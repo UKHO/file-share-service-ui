@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: File-Share-Service-UI
+  description: The File Share Service will be the single external place for external people to download files from the UKHO. This repository provides an Angular GUI to the File Share Service.
+  annotations:
+    github.com/project-slug: ukho/file-share-service-ui
+spec:
+  type: service
+  lifecycle: alpha
+  owner: rockydevnet
+  system: ADDS
+  consumesApis:
+    - File-Share-Service
