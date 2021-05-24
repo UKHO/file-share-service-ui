@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HeaderModule } from "@ukho/design-system";
+import { HeaderModule, FooterModule } from "@ukho/design-system";
+import { FssFooterComponent } from './components';
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [FssFooterComponent],
 
   imports: [
-    BrowserModule, HeaderModule
+    BrowserModule, HeaderModule, FooterModule
   ],
 
   exports: [
-      HeaderModule
+      HeaderModule, FssFooterComponent
   ]
 })
 
