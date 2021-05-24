@@ -2,3 +2,35 @@
 @use '~@fortawesome/fontawesome-free/scss/solid';
 @use '~@fortawesome/fontawesome-free/scss/brands';
 @use '~@ukho/design-system/styles/core.scss';
+
+.skip-to-content-link {
+    left: 2%;
+    position: absolute;
+    transform: translateY(-100%);
+    background: #f0f0f0;
+    padding: 10px;
+    border: none;
+    box-shadow: none; 
+
+    &:focus{
+        transform: translateY(20%);
+    }
+  }
+
+  #mainContainer{
+      img{
+          width: 100%
+      }
+      p{
+        font-size: 20px;
+        font-weight: 300;
+      }
+      a#fss-createaccount{
+        padding: 20px 0;
+        display: inline-block;
+
+        &:hover{
+            text-decoration: none;
+        }
+      }
+  }
