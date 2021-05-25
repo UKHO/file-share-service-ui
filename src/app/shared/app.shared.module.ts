@@ -1,17 +1,21 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HeaderModule, FooterModule, PhaseBannerModule } from "@ukho/design-system";
-import { FssFooterComponent } from './components';
+import { FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent } from './components';
 
 @NgModule({
-  declarations: [FssFooterComponent],
+  declarations: [
+    FssHeaderComponent,
+    FssPhaseBannerComponent,
+    FssFooterComponent
+  ],
 
   imports: [
     BrowserModule, HeaderModule, FooterModule, PhaseBannerModule
   ],
 
   exports: [
-      HeaderModule, FssFooterComponent, PhaseBannerModule
+      FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent
   ]
 })
 

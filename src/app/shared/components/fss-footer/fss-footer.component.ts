@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'
 import { FooterComponent } from '@ukho/design-system'
 
 
@@ -10,12 +9,12 @@ import { FooterComponent } from '@ukho/design-system'
 })
 export class FssFooterComponent extends FooterComponent {
 
-  constructor(private route:Router){
+  constructor(){
     super();
   }
 
   ngOnInit(): void {
-    this.imageLink="https://www.admiraliy.co.uk";
+    this.imageLink="https://www.admiralty.co.uk/";
     this.imageSrc="https://design.ukho.dev/svg/UKHO stacked logo.svg";
     this.imageAlt="Admirality Maritime Data Solutions | UK Hydrographic office";
     this.text="@ Crown copyright 2021 UK Hydrographic office";
