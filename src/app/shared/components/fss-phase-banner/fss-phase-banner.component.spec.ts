@@ -25,4 +25,9 @@ describe('FssPhaseBannerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it(`should have phase as 'alpha'`, () => {  
+    const app = fixture.componentInstance;
+    expect(app.phase).toEqual('alpha');
+  });
 });

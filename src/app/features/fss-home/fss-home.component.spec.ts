@@ -47,4 +47,11 @@ describe('FssHomeComponent', () => {
     expect(button.textContent).toEqual("Sign in");   
   });
 
+  it(`should have button component'`, () => {    
+    let compiled = fixture.nativeElement;
+    let a = compiled.querySelector('a');
+    expect(a).not.toBeNull();
+    expect(a.textContent).toEqual("Create a new account");   
+  });
+
 });
