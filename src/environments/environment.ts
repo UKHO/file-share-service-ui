@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  feedback_emailID: 'products.feedback@UKHO.gov.uk'
 };
 
 /*
