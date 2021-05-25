@@ -24,12 +24,10 @@ export class FssHeaderComponent extends HeaderComponent {
 
     this.menuItems = [
       {
-        title: 'Search',
-        clickAction: (() => {this.route.navigate(["fss-search"])}​​​​​​​​)
+        title: 'Search'      
       },
       {
-        title: 'Sign In',
-        clickAction: (() => {this.route.navigate([""])}​​​​​​​​)
+        title: 'Sign In'        
       }
     ];
   }

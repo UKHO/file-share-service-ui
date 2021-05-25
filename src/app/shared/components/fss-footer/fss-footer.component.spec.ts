@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { FssFooterComponent } from './fss-footer.component';
 
 describe('FssFooterComponent', () => {
@@ -8,6 +8,9 @@ describe('FssFooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule,        
+      ],
       declarations: [ FssFooterComponent ]
     })
     .compileComponents();
@@ -22,4 +25,5 @@ describe('FssFooterComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
 });
