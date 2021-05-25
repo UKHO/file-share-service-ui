@@ -50,3 +50,51 @@ stages:
             inputs:
               PathtoPublish: '$(Build.SourcesDirectory)/dist'
               ArtifactName: AngularApp
+
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish terraform Artifacts"
+            inputs:
+              PathtoPublish: '$(Build.SourcesDirectory)/Deployment'
+              ArtifactName: terraformartifact
+
+  - stage: Devdeploy
+    displayName: "Devdeploy (inc terraform, website deploy)"
+    jobs:
+      - deployment: DevDeploy
+        displayName: "Dev - deploy terraform and website"
+        environment: "Ess-Dev"
+        container: ${{variables.Container}}
+        workspace:
+          clean: all
+        variables:
+          - group: "File share service terraform Dev"
+          - group: "File-Share-Service-UI-Dev-Variables"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: Deployment/templates/continous-deployment.yml
+                  parameters:
+                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+                    AzureSubscription: "File-Share-Service-Dev-P4052"
+
+  - stage: QAdeploy
+    displayName: "QAdeploy (inc terraform, website deploy)"
+    jobs:
+      - deployment: QADeploy
+        displayName: "QA - deploy terraform and website"
+        environment: "FSS-QA"
+        container: ${{variables.Container}}
+        workspace:
+          clean: all
+        variables:
+          - group: "File share service terraform QA"
+          - group: "File-Share-Service-UI-QA-Variables"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: Deployment/templates/continous-deployment.yml
+                  parameters:
+                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+                    AzureSubscription: "File-Share-Service-QA-P4052"
