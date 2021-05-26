@@ -41,12 +41,6 @@ stages:
               npm ci
             displayName: 'npm restore'
           
-          - task: Bash@3
-            displayName: "Dependency check"
-            inputs:
-              filePath: 'dependency-check.sh'
-              arguments: '--project "Exchange-Set-Service - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)\UKHO.ExchangeSetService.API" --out "$(Build.ArtifactStagingDirectory)\DCReport" --noupdate'
-          
           - script: |
               npm run build --prod
             displayName: 'npm build'
