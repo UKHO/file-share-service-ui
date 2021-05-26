@@ -25,4 +25,4 @@ steps:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az storage blob upload-batch -d '$web' --account-name $(website_storage_account_name) -s "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
-      displayName: "Website deployment"
+    displayName: "Website deployment"
