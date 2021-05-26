@@ -19,10 +19,10 @@ steps:
       ARM_SUBSCRIPTION_ID: $(TERRAFORM-SUBSCRIPTION-ID)
 
   - task: AzureCLI@2
+    displayName: "Website deployment"
     inputs:
       azureSubscription: "${{ parameters.AzureSubscription }}"
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
         az storage blob upload-batch -d '$web' --account-name $(website_storage_account_name) -s "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
-    displayName: "Website deployment"
