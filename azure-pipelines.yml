@@ -28,7 +28,7 @@ stages:
         container: ${{variables.Container}}
         workspace:
           clean: all
-        displayName: "DependencyChecker Build test publish"
+        displayName: "Build test publish"
 
         steps:
           - task: NodeTool@0
