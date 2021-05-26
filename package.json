@@ -7,7 +7,12 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "dns-packet": "~5.2.2",
+    "postcss": "~8.2.10"
   },
   "private": true,
   "dependencies": {
