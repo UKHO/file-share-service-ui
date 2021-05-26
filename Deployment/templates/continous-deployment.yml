@@ -7,7 +7,7 @@ parameters:
 
 steps:
   - task: PowerShell@2
-    displayName: "terraform devdeploy"
+    displayName: "terraform deployment"
     inputs:
       targetType: filePath
       filePath: '$(Pipeline.Workspace)/terraformartifact/terraform_conditional_run.ps1'
