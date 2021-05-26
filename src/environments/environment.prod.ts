@@ -1,4 +1,8 @@
 export const environment = {
   production: true,
-  feedback_emailID: 'products.feedback@UKHO.gov.uk'
+
+  //Configuration variables for FSS UI
+  FSSConfiguration: {
+    feedback_emailID: 'products.feedback@UKHO.gov.uk'
+  }
 };

@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  feedback_emailID: 'products.feedback@UKHO.gov.uk'
+
+  //Configuration variables for FSS UI
+  FSSConfiguration: {
+    feedback_emailID: 'products.feedback@UKHO.gov.uk'
+  }
 };
 
 /*

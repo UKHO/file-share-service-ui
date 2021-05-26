@@ -14,7 +14,7 @@ export class FssPhaseBannerComponent extends PhaseBannerComponent implements OnI
   }
 
   ngOnInit(): void {
-    this.phase='alpha',
-    this.link='mailto:' + environment.feedback_emailID
+    this.phase = 'alpha',
+      this.link = 'mailto:' + environment.FSSConfiguration.feedback_emailID
   }
 }
