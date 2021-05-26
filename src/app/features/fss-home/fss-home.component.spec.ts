@@ -40,14 +40,14 @@ describe('FssHomeComponent', () => {
     expect(compiled.querySelector('h2').textContent).toContain('Sign in to access your files');
   });
 
-  it(`should have button component'`, () => {    
+  it('should have button component', () => {    
     let compiled = fixture.nativeElement;
     let button = compiled.querySelector('ukho-button');
     expect(button).not.toBeNull();
     expect(button.textContent).toEqual("Sign in");   
   });
 
-  it(`should have button component'`, () => {    
+  it('should have button component', () => {    
     let compiled = fixture.nativeElement;
     let a = compiled.querySelector('a');
     expect(a).not.toBeNull();

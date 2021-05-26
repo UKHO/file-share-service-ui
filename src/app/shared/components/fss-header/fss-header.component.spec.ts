@@ -26,7 +26,7 @@ describe('FssHeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(`should have header component'`, () => {    
+  it('should have header component', () => {    
     let compiled = fixture.nativeElement;
     let header = compiled.querySelector('ukho-header');
     expect(header).not.toBeNull();    
@@ -37,7 +37,7 @@ describe('FssHeaderComponent', () => {
     expect(app.branding.title).toEqual('File Sharing Service');
   });
 
-  it(`should have 2 menu items`, () => {  
+  it('should have 2 menu items', () => {  
     const app = fixture.componentInstance;
     expect(app.menuItems.length).toEqual(2);
     expect(app.menuItems[0].title).toEqual("Search");

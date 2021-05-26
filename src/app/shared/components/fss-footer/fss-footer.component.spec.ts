@@ -26,13 +26,13 @@ describe('FssFooterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(`should have footer component'`, () => {    
+  it('should have footer component', () => {    
     let compiled = fixture.nativeElement;
     let footer = compiled.querySelector('ukho-footer');
     expect(footer).not.toBeNull();    
   });
   
-  it(`should have 2 navigation items`, () => {  
+  it('should have 2 navigation items', () => {  
     const app = fixture.componentInstance;
     expect(app.navigation.length).toEqual(2);
     expect(app.navigation[0].title).toEqual("Privacy policy");
