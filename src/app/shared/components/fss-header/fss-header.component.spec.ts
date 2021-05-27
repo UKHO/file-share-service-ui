@@ -34,14 +34,14 @@ describe('FssHeaderComponent', () => {
 
   it(`should have as title 'File Sharing Service'`, () => {  
     const app = fixture.componentInstance;
-    expect(app.branding.title).toEqual('File Sharing Service');
+    expect(app.branding.title).toEqual('File Share Service');
   });
 
   it('should have 2 menu items', () => {  
     const app = fixture.componentInstance;
     expect(app.menuItems.length).toEqual(2);
     expect(app.menuItems[0].title).toEqual("Search");
-    expect(app.menuItems[1].title).toEqual("Sign In");
+    expect(app.menuItems[1].title).toEqual("Sign in");
   });
 
 });
