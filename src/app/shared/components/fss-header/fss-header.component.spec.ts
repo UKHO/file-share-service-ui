@@ -32,7 +32,7 @@ describe('FssHeaderComponent', () => {
     expect(header).not.toBeNull();    
   });
 
-  it(`should have as title 'File Sharing Service'`, () => {  
+  it(`should have as title 'File Share Service'`, () => {  
     const app = fixture.componentInstance;
     expect(app.branding.title).toEqual('File Share Service');
   });
