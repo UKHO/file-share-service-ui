@@ -16,7 +16,7 @@ export class FssHeaderComponent extends HeaderComponent {
   ngOnInit(): void {
 
     this.branding = {
-      title : "File Sharing Service",
+      title : "File Share Service",
       logoImgUrl : "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
       logoAltText : "Admiralty - Maritime Data Solutions Logo",
       logoLinkUrl : "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"
@@ -27,7 +27,7 @@ export class FssHeaderComponent extends HeaderComponent {
         title: 'Search'      
       },
       {
-        title: 'Sign In'        
+        title: 'Sign in'        
       }
     ];
   }
