@@ -1,8 +1,6 @@
-export const environment = {
-  production: true,
+import { FssEnvironment } from 'src/app/core/services/fss-environment.type';
 
-  //Configuration variables for FSS UI
-  FSSConfiguration: {
-    feedback_emailID: 'products.feedback@UKHO.gov.uk'
-  }
+export const environment: FssEnvironment = {
+  production: true,
+  fssConfiguration: { feedbackEmailId: 'products.feedback@UKHO.gov.uk' }
 };

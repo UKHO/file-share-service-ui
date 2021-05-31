@@ -1,14 +1,11 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+import { FssEnvironment } from 'src/app/core/services/fss-environment.type';
 
-export const environment = {
+export const environment: FssEnvironment = {
   production: false,
-
-  //Configuration variables for FSS UI
-  FSSConfiguration: {
-    feedback_emailID: 'products.feedback@UKHO.gov.uk'
-  }
+  fssConfiguration: { feedbackEmailId: 'products.feedback.dev@UKHO.gov.uk' }
 };
 
 /*
