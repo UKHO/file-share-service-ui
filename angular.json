@@ -62,6 +62,14 @@
                   "maximumError": "4kb"
                 }
               ]
+            },
+            "qa": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.qa.ts"
+                }
+              ]
             }
           }
         },
@@ -73,6 +81,9 @@
           "configurations": {
             "production": {
               "browserTarget": "ukho-fileshareservice-ui:build:production"
+            },
+            "qa": {
+              "browserTarget": "ukho-fileshareservice-ui:build:qa"
             }
           }
         },

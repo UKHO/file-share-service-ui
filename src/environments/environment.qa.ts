@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
 
   //Configuration variables for FSS UI
   FSSConfiguration: {
