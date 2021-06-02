@@ -56,7 +56,8 @@ stages:
             condition: succeededOrFailed()
             inputs:
              testRunner: JUnit
-             testResultsFiles: 'src/app/junit.xml'
+             testResultsFiles: 'junit.xml'
+             searchFolder: $(System.DefaultWorkingDirectory)
             displayName: "Publish Unit Test Results"
 
           - task: PublishCodeCoverageResults@1
