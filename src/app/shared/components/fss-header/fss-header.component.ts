@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from '@ukho/design-system'
-import { Router } from '@angular/router'
+import { HeaderComponent } from '@ukho/design-system';
+
 
 @Component({
   selector: 'app-fss-header',
@@ -9,7 +9,7 @@ import { Router } from '@angular/router'
 })
 export class FssHeaderComponent extends HeaderComponent {
   
-  constructor(private route:Router){
+  constructor(){
     super();
   }
 

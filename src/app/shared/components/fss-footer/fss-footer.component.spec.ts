@@ -1,42 +1,69 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FssFooterComponent } from './fss-footer.component';
+import { FooterComponent } from '@ukho/design-system';
+import { By } from '@angular/platform-browser';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('FssFooterComponent', () => {
+
+ describe('FssFooterComponent', () => {
   let component: FssFooterComponent;
-  let fixture: ComponentFixture<FssFooterComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,        
-      ],
-      declarations: [ FssFooterComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FssFooterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should have footer component', () => {    
-    let compiled = fixture.nativeElement;
-    let footer = compiled.querySelector('ukho-footer');
-    expect(footer).not.toBeNull();    
-  });
   
-  it('should have 2 navigation items', () => {  
-    const app = fixture.componentInstance;
-    expect(app.navigation.length).toEqual(2);
-    expect(app.navigation[0].title).toEqual("Privacy policy");
-    expect(app.navigation[1].title).toEqual("Accessibility");
-  });
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [RouterTestingModule],
+        declarations: [FssFooterComponent , FooterComponent],
+        schemas: [NO_ERRORS_SCHEMA]
+      }).compileComponents();
+    });
+
+
+      it('should have footer component', () => {    
+        const fixture = TestBed.createComponent(FssFooterComponent);
+        const footer = fixture.debugElement.nativeElement.querySelector('ukho-footer');
+        const header = fixture.debugElement.nativeElement.querySelector('ukho-header');
+        expect(footer).not.toBeNull();
+        expect(header).toBeNull();    
+      });
+
+      test('should render the text element of ukho-footer', () =>{
+      const fixture = TestBed.createComponent(FssFooterComponent);
+      fixture.detectChanges();     
+      const footer = fixture.debugElement.query(By.css('ukho-footer')).nativeElement;
+      expect(footer.querySelector('p').textContent).not.toBeNull();
+      expect(footer.querySelector('p').textContent).toContain('@ Crown copyright 2021 UK Hydrographic office');  
+      expect(footer.querySelector('p').textContent).not.toContain('File Share Service');  
+      });
+
+     
+      test('should render image in ukho-footer', () =>{
+        const fixture = TestBed.createComponent(FssFooterComponent);
+        fixture.detectChanges();     
+        const footer = fixture.debugElement.query(By.css('ukho-footer')).nativeElement;
+        expect(footer.querySelector('a').textContent).not.toBeNull();
+      });
+
+      test('should exist', () => {
+        component = new FssFooterComponent();
+        component.ngOnInit();
+        expect(component).toBeDefined();
+      });
+              
+      test('should exist copyright statement in footer', () => {
+        component = new FssFooterComponent();
+        component.ngOnInit();
+        expect(component.text).toEqual('@ Crown copyright 2021 UK Hydrographic office');
+        expect(component.text).not.toEqual('File Share Service');
+      });
+
+      test('should exist 2 menu items in footer', () => {
+        component = new FssFooterComponent();
+        component.ngOnInit();
+        expect(component.navigation.length).toEqual(2);
+        expect(component.navigation[0].title).toEqual("Privacy policy");
+        expect(component.navigation[1].title).toEqual("Accessibility");
+      });
 
 });
+
+
