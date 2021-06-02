@@ -49,7 +49,7 @@ stages:
              npm install jest jest-preset-angular @types/jest --save-dev
              npm test --coverage
             displayName: 'npm test and test coverage generation'
-            continueOnError: true
+            continueOnError: false
             
           - task: PublishTestResults@2
             condition: succeededOrFailed()
