@@ -57,6 +57,11 @@ stages:
              testRunner: JUnit
              testResultsFiles: '**/test-*.xml'
             displayName: "Publish Unit Test Results"
+
+          - task: PublishCodeCoverageResults@1
+            inputs:
+                codeCoverageTool: 'Cobertura'
+                summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*.xml'
             
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"
