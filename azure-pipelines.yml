@@ -48,7 +48,7 @@ stages:
           - script: |
              npm install jest jest-preset-angular @types/jest --save-dev
              npm install jest-junit --save-dev
-             npm run test-ci --coverage
+             npm test --coverage
             displayName: 'npm test and test coverage generation'
             continueOnError: false
             
