@@ -1,0 +1,28 @@
+parameters:
+  - name: ContinueEvenIfResourcesAreGettingDestroyed
+    type: boolean
+    default: false
+  - name: AzureSubscription
+    type: string
+
+steps:
+  - task: PowerShell@2
+    displayName: "terraform deployment"
+    inputs:
+      targetType: filePath
+      filePath: '$(Pipeline.Workspace)/terraformartifact/terraform_conditional_run.ps1'
+      arguments: '-deploymentResourceGroupName $(DeploymentResourceGroupName) -deploymentStorageAccountName $(DeploymentStorageAccountName) -workSpace $(Environment) -continueEvenIfResourcesAreGettingDestroyed $${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}'
+    env:
+      ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
+      ARM_CLIENT_SECRET: $(TERRAFORM-CLIENT-SECRET)
+      ARM_TENANT_ID: $(TERRAFORM-TENANT-ID)
+      ARM_SUBSCRIPTION_ID: $(TERRAFORM-SUBSCRIPTION-ID)
+
+  - task: AzureCLI@2
+    displayName: "Website deployment"
+    inputs:
+      azureSubscription: "${{ parameters.AzureSubscription }}"
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az storage blob upload-batch -d '$web' --account-name $(website_storage_account_name) -s "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
