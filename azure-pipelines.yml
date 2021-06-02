@@ -27,8 +27,8 @@ stages:
       - job:
         container: ${{variables.Container}}
         workspace:
-          clean: all
-        displayName: "Build test publish"
+          clean: all # what to clean up before the job runs outputs | resources | all
+        displayName: "DependencyChecker Build test publish"
 
         steps:
           - task: NodeTool@0
@@ -38,13 +38,26 @@ stages:
 
           - script: |
               npm install -g @angular/cli
-              npm ci
-            displayName: 'npm restore'
-          
+              npm install
+            displayName: 'npm install'
+
           - script: |
               npm run build --prod
             displayName: 'npm build'
-
+           
+          - script: |
+             npm install jest jest-preset-angular @types/jest --save-dev
+             npm test --coverage
+            displayName: 'npm test and test coverage generation'
+            continueOnError: true
+            
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+             testRunner: JUnit
+             testResultsFiles: '**/test-*.xml'
+            displayName: "Publish Unit Test Results"
+            
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"
             inputs:
