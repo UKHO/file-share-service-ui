@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { FssConfiguration } from './fss-configuration.types';
 import { FssEnvironment } from './fss-environment.type';
 
 @Injectable({
@@ -11,7 +12,7 @@ export class EnvironmentService {
     private environment: FssEnvironment
   ) { }
 
-  getFssConfiguration() {
+  getFssConfiguration(): FssConfiguration {
     return this.environment.fssConfiguration;
-  }
+  }  
 }
