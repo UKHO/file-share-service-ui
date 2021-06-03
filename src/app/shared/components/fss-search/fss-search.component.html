@@ -1,0 +1,53 @@
+<h1>Search files</h1>
+<p class="light">Complete the fields to search a query or select a popular search.</p> 
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Group</th>
+                <th>AND/Or</th>
+                <th>Field</th>
+                <th>Operator</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+             <tr *ngFor="let dynamic of searchArray; let i = index;" (click)="setClickedRow(i)" >
+                <td>
+                    <ukho-checkbox (change)="toggleSelection($event, i)" 
+                     [checked]="checkboxes[i]"></ukho-checkbox>
+                </td>
+                <td>
+                <ukho-select>
+                    <option [value]="option" *ngFor="let  option of options">{{option}}</option>
+                </ukho-select>
+                </td>
+                <td>
+                  <ukho-select>
+                      <option [value]="batch" *ngFor="let  batch of batches">{{batch}}</option>
+                  </ukho-select>
+                  </td>
+                <td>
+                  <ukho-select>
+                        <option [value]="Operator" *ngFor="let  Operator of Operators">{{Operator}}</option>
+                 </ukho-select>
+                </td>
+                <td>
+                    <ukho-textinput class="txt-input"></ukho-textinput>
+                 </td>
+                <td (click)="deleteRow(i)">
+                    <i class="fa fa-times fa-1x"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="searchSection">
+        <div [ngStyle]="{'padding':'10px'}"> <i (click)="addRow('index')" class="fa fa-plus fa-1x">&nbsp;Add new line</i></div>
+
+        <div class="searchBtn">
+            <ukho-button>Search</ukho-button>
+        </div>
+    </div>
+  </div>
+

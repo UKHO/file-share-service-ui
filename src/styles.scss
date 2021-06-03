@@ -43,3 +43,36 @@
   ukho-phase-banner.phasebanner {
     padding: 10px;
 }
+
+.container{
+  table{
+    border-spacing: 10px;
+    width: 100%;
+    text-align: center;
+    tr td:nth-child(n + 3){
+      text-align: right;
+    }
+  }
+  ukho-card.filesection .card {
+    margin-bottom: 15px;
+  }
+  .txt-input{
+    height: initial;
+    span{
+      display: none;
+    }
+}
+.searchSection{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+        .searchBtn{
+          display: flex;
+          flex-direction: row-reverse;
+          flex-grow: 1;
+          padding-right: 42px;
+        }
+}
+}
+
+

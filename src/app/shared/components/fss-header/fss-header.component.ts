@@ -1,6 +1,6 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system'
-import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-fss-header',
@@ -9,7 +9,7 @@ import { Router } from '@angular/router'
 })
 export class FssHeaderComponent extends HeaderComponent {
   
-  constructor(private route:Router){
+  constructor(private route: Router){
     super();
   }
 
@@ -24,7 +24,8 @@ export class FssHeaderComponent extends HeaderComponent {
 
     this.menuItems = [
       {
-        title: 'Search'      
+        title: 'Search',
+        clickAction: (() => {this.route.navigate(["/Search"])}​​​​​​​​)      
       },
       {
         title: 'Sign in'        
