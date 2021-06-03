@@ -6,7 +6,6 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "jest",
-    "test-ci": "npm run test -- --watchAll=false --reporters=default --reporters=jest-junit",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "preinstall": "npx npm-force-resolutions"
