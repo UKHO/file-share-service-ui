@@ -63,5 +63,5 @@ stages:
             inputs:
               codeCoverageTool: 'Cobertura'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-              reportDirectory: $(System.DefaultWorkingDirectory)/**/coverage
+              reportDirectory: '$(System.DefaultWorkingDirectory)/**/*coverage.html'
             displayName: Code Coverage
