@@ -5,7 +5,6 @@ import { FooterComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-
  describe('FssFooterComponent', () => {
   let component: FssFooterComponent;
   
@@ -23,7 +22,17 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
         const footer = fixture.debugElement.nativeElement.querySelector('ukho-footer');
         const header = fixture.debugElement.nativeElement.querySelector('ukho-header');
         expect(footer).not.toBeNull();
-        expect(header).toBeNull();    
+        expect(header).toBeFalsy();    
+      });
+
+      test('should render image and navigation in ukho-footer', () =>{
+        const fixture = TestBed.createComponent(FssFooterComponent);
+        fixture.detectChanges();     
+        const footerAnchorTags = fixture.debugElement.queryAll(By.css('a'));
+        for(var i=0; i < footerAnchorTags.length; i++){
+          var img = footerAnchorTags[i];
+          expect(img.attributes['href']).not.toBe(null);
+        }
       });
 
       test('should render the text element of ukho-footer', () =>{
@@ -36,13 +45,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
       });
 
      
-      test('should render image in ukho-footer', () =>{
-        const fixture = TestBed.createComponent(FssFooterComponent);
-        fixture.detectChanges();     
-        const footer = fixture.debugElement.query(By.css('ukho-footer')).nativeElement;
-        expect(footer.querySelector('a').textContent).not.toBeNull();
-      });
-
       test('should exist', () => {
         component = new FssFooterComponent();
         component.ngOnInit();

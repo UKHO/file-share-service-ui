@@ -12,7 +12,8 @@
   },
   "resolutions": {
     "dns-packet": "~5.2.2",
-    "postcss": "~8.2.10"
+    "postcss": "~8.2.10",
+    "ws": "~7.4.6"
   },
   "private": true,
   "dependencies": {

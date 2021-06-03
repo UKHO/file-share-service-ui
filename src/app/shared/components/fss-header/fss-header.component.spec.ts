@@ -27,7 +27,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
       it('should have header component', () => {    
         const fixture = TestBed.createComponent(FssHeaderComponent);
         const header = fixture.debugElement.nativeElement.querySelector('ukho-header');
-        expect(header).not.toBeNull();    
+        const footer = fixture.debugElement.nativeElement.querySelector('ukho-footer');
+        expect(header).not.toBeNull();  
+        expect(footer).toBeFalsy();  
       });
 
       test('should render the branding title element of ukho-header', () =>{
