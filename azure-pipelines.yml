@@ -62,7 +62,7 @@ stages:
           - task: PublishCodeCoverageResults@1
             inputs:
              codeCoverageTool: 'Cobertura'
-             summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/*.xml'
+             summaryFileLocation: '**/*coverage.cobertura.xml'
             
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"
