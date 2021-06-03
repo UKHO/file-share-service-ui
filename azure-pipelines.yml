@@ -59,6 +59,10 @@ stages:
              testResultsFiles: junit.xml
             displayName: "Publish Unit Test Results"
 
+          - script: |
+               ./node_modules/.bin/nyc --reporter=cobertura --reporter=html report
+               displayName: 'Build code coverage report'
+
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'Cobertura'
