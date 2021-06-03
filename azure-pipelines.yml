@@ -62,7 +62,7 @@ stages:
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'Cobertura'
-              summaryFileLocation: 'Coverage/my-app'
+              summaryFileLocation: '$(Build. SourcesDirectory)\TestResults\Coverage\**\coverage. cobertura. xml'
             displayName: Code Coverage
             
           - task: PublishBuildArtifacts@1
