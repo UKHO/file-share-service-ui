@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="15" failures="0" errors="0" time="7.643">
+  <testsuite name="src\app\features\fss-home\fss-home.component.spec.ts" errors="0" failures="0" skipped="0" timestamp="2021-06-03T13:04:50" time="3.159" tests="1">
+    <testcase classname="FssHomeComponent should exist" name="FssHomeComponent should exist" time="0.016">
+    </testcase>
+  </testsuite>
+  <testsuite name="src\app\app.component.spec.ts" errors="0" failures="0" skipped="0" timestamp="2021-06-03T13:04:50" time="3.443" tests="1">
+    <testcase classname="AppComponent should exist" name="AppComponent should exist" time="0.026">
+    </testcase>
+  </testsuite>
+  <testsuite name="src\app\shared\components\fss-phase-banner\fss-phase-banner.component.spec.ts" errors="0" failures="0" skipped="0" timestamp="2021-06-03T13:04:50" time="4.013" tests="1">
+    <testcase classname="FssPhaseBannerComponent should exist" name="FssPhaseBannerComponent should exist" time="0.014">
+    </testcase>
+  </testsuite>
+  <testsuite name="src\app\shared\components\fss-footer\fss-footer.component.spec.ts" errors="0" failures="0" skipped="0" timestamp="2021-06-03T13:04:50" time="4.975" tests="6">
+    <testcase classname="FssFooterComponent should have footer component" name="FssFooterComponent should have footer component" time="0.358">
+    </testcase>
+    <testcase classname="FssFooterComponent should render the text element of ukho-footer" name="FssFooterComponent should render the text element of ukho-footer" time="0.134">
+    </testcase>
+    <testcase classname="FssFooterComponent should render image in ukho-footer" name="FssFooterComponent should render image in ukho-footer" time="0.103">
+    </testcase>
+    <testcase classname="FssFooterComponent should exist" name="FssFooterComponent should exist" time="0.08">
+    </testcase>
+    <testcase classname="FssFooterComponent should exist copyright statement in footer" name="FssFooterComponent should exist copyright statement in footer" time="0.061">
+    </testcase>
+    <testcase classname="FssFooterComponent should exist 2 menu items in footer" name="FssFooterComponent should exist 2 menu items in footer" time="0.082">
+    </testcase>
+  </testsuite>
+  <testsuite name="src\app\shared\components\fss-header\fss-header.component.spec.ts" errors="0" failures="0" skipped="0" timestamp="2021-06-03T13:04:50" time="5.292" tests="6">
+    <testcase classname="FssHeaderComponent should render &quot;Skip to content&quot; in an anchor tag" name="FssHeaderComponent should render &quot;Skip to content&quot; in an anchor tag" time="0.586">
+    </testcase>
+    <testcase classname="FssHeaderComponent should have header component" name="FssHeaderComponent should have header component" time="0.201">
+    </testcase>
+    <testcase classname="FssHeaderComponent should render the branding title element of ukho-header" name="FssHeaderComponent should render the branding title element of ukho-header" time="0.194">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist" name="FssHeaderComponent should exist" time="0.14">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist the branding title in header" name="FssHeaderComponent should exist the branding title in header" time="0.111">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist 2 menu items in header" name="FssHeaderComponent should exist 2 menu items in header" time="0.089">
+    </testcase>
+  </testsuite>
+</testsuites>
