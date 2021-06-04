@@ -86,10 +86,10 @@ stages:
 
        - task: PublishTestResults@2
          condition: succeededOrFailed()
-          inputs
-            testRunner:'JUnit'
-             testResultsFiles:'junit.xml'
-           displayName:'Publish Unit Test Results'
+         inputs:
+          testRunner: JUnit
+          testResultsFiles:  junit.xml
+         displayName: 'Publish Unit Test Results'
           
        - task: PublishCodeCoverageResults@1
          inputs:
