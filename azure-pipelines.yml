@@ -64,7 +64,7 @@ stages:
             inputs:
               codeCoverageTool: 'Cobertura'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-              reportDirectory: '$(System.DefaultWorkingDirectory)/**/*.html'
+              reportDirectory: ./**/*.html'
             displayName: Code Coverage
    
           - task: PublishBuildArtifacts@1
