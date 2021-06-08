@@ -52,7 +52,6 @@ stages:
              displayName: Unit Testing
             continueOnError: false
             displayName: 'Unit test with Jest'
-
  
           - task: PublishTestResults@2
             condition: succeededOrFailed()
