@@ -49,7 +49,6 @@ stages:
              npm install jest jest-preset-angular @types/jest --save-dev
              npm install jest-junit --save-dev
              npm test --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html
-             displayName: Unit Testing
             continueOnError: false
             displayName: 'Unit test with Jest'
  
