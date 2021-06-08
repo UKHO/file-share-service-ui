@@ -81,9 +81,9 @@ stages:
              npm install jest jest-preset-angular @types/jest --save-dev
              npm install jest-junit --save-dev
              npm test --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html
-             displayName:
+             displayName: Unit Testing
          continueOnError: false
-
+         workingDirectory: 
        - task: PublishTestResults@2
          condition: succeededOrFailed()
          inputs:
