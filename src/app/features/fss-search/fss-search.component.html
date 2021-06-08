@@ -1,0 +1,17 @@
+
+<div class="container">
+    <h1>Search files</h1>
+    <p class="light">Complete the fields to search a query or select a popular search.</p> 
+    <app-fss-search-row 
+     [fssSearchRows]="fssSearchRows" 
+     (onSearchRowDeleted)="onSearchRowDeleted($event)">
+    </app-fss-search-row>
+  </div>
+  <div class="searchSection">
+    <div [ngStyle]="{'padding':'10px'}"> <i (click)="addSearchRow()" class="fa fa-plus fa-1x">&nbsp;Add new line</i></div>
+
+    <div class="searchBtn">
+        <ukho-button>Search</ukho-button>
+    </div>
+</div>
+

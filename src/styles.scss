@@ -45,34 +45,28 @@
 }
 
 .container{
+  padding: 32px;
   table{
     border-spacing: 10px;
     width: 100%;
     text-align: center;
-    tr td:nth-child(n + 3){
-      text-align: right;
-    }
   }
-  ukho-card.filesection .card {
-    margin-bottom: 15px;
-  }
-  .txt-input{
-    height: initial;
-    span{
-      display: none;
-    }
+ 
 }
 .searchSection{
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
+  padding: 0 32px;
+    i{
+      cursor: pointer;
+    }
         .searchBtn{
           display: flex;
           flex-direction: row-reverse;
           flex-grow: 1;
           padding-right: 42px;
         }
-}
 }
 
 

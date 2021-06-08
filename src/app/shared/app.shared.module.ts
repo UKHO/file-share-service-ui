@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HeaderModule, FooterModule, PhaseBannerModule,ButtonModule,SelectModule,CheckboxModule,TextinputModule } from "@ukho/design-system";
+import { HeaderModule, FooterModule, PhaseBannerModule } from "@ukho/design-system";
 import { FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent } from './components';
-import { FssSearchComponent } from './components/fss-search/fss-search.component';
 
 @NgModule({
   declarations: [
     FssHeaderComponent,
     FssPhaseBannerComponent,
-    FssFooterComponent,
-    FssSearchComponent
+    FssFooterComponent
   ],
 
   imports: [
-    BrowserModule, HeaderModule, FooterModule, PhaseBannerModule,ButtonModule,SelectModule,CheckboxModule,TextinputModule
+    BrowserModule, HeaderModule, FooterModule, PhaseBannerModule
   ],
 
   exports: [

@@ -1,0 +1,43 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Group</th>
+            <th>AND/Or</th>
+            <th>Field</th>
+            <th>Operator</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+         <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
+            <td>
+                <ukho-checkbox 
+                 [(ngModel)]="fssSearchRow.group"></ukho-checkbox>
+            </td>
+            <td>
+                <ukho-select [(ngModel)]="fssSearchRow.selectedJoinOperator">
+                    <option *ngFor="let joinOperator of fssSearchRow.joinOperators"
+                    value="{{joinOperator.value}}">{{joinOperator.text}}</option>
+                </ukho-select>
+            </td>
+            <td>
+                <ukho-select [(ngModel)]="fssSearchRow.selectedField">
+                    <option *ngFor="let field of fssSearchRow.fields"
+                     value="{{field.value}}">{{field.text}}</option>
+                </ukho-select>
+              </td>
+            <td>
+                <ukho-select [(ngModel)]="fssSearchRow.selectedOperator">
+                    <option *ngFor="let Operator of fssSearchRow.operators"
+                     value="{{Operator.value}}">{{Operator.text}}</option>
+                </ukho-select>
+            </td>
+            <td>
+                <ukho-textinput [(ngModel)]="fssSearchRow.value" type="date"></ukho-textinput>
+             </td>
+            <td>
+                <i (click)="onSearchRowDelete(fssSearchRow.rowId)" class="fa fa-times fa-1x"></i>
+            </td>
+        </tr>
+    </tbody>
+</table>
