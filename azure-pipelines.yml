@@ -51,7 +51,7 @@ stages:
              npm test --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html
              displayName: Unit Testing
             continueOnError: false
-            workingDirectory: fss-home
+           
 
  
           - task: PublishTestResults@2
