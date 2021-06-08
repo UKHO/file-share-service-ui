@@ -7,8 +7,9 @@ module.exports = {
   testMatch: ['**/+(*.)+(spec).+(ts)'],
   setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
   collectCoverage: true,
-  coverageReporters: ['html'],
+  coverageReporters: ['html','cobertura','lcove','json'],
   coverageDirectory: 'coverage/my-app',
+  reporters: ["default","jest-junit"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
     prefix: '<rootDir>/'
   })
