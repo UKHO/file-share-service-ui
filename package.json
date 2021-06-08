@@ -9,6 +9,15 @@
     "lint": "ng lint",
     "preinstall": "npx npm-force-resolutions"
   },
+ "jest-junit": {
+    "suiteNameTemplate": "{filepath}",
+    "outputDirectory": ".",
+    "outputName": "junit.xml"
+  },
+  "jest":{
+    "collectCoverage": true,
+     "coverageReporters" :["lcov","html"]
+  },
   "resolutions": {
     "dns-packet": "~5.2.2",
     "postcss": "~8.2.10",
