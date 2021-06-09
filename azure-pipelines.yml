@@ -55,7 +55,7 @@ stages:
 
      - job: BuildTestPublish
        dependsOn: Dependencychecker
-       pool: $(UbuntuPool)
+       pool: $(DeploymentPool)
        container: ${{variables.Container}}
        workspace:
          clean: all # what to clean up before the job runs outputs | resources | all
