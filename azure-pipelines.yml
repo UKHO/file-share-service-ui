@@ -51,7 +51,6 @@ stages:
              npm test --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html
             continueOnError: false
             displayName: 'Unit test with Jest'
-            workingDirectory: 'src/app'
  
           - task: PublishTestResults@2
             condition: succeededOrFailed()
