@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
+import{ constants } from '../../../../../constants';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class FssHeaderComponent extends HeaderComponent {
   ngOnInit(): void {
 
     this.branding = {
-      title : "File Share Service",
+      title : constants.fssTitle,
       logoImgUrl : "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
       logoAltText : "Admiralty - Maritime Data Solutions Logo",
       logoLinkUrl : "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FssHomeComponent } from './fss-home.component';
+import { FssHomeComponent } from '../src/app/features/fss-home/fss-home.component';
 import { CardComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
