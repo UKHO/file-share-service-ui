@@ -1,16 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HeaderModule, FooterModule, PhaseBannerModule } from "@ukho/design-system";
 import { HttpClientModule } from '@angular/common/http';
-import { MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
-
 import { FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent } from './components';
-import { msalConfig } from 'src/assets/config/auth-config';
+import { MsalConfigDynamicModule } from 'src/app/shared/components/msal-config-dynamic.module';
 
-export function MSALInstanceFactory(): IPublicClientApplication {
-  return new PublicClientApplication(msalConfig);
-}
 @NgModule({
   declarations: [
     FssHeaderComponent,
@@ -21,14 +15,9 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   imports: [
     BrowserModule, HeaderModule, FooterModule, PhaseBannerModule,
     HttpClientModule,
-    MsalModule
+    MsalConfigDynamicModule.forRoot('assets/config/appconfig.json')
   ],
-  providers:
-    [{
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory
-    },
-      MsalService],
+  providers:[],
 
   exports: [
     FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent
