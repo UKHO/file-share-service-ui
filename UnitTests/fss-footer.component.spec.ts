@@ -4,7 +4,7 @@ import { FssFooterComponent } from '../src/app/shared/components/fss-footer/fss-
 import { FooterComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { constants } from '../constants';
+import { fssConfiguration } from '../appConfig';
 
 describe('FssFooterComponent', () => {
   let component: FssFooterComponent;
@@ -40,7 +40,7 @@ describe('FssFooterComponent', () => {
     fixture.detectChanges();
     const footer = fixture.debugElement.query(By.css('ukho-footer')).nativeElement;
     expect(footer.querySelector('p').textContent).not.toBeNull();
-    expect(footer.querySelector('p').textContent).toContain(constants.copyright);
+    expect(footer.querySelector('p').textContent).toContain(fssConfiguration.copyright);
     expect(footer.querySelector('p').textContent).not.toContain('File Share Service');
   });
 
@@ -53,7 +53,7 @@ describe('FssFooterComponent', () => {
   test('should exist copyright statement in footer', () => {
     component = new FssFooterComponent();
     component.ngOnInit();
-    expect(component.text).toEqual(constants.copyright);
+    expect(component.text).toEqual(fssConfiguration.copyright);
     expect(component.text).not.toEqual('File Share Service');
   });
 
