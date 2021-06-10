@@ -18,5 +18,4 @@ export class FssSearchRowComponent implements OnInit {
     this.onSearchRowDeleted.emit(rowId);
   }
   
-
 }
