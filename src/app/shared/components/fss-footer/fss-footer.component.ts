@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '@ukho/design-system';
-import{ constants } from '../../../../../constants';
+import{ constants } from '../../../../../appConfig';
 
 @Component({
   selector: 'app-fss-footer',

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FssFooterComponent } from '../src/app/shared/components/fss-footer/fss-footer.component';
+import { FssFooterComponent } from '../../src/app/shared/components/fss-footer/fss-footer.component';
 import { FooterComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { constants } from '../constants';
+import { constants } from '../../appConfig';
 
 describe('FssFooterComponent', () => {
   let component: FssFooterComponent;

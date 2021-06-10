@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PhaseBannerComponent } from '@ukho/design-system'
 import { environment } from '../../../../environments/environment';
-import{ constants } from '../../../../../constants';
+import{ constants } from '../../../../../appConfig';
 
 @Component({
   selector: 'app-fss-phase-banner',

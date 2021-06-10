@@ -11,10 +11,17 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
+    "types": [
+      "@types/jest",
+      "jest-playwright-preset",
+      "expect-playwright"
+    ],
     "lib": [
       "es2018",
       "dom"

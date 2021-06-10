@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
-import{ constants } from '../../../../../constants';
+import{ constants } from '../../../../../appConfig';
 
 
 @Component({
