@@ -1,39 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
-import { Router } from '@angular/router';
 import { MsalService } from "@azure/msal-angular";
+
+import { AppConfigService } from 'src/app/core/services/app-config.service';
+import { AuthenticationResult } from '@azure/msal-browser';
 @Component({
   selector: 'app-fss-header',
   templateUrl: './fss-header.component.html',
   styleUrls: ['./fss-header.component.scss']
 })
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
-  name: string;
-  constructor(private route: Router,
-    private msalService: MsalService
-  ) {
+  userName: string;
+
+  constructor(private msalService: MsalService) {
     super();
   }
 
   ngOnInit(): void {
+
     this.msalService.instance.handleRedirectPromise().then(res => {
-      console.log(res);
+      console.log("called in promise", res);
       if (res != null && res.account != null) {
         this.msalService.instance.setActiveAccount(res.account);
-        //var acc_details = this.msalService.instance.getActiveAccount();
-
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
-        console.log(this.name);
-        this.authOptions =
-        {
-          signInButtonText: this.name,
-          signInHandler: (() => { this.msalService.loginRedirect(); }),
-          signOutHandler: (() => { this.msalService.logout(); }),
-          isSignedIn: (() => { return true }),
-          userProfileHandler: (() => {  })
-        }
+        console.log("from header component", this.userName);
+        this.acquireToken();
       }
-    })
+    });
 
     this.branding = {
       title: "File Share Service",
@@ -45,24 +38,50 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.menuItems = [
       {
         title: 'Search'
-      }     
+      }
     ];
 
     this.authOptions = {
       signInButtonText: 'Sign in',
       signInHandler: (() => { this.msalService.loginRedirect(); }),
-      signOutHandler: (() => { }),
+      signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return false }),
-      userProfileHandler: (() => {  })
+      userProfileHandler: (() => { })
     }
   }
 
   getClaims(claims: any) {
-    this.name = claims ? claims['given_name'] : null;
+    this.userName = claims ? claims['given_name'] : null;
+    this.authOptions =
+    {
+      signInButtonText: this.userName,
+      signInHandler: (() => { this.msalService.loginRedirect(); }),
+      signOutHandler: (() => { this.msalService.logout(); }),
+      isSignedIn: (() => { return true }),
+      userProfileHandler: (() => {
+        // let editProfileFlowRequest = {
+        //   scopes: ["openid"],
+        //   authority: b2cPolicies.authorities.editProfile.authority,
+        // };
+        // this.msalService.loginRedirect(editProfileFlowRequest);
+      })
+    }
+  }
+
+  acquireToken() {
+    const silentRequest = {
+      scopes: ["openid", "profile", AppConfigService.settings["b2cConfig"].clientId, "offline_access"],
+      prompt: 'none'
+    }
+
+    this.msalService.acquireTokenSilent(silentRequest).subscribe(
+      {
+        next: (result: AuthenticationResult) => {
+          console.log("Succeded", result);
+        },
+        error: (error) => {
+          this.msalService.loginRedirect();
+        }
+      });
   }
 }
-
-
-
-
-

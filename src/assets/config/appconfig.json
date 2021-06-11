@@ -2,9 +2,9 @@
   "b2cConfig": {
     "tenantName": "",
     "clientId": "",    
-    "redirectUri": "http://localhost:4200/aquiretoken",
-    "postLogoutRedirectUri": "http://localhost:4200/",
-    "navigateToLoginRequestUrl": true,
+    "redirectUri": "http://localhost:4200",
+    "postLogoutRedirectUri": "http://localhost:4200",
+    "navigateToLoginRequestUrl": false,
     "signUpSignIn": "B2C_1A_SignIn_SPA",
     "editProfile": "",
     "cacheLocation": "localStorage", 
