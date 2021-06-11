@@ -9,5 +9,9 @@
     "editProfile": "",
     "cacheLocation": "localStorage", 
     "storeAuthStateInCookie": true
-  }   
+  },
+
+  "fssConfig": {
+    "feedbackEmailId": "products.feedback.dev@UKHO.gov.uk"
+  }
 }
