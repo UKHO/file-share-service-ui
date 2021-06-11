@@ -44,7 +44,28 @@ stages:
           - script: |
               npm run build --prod
             displayName: 'npm build'
-
+          
+          - script: |
+             npm install jest jest-preset-angular @types/jest --save-dev
+             npm install jest-junit --save-dev
+             npm test --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html
+            continueOnError: false
+            displayName: 'Unit test with Jest'
+ 
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+             testRunner: JUnit
+             testResultsFiles:  junit.xml
+            displayName: 'Publish Unit Test Results'
+          
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: 'Cobertura'
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+              reportDirectory: 'coverage/my-app/'
+            displayName: 'Unit Test Code Coverage'
+    
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"
             inputs:
