@@ -3,8 +3,7 @@ import { HeaderComponent } from '@ukho/design-system';
 import { MsalService } from "@azure/msal-angular";
 import{ fssConfiguration } from '../../../../../appConfig';
 
-
-import { AppConfigService } from 'src/app/core/services/app-config.service';
+import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult } from '@azure/msal-browser';
 @Component({
   selector: 'app-fss-header',

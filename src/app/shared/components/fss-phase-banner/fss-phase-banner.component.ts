@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PhaseBannerComponent } from '@ukho/design-system'
-import { AppConfigService } from 'src/app/core/services/app-config.service';
+import { AppConfigService } from '../../../core/services/app-config.service';
 import { fssConfiguration } from '../../../../../appConfig';
 
 @Component({
