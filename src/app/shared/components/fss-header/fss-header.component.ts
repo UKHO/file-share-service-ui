@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalService } from "@azure/msal-angular";
@@ -11,9 +12,9 @@ import { AuthenticationResult } from '@azure/msal-browser';
   styleUrls: ['./fss-header.component.scss']
 })
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
-  userName: string;
+  userName!: string;
 
-  constructor(private msalService: MsalService) {
+  constructor(private msalService: MsalService, private route: Router) {
     super();
   }
 
@@ -38,7 +39,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
     this.menuItems = [
       {
-        title: 'Search'
+        title: 'Search',
+        clickAction: (() => {this.route.navigate(["/Search"])}​​​​​​​​)      
       }
     ];
 
