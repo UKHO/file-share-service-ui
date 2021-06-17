@@ -4,10 +4,10 @@ import { HeaderComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-
 import { FssHeaderComponent } from '../src/app/shared/components/fss-header/fss-header.component';
-import { MSALInstanceFactory } from '../src/app/shared/components/msal-config-dynamic.module'
 import { AppConfigService } from '../src/app/core/services/app-config.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 describe('FssHeaderComponent', () => {
   let component: FssHeaderComponent;
@@ -15,20 +15,25 @@ describe('FssHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MsalModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MsalModule],
       declarations: [FssHeaderComponent, HeaderComponent],
-      providers: [
+       providers: [
         {
           provide: MSAL_INSTANCE,
-          useFactory: MSALInstanceFactory,
-          deps: [AppConfigService]
+          useFactory: MockMSALInstanceFactory       
         },
-        MsalService],
+         MsalService],
       schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();    
-    AppConfigService.settings = {       
+    }).compileComponents();
+    AppConfigService.settings = { 
       fssConfig:{ fssTitle: 'File Share Service'}
-    };    
+    };
+    msalService = TestBed.inject(MsalService);       
+  });
+
+  test('should exist msalService', () => {    
+    //console.log(msalService.instance); 
+    expect(msalService).toBeDefined();
   });
 
   test('should render "Skip to content" in an anchor tag', () => {
@@ -65,15 +70,30 @@ describe('FssHeaderComponent', () => {
     expect(component.branding.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
-  test('should exist 2 menu items in header', () => {
+  test('should exist Search menu item in header', () => {
     component = new FssHeaderComponent(msalService);
     component.ngOnInit();
-    expect(component.menuItems.length).toEqual(2);
+    expect(component.menuItems.length).toEqual(1);
     expect(component.menuItems[0].title).toEqual("Search");
-    expect(component.menuItems[1].title).toEqual("Sign in");
   });
 });
 
 
+export function MockMSALInstanceFactory () {    
+ return new PublicClientApplication ( {
+    auth:{
+      clientId:"",
+      authority: "",
+      redirectUri: "http://localhost:4200/search",
+      knownAuthorities: [],
+      postLogoutRedirectUri: "http://localhost:4200/",
+      navigateToLoginRequestUrl: false
+    },
+    cache:{
+      cacheLocation: "localStorage",
+      storeAuthStateInCookie: true
+    }
+  })           
+};
 
 
