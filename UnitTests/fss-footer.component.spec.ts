@@ -4,7 +4,7 @@ import { FssFooterComponent } from '../src/app/shared/components/fss-footer/fss-
 import { FooterComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { fssConfiguration } from '../appConfig';
+import { AppConfigService } from '../src/app/core/services/app-config.service';
 
 describe('FssFooterComponent', () => {
   let component: FssFooterComponent;
@@ -15,6 +15,10 @@ describe('FssFooterComponent', () => {
       declarations: [FssFooterComponent, FooterComponent],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
+    AppConfigService.settings = { 
+      fssConfig:{
+        copyright: '@ Crown copyright 2021 UK Hydrographic office' }
+      }; 
   });
 
   it('should have footer component', () => {
@@ -40,7 +44,7 @@ describe('FssFooterComponent', () => {
     fixture.detectChanges();
     const footer = fixture.debugElement.query(By.css('ukho-footer')).nativeElement;
     expect(footer.querySelector('p').textContent).not.toBeNull();
-    expect(footer.querySelector('p').textContent).toContain(fssConfiguration.copyright);
+    expect(footer.querySelector('p').textContent).toContain(AppConfigService.settings["fssConfig"].copyright);
     expect(footer.querySelector('p').textContent).not.toContain('File Share Service');
   });
 
@@ -53,7 +57,7 @@ describe('FssFooterComponent', () => {
   test('should exist copyright statement in footer', () => {
     component = new FssFooterComponent();
     component.ngOnInit();
-    expect(component.text).toEqual(fssConfiguration.copyright);
+    expect(component.text).toEqual(AppConfigService.settings["fssConfig"].copyright);
     expect(component.text).not.toEqual('File Share Service');
   });
 

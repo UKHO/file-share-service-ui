@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalService } from "@azure/msal-angular";
-import{ fssConfiguration } from '../../../../../appConfig';
 
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult } from '@azure/msal-browser';
@@ -30,7 +29,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     });
 
     this.branding = {
-      title : fssConfiguration.fssTitle,
+      title : AppConfigService.settings["fssConfig"].fssTitle,
       logoImgUrl : "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
       logoAltText : "Admiralty - Maritime Data Solutions Logo",
       logoLinkUrl : "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"

@@ -25,7 +25,10 @@ describe('FssHeaderComponent', () => {
         },
         MsalService],
       schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
+    }).compileComponents();    
+    AppConfigService.settings = {       
+      fssConfig:{ fssTitle: 'File Share Service'}
+    };    
   });
 
   test('should render "Skip to content" in an anchor tag', () => {

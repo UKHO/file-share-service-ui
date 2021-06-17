@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PhaseBannerComponent } from '@ukho/design-system'
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { fssConfiguration } from '../../../../../appConfig';
 
 @Component({
   selector: 'app-fss-phase-banner',
@@ -15,7 +14,7 @@ export class FssPhaseBannerComponent extends PhaseBannerComponent implements OnI
   }
 
   ngOnInit(): void {
-    this.phase = <any>fssConfiguration.phase,
+      this.phase = AppConfigService.settings["fssConfig"].phase;
       this.link = 'mailto:' + AppConfigService.settings["fssConfig"].feedbackEmailId;
   }
 }
