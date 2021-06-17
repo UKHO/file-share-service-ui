@@ -8,20 +8,13 @@
        "signinlinkSelector":"ukho-header [id='Sign in'] >a",
        "signinlinkText":"Sign in",
        "accessibilitylinkSelector": "text=Accessibility",
-       "accessibilitypagetitleSelector" : "h1[data-name='Page Field: Title']",
-       "accessibilitypagetitleText" : "Accessibility",
        "privacypolicylinkSelector": "text=Privacy policy",
-       "privacypolicypagetitleSelector": "h1[data-name='Page Field: Title']",
-       "privacypolicypagetitleText" : "Privacy and Cookies",
        "marinedataportallinkSelector" : "a > img[alt='Admiralty - Maritime Data Solutions Logo']",
        "marinedataportalpageSelector" : "div.navbar-header + h2",
        "marinedataportalpageText": "Marine Data Portal",       
        "ukhydrographiclinkSelector" : "a > img[alt='Admirality Maritime Data Solutions | UK Hydrographic office']",
        "ukhydrographicpageSelector" : "a.logo__link",
        "ukhydrographicpageTitle" : "Admiralty - Maritime Data Solutions",
-       "ukhydrographicpageUrl" : "https://www.admiralty.co.uk/",
-       "feebacklinkSelector" : "text=feedback",
-       "feebackUrl" : "mailto:products.feedback@UKHO.gov.uk"
-
+       "ukhydrographicpageUrl" : "https://www.admiralty.co.uk/"
     }
 }

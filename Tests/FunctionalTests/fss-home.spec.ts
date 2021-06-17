@@ -9,17 +9,20 @@ describe('Test Home Page Scenario', () => {
     let page: Page;
     beforeAll(async () => {
         browser = await chromium.launch();
-        context = await browser.newContext();
-        page = await context.newPage();
     })
 
     beforeEach(async () => {
+        context = await browser.newContext();
+        page = await context.newPage();
         await page.goto(autoTestConfig.url)
     })
 
+    afterEach(async () => {
+        await page.close()
+        await context.close()
+    })
+
     afterAll(async () => {
-       await page.close()
-       await context.close()
        await browser.close()
     })
 
@@ -36,15 +39,18 @@ describe('Test Home Page Scenario', () => {
 
     test('Does it navigate to accessibility page once click on Accessibility link', async () => {
         await page.click(pageObjectsConfig.accessibilitylinkSelector);
-        expect(await page.innerText(pageObjectsConfig.accessibilitypagetitleSelector)).toContain(pageObjectsConfig.accessibilitypagetitleText);
-        expect(page.url()).toContain("accessibility");
-
+        context.on('page', async page => {
+            await page.waitForLoadState();
+            expect(page.url()).toContain("accessibility");
+          })   
     })
 
-    test('Does it navigate to accessibility page once click on Privacy policy link', async () => {
+    test('Does it navigate to Privacy policy page once click on Privacy policy link', async () => {
         await page.click(pageObjectsConfig.privacypolicylinkSelector);
-        expect(await page.innerText(pageObjectsConfig.privacypolicypagetitleSelector)).toContain(pageObjectsConfig.privacypolicypagetitleText);
-        expect(page.url()).toContain("cookie-policy");
+        context.on('page', async page => {
+            await page.waitForLoadState();
+            expect(page.url()).toContain("cookie-policy");
+          }) 
     })
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
@@ -52,14 +58,6 @@ describe('Test Home Page Scenario', () => {
         expect(await page.innerText(pageObjectsConfig.marinedataportalpageSelector)).toContain(pageObjectsConfig.marinedataportalpageText);
         expect(page.url()).toContain("marine-data-portal");
     }) 
-
-    test('Does it open new window once click on feedback link', async () => {
-        page.click(pageObjectsConfig.feebacklinkSelector)    
-        context.on('page', async page => {
-            await page.waitForLoadState();
-            expect(page.url()).toEqual(pageObjectsConfig.feebackUrl);
-          })       
-    })
 
     test('Does it navigate to admiralty home page once click on UK Hydrographic office link', async () => {
         await page.click(pageObjectsConfig.ukhydrographiclinkSelector);
