@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '@ukho/design-system';
-import { fssConfiguration } from '../../../../../appConfig';
+import { AppConfigService } from '../../../core/services/app-config.service';
 
 @Component({
   selector: 'app-fss-footer',
@@ -17,7 +17,7 @@ export class FssFooterComponent extends FooterComponent {
     this.imageLink = "https://www.admiralty.co.uk/";
     this.imageSrc = "https://design.ukho.dev/svg/UKHO stacked logo.svg";
     this.imageAlt = "Admirality Maritime Data Solutions | UK Hydrographic office";
-    this.text = fssConfiguration.copyright;
+    this.text = AppConfigService.settings["fssConfig"].copyright;
     this.navigation = [
       {
         title: "Privacy policy",
