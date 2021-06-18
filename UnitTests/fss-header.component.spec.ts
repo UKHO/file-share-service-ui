@@ -8,10 +8,12 @@ import { FssHeaderComponent } from '../src/app/shared/components/fss-header/fss-
 import { AppConfigService } from '../src/app/core/services/app-config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { Router } from '@angular/router';
 
 describe('FssHeaderComponent', () => {
   let component: FssHeaderComponent;
   let msalService: MsalService;
+  let router: Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,19 +61,19 @@ describe('FssHeaderComponent', () => {
   });
 
   test('should exist', () => {
-    component = new FssHeaderComponent(msalService);
+    component = new FssHeaderComponent(msalService, router);
     component.ngOnInit();
     expect(component).toBeDefined();
   });
 
   test('should exist the branding title in header', () => {
-    component = new FssHeaderComponent(msalService);
+    component = new FssHeaderComponent(msalService, router);
     component.ngOnInit();
     expect(component.branding.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist Search menu item in header', () => {
-    component = new FssHeaderComponent(msalService);
+    component = new FssHeaderComponent(msalService,router);
     component.ngOnInit();
     expect(component.menuItems.length).toEqual(1);
     expect(component.menuItems[0].title).toEqual("Search");
