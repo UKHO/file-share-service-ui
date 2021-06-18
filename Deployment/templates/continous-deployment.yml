@@ -18,6 +18,13 @@ steps:
       ARM_TENANT_ID: $(TERRAFORM-TENANT-ID)
       ARM_SUBSCRIPTION_ID: $(TERRAFORM-SUBSCRIPTION-ID)
 
+  - task: FileTransform@1
+    displayName: "File Transform: website config"
+    inputs:
+      folderPath: "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
+      fileType: json
+      targetFiles: '**\appconfig.json'
+
   - task: AzureCLI@2
     displayName: "Website deployment"
     inputs:
