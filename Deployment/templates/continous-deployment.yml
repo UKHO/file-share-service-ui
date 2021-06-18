@@ -23,7 +23,7 @@ steps:
     inputs:
       folderPath: "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
       fileType: json
-      targetFiles: '**\appconfig.json'
+      targetFiles: '**/appconfig.json'
 
   - task: AzureCLI@2
     displayName: "Website deployment"
