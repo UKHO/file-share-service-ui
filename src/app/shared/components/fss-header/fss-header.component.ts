@@ -6,6 +6,7 @@ import{ fssConfiguration } from '../../../../../appConfig';
 
 import { AppConfigService } from 'src/app/core/services/app-config.service';
 import { AuthenticationResult } from '@azure/msal-browser';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-fss-header',
   templateUrl: './fss-header.component.html',
@@ -14,7 +15,7 @@ import { AuthenticationResult } from '@azure/msal-browser';
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
   userName: string;
 
-  constructor(private msalService: MsalService) {
+  constructor(private msalService: MsalService, private route: Router) {
     super();
   }
 
@@ -26,7 +27,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         this.msalService.instance.setActiveAccount(res.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
         console.log("from header component", this.userName);
-        this.acquireToken();
+        // this.acquireToken();
       }
     });
 
@@ -39,7 +40,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
     this.menuItems = [
       {
-        title: 'Search'
+        title: 'Search',
+        clickAction: (() => {
+          this.route.navigateByUrl('/search');
+        })
       }
     ];
 
@@ -61,11 +65,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
-        // let editProfileFlowRequest = {
-        //   scopes: ["openid"],
-        //   authority: b2cPolicies.authorities.editProfile.authority,
-        // };
-        // this.msalService.loginRedirect(editProfileFlowRequest);
       })
     }
   }

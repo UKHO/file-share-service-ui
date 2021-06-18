@@ -43,3 +43,37 @@
   ukho-phase-banner.phasebanner {
     padding: 10px;
 }
+
+.container{
+  padding: 0 35px;
+    max-width: 1150px;
+    margin: 0 auto;
+   h1{
+    padding-left: 25px;
+   }
+   p{
+    padding-left: 25px;
+   }
+  table{
+    border-spacing: 10px;
+    width: 100%;
+    text-align: center;
+  }
+ 
+}
+.searchSection{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  padding: 0 35px;
+    i{
+      cursor: pointer;
+    }
+        .searchBtn{
+          display: flex;
+          flex-direction: row-reverse;
+          flex-grow: 1;
+        }
+}
+
+
