@@ -24,15 +24,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         this.msalService.instance.setActiveAccount(res.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
         console.log("from header component", this.userName);
-        this.acquireToken();
       }
     });
 
     this.branding = {
-      title : AppConfigService.settings["fssConfig"].fssTitle,
-      logoImgUrl : "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
-      logoAltText : "Admiralty - Maritime Data Solutions Logo",
-      logoLinkUrl : "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"
+      title: AppConfigService.settings["fssConfig"].fssTitle,
+      logoImgUrl: "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
+      logoAltText: "Admiralty - Maritime Data Solutions Logo",
+      logoLinkUrl: "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"
     };
 
     this.menuItems = [
@@ -59,29 +58,13 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
-        // let editProfileFlowRequest = {
-        //   scopes: ["openid"],
-        //   authority: b2cPolicies.authorities.editProfile.authority,
-        // };
-        // this.msalService.loginRedirect(editProfileFlowRequest);
+        const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
+        let editProfileFlowRequest = {
+          scopes: ["openid", AppConfigService.settings["b2cConfig"].clientId],
+          authority: "https://" + tenantName + ".b2clogin.com/" + tenantName + ".onmicrosoft.com/" + AppConfigService.settings["b2cConfig"].editProfile,
+        };
+        this.msalService.loginRedirect(editProfileFlowRequest);
       })
     }
-  }
-
-  acquireToken() {
-    const silentRequest = {
-      scopes: ["openid", "profile", AppConfigService.settings["b2cConfig"].clientId, "offline_access"],
-      prompt: 'none'
-    }
-
-    this.msalService.acquireTokenSilent(silentRequest).subscribe(
-      {
-        next: (result: AuthenticationResult) => {
-          console.log("Succeded", result);
-        },
-        error: (error) => {
-          this.msalService.loginRedirect();
-        }
-      });
   }
 }
