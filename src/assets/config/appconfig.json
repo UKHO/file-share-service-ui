@@ -2,7 +2,7 @@
   "b2cConfig": {
     "tenantName": "",
     "clientId": "",
-    "redirectUri": "http://localhost:4200",
+    "redirectUri": "/search",
     "postLogoutRedirectUri": "/",
     "navigateToLoginRequestUrl": false,
     "signUpSignIn": "B2C_1A_SignIn_SPA",
