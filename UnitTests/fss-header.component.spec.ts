@@ -8,10 +8,13 @@ import { FssHeaderComponent } from '../src/app/shared/components/fss-header/fss-
 import { AppConfigService } from '../src/app/core/services/app-config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { Router } from '@angular/router';
+import { Route } from '@angular/compiler/src/core';
 
 describe('FssHeaderComponent', () => {
   let component: FssHeaderComponent;
   let msalService: MsalService;
+  let route:Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,7 +31,8 @@ describe('FssHeaderComponent', () => {
     AppConfigService.settings = { 
       fssConfig:{ fssTitle: 'File Share Service'}
     };
-    msalService = TestBed.inject(MsalService);       
+    msalService = TestBed.inject(MsalService);
+    route = TestBed.inject(Router);              
   });
 
   test('should exist msalService', () => {    
@@ -59,19 +63,19 @@ describe('FssHeaderComponent', () => {
   });
 
   test('should exist', () => {
-    component = new FssHeaderComponent(msalService);
+    component = new FssHeaderComponent(msalService, route);
     component.ngOnInit();
     expect(component).toBeDefined();
   });
 
   test('should exist the branding title in header', () => {
-    component = new FssHeaderComponent(msalService);
+    component = new FssHeaderComponent(msalService, route);
     component.ngOnInit();
     expect(component.branding.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist Search menu item in header', () => {
-    component = new FssHeaderComponent(msalService);
+    component = new FssHeaderComponent(msalService, route);
     component.ngOnInit();
     expect(component.menuItems.length).toEqual(1);
     expect(component.menuItems[0].title).toEqual("Search");
