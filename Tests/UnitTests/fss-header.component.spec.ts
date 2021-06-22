@@ -4,7 +4,7 @@ import { FssHeaderComponent } from '../../src/app/shared/components/fss-header/f
 import { HeaderComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { constants } from '../../appConfig';
+import { fssConfiguration } from '../../appConfig';
 
 describe('FssHeaderComponent', () => {
   let component: FssHeaderComponent;
@@ -36,7 +36,7 @@ describe('FssHeaderComponent', () => {
     const fixture = TestBed.createComponent(FssHeaderComponent);
     fixture.detectChanges();
     const header = fixture.debugElement.query(By.css('ukho-header')).nativeElement;
-    expect(header.querySelector('h2').textContent).toContain(constants.fssTitle);
+    expect(header.querySelector('h2').textContent).toContain(fssConfiguration.fssTitle);
   });
 
   test('should exist', () => {
@@ -48,7 +48,7 @@ describe('FssHeaderComponent', () => {
   test('should exist the branding title in header', () => {
     component = new FssHeaderComponent();
     component.ngOnInit();
-    expect(component.branding.title).toEqual(constants.fssTitle);
+    expect(component.branding.title).toEqual(fssConfiguration.fssTitle);
   });
 
   test('should exist 2 menu items in header', () => {

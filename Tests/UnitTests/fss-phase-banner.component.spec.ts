@@ -4,7 +4,7 @@ import { FssPhaseBannerComponent } from '../../src/app/shared/components/fss-pha
 import { PhaseBannerComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { constants } from '../../appConfig';
+import { fssConfiguration } from '../../appConfig';
 
 describe('FssPhaseBannerComponent', () => {
   let component: FssPhaseBannerComponent;
@@ -28,7 +28,7 @@ describe('FssPhaseBannerComponent', () => {
   test('should render the phase-value "alpha" in ukho-phase-banner', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('strong').textContent).toContain(constants.phase);
+    expect(fixture.nativeElement.querySelector('strong').textContent).toContain(fssConfiguration.phase);
   });
 
   test('should render the phase-value "alpha" in ukho-phase-banner', () => {
