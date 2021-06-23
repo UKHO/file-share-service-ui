@@ -13,8 +13,11 @@ export class FssSearchResultService {
     
     getSearchResult(payload: string): Observable<any>{
           
-         const searchParams = new HttpParams()
-                      .set('params', payload);
+         const searchParams = new HttpParams({
+          fromObject: {
+            $filter: payload
+           }
+         })
         return this.http.get( this.baseUrl+encodeURIComponent('batch'),
               {
                 params: searchParams
