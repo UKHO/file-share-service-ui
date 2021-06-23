@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren: () => import('./features/fss-home/fss-home.module').then(m => m.FssHomeModule) 
   },
   { 
-    path: 'Search', 
+    path: 'search', 
     loadChildren: () => import('./features/fss-search/fss-search.module').then(m => m.FssSearchModule) 
   }
 ];

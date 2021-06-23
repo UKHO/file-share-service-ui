@@ -3,8 +3,10 @@ import { ButtonModule,SelectModule,CheckboxModule,TextinputModule } from '@ukho/
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FssSearchRoutingModule } from './fss-search-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FssSearchRowComponent } from './fss-search-row/fss-search-row.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FssSearchResultService } from '../../core/services/fss-search-result.service';
 
 
 @NgModule({
@@ -15,7 +17,8 @@ import { FssSearchRowComponent } from './fss-search-row/fss-search-row.component
   imports: [
     CommonModule,
     FssSearchRoutingModule,
-    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule
-  ]
+    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule, ReactiveFormsModule
+  ],
+  providers:[FssSearchResultService]
 })
 export class FssSearchModule { }
