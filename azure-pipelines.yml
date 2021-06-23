@@ -146,6 +146,7 @@ stages:
     jobs:
       - deployment: QADeploy
         displayName: "QA - deploy terraform and website"
+        condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
         environment: "FSS-QA"
         container: ${{variables.Container}}
         workspace:
