@@ -28,6 +28,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         filter((status: InteractionStatus) => status === InteractionStatus.None))
       .subscribe(() => {
         this.handleSigninAwareness();
+        this.route.navigateByUrl('/search');
       });
 
     this.branding = {
@@ -114,7 +115,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       if (localStorage['claims'] == null) {
         this.setIdToken();
         localStorage.setItem('claims', JSON.stringify(account.idTokenClaims));
-        this.route.navigateByUrl('/search');
       }
       else {
         const claims = JSON.parse(localStorage['claims']);
