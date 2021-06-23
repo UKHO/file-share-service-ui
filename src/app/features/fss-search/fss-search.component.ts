@@ -2,7 +2,8 @@ import { FssSearchService } from './../../core/services/fss-search.service';
 import { Component, OnInit } from '@angular/core';
 import { Operator,IFssSearchService,Field,JoinOperator,FssSearchRow } from './../../core/models/fss-search-types';
 import { FssSearchResultService } from '../../core/services/fss-search-result.service';
-import { FormArray } from '@angular/forms';
+import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+
 
 @Component({
   selector: 'app-fss-search',
@@ -19,13 +20,10 @@ export class FssSearchComponent implements OnInit {
   operators: Operator[] =[];
   fssSearchRows: FssSearchRow[] = [];
   rowId: number =1;
-  filterExpression: FormArray; //for testing
   searchResult: any = [];
 
-  constructor(private fssSearchTypeService: IFssSearchService, private searchResultService: FssSearchResultService) { 
-    
-  }
-
+  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private searchResultService: FssSearchResultService) { }
+  
   ngOnInit(): void {
       this.joinOperators = this.fssSearchTypeService.getJoinOperators();
       this.fields = this.fssSearchTypeService.getFields();
@@ -56,14 +54,16 @@ export class FssSearchComponent implements OnInit {
      this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId=== rowId),1);
   }
 
-  getSearchFilter($event: FormArray) {
-    this.filterExpression =  $event; //for testing
-    if(this.filterExpression != null){
-    this.searchResultService.getSearchResult(this.filterExpression).subscribe((res: {}) => {
-      this.searchResult = res;
-      console.log("apiResponse", this.searchResult);
-    })
-   }
- }
+  getSearchResult() {
+
+    var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
+    console.log(filter);
+    if(filter != null){
+      this.searchResultService.getSearchResult(filter).subscribe((res: {}) => {
+        this.searchResult = res;
+        console.log("apiResponse", this.searchResult);
+      })
+     }
+  }
   
 }
