@@ -1,6 +1,8 @@
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Component, OnInit } from '@angular/core';
 import { Operator,IFssSearchService,Field,JoinOperator,FssSearchRow } from './../../core/models/fss-search-types';
+import { FssSearchFilterService } from 'src/app/core/services/fss-search-filter.service';
+
 
 @Component({
   selector: 'app-fss-search',
@@ -17,8 +19,9 @@ export class FssSearchComponent implements OnInit {
   operators: Operator[] =[];
   fssSearchRows: FssSearchRow[] = [];
   rowId: number =1;
-
-  constructor(private fssSearchTypeService: IFssSearchService) { 
+  
+   constructor(private fssSearchTypeService: IFssSearchService, 
+    private fssSearchFilterService: FssSearchFilterService) { 
     
   }
 
@@ -50,6 +53,13 @@ export class FssSearchComponent implements OnInit {
 
   onSearchRowDeleted(rowId: number) {
      this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId=== rowId),1);
+  }
+
+  getSearchResult() {
+
+    var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
+    
+    console.log(filter);
   }
   
 }
