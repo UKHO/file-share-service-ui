@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
-import { MsalService } from "@azure/msal-angular";
+import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult } from '@azure/msal-browser';
@@ -11,22 +11,24 @@ import { AuthenticationResult } from '@azure/msal-browser';
   styleUrls: ['./fss-header.component.scss']
 })
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
-  userName!: string;
+  userName: string = "";
 
-  constructor(private msalService: MsalService, private route: Router) {
+  constructor(private msalService: MsalService,
+    private route: Router,
+    private msalBroadcastService: MsalBroadcastService) {
     super();
   }
 
   ngOnInit(): void {
 
-    this.msalService.instance.handleRedirectPromise().then(res => {
-      console.log("called in promise", res);
-      if (res != null && res.account != null) {
-        this.msalService.instance.setActiveAccount(res.account);
-        this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
-        console.log("from header component", this.userName);
-      }
-    });
+    this.msalBroadcastService.inProgress$
+      .subscribe(() => {
+        const account = this.msalService.instance.getAllAccounts()[0];
+        if (account != null) {
+          this.getClaims(account.idTokenClaims);          
+          this.msalService.instance.setActiveAccount(account);
+        }
+      });
 
     this.branding = {
       title: AppConfigService.settings["fssConfig"].fssTitle,
@@ -38,17 +40,31 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.menuItems = [
       {
         title: 'Search',
-        clickAction: (() => {this.route.navigate(["/Search"])}​​​​​​​​)      
+        clickAction: (() => { this.route.navigate(["search"]) })
       }
     ];
 
     this.authOptions = {
       signInButtonText: 'Sign in',
-      signInHandler: (() => { this.msalService.loginRedirect(); }),
+      signInHandler: (() => { this.logInPopup(); }),
       signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
+  }
+
+  logInPopup() {
+    this.msalService.loginPopup().subscribe(response => {
+      console.log("response after login", response);
+      if (response != null && response.account != null) {
+        this.msalService.instance.setActiveAccount(response.account);
+        this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
+        localStorage.setItem('idToken', response.idToken);
+        localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+        console.log("from header component", this.userName);
+        this.route.navigate(["search"]);
+      }
+    });
   }
 
   getClaims(claims: any) {
@@ -56,7 +72,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.authOptions =
     {
       signInButtonText: this.userName,
-      signInHandler: (() => { this.msalService.loginRedirect(); }),
+      signInHandler: (() => { }),
       signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
@@ -65,8 +81,11 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           scopes: ["openid", AppConfigService.settings["b2cConfig"].clientId],
           authority: "https://" + tenantName + ".b2clogin.com/" + tenantName + ".onmicrosoft.com/" + AppConfigService.settings["b2cConfig"].editProfile,
         };
-        this.msalService.loginRedirect(editProfileFlowRequest);
+        this.msalService.loginPopup(editProfileFlowRequest).subscribe((response: AuthenticationResult) => {
+          this.msalService.instance.setActiveAccount(response.account);
+          this.getClaims(response.idTokenClaims);
+        });;
       })
     }
-  }
+  }  
 }
