@@ -114,6 +114,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       if (localStorage['claims'] == null) {
         this.setIdToken();
         localStorage.setItem('claims', JSON.stringify(account.idTokenClaims));
+        this.route.navigateByUrl('/search');
       }
       else {
         const claims = JSON.parse(localStorage['claims']);
@@ -128,7 +129,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
                 localStorage.setItem('idToken', response.idToken);
               });
             }
-            
             this.route.navigateByUrl('/search');
           }
         }
