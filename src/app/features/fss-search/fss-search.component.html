@@ -12,8 +12,8 @@
       <div class="searchBtn">
           <ukho-button (click)="getSearchResult()">Search</ukho-button>
       </div>
-  </div>
-  <h2>{{ searchResult | json}}</h2>
+    </div>
+    <app-fss-search-results *ngIf="searchClicked" [resultList]="searchResult"></app-fss-search-results> 
 </div>
   
 

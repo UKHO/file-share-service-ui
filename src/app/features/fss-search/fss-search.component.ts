@@ -54,16 +54,19 @@ export class FssSearchComponent implements OnInit {
      this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId=== rowId),1);
   }
 
+  searchClicked=false;    
   getSearchResult() {
-
+    this.searchClicked = true; 
     var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
-    console.log(filter);
+    
     if(filter != null){
+      this.searchResult = [];
       this.searchResultService.getSearchResult(filter).subscribe((res: {}) => {
         this.searchResult = res;
+        this.searchResult = Array.of(this.searchResult['entries']);     
         console.log("apiResponse", this.searchResult);
       })
-     }
+    } 
   }
   
 }
