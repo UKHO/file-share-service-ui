@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
-import { MsalService } from "@azure/msal-angular";
+import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult } from '@azure/msal-browser';
@@ -14,11 +14,22 @@ import { Router } from '@angular/router';
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
   userName: string = "";
 
-  constructor(private msalService: MsalService, private route: Router) {
+  constructor(private msalService: MsalService,
+    private route: Router,
+    private msalBroadcastService: MsalBroadcastService) {
     super();
   }
 
   ngOnInit(): void {
+
+    this.msalBroadcastService.inProgress$
+      .subscribe(() => {
+        const account = this.msalService.instance.getAllAccounts()[0];
+        if (account != null) {
+          this.getClaims(account.idTokenClaims);          
+          this.msalService.instance.setActiveAccount(account);
+        }
+      });
 
     this.branding = {
       title: AppConfigService.settings["fssConfig"].fssTitle,
@@ -30,7 +41,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.menuItems = [
       {
         title: 'Search',
-        clickAction: (() => {this.route.navigate(["search"])}​​​​​​​​)
+        clickAction: (() => { this.route.navigate(["search"]) })
       }
     ];
 
@@ -43,13 +54,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     }
   }
 
-  logInPopup()
-  {
+  logInPopup() {
     this.msalService.loginPopup().subscribe(response => {
       console.log("response after login", response);
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
+        localStorage.setItem('idToken', response.idToken);
+        localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         console.log("from header component", this.userName);
         this.route.navigate(["search"]);
       }
@@ -76,5 +88,5 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         });;
       })
     }
-  }
+  }  
 }
