@@ -1,6 +1,0 @@
-{
-    "/api": {
-      "target": "https://localhost:44343/batch",
-      "secure": false
-    }
-  }
