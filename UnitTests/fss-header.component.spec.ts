@@ -33,6 +33,7 @@ describe('FssHeaderComponent', () => {
       fssConfig:{ fssTitle: 'File Share Service'}
     };
     msalService = TestBed.inject(MsalService);
+    msalBroadcastService=TestBed.inject(MsalBroadcastService);
     route = TestBed.inject(Router);              
   });
 
