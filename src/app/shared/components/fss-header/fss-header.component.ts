@@ -22,6 +22,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
   ngOnInit(): void {
 
+    /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None))
@@ -68,6 +69,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     });
   }
 
+  /** Extract claims of user once user is Signed in */
   getClaims(claims: any) {
     this.userName = claims ? claims['given_name'] : null;
     this.authOptions =
@@ -93,6 +95,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     }
   }
 
+  /* Set idToken which will be used in interceptor for API call. */
   setIdToken() {
     Object.keys(localStorage).forEach(key => {
       if (key.includes('idtoken')) {
@@ -102,6 +105,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     });
   }
 
+  /**Once signed in handles user redirects and also handle expiry if token expires.*/
   handleSigninAwareness() {
     const date = new Date()
     const account = this.msalService.instance.getAllAccounts()[0];
@@ -117,12 +121,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           this.msalService.instance.setActiveAccount(account);
           if (this.authOptions?.isSignedIn()) {
             console.log("Expires On", new Date(1000 * claims['exp']));
+            // Handling token expiry
             if (new Date(1000 * claims['exp']).toISOString() < date.toISOString()) {
               this.msalService.loginPopup().subscribe(response => {
                 localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
                 localStorage.setItem('idToken', response.idToken);
               });
             }
+            
             this.route.navigateByUrl('/search');
           }
         }
