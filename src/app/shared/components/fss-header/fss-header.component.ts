@@ -3,8 +3,9 @@ import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { AuthenticationResult } from '@azure/msal-browser';
+import { AuthenticationResult, InteractionStatus } from '@azure/msal-browser';
 import { Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-fss-header',
   templateUrl: './fss-header.component.html',
@@ -22,12 +23,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   ngOnInit(): void {
 
     this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.None))
       .subscribe(() => {
-        const account = this.msalService.instance.getAllAccounts()[0];
-        if (account != null) {
-          this.getClaims(account.idTokenClaims);          
-          this.msalService.instance.setActiveAccount(account);
-        }
+        this.handleSigninAwareness();
       });
 
     this.branding = {
@@ -51,6 +50,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
+
+    this.handleSigninAwareness();
   }
 
   logInPopup() {
@@ -73,7 +74,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     {
       signInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { this.msalService.logout(); }),
+      signOutHandler: (() => {
+        this.msalService.logout();
+        localStorage.clear();
+      }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
@@ -87,5 +91,42 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         });;
       })
     }
-  }  
+  }
+
+  setIdToken() {
+    Object.keys(localStorage).forEach(key => {
+      if (key.includes('idtoken')) {
+        var token = JSON.parse(localStorage[key]);
+        localStorage.setItem('idToken', token['secret']);
+      }
+    });
+  }
+
+  handleSigninAwareness() {
+    const date = new Date()
+    const account = this.msalService.instance.getAllAccounts()[0];
+    if (account != null) {
+      this.getClaims(account.idTokenClaims);
+      if (localStorage['claims'] == null) {
+        this.setIdToken();
+        localStorage.setItem('claims', JSON.stringify(account.idTokenClaims));
+      }
+      else {
+        const claims = JSON.parse(localStorage['claims']);
+        if (this.userName == claims['given_name']) {
+          this.msalService.instance.setActiveAccount(account);
+          if (this.authOptions?.isSignedIn()) {
+            console.log("Expires On", new Date(1000 * claims['exp']));
+            if (new Date(1000 * claims['exp']).toISOString() < date.toISOString()) {
+              this.msalService.loginPopup().subscribe(response => {
+                localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+                localStorage.setItem('idToken', response.idToken);
+              });
+            }
+            this.route.navigateByUrl('/search');
+          }
+        }
+      }
+    }
+  }
 }

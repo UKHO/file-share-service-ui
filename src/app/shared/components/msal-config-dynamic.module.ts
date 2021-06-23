@@ -1,6 +1,6 @@
 import { InjectionToken, NgModule, APP_INITIALIZER } from '@angular/core';
 import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
-import { MsalInterceptor, MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppConfigService } from '../../../app/core/services/app-config.service';
@@ -30,6 +30,12 @@ export function MSALInstanceFactory(config: AppConfigService): IPublicClientAppl
   });
 }
 
+export function MSALGuardConfigFactory(config: AppConfigService): MsalGuardConfiguration {
+    return { 
+      interactionType: AppConfigService.settings["b2cConfig"].interactionType
+    };
+}
+
 @NgModule({
     providers: [],
     imports: [MsalModule]
@@ -49,6 +55,12 @@ export class MsalConfigDynamicModule {
                     useFactory: MSALInstanceFactory,
                     deps: [AppConfigService]
                 },
+                {
+                    provide: MSAL_GUARD_CONFIG,
+                    useFactory: MSALGuardConfigFactory,
+                    deps: [AppConfigService]
+                },
+                MsalGuard,
                 MsalService,
                 {
                     provide: HTTP_INTERCEPTORS,

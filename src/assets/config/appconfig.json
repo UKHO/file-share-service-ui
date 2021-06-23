@@ -8,7 +8,8 @@
     "signUpSignIn": "B2C_1A_SignIn_SPA",
     "editProfile": "B2C_1A_UserProfile",
     "cacheLocation": "localStorage",
-    "storeAuthStateInCookie": true
+    "storeAuthStateInCookie": true,
+    "interactionType":"popup"
   },
   "fssConfig": {
     "copyright": "@ Crown copyright 2021 UK Hydrographic office",
