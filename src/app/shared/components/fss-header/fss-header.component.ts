@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
-import { MsalService } from "@azure/msal-angular";
-import{ fssConfiguration } from '../../../../../appConfig';
+import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 
-
-import { AppConfigService } from 'src/app/core/services/app-config.service';
+import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult } from '@azure/msal-browser';
 import { Router } from '@angular/router';
 @Component({
@@ -13,47 +11,60 @@ import { Router } from '@angular/router';
   styleUrls: ['./fss-header.component.scss']
 })
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
-  userName: string;
+  userName: string = "";
 
-  constructor(private msalService: MsalService, private route: Router) {
+  constructor(private msalService: MsalService,
+    private route: Router,
+    private msalBroadcastService: MsalBroadcastService) {
     super();
   }
 
   ngOnInit(): void {
 
-    this.msalService.instance.handleRedirectPromise().then(res => {
-      console.log("called in promise", res);
-      if (res != null && res.account != null) {
-        this.msalService.instance.setActiveAccount(res.account);
-        this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
-        console.log("from header component", this.userName);
-        // this.acquireToken();
-      }
-    });
+    this.msalBroadcastService.inProgress$
+      .subscribe(() => {
+        const account = this.msalService.instance.getAllAccounts()[0];
+        if (account != null) {
+          this.getClaims(account.idTokenClaims);          
+          this.msalService.instance.setActiveAccount(account);
+        }
+      });
 
     this.branding = {
-      title : fssConfiguration.fssTitle,
-      logoImgUrl : "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
-      logoAltText : "Admiralty - Maritime Data Solutions Logo",
-      logoLinkUrl : "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"
+      title: AppConfigService.settings["fssConfig"].fssTitle,
+      logoImgUrl: "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
+      logoAltText: "Admiralty - Maritime Data Solutions Logo",
+      logoLinkUrl: "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"
     };
 
     this.menuItems = [
       {
         title: 'Search',
-        clickAction: (() => {
-          this.route.navigateByUrl('/search');
-        })
+        clickAction: (() => { this.route.navigate(["search"]) })
       }
     ];
 
     this.authOptions = {
       signInButtonText: 'Sign in',
-      signInHandler: (() => { this.msalService.loginRedirect(); }),
+      signInHandler: (() => { this.logInPopup(); }),
       signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
+  }
+
+  logInPopup() {
+    this.msalService.loginPopup().subscribe(response => {
+      console.log("response after login", response);
+      if (response != null && response.account != null) {
+        this.msalService.instance.setActiveAccount(response.account);
+        this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
+        localStorage.setItem('idToken', response.idToken);
+        localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+        console.log("from header component", this.userName);
+        this.route.navigate(["search"]);
+      }
+    });
   }
 
   getClaims(claims: any) {
@@ -61,28 +72,20 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.authOptions =
     {
       signInButtonText: this.userName,
-      signInHandler: (() => { this.msalService.loginRedirect(); }),
+      signInHandler: (() => { }),
       signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
+        const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
+        let editProfileFlowRequest = {
+          scopes: ["openid", AppConfigService.settings["b2cConfig"].clientId],
+          authority: "https://" + tenantName + ".b2clogin.com/" + tenantName + ".onmicrosoft.com/" + AppConfigService.settings["b2cConfig"].editProfile,
+        };
+        this.msalService.loginPopup(editProfileFlowRequest).subscribe((response: AuthenticationResult) => {
+          this.msalService.instance.setActiveAccount(response.account);
+          this.getClaims(response.idTokenClaims);
+        });;
       })
     }
-  }
-
-  acquireToken() {
-    const silentRequest = {
-      scopes: ["openid", "profile", AppConfigService.settings["b2cConfig"].clientId, "offline_access"],
-      prompt: 'none'
-    }
-
-    this.msalService.acquireTokenSilent(silentRequest).subscribe(
-      {
-        next: (result: AuthenticationResult) => {
-          console.log("Succeded", result);
-        },
-        error: (error) => {
-          this.msalService.loginRedirect();
-        }
-      });
-  }
+  }  
 }

@@ -2,7 +2,8 @@ import { InjectionToken, NgModule, APP_INITIALIZER } from '@angular/core';
 import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
 import { MsalInterceptor, MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AppConfigService } from 'src/app/core/services/app-config.service';
+
+import { AppConfigService } from '../../../app/core/services/app-config.service';
 
 const AUTH_CONFIG_URL_TOKEN = new InjectionToken<string>('AUTH_CONFIG_URL');
 
