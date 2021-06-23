@@ -45,29 +45,28 @@
 }
 
 .container{
-  padding: 0 35px;
-    max-width: 1150px;
-    margin: 0 auto;
+  padding: 0 25px;        
    h1{
-    padding-left: 25px;
+    padding-left: 30px;
+    margin-bottom: 10px;
    }
    p{
-    padding-left: 25px;
+    padding-left: 30px;
    }
   table{
+    margin-top: 20px;
     border-spacing: 10px;
     width: 100%;
     text-align: center;
-  }
- 
+  } 
 }
 .searchSection{
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
   padding: 0 35px;
-    i{
-      cursor: pointer;
+    strong{
+      cursor: pointer;      
     }
         .searchBtn{
           display: flex;
