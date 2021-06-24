@@ -17,7 +17,7 @@ export class FssFooterComponent extends FooterComponent {
     this.imageLink = "https://www.admiralty.co.uk/";
     this.imageSrc = "https://design.ukho.dev/svg/UKHO stacked logo.svg";
     this.imageAlt = "Admirality Maritime Data Solutions | UK Hydrographic office";
-    this.text = AppConfigService.settings["fssConfig"].copyright;
+    this.text = "@ Crown copyright " + new Date().getUTCFullYear() + " UK Hydrographic office";
     this.navigation = [
       {
         title: "Privacy policy",
