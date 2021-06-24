@@ -13,7 +13,7 @@
           <ukho-button (click)="getSearchResult()">Search</ukho-button>
       </div>
     </div>
-    <app-fss-search-results *ngIf="searchClicked" [resultList]="searchResult"></app-fss-search-results> 
+    <app-fss-search-results *ngIf="searchClicked && searchResult.length > 0" [resultList]="searchResult"></app-fss-search-results> 
 </div>
   
 

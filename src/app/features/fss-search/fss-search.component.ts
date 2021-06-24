@@ -63,8 +63,12 @@ export class FssSearchComponent implements OnInit {
       this.searchResult = [];
       this.searchResultService.getSearchResult(filter).subscribe((res: {}) => {
         this.searchResult = res;
-        this.searchResult = Array.of(this.searchResult['entries']);     
-        console.log("apiResponse", this.searchResult);
+        
+        if(this.searchResult.count > 0)
+        {
+          this.searchResult = Array.of(this.searchResult['entries']);     
+          console.log("apiResponse", this.searchResult);
+        }
       })
     } 
   }
