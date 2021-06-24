@@ -21,7 +21,12 @@ export class FssSearchComponent implements OnInit {
   fssSearchRows: FssSearchRow[] = [];
   rowId: number =1;
   searchResult: any = [];
-
+  messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
+  messageTitle: string = "";
+  messageDesc: string = "";
+  searchButtonText: string = "Search";
+  displayMessage: boolean = false;
+  displaySearchResult: Boolean = false;
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private searchResultService: FssSearchResultService) { }
   
   ngOnInit(): void {
@@ -53,24 +58,46 @@ export class FssSearchComponent implements OnInit {
   onSearchRowDeleted(rowId: number) {
      this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId=== rowId),1);
   }
-
-  searchClicked=false;    
+   
   getSearchResult() {
-    this.searchClicked = true; 
+    this.searchButtonText = "Refine Search" 
     var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
     
     if(filter != null){
       this.searchResult = [];
       this.searchResultService.getSearchResult(filter).subscribe((res: {}) => {
         this.searchResult = res;
-        
         if(this.searchResult.count > 0)
         {
-          this.searchResult = Array.of(this.searchResult['entries']);     
+          this.searchResult = Array.of(this.searchResult['entries']);
+          this.displaySearchResult = true;  
+          this.toggleMessage(false);
           console.log("apiResponse", this.searchResult);
         }
+         else{
+          this.toggleMessage(
+            true, 
+            "warning", 
+            "No results can be found for this match.",
+            "Try searching again using differenct query paramerters.\nOr use the popular searches to see results. You can refine these queries once the results are shown."
+            );
+         }
       })
     } 
+  }
+
+  toggleMessage(flag:boolean, messageType:'info' | 'warning' | 'success' | 'error'= "info", messageTitle:string="", messageDesc:string="")
+  {    
+    this.messageTitle = "";
+    this.messageDesc = "";
+    this.displayMessage = flag;
+ 
+    if(flag === true)
+    {
+      this.messageType = messageType;
+      this.messageTitle = messageTitle;
+      this.messageDesc = messageDesc;      
+    }
   }
   
 }
