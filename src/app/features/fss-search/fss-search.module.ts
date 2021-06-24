@@ -1,5 +1,5 @@
 import { FssSearchComponent } from './fss-search.component';
-import { ButtonModule,SelectModule,CheckboxModule,TextinputModule,DialogueModule } from '@ukho/design-system';
+import { ButtonModule,SelectModule,CheckboxModule,TextinputModule,DialogueModule, HorizontalRuleModule } from '@ukho/design-system';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FssSearchRoutingModule } from './fss-search-routing.module';
@@ -19,8 +19,8 @@ import { FssSearchResultsComponent } from './fss-search-results/fss-search-resul
   imports: [
     CommonModule,
     FssSearchRoutingModule,
-    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule, ReactiveFormsModule,DialogueModule
+    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule, ReactiveFormsModule,DialogueModule, HorizontalRuleModule
   ],
-  providers:[FssSearchResultService]
+  providers: [FssSearchResultService]
 })
 export class FssSearchModule { }

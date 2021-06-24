@@ -1,23 +1,21 @@
-
+<ukho-hr></ukho-hr>
 <div class="container">
-    <ukho-dialogue [type]='messageType' *ngIf="displayMessage">
-      <h3>{{messageTitle}}</h3>
-      <div style="white-space: pre-line">{{messageDesc}}</div>
-    </ukho-dialogue> <br/>
-    <h1>Search files</h1>
-    <p class="light">Complete the fields to search a query or select a popular search.</p> 
-    <app-fss-search-row 
-     [fssSearchRows]="fssSearchRows" 
-     (onSearchRowDeleted)="onSearchRowDeleted($event)">
-    </app-fss-search-row>
-    <div class="searchSection">
-      <div> <i (click)="addSearchRow()" class="fa fa-plus fa-1x">&nbsp;Add new line</i></div>
-  
-      <div class="searchBtn">
-          <ukho-button (click)="getSearchResult()">{{searchButtonText}}</ukho-button>
-      </div>
-    </div>
-    <app-fss-search-results *ngIf="displaySearchResult" [resultList]="searchResult"></app-fss-search-results> 
-</div>
-  
+  <ukho-dialogue [type]='messageType' *ngIf="displayMessage">
+    <h3>{{messageTitle}}</h3>
+    <div style="white-space: pre-line">{{messageDesc}}</div>
+  </ukho-dialogue> <br />
+  <h1>Search files</h1>
+  <p class="light">Complete the fields to search a query or select a popular search.</p>
+  <app-fss-search-row [fssSearchRows]="fssSearchRows" (onSearchRowDeleted)="onSearchRowDeleted($event)">
+  </app-fss-search-row>
+  <div class="searchSection">
+    <div> <i (click)="addSearchRow()" class="fa fa-plus fa-1x">&nbsp;Add new line</i></div>
 
+    <div class="searchBtn">
+      <ukho-button (click)="getSearchResult()">{{searchButtonText}}</ukho-button>
+    </div>
+  </div>
+  <div class="searchResult">
+    <app-fss-search-results *ngIf="displaySearchResult" [resultList]="searchResult"></app-fss-search-results>
+  </div>
+</div>

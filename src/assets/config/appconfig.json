@@ -1,7 +1,7 @@
 {
   "b2cConfig": {
-    "tenantName": "",
-    "clientId": "",
+    "tenantName": "mgiaiddevb2c",
+    "clientId": "4aa5dabc-bf54-44e8-8926-d3e3ea172422",
     "redirectUri": "/search",
     "postLogoutRedirectUri": "/",
     "navigateToLoginRequestUrl": false,
@@ -15,6 +15,6 @@
     "fssTitle": "File Share Service",
     "phase": "alpha",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl":""
+    "apiUrl":"https://localhost:5001/"
   }
 }
