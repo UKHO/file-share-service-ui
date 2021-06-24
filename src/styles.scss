@@ -75,4 +75,16 @@
         }
 }
 
+.pageOverlay{
+  width: 100%;
+  height: 162%;
+  top: 0px;
+  position: absolute;
+  z-index: 1000000;
+  background-color: rgba(0,0,0,.4);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
 

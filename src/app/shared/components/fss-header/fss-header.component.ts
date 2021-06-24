@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 
@@ -6,6 +6,7 @@ import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult, InteractionStatus } from '@azure/msal-browser';
 import { Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+
 @Component({
   selector: 'app-fss-header',
   templateUrl: './fss-header.component.html',
@@ -13,6 +14,7 @@ import { filter } from 'rxjs/operators';
 })
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
   userName: string = "";
+  @Output() isPageOverlay = new EventEmitter<boolean>();
 
   constructor(private msalService: MsalService,
     private route: Router,
@@ -21,14 +23,20 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
+    this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.Login))
+      .subscribe(() => {
+        this.isPageOverlay.emit(true);
+      });
+
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None))
       .subscribe(() => {
+        this.isPageOverlay.emit(false);
         this.handleSigninAwareness();
-        this.route.navigateByUrl('/search');
       });
 
     this.branding = {
@@ -57,9 +65,11 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   logInPopup() {
+    this.isPageOverlay.emit(true);
     this.msalService.loginPopup().subscribe(response => {
       console.log("response after login", response);
       if (response != null && response.account != null) {
+        this.isPageOverlay.emit(false);
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
         localStorage.setItem('idToken', response.idToken);
@@ -110,11 +120,13 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   handleSigninAwareness() {
     const date = new Date()
     const account = this.msalService.instance.getAllAccounts()[0];
+    console.log("Account: ", account);
     if (account != null) {
       this.getClaims(account.idTokenClaims);
       if (localStorage['claims'] == null) {
         this.setIdToken();
         localStorage.setItem('claims', JSON.stringify(account.idTokenClaims));
+        this.route.navigateByUrl('/search');
       }
       else {
         const claims = JSON.parse(localStorage['claims']);

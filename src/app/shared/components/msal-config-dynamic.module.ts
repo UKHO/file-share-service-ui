@@ -1,6 +1,6 @@
 import { InjectionToken, NgModule, APP_INITIALIZER } from '@angular/core';
 import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
-import { MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppConfigService } from '../../../app/core/services/app-config.service';
@@ -62,6 +62,7 @@ export class MsalConfigDynamicModule {
                 },
                 MsalGuard,
                 MsalService,
+                MsalBroadcastService,
                 {
                     provide: HTTP_INTERCEPTORS,
                     useClass: MsalInterceptor,
