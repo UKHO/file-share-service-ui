@@ -1,21 +1,20 @@
 {
   "b2cConfig": {
-    "tenantName": "mgiaiddevb2c",
-    "clientId": "4aa5dabc-bf54-44e8-8926-d3e3ea172422",
-    "redirectUri": "http://localhost:4200/search",
+    "tenantName": "",
+    "clientId": "",
+    "redirectUri": "/search",
     "postLogoutRedirectUri": "/",
     "navigateToLoginRequestUrl": false,
     "signUpSignIn": "B2C_1A_SignIn_SPA",
     "editProfile": "B2C_1A_UserProfile",
-    "cacheLocation": "localStorage", 
-    "storeAuthStateInCookie": true,
-    "interactionType":"redirect"
+    "cacheLocation": "localStorage",
+    "storeAuthStateInCookie": true
   },
   "fssConfig": {
     "copyright": "@ Crown copyright 2021 UK Hydrographic office",
     "fssTitle": "File Share Service",
     "phase": "alpha",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl": "https://localhost:44343/batch"
+    "apiUrl":""
   }
 }
