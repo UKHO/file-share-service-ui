@@ -33,8 +33,10 @@ export class FssSearchFilterService {
     var filterExpression='';
 
     switch(fssSearchRow.selectedField) {
-      //For integer field
+      //For number and date field
       case 'FileSize':
+      case 'ExpiryDate':
+      case 'BatchPublishedDate':
         filterExpression = filterExpression.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", fssSearchRow.value);
         break;
       //For all other fields

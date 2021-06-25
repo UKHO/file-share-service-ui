@@ -14,13 +14,8 @@ export class FileShareApiService {
          if(payload === "") {
           return this.http.get( this.baseUrl + encodeURIComponent('batch'));
          }
-         else {
-          const searchParams = new HttpParams({
-            fromObject: {
-              $filter: payload
-             }
-           });
-          return this.http.get( this.baseUrl+encodeURIComponent('batch'), { params: searchParams });
+         else {          
+          return this.http.get( this.baseUrl + "batch?$filter=" + encodeURIComponent(payload));
          }
     }
 }
