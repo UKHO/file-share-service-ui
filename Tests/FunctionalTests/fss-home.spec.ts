@@ -59,7 +59,7 @@ describe('Test Home Page Scenario', () => {
         expect(page.url()).toContain("marine-data-portal");
     }) 
 
-    test('Does it navigate to admiralty home page once click on UK Hydrographic office link', async () => {
+    test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
         await page.click(pageObjectsConfig.ukhydrographiclinkSelector);
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicpageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicpageTitle);
         expect(page.url()).toEqual(pageObjectsConfig.ukhydrographicpageUrl);

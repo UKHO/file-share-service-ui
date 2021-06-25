@@ -18,7 +18,7 @@ import {axe} from 'jest-axe'
       
     });
 
-    test('should retuns no violations for ukho-footer component', async() =>{
+    test('should return no violations for ukho-footer component', async() =>{
         const fixture = TestBed.createComponent(FssFooterComponent);
         fixture.detectChanges();     
         const footer = fixture.debugElement.query(By.css('ukho-footer'));
@@ -26,7 +26,7 @@ import {axe} from 'jest-axe'
         expect(results.violations).toEqual([]);
       });
 
-      test('should retuns no violation for image in ukho-footer component', async() =>{
+      test('should return no violation for image in ukho-footer component', async() =>{
         const fixture = TestBed.createComponent(FssFooterComponent);
         fixture.detectChanges();     
         const footer = fixture.debugElement.query(By.css('ukho-footer')).childNodes;
@@ -35,7 +35,7 @@ import {axe} from 'jest-axe'
         expect(results.violations).toEqual([]);      
       });
 
-      test('should retuns no violations for Privacy policy anchor tag in ukho-footer', async() =>{
+      test('should return no violations for Privacy policy anchor tag in ukho-footer', async() =>{
         const fixture = TestBed.createComponent(FssFooterComponent);
         fixture.detectChanges();     
         const footer = fixture.debugElement.query(By.css('ukho-footer')).childNodes;        
@@ -45,7 +45,7 @@ import {axe} from 'jest-axe'
         expect(results.violations).toEqual([]);
       });
 
-      test('should retuns no violations for Accessibility anchor tag in ukho-footer', async() =>{
+      test('should return no violations for Accessibility anchor tag in ukho-footer', async() =>{
         const fixture = TestBed.createComponent(FssFooterComponent);
         fixture.detectChanges();     
         const footer = fixture.debugElement.query(By.css('ukho-footer')).childNodes;
@@ -55,7 +55,7 @@ import {axe} from 'jest-axe'
         expect(results.violations).toEqual([]);   
       });
 
-      test('should retuns pass as true for all anchor tag href attribute present in ukho-footer', async() =>{
+      test('should return pass as true for all anchor tag href attribute present in ukho-footer', async() =>{
         const fixture = TestBed.createComponent(FssFooterComponent);
         fixture.detectChanges();     
         const footeranchortags = fixture.debugElement.queryAll(By.css('a'));
@@ -65,7 +65,7 @@ import {axe} from 'jest-axe'
         }           
       });      
       
-      test('should returns violations for mock html', async() =>{
+      test('should return violations for mock html', async() =>{
         const failingExtendedHtmlExample = `
                                     <html>
                                         <body>

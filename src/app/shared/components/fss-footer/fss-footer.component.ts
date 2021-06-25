@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '@ukho/design-system';
-import{ fssConfiguration } from '../../../../../appConfig';
+import { AppConfigService } from '../../../core/services/app-config.service';
 
 @Component({
   selector: 'app-fss-footer',
@@ -9,25 +9,26 @@ import{ fssConfiguration } from '../../../../../appConfig';
 })
 export class FssFooterComponent extends FooterComponent {
 
-  constructor(){
+  constructor() {
     super();
   }
 
   ngOnInit(): void {
-    this.imageLink="https://www.admiralty.co.uk/";
-    this.imageSrc="https://design.ukho.dev/svg/UKHO stacked logo.svg";
-    this.imageAlt="Admirality Maritime Data Solutions | UK Hydrographic office";
-    this.text=fssConfiguration.copyright;
+    this.imageLink = "https://www.admiralty.co.uk/";
+    this.imageSrc = "https://design.ukho.dev/svg/UKHO stacked logo.svg";
+    this.imageAlt = "Admirality Maritime Data Solutions | UK Hydrographic office";
+    this.text = "© Crown copyright " + new Date().getUTCFullYear() + " UK Hydrographic Office";
     this.navigation = [
       {
-        title:"Privacy policy",
-        href:"https://www.admiralty.co.uk/cookie-policy",
+        title: "Privacy policy",
+        href: "https://www.admiralty.co.uk/cookie-policy",
+        newTab: true
       },
       {
-        title:"Accessibility",
-        href:"https://www.admiralty.co.uk/accessibility"
+        title: "Accessibility",
+        href: "https://www.admiralty.co.uk/accessibility",
+        newTab: true
       }
     ]
   }
-
 }

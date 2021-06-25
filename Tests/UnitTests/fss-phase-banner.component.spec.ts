@@ -4,7 +4,7 @@ import { FssPhaseBannerComponent } from '../../src/app/shared/components/fss-pha
 import { PhaseBannerComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { fssConfiguration } from '../../appConfig';
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 
 describe('FssPhaseBannerComponent', () => {
   let component: FssPhaseBannerComponent;
@@ -15,9 +15,14 @@ describe('FssPhaseBannerComponent', () => {
       declarations: [FssPhaseBannerComponent, PhaseBannerComponent],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
+    AppConfigService.settings = { 
+      fssConfig:{
+        phase: 'alpha',
+        feedbackEmailId: 'products.feedback.dev@UKHO.gov.uk' }
+      };    
   });
 
-  it('should have banner component', () => {
+  test('should have banner component', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     const banner = fixture.debugElement.nativeElement.querySelector('ukho-phase-banner');
     const header = fixture.debugElement.nativeElement.querySelector('ukho-header');
@@ -28,7 +33,7 @@ describe('FssPhaseBannerComponent', () => {
   test('should render the phase-value "alpha" in ukho-phase-banner', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('strong').textContent).toContain(fssConfiguration.phase);
+    expect(fixture.nativeElement.querySelector('strong').textContent).toContain(AppConfigService.settings["fssConfig"].phase);
   });
 
   test('should render the phase-value "alpha" in ukho-phase-banner', () => {

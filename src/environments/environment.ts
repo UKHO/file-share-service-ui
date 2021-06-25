@@ -3,12 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-
-  //Configuration variables for FSS UI
-  FSSConfiguration: {
-    feedback_emailID: 'products.feedback@UKHO.gov.uk'
-  }
+  production: false
 };
 
 /*

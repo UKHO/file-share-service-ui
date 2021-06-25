@@ -12,5 +12,8 @@ module.exports = {
   reporters: ["default","jest-junit"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
     prefix: '<rootDir>/'
-  })
+  }),
+  globals: {
+    crypto: require('crypto')
+  }
 };
