@@ -1,5 +1,5 @@
 <ukho-hr></ukho-hr>
-<i class="fas fa-spinner spinner-wrapper" *ngIf="displayLoader" style="font-size: 50px;"></i>
+<div class="spinner-wrapper" *ngIf="displayLoader"><i class="fas fa-spinner fa-pulse" style="font-size: 50px;"></i></div>
 <div class="container">
   <ukho-dialogue [type]='messageType' *ngIf="displayMessage">
     <h3>{{messageTitle}}</h3>

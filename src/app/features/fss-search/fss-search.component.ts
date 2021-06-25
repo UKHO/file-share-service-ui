@@ -113,6 +113,7 @@ export class FssSearchComponent implements OnInit {
   }
 
    handleErrMessage(err: any){
+    this.displayLoader = false;
     var errmsg="";
         for(let i=0; i<err.error.errors.length; i++){
             errmsg += err.error.errors[i]['description']+'\n';
