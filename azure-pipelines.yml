@@ -19,30 +19,62 @@ variables:
     value: "ukhydrographicoffice/terraform-azure-powershell:0.15.4"
   - name: DeploymentPool
     value: "UKHO Ubuntu 1804"
+  - name: WindowPool
+    value: "NautilusBuild"
 
 stages:
   - stage: Perfrom_Build_Test_Publish
     displayName: "Build (Build ,test and publish artifact )"
     jobs:
-      - job:
-        container: ${{variables.Container}}
-        workspace:
-          clean: all
-        displayName: "Build test publish"
+     - job: Dependencychecker
+       pool: $(WindowPool)
+       displayName: "Dependency checker"
+       workspace:
+        clean: all
+       steps:
+          - task: CmdLine@1
+            displayName: "Run OWASP Dependency Checker"
+            inputs:
+              filename: 'dependency-check.bat'
+              arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate'
 
-        steps:
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish Artifact: OWASP Dependency Checker Report"
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)\DCReport'
+              ArtifactName: "OWASP Dependency Checker Report"
+
+          - task: PowerShell@1
+            displayName: "Fail Build if Dependency Check Finds Any Vulnerabilities"
+            inputs:
+              scriptType: inlineScript
+              arguments: '-ReportLocation $(Build.ArtifactStagingDirectory)\DCReport\*'
+              inlineScript: |
+                param($ReportLocation)
+                Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
+
+     - job: BuildTestPublish
+       dependsOn: Dependencychecker
+       pool: $(DeploymentPool)
+       container: ${{variables.Container}}
+       workspace:
+         clean: all # what to clean up before the job runs outputs | resources | all
+       displayName: "Build test publish"
+
+       steps:
+          - checkout: self
           - task: NodeTool@0
             inputs:
-              versionSpec: '14.x'
+             versionSpec: '14.x'
             displayName: 'Install Node.js'
 
           - script: |
-              npm install -g @angular/cli
-              npm ci
-            displayName: 'npm restore'
-          
+             npm install -g @angular/cli
+             npm ci
+            displayName: 'npm restore' 
+ 
           - script: |
-              npm run build --prod
+             npm run build
             displayName: 'npm build'
           
           - script: |
@@ -69,14 +101,14 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"
             inputs:
-              PathtoPublish: '$(Build.SourcesDirectory)/dist'
-              ArtifactName: AngularApp
-
+             PathtoPublish: '$(Build.SourcesDirectory)/dist'
+             ArtifactName: AngularApp
+          
           - task: PublishBuildArtifacts@1
             displayName: "Publish terraform Artifacts"
             inputs:
-              PathtoPublish: '$(Build.SourcesDirectory)/Deployment'
-              ArtifactName: terraformartifact
+             PathtoPublish: '$(Build.SourcesDirectory)/Deployment'
+             ArtifactName: terraformartifact
 
   - stage: Devdeploy
     displayName: "Devdeploy (inc terraform, website deploy)"

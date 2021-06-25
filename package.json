@@ -40,8 +40,10 @@
     "@angular/platform-browser": "~11.2.13",
     "@angular/platform-browser-dynamic": "~11.2.13",
     "@angular/router": "~11.2.13",
+    "@azure/msal-angular": "^2.0.0",
+    "@azure/msal-browser": "^2.14.2",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@ukho/design-system": "^2.0.0",
+    "@ukho/design-system": "^2.1.0",
     "jest-junit": "^12.1.0",
     "npm-force-resolutions": "0.0.10",
     "postcss": "^8.3.0",
@@ -50,7 +52,7 @@
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1102.12",
+    "@angular-devkit/build-angular": "~0.1102.14",
     "@angular/cli": "~11.2.12",
     "@angular/compiler-cli": "~11.2.13",
     "@types/jest": "^26.0.23",

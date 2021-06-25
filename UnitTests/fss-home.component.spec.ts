@@ -4,17 +4,26 @@ import { FssHomeComponent } from '../src/app/features/fss-home/fss-home.componen
 import { CardComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { PublicClientApplication } from '@azure/msal-browser';
 
  describe('FssHomeComponent', () => {
   let component: FssHomeComponent;
+  let msalservice: MsalService;
   
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         imports: [RouterTestingModule],
         declarations: [FssHomeComponent , CardComponent],
+        providers: [
+          {
+            provide: MSAL_INSTANCE,
+            useFactory: MockMSALInstanceFactory       
+          },
+           MsalService],
         schemas: [NO_ERRORS_SCHEMA]
       }).compileComponents();
+      msalservice:TestBed.inject(MsalService);
     });
 
 
@@ -56,4 +65,19 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
       
 });
 
-
+export function MockMSALInstanceFactory () {    
+  return new PublicClientApplication ( {
+     auth:{
+       clientId:"",
+       authority: "",
+       redirectUri: "http://localhost:4200/search",
+       knownAuthorities: [],
+       postLogoutRedirectUri: "http://localhost:4200/",
+       navigateToLoginRequestUrl: false
+     },
+     cache:{
+       cacheLocation: "localStorage",
+       storeAuthStateInCookie: true
+     }
+   })           
+ };
