@@ -17,7 +17,7 @@ describe('FssFooterComponent', () => {
     }).compileComponents();
     AppConfigService.settings = { 
       fssConfig:{
-        copyright: "@ Crown copyright " + new Date().getUTCFullYear() + " UK Hydrographic office" }
+        copyright: "© Crown copyright " + new Date().getUTCFullYear() + " UK Hydrographic Office" }
       }; 
   });
 
