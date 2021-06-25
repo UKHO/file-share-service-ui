@@ -15,7 +15,7 @@
                  [(ngModel)]="fssSearchRow.group"></ukho-checkbox>
             </td>
             <td>
-                <ukho-select [(ngModel)]="fssSearchRow.selectedJoinOperator">
+                <ukho-select *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators"
                     value="{{joinOperator.value}}">{{joinOperator.text}}</option>
                 </ukho-select>
