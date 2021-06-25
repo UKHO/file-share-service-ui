@@ -1,10 +1,10 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
-
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult } from '@azure/msal-browser';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-fss-header',
