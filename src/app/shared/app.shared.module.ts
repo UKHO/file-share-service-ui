@@ -1,6 +1,6 @@
 import { NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HeaderModule, FooterModule, PhaseBannerModule } from "@ukho/design-system";
+import { HeaderModule, FooterModule, PhaseBannerModule, HorizontalRuleModule } from "@ukho/design-system";
 import { HttpClientModule } from '@angular/common/http';
 import { FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent } from './components';
 import { MsalConfigDynamicModule } from 'src/app/shared/components/msal-config-dynamic.module';
@@ -13,8 +13,8 @@ import { MsalConfigDynamicModule } from 'src/app/shared/components/msal-config-d
   ],
 
   imports: [
-    BrowserModule, HeaderModule, FooterModule, PhaseBannerModule,
-    HttpClientModule,
+    HeaderModule, FooterModule, PhaseBannerModule, HorizontalRuleModule,
+    BrowserModule, HttpClientModule,
     MsalConfigDynamicModule.forRoot('assets/config/appconfig.json')
   ],
   providers:[],
