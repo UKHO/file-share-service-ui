@@ -1,7 +1,7 @@
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Component, OnInit } from '@angular/core';
 import { Operator,IFssSearchService,Field,JoinOperator,FssSearchRow } from './../../core/models/fss-search-types';
-import { FileShareApiService } from '../../core/services/fileshareapiservice';
+import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 
 
@@ -65,7 +65,7 @@ export class FssSearchComponent implements OnInit {
     this.searchButtonText = "Refine Search";
     this.displayLoader = true;
     var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
-    
+    console.log(filter);
     if(filter != null){
       this.searchResult = [];
       this.searchResultService.getSearchResult(filter).subscribe((res) => {
@@ -104,9 +104,9 @@ export class FssSearchComponent implements OnInit {
     }
      else{
       this.showMessage(
-        "warning", 
-        "No results can be found for this match.",
-        "Try searching again using different query paramerters.\nOr use the popular searches to see results. You can refine these queries once the results are shown."
+        "info", 
+        "No results can be found for this search",
+        "Try again using different parameters in the search query."
         );
         this.displayLoader = false;
      }
@@ -118,7 +118,7 @@ export class FssSearchComponent implements OnInit {
         for(let i=0; i<err.error.errors.length; i++){
             errmsg += err.error.errors[i]['description']+'\n';
         }
-        this.showMessage("error","something went wrong, please contact admininstrator.",errmsg);
+        this.showMessage("warning","An exception occurred when processing this search",errmsg);
   }
 
   
