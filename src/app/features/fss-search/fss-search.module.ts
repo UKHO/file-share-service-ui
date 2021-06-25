@@ -6,7 +6,7 @@ import { FssSearchRoutingModule } from './fss-search-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FssSearchRowComponent } from './fss-search-row/fss-search-row.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FssSearchResultService } from '../../core/services/fss-search-result.service';
+import { FileShareApiService } from '../../core/services/fileshareapiservice';
 import { FssSearchResultsComponent } from './fss-search-results/fss-search-results.component';
 
 
@@ -21,6 +21,6 @@ import { FssSearchResultsComponent } from './fss-search-results/fss-search-resul
     FssSearchRoutingModule,
     ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule, ReactiveFormsModule,DialogueModule, HorizontalRuleModule
   ],
-  providers: [FssSearchResultService]
+  providers: [FileShareApiService]
 })
 export class FssSearchModule { }

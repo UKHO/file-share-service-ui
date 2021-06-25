@@ -5,6 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppConfigService } from '../../../app/core/services/app-config.service';
 import { FssInterceptor } from './fss-interceptor';
+import { HttpErrorInterceptorService } from '../../core/services/httperror-interceptor.service';
 
 const AUTH_CONFIG_URL_TOKEN = new InjectionToken<string>('AUTH_CONFIG_URL');
 
@@ -54,7 +55,7 @@ export class MsalConfigDynamicModule {
                 MsalService,
                 {
                     provide: HTTP_INTERCEPTORS,
-                    useClass: FssInterceptor,
+                    useClass: FssInterceptor, HttpErrorInterceptorService,
                     multi: true
                 }
             ]

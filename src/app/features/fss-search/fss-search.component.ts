@@ -1,7 +1,7 @@
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Component, OnInit } from '@angular/core';
 import { Operator,IFssSearchService,Field,JoinOperator,FssSearchRow } from './../../core/models/fss-search-types';
-import { FssSearchResultService } from '../../core/services/fss-search-result.service';
+import { FileShareApiService } from '../../core/services/fileshareapiservice';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 
 
@@ -27,7 +27,8 @@ export class FssSearchComponent implements OnInit {
   searchButtonText: string = "Search";
   displayMessage: boolean = false;
   displaySearchResult: Boolean = false;
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private searchResultService: FssSearchResultService) { }
+  
+  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private searchResultService: FileShareApiService) { }
   
   ngOnInit(): void {
       this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -65,39 +66,55 @@ export class FssSearchComponent implements OnInit {
     
     if(filter != null){
       this.searchResult = [];
-      this.searchResultService.getSearchResult(filter).subscribe((res: {}) => {
-        this.searchResult = res;
-        if(this.searchResult.count > 0)
-        {
-          this.searchResult = Array.of(this.searchResult['entries']);
-          this.displaySearchResult = true;  
-          this.toggleMessage(false);
-          console.log("apiResponse", this.searchResult);
-        }
-         else{
-          this.toggleMessage(
-            true, 
-            "warning", 
-            "No results can be found for this match.",
-            "Try searching again using differenct query paramerters.\nOr use the popular searches to see results. You can refine these queries once the results are shown."
-            );
-         }
-      })
+      this.searchResultService.getSearchResult(filter).subscribe((res) => {
+        this.handleSuccess(res)
+      },
+       (error) => { 
+         this.handleErrMessage(error);
+       }
+      );
     } 
   }
 
-  toggleMessage(flag:boolean, messageType:'info' | 'warning' | 'success' | 'error'= "info", messageTitle:string="", messageDesc:string="")
-  {    
+  hideMessage(){
+    this.messageType = "info";
     this.messageTitle = "";
-    this.messageDesc = "";
-    this.displayMessage = flag;
- 
-    if(flag === true)
-    {
-      this.messageType = messageType;
-      this.messageTitle = messageTitle;
-      this.messageDesc = messageDesc;      
-    }
+    this.messageDesc = "";    
+    this.displayMessage = false; 
   }
+
+  showMessage(messageType:'info' | 'warning' | 'success' | 'error'= "info", messageTitle:string="", messageDesc:string="")
+  {    
+    this.messageType = messageType;
+    this.messageTitle = messageTitle;
+    this.messageDesc = messageDesc;     
+    this.displayMessage = true; 
+  }
+
+  handleSuccess(res: any){
+    this.searchResult = res;
+    if(this.searchResult.count > 0)
+    {
+      this.searchResult = Array.of(this.searchResult['entries']);
+      this.displaySearchResult = true;  
+      this.hideMessage();
+    }
+     else{
+      this.showMessage(
+        "warning", 
+        "No results can be found for this match.",
+        "Try searching again using differenct query paramerters.\nOr use the popular searches to see results. You can refine these queries once the results are shown."
+        );
+     }
+  }
+
+   handleErrMessage(err: any){
+    var errmsg="";
+        for(let i=0; i<err.error.errors.length; i++){
+            errmsg += err.error.errors[i]['description']+'\n';
+        }
+        this.showMessage("error","something went wrong, please contact admininstrator.",errmsg);
+  }
+
   
 }
