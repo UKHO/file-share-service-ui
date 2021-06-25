@@ -27,6 +27,7 @@ export class FssSearchComponent implements OnInit {
   searchButtonText: string = "Search";
   displayMessage: boolean = false;
   displaySearchResult: Boolean = false;
+  displayLoader: boolean = false;
   
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private searchResultService: FileShareApiService) { }
   
@@ -61,7 +62,8 @@ export class FssSearchComponent implements OnInit {
   }
    
   getSearchResult() {
-    this.searchButtonText = "Refine Search" 
+    this.searchButtonText = "Refine Search";
+    this.displayLoader = true;
     var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
     
     if(filter != null){
@@ -98,13 +100,15 @@ export class FssSearchComponent implements OnInit {
       this.searchResult = Array.of(this.searchResult['entries']);
       this.displaySearchResult = true;  
       this.hideMessage();
+      this.displayLoader = false;
     }
      else{
       this.showMessage(
         "warning", 
         "No results can be found for this match.",
-        "Try searching again using differenct query paramerters.\nOr use the popular searches to see results. You can refine these queries once the results are shown."
+        "Try searching again using different query paramerters.\nOr use the popular searches to see results. You can refine these queries once the results are shown."
         );
+        this.displayLoader = false;
      }
   }
 

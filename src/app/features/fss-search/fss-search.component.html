@@ -1,4 +1,5 @@
 <ukho-hr></ukho-hr>
+<i class="fas fa-spinner spinner-wrapper" *ngIf="displayLoader" style="font-size: 50px;"></i>
 <div class="container">
   <ukho-dialogue [type]='messageType' *ngIf="displayMessage">
     <h3>{{messageTitle}}</h3>
@@ -15,6 +16,7 @@
       <ukho-button (click)="getSearchResult()">{{searchButtonText}}</ukho-button>
     </div>
   </div>
+
   <div class="searchResult">
     <app-fss-search-results *ngIf="displaySearchResult" [resultList]="searchResult"></app-fss-search-results>
   </div>
