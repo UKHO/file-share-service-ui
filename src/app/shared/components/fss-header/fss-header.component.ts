@@ -92,7 +92,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         localStorage.setItem('idToken', response.idToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         console.log("from header component", this.userName);
-        this.route.navigate(["/"]);
+        this.route.navigate(["search"]);
       }
     });
   }
