@@ -1,10 +1,10 @@
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult } from '@azure/msal-browser';
-
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-fss-header',
@@ -13,15 +13,15 @@ import { AuthenticationResult } from '@azure/msal-browser';
 })
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
   userName: string = "";
-
+  skipToContent:string = "";
   constructor(private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService) {
     super();
   }
 
-  ngOnInit(): void {
-
+  ngOnInit(): void {   
+    this.setSkipToContent();    
     this.msalBroadcastService.inProgress$
       .subscribe(() => {
         const account = this.msalService.instance.getAllAccounts()[0];
@@ -52,6 +52,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
+  }
+
+  setSkipToContent() {
+    this.route.events.pipe (
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => { this.skipToContent = `${event.url}#mainContainer`; });
   }
 
   logInPopup() {

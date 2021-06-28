@@ -1,21 +1,25 @@
 import { FssSearchComponent } from './fss-search.component';
-import { ButtonModule,SelectModule,CheckboxModule,TextinputModule } from '@ukho/design-system';
+import { ButtonModule,SelectModule,CheckboxModule,TextinputModule,DialogueModule } from '@ukho/design-system';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FssSearchRoutingModule } from './fss-search-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FssSearchRowComponent } from './fss-search-row/fss-search-row.component';
+import { FileShareApiService } from '../../core/services/file-share-api.service';
+import { FssSearchResultsComponent } from './fss-search-results/fss-search-results.component';
 
 
 @NgModule({
   declarations: [
     FssSearchComponent,
-    FssSearchRowComponent
+    FssSearchRowComponent,
+    FssSearchResultsComponent
   ],
   imports: [
     CommonModule,
     FssSearchRoutingModule,
-    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule
-  ]
+    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule, ReactiveFormsModule,DialogueModule
+  ],
+  providers: [FileShareApiService]
 })
 export class FssSearchModule { }

@@ -21,7 +21,7 @@ export class FssSearchService implements IFssSearchService {
     const fields: Field[] = [
       {value: 'BusinessUnit',text: '@BusinessUnit'},
       {value: 'FileName',text: '@FileName'},
-      {value: 'MineType',text: '@MineType'},
+      {value: 'MimeType',text: '@MimeType'},
       {value: 'FileSize',text: '@FileSize'},
       {value: 'ExpiryDate',text: '@BatchExpiryDate'},
       {value: 'BatchPublishedDate',text: '@BatchPublishedDate'}

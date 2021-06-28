@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HeaderComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MsalBroadcastService, MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MsalModule, MsalService, MSAL_INSTANCE, MsalBroadcastService } from '@azure/msal-angular';
 import { FssHeaderComponent } from '../src/app/shared/components/fss-header/fss-header.component';
 import { AppConfigService } from '../src/app/core/services/app-config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
