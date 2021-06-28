@@ -23,9 +23,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleSignIn();
-    this.msalService.instance.handleRedirectPromise().then(response => {
-      console.log("Redirect", response);
-    })
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
