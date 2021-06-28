@@ -7,7 +7,7 @@ import { MsalService } from '@azure/msal-angular';
   styleUrls: ['./fss-home.component.scss']
 })
 export class FssHomeComponent implements OnInit {
-  name: string;
+  name: string="";
   constructor(private msalService: MsalService, 
     private route: Router) { }
 
@@ -17,7 +17,7 @@ export class FssHomeComponent implements OnInit {
     this.msalService.loginPopup().subscribe(response => {
       localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
       localStorage.setItem('idToken', response.idToken);
-      this.route.navigate(['search'])
+      this.route.navigate(['/']);
     });
   }
 }
