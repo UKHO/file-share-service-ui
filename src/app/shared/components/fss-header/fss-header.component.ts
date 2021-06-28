@@ -3,8 +3,8 @@ import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { AuthenticationResult, InteractionStatus } from '@azure/msal-browser';
-import { Router } from '@angular/router';
+import { AuthenticationResult, EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -23,6 +23,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.handleSignIn();
+    this.msalService.instance.handleRedirectPromise().then(response => {
+      console.log("Redirect", response);
+    })
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -38,6 +42,15 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       .subscribe(() => {
         this.isPageOverlay.emit(false);
         this.handleSigninAwareness();
+      });
+
+      this.msalBroadcastService.msalSubject$
+      .pipe(
+        // Optional filtering of events.
+        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_FAILURE),
+      )
+      .subscribe((result: EventMessage) => {
+        this.route.navigate(['']);
       });
 
     this.branding = {
@@ -86,6 +99,18 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         this.route.navigate(["search"]);
       }
     });
+  }
+
+  handleSignIn() {
+    this.route.events.pipe (
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => { const url = `${event.url}`
+      if(url.includes('search')){
+        if(!this.authOptions?.isSignedIn()){
+          this.route.navigate(['']);
+        }
+      }
+  });
   }
 
   /** Extract claims of user once user is Signed in */

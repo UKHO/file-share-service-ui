@@ -21,7 +21,7 @@ export function MSALInstanceFactory(config: AppConfigService): IPublicClientAppl
             redirectUri: AppConfigService.settings["b2cConfig"].redirectUri,
             knownAuthorities: [tenantName + ".b2clogin.com/"],
             postLogoutRedirectUri: AppConfigService.settings["b2cConfig"].postLogoutRedirectUri,
-            navigateToLoginRequestUrl: true
+            navigateToLoginRequestUrl: AppConfigService.settings["b2cConfig"].navigateToLoginRequestUrl
         },
         cache: {
             cacheLocation: AppConfigService.settings["b2cConfig"].cacheLocation,

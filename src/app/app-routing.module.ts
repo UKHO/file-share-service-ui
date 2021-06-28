@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MsalGuard } from '@azure/msal-angular';
-
 const routes: Routes = [
   { 
     path: '', 
@@ -9,8 +7,7 @@ const routes: Routes = [
   },
   { 
     path: 'search', 
-    loadChildren: () => import('./features/fss-search/fss-search.module').then(m => m.FssSearchModule),
-    // canActivate: [MsalGuard] 
+    loadChildren: () => import('./features/fss-search/fss-search.module').then(m => m.FssSearchModule)
   }
 ];
 
