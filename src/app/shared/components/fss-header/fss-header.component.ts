@@ -31,6 +31,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         this.isPageOverlay.emit(true);
       });
 
+
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None))
@@ -49,7 +50,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.menuItems = [
       {
         title: 'Search',
-        clickAction: (() => { this.route.navigate(["search"]) })
+        clickAction: (() => {
+          if(this.authOptions?.isSignedIn()){
+            this.route.navigate(["search"]) 
+          }
+          if(!this.authOptions?.isSignedIn()){
+            this.logInPopup();
+          }
+        })
       }
     ];
 
@@ -106,16 +114,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     }
   }
 
-  /* Set idToken which will be used in interceptor for API call. */
-  setIdToken() {
-    Object.keys(localStorage).forEach(key => {
-      if (key.includes('idtoken')) {
-        var token = JSON.parse(localStorage[key]);
-        localStorage.setItem('idToken', token['secret']);
-      }
-    });
-  }
-
   /**Once signed in handles user redirects and also handle expiry if token expires.*/
   handleSigninAwareness() {
     const date = new Date()
@@ -123,12 +121,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     console.log("Account: ", account);
     if (account != null) {
       this.getClaims(account.idTokenClaims);
-      if (localStorage['claims'] == null) {
-        this.setIdToken();
-        localStorage.setItem('claims', JSON.stringify(account.idTokenClaims));
-        this.route.navigateByUrl('/search');
-      }
-      else {
+      if (localStorage['claims'] != null) {
         const claims = JSON.parse(localStorage['claims']);
         if (this.userName == claims['given_name']) {
           this.msalService.instance.setActiveAccount(account);
