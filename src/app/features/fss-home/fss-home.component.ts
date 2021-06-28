@@ -8,7 +8,8 @@ import { MsalService } from '@azure/msal-angular';
 })
 export class FssHomeComponent implements OnInit {
   @Output() isPageOverlay = new EventEmitter<boolean>();
-
+  name: string="";
+  
   constructor(private msalService: MsalService, 
     private route: Router) { }
 
@@ -20,7 +21,7 @@ export class FssHomeComponent implements OnInit {
       this.isPageOverlay.emit(false);
       localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
       localStorage.setItem('idToken', response.idToken);
-      this.route.navigate(['search'])
+      this.route.navigate(['/']);
     });
   }
 }

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
-
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult, EventMessage, EventType, InteractionStatus } from '@azure/msal-browser';
 import { NavigationEnd, Router } from '@angular/router';
@@ -96,7 +95,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         localStorage.setItem('idToken', response.idToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         console.log("from header component", this.userName);
-        this.route.navigate(["search"]);
+        this.route.navigate(["/"]);
       }
     });
   }
