@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MsalService } from '@azure/msal-angular';
+import { AppConfigService } from 'src/app/core/services/app-config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,13 +32,13 @@ export class FssInterceptor implements HttpInterceptor {
         localStorage.setItem('idToken', idToken);
         headers = new HttpHeaders({
           'Authorization': 'Bearer ' + idToken,
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
         });
       });
     } else {
       headers = new HttpHeaders({
         'Authorization': 'Bearer ' + idToken,
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
       });
       //return next.handle(httpRequest.clone({ setHeaders: { headers } }));
     }
