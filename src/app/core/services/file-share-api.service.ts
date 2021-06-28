@@ -12,10 +12,10 @@ export class FileShareApiService {
     
     getSearchResult(payload: string): Observable<any>{
          if(payload === "") {
-          return this.http.get( this.baseUrl + encodeURIComponent('batch'));
+          return this.http.get(this.baseUrl + 'batch');
          }
          else {          
-          return this.http.get( this.baseUrl + "batch?$filter=" + encodeURIComponent(payload));
+          return this.http.get(this.baseUrl + "batch?$filter=" + encodeURIComponent(payload));
          }
     }
 }
