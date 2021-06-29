@@ -4,6 +4,7 @@ import { FssFooterComponent } from '../../src/app/shared/components/fss-footer/f
 import { FooterComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 
 describe('FssFooterComponent', () => {
   let component: FssFooterComponent;
@@ -14,6 +15,10 @@ describe('FssFooterComponent', () => {
       declarations: [FssFooterComponent, FooterComponent],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
+    AppConfigService.settings = { 
+      fssConfig:{
+        copyright: "© Crown copyright " + new Date().getUTCFullYear() + " UK Hydrographic Office" }
+      }; 
   });
 
   test('should have footer component', () => {
