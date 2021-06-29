@@ -4,6 +4,8 @@ import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalIntercepto
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppConfigService } from '../../../app/core/services/app-config.service';
+import { FssInterceptor } from './fss-interceptor';
+import { HttpErrorInterceptorService } from '../../core/services/httperror-interceptor.service';
 
 const AUTH_CONFIG_URL_TOKEN = new InjectionToken<string>('AUTH_CONFIG_URL');
 
@@ -35,7 +37,6 @@ export function MSALGuardConfigFactory(config: AppConfigService): MsalGuardConfi
         interactionType: AppConfigService.settings["b2cConfig"].interactionType
     };
 }
-
 @NgModule({
     providers: [],
     imports: [MsalModule]
@@ -67,7 +68,7 @@ export class MsalConfigDynamicModule {
                 MsalBroadcastService,
                 {
                     provide: HTTP_INTERCEPTORS,
-                    useClass: MsalInterceptor,
+                    useClass: FssInterceptor, HttpErrorInterceptorService,
                     multi: true
                 }
             ]

@@ -15,6 +15,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   userName: string = "";
   @Output() isPageOverlay = new EventEmitter<boolean>();
 
+  skipToContent:string = "";
   constructor(private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService) {
@@ -23,6 +24,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleSignIn();
+    this.setSkipToContent(); 
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -30,8 +32,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       .subscribe(() => {
         this.isPageOverlay.emit(true);
       });
-
-
+       
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None))
@@ -79,6 +80,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     }
 
     this.handleSigninAwareness();
+  }
+
+  setSkipToContent() {
+    this.route.events.pipe (
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => { this.skipToContent = `${event.url}#mainContainer`; });
   }
 
   logInPopup() {

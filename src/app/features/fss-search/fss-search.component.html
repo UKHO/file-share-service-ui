@@ -1,17 +1,22 @@
+<div class="spinner-wrapper" *ngIf="displayLoader"><i class="fas fa-spinner fa-pulse fa-3x"></i></div>
+<div class="container" role="main" id="mainContainer">
+  <ukho-dialogue [type]='messageType' *ngIf="displayMessage">
+    <h3>{{messageTitle}}</h3>
+    <div style="white-space: pre-line">{{messageDesc}}</div>
+  </ukho-dialogue> <br />
+  <h1>Search files</h1>
+  <p class="light">Complete the parameters to create a search query</p>
+  <app-fss-search-row [fssSearchRows]="fssSearchRows" (onSearchRowDeleted)="onSearchRowDeleted($event)">
+  </app-fss-search-row>
+  <div class="searchSection">
+    <strong (click)="addSearchRow()"> <i class="fa fa-plus fa-1x"></i> Add new line </strong>
 
-<div class="container">
-    <h1>Search files</h1>
-    <p>Complete the fields to search a query or select a popular search.</p> 
-    <app-fss-search-row 
-     [fssSearchRows]="fssSearchRows" 
-     (onSearchRowDeleted)="onSearchRowDeleted($event)">
-    </app-fss-search-row>
-    <div class="searchSection">
-      <strong (click)="addSearchRow()"><i class="fas fa-plus"></i> Add new line </strong>
-      <div class="searchBtn">
-          <ukho-button>Search</ukho-button>
-      </div>
+    <div class="searchBtn">
+      <ukho-button (click)="getSearchResult()">{{searchButtonText}}</ukho-button>
+    </div>
+  </div>
+
+  <div class="searchResult">
+    <app-fss-search-results *ngIf="displaySearchResult" [resultList]="searchResult"></app-fss-search-results>
   </div>
 </div>
-  
-
