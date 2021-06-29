@@ -4,7 +4,7 @@
     "clientId": "",
     "redirectUri": "/",
     "postLogoutRedirectUri": "/",
-    "navigateToLoginRequestUrl": false,
+    "navigateToLoginRequestUrl": true,
     "signUpSignIn": "B2C_1A_SignIn_SPA",
     "editProfile": "B2C_1A_UserProfile",
     "cacheLocation": "localStorage",
