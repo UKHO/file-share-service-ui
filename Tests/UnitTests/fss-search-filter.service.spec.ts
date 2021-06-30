@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { Field, FssSearchRow, IFssSearchService, JoinOperator, Operator } from '../src/app/core/models/fss-search-types';
+import { FssSearchRow, IFssSearchService} from '../../src/app/core/models/fss-search-types';
 
-import { FssSearchFilterService } from '../src/app/core/services/fss-search-filter.service';
-import { FssSearchService } from '../src/app/core/services/fss-search.service';
+import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
+import { FssSearchService } from '../../src/app/core/services/fss-search.service';
 
 describe('FssSearchFilterService', () => {
   let service: FssSearchFilterService;
@@ -36,7 +36,7 @@ describe('FssSearchFilterService', () => {
 
     var filter = service.getFilterExpression(searchRows);
 
-    expect(filter).toBe("FileName eq 'TestReport.pdf' OR FileSize le 3000 AND ExpiryDate gt '2021-12-31T13:00:00'");
+    expect(filter).toBe("FileName eq 'TestReport.pdf' OR FileSize le 3000 AND ExpiryDate gt 2021-12-31T13:00:00");
   });
 });
 
