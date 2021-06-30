@@ -1,0 +1,20 @@
+{
+    "pageObjectsConfig":
+    {
+       "homepageheaderSelector":"#main-menu h2",
+       "homepageheaderText":"File Share Service",
+       "searchlinkSelector":"ukho-header #Search >a",
+       "searchlinkText":"Search",
+       "signinlinkSelector":"ukho-header [id='signInButton'] >a",
+       "signinlinkText":"Sign In",
+       "accessibilitylinkSelector": "text=Accessibility",
+       "privacypolicylinkSelector": "text=Privacy policy",
+       "marinedataportallinkSelector" : "a > img[alt='Admiralty - Maritime Data Solutions Logo']",
+       "marinedataportalpageSelector" : "div.navbar-header + h2",
+       "marinedataportalpageText": "Marine Data Portal",       
+       "ukhydrographiclinkSelector" : "a > img[alt='Admirality Maritime Data Solutions | UK Hydrographic office']",
+       "ukhydrographicpageSelector" : "a.logo__link",
+       "ukhydrographicpageTitle" : "Admiralty - Maritime Data Solutions",
+       "ukhydrographicpageUrl" : "https://www.admiralty.co.uk/"
+    }
+}

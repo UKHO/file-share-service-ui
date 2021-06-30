@@ -7,6 +7,7 @@ parameters:
 
 steps:
   - task: PowerShell@2
+    name: Deployment
     displayName: "terraform deployment"
     inputs:
       targetType: filePath

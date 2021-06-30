@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { Field, FssSearchRow, IFssSearchService, JoinOperator, Operator } from '../src/app/core/models/fss-search-types';
+import { FssSearchRow, IFssSearchService} from '../../src/app/core/models/fss-search-types';
 
-import { FssSearchFilterService } from '../src/app/core/services/fss-search-filter.service';
-import { FssSearchService } from '../src/app/core/services/fss-search.service';
+import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
+import { FssSearchService } from '../../src/app/core/services/fss-search.service';
 
 describe('FssSearchFilterService', () => {
   let service: FssSearchFilterService;
