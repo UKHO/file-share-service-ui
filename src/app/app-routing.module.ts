@@ -7,17 +7,15 @@ const routes: Routes = [
   },
   { 
     path: 'search', 
-    loadChildren: () => import('./features/fss-search/fss-search.module').then(m => m.FssSearchModule) 
-  },
-  {
-    path: '**',
-    redirectTo: '',
-    pathMatch: 'full'
+    loadChildren: () => import('./features/fss-search/fss-search.module').then(m => m.FssSearchModule)
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  imports: [RouterModule.forRoot(routes,{
+    useHash: false,
+    initialNavigation: 'enabled'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
