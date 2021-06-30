@@ -19,12 +19,12 @@ export class FssSearchService implements IFssSearchService {
 
   getFields() {
     const fields: Field[] = [
-      {value: 'BusinessUnit',text: '@BusinessUnit'},
-      {value: 'FileName',text: '@FileName'},
-      {value: 'MimeType',text: '@MimeType'},
-      {value: 'FileSize',text: '@FileSize'},
-      {value: 'ExpiryDate',text: '@BatchExpiryDate'},
-      {value: 'BatchPublishedDate',text: '@BatchPublishedDate'}
+      {value: 'BusinessUnit',text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string'},
+      {value: 'FileName',text: '@FileName', type: 'SystemAttribute', dataType: 'string'},
+      {value: 'MimeType',text: '@MimeType', type: 'SystemAttribute', dataType: 'string'},
+      {value: 'FileSize',text: '@FileSize', type: 'SystemAttribute', dataType: 'number'},
+      {value: 'ExpiryDate',text: '@BatchExpiryDate', type: 'SystemAttribute', dataType: 'date'},
+      {value: 'BatchPublishedDate',text: '@BatchPublishedDate', type: 'SystemAttribute', dataType: 'date'}
     ];
 
     return fields;
@@ -32,20 +32,20 @@ export class FssSearchService implements IFssSearchService {
 
   getOperators() {
     const Operators: Operator[] = [
-      {value: 'eq',text: '='},
-      {value: 'ne',text: '<>'},
-      {value: 'eq null',text: '= null'},
-      {value: 'ne null',text: '<> null'},
-      {value: 'gt',text: '>'},
-      {value: 'ge',text: '>='},
-      {value: 'lt',text: '<'},
-      {value: 'le',text: '<='},
-      {value: 'startswith',text: 'StartsWith'},
-      {value: 'not startswith',text: 'Not StartsWith'},
-      {value: 'endswith',text: 'EndsWith'},
-      {value: 'not endswith',text: 'Not EndsWith'},
-      {value: 'contains',text: 'Contains'},
-      {value: 'not contains',text: 'Not Contains'}
+      {value: 'eq',text: '=', 'type':'operators', 'supportedDataTypes':['string', 'number', 'date', 'attribute']},
+      {value: 'ne',text: '<>', 'type':'operators', 'supportedDataTypes':['string', 'number', 'date', 'attribute']},
+      {value: 'eq null',text: '= null', 'type':'nullOperator', 'supportedDataTypes':['attribute']},
+      {value: 'ne null',text: '<> null', 'type':'nullOperator', 'supportedDataTypes':['attribute']},
+      {value: 'gt',text: '>', 'type':'operator', 'supportedDataTypes':['number', 'date']},
+      {value: 'ge',text: '>=', 'type':'operator', 'supportedDataTypes':['number', 'date']},
+      {value: 'lt',text: '<', 'type':'operator', 'supportedDataTypes':['number', 'date']},
+      {value: 'le',text: '<=', 'type':'operator', 'supportedDataTypes':['number', 'date']},
+      {value: 'startswith',text: 'StartsWith', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
+      {value: 'not startswith',text: 'Not StartsWith', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
+      {value: 'endswith',text: 'EndsWith', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
+      {value: 'not endswith',text: 'Not EndsWith', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
+      {value: 'contains',text: 'Contains', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
+      {value: 'not contains',text: 'Not Contains', 'type':'function', 'supportedDataTypes':['string', 'attribute']}
     ];
 
     return Operators;

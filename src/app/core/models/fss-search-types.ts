@@ -8,11 +8,15 @@ export interface JoinOperator {
 export interface Field {
     value: string;
     text: string;
+    type: string;
+    dataType: string;
 }
 
 export interface Operator {
     value: string;
     text: string;
+    type: string;
+    supportedDataTypes: Array<string>; 
 }
 
 export class FssSearchRow {
