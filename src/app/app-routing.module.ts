@@ -24,7 +24,7 @@ const routes: Routes = [
     // Needed for hash routing
     path: 'code',
     component: FssHomeComponent
-  },
+  }
 ];
 
 

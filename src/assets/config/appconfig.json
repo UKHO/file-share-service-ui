@@ -17,15 +17,5 @@
     "phase": "alpha",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
     "apiUrl": ""
-  },
-  "navigationFallback": {
-    "rewrite": "index.html",
-    "exclude": [
-      "/images/*.{png,jpg,gif}",
-      "/css/*"
-    ]
-  },
-  "mimeTypes": {
-    ".json": "text/json"
   }
 }
