@@ -9,13 +9,23 @@
     "editProfile": "B2C_1A_UserProfile",
     "cacheLocation": "localStorage",
     "storeAuthStateInCookie": true,
-    "interactionType":"popup"
+    "interactionType": "popup"
   },
   "fssConfig": {
     "copyright": "@ Crown copyright 2021 UK Hydrographic office",
     "fssTitle": "File Share Service",
     "phase": "alpha",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl":""
+    "apiUrl": ""
+  },
+  "navigationFallback": {
+    "rewrite": "index.html",
+    "exclude": [
+      "/images/*.{png,jpg,gif}",
+      "/css/*"
+    ]
+  },
+  "mimeTypes": {
+    ".json": "text/json"
   }
 }
