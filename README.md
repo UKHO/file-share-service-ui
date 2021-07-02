@@ -20,7 +20,17 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `npm test` to execute the unit tests via [Jest](https://jestjs.io/).
+Run `npm run test:unit` to execute the unit tests via [Jest](https://jestjs.io/).
+
+## Running functional tests
+
+Run `npm run test:auto` to execute the functional tests via [Jest-Playwright]
+(https://www.npmjs.com/package/jest-playwright-preset).
+
+## Running functional tests
+
+Run `npm run test:a11y` to execute the accessibility tests via [Jest-Axe]
+(https://www.npmjs.com/package/jest-axe).
 
 ## Further help
 
