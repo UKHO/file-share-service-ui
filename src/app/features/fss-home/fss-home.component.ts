@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 @Component({
   selector: 'app-fss-home',
@@ -7,21 +7,25 @@ import { MsalService } from '@azure/msal-angular';
   styleUrls: ['./fss-home.component.scss']
 })
 export class FssHomeComponent implements OnInit {
-  @Output() isPageOverlay = new EventEmitter<boolean>();
-  name: string="";
-  
-  constructor(private msalService: MsalService, 
+  name: string = "";
+
+  constructor(private msalService: MsalService,
     private route: Router) { }
 
   ngOnInit(): void {
+    this.handleSignIn();
   }
   Signin() {
-    this.isPageOverlay.emit(true);
     this.msalService.loginPopup().subscribe(response => {
-      this.isPageOverlay.emit(false);
       localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
       localStorage.setItem('idToken', response.idToken);
-      this.route.navigate(['/']);
     });
+  }
+
+  handleSignIn() {
+    const account = this.msalService.instance.getAllAccounts()[0];
+    if (account != null) {
+      this.route.navigate(['search']);
+    }
   }
 }

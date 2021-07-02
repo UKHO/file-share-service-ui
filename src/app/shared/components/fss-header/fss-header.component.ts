@@ -25,6 +25,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.handleSignIn();
     this.setSkipToContent(); 
+    
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -39,15 +40,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       .subscribe(() => {
         this.isPageOverlay.emit(false);
         this.handleSigninAwareness();
-      });
-
-      this.msalBroadcastService.msalSubject$
-      .pipe(
-        // Optional filtering of events.
-        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_FAILURE),
-      )
-      .subscribe((result: EventMessage) => {
-        this.route.navigate(['']);
       });
 
     this.branding = {
@@ -78,7 +70,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
-
     this.handleSigninAwareness();
   }
 
@@ -89,16 +80,13 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   logInPopup() {
-    this.isPageOverlay.emit(true);
     this.msalService.loginPopup().subscribe(response => {
-      console.log("response after login", response);
       if (response != null && response.account != null) {
-        this.isPageOverlay.emit(false);
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
         localStorage.setItem('idToken', response.idToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-        console.log("from header component", this.userName);
+        this.route.navigate(['search'])
       }
     });
   }
@@ -145,7 +133,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   handleSigninAwareness() {
     const date = new Date()
     const account = this.msalService.instance.getAllAccounts()[0];
-    console.log("Account: ", account);
     if (account != null) {
       this.getClaims(account.idTokenClaims);
       if (localStorage['claims'] != null) {
@@ -153,7 +140,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         if (this.userName == claims['given_name']) {
           this.msalService.instance.setActiveAccount(account);
           if (this.authOptions?.isSignedIn()) {
-            console.log("Expires On", new Date(1000 * claims['exp']));
             // Handling token expiry
             if (new Date(1000 * claims['exp']).toISOString() < date.toISOString()) {
               this.msalService.loginPopup().subscribe(response => {

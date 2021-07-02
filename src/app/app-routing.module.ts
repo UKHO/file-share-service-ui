@@ -24,14 +24,19 @@ const routes: Routes = [
     // Needed for hash routing
     path: 'code',
     component: FssHomeComponent
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ];
-
+const isIframe = window.opener && window !== window.opener
 
 @NgModule({
   imports: [RouterModule.forRoot(routes,{
     useHash: true,
-    initialNavigation: 'enabled'
+    initialNavigation: isIframe ? 'disabled' : 'enabled'
   })],
   exports: [RouterModule]
 })
