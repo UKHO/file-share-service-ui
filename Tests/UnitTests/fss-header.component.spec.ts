@@ -4,8 +4,8 @@ import { HeaderComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MsalModule, MsalService, MSAL_INSTANCE, MsalBroadcastService } from '@azure/msal-angular';
-import { FssHeaderComponent } from '../src/app/shared/components/fss-header/fss-header.component';
-import { AppConfigService } from '../src/app/core/services/app-config.service';
+import { FssHeaderComponent } from '../../src/app/shared/components/fss-header/fss-header.component';
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { Router } from '@angular/router';
@@ -37,7 +37,6 @@ describe('FssHeaderComponent', () => {
   });
 
   test('should exist msalService', () => {    
-    //console.log(msalService.instance); 
     expect(msalService).toBeDefined();
   });
 
@@ -48,7 +47,7 @@ describe('FssHeaderComponent', () => {
     expect(atag.textContent).toContain('Skip to content');
   });
 
-  it('should have header component', () => {
+  test('should have header component', () => {
     const fixture = TestBed.createComponent(FssHeaderComponent);
     const header = fixture.debugElement.nativeElement.querySelector('ukho-header');
     const footer = fixture.debugElement.nativeElement.querySelector('ukho-footer');

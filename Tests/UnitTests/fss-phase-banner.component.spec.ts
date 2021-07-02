@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FssPhaseBannerComponent } from '../src/app/shared/components/fss-phase-banner/fss-phase-banner.component';
+import { FssPhaseBannerComponent } from '../../src/app/shared/components/fss-phase-banner/fss-phase-banner.component';
 import { PhaseBannerComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { AppConfigService } from '../src/app/core/services/app-config.service';
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 
 describe('FssPhaseBannerComponent', () => {
   let component: FssPhaseBannerComponent;
@@ -22,7 +22,7 @@ describe('FssPhaseBannerComponent', () => {
       };    
   });
 
-  it('should have banner component', () => {
+  test('should have banner component', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     const banner = fixture.debugElement.nativeElement.querySelector('ukho-phase-banner');
     const header = fixture.debugElement.nativeElement.querySelector('ukho-header');
