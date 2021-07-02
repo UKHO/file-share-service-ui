@@ -80,7 +80,7 @@ stages:
           - script: |
              npm install jest jest-preset-angular @types/jest --save-dev
              npm install jest-junit --save-dev
-             npm run test:unit -- --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura
+             npm run test:unit
             continueOnError: false
             displayName: 'Unit test with Jest'
 
@@ -91,16 +91,16 @@ stages:
               testResultsFiles: 'junit.xml'
             displayName: 'Publish Unit Test Results'
 
-          - script: |
-             npm run test:a11y -- --reporters=jest-junit --reporters=default
-            continueOnError: false
-            displayName: 'Accessibility Testing'
-         
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'Cobertura'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
               reportDirectory: 'coverage/'
+
+          - script: |
+             npm run test:a11y
+            continueOnError: false
+            displayName: 'Accessibility Testing'
 
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"
