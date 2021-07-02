@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 
 export interface JoinOperator {
-    value: string;
-    text: string;
+  value: string;
+  text: string;
 }
 
 export interface Field {
-    value: string;
-    text: string;
+  value: string;
+  text: string;
+  type: string;
+  dataType: string;
 }
 
 export interface Operator {
-    value: string;
-    text: string;
+  value: string;
+  text: string;
 }
 
 export class FssSearchRow {
@@ -24,7 +26,7 @@ export class FssSearchRow {
   selectedField: string = "";
   selectedOperator: string = "";
   value: string = "";
-  rowId:number = 0;
+  rowId: number = 0;
 }
 
 
@@ -34,6 +36,6 @@ export abstract class IFssSearchService {
    * Return all above fields here
    */
   abstract getJoinOperators(): JoinOperator[];
-  abstract getFields(): Field[];
+  abstract getFields(batchAttributeResult: any): Field[];
   abstract getOperators(): Operator[];
 }
