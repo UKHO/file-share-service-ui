@@ -28,7 +28,7 @@
               </td>
             <td>
                 <ukho-select [(ngModel)]="fssSearchRow.selectedOperator">
-                    <option *ngFor="let Operator of fssSearchRow.operators"
+                    <option *ngFor="let Operator of fssSearchRow.operators | filterOperator: fssSearchRow.selectedField : fssSearchRow.fields"
                      value="{{Operator.value}}">{{Operator.text}}</option>
                 </ukho-select>
             </td>
