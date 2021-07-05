@@ -139,7 +139,7 @@ stages:
       - job: FunctionalTest
         dependsOn: DevDeploy
         pool: $(WindowPool)
-        displayName: "Function Test"
+        displayName: "Functional Test"
         variables: 
          autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
         workspace:
@@ -197,7 +197,7 @@ stages:
       - job: FunctionalTest
         dependsOn: QAdeploy
         pool: $(WindowPool)
-        displayName: "Function Test"
+        displayName: "Functional Test"
         variables: 
          autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
         workspace:
