@@ -6,7 +6,10 @@
   </ukho-dialogue> <br />
   <h1>Search files</h1>
   <p class="light">Complete the parameters to create a search query</p>
-  <app-fss-search-row [fssSearchRows]="fssSearchRows" (onSearchRowDeleted)="onSearchRowDeleted($event)">
+  <app-fss-search-row [fssSearchRows]="fssSearchRows" 
+  (onFieldChanged)="onFieldChanged($event)"
+  (onOperatorChanged)="onOperatorChanged($event)"
+  (onSearchRowDeleted)="onSearchRowDeleted($event)">
   </app-fss-search-row>
   <div class="searchSection">
     <strong (click)="addSearchRow()"> <i class="fa fa-plus fa-1x"></i> Add new line </strong>

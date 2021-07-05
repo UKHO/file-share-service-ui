@@ -24,7 +24,8 @@ export class FssSearchService implements IFssSearchService {
       {value: 'MimeType',text: '@MimeType', type: 'SystemAttribute', dataType: 'string'},
       {value: 'FileSize',text: '@FileSize', type: 'SystemAttribute', dataType: 'number'},
       {value: 'ExpiryDate',text: '@BatchExpiryDate', type: 'SystemAttribute', dataType: 'date'},
-      {value: 'BatchPublishedDate',text: '@BatchPublishedDate', type: 'SystemAttribute', dataType: 'date'}
+      {value: 'BatchPublishedDate',text: '@BatchPublishedDate', type: 'SystemAttribute', dataType: 'date'},
+      {value: 'Product',text: 'Product', type: 'UserAttribute', dataType: 'attribute'}
     ];
 
     return fields;

@@ -28,6 +28,8 @@ export class FssSearchRow {
   selectedField: string = "";
   selectedOperator: string = "";
   value: string = "";
+  valueType :"time" | "text" | "date" | "email" | "password" | "tel" | "url";
+  valueIsdisabled :boolean =false;
   rowId:number = 0;
 }
 
