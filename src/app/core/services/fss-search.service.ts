@@ -25,7 +25,7 @@ export class FssSearchService implements IFssSearchService {
       {value: 'FileSize',text: '@FileSize', type: 'SystemAttribute', dataType: 'number'},
       {value: 'ExpiryDate',text: '@BatchExpiryDate', type: 'SystemAttribute', dataType: 'date'},
       {value: 'BatchPublishedDate',text: '@BatchPublishedDate', type: 'SystemAttribute', dataType: 'date'},
-      {value: 'Product',text: 'Product', type: 'UserAttribute', dataType: 'attribute'}
+      {value: 'Product', text: 'Product', type:'UserAttribute', dataType: 'attribute'}
     ];
 
     return fields;
@@ -33,20 +33,20 @@ export class FssSearchService implements IFssSearchService {
 
   getOperators() {
     const Operators: Operator[] = [
-      {value: 'eq',text: '=', 'type':'operators', 'supportedDataTypes':['string', 'number', 'date', 'attribute']},
-      {value: 'ne',text: '<>', 'type':'operators', 'supportedDataTypes':['string', 'number', 'date', 'attribute']},
-      {value: 'eq null',text: '= null', 'type':'nullOperator', 'supportedDataTypes':['attribute']},
-      {value: 'ne null',text: '<> null', 'type':'nullOperator', 'supportedDataTypes':['attribute']},
-      {value: 'gt',text: '>', 'type':'operator', 'supportedDataTypes':['number', 'date']},
-      {value: 'ge',text: '>=', 'type':'operator', 'supportedDataTypes':['number', 'date']},
-      {value: 'lt',text: '<', 'type':'operator', 'supportedDataTypes':['number', 'date']},
-      {value: 'le',text: '<=', 'type':'operator', 'supportedDataTypes':['number', 'date']},
-      {value: 'startswith',text: 'StartsWith', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
-      {value: 'not startswith',text: 'Not StartsWith', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
-      {value: 'endswith',text: 'EndsWith', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
-      {value: 'not endswith',text: 'Not EndsWith', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
-      {value: 'contains',text: 'Contains', 'type':'function', 'supportedDataTypes':['string', 'attribute']},
-      {value: 'not contains',text: 'Not Contains', 'type':'function', 'supportedDataTypes':['string', 'attribute']}
+      {value: 'eq',text: '=', type:'operator', supportedDataTypes:['string', 'number', 'date', 'attribute']},
+      {value: 'ne',text: '<>', type:'operator', supportedDataTypes:['string', 'number', 'date', 'attribute']},
+      {value: 'eq null',text: '= null', type:'nullOperator', supportedDataTypes:['attribute']},
+      {value: 'ne null',text: '<> null', type:'nullOperator', supportedDataTypes:['attribute']},
+      {value: 'gt',text: '>', type:'operator', supportedDataTypes:['number', 'date']},
+      {value: 'ge',text: '>=', type:'operator', supportedDataTypes:['number', 'date']},
+      {value: 'lt',text: '<', type:'operator', supportedDataTypes:['number', 'date']},
+      {value: 'le',text: '<=', type:'operator', supportedDataTypes:['number', 'date']},
+      {value: 'startswith',text: 'StartsWith', type:'function', supportedDataTypes:['string', 'attribute']},
+      {value: 'not startswith',text: 'Not StartsWith', type:'function', supportedDataTypes:['string', 'attribute']},
+      {value: 'endswith',text: 'EndsWith', type:'function', supportedDataTypes:['string', 'attribute']},
+      {value: 'not endswith',text: 'Not EndsWith', type:'function', supportedDataTypes:['string', 'attribute']},
+      {value: 'contains',text: 'Contains', type:'function', supportedDataTypes:['string', 'attribute']},
+      {value: 'not contains',text: 'Not Contains', type:'function', supportedDataTypes:['string', 'attribute']}
     ];
 
     return Operators;
