@@ -65,17 +65,29 @@ export class FssSearchComponent implements OnInit {
     var changedFieldRow = this.fssSearchRows.find(fsr => fsr.rowId === changedField.rowId);
     changedFieldRow!.operators = this.operators.filter(operator => operator.supportedDataTypes.includes(fieldDataType));
     
-
     if (fieldDataType === "string" || fieldDataType === "attribute")
       changedFieldRow!.valueType = "text";
     else if (fieldDataType === "number")
       changedFieldRow!.valueType = "tel";
     else if (fieldDataType === "date")
       changedFieldRow!.valueType = "date";
-
-    changedFieldRow!.selectedOperator = "eq";
+    // if(!this.contains(changedFieldRow?.operators, changedFieldRow?.selectedOperator)){
+    //   changedFieldRow!.selectedOperator = "eq";
+    // }
+    if(!changedFieldRow?.operators.find(operator => operator.value === changedFieldRow?.selectedOperator)){
+      changedFieldRow!.selectedOperator = "eq";
+    }
     changedFieldRow!.valueIsdisabled = false;
   }
+
+  // contains(operators:any, selectedOperator:any){
+  //   for(let i=0; i< operators.length; i++){
+  //     if(operators[i].value === selectedOperator){
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   onOperatorChanged(changedOperator: any) {
     var operatorType = this.operators.find(f => f.value === changedOperator.operatorValue)?.type!;

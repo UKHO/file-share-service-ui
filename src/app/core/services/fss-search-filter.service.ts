@@ -15,17 +15,53 @@ export class FssSearchFilterService {
     for(var i=0; i < fssSearchRows.length; i++) {
 
       var fssSearchRow = fssSearchRows[i];
+      // getFieldDataType
+      const dataType = this.getFieldDataType(fssSearchRow);
+      // getOperatorType
+      const operaterType = this.getOperatorType(fssSearchRow);
+      // dataType, OperatorType
+      console.log(dataType, operaterType);
+      // operaterType Func. 
+      // Operatorvalue(SelectedField,value)
 
       //Append join operator from second search condition
       if(i != 0) {
         filter = filter.concat(' ',fssSearchRow.selectedJoinOperator, ' ');        
       }
-
-      //Get system attribute filter expression
-      filter += this.getSystemAttributeFilterExpression(fssSearchRow);      
+      if(dataType === 'string' || dataType === 'attribute'){
+        if(operaterType === 'operator'){
+          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
+        }
+        else if(operaterType === 'nullOperator'){
+          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
+        }
+        else if(operaterType === 'function'){
+          filter = filter.concat(fssSearchRow.selectedOperator, "(", fssSearchRow.selectedField, ", '", fssSearchRow.value, "')");
+        }
+      }
+      if(dataType === 'number' || dataType === 'date'){
+        if(operaterType === 'operator'){
+          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", fssSearchRow.value);
+        }
+      }
+      console.log("Before Completion",filter);
+      // //Get system attribute filter expression
+      // filter += this.getSystemAttributeFilterExpression(fssSearchRow);      
     }
-
+    console.log("After completion",filter);
     return filter;
+  }
+
+  getFieldDataType(fssSearchRow: FssSearchRow){
+    console.log(fssSearchRow);
+    const dataType = fssSearchRow.fields.find(f => f.value === fssSearchRow.selectedField)?.dataType!;
+    return dataType
+  }
+
+  getOperatorType(fssSearchRow: FssSearchRow){
+    console.log(fssSearchRow);
+    const operatorType = fssSearchRow.operators.find(o => o.value === fssSearchRow.selectedOperator)?.type!;
+    return operatorType
   }
 
   getSystemAttributeFilterExpression(fssSearchRow: FssSearchRow) {
