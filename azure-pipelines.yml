@@ -114,7 +114,6 @@ stages:
               PathtoPublish: '$(Build.SourcesDirectory)/Deployment'
               ArtifactName: terraformartifact
 
-
   - stage: Devdeploy
     displayName: "Devdeploy (inc terraform, website deploy)"
     jobs:
