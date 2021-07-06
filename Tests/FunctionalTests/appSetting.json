@@ -1,8 +1,9 @@
 {
     "autoTestConfig":
     {
-       "url":"https://fssuidevwebsite.z33.web.core.windows.net/",
+       "url":"",
        "user":"",
-       "password":""
+       "password":"",
+       "userFullName" : ""
     }
 }

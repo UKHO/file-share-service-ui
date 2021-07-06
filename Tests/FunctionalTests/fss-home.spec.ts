@@ -27,18 +27,18 @@ describe('Test Home Page Scenario', () => {
     })
 
     test('Does it contains correct header text', async () => {
-        expect(await page.innerText(pageObjectsConfig.homepageheaderSelector)).toEqual(pageObjectsConfig.homepageheaderText);
+        expect(await page.innerText(pageObjectsConfig.homePageHeaderSelector)).toEqual(pageObjectsConfig.homePageHeaderText);
        
     })
 
     test('Does Search and Sign in link appear on header', async () => {
-        expect(await page.innerText(pageObjectsConfig.searchlinkSelector)).toEqual(pageObjectsConfig.searchlinkText);
-        expect(await page.innerText(pageObjectsConfig.signinlinkSelector)).toEqual(pageObjectsConfig.signinlinkText);
+        expect(await page.innerText(pageObjectsConfig.searchLinkSelector)).toEqual(pageObjectsConfig.searchLinkText);
+        expect(await page.innerText(pageObjectsConfig.signinLinkSelector)).toEqual(pageObjectsConfig.signinLinkText);
        
     })
 
     test('Does it navigate to accessibility page once click on Accessibility link', async () => {
-        await page.click(pageObjectsConfig.accessibilitylinkSelector);
+        await page.click(pageObjectsConfig.accessibilityLinkSelector);
         context.on('page', async page => {
             await page.waitForLoadState();
             expect(page.url()).toContain("accessibility");
@@ -46,7 +46,7 @@ describe('Test Home Page Scenario', () => {
     })
 
     test('Does it navigate to Privacy policy page once click on Privacy policy link', async () => {
-        await page.click(pageObjectsConfig.privacypolicylinkSelector);
+        await page.click(pageObjectsConfig.privacypolicyLinkSelector);
         context.on('page', async page => {
             await page.waitForLoadState();
             expect(page.url()).toContain("cookie-policy");
@@ -54,16 +54,21 @@ describe('Test Home Page Scenario', () => {
     })
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
-        await page.click(pageObjectsConfig.marinedataportallinkSelector);
-        expect(await page.innerText(pageObjectsConfig.marinedataportalpageSelector)).toContain(pageObjectsConfig.marinedataportalpageText);
+        await page.click(pageObjectsConfig.marinedataportalLinkSelector);
+        expect(await page.innerText(pageObjectsConfig.marinedataportalPageSelector)).toContain(pageObjectsConfig.marinedataportalPageText);
         expect(page.url()).toContain("marine-data-portal");
     }) 
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
-        await page.click(pageObjectsConfig.ukhydrographiclinkSelector);
-        expect(await page.getAttribute(pageObjectsConfig.ukhydrographicpageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicpageTitle);
-        expect(page.url()).toEqual(pageObjectsConfig.ukhydrographicpageUrl);
+        await page.click(pageObjectsConfig.ukhydrographicLinkSelector);
+        expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
+        expect(page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);
 
+    })
+
+    test('Does it contains correct Copyright text', async () => {
+        expect(await page.innerText(pageObjectsConfig.copyrightTextSelector)).toEqual("© Crown copyright " + new Date().getFullYear() + " UK Hydrographic Office");
+       
     })
 
 })
