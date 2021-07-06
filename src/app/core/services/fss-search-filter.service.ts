@@ -5,6 +5,13 @@ import { FssSearchRow } from '../models/fss-search-types';
   providedIn: 'root'
 })
 export class FssSearchFilterService {
+  stringDataType: string = "string";
+  attributeDataType: string = "attribute";
+  numberDataType: string = "number";
+  dateDataType: string = "date";
+  typeOperator: string = "operator";
+  nulloperatorType: string = "nullOperator";
+  functionType: string = "function";
 
   constructor() { }
 
@@ -28,20 +35,26 @@ export class FssSearchFilterService {
       if(i != 0) {
         filter = filter.concat(' ',fssSearchRow.selectedJoinOperator, ' ');        
       }
-      if(dataType === 'string' || dataType === 'attribute'){
-        if(operaterType === 'operator'){
+      if(dataType === this.stringDataType || dataType === this.attributeDataType){
+        if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
         }
-        else if(operaterType === 'nullOperator'){
+        else if(operaterType === this.nulloperatorType){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
         }
-        else if(operaterType === 'function'){
+        else if(operaterType === this.functionType){
           filter = filter.concat(fssSearchRow.selectedOperator, "(", fssSearchRow.selectedField, ", '", fssSearchRow.value, "')");
         }
       }
-      if(dataType === 'number' || dataType === 'date'){
-        if(operaterType === 'operator'){
+      if(dataType === this.numberDataType){
+        if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", fssSearchRow.value);
+        }
+      }
+      if(dataType === this.dateDataType){
+        const value = new Date(fssSearchRow.value).toISOString();
+        if(operaterType === this.typeOperator){
+          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
         }
       }
       console.log("Before Completion",filter);
