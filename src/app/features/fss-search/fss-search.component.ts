@@ -78,6 +78,7 @@ export class FssSearchComponent implements OnInit {
       changedFieldRow!.selectedOperator = "eq";
     }
     changedFieldRow!.valueIsdisabled = false;
+    changedFieldRow!.value = "";
   }
 
   // contains(operators:any, selectedOperator:any){
@@ -139,8 +140,8 @@ export class FssSearchComponent implements OnInit {
   }
 
   handleSuccess(res: any) {
-    this.searchResult = res;
-    if (this.searchResult.count > 0) {
+    if (res.count > 0) {
+      this.searchResult = res;
       this.searchResult = Array.of(this.searchResult['entries']);
       this.displaySearchResult = true;
       this.hideMessage();

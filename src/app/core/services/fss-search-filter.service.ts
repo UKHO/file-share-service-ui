@@ -10,7 +10,7 @@ export class FssSearchFilterService {
   numberDataType: string = "number";
   dateDataType: string = "date";
   typeOperator: string = "operator";
-  nulloperatorType: string = "nullOperator";
+  nullOperatorType: string = "nullOperator";
   functionType: string = "function";
 
   constructor() { }
@@ -26,10 +26,6 @@ export class FssSearchFilterService {
       const dataType = this.getFieldDataType(fssSearchRow);
       // getOperatorType
       const operaterType = this.getOperatorType(fssSearchRow);
-      // dataType, OperatorType
-      console.log(dataType, operaterType);
-      // operaterType Func. 
-      // Operatorvalue(SelectedField,value)
 
       //Append join operator from second search condition
       if(i != 0) {
@@ -39,7 +35,7 @@ export class FssSearchFilterService {
         if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
         }
-        else if(operaterType === this.nulloperatorType){
+        else if(operaterType === this.nullOperatorType){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
         }
         else if(operaterType === this.functionType){
