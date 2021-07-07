@@ -1,3 +1,4 @@
+import { mkdir, mkdirSync } from 'fs';
 import { chromium, Browser,BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const {pageObjectsConfig} = require('./pageObjects');
@@ -27,6 +28,7 @@ describe('Test Sign In Page Scenario', () => {
     //==================START==============================
     async function LoginPortal(username: string, password: string)
     {
+      try{
       const [popup] = await Promise.all([
         page.waitForEvent('popup')
         ]);
@@ -40,7 +42,32 @@ describe('Test Sign In Page Scenario', () => {
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
       popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInButtonSelector)
-      popup.click(pageObjectsConfig.loginPopupSignInButtonSelector)   
+      popup.click(pageObjectsConfig.loginPopupSignInButtonSelector)
+      }
+      catch(e)
+      {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = date.getUTCMonth() + 1;
+      const dateOfMonth = date.getUTCDate();
+      const hour = date.getUTCHours();
+      const minute = date.getUTCMinutes();
+      const sec = date.getUTCSeconds();
+      const dateString = `${year}-${month}-${dateOfMonth}-${hour}-${minute}-${sec}`;
+      const errorScreenshotPath = `screenshots/failedTest-${dateString}.png`;
+
+      const captureScreenshots = process.env.CAPTURE_SCREENSHOTS === "true";
+
+      if (captureScreenshots) {
+        mkdirSync("screenshots");
+
+        await page.screenshot({
+          path: errorScreenshotPath,
+        });
+      }
+      throw e;
+
+      }   
       
     }  
     //===============END===================================
