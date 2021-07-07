@@ -13,7 +13,7 @@ describe('Test Home Page Scenario', () => {
           headless: true,
           channel:"chrome"});
           context = await browser.newContext();
-          page = await context.newPage();
+          page = await context.newPage();         
           await page.goto(autoTestConfig.url)
       })
 
@@ -31,9 +31,10 @@ describe('Test Home Page Scenario', () => {
         page.waitForEvent('popup')
         ]);
       
+      popup.setDefaultTimeout(60000);
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)        
       popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, username)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupNextButtonSelector)
+      await popup.waitForSelector(pageObjectsConfig.loginPopupNextButtonSelector)      
       popup.click(pageObjectsConfig.loginPopupNextButtonSelector)
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
       popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
