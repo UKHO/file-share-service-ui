@@ -1,14 +1,14 @@
 const { pathsToModuleNameMapper } = require('ts-jest/utils');
-const { compilerOptions } = require('../../tsconfig');
+const { compilerOptions } = require('./tsconfig');
 
 module.exports = {
   preset: 'jest-preset-angular',
-  roots: ['<rootDir>/'],
+  roots: ['<rootDir>/Tests/UnitTests/'],
   testMatch: ['**/+(*.)+(spec).+(ts)'],
   setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
   collectCoverage: true,
-  coverageReporters: ['html','cobertura','lcove','json'],
-  coverageDirectory: 'coverage/my-app',
+  coverageReporters: ['html','cobertura'],
+  coverageDirectory: 'coverage',
   reporters: ["default","jest-junit"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
     prefix: '<rootDir>/'
