@@ -52,43 +52,18 @@ export class FssSearchFilterService {
         if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
         }
-      }
-      console.log("Before Completion",filter);
-      // //Get system attribute filter expression
-      // filter += this.getSystemAttributeFilterExpression(fssSearchRow);      
+      }  
     }
-    console.log("After completion",filter);
     return filter;
   }
 
   getFieldDataType(fssSearchRow: FssSearchRow){
-    console.log(fssSearchRow);
     const dataType = fssSearchRow.fields.find(f => f.value === fssSearchRow.selectedField)?.dataType!;
     return dataType
   }
 
   getOperatorType(fssSearchRow: FssSearchRow){
-    console.log(fssSearchRow);
     const operatorType = fssSearchRow.operators.find(o => o.value === fssSearchRow.selectedOperator)?.type!;
     return operatorType
   }
-
-  getSystemAttributeFilterExpression(fssSearchRow: FssSearchRow) {
-
-    var filterExpression='';
-
-    switch(fssSearchRow.selectedField) {
-      //For number and date field
-      case 'FileSize':
-      case 'ExpiryDate':
-      case 'BatchPublishedDate':
-        filterExpression = filterExpression.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", fssSearchRow.value);
-        break;
-      //For all other fields
-      default:
-        filterExpression = filterExpression.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
-        break;      
-    }
-    return filterExpression;   
-  } 
 }
