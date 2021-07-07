@@ -61,47 +61,76 @@ export class FssSearchComponent implements OnInit {
   }
 
   onFieldChanged(changedField: any) {
-    var fieldDataType = this.fields.find(f => f.value === changedField.fieldValue)?.dataType!;
-    var changedFieldRow = this.fssSearchRows.find(fsr => fsr.rowId === changedField.rowId);
-    changedFieldRow!.operators = this.operators.filter(operator => operator.supportedDataTypes.includes(fieldDataType));
-    
-    if (fieldDataType === "string" || fieldDataType === "attribute")
-      changedFieldRow!.valueType = "text";
-    else if (fieldDataType === "number")
-      changedFieldRow!.valueType = "tel";
-    else if (fieldDataType === "date")
-      changedFieldRow!.valueType = "date";
-    // if(!this.contains(changedFieldRow?.operators, changedFieldRow?.selectedOperator)){
-    //   changedFieldRow!.selectedOperator = "eq";
-    // }
-    if(!changedFieldRow?.operators.find(operator => operator.value === changedFieldRow?.selectedOperator)){
-      changedFieldRow!.selectedOperator = "eq";
+    // getFieldDataType
+    var fieldDataType = this.getFieldDataType(changedField.fieldValue);
+    // getFieldRow
+    var changedFieldRow = this.getSearchRow(changedField.rowId);
+    // getFilteredOperators
+    changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
+    // getValueType
+    changedFieldRow!.valueType = this.getValueType(fieldDataType);
+
+    // setDefault
+    if(!this.isOperatorExist(changedFieldRow!)){
+      changedFieldRow!.selectedOperator = "eq"
     }
     changedFieldRow!.valueIsdisabled = false;
     changedFieldRow!.value = "";
   }
 
-  // contains(operators:any, selectedOperator:any){
-  //   for(let i=0; i< operators.length; i++){
-  //     if(operators[i].value === selectedOperator){
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
+  getFieldDataType(fieldValue: string) {
+    return this.fields.find(f => f.value === fieldValue)?.dataType!;
+  }
+
+  getSearchRow(rowId: number) {
+    return this.fssSearchRows.find(fsr => fsr.rowId === rowId);
+  }
+
+  getFilteredOperators(fieldDataType: string) {
+    return this.operators.filter(operator => operator.supportedDataTypes.includes(fieldDataType))
+  }
+
+  getValueType(fieldDataType: string) {
+    var valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url" = "text";
+    if (fieldDataType === "string" || fieldDataType === "attribute")
+      valueType = "text";
+    else if (fieldDataType === "number")
+      valueType = "tel";
+    else if (fieldDataType === "date")
+      valueType = "date";
+
+    return valueType
+  }
+  
+
+  isOperatorExist(changedFieldRow: FssSearchRow){
+    var operator = changedFieldRow.operators.find(operator => operator.value === changedFieldRow?.selectedOperator)
+    if (!operator) {
+      return false;
+    }
+    else{
+      return true
+    }
+  }
 
   onOperatorChanged(changedOperator: any) {
-    var operatorType = this.operators.find(f => f.value === changedOperator.operatorValue)?.type!;
-    var changedFieldRow = this.fssSearchRows.find(fsr => fsr.rowId === changedOperator.rowId);
-    if(operatorType === "nullOperator")
-    {
+    var operatorType = this.getOperatorType(changedOperator);
+    var changedFieldRow = this.getSearchRow(changedOperator.rowId);
+    this.toggleValueInput(changedFieldRow!, operatorType);
+  }
+
+  getOperatorType(changedOperator: any){
+    return this.operators.find(f => f.value === changedOperator.operatorValue)?.type!;
+  }
+
+  toggleValueInput(changedFieldRow: FssSearchRow, operatorType: string){
+    if (operatorType === "nullOperator") {
       changedFieldRow!.valueIsdisabled = true;
       changedFieldRow!.value = "";
     }
-   else{
-    changedFieldRow!.valueIsdisabled = false;
-   }
-    
+    else {
+      changedFieldRow!.valueIsdisabled = false;
+    }
   }
 
   onSearchRowDeleted(rowId: number) {
