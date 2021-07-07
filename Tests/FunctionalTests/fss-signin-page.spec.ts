@@ -10,7 +10,7 @@ describe('Test Home Page Scenario', () => {
 
     beforeEach(async () => {
         browser = await chromium.launch({ 
-          headless: false,
+          headless: true,
           channel:"chrome"});
           context = await browser.newContext();
           page = await context.newPage();
