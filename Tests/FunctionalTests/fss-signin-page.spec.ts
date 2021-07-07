@@ -31,7 +31,8 @@ describe('Test Sign In Page Scenario', () => {
         page.waitForEvent('popup')
         ]);
       
-      popup.setDefaultTimeout(120000);
+      popup.setDefaultTimeout(60000);
+      popup.setViewportSize({'width' : 800,'height' : 1024})
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)        
       popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, username)
       await popup.waitForSelector(pageObjectsConfig.loginPopupNextButtonSelector)      
