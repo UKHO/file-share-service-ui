@@ -10,7 +10,7 @@ describe('Test Home Page Scenario', () => {
 
     beforeEach(async () => {
         browser = await chromium.launch({ 
-          headless: true,
+          headless: false,
           channel:"chrome"});
           context = await browser.newContext();
           page = await context.newPage();
@@ -33,8 +33,11 @@ describe('Test Home Page Scenario', () => {
       
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)        
       popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, username)
+      await popup.waitForSelector(pageObjectsConfig.loginPopupNextButtonSelector)
       popup.click(pageObjectsConfig.loginPopupNextButtonSelector)
+      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
       popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
+      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInButtonSelector)
       popup.click(pageObjectsConfig.loginPopupSignInButtonSelector)   
       
     }  
@@ -72,7 +75,7 @@ describe('Test Home Page Scenario', () => {
 
       it('When user navigate to search url without Sign in it should naviagte to fss home page', async () => {
         
-        page.goto(autoTestConfig.url + "search/");
+        page.goto(autoTestConfig.url + "#/search/");
                 
         await page.waitForSelector(pageObjectsConfig.homePageSignInHeaderInfoSelector);    
         expect(await page.innerHTML(pageObjectsConfig.homePageSignInHeaderInfoSelector)).toEqual(pageObjectsConfig.homePageSignInHeaderInfoText);       
