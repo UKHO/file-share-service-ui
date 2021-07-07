@@ -2,7 +2,7 @@ import { chromium, Browser,BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const {pageObjectsConfig} = require('./pageObjects');
 
-describe('Test Home Page Scenario', () => {
+describe('Test Sign In Page Scenario', () => {
     jest.setTimeout(120000);
     let browser: Browser;
     let context: BrowserContext;
@@ -31,7 +31,7 @@ describe('Test Home Page Scenario', () => {
         page.waitForEvent('popup')
         ]);
       
-      popup.setDefaultTimeout(60000);
+      popup.setDefaultTimeout(120000);
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)        
       popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, username)
       await popup.waitForSelector(pageObjectsConfig.loginPopupNextButtonSelector)      
