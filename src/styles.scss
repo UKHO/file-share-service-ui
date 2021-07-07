@@ -44,12 +44,32 @@ ukho-phase-banner.phasebanner {
 	}
 	p {
 		padding-left: 30px;
-	}
-	table {
-		border-spacing: 10px;
-		width: 100%;
-		text-align: center;
-	}
+	}	
+}
+
+.querytable {
+	border-spacing: 10px;
+	width: 100%;
+	text-align: center;
+}
+
+table{
+    border-spacing: 10px;
+    width: 100%;
+    text-align: left;
+}
+
+th{
+	font-size: large;
+}
+
+td{
+	font-size: large;
+	font-weight: bold;
+}
+
+.margin{
+	margin-top:20px;
 }
 
 .searchSection {
