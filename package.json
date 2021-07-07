@@ -5,30 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "jest --detectOpenHandles",
-    "test:unit": "jest --testPathPattern=Tests/UnitTests/",
-    "test:auto": "jest --testPathPattern=Tests/FunctionalTests/",
-    "test:a11y": "jest --testPathPattern=Tests/AccessibilityTests/",
+    "test:unit": "jest --config=jest.config.js",
+    "test:auto": "jest --config=Tests/FunctionalTests/jest.config.js",
+    "test:a11y": "jest --config=Tests/AccessibilityTests/jest.config.js",
     "lint": "ng lint",
     "preinstall": "npx npm-force-resolutions"
-  },
-  "jest-junit": {
-    "suiteNameTemplate": "{filepath}",
-    "outputDirectory": ".",
-    "outputName": "junit.xml"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "coverageReporters": [
-      "lcov",
-      "html"
-    ],
-    "projects": [
-      "<rootDir>/Tests/UnitTests/jest.config.js",
-      "<rootDir>/Tests/FunctionalTests/jest.config.js",
-      "<rootDir>/Tests/AccessibilityTests/jest.config.js"
-    ],
-    "testTimeout": 120000
   },
   "resolutions": {
     "dns-packet": "~5.2.2",
