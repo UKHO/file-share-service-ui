@@ -24,7 +24,6 @@ export class FssSearchComponent implements OnInit {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageTitle: string = "";
   messageDesc: string = "";
-  searchButtonText: string = "Search";
   displayMessage: boolean = false;
   displaySearchResult: Boolean = false;
   displayLoader: boolean = false;
@@ -33,15 +32,16 @@ export class FssSearchComponent implements OnInit {
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
-    this.joinOperators = this.fssSearchTypeService.getJoinOperators();    
+    this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-    
+    /*Call attributes API to retrieve User attributes and send back to search service 
+    to append to existing System attributes*/
     this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-      console.log(batchAttributeResult);     
+      console.log(batchAttributeResult);
       this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
       this.addSearchRow();
-    });    
-  }  
+    });
+  }
 
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
@@ -67,7 +67,6 @@ export class FssSearchComponent implements OnInit {
   }
 
   getSearchResult() {
-    this.searchButtonText = "Refine Search";
     this.displayLoader = true;
     var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
     console.log(filter);

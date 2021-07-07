@@ -13,20 +13,22 @@ import { filter } from 'rxjs/operators';
 })
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
   userName: string = "";
-  skipToContent:string = "";
+  skipToContent: string = "";
+  firstName: string = '';
+  lastName: string = '';
   constructor(private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService) {
     super();
   }
 
-  ngOnInit(): void {   
-    this.setSkipToContent();    
+  ngOnInit(): void {
+    this.setSkipToContent();
     this.msalBroadcastService.inProgress$
       .subscribe(() => {
         const account = this.msalService.instance.getAllAccounts()[0];
         if (account != null) {
-          this.getClaims(account.idTokenClaims);          
+          this.getClaims(account.idTokenClaims);
           this.msalService.instance.setActiveAccount(account);
         }
       });
@@ -35,7 +37,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       title: AppConfigService.settings["fssConfig"].fssTitle,
       logoImgUrl: "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
       logoAltText: "Admiralty - Maritime Data Solutions Logo",
-      logoLinkUrl: "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"
+      logoLinkUrl: "https://admiralty.co.uk"
     };
 
     this.menuItems = [
@@ -55,7 +57,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   setSkipToContent() {
-    this.route.events.pipe (
+    this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => { this.skipToContent = `${event.url}#mainContainer`; });
   }
@@ -75,7 +77,9 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   getClaims(claims: any) {
-    this.userName = claims ? claims['given_name'] : null;
+    this.firstName = claims ? claims['given_name'] : null;
+    this.lastName = claims ? claims['family_name'] : null;
+    this.userName = this.firstName + ' ' + this.lastName;
     this.authOptions =
     {
       signInButtonText: this.userName,
@@ -94,5 +98,5 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         });;
       })
     }
-  }  
+  }
 }
