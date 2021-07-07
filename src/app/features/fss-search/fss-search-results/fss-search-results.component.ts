@@ -67,12 +67,17 @@ export class FssSearchResultsComponent implements OnInit {
   }
 
   public ngOnDestroy() {
-    // Cleanup by removing the event listener on destroy
-    this.removeEventListener();
+    // Cleanup by removing the event listener on destroy    
+    var elem = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
+    if (elem) {
+      elem.forEach((res: any ) => {
+        res.removeEventListener('click', this.downloadFile.bind(res));        
+      })
+    }
   }
 
   downloadFile(res:any){
-    res.currentTarget.innerHTML = '<i class="fa fa-check" style="color: #4aab37"></i>'; 
+    res.currentTarget.innerHTML = '<i class="fa fa-check"></i>'; 
   }
 }
 

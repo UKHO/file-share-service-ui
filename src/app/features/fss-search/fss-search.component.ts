@@ -93,16 +93,18 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = true; 
   }
 
-  handleSuccess(res: any){
-    this.searchResult = res;
-    if(this.searchResult.count > 0)
+  handleSuccess(res: any){    
+    if(res.count > 0)
     {
+      this.searchResult = res;      
       this.searchResult = Array.of(this.searchResult['entries']);
       this.displaySearchResult = true;  
       this.hideMessage();
       this.displayLoader = false;
     }
-     else{
+    else{
+      this.searchResult = [];
+      this.displaySearchResult = false;
       this.showMessage(
         "info", 
         "No results can be found for this search",

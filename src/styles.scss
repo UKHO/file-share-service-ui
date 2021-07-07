@@ -54,22 +54,33 @@ ukho-phase-banner.phasebanner {
 }
 
 table{
-    border-spacing: 10px;
     width: 100%;
     text-align: left;
 }
 
 th{
-	font-size: large;
+	font-size: medium;
 }
 
 td{
 	font-size: large;
-	font-weight: bold;
+	font-weight: 400;
 }
 
-.margin{
+.result-margin{
 	margin-top:20px;
+}
+
+table.cdk-table td>div {
+    font-weight: 400;
+}
+
+table.cdk-table th, table.cdk-table td{
+    color: #221f1c !important;
+}
+
+.fa-check{
+	color: #4aab37;
 }
 
 .searchSection {
