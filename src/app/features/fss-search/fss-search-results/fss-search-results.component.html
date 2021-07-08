@@ -1,15 +1,15 @@
-<div class="result-margin" *ngFor="let items of searchResults">  
+<div class="result-margin" *ngFor="let batch of searchResultVM">  
   <ukho-card>
     <table class="table">         
       <tr>
-        <th *ngFor="let attribute of items.batchAttributes">{{attribute.key}}</th>
+        <th *ngFor="let attribute of batch.batchAttributes">{{attribute.key}}</th>
       </tr>
       <tr>
-        <td *ngFor="let attribute of items.batchAttributes">{{attribute.value}}</td>                               
+        <td *ngFor="let attribute of batch.batchAttributes">{{attribute.value}}</td>                               
       </tr>
     </table>
     <ukho-expansion heading="Choose files to Download" [alignHeadingRight]=true [initialExpanded] = false>              
-      <ukho-table  [displayedColumns]="items.fileDetails.columnData" [dataSource]="items.fileDetails.rowData"></ukho-table>         
+      <ukho-table  [displayedColumns]="batch.batchFileDetails.columnData" [dataSource]="batch.batchFileDetails.rowData"></ukho-table>         
     </ukho-expansion>
   </ukho-card> 
 </div>

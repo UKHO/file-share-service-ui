@@ -1,6 +1,6 @@
-export interface SearchResults{
+export interface SearchResultViewModel{
     batchAttributes: BatchAttribute[];
-    fileDetails: FileDetails;
+    batchFileDetails: BatchFileDetails;
   }
   
   export interface BatchAttribute {
@@ -8,17 +8,17 @@ export interface SearchResults{
     value: string;
   }
   
-  export interface FileDetails{
-    columnData: ColumnData[];
-    rowData:RowData[];
+  export interface BatchFileDetails{
+    columnData: BatchFileDetailsColumnData[];
+    rowData:BatchFileDetailsRowData[];
   }
   
-  export interface ColumnData {  
+  export interface BatchFileDetailsColumnData {  
     headerTitle: string;
     propertyName: string;
   }
   
-  export interface RowData {
+  export interface BatchFileDetailsRowData {
     FileName: string;
     MimeType: string;
     FileSize: string;
