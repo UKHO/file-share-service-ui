@@ -1,8 +1,8 @@
 {
   "b2cConfig": {
-    "tenantName": "mgiaiddevb2c",
-    "clientId": "4aa5dabc-bf54-44e8-8926-d3e3ea172422",
-    "redirectUri": "/search",
+    "tenantName": "",
+    "clientId": "",
+    "redirectUri": "/",
     "postLogoutRedirectUri": "/",
     "navigateToLoginRequestUrl": false,
     "signUpSignIn": "B2C_1A_SignIn_SPA",
@@ -15,6 +15,6 @@
     "fssTitle": "File Share Service",
     "phase": "alpha",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl":"https://fss-dev-webapp.azurewebsites.net/"
+    "apiUrl":""
   }
 }
