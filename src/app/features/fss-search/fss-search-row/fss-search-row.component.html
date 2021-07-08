@@ -43,8 +43,8 @@
                 <ukho-textinput [(ngModel)]="fssSearchRow.value"></ukho-textinput>
             </td>
             <td>
-                <a href="javascript:void(0);" (click)="onSearchRowDelete(fssSearchRow.rowId)"><i
-                        class="fa fa-times fa-1x"></i></a>
+                <button class="delete" (click)="onSearchRowDelete(fssSearchRow.rowId)"><i
+                        class="fa fa-times fa-1x"></i></button>
             </td>
         </tr>
     </tbody>

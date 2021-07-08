@@ -9,7 +9,7 @@
   <app-fss-search-row [fssSearchRows]="fssSearchRows" (onSearchRowDeleted)="onSearchRowDeleted($event)">
   </app-fss-search-row>
   <div class="searchSection">
-    <a (click)="addSearchRow()" href="javascript:void(0);" style="font-weight: 400;"> <i class="fa fa-plus fa-1x"></i> Add new line </a>
+    <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>
     <div class="searchBtn">
       <ukho-button (click)="getSearchResult()">Search</ukho-button>
     </div>
