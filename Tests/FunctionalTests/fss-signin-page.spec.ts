@@ -46,7 +46,7 @@ describe('Test Sign In Page Scenario', () => {
     }  
     //===============END===================================
 
-    it('User clicks Sign in link with valid credentails should display FirstName after login successfully', async () => {
+    it('User clicks Sign in link with valid credentials should display FirstName after login successfully', async () => {
     
         page.click(pageObjectsConfig.loginSignInLinkSelector);
         try {
@@ -56,7 +56,7 @@ describe('Test Sign In Page Scenario', () => {
           let temppath = tmpdir();
           
           await page.screenshot({
-            path: temppath + "\failedtest.jpeg"
+            path: temppath + "\failedtest.jpg"
           });
         }
 
@@ -65,7 +65,7 @@ describe('Test Sign In Page Scenario', () => {
         
       })
 
-      it('User clicks Sign in link with valid credentails should naviagte to search page after login successfully', async () => {
+      it('User clicks Sign in link with valid credentials should navigate to search page after login successfully', async () => {
     
         page.click(pageObjectsConfig.loginSignInLinkSelector);
         await LoginPortal(autoTestConfig.user,autoTestConfig.password);  
@@ -75,7 +75,7 @@ describe('Test Sign In Page Scenario', () => {
         
       })
 
-      it('User clicks Search link with valid credentails should naviagte to search page after login successfully', async () => {
+      it('User clicks Search link with valid credentials should navigate to search page after login successfully', async () => {
     
         page.click(pageObjectsConfig.searchButtonSelector);
         await LoginPortal(autoTestConfig.user,autoTestConfig.password);  
@@ -85,7 +85,7 @@ describe('Test Sign In Page Scenario', () => {
         
       })
 
-      it('When user navigate to search url without Sign in it should naviagte to fss home page', async () => {
+      it('When user navigate to search url without Sign in it should navigate to fss home page', async () => {
         
         page.goto(autoTestConfig.url + "#/search/");
                 
