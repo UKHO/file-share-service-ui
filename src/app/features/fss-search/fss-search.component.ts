@@ -29,7 +29,8 @@ export class FssSearchComponent implements OnInit {
   displayMessage: boolean = false;
   displaySearchResult: Boolean = false;
   displayLoader: boolean = false;
-
+  errorMessageTitle: string = "";
+  errorMessageDescription: string = "";
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private searchResultService: FileShareApiService) { }
 
   ngOnInit(): void {
@@ -71,7 +72,7 @@ export class FssSearchComponent implements OnInit {
     changedFieldRow!.valueType = this.getValueType(fieldDataType);
 
     // setDefault
-    if(!this.isOperatorExist(changedFieldRow!)){
+    if (!this.isOperatorExist(changedFieldRow!)) {
       changedFieldRow!.selectedOperator = "eq"
     }
     changedFieldRow!.valueIsdisabled = false;
@@ -101,14 +102,14 @@ export class FssSearchComponent implements OnInit {
 
     return valueType
   }
-  
 
-  isOperatorExist(changedFieldRow: FssSearchRow){
+
+  isOperatorExist(changedFieldRow: FssSearchRow) {
     var operator = changedFieldRow.operators.find(operator => operator.value === changedFieldRow?.selectedOperator)
     if (!operator) {
       return false;
     }
-    else{
+    else {
       return true
     }
   }
@@ -119,11 +120,11 @@ export class FssSearchComponent implements OnInit {
     this.toggleValueInput(changedFieldRow!, operatorType);
   }
 
-  getOperatorType(changedOperator: any){
+  getOperatorType(changedOperator: any) {
     return this.operators.find(f => f.value === changedOperator.operatorValue)?.type!;
   }
 
-  toggleValueInput(changedFieldRow: FssSearchRow, operatorType: string){
+  toggleValueInput(changedFieldRow: FssSearchRow, operatorType: string) {
     if (operatorType === "nullOperator") {
       changedFieldRow!.valueIsdisabled = true;
       changedFieldRow!.value = "";
@@ -137,20 +138,46 @@ export class FssSearchComponent implements OnInit {
     this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId), 1);
   }
 
-  getSearchResult() {
-    this.searchButtonText = "Refine Search";
-    this.displayLoader = true;
-    var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
-    console.log(filter);
-    if (filter != null) {
-      this.searchResult = [];
-      this.searchResultService.getSearchResult(filter).subscribe((res) => {
-        this.handleSuccess(res)
-      },
-        (error) => {
-          this.handleErrMessage(error);
+  validateSearchInput() {
+    var flag = true;
+
+    for (let i = 0; i < this.fssSearchRows.length; i++) {
+      if (this.fssSearchRows[i].selectedField === 'FileSize') {
+        var reg = new RegExp(/^\d+$/);
+        var isNumber = reg.test(this.fssSearchRows[i].value);
+        if (!isNumber) {
+          this.errorMessageTitle = "Please provide only Numbers against FileSize";
+          this.errorMessageDescription = "Please check at row No. " + this.fssSearchRows[i].rowId + " with value entered as " + this.fssSearchRows[i].value;
+          flag = false;
+          break;
         }
-      );
+      }
+    }
+    return flag;
+  }
+
+  getSearchResult() {
+    if (this.validateSearchInput()) {
+      this.searchButtonText = "Refine Search";
+      this.displayLoader = true;
+      var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
+      console.log(filter);
+      if (filter != null) {
+        this.searchResult = [];
+        this.searchResultService.getSearchResult(filter).subscribe((res) => {
+          this.handleSuccess(res)
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
+    }
+    else {
+      this.showMessage(
+        "warning",
+        this.errorMessageTitle,
+        this.errorMessageDescription);
     }
   }
 
