@@ -141,13 +141,13 @@ export class FssSearchComponent implements OnInit {
   validateSearchInput() {
     var flag = true;
 
-    for (let i = 0; i < this.fssSearchRows.length; i++) {
-      if (this.fssSearchRows[i].selectedField === 'FileSize') {
+    for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
+      if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
         var reg = new RegExp(/^\d+$/);
-        var isNumber = reg.test(this.fssSearchRows[i].value);
+        var isNumber = reg.test(this.fssSearchRows[rowId].value);
         if (!isNumber) {
           this.errorMessageTitle = "Please provide only Numbers against FileSize";
-          this.errorMessageDescription = "Please check at row No. " + this.fssSearchRows[i].rowId + " with value entered as " + this.fssSearchRows[i].value;
+          this.errorMessageDescription = "Incorrect value '" + this.fssSearchRows[rowId].value + "' on row " + (rowId+1);
           flag = false;
           break;
         }
