@@ -99,7 +99,7 @@ export class FssSearchResultsComponent implements OnInit {
 // Convert file size from bytes to respective size units
 export function formatBytes(bytes: number) {
   if (bytes == 0) {
-    return "0 b";
+    return "0 B";
   }
   var k = 1024;
   var sizes = ["B", "KB", "MB", "GB", "TB", "PB"];

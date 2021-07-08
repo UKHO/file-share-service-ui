@@ -121,8 +121,8 @@ export class FssSearchComponent implements OnInit {
         for(let i=0; i<err.error.errors.length; i++){
             errmsg += err.error.errors[i]['description']+'\n';
         }
-    }
-    this.showMessage("warning","An exception occurred when processing this search",errmsg);
+        this.showMessage("warning","An exception occurred when processing this search",errmsg);
+    }   
   }
 
   
