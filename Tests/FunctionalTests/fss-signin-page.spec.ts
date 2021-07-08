@@ -2,6 +2,7 @@ import { mkdir, mkdirSync } from 'fs';
 import { chromium, Browser,BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const {pageObjectsConfig} = require('./pageObjects');
+import {tmpdir} from 'os'
 
 describe('Test Sign In Page Scenario', () => {
     jest.setTimeout(120000);
@@ -48,7 +49,16 @@ describe('Test Sign In Page Scenario', () => {
     it('User clicks Sign in link with valid credentails should display FirstName after login successfully', async () => {
     
         page.click(pageObjectsConfig.loginSignInLinkSelector);
-        await LoginPortal(autoTestConfig.user,autoTestConfig.password); 
+        try {
+          await LoginPortal(autoTestConfig.user, autoTestConfig.password);
+        }
+        catch (e) {
+          let temppath = tmpdir();
+          
+          await page.screenshot({
+            path: temppath + "\failedtest.jpeg"
+          });
+        }
 
         await page.waitForSelector(pageObjectsConfig.loginAccountSelector);     
         expect(await page.innerHTML(pageObjectsConfig.loginAccountLinkSelector)).toEqual(autoTestConfig.userFullName);    
