@@ -170,7 +170,7 @@ stages:
              
            - script: |
               npm run test:auto
-             displayName: 'Run functional Tests
+             displayName: 'Run functional Tests'
               
      
   - stage: QAdeploy
