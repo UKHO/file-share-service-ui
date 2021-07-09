@@ -170,6 +170,12 @@ stages:
            - script: |
               npm run test:auto
              displayName: 'Run functional Tests'
+
+           - task: PublishBuildArtifacts@1
+             displayName: "copy error screenshot"
+             inputs:
+              PathtoPublish: '$(Build.SourcesDirectory)\screenshot'
+              ArtifactName: AngularApp
      
   - stage: QAdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"

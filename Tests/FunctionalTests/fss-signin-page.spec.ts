@@ -48,9 +48,9 @@ describe('Test Sign In Page Scenario', () => {
     catch (e) {
       const errorPath = name.replace(" ", "") + "failedtest.jpeg"
       await popup.screenshot({
-        path: join(tmpdir(), errorPath)
+        path: join("screenshot",errorPath)
       });
-      console.log(join(tmpdir(), errorPath))
+      console.log(join(errorPath))
     }
 
 
