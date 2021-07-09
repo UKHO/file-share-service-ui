@@ -23,7 +23,7 @@ export class FssSearchFilterService {
 
       var fssSearchRow = fssSearchRows[i];
       // getFieldDataType
-      const dataType = this.getFieldDataType(fssSearchRow);
+      const fieldDataType = this.getFieldDataType(fssSearchRow);
       // getOperatorType
       const operaterType = this.getOperatorType(fssSearchRow);
 
@@ -31,7 +31,7 @@ export class FssSearchFilterService {
       if(i != 0) {
         filter = filter.concat(' ',fssSearchRow.selectedJoinOperator, ' ');        
       }
-      if(dataType === this.stringDataType || dataType === this.attributeDataType){
+      if(fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType){
         if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
         }
@@ -42,12 +42,12 @@ export class FssSearchFilterService {
           filter = filter.concat(fssSearchRow.selectedOperator, "(", fssSearchRow.selectedField, ", '", fssSearchRow.value, "')");
         }
       }
-      if(dataType === this.numberDataType){
+      if(fieldDataType === this.numberDataType){
         if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", fssSearchRow.value);
         }
       }
-      if(dataType === this.dateDataType){
+      if(fieldDataType === this.dateDataType){
         const value = new Date(fssSearchRow.value).toISOString();
         if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
