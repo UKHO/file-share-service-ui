@@ -8,11 +8,15 @@ export interface JoinOperator {
 export interface Field {
     value: string;
     text: string;
+    type: string;
+    dataType: string;
 }
 
 export interface Operator {
     value: string;
     text: string;
+    type: string;
+    supportedDataTypes: Array<string>; 
 }
 
 export class FssSearchRow {
@@ -24,6 +28,8 @@ export class FssSearchRow {
   selectedField: string = "";
   selectedOperator: string = "";
   value: string = "";
+  valueType :"time" | "text" | "date" | "email" | "password" | "tel" | "url";
+  valueIsdisabled :boolean =false;
   rowId:number = 0;
 }
 
