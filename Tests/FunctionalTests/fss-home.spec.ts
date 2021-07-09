@@ -60,10 +60,16 @@ describe('Test Home Page Scenario', () => {
     }) 
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
-        await page.click(pageObjectsConfig.ukhydrographiclinkSelector);
+        await page.click(pageObjectsConfig.ukhydrographiclinkSelector);        
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicpageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicpageTitle);
         expect(page.url()).toEqual(pageObjectsConfig.ukhydrographicpageUrl);
 
+    })
+
+    test('Does it contains correct body text', async () => {
+        page.waitForSelector(pageObjectsConfig.homePageBodySelector);
+        expect(await page.innerText(pageObjectsConfig.homePageBodySelector)).toEqual(pageObjectsConfig.homePageBodyText);
+       
     })
 
 })
