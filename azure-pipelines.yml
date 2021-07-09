@@ -116,6 +116,8 @@ stages:
 
   - stage: Devdeploy
     displayName: "Devdeploy (inc terraform, website deploy)"
+    variables:
+      - group: "File-Share-Service-UI-Dev-Variables"
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
@@ -125,7 +127,6 @@ stages:
           clean: all
         variables:
           - group: "File share service terraform Dev"
-          - group: "File-Share-Service-UI-Dev-Variables"
         strategy:
           runOnce:
             deploy:
@@ -174,6 +175,8 @@ stages:
      
   - stage: QAdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
+    variables:
+      - group: "File-Share-Service-UI-QA-Variables"
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
@@ -184,7 +187,6 @@ stages:
           clean: all
         variables:
           - group: "File share service terraform QA"
-          - group: "File-Share-Service-UI-QA-Variables"
         strategy:
           runOnce:
             deploy:
