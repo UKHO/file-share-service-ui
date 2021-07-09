@@ -17,12 +17,14 @@ export class FssSearchResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchResultVM = [];
-    var batches = this.searchResult[0];
-    for (var i = 0; i < batches.length; i++) {           
-      this.searchResultVM.push({
-        batchAttributes: this.getBatchAttributes(batches[i]),
-        batchFileDetails: this.getBatchFileDetails(batches[i])
-      });
+    if(this.searchResult.length > 0){
+      var batches = this.searchResult[0];
+      for (var i = 0; i < batches.length; i++) {           
+        this.searchResultVM.push({
+          batchAttributes: this.getBatchAttributes(batches[i]),
+          batchFileDetails: this.getBatchFileDetails(batches[i])
+        });
+      }
     }
   }
 

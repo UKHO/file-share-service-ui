@@ -56,15 +56,22 @@ ukho-phase-banner.phasebanner {
 table{
     width: 100%;
     text-align: left;
+	th{
+		font-size: medium;
+	}
+	
+	td{
+		font-size: large;
+		font-weight: 400;
+	}
 }
 
-th{
-	font-size: medium;
-}
-
-td{
-	font-size: large;
-	font-weight: 400;
+.attribute-table{
+    table-layout: fixed !important;		
+	th, td{
+		width: fit-content;
+		padding: 0 5px;
+	}
 }
 
 .result-margin{
