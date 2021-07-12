@@ -1,26 +1,16 @@
-<div *ngFor="let entries of resultList">        
-    <div *ngFor="let items of entries">
-      <p></p>      
-      <table class="attributeTable">         
-        <tr>             
-          <th *ngFor="let attribute of items.attributes">{{attribute.key}}</th>
-        </tr>
-        <tr>
-          <td *ngFor="let attribute of items.attributes">{{attribute.value}}</td>                               
-        </tr>
-      </table>
-      <table class="fileTable">                     
-      <tr class="fileTable">         
-        <th class="fileTable">File Name</th> 
-        <th class="fileTable">MIME Type</th>
-        <th class="fileTable">File Size</th>
-        <th class="fileTable">Download</th>             
+<div class="result-margin" *ngFor="let batch of searchResultVM">  
+  <ukho-card>
+    <table class="attribute-table">         
+      <tr>
+        <th *ngFor="let attribute of batch.batchAttributes">{{attribute.key}}</th>
       </tr>
-      <tr *ngFor="let file of items.files" class="fileTable">            
-          <td class="fileTable">{{file.filename}}</td> 
-          <td class="fileTable">{{file.mimeType}}</td>
-          <td class="fileTable">{{file.fileSize}}</td>              
-          <td class="fileTable"><i class="fa fa-download fa-1x"></i></td>              
+      <tr>
+        <td *ngFor="let attribute of batch.batchAttributes">{{attribute.value}}</td>                               
       </tr>
     </table>
-    </div> 
+    <ukho-expansion heading="Choose files to Download" [alignHeadingRight]=true [initialExpanded] = false>              
+      <ukho-table  [displayedColumns]="batch.batchFileDetails.columnData" [dataSource]="batch.batchFileDetails.rowData"></ukho-table>         
+    </ukho-expansion>
+  </ukho-card> 
+</div>
+  

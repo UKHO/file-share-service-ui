@@ -3,8 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
-import { createFalse } from 'typescript';
-
 
 @Component({
   selector: 'app-fss-search',
@@ -203,7 +201,9 @@ export class FssSearchComponent implements OnInit {
       this.hideMessage();
       this.displayLoader = false;
     }
-    else {
+    else{
+      this.searchResult = [];
+      this.displaySearchResult = false;
       this.showMessage(
         "info",
         "No results can be found for this search",
@@ -213,13 +213,15 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-  handleErrMessage(err: any) {
+  handleErrMessage(err: any){
     this.displayLoader = false;
-    var errmsg = "";
-    for (let i = 0; i < err.error.errors.length; i++) {
-      errmsg += err.error.errors[i]['description'] + '\n';
-    }
-    this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    var errmsg="";
+    if(err.error != undefined && err.error.total>0){    
+        for(let i=0; i<err.error.errors.length; i++){
+            errmsg += err.error.errors[i]['description']+'\n';
+        }
+        this.showMessage("warning","An exception occurred when processing this search",errmsg);
+    }   
   }
 
 
