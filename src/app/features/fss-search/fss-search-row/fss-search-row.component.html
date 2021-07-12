@@ -9,24 +9,31 @@
         </tr>
     </thead>
     <tbody>
-         <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
+        <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
             <td>
-                <ukho-checkbox 
-                 [(ngModel)]="fssSearchRow.group"></ukho-checkbox>
+                <ukho-checkbox [(ngModel)]="fssSearchRow.group"></ukho-checkbox>
             </td>
             <td>
                 <ukho-select *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
-                    <option *ngFor="let joinOperator of fssSearchRow.joinOperators"
-                    value="{{joinOperator.value}}">{{joinOperator.text}}</option>
+                    <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
+                        {{joinOperator.text}}</option>
                 </ukho-select>
             </td>
             <td>
                 <ukho-select #fieldSelect [(ngModel)]="fssSearchRow.selectedField"
                 (change)="onFieldChange(fieldSelect, fssSearchRow.rowId)">
-                    <option *ngFor="let field of fssSearchRow.fields"
-                     value="{{field.value}}">{{field.text}}</option>
+                    <optgroup label="System Atributes">
+                        <option *ngFor="let field of fssSearchRow.fields | filter:'type':'SystemAttribute'"
+                            value="{{field.value}}">{{field.text}}
+                        </option>
+                    </optgroup>
+                    <optgroup label="User Atributes">
+                        <option *ngFor="let field of fssSearchRow.fields | filter:'type':'UserAttribute'"
+                            value="{{field.value}}">{{field.text}}
+                        </option>
+                    </optgroup>               
                 </ukho-select>
-              </td>
+            </td>
             <td>
                 <ukho-select #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (change)="onOperatorChange(operatorSelect, fssSearchRow.rowId)">
@@ -40,7 +47,8 @@
                 [type]= "fssSearchRow.valueType"></ukho-textinput>
              </td>
             <td>
-                <i (click)="onSearchRowDelete(fssSearchRow.rowId)" class="fa fa-times fa-1x"></i>
+                <button class="delete" (click)="onSearchRowDelete(fssSearchRow.rowId)"><i
+                        class="fa fa-times fa-1x"></i></button>
             </td>
         </tr>
     </tbody>

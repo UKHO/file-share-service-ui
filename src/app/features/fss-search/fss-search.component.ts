@@ -1,5 +1,6 @@
-import { FssSearchService } from './../../core/services/fss-search.service';
 import { Component, OnInit } from '@angular/core';
+
+import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
@@ -23,19 +24,24 @@ export class FssSearchComponent implements OnInit {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageTitle: string = "";
   messageDesc: string = "";
-  searchButtonText: string = "Search";
   displayMessage: boolean = false;
   displaySearchResult: Boolean = false;
   displayLoader: boolean = false;
+  userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private searchResultService: FileShareApiService) { }
+  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
-    this.fields = this.fssSearchTypeService.getFields();
     this.operators = this.fssSearchTypeService.getOperators();
-    this.addSearchRow();
+    /*Call attributes API to retrieve User attributes and send back to search service 
+    to append to existing System attributes*/
+    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+      console.log(batchAttributeResult);
+      this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
+      this.addSearchRow();
+    });
   }
 
   addSearchRow() {
@@ -156,13 +162,12 @@ export class FssSearchComponent implements OnInit {
 
   getSearchResult() {
     if (this.validateSearchInput()) {
-      this.searchButtonText = "Refine Search";
       this.displayLoader = true;
       var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
       console.log(filter);
       if (filter != null) {
         this.searchResult = [];
-        this.searchResultService.getSearchResult(filter).subscribe((res) => {
+        this.fileShareApiService.getSearchResult(filter).subscribe((res) => {
           this.handleSuccess(res)
         },
           (error) => {

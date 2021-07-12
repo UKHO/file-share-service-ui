@@ -134,3 +134,25 @@ table.cdk-table th, table.cdk-table td{
         height: 6rem;
     }
 }
+
+
+button{
+	&.delete, &.delete:hover, &.addNewLine, &.addNewLine:hover {
+		background: #fff;
+    	border: none;
+    	min-width: auto;
+		height: auto;
+    	padding: 0;
+		font-weight: 400;
+		color: #000;
+		i {
+    	color: #000;
+    	padding: 0;
+	}
+	&.addNewLine{
+		font-size: 18px;
+		i{
+			padding: 0 5px 0 0;
+		}
+	}
+}}

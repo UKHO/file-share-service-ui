@@ -12,10 +12,9 @@
   (onSearchRowDeleted)="onSearchRowDeleted($event)">
   </app-fss-search-row>
   <div class="searchSection">
-    <strong (click)="addSearchRow()"> <i class="fa fa-plus fa-1x"></i> Add new line </strong>
-
+    <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>
     <div class="searchBtn">
-      <ukho-button (click)="getSearchResult()">{{searchButtonText}}</ukho-button>
+      <ukho-button (click)="getSearchResult()">Search</ukho-button>
     </div>
   </div>
 

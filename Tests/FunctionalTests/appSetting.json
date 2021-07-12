@@ -3,6 +3,8 @@
     {
        "url":"https://fssuidevwebsite.z33.web.core.windows.net/",
        "user":"",
-       "password":""
+       "password":"",
+       "userFullName" : ""
+
     }
 }
