@@ -20,7 +20,8 @@
                 </ukho-select>
             </td>
             <td>
-                <ukho-select [(ngModel)]="fssSearchRow.selectedField">
+                <ukho-select #fieldSelect [(ngModel)]="fssSearchRow.selectedField"
+                (change)="onFieldChange(fieldSelect, fssSearchRow.rowId)">
                     <optgroup label="System Atributes">
                         <option *ngFor="let field of fssSearchRow.fields | filter:'type':'SystemAttribute'"
                             value="{{field.value}}">{{field.text}}
@@ -30,18 +31,21 @@
                         <option *ngFor="let field of fssSearchRow.fields | filter:'type':'UserAttribute'"
                             value="{{field.value}}">{{field.text}}
                         </option>
-                    </optgroup>
+                    </optgroup>               
                 </ukho-select>
             </td>
             <td>
-                <ukho-select [(ngModel)]="fssSearchRow.selectedOperator">
-                    <option *ngFor="let Operator of fssSearchRow.operators" value="{{Operator.value}}">{{Operator.text}}
-                    </option>
+                <ukho-select #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
+                (change)="onOperatorChange(operatorSelect, fssSearchRow.rowId)">
+                    <option *ngFor="let Operator of fssSearchRow.operators "
+                     value="{{Operator.value}}">{{Operator.text}}</option>
                 </ukho-select>
             </td>
             <td>
-                <ukho-textinput [(ngModel)]="fssSearchRow.value"></ukho-textinput>
-            </td>
+                <ukho-textinput [(ngModel)]="fssSearchRow.value" 
+                [disabled] = "fssSearchRow.valueIsdisabled"
+                [type]= "fssSearchRow.valueType"></ukho-textinput>
+             </td>
             <td>
                 <button class="delete" (click)="onSearchRowDelete(fssSearchRow.rowId)"><i
                         class="fa fa-times fa-1x"></i></button>
