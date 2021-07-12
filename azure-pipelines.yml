@@ -228,3 +228,25 @@ stages:
            - script: |
               npm run test:auto
              displayName: 'Run functional Tests'
+
+  - stage: LiveDeploy
+    displayName: "Proddeploy (inc terraform, website deploy)"
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+    jobs:
+      - deployment: LiveDeploy
+        displayName: "Live - deploy terraform and website"
+        environment: "FSS-Live"
+        container: ${{variables.Container}}
+        workspace:
+          clean: all
+        variables:
+          - group: "File share service terraform Live"
+          - group: "File-Share-Service-UI-Live-Variables"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: Deployment/templates/continous-deployment.yml
+                  parameters:
+                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+                    AzureSubscription: "File-Share-Service-Live-P4052"
