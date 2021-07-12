@@ -44,12 +44,50 @@ ukho-phase-banner.phasebanner {
 	}
 	p {
 		padding-left: 30px;
+	}	
+}
+
+.querytable {
+	border-spacing: 10px;
+	width: 100%;
+	text-align: center;
+}
+
+table{
+    width: 100%;
+    text-align: left;
+	th{
+		font-size: medium;
 	}
-	table {
-		border-spacing: 10px;
-		width: 100%;
-		text-align: center;
+	
+	td{
+		font-size: large;
+		font-weight: 400;
 	}
+}
+
+.attribute-table{
+    table-layout: fixed !important;		
+	th, td{
+		width: fit-content;
+		padding: 0 5px;
+	}
+}
+
+.result-margin{
+	margin-top:20px;
+}
+
+table.cdk-table td>div {
+    font-weight: 400;
+}
+
+table.cdk-table th, table.cdk-table td{
+    color: #221f1c !important;
+}
+
+.fa-check{
+	color: #4aab37;
 }
 
 .searchSection {

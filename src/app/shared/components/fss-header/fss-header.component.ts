@@ -32,14 +32,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           this.msalService.instance.setActiveAccount(account);
         }
       });
-
-    this.branding = {
-      title: AppConfigService.settings["fssConfig"].fssTitle,
-      logoImgUrl: "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
-      logoAltText: "Admiralty - Maritime Data Solutions Logo",
-      logoLinkUrl: "https://www.admiralty.co.uk/"
-    };
-
+    
+    this.title = AppConfigService.settings["fssConfig"].fssTitle;
+    this.logoImgUrl = "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg";
+    this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
+    this.logoLinkUrl = "https://www.admiralty.co.uk/";
+    
     this.menuItems = [
       {
         title: 'Search',
