@@ -230,7 +230,7 @@ stages:
              displayName: 'Run functional Tests'
 
   - stage: LiveDeploy
-    displayName: "Proddeploy (inc terraform, website deploy)"
+    displayName: "Livedeploy (inc terraform, website deploy)"
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: LiveDeploy
