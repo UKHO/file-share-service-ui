@@ -14,15 +14,6 @@ export class AppComponent implements OnInit {
   ngOnInit(){
   }
   changeOverlay(pageOverlay:any){
-    const height = document.body.offsetHeight;
     this.isOverlay = pageOverlay;
-    if(this.isOverlay === true){
-      var element = document.getElementById('overlay');
-      element!.style.height = height + 'px';
-    }
-    else{
-      var element = document.getElementById('overlay');
-      element!.style.height = 0 + 'px';
-    }
   }
 }
