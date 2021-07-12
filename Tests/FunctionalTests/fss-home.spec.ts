@@ -8,7 +8,7 @@ describe('Test Home Page Scenario', () => {
     let context: BrowserContext;
     let page: Page;
     beforeAll(async () => {
-        browser = await chromium.launch();
+        browser = await chromium.launch({slowMo:100});
     })
 
     beforeEach(async () => {
@@ -55,19 +55,20 @@ describe('Test Home Page Scenario', () => {
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
         await page.click(pageObjectsConfig.marinedataportallinkSelector);
+        page.setDefaultTimeout(60000);
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicpageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicpageTitle);
         expect(await page.url()).toEqual(pageObjectsConfig.ukhydrographicpageUrl);
     }) 
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
         await page.click(pageObjectsConfig.ukhydrographiclinkSelector);        
+        page.setDefaultTimeout(60000);
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicpageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicpageTitle);
         expect(page.url()).toEqual(pageObjectsConfig.ukhydrographicpageUrl);
 
     })
 
-    test('Does it contains correct body text', async () => {
-        page.waitForSelector(pageObjectsConfig.homePageBodySelector);
+    test('Does it contains correct body text', async () => {        
         expect(await page.innerText(pageObjectsConfig.homePageBodySelector)).toEqual(pageObjectsConfig.homePageBodyText);
        
     })

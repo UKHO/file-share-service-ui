@@ -17,6 +17,6 @@
        "ukhydrographicpageTitle" : "Admiralty - Maritime Data Solutions",
        "ukhydrographicpageUrl" : "https://www.admiralty.co.uk/",
        "homePageBodyText" : "The ADMIRALTY File Share Service allows you to search and download files.",
-       "homePageBodySelector" : "ukho-card p:nth-of-type(1)"
+       "homePageBodySelector" : ".card p:nth-of-type(1)"
     }
 }
