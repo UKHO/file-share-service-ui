@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, Page } from 'playwright';
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig } = require('./pageObjects');
+const {pageObjectsConfig} = require('./pageObjects');
 
 describe('Test Home Page Scenario', () => {
     jest.setTimeout(120000);
@@ -8,7 +8,7 @@ describe('Test Home Page Scenario', () => {
     let context: BrowserContext;
     let page: Page;
     beforeAll(async () => {
-        browser = await chromium.launch();
+        browser = await chromium.launch({slowMo:100});
     })
 
     beforeEach(async () => {
@@ -55,19 +55,25 @@ describe('Test Home Page Scenario', () => {
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
         await page.click(pageObjectsConfig.marinedataportalLinkSelector);
-        expect(await page.innerText(pageObjectsConfig.marinedataportalPageSelector)).toContain(pageObjectsConfig.marinedataportalPageText);
-        expect(page.url()).toContain("marine-data-portal");
-    })
+        page.setDefaultTimeout(60000);
+        expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
+        expect(await page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);
+    }) 
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
-        await page.click(pageObjectsConfig.ukhydrographicLinkSelector);
+        await page.click(pageObjectsConfig.ukhydrographicLinkSelector);        
+        page.setDefaultTimeout(60000);
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
         expect(page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);
-
     })
 
     test('Does it contains correct Copyright text', async () => {
         expect(await page.innerText(pageObjectsConfig.copyrightTextSelector)).toEqual("© Crown copyright " + new Date().getFullYear() + " UK Hydrographic Office");
+       
+    })
+
+    test('Does it contains correct body text', async () => {        
+        expect(await page.innerText(pageObjectsConfig.homePageBodySelector)).toEqual(pageObjectsConfig.homePageBodyText);
        
     })
 

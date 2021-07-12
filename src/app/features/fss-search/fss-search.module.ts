@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FssSearchRowComponent } from './fss-search-row/fss-search-row.component';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchResultsComponent } from './fss-search-results/fss-search-results.component';
+import { FilterPipe } from './filter.pipe';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { FssSearchResultsComponent } from './fss-search-results/fss-search-resul
     FssSearchComponent,
     FssSearchRowComponent,
     FssSearchResultsComponent,
-    ],
+    FilterPipe
+  ],
   imports: [
     CommonModule,
     FssSearchRoutingModule,

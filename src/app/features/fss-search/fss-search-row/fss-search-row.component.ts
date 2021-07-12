@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, Output, EventEmitter, ElementRef } from '@angular/core';
-import { Field, FssSearchRow } from './../../../core/models/fss-search-types';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { FssSearchRow } from './../../../core/models/fss-search-types';
 
 @Component({
   selector: 'app-fss-search-row',
