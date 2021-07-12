@@ -13,8 +13,8 @@ import { FssSearchResultsComponent } from './fss-search-results/fss-search-resul
   declarations: [
     FssSearchComponent,
     FssSearchRowComponent,
-    FssSearchResultsComponent
-  ],
+    FssSearchResultsComponent,
+    ],
   imports: [
     CommonModule,
     FssSearchRoutingModule,

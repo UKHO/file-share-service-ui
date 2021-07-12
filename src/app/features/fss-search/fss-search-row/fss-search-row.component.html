@@ -21,19 +21,23 @@
                 </ukho-select>
             </td>
             <td>
-                <ukho-select [(ngModel)]="fssSearchRow.selectedField">
+                <ukho-select #fieldSelect [(ngModel)]="fssSearchRow.selectedField"
+                (change)="onFieldChange(fieldSelect, fssSearchRow.rowId)">
                     <option *ngFor="let field of fssSearchRow.fields"
                      value="{{field.value}}">{{field.text}}</option>
                 </ukho-select>
               </td>
             <td>
-                <ukho-select [(ngModel)]="fssSearchRow.selectedOperator">
-                    <option *ngFor="let Operator of fssSearchRow.operators"
+                <ukho-select #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
+                (change)="onOperatorChange(operatorSelect, fssSearchRow.rowId)">
+                    <option *ngFor="let Operator of fssSearchRow.operators "
                      value="{{Operator.value}}">{{Operator.text}}</option>
                 </ukho-select>
             </td>
             <td>
-                <ukho-textinput [(ngModel)]="fssSearchRow.value"></ukho-textinput>
+                <ukho-textinput [(ngModel)]="fssSearchRow.value" 
+                [disabled] = "fssSearchRow.valueIsdisabled"
+                [type]= "fssSearchRow.valueType"></ukho-textinput>
              </td>
             <td>
                 <i (click)="onSearchRowDelete(fssSearchRow.rowId)" class="fas fa-times"></i>

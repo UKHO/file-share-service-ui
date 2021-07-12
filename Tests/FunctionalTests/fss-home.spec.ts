@@ -1,9 +1,9 @@
 import { Browser, BrowserContext, chromium, Page } from 'playwright';
 const { autoTestConfig } = require('./appSetting');
-const {pageObjectsConfig} = require('./pageObjects');
+const { pageObjectsConfig } = require('./pageObjects');
 
 describe('Test Home Page Scenario', () => {
-
+    jest.setTimeout(120000);
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;
@@ -23,7 +23,7 @@ describe('Test Home Page Scenario', () => {
     })
 
     afterAll(async () => {
-       await browser.close()
+        await browser.close()
     })
 
     test('Does it contains correct header text', async () => {
@@ -42,7 +42,7 @@ describe('Test Home Page Scenario', () => {
         context.on('page', async page => {
             await page.waitForLoadState();
             expect(page.url()).toContain("accessibility");
-          })   
+        })
     })
 
     test('Does it navigate to Privacy policy page once click on Privacy policy link', async () => {
@@ -50,14 +50,14 @@ describe('Test Home Page Scenario', () => {
         context.on('page', async page => {
             await page.waitForLoadState();
             expect(page.url()).toContain("cookie-policy");
-          }) 
+        })
     })
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
         await page.click(pageObjectsConfig.marinedataportalLinkSelector);
         expect(await page.innerText(pageObjectsConfig.marinedataportalPageSelector)).toContain(pageObjectsConfig.marinedataportalPageText);
         expect(page.url()).toContain("marine-data-portal");
-    }) 
+    })
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
         await page.click(pageObjectsConfig.ukhydrographicLinkSelector);
