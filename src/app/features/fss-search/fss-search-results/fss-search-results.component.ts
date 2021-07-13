@@ -1,4 +1,4 @@
-import { ElementRef, OnChanges } from '@angular/core';
+import {ElementRef, OnChanges } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
 
@@ -26,6 +26,17 @@ export class FssSearchResultsComponent implements OnChanges {
         });
       }
     }
+
+    setTimeout(() => {
+        // Bind click event to each file download link
+        var elem = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
+        if (elem) {
+          elem.forEach((res: any) => {
+            res.style.cursor = 'pointer';
+            res.addEventListener('click', this.downloadFile.bind(res));
+          })
+        }      
+    }, 0);
   }
   
   getfileDetailsColumnData(): BatchFileDetailsColumnData[] {
@@ -70,17 +81,6 @@ export class FssSearchResultsComponent implements OnChanges {
     batchFileDetails.rowData = batchFilesRowData;
 
     return batchFileDetails;
-  }
-
-  ngAfterViewInit() {
-    // Bind click event to each file download link
-    var elem = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
-    if (elem) {
-      elem.forEach((res: any) => {
-        res.style.cursor = 'pointer';
-        res.addEventListener('click', this.downloadFile.bind(res));
-      })
-    }
   }
 
   public ngOnDestroy() {
