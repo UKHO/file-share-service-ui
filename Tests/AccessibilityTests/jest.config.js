@@ -1,15 +1,16 @@
-const { pathsToModuleNameMapper } = require('ts-jest/utils');
-const { compilerOptions } = require('../../tsconfig');
+/**@type {import ('@jest/types').Config.InitialOptions} */
 
 module.exports = {
-  preset: 'jest-preset-angular',
+  preset: 'jest-playwright-preset',
   roots: ['<rootDir>/'],
-  testMatch: ['**/+(*.)+(spec).+(ts)'],
-  setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
-    prefix: '<rootDir>/'
-  }),
-  globals: {
-    crypto: require('crypto')
-  }
-};
+  testMatch: ["**/?(*.)+(spec).+(ts|js)"],
+  transform: {
+    "^.+\\.(ts)$": "ts-jest",
+  },
+  testEnvironmentOptions: {
+    'jest-playwright': {
+    },
+  },
+  testPathIgnorePatterns: ['/node_modules/'],
+  testTimeout: 120000
+}
