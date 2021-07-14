@@ -31,6 +31,7 @@ export class FssSearchRow {
   valueType :"time" | "text" | "date" | "email" | "password" | "tel" | "url";
   valueIsdisabled :boolean =false;
   rowId:number = 0;
+  time: string = "";
 }
 
 

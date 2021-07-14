@@ -62,6 +62,7 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.valueType = 'text';
     fssSearchRow.valueIsdisabled = false;
     fssSearchRow.rowId = this.rowId;
+    fssSearchRow.time = "";
     return fssSearchRow;
   }
 
@@ -79,7 +80,17 @@ export class FssSearchComponent implements OnInit {
     if (!this.isOperatorExist(changedFieldRow!)) {
       changedFieldRow!.selectedOperator = "eq"
     }
-    changedFieldRow!.valueIsdisabled = false;
+    // check for null operators
+    if(this.isOperatorExist(changedFieldRow!)){
+      const operatorType = this.operators.find(f => f.value === changedFieldRow?.selectedOperator)?.type!;
+      if(operatorType == 'nullOperator'){
+        changedFieldRow!.valueIsdisabled = true;
+      }
+      else{
+        changedFieldRow!.valueIsdisabled = false;
+      }
+    }
+    
     changedFieldRow!.value = "";
   }
 

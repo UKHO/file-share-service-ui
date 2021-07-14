@@ -35,8 +35,8 @@ export class FssSearchService implements IFssSearchService {
     const Operators: Operator[] = [
       {value: 'eq',text: '=', type:'operator', supportedDataTypes:['string', 'number', 'date', 'attribute']},
       {value: 'ne',text: '<>', type:'operator', supportedDataTypes:['string', 'number', 'date', 'attribute']},
-      {value: 'eq null',text: '= null', type:'nullOperator', supportedDataTypes:['attribute']},
-      {value: 'ne null',text: '<> null', type:'nullOperator', supportedDataTypes:['attribute']},
+      {value: 'eq null',text: '= null', type:'nullOperator', supportedDataTypes:['date','attribute']},
+      {value: 'ne null',text: '<> null', type:'nullOperator', supportedDataTypes:['date','attribute']},
       {value: 'gt',text: '>', type:'operator', supportedDataTypes:['number', 'date']},
       {value: 'ge',text: '>=', type:'operator', supportedDataTypes:['number', 'date']},
       {value: 'lt',text: '<', type:'operator', supportedDataTypes:['number', 'date']},

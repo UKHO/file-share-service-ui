@@ -45,7 +45,17 @@
                 <ukho-textinput [(ngModel)]="fssSearchRow.value" 
                 [disabled] = "fssSearchRow.valueIsdisabled"
                 [type]= "fssSearchRow.valueType"></ukho-textinput>
+
+                <ukho-textinput *ngIf="fssSearchRow.valueType == 'date'"
+                 [(ngModel)]="fssSearchRow.time"
+                    [disabled] = "fssSearchRow.valueIsdisabled"
+                    type = "time"></ukho-textinput>
              </td>
+             <!-- <td *ngIf="fssSearchRow.valueType == 'date'">
+                <ukho-textinput [(ngModel)]="fssSearchRow.time"
+                [disabled] = "fssSearchRow.valueIsdisabled"
+                type = "time"></ukho-textinput>
+             </td> -->
             <td>
                 <button class="delete" (click)="onSearchRowDelete(fssSearchRow.rowId)"><i
                         class="fa fa-times fa-1x"></i></button>

@@ -16,10 +16,10 @@ export class FssSearchFilterService {
   constructor() { }
 
   getFilterExpression(fssSearchRows: FssSearchRow[]) {
-    
-    var filter='';
 
-    for(var i=0; i < fssSearchRows.length; i++) {
+    var filter = '';
+
+    for (var i = 0; i < fssSearchRows.length; i++) {
 
       var fssSearchRow = fssSearchRows[i];
       // getFieldDataType
@@ -28,42 +28,60 @@ export class FssSearchFilterService {
       const operaterType = this.getOperatorType(fssSearchRow);
 
       //Append join operator from second search condition
-      if(i != 0) {
-        filter = filter.concat(' ',fssSearchRow.selectedJoinOperator, ' ');        
+      if (i != 0) {
+        filter = filter.concat(' ', fssSearchRow.selectedJoinOperator, ' ');
       }
-      if(fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType){
-        if(operaterType === this.typeOperator){
+      if (fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType) {
+        if (operaterType === this.typeOperator) {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
         }
-        else if(operaterType === this.nullOperatorType){
+        else if (operaterType === this.nullOperatorType) {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
         }
-        else if(operaterType === this.functionType){
+        else if (operaterType === this.functionType) {
           filter = filter.concat(fssSearchRow.selectedOperator, "(", fssSearchRow.selectedField, ", '", fssSearchRow.value, "')");
         }
       }
-      if(fieldDataType === this.numberDataType){
-        if(operaterType === this.typeOperator){
+      if (fieldDataType === this.numberDataType) {
+        if (operaterType === this.typeOperator) {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", fssSearchRow.value);
         }
       }
-      if(fieldDataType === this.dateDataType){
-        const value = new Date(fssSearchRow.value).toISOString();
-        if(operaterType === this.typeOperator){
+      if (fieldDataType === this.dateDataType) {
+        if (operaterType === this.typeOperator) {
+          const value = new Date(fssSearchRow.value + ' ' + fssSearchRow.time).toISOString();
+          console.log(new Date(fssSearchRow.value + ' ' + fssSearchRow.time), value);
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
         }
-      }  
+        else if (operaterType === this.nullOperatorType) {
+          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
+        }
+      }
     }
     return filter;
   }
 
-  getFieldDataType(fssSearchRow: FssSearchRow){
+  getFieldDataType(fssSearchRow: FssSearchRow) {
     const dataType = fssSearchRow.fields.find(f => f.value === fssSearchRow.selectedField)?.dataType!;
     return dataType
   }
 
-  getOperatorType(fssSearchRow: FssSearchRow){
+  getOperatorType(fssSearchRow: FssSearchRow) {
     const operatorType = fssSearchRow.operators.find(o => o.value === fssSearchRow.selectedOperator)?.type!;
     return operatorType
   }
+
+  // getAsDate(day:any, time:any) {
+  //   var hours = Number(time.match(/^(\d+)/)[1]);
+  //   var minutes = Number(time.match(/:(\d+)/)[1]);
+  //   var sHours = hours.toString();
+  //   var sMinutes = minutes.toString();
+  //   if (hours < 10) sHours = "0" + sHours;
+  //   if (minutes < 10) sMinutes = "0" + sMinutes;
+  //   time = sHours + ":" + sMinutes + ":00";
+  //   var d = new Date(day);
+  //   var n = d.toISOString().substring(0, 10);
+  //   var newDate = new Date(n + "T" + time);
+  //   return newDate;
+  // }
 }
