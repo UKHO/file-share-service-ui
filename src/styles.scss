@@ -171,3 +171,31 @@ button{
 		}
 	}
 }}
+
+.valueTD{
+	text-align: left;
+	ukho-textinput{
+	&.validated {
+		input.form-text-input{
+		padding-right: 0;
+	}
+	}
+}
+
+ukho-textinput.text-input-wrap{
+	&[ng-reflect-type="date"] {
+		display: inline-block;
+		width: 43%;
+	input {
+		padding-right: 3%;
+	}
+}
+	&[ng-reflect-type="time"]{
+		width: 45%;
+		display: inline-block;
+		left: 7%;
+	
+}
+	}
+	
+}
