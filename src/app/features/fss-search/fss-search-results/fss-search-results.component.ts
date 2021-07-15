@@ -1,7 +1,7 @@
-import {ElementRef, OnChanges } from '@angular/core';
+import { ElementRef, OnChanges } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
-
+import { AppConfigService } from '../../../core/services/app-config.service';
 @Component({
   selector: 'app-fss-search-results',
   templateUrl: './fss-search-results.component.html',
@@ -10,6 +10,7 @@ import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFile
 export class FssSearchResultsComponent implements OnChanges {
   @Input() public searchResult: Array<any> = [];
   searchResultVM: SearchResultViewModel[] = [];
+  baseUrl: string;
 
   public removeEventListener: () => void;
 
@@ -17,9 +18,9 @@ export class FssSearchResultsComponent implements OnChanges {
 
   ngOnChanges(): void {
     this.searchResultVM = [];
-    if(this.searchResult.length > 0){
+    if (this.searchResult.length > 0) {
       var batches = this.searchResult[0];
-      for (var i = 0; i < batches.length; i++) {           
+      for (var i = 0; i < batches.length; i++) {
         this.searchResultVM.push({
           batchAttributes: this.getBatchAttributes(batches[i]),
           batchFileDetails: this.getBatchFileDetails(batches[i])
@@ -28,17 +29,17 @@ export class FssSearchResultsComponent implements OnChanges {
     }
 
     setTimeout(() => {
-        // Bind click event to each file download link
-        var elem = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
-        if (elem) {
-          elem.forEach((res: any) => {
-            res.style.cursor = 'pointer';
-            res.addEventListener('click', this.downloadFile.bind(res));
-          })
-        }      
+      // Bind click event to each file download link
+      var elem = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
+      if (elem) {
+        elem.forEach((res: any) => {
+          res.style.cursor = 'pointer';
+          res.addEventListener('click', this.downloadFile.bind(res));
+        })
+      }
     }, 0);
   }
-  
+
   getfileDetailsColumnData(): BatchFileDetailsColumnData[] {
     var fileDetailsColumnData: BatchFileDetailsColumnData[] = [
       { headerTitle: 'File name', propertyName: 'FileName' },
@@ -50,7 +51,7 @@ export class FssSearchResultsComponent implements OnChanges {
     return fileDetailsColumnData;
   }
 
-  getBatchAttributes(batch:any) {
+  getBatchAttributes(batch: any) {
     var attributes = batch["attributes"];
     var batchAttributes: BatchAttribute[] = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -63,17 +64,19 @@ export class FssSearchResultsComponent implements OnChanges {
     return batchAttributes;
   }
 
-  getBatchFileDetails(batch:any) {
+  getBatchFileDetails(batch: any) {
     var files = batch["files"];
     var batchFilesRowData: BatchFileDetailsRowData[] = [];
     var batchFileDetails: BatchFileDetails = { columnData: [], rowData: [] };
     
     for (var i = 0; i < files.length; i++) {
+      var link = files[i]["links"]["get"]["href"];
+      console.log(link);
       batchFilesRowData.push({
         FileName: files[i]["filename"],
         MimeType: files[i]["mimeType"],
         FileSize: formatBytes(files[i]["fileSize"]),
-        Download: '<div class="fileDownload"><i class="fa fa-download fa-1x"></i></div>'
+        Download: '<div class="fileDownload"><span hidden>' + link + '</span><i class="fa fa-download fa-1x"></i></div>'
       });
     }
 
@@ -94,6 +97,11 @@ export class FssSearchResultsComponent implements OnChanges {
   }
 
   downloadFile(res: any) {
+    this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
+    var filePath = res.currentTarget.children[0].innerText;
+    filePath = filePath.substring(1, filePath.length); //remove initial / from the file path
+    res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
+    window.open(this.baseUrl + filePath);
     res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
   }
 }
