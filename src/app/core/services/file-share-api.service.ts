@@ -25,12 +25,7 @@ export class FileShareApiService {
     }
 
     getBatchAttributes(): Observable<any> {
-        if (this.checkTokenExpiry()) {
-            return this.http.get(this.baseUrl + 'attributes');
-        }
-        else {
-            return of([])
-        }
+        return this.http.get(this.baseUrl + 'attributes');
     }
 
     checkTokenExpiry() {

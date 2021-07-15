@@ -38,16 +38,27 @@ export class FssSearchComponent implements OnInit {
     this.operators = this.fssSearchTypeService.getOperators();
     /*Call attributes API to retrieve User attributes and send back to search service 
     to append to existing System attributes*/
-    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-      if (batchAttributeResult.length === 0) {
-        this.handleResError();
-      }
-      else {
-        console.log(batchAttributeResult);
-        this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
-        this.addSearchRow();
-      }
-    });
+    if(!localStorage['batchAttributes']){
+      this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+        if (batchAttributeResult.length === 0) {
+          this.handleResError();
+        }
+        else {
+          console.log(batchAttributeResult);
+          localStorage.setItem('batchAttributes',JSON.stringify(batchAttributeResult));
+          this.setFields(batchAttributeResult);
+        }
+      });
+    }
+    else{
+      var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
+      this.setFields(batchAttributeResult);
+    }
+  }
+
+  setFields(batchAttributeResult: any){
+    this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
+    this.addSearchRow();
   }
 
   addSearchRow() {

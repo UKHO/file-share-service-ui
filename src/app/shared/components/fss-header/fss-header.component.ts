@@ -35,6 +35,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       .subscribe(() => {
         this.isPageOverlay.emit(true);
       });
+
+      this.msalBroadcastService.inProgress$.pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
+        .subscribe(() => {
+          this.isPageOverlay.emit(true);
+        })
        
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -66,7 +72,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.authOptions = {
       signInButtonText: 'Sign in',
       signInHandler: (() => { this.logInPopup(); }),
-      signOutHandler: (() => { this.msalService.logout(); }),
+      signOutHandler: (() => { }),
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
