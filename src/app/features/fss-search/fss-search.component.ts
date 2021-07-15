@@ -4,6 +4,7 @@ import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+import { getLocaleTimeFormat } from '@angular/common';
 
 @Component({
   selector: 'app-fss-search',
@@ -30,7 +31,7 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  userLocalTimeZone = new Date().toTimeString().split('(')[1].split(')')[0];
+  userLocalTimeZone = this.getLocalTimeFormat();
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
@@ -38,25 +39,34 @@ export class FssSearchComponent implements OnInit {
     this.operators = this.fssSearchTypeService.getOperators();
     /*Call attributes API to retrieve User attributes and send back to search service 
     to append to existing System attributes*/
-    if(!localStorage['batchAttributes']){
+    if (!localStorage['batchAttributes']) {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         if (batchAttributeResult.length === 0) {
           this.handleResError();
         }
         else {
           console.log(batchAttributeResult);
-          localStorage.setItem('batchAttributes',JSON.stringify(batchAttributeResult));
+          localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
           this.setFields(batchAttributeResult);
         }
       });
     }
-    else{
+    else {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
       this.setFields(batchAttributeResult);
     }
   }
 
-  setFields(batchAttributeResult: any){
+  getLocalTimeFormat() {
+    return this.executeRegex(new Date().toTimeString(), /\(([^)]+)\)/);
+  }
+
+  executeRegex(valueField: any, regex: any) {
+    var regExp = new RegExp(regex, "i");
+    return regExp.exec(valueField)![1];
+  }
+
+  setFields(batchAttributeResult: any) {
     this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
     this.addSearchRow();
   }
