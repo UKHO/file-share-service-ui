@@ -174,8 +174,9 @@ button{
 
 .valueTD{
 	text-align: left;
+	width: 33%;
 	ukho-textinput{
-	&.validated {
+	&.validated, &.invalid {
 		input.form-text-input{
 		padding-right: 0;
 	}
