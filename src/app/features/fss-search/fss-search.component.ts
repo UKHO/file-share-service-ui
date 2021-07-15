@@ -30,6 +30,7 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
+  userLocalTimeZone = new Date().toTimeString().split('(')[1].split(')')[0];
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
@@ -38,9 +39,14 @@ export class FssSearchComponent implements OnInit {
     /*Call attributes API to retrieve User attributes and send back to search service 
     to append to existing System attributes*/
     this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-      console.log(batchAttributeResult);
-      this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
-      this.addSearchRow();
+      if (batchAttributeResult.length === 0) {
+        this.handleResError();
+      }
+      else {
+        console.log(batchAttributeResult);
+        this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
+        this.addSearchRow();
+      }
     });
   }
 
@@ -81,17 +87,16 @@ export class FssSearchComponent implements OnInit {
       changedFieldRow!.selectedOperator = "eq"
     }
     // check for null operators
-    if(this.isOperatorExist(changedFieldRow!)){
-      const operatorType = this.operators.find(f => f.value === changedFieldRow?.selectedOperator)?.type!;
-      if(operatorType == 'nullOperator'){
-        changedFieldRow!.valueIsdisabled = true;
-      }
-      else{
-        changedFieldRow!.valueIsdisabled = false;
-      }
+    const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
+    if (operatorType == 'nullOperator') {
+      changedFieldRow!.valueIsdisabled = true;
     }
-    
+    else {
+      changedFieldRow!.valueIsdisabled = false;
+    }
+
     changedFieldRow!.value = "";
+    changedFieldRow!.time = "";
   }
 
   getFieldDataType(fieldValue: string) {
@@ -130,19 +135,20 @@ export class FssSearchComponent implements OnInit {
   }
 
   onOperatorChanged(changedOperator: any) {
-    var operatorType = this.getOperatorType(changedOperator);
+    var operatorType = this.getOperatorType(changedOperator.operatorValue);
     var changedFieldRow = this.getSearchRow(changedOperator.rowId);
     this.toggleValueInput(changedFieldRow!, operatorType);
   }
 
-  getOperatorType(changedOperator: any) {
-    return this.operators.find(f => f.value === changedOperator.operatorValue)?.type!;
+  getOperatorType(selectedOperator: string) {
+    return this.operators.find(f => f.value === selectedOperator)?.type!;
   }
 
   toggleValueInput(changedFieldRow: FssSearchRow, operatorType: string) {
     if (operatorType === "nullOperator") {
       changedFieldRow!.valueIsdisabled = true;
       changedFieldRow!.value = "";
+      changedFieldRow!.time = "";
     }
     else {
       changedFieldRow!.valueIsdisabled = false;
@@ -161,10 +167,22 @@ export class FssSearchComponent implements OnInit {
         var reg = new RegExp(/^\d+$/);
         var isNumber = reg.test(this.fssSearchRows[rowId].value);
         if (!isNumber) {
-          this.errorMessageTitle = "Please provide only Numbers against FileSize";
-          this.errorMessageDescription = "Incorrect value '" + this.fssSearchRows[rowId].value + "' on row " + (rowId+1);
+          this.errorMessageTitle = "There is a problem with FileSize value field";
+          this.errorMessageDescription = "Only enter numbers in the FileSize Value field. The Search will not run if characters are entered.";
           flag = false;
           break;
+        }
+      }
+      const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
+      if (fieldDataType === 'date') {
+        const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
+        if (operatorType != 'nullOperator') {
+          if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
+            this.errorMessageTitle = "There is a problem with the Date and/or Time field";
+            this.errorMessageDescription = "You must choose a date or time in these fields. Use your local time to search.";
+            flag = false;
+            break;
+          }
         }
       }
     }
@@ -179,7 +197,13 @@ export class FssSearchComponent implements OnInit {
       if (filter != null) {
         this.searchResult = [];
         this.fileShareApiService.getSearchResult(filter).subscribe((res) => {
-          this.handleSuccess(res)
+          if (res.length === 0) {
+            console.log(res);
+            this.handleResError();
+          }
+          else {
+            this.handleSuccess(res);
+          }
         },
           (error) => {
             this.handleErrMessage(error);
@@ -188,6 +212,8 @@ export class FssSearchComponent implements OnInit {
       }
     }
     else {
+      this.searchResult = [];
+      this.displaySearchResult = false;
       this.showMessage(
         "warning",
         this.errorMessageTitle,
@@ -217,7 +243,7 @@ export class FssSearchComponent implements OnInit {
       this.hideMessage();
       this.displayLoader = false;
     }
-    else{
+    else {
       this.searchResult = [];
       this.displaySearchResult = false;
       this.showMessage(
@@ -229,15 +255,20 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-  handleErrMessage(err: any){
+  handleErrMessage(err: any) {
     this.displayLoader = false;
-    var errmsg="";
-    if(err.error != undefined && err.error.total>0){    
-        for(let i=0; i<err.error.errors.length; i++){
-            errmsg += err.error.errors[i]['description']+'\n';
-        }
-        this.showMessage("warning","An exception occurred when processing this search",errmsg);
-    }   
+    var errmsg = "";
+    if (err.error != undefined && err.error.total > 0) {
+      for (let i = 0; i < err.error.errors.length; i++) {
+        errmsg += err.error.errors[i]['description'] + '\n';
+      }
+      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    }
+  }
+
+  handleResError() {
+    this.showMessage("info", "Login in progress", "Due to token expiry timeout we are trying to log you in again");
+    this.displayLoader = false;
   }
 
 

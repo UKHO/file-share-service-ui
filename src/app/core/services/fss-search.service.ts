@@ -22,7 +22,7 @@ export class FssSearchService implements IFssSearchService {
       {value: 'BusinessUnit',text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string'},
       {value: 'FileName',text: '@FileName', type: 'SystemAttribute', dataType: 'string'},
       {value: 'MimeType',text: '@MimeType', type: 'SystemAttribute', dataType: 'string'},
-      {value: 'FileSize',text: '@FileSize', type: 'SystemAttribute', dataType: 'number'},
+      {value: 'FileSize',text: '@FileSize (in bytes)', type: 'SystemAttribute', dataType: 'number'},
       {value: 'ExpiryDate',text: '@BatchExpiryDate', type: 'SystemAttribute', dataType: 'date'},
       {value: 'BatchPublishedDate',text: '@BatchPublishedDate', type: 'SystemAttribute', dataType: 'date'}
     ];
