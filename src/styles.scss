@@ -16,15 +16,19 @@
 }
 
 #mainContainer {
-	img.header-image {
-		width: 100%
+	.header-image {
+		width: 100%;
+		display: inherit;
+		height: 240px;
+		background: url(/assets/images/UKHO-1400x240.jpg) center center;
 	}
 	p {
 		font-size: x-large;
 		font-weight: 300;
+		margin-bottom: 20px;
 	}
 	a#fss-createaccount {
-		padding: 20px 0;
+		padding: 20px 0  20px 40px;
 		display: inline-block;
 		&:hover {
 			text-decoration: none;
@@ -171,3 +175,16 @@ button{
 		}
 	}
 }}
+
+@media screen and (max-width:1024px){
+	ukho-phase-banner.phasebanner {
+		width: 98%;
+	}
+	#mainContainer {
+	.header-image {
+		height: 240px;
+		background: url(/assets/images/UKHO-17-AW-0005-Web.jpg) center center;
+	}
+}
+}
+
