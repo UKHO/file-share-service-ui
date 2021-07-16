@@ -1,4 +1,5 @@
 <table class="querytable">
+    <caption class="sr-only">Search Query </caption>
     <thead>
         <tr>
             <th class="searchFieldBold">Group</th>
@@ -47,8 +48,7 @@
                 [type]= "fssSearchRow.valueType"></ukho-textinput>
              </td>
             <td>
-                <button class="delete" (click)="onSearchRowDelete(fssSearchRow.rowId)"><i
-                        class="fa fa-times fa-1x"></i></button>
+                <button class="delete fa fa-times fa-1x" (click)="onSearchRowDelete(fssSearchRow.rowId)" aria-label="Delete Row"></button>
             </td>
         </tr>
     </tbody>

@@ -1,9 +1,11 @@
-<div class="spinner-wrapper" *ngIf="displayLoader"><i class="fas fa-spinner fa-pulse fa-3x"></i></div>
+<div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="results loding"><i class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
 <div class="container" role="main" id="mainContainer">
-  <ukho-dialogue [type]='messageType' *ngIf="displayMessage">
+  <div  *ngIf="displayMessage" role="alert" tabindex="-1"  aria-live="polite">
+  <ukho-dialogue [type]='messageType'>
     <h3>{{messageTitle}}</h3>
-    <div style="white-space: pre-line">{{messageDesc}}</div>
-  </ukho-dialogue> <br />
+    <div>{{messageDesc}}</div>
+  </ukho-dialogue>
+</div>
   <h1>Search files</h1>
   <p class="light">Complete the parameters to create a search query</p>
   <app-fss-search-row [fssSearchRows]="fssSearchRows" 
