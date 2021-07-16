@@ -54,7 +54,7 @@ describe('FssSearchFilterService', () => {
   });
 });
 
-export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", valueIsdisabled: boolean,time: string) {
+export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean,time: string) {
   var row = new FssSearchRow();
   row.rowId = rowId;
   row.fields = fields,
@@ -64,7 +64,7 @@ export function createSearchRow(rowId: number, fields: Field[], operators: Opera
   row.selectedOperator = operator;
   row.value = value;
   row.valueType = valueType;
-  row.valueIsdisabled = valueIsdisabled;
+  row.isValueHidden = isValueHidden;
   row.time = time;
   return row;
 }

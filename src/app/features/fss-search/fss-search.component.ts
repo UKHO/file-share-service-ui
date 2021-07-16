@@ -4,7 +4,7 @@ import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
-import { getLocaleTimeFormat } from '@angular/common';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-fss-search',
@@ -32,6 +32,7 @@ export class FssSearchComponent implements OnInit {
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
   userLocalTimeZone = this.getLocalTimeFormat();
+  valueInputForm: FormControl;
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
@@ -78,6 +79,7 @@ export class FssSearchComponent implements OnInit {
 
   getDefaultSearchRow() {
     var fssSearchRow = new FssSearchRow();
+    this.valueInputForm = new FormControl();
     fssSearchRow.joinOperators = this.joinOperators;
     fssSearchRow.fields = this.fields;
     fssSearchRow.operators = this.operators.filter(operator => operator.supportedDataTypes.includes("string"));
@@ -87,9 +89,10 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.selectedOperator = this.operators[0].value;
     fssSearchRow.value = '';
     fssSearchRow.valueType = 'text';
-    fssSearchRow.valueIsdisabled = false;
+    fssSearchRow.isValueHidden = false;
     fssSearchRow.rowId = this.rowId;
     fssSearchRow.time = "";
+    fssSearchRow.valueFormControl = this.valueInputForm
     return fssSearchRow;
   }
 
@@ -98,6 +101,13 @@ export class FssSearchComponent implements OnInit {
     var fieldDataType = this.getFieldDataType(changedField.fieldValue);
     // getFieldRow
     var changedFieldRow = this.getSearchRow(changedField.rowId);
+
+    if(fieldDataType === 'number'){
+      changedFieldRow!.valueFormControl = new FormControl('', Validators.pattern(/^\d+$/))
+    }
+    else{
+      changedFieldRow!.valueFormControl = new FormControl('')
+    }
     // getFilteredOperators
     changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
     // getValueType
@@ -110,10 +120,10 @@ export class FssSearchComponent implements OnInit {
     // check for null operators
     const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
     if (operatorType == 'nullOperator') {
-      changedFieldRow!.valueIsdisabled = true;
+      changedFieldRow!.isValueHidden = true;
     }
     else {
-      changedFieldRow!.valueIsdisabled = false;
+      changedFieldRow!.isValueHidden = false;
     }
 
     changedFieldRow!.value = "";
@@ -167,12 +177,12 @@ export class FssSearchComponent implements OnInit {
 
   toggleValueInput(changedFieldRow: FssSearchRow, operatorType: string) {
     if (operatorType === "nullOperator") {
-      changedFieldRow!.valueIsdisabled = true;
+      changedFieldRow!.isValueHidden = true;
       changedFieldRow!.value = "";
       changedFieldRow!.time = "";
     }
     else {
-      changedFieldRow!.valueIsdisabled = false;
+      changedFieldRow!.isValueHidden = false;
     }
   }
 
@@ -182,9 +192,9 @@ export class FssSearchComponent implements OnInit {
 
   validateSearchInput() {
     var flag = true;
-
     for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
       if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
+        console.log(this.fssSearchRows[rowId].valueFormControl);
         var reg = new RegExp(/^\d+$/);
         var isNumber = reg.test(this.fssSearchRows[rowId].value);
         if (!isNumber) {

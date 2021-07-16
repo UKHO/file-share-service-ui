@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 export interface JoinOperator {
   value: string;
@@ -29,9 +30,10 @@ export class FssSearchRow {
   selectedOperator: string = "";
   value: string = "";
   valueType :"time" | "text" | "date" | "email" | "password" | "tel" | "url";
-  valueIsdisabled :boolean =false;
+  isValueHidden :boolean =false;
   rowId:number = 0;
   time: string = "";
+  valueFormControl: FormControl;
 }
 
 

@@ -43,13 +43,12 @@
             </td>
             <td class="valueTD">
                 <ukho-textinput [(ngModel)]="fssSearchRow.value" 
-                *ngIf="!fssSearchRow.valueIsdisabled"
-                [disabled] = "fssSearchRow.valueIsdisabled"
-                [type]= "fssSearchRow.valueType"></ukho-textinput>
+                *ngIf="!fssSearchRow.isValueHidden"
+                [type]= "fssSearchRow.valueType"
+                [formControl] = "fssSearchRow.valueFormControl"></ukho-textinput>
 
-                <ukho-textinput *ngIf="fssSearchRow.valueType == 'date' && !fssSearchRow.valueIsdisabled"
+                <ukho-textinput *ngIf="fssSearchRow.valueType == 'date' && !fssSearchRow.isValueHidden"
                  [(ngModel)]="fssSearchRow.time"
-                    [disabled] = "fssSearchRow.valueIsdisabled"
                     type = "time"></ukho-textinput>
              </td>
             <td>
