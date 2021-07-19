@@ -4,6 +4,8 @@ import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-fss-search',
@@ -30,6 +32,10 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
+  filterList: string[] = new Array<string>();
+  typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
+  typeaheadSelectionAction: (selectedItemText: any) => () => {};
+  selectedRow: number;
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
@@ -38,10 +44,13 @@ export class FssSearchComponent implements OnInit {
     /*Call attributes API to retrieve User attributes and send back to search service 
     to append to existing System attributes*/
     this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-      console.log(batchAttributeResult);
       this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
+      for (let i = 0; i < this.fields.length; i++) {
+        this.filterList.push(this.fields[i].text)
+      }
       this.addSearchRow();
     });
+    this.typeaheadFields = this.filter(this.filterList);
   }
 
   addSearchRow() {
@@ -62,25 +71,9 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.valueType = 'text';
     fssSearchRow.valueIsdisabled = false;
     fssSearchRow.rowId = this.rowId;
+    fssSearchRow.fieldFormControl = new FormControl();
+    fssSearchRow.filterFn = this.typeaheadFields;
     return fssSearchRow;
-  }
-
-  onFieldChanged(changedField: any) {
-    // getFieldDataType
-    var fieldDataType = this.getFieldDataType(changedField.fieldValue);
-    // getFieldRow
-    var changedFieldRow = this.getSearchRow(changedField.rowId);
-    // getFilteredOperators
-    changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
-    // getValueType
-    changedFieldRow!.valueType = this.getValueType(fieldDataType);
-
-    // setDefault
-    if (!this.isOperatorExist(changedFieldRow!)) {
-      changedFieldRow!.selectedOperator = "eq"
-    }
-    changedFieldRow!.valueIsdisabled = false;
-    changedFieldRow!.value = "";
   }
 
   getFieldDataType(fieldValue: string) {
@@ -151,7 +144,7 @@ export class FssSearchComponent implements OnInit {
         var isNumber = reg.test(this.fssSearchRows[rowId].value);
         if (!isNumber) {
           this.errorMessageTitle = "Please provide only Numbers against FileSize";
-          this.errorMessageDescription = "Incorrect value '" + this.fssSearchRows[rowId].value + "' on row " + (rowId+1);
+          this.errorMessageDescription = "Incorrect value '" + this.fssSearchRows[rowId].value + "' on row " + (rowId + 1);
           flag = false;
           break;
         }
@@ -206,7 +199,7 @@ export class FssSearchComponent implements OnInit {
       this.hideMessage();
       this.displayLoader = false;
     }
-    else{
+    else {
       this.searchResult = [];
       this.displaySearchResult = false;
       this.showMessage(
@@ -218,16 +211,52 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-  handleErrMessage(err: any){
+  handleErrMessage(err: any) {
     this.displayLoader = false;
-    var errmsg="";
-    if(err.error != undefined && err.error.total>0){    
-        for(let i=0; i<err.error.errors.length; i++){
-            errmsg += err.error.errors[i]['description']+'\n';
-        }
-        this.showMessage("warning","An exception occurred when processing this search",errmsg);
-    }   
+    var errmsg = "";
+    if (err.error != undefined && err.error.total > 0) {
+      for (let i = 0; i < err.error.errors.length; i++) {
+        errmsg += err.error.errors[i]['description'] + '\n';
+      }
+      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    }
   }
 
+  filter(filterList: string[]) {
+    return (text: string) => {
+     // this.fieldFormControl.setValue(text)
+      const filterResult = filterList
+        .filter((field) => {
+          return text === null || text.length < 1 || field.toLowerCase().indexOf(text.toLowerCase()) > -1;
+        })
+      return filterResult;
+    };
+  };
+
+  getFieldValue(fieldText: string) {
+    const selectedFieldValue: any = this.fields.find(f => f.text === fieldText)?.value!;
+    return selectedFieldValue;
+  }
+
+  onFieldChanged(rowId: number) { 
+    // getFieldRow
+    var changedFieldRow = this.getSearchRow(rowId);
+    //getFieldValue
+    var changedFieldValue = this.getFieldValue(changedFieldRow!.fieldFormControl.value);
+    console.log("formControl", changedFieldRow!.fieldFormControl.value)
+    changedFieldRow!.selectedField = changedFieldValue;
+    // getFieldDataType
+    var fieldDataType = this.getFieldDataType(changedFieldValue);
+    //getFilteredOperators
+    changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
+    // getValueType
+    changedFieldRow!.valueType = this.getValueType(fieldDataType);
+    // setDefault
+    if (!this.isOperatorExist(changedFieldRow!)) {
+      changedFieldRow!.selectedOperator = "eq"
+    }
+    changedFieldRow!.valueIsdisabled = false;
+    changedFieldRow!.value = "";
+  }
 
 }
