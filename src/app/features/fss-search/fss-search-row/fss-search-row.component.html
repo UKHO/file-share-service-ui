@@ -10,16 +10,16 @@
     </thead>
     <tbody>
         <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
-            <td>
+            <td width="5%">
                 <ukho-checkbox [(ngModel)]="fssSearchRow.group"></ukho-checkbox>
             </td>
-            <td>
+            <td width="10%">
                 <ukho-select *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
                         {{joinOperator.text}}</option>
                 </ukho-select>
             </td>
-            <td>
+            <td width="25%">
                 <ukho-select #fieldSelect [(ngModel)]="fssSearchRow.selectedField"
                 (change)="onFieldChange(fieldSelect, fssSearchRow.rowId)">
                     <optgroup label="System Atributes">
@@ -34,7 +34,7 @@
                     </optgroup>               
                 </ukho-select>
             </td>
-            <td>
+            <td width="20%">
                 <ukho-select #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (change)="onOperatorChange(operatorSelect, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "

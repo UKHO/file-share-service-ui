@@ -174,7 +174,7 @@ button{
 
 .valueTD{
 	text-align: left;
-	width: 33%;
+	// width: 33%;
 	ukho-textinput{
 	&.validated, &.invalid {
 		input.form-text-input{
@@ -197,6 +197,24 @@ ukho-textinput.text-input-wrap{
 		left: 7%;
 	
 }
-	}
+}
 	
+}
+
+
+@media (max-width:1024px){
+	.valueTD {
+		ukho-textinput.text-input-wrap{
+		&[ng-reflect-type=date]{
+		padding-left: 5px;
+		input{
+			padding-left:5px;
+		}
+	}
+	&[ng-reflect-type="time"]{
+		width: 42%;
+		left: 6%;
+	}
+ }
+ }
 }
