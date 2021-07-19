@@ -1,4 +1,4 @@
-import { ElementRef } from '@angular/core';
+import { ElementRef, OnChanges } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
 
@@ -7,7 +7,7 @@ import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFile
   templateUrl: './fss-search-results.component.html',
   styleUrls: ['./fss-search-results.component.scss']
 })
-export class FssSearchResultsComponent implements OnInit {
+export class FssSearchResultsComponent implements OnChanges {
   @Input() public searchResult: Array<any> = [];
   searchResultVM: SearchResultViewModel[] = [];
 
@@ -15,7 +15,7 @@ export class FssSearchResultsComponent implements OnInit {
 
   constructor(private elementRef: ElementRef) { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.searchResultVM = [];
     if(this.searchResult.length > 0){
       var batches = this.searchResult[0];
