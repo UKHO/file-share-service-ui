@@ -158,7 +158,7 @@ export class FssSearchComponent implements OnInit {
         var isNumber = reg.test(this.fssSearchRows[rowId].value);
         if (!isNumber) {
           this.errorMessageTitle = "Please provide only Numbers against FileSize";
-          this.errorMessageDescription = "Incorrect value '" + this.fssSearchRows[rowId].value + "' on row " + (rowId+1);
+          this.errorMessageDescription = "Incorrect value '" + this.fssSearchRows[rowId].value + "' on row " + (rowId + 1);
           flag = false;
           break;
         }
@@ -195,7 +195,7 @@ export class FssSearchComponent implements OnInit {
             );
             this.displayLoader = false;
           }
-          
+
         },
           (error) => {
             this.handleErrMessage(error);
@@ -252,14 +252,15 @@ export class FssSearchComponent implements OnInit {
     }
   }
   pageChange(currentPage: number) {
-    if (currentPage>1) {
+    if (currentPage > 1) {
       this.displayLoader = true;
-      console.log(currentPage, this.currentPage);
+      console.log(currentPage);
       var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
       this.currentPage = currentPage;
       if (paginatorAction === "next") {
-        console.log(this.pagingLinks!);
+        
         var nextPageLink = this.pagingLinks!.next!.href;
+        console.log(nextPageLink!);
 
         this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
           this.searchResult = res;
@@ -270,9 +271,10 @@ export class FssSearchComponent implements OnInit {
           }
         );
       }
-      else {
+      else if (paginatorAction === "prev"){
         console.log(this.pagingLinks!);
         var previousPageLink = this.pagingLinks!.previous!.href;
+        console.log(previousPageLink!);
         this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
           this.searchResult = res;
           this.handleSuccess()
@@ -282,6 +284,22 @@ export class FssSearchComponent implements OnInit {
           }
         );
 
+      }
+
+    }
+    if (currentPage === 1) {
+      if (this.pagingLinks.previous) {
+        this.displayLoader = true;
+        this.currentPage = currentPage;
+        var previousPageLink = this.pagingLinks!.previous!.href;
+        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
       }
 
     }
