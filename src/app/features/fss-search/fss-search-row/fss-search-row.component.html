@@ -1,7 +1,7 @@
 <table class="querytable">
     <thead>
         <tr>
-            <th class="searchFieldBold">Group</th>
+            <th><span class="fa fa-object-group grouping" [class.disabled]="this.enableGrouping == false" (click)="onGroupClick()"></span></th>
             <th class="searchFieldsRow">And/Or</th>
             <th class="searchFieldsRow">Field</th>
             <th class="searchFieldsRow">Operator</th>
@@ -11,7 +11,7 @@
     <tbody>
         <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
             <td>
-                <ukho-checkbox [(ngModel)]="fssSearchRow.group"></ukho-checkbox>
+                <ukho-checkbox [(ngModel)]="fssSearchRow.group" (change)="onCheckboxClick()"></ukho-checkbox>
             </td>
             <td>
                 <ukho-select *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">

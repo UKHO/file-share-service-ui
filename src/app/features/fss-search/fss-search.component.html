@@ -9,7 +9,8 @@
   <app-fss-search-row [fssSearchRows]="fssSearchRows" 
   (onFieldChanged)="onFieldChanged($event)"
   (onOperatorChanged)="onOperatorChanged($event)"
-  (onSearchRowDeleted)="onSearchRowDeleted($event)">
+  (onSearchRowDeleted)="onSearchRowDeleted($event)"
+  (onGroupClicked)="onGroupClicked()">
   </app-fss-search-row>
   <div class="searchSection">
     <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FssSearchService } from './../../core/services/fss-search.service';
-import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
+import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 
@@ -30,6 +30,10 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
+  currentGroupStartIndex:number=0;
+  currentGroupEndIndex:number=0;
+  rowGroupings:RowGrouping[]=[];
+  groupingLevels:GroupingLevel[]=[];
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
@@ -228,6 +232,85 @@ export class FssSearchComponent implements OnInit {
         this.showMessage("warning","An exception occurred when processing this search",errmsg);
     }   
   }
+
+  onGroupClicked(){
+    
+    this.currentGroupStartIndex= 0; 
+    this.currentGroupEndIndex = 0; 
+
+    let rowIndexArray:Array<number>=[];
+    for(var i=0; i<this.fssSearchRows.length; i++){
+      if(this.fssSearchRows[i].group){
+        rowIndexArray.push(i);
+      }
+    } 
+    this.currentGroupStartIndex= rowIndexArray[0]; 
+    this.currentGroupEndIndex = rowIndexArray[rowIndexArray.length-1]; 
+
+    if (this.isGroupAlreadyExist()){
+        alert("A group already exists for selected clauses.");
+    }
+    else if(this.isGroupIntersectWithOther()){
+        alert("Groups can not intersect each other.");      
+    }
+    else{       
+        this.AddGrouping();
+    }
+    console.log(this.fssSearchRows);
+    console.log(this.rowGroupings);
+    console.log(this.groupingLevels);    
+}
+
+isGroupAlreadyExist() {
+  var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));   
+  return grouping !== undefined ? true : false;
+}  
+
+isGroupIntersectWithOther() {
+  return (this.rowGroupings.find(g => (this.currentGroupStartIndex < g.startIndex &&
+    (this.currentGroupEndIndex >= g.startIndex &&
+      this.currentGroupEndIndex < g.endIndex))) !== undefined) ||
+    (this.rowGroupings.find(g => ((this.currentGroupStartIndex > g.startIndex &&
+      this.currentGroupStartIndex <= g.endIndex) &&
+      this.currentGroupEndIndex > g.endIndex)) !== undefined)
+}
+
+AddGrouping(){
+  if(this.groupingLevels.length == 0){
+
+    this.rowGroupings.push({        
+      startIndex: this.currentGroupStartIndex, 
+      endIndex: this.currentGroupEndIndex
+    });
+
+    var groupingLevel = new GroupingLevel();
+    groupingLevel.level = 1;
+    groupingLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
+    this.groupingLevels.push(groupingLevel);
+  }
+  else {
+    //is current level belongs to exisitng inner grouping level
+    if((this.groupingLevels.find(g => g.rowGroupings.find(
+      r => r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupStartIndex &&
+      r.startIndex <= this.currentGroupEndIndex && r.endIndex >= this.currentGroupEndIndex)))!== undefined)
+      {
+        alert("Inner grouping not supported.");
+      }
+    else{
+      this.rowGroupings.push({        
+      startIndex: this.currentGroupStartIndex, 
+      endIndex: this.currentGroupEndIndex
+    });
+      //TODO      
+      //if current grouping belongs to same level (means outside of exisitng indexes) - Add rowGrouping at same level
+      //if current grouping belongs to new outer level - Add rowGrouping at new grouping level (level +1)
+      //create UIGrouping based on grouping level (class + colspan implementation)
+      //reset UIGrouping on delete row
+      //reset UIGrouping on add new row
+
+     }
+  }
+}
 
 
 }
