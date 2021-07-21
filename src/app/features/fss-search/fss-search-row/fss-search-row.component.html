@@ -21,7 +21,7 @@
             </td>
             <td>
                 <ukho-typeahead [label]="label" [FormControl]="fssSearchRow.fieldFormControl" [showResultsOnInitialFocus]="true"
-                [filterFn]="fssSearchRow.filterFn" (change)="onFieldChange(fssSearchRow.rowId)"></ukho-typeahead>
+                [filterFn]="fssSearchRow.filterFn" (valueChanged)="onFieldChange($event, fssSearchRow.rowId)"></ukho-typeahead>
             </td>
             <td>
                 <ukho-select #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"

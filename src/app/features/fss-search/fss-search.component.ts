@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
@@ -34,7 +34,6 @@ export class FssSearchComponent implements OnInit {
   errorMessageDescription: string = "";
   filterList: string[] = new Array<string>();
   typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
-  typeaheadSelectionAction: (selectedItemText: any) => () => {};
   selectedRow: number;
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
@@ -238,12 +237,11 @@ export class FssSearchComponent implements OnInit {
     return selectedFieldValue;
   }
 
-  onFieldChanged(rowId: number) { 
+  onFieldChanged(fieldChanged: any) { 
     // getFieldRow
-    var changedFieldRow = this.getSearchRow(rowId);
+    var changedFieldRow = this.getSearchRow(fieldChanged.rowId);
     //getFieldValue
-    var changedFieldValue = this.getFieldValue(changedFieldRow!.fieldFormControl.value);
-    console.log("formControl", changedFieldRow!.fieldFormControl.value)
+    var changedFieldValue = this.getFieldValue(fieldChanged.currentFieldValue);
     changedFieldRow!.selectedField = changedFieldValue;
     // getFieldDataType
     var fieldDataType = this.getFieldDataType(changedFieldValue);

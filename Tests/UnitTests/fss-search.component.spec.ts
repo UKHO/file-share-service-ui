@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FssSearchComponent } from './fss-search.component';
+import { FssSearchComponent } from '../../src/app/features/fss-search/fss-search.component';
 
 describe('FssSearchComponent', () => {
   let component: FssSearchComponent;

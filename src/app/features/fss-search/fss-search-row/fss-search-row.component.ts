@@ -10,7 +10,7 @@ export class FssSearchRowComponent implements OnInit {
   @Input() fssSearchRows: FssSearchRow[] = [];
   @Output() onSearchRowDeleted = new EventEmitter<number>();
   @Output() onOperatorChanged = new EventEmitter<{ operatorValue: string, rowId: number }>();
-  @Output() onFieldChanged = new EventEmitter<number>();
+  @Output() onFieldChanged = new EventEmitter<{ currentFieldValue: string, rowId: number }>();
   label: string; 
   constructor() { }
 
@@ -25,7 +25,7 @@ export class FssSearchRowComponent implements OnInit {
     this.onOperatorChanged.emit({ operatorValue: operator.select.nativeElement.value, rowId: rowId });
   }
 
-  onFieldChange(rowId: number){
-    this.onFieldChanged.emit(rowId);
+  onFieldChange(fieldValue: any, rowId: number){
+    this.onFieldChanged.emit({ currentFieldValue: fieldValue, rowId: rowId });
   }
 }
