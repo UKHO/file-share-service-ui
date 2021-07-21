@@ -49,8 +49,8 @@ describe('FssSearchFilterService', () => {
     searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31', 'date', false, "12:00"));
 
     var filter = service.getFilterExpression(searchRows);
-
-    expect(filter).toBe("FileName eq 'TestReport.pdf' OR FileSize le 3000 AND ExpiryDate gt 2021-12-31T12:00:00.000Z");
+    var date = new Date('2021-12-31 12:00').toISOString()
+    expect(filter).toBe("FileName eq 'TestReport.pdf' OR FileSize le 3000 AND ExpiryDate gt " + date);
   });
 });
 
