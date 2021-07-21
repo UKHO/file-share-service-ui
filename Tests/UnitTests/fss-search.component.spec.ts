@@ -124,6 +124,36 @@ describe('FssSearchComponent', () => {
     expect(result).toEqual(searchRows[1]);
   });
 
+  it('should return only SystemAttribute fields when type = SystemAttribute is passed through pipe', () => {
+    const pipe = new FilterPipe();
+    const inputFields: Field[] = [
+      { value: 'BusinessUnit', text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string' },
+      { value: 'FileName', text: '@FileName', type: 'SystemAttribute', dataType: 'string' },
+      { value: 'MimeType', text: '@MimeType', type: 'SystemAttribute', dataType: 'string' },
+      { value: "$batch(cellname)", text: "cellname", type: "UserAttribute", dataType: "attribute" },
+      { value: "$batch(Product Type)", text: "Product Type", type: "UserAttribute", dataType: "attribute" }];
+
+    const expectedOutput: Field[] = [
+      { value: 'BusinessUnit', text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string' },
+      { value: 'FileName', text: '@FileName', type: 'SystemAttribute', dataType: 'string' },
+      { value: 'MimeType', text: '@MimeType', type: 'SystemAttribute', dataType: 'string' }];
+    expect(pipe.transform(inputFields, 'type', 'SystemAttribute')).toStrictEqual(expectedOutput);
+  });
+
+  it('should return only UserAttribute fields when type = UserAttribute is passed through pipe', () => {
+    const pipe = new FilterPipe();
+    const inputFields: Field[] = [
+      { value: 'BusinessUnit', text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string' },
+      { value: 'FileName', text: '@FileName', type: 'SystemAttribute', dataType: 'string' },
+      { value: 'MimeType', text: '@MimeType', type: 'SystemAttribute', dataType: 'string' },
+      { value: "$batch(cellname)", text: "cellname", type: "UserAttribute", dataType: "attribute" },
+      { value: "$batch(Product Type)", text: "Product Type", type: "UserAttribute", dataType: "attribute" }];
+
+    const expectedOutput: Field[] = [
+      { value: "$batch(cellname)", text: "cellname", type: "UserAttribute", dataType: "attribute" },
+      { value: "$batch(Product Type)", text: "Product Type", type: "UserAttribute", dataType: "attribute" }];
+    expect(pipe.transform(inputFields, 'type', 'UserAttribute')).toStrictEqual(expectedOutput);
+  });
 
 });
 
