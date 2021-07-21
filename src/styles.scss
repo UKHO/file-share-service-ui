@@ -14,11 +14,15 @@
 		transform: translateY(20%);
 	}
 }
+p{
+	color: #333;
+}
 
 #mainContainer {
 	img.header-image {
 		width: 100%
 	}
+	ukho-card{
 	p {
 		font-size: x-large;
 		font-weight: 300;
@@ -31,19 +35,23 @@
 		}
 	}
 }
+}
 
 ukho-phase-banner.phasebanner {
 	padding: 10px;
 }
 
 .container {
-	padding: 0 30px 40px;
+	width: 90%;
+	margin:0 auto ;
+	padding: 10px 0;
 	h1 {
-		padding-left: 30px;
+		// padding-left: 30px;
 		margin-bottom: 10px;
 	}
 	p {
-		padding-left: 30px;
+		// padding-left: 30px;
+		margin-bottom: 20px;
 	}	
 }
 
@@ -131,6 +139,7 @@ table.cdk-table th, table.cdk-table td{
 
 .searchFieldBold {
 	font-weight: 500;
+	text-align: left;
 }
 
 .spinner-wrapper {
