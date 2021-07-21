@@ -93,6 +93,7 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.rowId = this.rowId;
     fssSearchRow.time = "";
     fssSearchRow.valueFormControl = this.valueInputForm
+    fssSearchRow.valueFormControlTime = this.valueInputForm
     return fssSearchRow;
   }
 
@@ -101,13 +102,8 @@ export class FssSearchComponent implements OnInit {
     var fieldDataType = this.getFieldDataType(changedField.fieldValue);
     // getFieldRow
     var changedFieldRow = this.getSearchRow(changedField.rowId);
-
-    if(fieldDataType === 'number'){
-      changedFieldRow!.valueFormControl = new FormControl('', Validators.pattern(/^\d+$/))
-    }
-    else{
-      changedFieldRow!.valueFormControl = new FormControl('')
-    }
+    // SetDefaultValueFormControl based on fieldDataType
+    this.setValueFormControl(fieldDataType, changedFieldRow!);
     // getFilteredOperators
     changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
     // getValueType
@@ -119,12 +115,7 @@ export class FssSearchComponent implements OnInit {
     }
     // check for null operators
     const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
-    if (operatorType == 'nullOperator') {
-      changedFieldRow!.isValueHidden = true;
-    }
-    else {
-      changedFieldRow!.isValueHidden = false;
-    }
+    this.toggleValueInput(changedFieldRow!, operatorType);
 
     changedFieldRow!.value = "";
     changedFieldRow!.time = "";
@@ -136,6 +127,20 @@ export class FssSearchComponent implements OnInit {
 
   getSearchRow(rowId: number) {
     return this.fssSearchRows.find(fsr => fsr.rowId === rowId);
+  }
+
+  setValueFormControl(fieldDataType: string, changedFieldRow: FssSearchRow) {
+    if (fieldDataType === 'number') {
+      changedFieldRow!.valueFormControl = new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]);
+    }
+    else if (fieldDataType === 'date') {
+      changedFieldRow!.valueFormControl = new FormControl(null, Validators.required);
+      changedFieldRow!.valueFormControlTime = new FormControl(null, Validators.required);
+    }
+    else {
+      changedFieldRow!.valueFormControl = new FormControl()
+    }
+    return changedFieldRow
   }
 
   getFilteredOperators(fieldDataType: string) {
@@ -190,11 +195,37 @@ export class FssSearchComponent implements OnInit {
     this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId), 1);
   }
 
+  validateValueFormControl() {
+    for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
+      const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
+      if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
+        if (this.fssSearchRows[rowId].value === "") {
+          if (this.fssSearchRows[rowId].valueFormControl.touched === false) {
+            this.fssSearchRows[rowId].valueFormControl.markAsTouched();
+          }
+        }
+      }
+      if (fieldDataType === 'date') {
+        const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
+        if (operatorType !== 'nullOperator') {
+          if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
+            if (this.fssSearchRows[rowId].valueFormControl.touched === false) {
+              this.fssSearchRows[rowId].valueFormControl.markAsTouched();
+            }
+            if (this.fssSearchRows[rowId].valueFormControlTime.touched === false) {
+              this.fssSearchRows[rowId].valueFormControlTime.markAsTouched();
+            }
+          }
+        }
+      }
+    }
+  }
+
   validateSearchInput() {
     var flag = true;
+    this.validateValueFormControl()
     for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
       if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
-        console.log(this.fssSearchRows[rowId].valueFormControl);
         var reg = new RegExp(/^\d+$/);
         var isNumber = reg.test(this.fssSearchRows[rowId].value);
         if (!isNumber) {
@@ -207,7 +238,7 @@ export class FssSearchComponent implements OnInit {
       const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
       if (fieldDataType === 'date') {
         const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
-        if (operatorType != 'nullOperator') {
+        if (operatorType !== 'nullOperator') {
           if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
             this.errorMessageTitle = "There is a problem with the Date and/or Time field";
             this.errorMessageDescription = "You must choose a date or time in these fields. Use your local time to search.";

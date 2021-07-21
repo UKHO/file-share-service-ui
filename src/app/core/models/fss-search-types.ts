@@ -34,6 +34,7 @@ export class FssSearchRow {
   rowId:number = 0;
   time: string = "";
   valueFormControl: FormControl;
+  valueFormControlTime: FormControl;
 }
 
 
