@@ -6,7 +6,7 @@ let browser: Browser
 let page: Page
 
 describe('FSS UI Home Page Accessibility Test Scenarios', () => {
-  jest.setTimeout(120000);
+  jest.setTimeout(30000);
   beforeAll(async () => {
     browser = await chromium.launch()
     page = await browser.newPage()
@@ -16,6 +16,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
 
   test('should return no violations Page Accessibility check', async () => {
     const violations = await getViolations(page)
+    if (violations.length>0)
+    {
+      console.log(violations);
+    }
     expect(violations.length).toBe(0);
   })
 
@@ -28,6 +32,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+      {
+        console.log(violations);
+      }
       expect(violations.length).toBe(0);
   })
 
@@ -52,6 +60,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+      {
+        console.log(violations);
+      }
       expect(violations.length).toBe(0);
 
   })
@@ -65,6 +77,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+      {
+        console.log(violations);
+      }
       expect(violations.length).toBe(0);
   })
 
@@ -77,6 +93,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+        {
+        console.log(violations);
+        }
       expect(violations.length).toBe(0);
   })
 
@@ -89,6 +109,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+      {
+        console.log(violations);
+      }
       expect(violations.length).toBe(0);
   })
 
@@ -101,6 +125,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+      {
+        console.log(violations);
+      }
       expect(violations.length).toBe(0);
   })
 
@@ -113,6 +141,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+      {
+        console.log(violations);
+      }
       expect(violations.length).toBe(0);
   })
 
@@ -125,6 +157,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+      {
+        console.log(violations);
+      }
       expect(violations.length).toBe(0);
   })
 
@@ -137,6 +173,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+      {
+        console.log(violations);
+      }
       expect(violations.length).toBe(0);
   })
 
@@ -149,6 +189,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
           },
         },
       })
+      if (violations.length>0)
+       {
+         console.log(violations);
+       }
       expect(violations.length).toBe(0);
   })
 

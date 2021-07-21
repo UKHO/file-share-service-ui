@@ -1,14 +1,11 @@
-import { mkdir, mkdirSync } from 'fs';
 import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig } = require('./pageObjects');
-import { tmpdir } from 'os'
 import { join } from 'path'
-const path = require('path')
 let name: string;
 
 describe('Test Sign In Page Scenario', () => {
-  jest.setTimeout(120000);
+  jest.setTimeout(30000);
   let browser: Browser;
   let context: BrowserContext;
   let page: Page;
