@@ -101,7 +101,7 @@ describe('FssSearchComponent', () => {
     expect(result).toEqual(expectedOperatorType);
   });
 
-  test('should return second row based on rowid 2', () => {
+  test('should return second row based on rowid passed', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
     component.ngOnInit();
     let searchRows: FssSearchRow[] = [];
@@ -153,6 +153,63 @@ describe('FssSearchComponent', () => {
       { value: "$batch(cellname)", text: "cellname", type: "UserAttribute", dataType: "attribute" },
       { value: "$batch(Product Type)", text: "Product Type", type: "UserAttribute", dataType: "attribute" }];
     expect(pipe.transform(inputFields, 'type', 'UserAttribute')).toStrictEqual(expectedOutput);
+  });
+
+  test('should return flag false when FileSize value is passed as number', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component.ngOnInit();
+    let searchRows: FssSearchRow[] = [];
+    let fields: Field[] = [
+      { value: 'FileName', text: '@FileName', type: 'SystemAttribute', dataType: 'string' },
+      { value: 'FileSize', text: '@FileSize', type: 'SystemAttribute', dataType: 'number' },
+      { value: 'ExpiryDate', text: '@BatchExpiryDate', type: 'SystemAttribute', dataType: 'date' },
+    ];
+    let operators: Operator[] = [
+      { value: 'eq', text: '=', type: 'operator', supportedDataTypes: ['string', 'number', 'date', 'attribute'] },
+      { value: 'gt', text: '>', type: 'operator', supportedDataTypes: ['number', 'date'] },
+      { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] }
+    ];
+    //searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
+    searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileSize', 'eq', 'test', 'tel', false));
+    //searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
+    component.fssSearchRows = searchRows;
+    var result = component.validateSearchInput();
+    console.log(result);
+    expect(result).toBe(false);
+  });
+
+  test('should return row count 2 when Add new line is called twice', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component.ngOnInit();
+    component.fields = searchService.getFields(MockUserAttributeFields());
+    component.addSearchRow();
+    component.addSearchRow();
+    var result = component.fssSearchRows.length
+    console.log(component);
+    expect(result).toBe(2);
+  });
+
+  test('should return row count 2 when 3 rows exist and delete is called', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component.ngOnInit();
+    component.fields = searchService.getFields(MockUserAttributeFields());
+    component.addSearchRow();
+    component.addSearchRow();
+    component.addSearchRow();
+    component.onSearchRowDeleted(3);
+    var result = component.fssSearchRows.length;
+    console.log(component);
+    expect(result).toBe(2);
+  });
+
+  test('should disable Value input when nullOperator is selected in the row', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component.ngOnInit();
+    component.fields = searchService.getFields(MockUserAttributeFields());    
+    component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', false));
+    component.toggleValueInput(component.fssSearchRows[0], 'nullOperator');
+    var result = component.fssSearchRows[0].valueIsdisabled;
+    expect(result).toBe(true);
   });
 
 });
