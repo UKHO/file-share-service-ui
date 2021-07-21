@@ -62,7 +62,7 @@ export class FssSearchResultsComponent implements OnInit {
         FileName: files[i]["filename"],
         MimeType: files[i]["mimeType"],
         FileSize: formatBytes(files[i]["fileSize"]),
-        Download: '<div class="fileDownload" tabindex="0" aria-label="Download File"><i class="fa fa-download fa-1x"></i></div>'
+        Download: '<div class="fileDownload" tabindex="0" role="button" aria-label="Download File"><i class="fa fa-download fa-1x"></i></div>'
       });
     }
 
