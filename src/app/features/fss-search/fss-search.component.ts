@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
@@ -30,7 +30,8 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
+  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService,private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -196,6 +197,8 @@ export class FssSearchComponent implements OnInit {
     this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;
     this.displayMessage = true;
+    this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+    this.ukhoDialog.nativeElement.focus();
   }
 
   handleSuccess(res: any) {
@@ -208,13 +211,13 @@ export class FssSearchComponent implements OnInit {
     }
     else{
       this.searchResult = [];
+      this.displayLoader = false;
       this.displaySearchResult = false;
       this.showMessage(
         "info",
         "No results can be found for this search",
         "Try again using different parameters in the search query."
-      );
-      this.displayLoader = false;
+      );     
     }
   }
 

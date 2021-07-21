@@ -52,6 +52,7 @@ ukho-dialogue section {
 
 ukho-phase-banner.phasebanner {
 	padding: 10px;
+	width: auto;
 }
 
 .container {
@@ -191,9 +192,6 @@ button{
 }}
 
 @media screen and (max-width:1024px){
-	ukho-phase-banner.phasebanner {
-		width: 98%;
-	}
 	#mainContainer {
 	.header-image {
 		height: 240px;
@@ -201,4 +199,3 @@ button{
 	}
 }
 }
-
