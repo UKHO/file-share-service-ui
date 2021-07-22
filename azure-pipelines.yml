@@ -250,28 +250,12 @@ stages:
            - script: |
               npm install -D jest jest-playwright-preset playwright
              displayName: 'Install Jest Playwright Dependencies'
-             
-           - task: DownloadBuildArtifacts@1
-             inputs:
-                buildType: 'current'
-                downloadType: 'single'
-                artifactName: 'AccessibilityArtifact'
-                downloadPath: '$(Build.SourcesDirectory)'
-             displayName: Download Accessibility Test Artifact
 
-           - task: DownloadBuildArtifacts@1
-             inputs:
-                buildType: 'current'
-                downloadType: 'single'
-                artifactName: 'FunctionalTestsArtifact'
-                downloadPath: '$(Build.SourcesDirectory)'
-             displayName: Download Functional Test Artifact
-          
            - script: |
               npm run test:a11y
               continueOnError: false
              displayName: 'Run Accessibility Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/AccessibilityArtifact'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
@@ -286,7 +270,7 @@ stages:
            - script: |
               npm run test:auto
              displayName: 'Run Functional Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/FunctionalTestsArtifact'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
