@@ -89,18 +89,28 @@ stages:
             inputs:
               testRunner: 'JUnit'
               testResultsFiles: 'junit.xml'
+              testRunTitle: Unit Test Results
             displayName: 'Publish Unit Test Results'
+            
+          - task: CopyFiles@2
+            inputs:
+               SourceFolder: '$(Build.SourcesDirectory)'
+               Contents: 'junit.xml'
+               TargetFolder: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+            displayName: Copy junit.xml to AccessibilityTests folder
+
+          - task: CopyFiles@2
+            inputs:
+               SourceFolder: '$(Build.SourcesDirectory)'
+               Contents: 'junit.xml'
+               TargetFolder: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+            displayName: Copy junit.xml to FunctionalTests folder
 
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'Cobertura'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
               reportDirectory: 'coverage/'
-
-          - script: |
-             npm run test:a11y
-            continueOnError: false
-            displayName: 'Accessibility Testing'
 
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"
@@ -113,6 +123,20 @@ stages:
             inputs:
               PathtoPublish: '$(Build.SourcesDirectory)/Deployment'
               ArtifactName: terraformartifact
+          
+          - task: PublishBuildArtifacts@1
+            inputs:
+             PathtoPublish: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+             ArtifactName: 'AccessibilityArtifact'
+             publishLocation: 'Container'
+            displayName: Publish Accessibility Test Artifact
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+             PathtoPublish: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             ArtifactName: 'FunctionalTestsArtifact'
+             publishLocation: 'Container'
+            displayName: Publish Functional Test Artifact
 
   - stage: Devdeploy
     displayName: "Devdeploy (inc terraform, website deploy)"
@@ -136,10 +160,10 @@ stages:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-Dev-P4052"
 
-      - job: FunctionalTest
+      - job: Functional_And_AccessibilityTests
         dependsOn: DevDeploy
         pool: $(WindowPool)
-        displayName: "Functional Test"
+        displayName: "Functional and Acccessibility Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
         workspace:
@@ -167,12 +191,54 @@ stages:
            - script: |
               npm install -D jest jest-playwright-preset playwright
              displayName: 'Install Jest Playwright Dependencies'
-             
+
+           - task: DownloadBuildArtifacts@1
+             inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'AccessibilityArtifact'
+                downloadPath: '$(Build.SourcesDirectory)'
+             displayName: Download Accessibility Test Artifact
+
+           - task: DownloadBuildArtifacts@1
+             inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'FunctionalTestsArtifact'
+                downloadPath: '$(Build.SourcesDirectory)'
+             displayName: Download Functional Test Artifact
+          
+           - script: |
+              npm run test:a11y
+              continueOnError: false
+             displayName: 'Run Accessibility Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/AccessibilityArtifact'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Accessibility Test Results
+             displayName: 'Publish Accessibility Test Results'
+
            - script: |
               npm run test:auto
-             displayName: 'Run functional Tests'
-              
-     
+             displayName: 'Run Functional Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/FunctionalTestsArtifact'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Functional Test Results
+             displayName: 'Publish Functional Test Results'
+
   - stage: QAdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
@@ -196,10 +262,10 @@ stages:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-QA-P4052"
     
-      - job: FunctionalTest
+      - job: Functional_And_AccessibilityTests
         dependsOn: QAdeploy
         pool: $(WindowPool)
-        displayName: "Functional Test"
+        displayName: "Functional and Acccessibility Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
         workspace:
@@ -228,6 +294,49 @@ stages:
               npm install -D jest jest-playwright-preset playwright
              displayName: 'Install Jest Playwright Dependencies'
              
+           - task: DownloadBuildArtifacts@1
+             inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'AccessibilityArtifact'
+                downloadPath: '$(Build.SourcesDirectory)'
+             displayName: Download Accessibility Test Artifact
+
+           - task: DownloadBuildArtifacts@1
+             inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'FunctionalTestsArtifact'
+                downloadPath: '$(Build.SourcesDirectory)'
+             displayName: Download Functional Test Artifact
+          
+           - script: |
+              npm run test:a11y
+              continueOnError: false
+             displayName: 'Run Accessibility Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/AccessibilityArtifact'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Accessibility Test Results
+             displayName: 'Publish Accessibility Test Results'
+
            - script: |
               npm run test:auto
-             displayName: 'Run functional Tests'
+             displayName: 'Run Functional Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/FunctionalTestsArtifact'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Functional Test Results
+             displayName: 'Publish Functional Test Results'
