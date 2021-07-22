@@ -36,19 +36,23 @@ ukho-dialogue section {
 		height: 240px;
 		background: url(/assets/images/UKHO-1400x240.jpg) center center;
 	}
+	ukho-card{
 	p {
 		font-size: x-large;
 		font-weight: 300;
 		margin-bottom: 20px;
 	}
+	button{
+		float: left;
+	}
 	a#fss-createaccount {
 		padding: 20px 0  20px 40px;
-		display: inline-block;
+		float: left;
 		&:hover {
 			text-decoration: none;
 		}
 	}
-}
+}}
 
 ukho-phase-banner.phasebanner {
 	padding: 10px;
