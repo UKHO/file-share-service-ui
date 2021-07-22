@@ -92,7 +92,6 @@ stages:
               testRunTitle: Unit Test Results
             displayName: 'Publish Unit Test Results'
 
-
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: 'Cobertura'
