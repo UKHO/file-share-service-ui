@@ -1,0 +1,150 @@
+import { chromium, Browser, BrowserContext, Page } from 'playwright'
+const { autoTestConfig } = require('./appSetting');
+const { pageObjectsConfig } = require('./pageObjects');
+import {LoginPortal,SearchAttribute} from './helpermethod'
+import {stringOperatorList,symbolOperatorList} from './helperconstant'
+
+
+describe('Test Search Attribute Scenario On Search Page', () => {
+  jest.setTimeout(60000);
+  let browser: Browser;
+  let context: BrowserContext;
+  let page: Page;  
+
+  beforeAll(async () => {
+    browser = await chromium.launch({slowMo:100});
+    context = await browser.newContext();
+    page = await context.newPage();    
+    await page.goto(autoTestConfig.url)
+    
+    page.click(pageObjectsConfig.searchButtonSelector);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);    
+    
+    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
+    expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
+  })
+
+  afterAll(async () => {
+     await page.close()
+     await context.close()
+     await browser.close()
+  })
+ 
+  it('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async () => {
+    page.setDefaultTimeout(30000);     
+    await page.fill(pageObjectsConfig.inputSearchFieldSelector,"BusinessUnit")    
+     const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
+    
+    var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function(element, index) {
+        return element === operatorsOption[index]; 
+    });
+    
+    expect(match).toBeTruthy();    
+
+  })
+
+  it('Verify Operator dropdown contains correct values when "FileSize" attribute field selected', async () => {
+    await SearchAttribute(page,"FileSize");  
+    
+    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
+    var match = (symbolOperatorList.length == operatorsOption.length) && symbolOperatorList.every(function(element, index) {
+        return element === operatorsOption[index]; 
+    });
+    
+    expect(match).toBeTruthy();   
+
+  })
+
+  it('Verify Operator dropdown contains correct values when "FileName" attribute field selected', async () => {
+    await SearchAttribute(page,"FileName");    
+    
+    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
+    var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function(element, index) {
+        return element === operatorsOption[index]; 
+    });
+    
+    expect(match).toBeTruthy();   
+
+  })
+
+  it('Verify Operator dropdown contains correct values when "MimeType" attribute field selected', async () => {
+    await SearchAttribute(page,"MimeType");     
+    
+    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
+    var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function(element, index) {
+        return element === operatorsOption[index]; 
+    });
+    
+    expect(match).toBeTruthy();   
+
+  })
+
+  it('Verify Operator dropdown contains correct values when "BatchExpiryDate" attribute field selected', async () => {
+    await SearchAttribute(page,"BatchExpiryDate");  
+    
+    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
+    var match = (symbolOperatorList.length == operatorsOption.length) && symbolOperatorList.every(function(element, index) {
+        return element === operatorsOption[index]; 
+    });
+    
+    expect(match).toBeTruthy();   
+
+  })
+
+  it('Verify Operator dropdown contains correct values when "BatchPublishedDate" attribute field selected', async () => {
+    await SearchAttribute(page,"BatchPublishedDate");    
+    
+    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
+    var match = (symbolOperatorList.length == operatorsOption.length) && symbolOperatorList.every(function(element, index) {
+        return element === operatorsOption[index]; 
+    });
+    
+    expect(match).toBeTruthy();   
+
+  })
+
+  it('Verify when "BusinessUnit" attribute field selected, input value field change to "text" type', async () => {
+    await SearchAttribute(page,"BusinessUnit");  
+   
+    const inputValueFieldAttribute=await page.getAttribute(pageObjectsConfig.inputSearchValueSelector,"type");
+    expect(inputValueFieldAttribute).toEqual("text");
+  })
+
+  it('Verify when "FileSize" attribute field selected, input value field change to "tel" type', async () => {
+    await SearchAttribute(page,"FileSize");  
+
+    const inputValueFieldAttribute=await page.getAttribute(pageObjectsConfig.inputSearchValueSelector,"type");
+    expect(inputValueFieldAttribute).toEqual("tel");
+  })
+
+  it('Verify when "BatchPublishedDate" attribute field selected, input value field change to "date" type', async () => {
+    await SearchAttribute(page,"BatchPublishedDate");  
+    
+    const inputValueFieldAttribute=await page.getAttribute(pageObjectsConfig.inputSearchValueSelector,"type");
+    expect(inputValueFieldAttribute).toEqual("date");
+  })
+
+  it('When click on "Add new line" button a new row added to the query table', async () => {
+    await page.waitForSelector(pageObjectsConfig.inputSearchFieldSelector); 
+    let tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;  
+    expect(tableRows).toEqual(1); 
+
+    //add new row
+    await page.click(".addNewLine");
+    tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
+    expect(tableRows).toEqual(2);
+  })
+
+  it('When click on "Delete" button a row deleted from the query table', async () => {
+    await page.waitForSelector(pageObjectsConfig.inputSearchFieldSelector);  
+    let tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
+    expect(tableRows).toEqual(2);
+
+    //delete a row
+    await page.click(".delete");
+    tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
+    expect(tableRows).toEqual(1);
+
+  })
+
+})

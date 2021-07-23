@@ -1,11 +1,8 @@
-import { mkdir, mkdirSync } from 'fs';
 import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig } = require('./pageObjects');
-import { tmpdir } from 'os'
-import { join } from 'path'
-const path = require('path')
-let name: string;
+import {LoginPortal} from './helpermethod'
+
 
 describe('Test Sign In Page Scenario', () => {
   jest.setTimeout(120000);
@@ -14,7 +11,7 @@ describe('Test Sign In Page Scenario', () => {
   let page: Page;
 
   beforeEach(async () => {
-    browser = await chromium.launch();
+    browser = await chromium.launch({slowMo:100});
     context = await browser.newContext();
     page = await context.newPage();
     await page.goto(autoTestConfig.url)
@@ -24,65 +21,33 @@ describe('Test Sign In Page Scenario', () => {
     await page.close()
     await context.close()
     await browser.close()
-  })
-
-  //Function to sign in portal
-  //==================START==============================
-  async function LoginPortal(username: string, password: string) {
-
-    const [popup] = await Promise.all([
-      page.waitForEvent('popup')
-    ]);
-    try {
-      popup.setDefaultTimeout(30000);
-      popup.setViewportSize({ 'width': 800, 'height': 1024 })
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)
-      popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, username)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupNextButtonSelector)
-      popup.click(pageObjectsConfig.loginPopupNextButtonSelector)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
-      popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInButtonSelector)
-      popup.click(pageObjectsConfig.loginPopupSignInButtonSelector)
-    }
-    catch (e) {
-      const errorPath = name.replace(" ", "") + "failedtest.jpeg"
-      await popup.screenshot({
-        path: join("screenshot",errorPath)
-      });
-      console.log(join(errorPath))
-    }
-
-
-  }
-  //===============END===================================
-  name = 'User clicks Sign in link with valid credentials should display FullName after login successfully'
-  it(name, async () => {
+  }) 
+  
+  it('User clicks Sign in link with valid credentials should display FullName after login successfully', async () => {
 
     page.click(pageObjectsConfig.loginSignInLinkSelector);
-    await LoginPortal(autoTestConfig.user, autoTestConfig.password);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
 
     await page.waitForSelector(pageObjectsConfig.loginAccountSelector);
     expect(await page.innerHTML(pageObjectsConfig.loginAccountLinkSelector)).toEqual(autoTestConfig.userFullName);
 
   })
 
-  name = 'User clicks Sign in link with valid credentials should navigate to search page after login successfully'
-  it(name, async () => {
+  
+  it('User clicks Sign in link with valid credentials should navigate to search page after login successfully', async () => {
 
     page.click(pageObjectsConfig.loginSignInLinkSelector);
-    await LoginPortal(autoTestConfig.user, autoTestConfig.password);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
 
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
 
   })
-
-  name = 'User clicks Search link with valid credentials should navigate to search page after login successfully';
-  it(name, async () => {
+  
+  it('User clicks Search link with valid credentials should navigate to search page after login successfully', async () => {
 
     page.click(pageObjectsConfig.searchButtonSelector);
-    await LoginPortal(autoTestConfig.user, autoTestConfig.password);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
 
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
