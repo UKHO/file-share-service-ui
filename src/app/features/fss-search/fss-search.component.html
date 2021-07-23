@@ -6,7 +6,7 @@
   </ukho-dialogue> <br />
   <h1>Search files</h1>
   <p class="light">Complete the parameters to create a search query</p>
-  <app-fss-search-row [fssSearchRows]="fssSearchRows" 
+  <app-fss-search-row [fssSearchRows]="fssSearchRows" [groupingLevels]="groupingLevels" [uiGroupings]="uiGroupings"
   (onFieldChanged)="onFieldChanged($event)"
   (onOperatorChanged)="onOperatorChanged($event)"
   (onSearchRowDeleted)="onSearchRowDeleted($event)"

@@ -58,4 +58,5 @@ export class UIGrouping {
   rowIndex: number;
   class: string;
   colspan: number;
+  rowGroupings: RowGrouping[]=[];
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FssSearchRow } from './../../../core/models/fss-search-types';
+import { FssSearchRow, GroupingLevel, UIGrouping } from './../../../core/models/fss-search-types';
 
 @Component({
   selector: 'app-fss-search-row',
@@ -8,6 +8,8 @@ import { FssSearchRow } from './../../../core/models/fss-search-types';
 })
 export class FssSearchRowComponent implements OnInit {
   @Input() fssSearchRows: FssSearchRow[] = [];
+  @Input() groupingLevels: GroupingLevel[] = [];
+  @Input() uiGroupings: UIGrouping[] = [];
   @Output() onSearchRowDeleted = new EventEmitter<number>();
   @Output() onFieldChanged = new EventEmitter<{ fieldValue: string, rowId: number }>();
   @Output() onOperatorChanged = new EventEmitter<{ operatorValue: string, rowId: number }>();

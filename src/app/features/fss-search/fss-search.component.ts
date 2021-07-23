@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FssSearchService } from './../../core/services/fss-search.service';
-import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel } from './../../core/models/fss-search-types';
+import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 
@@ -30,10 +30,11 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  currentGroupStartIndex:number=0;
-  currentGroupEndIndex:number=0;
-  rowGroupings:RowGrouping[]=[];
-  groupingLevels:GroupingLevel[]=[];
+  currentGroupStartIndex: number=0;
+  currentGroupEndIndex: number=0;
+  rowGroupings: RowGrouping[]=[];
+  groupingLevels: GroupingLevel[]=[];
+  uiGroupings: UIGrouping[] = [];
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
@@ -51,6 +52,7 @@ export class FssSearchComponent implements OnInit {
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
     this.rowId += 1;
+    this.createUIGrouping();
   }
 
   getDefaultSearchRow() {
@@ -234,9 +236,6 @@ export class FssSearchComponent implements OnInit {
   }
 
   onGroupClicked(){
-    
-    this.currentGroupStartIndex= 0; 
-    this.currentGroupEndIndex = 0; 
 
     let rowIndexArray:Array<number>=[];
     for(var i=0; i<this.fssSearchRows.length; i++){
@@ -254,7 +253,8 @@ export class FssSearchComponent implements OnInit {
         alert("Groups can not intersect each other.");      
     }
     else{       
-        this.AddGrouping();
+        this.AddGrouping();       
+        this.createUIGrouping(); 
     }
     console.log(this.fssSearchRows);
     console.log(this.rowGroupings);
@@ -276,41 +276,162 @@ isGroupIntersectWithOther() {
 }
 
 AddGrouping(){
-  if(this.groupingLevels.length == 0){
 
-    this.rowGroupings.push({        
-      startIndex: this.currentGroupStartIndex, 
-      endIndex: this.currentGroupEndIndex
-    });
+  this.rowGroupings.push({        
+    startIndex: this.currentGroupStartIndex, 
+    endIndex: this.currentGroupEndIndex
+  });
+  
+  if(this.groupingLevels.length == 0){   
 
     var groupingLevel = new GroupingLevel();
     groupingLevel.level = 1;
     groupingLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
     this.groupingLevels.push(groupingLevel);
-  }
-  else {
-    //is current level belongs to exisitng inner grouping level
-    if((this.groupingLevels.find(g => g.rowGroupings.find(
-      r => r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupStartIndex &&
-      r.startIndex <= this.currentGroupEndIndex && r.endIndex >= this.currentGroupEndIndex)))!== undefined)
-      {
-        alert("Inner grouping not supported.");
+
+  }  
+  else if(this.isOuterLevelGroup()){
+        
+    var matchedGroupingLevel = this.groupingLevels.filter(g=> g.rowGroupings.some( r => 
+        r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
+
+    var newLevel = new GroupingLevel();
+    var matchedLevel = matchedGroupingLevel[matchedGroupingLevel.length-1];
+    
+    if(matchedLevel !== undefined){
+      var currentlevel = this.groupingLevels.find(g => g.level === matchedLevel.level && g.rowGroupings.find(r=> 
+        r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));      
+      
+      if(currentlevel !== undefined) {
+        newLevel = currentlevel;      
       }
+      else {
+        newLevel.level = matchedLevel.level + 1;
+      }
+    }
+      
+    var newLevelIndex = this.groupingLevels.findIndex(i => i.level === newLevel.level);           
+    if(newLevelIndex !== -1){
+      this.groupingLevels[newLevelIndex].rowGroupings.push({startIndex:this.currentGroupStartIndex, endIndex:this.currentGroupEndIndex});
+    }
     else{
-      this.rowGroupings.push({        
-      startIndex: this.currentGroupStartIndex, 
-      endIndex: this.currentGroupEndIndex
-    });
-      //TODO      
-      //if current grouping belongs to same level (means outside of exisitng indexes) - Add rowGrouping at same level
-      //if current grouping belongs to new outer level - Add rowGrouping at new grouping level (level +1)
-      //create UIGrouping based on grouping level (class + colspan implementation)
-      //reset UIGrouping on delete row
-      //reset UIGrouping on add new row
+      newLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
+      this.groupingLevels.push(newLevel);
+    }
+  }     
+  else if(this.isInnerLevelOfExistingGroup()) {
+        alert("Inner grouping not supported.");
+        this.rowGroupings.pop();
+  }    
+  else if(this.isInnerLevelGroup()){  
 
-     }
+    var existingGroupingLevel = this.groupingLevels.filter(g => g.rowGroupings.some( r =>    
+      (r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) ||
+      (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex )));
+
+      var existingLevel = existingGroupingLevel[0];
+      var existingLevelIndex = this.groupingLevels.findIndex(i => i === existingLevel);        
+      existingLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
+
+      this.groupingLevels[existingLevelIndex] = existingLevel;
+  }    
+}
+
+isOuterLevelGroup(){
+  var outerGroup =  this.groupingLevels.filter(g=> g.rowGroupings.some( 
+    r => r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
+
+  if (outerGroup.length>0){
+    return true;
   }
+  return false;
 }
 
+isInnerLevelOfExistingGroup(){
+  var innerGroup = this.groupingLevels.filter(g => g.rowGroupings.find(
+                  r => r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));
 
+  if (innerGroup.length>0){
+    return true;
+  }
+  return false;
 }
+
+isInnerLevelGroup(){  
+  var innerGroup = this.groupingLevels.find(g => g.rowGroupings.find( r => 
+    ((r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) && r.startIndex < this.currentGroupEndIndex) ||
+    (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex )));
+
+    if (innerGroup !== undefined){
+      return true;
+    }
+    return false;
+}
+
+createUIGrouping(){
+  this.uiGroupings = [];
+
+  if(this.groupingLevels.length > 0){
+    var maxLevel = this.groupingLevels[this.groupingLevels.length-1].level;
+
+    for(var i = 0; i < this.fssSearchRows.length; i++){  
+      var j = maxLevel;
+
+      while(j>=1){
+        var groupingLevel = this.groupingLevels.find(g=>g.level === j);               
+        var uiGrouping = new UIGrouping();
+        uiGrouping.rowIndex = i;
+        uiGrouping.class = this.getUIGroupClass(i, groupingLevel!);
+        uiGrouping.colspan = this.getUIGroupingColspan(i, groupingLevel!);
+        uiGrouping.rowGroupings = this.getUIRowGrouping(i, groupingLevel!);
+        this.uiGroupings.push(uiGrouping);  
+        
+        j = j - uiGrouping.colspan; 
+      }          
+    }
+  }
+  console.log(this.uiGroupings);
+}
+
+getUIGroupClass(rowIndex: number, groupingLevel: GroupingLevel){
+  var groupingClass = "";
+
+  if(groupingLevel.rowGroupings.find(g=>g.startIndex == rowIndex)){
+    groupingClass = "group group-start";
+  }
+  else if(groupingLevel.rowGroupings.find(g=>g.endIndex == rowIndex)){
+    groupingClass = "group group-end";
+  }
+  else if(groupingLevel.rowGroupings.find(g=>g.startIndex < rowIndex && g.endIndex > rowIndex)){
+    groupingClass = "group";
+  }
+  else{
+    groupingClass = "no-group";
+  }
+
+  return groupingClass;
+}
+
+getUIGroupingColspan(rowIndex:number, groupingLevel: GroupingLevel) {
+  var groupingLevels = this.groupingLevels.slice().reverse()
+       .filter(gl => gl.level <= groupingLevel.level && gl.rowGroupings
+       .some(g => rowIndex >= g.startIndex &&
+        rowIndex <= g.endIndex ));
+
+    if(groupingLevels.length > 1) {
+      return groupingLevels[0].level - groupingLevels[1].level; 
+    } 
+    else if(groupingLevels.length === 1 && groupingLevels[0].level !== groupingLevel.level ) {
+      return groupingLevels[0].level;
+    }
+    else {
+      return groupingLevel.level;
+    }      
+}
+
+getUIRowGrouping(rowIndex: number, groupingLevel:GroupingLevel){
+  var rowGrouping = groupingLevel.rowGroupings.filter(r=>r.startIndex == rowIndex);
+  return rowGrouping;
+}
+
+} 
