@@ -2,6 +2,7 @@ import { ElementRef, OnChanges } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
 import { AppConfigService } from '../../../core/services/app-config.service';
+
 @Component({
   selector: 'app-fss-search-results',
   templateUrl: './fss-search-results.component.html',
@@ -11,8 +12,8 @@ export class FssSearchResultsComponent implements OnChanges {
   @Input() public searchResult: Array<any> = [];
   searchResultVM: SearchResultViewModel[] = [];
   baseUrl: string;
-
   public removeEventListener: () => void;
+
 
   constructor(private elementRef: ElementRef) { }
 
@@ -34,7 +35,7 @@ export class FssSearchResultsComponent implements OnChanges {
       if (elem) {
         elem.forEach((res: any) => {
           res.style.cursor = 'pointer';
-          res.addEventListener('click', this.downloadFile.bind(res));
+          res.addEventListener('click', this.downloadFile.bind(res, this));
         })
       }
     }, 0);
@@ -76,7 +77,7 @@ export class FssSearchResultsComponent implements OnChanges {
         FileName: files[i]["filename"],
         MimeType: files[i]["mimeType"],
         FileSize: formatBytes(files[i]["fileSize"]),
-        Download: '<div class="fileDownload" rel="' + link + '"><i class="fa fa-download fa-1x"></i></div>'
+        Download: '<div class="fileDownload" rel="' + link + '" download="' + files[i]["filename"] + '"><i class="fa fa-download fa-1x"></i></div>'
       });
     }
 
@@ -96,16 +97,32 @@ export class FssSearchResultsComponent implements OnChanges {
     }
   }
 
-  downloadFile(res: any) {
+  downloadFile(obj: any, res: any) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = res.currentTarget.getAttribute('rel');
+    var fileName = res.currentTarget.getAttribute('download');
     if (filePath) {
       filePath = filePath.substring(1, filePath.length); //remove initial / from the file path
       res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
-      window.open(this.baseUrl + filePath);
+      //window.open(this.baseUrl + filePath);
+
       res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
+      obj.fileShareApiService.downloadFile(filePath).subscribe((response: any) => { //when you use stricter type checking
+    
+        const fileURL = URL.createObjectURL(response);
+        console.log(fileURL);
+
+        var a = document.createElement("a");
+        a.href = fileURL;
+        a.target = '_blank';
+        // Don't set download attribute
+        a.download = fileName;
+        a.click();
+      }), (error: any) => console.log('Error downloading the file'), //when you use stricter type checking
+        () => console.info('File downloaded successfully');
     }
   }
+
 }
 
 // Convert file size from bytes to respective size units
