@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 
@@ -8,9 +8,9 @@ export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     private httpClient: HttpClient;
     constructor(private http: HttpClient
-        ,private httpBackend: HttpBackend) {
-            this.httpClient = new HttpClient(httpBackend);
-         }
+        , private httpBackend: HttpBackend) {
+        this.httpClient = new HttpClient(httpBackend);
+    }
 
     getSearchResult(payload: string): Observable<any> {
         if (payload === "") {
@@ -30,6 +30,9 @@ export class FileShareApiService {
     // }
 
     downloadFile(filePath: string): any {
-        return this.httpClient.get(this.baseUrl + filePath, { responseType: 'blob' });
+        var headers; headers = new HttpHeaders({
+            'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
+        });
+        return this.httpClient.get(this.baseUrl + filePath, { headers, responseType: 'blob' });
     }
 }
