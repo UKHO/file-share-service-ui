@@ -2,6 +2,7 @@ import { ElementRef, OnChanges } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
 import { AppConfigService } from '../../../core/services/app-config.service';
+import { FileShareApiService } from '../../../core/services/file-share-api.service';
 
 @Component({
   selector: 'app-fss-search-results',
@@ -15,7 +16,8 @@ export class FssSearchResultsComponent implements OnChanges {
   public removeEventListener: () => void;
 
 
-  constructor(private elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef
+    , private fileShareApiService: FileShareApiService) { }
 
   ngOnChanges(): void {
     this.searchResultVM = [];
