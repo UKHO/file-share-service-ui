@@ -199,6 +199,12 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = true;
     this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
     this.ukhoDialog.nativeElement.focus();
+    if(this.displayLoader === false){
+      window.scroll({
+        top: 150,
+        behavior: 'smooth' 
+      });
+   }
   }
 
   handleSuccess(res: any) {
