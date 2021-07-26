@@ -228,7 +228,6 @@ export class FssSearchComponent implements OnInit {
   handleSuccess() {
 
     this.pagingLinks = this.searchResult['_Links'];
-    console.log(this.pagingLinks);
     this.searchResult = Array.of(this.searchResult['entries']);
     this.displaySearchResult = true;
     this.hideMessage();
@@ -252,58 +251,31 @@ export class FssSearchComponent implements OnInit {
     }
   }
   pageChange(currentPage: number) {
-    if (currentPage > 1) {
-      this.displayLoader = true;
-      console.log(currentPage);
-      var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
-      this.currentPage = currentPage;
-      if (paginatorAction === "next") {
-        
-        var nextPageLink = this.pagingLinks!.next!.href;
-        console.log(nextPageLink!);
-
+    this.displayLoader = true;
+    var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
+    this.currentPage = currentPage;
+    if (paginatorAction === "next") {
+      var nextPageLink = this.pagingLinks!.next!.href;
         this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
-          this.searchResult = res;
-          this.handleSuccess()
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
-      }
-      else if (paginatorAction === "prev"){
-        console.log(this.pagingLinks!);
-        var previousPageLink = this.pagingLinks!.previous!.href;
-        console.log(previousPageLink!);
-        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
-          this.searchResult = res;
-          this.handleSuccess()
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
-
-      }
-
+        this.searchResult = res;
+        this.handleSuccess()
+      },
+        (error) => {
+          this.handleErrMessage(error);
+        }
+      );
     }
-    if (currentPage === 1) {
-      if (this.pagingLinks.previous) {
-        this.displayLoader = true;
-        this.currentPage = currentPage;
-        var previousPageLink = this.pagingLinks!.previous!.href;
-        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
-          this.searchResult = res;
-          this.handleSuccess()
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
-      }
-
+    else if (paginatorAction === "prev") {
+      console.log(this.pagingLinks!);
+      var previousPageLink = this.pagingLinks!.previous!.href;
+      this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
+        this.searchResult = res;
+        this.handleSuccess()
+      },
+        (error) => {
+          this.handleErrMessage(error);
+        }
+      );
     }
-
-
   }
 }
