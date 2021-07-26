@@ -237,6 +237,8 @@ export class FssSearchComponent implements OnInit {
 
   onGroupClicked(){
 
+    this.displaySearchResult = false;
+    this.hideMessage();
     let rowIndexArray:Array<number>=[];
     for(var i=0; i<this.fssSearchRows.length; i++){
       if(this.fssSearchRows[i].group){
@@ -247,18 +249,21 @@ export class FssSearchComponent implements OnInit {
     this.currentGroupEndIndex = rowIndexArray[rowIndexArray.length-1]; 
 
     if (this.isGroupAlreadyExist()){
-        alert("A group already exists for selected clauses.");
+        this.showMessage(
+          "info",
+          "A group already exists for selected clauses."
+        );
     }
     else if(this.isGroupIntersectWithOther()){
-        alert("Groups can not intersect each other.");      
+        this.showMessage(
+          "info",
+          "Groups can not intersect each other."
+        );
     }
     else{       
         this.AddGrouping();       
         this.createUIGrouping(); 
     }
-    console.log(this.fssSearchRows);
-    console.log(this.rowGroupings);
-    console.log(this.groupingLevels);    
 }
 
 isGroupAlreadyExist() {
@@ -320,7 +325,10 @@ AddGrouping(){
     }
   }     
   else if(this.isInnerLevelOfExistingGroup()) {
-        alert("Inner grouping not supported.");
+        this.showMessage(
+          "info",
+          "Inner grouping not supported."
+        );
         this.rowGroupings.pop();
   }    
   else if(this.isInnerLevelGroup()){  
@@ -390,7 +398,6 @@ createUIGrouping(){
       }          
     }
   }
-  console.log(this.uiGroupings);
 }
 
 getUIGroupClass(rowIndex: number, groupingLevel: GroupingLevel){
