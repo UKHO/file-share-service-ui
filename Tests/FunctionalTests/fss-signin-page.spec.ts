@@ -1,11 +1,11 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig } = require('./pageObjects');
+const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import { join } from 'path'
 let name: string;
 
 describe('Test Sign In Page Scenario', () => {
-  jest.setTimeout(30000);
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   let browser: Browser;
   let context: BrowserContext;
   let page: Page;
@@ -31,7 +31,7 @@ describe('Test Sign In Page Scenario', () => {
       page.waitForEvent('popup')
     ]);
     try {
-      popup.setDefaultTimeout(30000);
+      popup.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
       popup.setViewportSize({ 'width': 800, 'height': 1024 })
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)
       popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, username)
