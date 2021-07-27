@@ -4,6 +4,7 @@
     preset: 'jest-playwright-preset',
     roots: ['<rootDir>/'],
     testMatch: ["**/?(*.)+(spec).+(ts|js)"],
+    reporters: ["default","jest-junit"],
     transform: {
       "^.+\\.(ts)$": "ts-jest",
     },
