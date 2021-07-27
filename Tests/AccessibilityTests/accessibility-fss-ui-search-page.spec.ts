@@ -70,7 +70,6 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   })  
 
   test('should return no violation for Group checkbox element', async() =>{    
-    page.waitForSelector("#ukho-form-field-1");
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-1', {
         axeOptions: {
@@ -88,7 +87,6 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   })
 
   test('should return no violation for Attributes dropdown element', async() =>{    
-    page.waitForSelector("#ukho-form-field-2");
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-2', {
         axeOptions: {
@@ -106,7 +104,6 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   })
 
   test('should return no violation for Operator dropdown element', async() =>{    
-    page.waitForSelector("#ukho-form-field-3");
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-3', {
         axeOptions: {
@@ -124,7 +121,6 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   })
 
   test('should return no violation for value inputbox element', async() =>{    
-    page.waitForSelector("#ukho-form-field-4");
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-4', {
         axeOptions: {
