@@ -251,13 +251,15 @@ export class FssSearchComponent implements OnInit {
     if (this.isGroupAlreadyExist()){
         this.showMessage(
           "info",
-          "A group already exists for selected clauses."
+          "A group already exists for selected clauses.",
+          "A duplicate group cannot be created."
         );
     }
     else if(this.isGroupIntersectWithOther()){
         this.showMessage(
           "info",
-          "Groups can not intersect each other."
+          "Groups can not intersect each other.",
+          "A group can only contain complete groups, they cannot contain a part of another group."
         );
     }
     else{       
@@ -327,7 +329,8 @@ AddGrouping(){
   else if(this.isInnerLevelOfExistingGroup()) {
         this.showMessage(
           "info",
-          "Inner grouping not supported."
+          "Adding an inner group to a group is not supported.",
+          "To add an inner group, first remove the outer group, then add the inner group and re-add the outer group."
         );
         this.rowGroupings.pop();
   }    
