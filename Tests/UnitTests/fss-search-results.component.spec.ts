@@ -20,7 +20,7 @@ describe('FssSearchResultsComponent', () => {
       .compileComponents();
     AppConfigService.settings = {
       fssConfig: {
-        "apiUrl": "https://fssapiurl/"
+        "apiUrl": "https://dummyfssapiurl"
       }
     };
     fileShareApiService = TestBed.inject(FileShareApiService);

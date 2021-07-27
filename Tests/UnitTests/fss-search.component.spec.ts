@@ -37,7 +37,7 @@ describe('FssSearchComponent', () => {
       .compileComponents();
     AppConfigService.settings = {
       fssConfig: {
-        "apiUrl": "https://fssapiurl/"
+        "apiUrl": "https://dummyfssapiurl "
       }
     };
     searchService = TestBed.inject(FssSearchService);

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="51" failures="0" errors="0" time="12.943">
+  <testsuite name="FssSearchService" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:22" time="3.496" tests="8">
+    <testcase classname="FssSearchService should be created" name="FssSearchService should be created" time="0.068">
+    </testcase>
+    <testcase classname="FssSearchService should convert object of type any into Field[]" name="FssSearchService should convert object of type any into Field[]" time="0.018">
+    </testcase>
+    <testcase classname="FssSearchService should return the count of getJoinOperators list as 2" name="FssSearchService should return the count of getJoinOperators list as 2" time="0.061">
+    </testcase>
+    <testcase classname="FssSearchService should return the count of getOperators list as 14" name="FssSearchService should return the count of getOperators list as 14" time="0.028">
+    </testcase>
+    <testcase classname="FssSearchService should return the value of first JoinOperator as and" name="FssSearchService should return the value of first JoinOperator as and" time="0.028">
+    </testcase>
+    <testcase classname="FssSearchService should return the value of last JoinOperator as or" name="FssSearchService should return the value of last JoinOperator as or" time="0.014">
+    </testcase>
+    <testcase classname="FssSearchService should return the the value of first Operator list as eq" name="FssSearchService should return the the value of first Operator list as eq" time="0.016">
+    </testcase>
+    <testcase classname="FssSearchService should return the the value of last Operator list as not contains" name="FssSearchService should return the the value of last Operator list as not contains" time="0.014">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssPhaseBannerComponent" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:22" time="4.277" tests="7">
+    <testcase classname="FssPhaseBannerComponent should have banner component" name="FssPhaseBannerComponent should have banner component" time="0.245">
+    </testcase>
+    <testcase classname="FssPhaseBannerComponent should render the phase-value &quot;alpha&quot; in ukho-phase-banner" name="FssPhaseBannerComponent should render the phase-value &quot;alpha&quot; in ukho-phase-banner" time="0.087">
+    </testcase>
+    <testcase classname="FssPhaseBannerComponent should render the phase-value &quot;alpha&quot; in ukho-phase-banner" name="FssPhaseBannerComponent should render the phase-value &quot;alpha&quot; in ukho-phase-banner" time="0.088">
+    </testcase>
+    <testcase classname="FssPhaseBannerComponent should render the feedback link of ukho-phase-banner" name="FssPhaseBannerComponent should render the feedback link of ukho-phase-banner" time="0.051">
+    </testcase>
+    <testcase classname="FssPhaseBannerComponent should exist" name="FssPhaseBannerComponent should exist" time="0.048">
+    </testcase>
+    <testcase classname="FssPhaseBannerComponent should exist phase in banner" name="FssPhaseBannerComponent should exist phase in banner" time="0.04">
+    </testcase>
+    <testcase classname="FssPhaseBannerComponent should exist mailto link in banner" name="FssPhaseBannerComponent should exist mailto link in banner" time="0.033">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssFooterComponent" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:22" time="4.395" tests="6">
+    <testcase classname="FssFooterComponent should have footer component" name="FssFooterComponent should have footer component" time="0.312">
+    </testcase>
+    <testcase classname="FssFooterComponent should render image and navigation in ukho-footer" name="FssFooterComponent should render image and navigation in ukho-footer" time="0.136">
+    </testcase>
+    <testcase classname="FssFooterComponent should render the text element of ukho-footer" name="FssFooterComponent should render the text element of ukho-footer" time="0.07">
+    </testcase>
+    <testcase classname="FssFooterComponent should exist" name="FssFooterComponent should exist" time="0.052">
+    </testcase>
+    <testcase classname="FssFooterComponent should exist copyright statement in footer" name="FssFooterComponent should exist copyright statement in footer" time="0.061">
+    </testcase>
+    <testcase classname="FssFooterComponent should exist 2 menu items in footer" name="FssFooterComponent should exist 2 menu items in footer" time="0.065">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssHomeComponent" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:22" time="4.473" tests="5">
+    <testcase classname="FssHomeComponent should have home component" name="FssHomeComponent should have home component" time="0.225">
+    </testcase>
+    <testcase classname="FssHomeComponent should render the element ukho-card" name="FssHomeComponent should render the element ukho-card" time="0.098">
+    </testcase>
+    <testcase classname="FssHomeComponent should render different texts inside ukho-card" name="FssHomeComponent should render different texts inside ukho-card" time="0.09">
+    </testcase>
+    <testcase classname="FssHomeComponent should render SignIn button inside ukho-card" name="FssHomeComponent should render SignIn button inside ukho-card" time="0.058">
+    </testcase>
+    <testcase classname="FssHomeComponent should render Create Account link inside ukho-card" name="FssHomeComponent should render Create Account link inside ukho-card" time="0.068">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssHeaderComponent" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:22" time="5.106" tests="7">
+    <testcase classname="FssHeaderComponent should exist msalService" name="FssHeaderComponent should exist msalService" time="0.298">
+    </testcase>
+    <testcase classname="FssHeaderComponent should render &quot;Skip to content&quot; in an anchor tag" name="FssHeaderComponent should render &quot;Skip to content&quot; in an anchor tag" time="0.258">
+    </testcase>
+    <testcase classname="FssHeaderComponent should have header component" name="FssHeaderComponent should have header component" time="0.146">
+    </testcase>
+    <testcase classname="FssHeaderComponent should render the title element of ukho-header" name="FssHeaderComponent should render the title element of ukho-header" time="0.119">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist" name="FssHeaderComponent should exist" time="0.088">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist the title in header" name="FssHeaderComponent should exist the title in header" time="0.085">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist Search menu item in header" name="FssHeaderComponent should exist Search menu item in header" time="0.085">
+    </testcase>
+  </testsuite>
+  <testsuite name="AppComponent" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:26" time="1.026" tests="1">
+    <testcase classname="AppComponent should exist" name="AppComponent should exist" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSearchFilterService" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:26" time="1.479" tests="3">
+    <testcase classname="FssSearchFilterService should be created" name="FssSearchFilterService should be created" time="0.018">
+    </testcase>
+    <testcase classname="FssSearchFilterService should create valid filter expression for single search criteria" name="FssSearchFilterService should create valid filter expression for single search criteria" time="0.016">
+    </testcase>
+    <testcase classname="FssSearchFilterService should create valid filter expression for multiple search criteria" name="FssSearchFilterService should create valid filter expression for multiple search criteria" time="0.042">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSearchResultsComponent" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:22" time="6.528" tests="1">
+    <testcase classname="FssSearchResultsComponent should create" name="FssSearchResultsComponent should create" time="0.107">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSearchComponent" errors="0" failures="0" skipped="0" timestamp="2021-07-27T11:17:22" time="8.687" tests="13">
+    <testcase classname="FssSearchComponent should create" name="FssSearchComponent should create" time="0.283">
+    </testcase>
+    <testcase classname="FssSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.15">
+    </testcase>
+    <testcase classname="FssSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.104">
+    </testcase>
+    <testcase classname="FssSearchComponent should return filtered operators based on number datatype" name="FssSearchComponent should return filtered operators based on number datatype" time="0.092">
+    </testcase>
+    <testcase classname="FssSearchComponent should return value type text based on datatype string" name="FssSearchComponent should return value type text based on datatype string" time="0.095">
+    </testcase>
+    <testcase classname="FssSearchComponent should return operator type nullOperator based on operator value ne null" name="FssSearchComponent should return operator type nullOperator based on operator value ne null" time="0.109">
+    </testcase>
+    <testcase classname="FssSearchComponent should return second row based on rowid passed" name="FssSearchComponent should return second row based on rowid passed" time="0.091">
+    </testcase>
+    <testcase classname="FssSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.1">
+    </testcase>
+    <testcase classname="FssSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.075">
+    </testcase>
+    <testcase classname="FssSearchComponent should return flag false when FileSize value is passed as number" name="FssSearchComponent should return flag false when FileSize value is passed as number" time="0.088">
+    </testcase>
+    <testcase classname="FssSearchComponent should return row count 2 when Add new line is called twice" name="FssSearchComponent should return row count 2 when Add new line is called twice" time="0.101">
+    </testcase>
+    <testcase classname="FssSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.073">
+    </testcase>
+    <testcase classname="FssSearchComponent should disable Value input when nullOperator is selected in the row" name="FssSearchComponent should disable Value input when nullOperator is selected in the row" time="0.07">
+    </testcase>
+  </testsuite>
+</testsuites>
