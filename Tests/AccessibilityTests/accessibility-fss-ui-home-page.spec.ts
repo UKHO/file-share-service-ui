@@ -199,7 +199,8 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
   })
 
   afterAll(async () => {
-    await browser.close()
+    await page.close();
+    await browser.close();
   })
 
 })

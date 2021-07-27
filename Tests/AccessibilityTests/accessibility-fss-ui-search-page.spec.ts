@@ -163,4 +163,10 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       expect(violations.length).toBe(0);
   })  
 
+  afterAll(async () => {
+    await page.close();  
+    await context.close(); 
+    await browser.close();
+  })
+
 })
