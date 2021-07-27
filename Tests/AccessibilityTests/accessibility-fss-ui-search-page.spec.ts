@@ -1,7 +1,7 @@
 import { chromium,BrowserContext, Browser, Page } from 'playwright'
 import { injectAxe, getViolations} from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
-const { pageObjectsConfig } = require('../FunctionalTests/pageObjects.json');
+const { pageObjectsConfig,pageTimeOut } = require('../FunctionalTests/pageObjects.json');
 import { join } from 'path'
 let name: string;
 
@@ -10,7 +10,7 @@ let context: BrowserContext;
 let page: Page
 
 describe('FSS UI Search Page Accessibility Test Scenarios', () => {
-  jest.setTimeout(30000);
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   beforeAll(async () => {
     browser = await chromium.launch({slowMo:100})
     context = await browser.newContext();
@@ -27,7 +27,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       page.waitForEvent('popup')
     ]);
     try {
-      popup.setDefaultTimeout(30000);
+      popup.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
       popup.setViewportSize({ 'width': 800, 'height': 1024 })
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)
       popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, username)
@@ -69,7 +69,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     expect(violations.length).toBe(0);
   })  
 
-  test('should return no violation for Group checkbox element', async() =>{
+  test('should return no violation for Group checkbox element', async() =>{    
     page.waitForSelector("#ukho-form-field-1");
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-1', {
@@ -87,7 +87,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for Attributes dropdown element', async() =>{
+  test('should return no violation for Attributes dropdown element', async() =>{    
     page.waitForSelector("#ukho-form-field-2");
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-2', {
@@ -105,7 +105,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for Operator dropdown element', async() =>{
+  test('should return no violation for Operator dropdown element', async() =>{    
     page.waitForSelector("#ukho-form-field-3");
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-3', {
@@ -123,7 +123,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for value inputbox element', async() =>{
+  test('should return no violation for value inputbox element', async() =>{    
     page.waitForSelector("#ukho-form-field-4");
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-4', {
@@ -141,7 +141,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for search result table', async() =>{
+  test('should return no violation for search result table', async() =>{    
     await page.selectOption("#ukho-form-field-2","BusinessUnit");
     await page.selectOption("#ukho-form-field-3","eq");    
     await page.fill("#ukho-form-field-4","adds");
@@ -162,5 +162,11 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       }
       expect(violations.length).toBe(0);
   })  
+
+  afterAll(async () => {
+    await page.close();  
+    await context.close(); 
+    await browser.close();
+  })
 
 })

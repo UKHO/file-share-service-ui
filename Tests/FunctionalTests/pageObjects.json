@@ -31,5 +31,9 @@
        "searchButtonSelector": "#Search",
        "homePageSignInHeaderInfoSelector" : ".card h1",
        "homePageSignInHeaderInfoText":"Sign in to access your files"
+    },
+    "pageTimeOut":
+    {
+      "timeOutInMilliSeconds" : 30000
     }
 }

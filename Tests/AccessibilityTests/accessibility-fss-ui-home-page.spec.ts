@@ -1,12 +1,14 @@
 import { chromium, Browser, Page } from 'playwright'
 import { injectAxe, getViolations} from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
+const{pageTimeOut} =require('../FunctionalTests/pageObjects.json')
+
 
 let browser: Browser
 let page: Page
 
 describe('FSS UI Home Page Accessibility Test Scenarios', () => {
-  jest.setTimeout(30000);
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   beforeAll(async () => {
     browser = await chromium.launch()
     page = await browser.newPage()
@@ -197,7 +199,8 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
   })
 
   afterAll(async () => {
-    await browser.close()
+    await page.close();
+    await browser.close();
   })
 
 })
