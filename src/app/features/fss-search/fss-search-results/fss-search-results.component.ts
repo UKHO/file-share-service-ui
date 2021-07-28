@@ -102,7 +102,6 @@ export class FssSearchResultsComponent implements OnChanges {
     var filePath = res.currentTarget.getAttribute('rel');
 
     if (filePath) {
-      filePath = filePath.substring(1, filePath.length); //remove initial / from the file path
       res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
       window.open(this.baseUrl + filePath);
       res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
