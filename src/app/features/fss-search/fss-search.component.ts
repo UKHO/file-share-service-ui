@@ -1,5 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
-
+import { Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
@@ -42,7 +41,8 @@ export class FssSearchComponent implements OnInit {
   pages: number;
   currentPage: number = 0;
   paginatorLabel: string;
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
+  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -215,6 +215,14 @@ export class FssSearchComponent implements OnInit {
     this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;
     this.displayMessage = true;
+    this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+    this.ukhoDialog.nativeElement.focus();
+    if(this.displayLoader === false){
+      window.scroll({
+        top: 150,
+        behavior: 'smooth' 
+      });
+   }
   }
 
   handleSuccess() {

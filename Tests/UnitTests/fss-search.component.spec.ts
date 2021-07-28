@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA , ViewChild, ElementRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule } from '@ukho/design-system';
 
@@ -21,6 +21,7 @@ describe('FssSearchComponent', () => {
   let fileShareApiService: FileShareApiService;
   let searchFilterservice: FssSearchFilterService;
   let searchService: FssSearchService;
+  let elementRef: ElementRef;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -52,21 +53,21 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return datatype as "attribute" when UserAttribute is passed', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     expect(component.getFieldDataType('$batch(product)')).toEqual('attribute');
   });
 
   test('should return datatype as "string" when SystemAttribute FileName is passed', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     expect(component.getFieldDataType('FileName')).toEqual('string');
   });
 
   test('should return filtered operators based on number datatype', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     const expectedOperators: Operator[] = [
       { value: 'eq', text: '=', type: 'operator', supportedDataTypes: ['string', 'number', 'date', 'attribute'] },
@@ -80,7 +81,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return value type text based on datatype string', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     var expectedValueType = "text";
     var result = component.getValueType('string');
@@ -88,7 +89,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return operator type nullOperator based on operator value ne null', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     var expectedOperatorType = "nullOperator";
     var changedOperator = { operatorValue: "ne null", rowId: 1 }
@@ -97,7 +98,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return second row based on rowid passed', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     let searchRows: FssSearchRow[] = [];
     let fields: Field[] = [
@@ -150,7 +151,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return flag false when FileSize value is passed as number', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     let searchRows: FssSearchRow[] = [];
     let fields: Field[] = [
@@ -172,7 +173,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return row count 2 when Add new line is called twice', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -182,7 +183,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return row count 2 when 3 rows exist and delete is called', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -194,7 +195,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should disable Value input when nullOperator is selected in the row', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());    
     component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', false));
