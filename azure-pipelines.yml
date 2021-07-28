@@ -184,13 +184,12 @@ stages:
               npm run test:auto
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-             continueOnError: true
 
            - task: PublishTestResults@2
              inputs:
                testRunner: 'JUnit'
                testResultsFiles: 'junit.xml'
-               mergeTestResults: false
+               mergeTestResults: true
                searchFolder:  '$(System.DefaultWorkingDirectory)/'
                testRunTitle: Functional Test Results
              displayName: 'Publish Functional Test Results'
