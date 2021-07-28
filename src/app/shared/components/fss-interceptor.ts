@@ -42,7 +42,7 @@ export class FssInterceptor implements HttpInterceptor {
       });
       //return next.handle(httpRequest.clone({ setHeaders: { headers } }));
     }
-    return next.handle(httpRequest.clone({ headers, withCredentials: true }));
+    return next.handle(httpRequest.clone({ headers }));
 
   }
 }
