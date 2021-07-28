@@ -186,7 +186,6 @@ stages:
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
            - task: PublishTestResults@2
-             condition: succeededOrFailed()
              inputs:
                testRunner: 'JUnit'
                testResultsFiles: 'junit.xml'
