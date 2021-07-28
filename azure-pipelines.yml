@@ -186,7 +186,6 @@ stages:
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
-
            - task: PublishTestResults@2
              inputs:
                testRunner: 'JUnit'
