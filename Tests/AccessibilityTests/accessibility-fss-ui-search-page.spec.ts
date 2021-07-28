@@ -122,7 +122,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
 
   test('should return no violation for value inputbox element', async() =>{    
     await injectAxe(page);
-    const violations  =await getViolations(page, '#ukho-form-field-', {
+    const violations  =await getViolations(page, '#ukho-form-field-4', {
         axeOptions: {
           runOnly: {
             type: 'tag',
