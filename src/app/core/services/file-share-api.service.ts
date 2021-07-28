@@ -10,22 +10,29 @@ export class FileShareApiService {
 
     constructor(private http: HttpClient, private msalService: MsalService) { }
 
-    getSearchResult(payload: string): Observable<any> {
+    getSearchResult(payload: string, isPagingRequest: boolean): Observable<any> {
         if (this.checkTokenExpiry()) {
-            if (payload === "") {
-                return this.http.get(this.baseUrl + 'batch');
+            if (!isPagingRequest) {
+                if (payload === "") {
+                    return this.http.get(this.baseUrl + '/batch');
+                }
+                else {
+                    return this.http.get(this.baseUrl + "/batch?$filter=" + encodeURIComponent(payload));
+                }
+
             }
             else {
-                return this.http.get(this.baseUrl + "batch?$filter=" + encodeURIComponent(payload));
+                return this.http.get(this.baseUrl + payload);
             }
         }
         else {
-            return of([])
+            return of([]);
         }
+
     }
 
     getBatchAttributes(): Observable<any> {
-        return this.http.get(this.baseUrl + 'attributes');
+        return this.http.get(this.baseUrl + '/attributes');
     }
 
     checkTokenExpiry() {
