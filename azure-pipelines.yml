@@ -169,7 +169,6 @@ stages:
               continueOnError: false
              displayName: 'Run Accessibility Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
-             continueOnError: true
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
@@ -185,12 +184,13 @@ stages:
               npm run test:auto
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             continueOnError: true
 
            - task: PublishTestResults@2
              inputs:
                testRunner: 'JUnit'
                testResultsFiles: 'junit.xml'
-               mergeTestResults: true
+               mergeTestResults: false
                searchFolder:  '$(System.DefaultWorkingDirectory)/'
                testRunTitle: Functional Test Results
              displayName: 'Publish Functional Test Results'
