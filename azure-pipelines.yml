@@ -169,6 +169,7 @@ stages:
               continueOnError: false
              displayName: 'Run Accessibility Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+             continueOnError: false
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
@@ -185,8 +186,8 @@ stages:
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
+
            - task: PublishTestResults@2
-             condition: succeededOrFailed()
              inputs:
                testRunner: 'JUnit'
                testResultsFiles: 'junit.xml'
