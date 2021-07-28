@@ -169,7 +169,7 @@ stages:
               continueOnError: false
              displayName: 'Run Accessibility Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
-             continueOnError: false
+             continueOnError: true
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
