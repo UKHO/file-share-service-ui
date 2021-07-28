@@ -20,4 +20,12 @@
   <div class="searchResult">
     <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult"></app-fss-search-results>
   </div>
+  <div class="pagination">
+    <ukho-paginator *ngIf="displaySearchResult"
+                    [label]="paginatorLabel" 
+                    [pages]="pages" 
+                    [currentPage]="currentPage"
+                    (pageChange)="pageChange($event)">
+    </ukho-paginator>
+  </div>
 </div>

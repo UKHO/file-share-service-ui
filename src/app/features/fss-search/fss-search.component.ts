@@ -7,6 +7,7 @@ import { FssSearchFilterService } from '../../core/services/fss-search-filter.se
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 
+
 @Component({
   selector: 'app-fss-search',
   templateUrl: './fss-search.component.html',
@@ -35,6 +36,12 @@ export class FssSearchComponent implements OnInit {
   filterList: string[] = new Array<string>();
   typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
   selectedRow: number;
+  pageRecordCount: number = 10;
+  searchResultTotal: number;
+  pagingLinks: any = [];
+  pages: number;
+  currentPage: number = 0;
+  paginatorLabel: string;
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
 
   ngOnInit(): void {
@@ -159,8 +166,28 @@ export class FssSearchComponent implements OnInit {
       console.log(filter);
       if (filter != null) {
         this.searchResult = [];
-        this.fileShareApiService.getSearchResult(filter).subscribe((res) => {
-          this.handleSuccess(res)
+        this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
+          this.searchResult = res;
+          if (this.searchResult.count > 0) {
+            var searchResultCount = this.searchResult['count'];
+            this.searchResultTotal = this.searchResult['total'];
+            this.currentPage = 1;
+            this.pages = this.searchResultTotal % searchResultCount === 0 ?
+              Math.floor(this.searchResultTotal / searchResultCount) :
+              (Math.floor(this.searchResultTotal / searchResultCount) + 1);
+            this.handleSuccess()
+          }
+          else {
+            this.searchResult = [];
+            this.displaySearchResult = false;
+            this.showMessage(
+              "info",
+              "No results can be found for this search",
+              "Try again using different parameters in the search query."
+            );
+            this.displayLoader = false;
+          }
+
         },
           (error) => {
             this.handleErrMessage(error);
@@ -190,24 +217,19 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = true;
   }
 
-  handleSuccess(res: any) {
-    if (res.count > 0) {
-      this.searchResult = res;
-      this.searchResult = Array.of(this.searchResult['entries']);
-      this.displaySearchResult = true;
-      this.hideMessage();
-      this.displayLoader = false;
-    }
-    else {
-      this.searchResult = [];
-      this.displaySearchResult = false;
-      this.showMessage(
-        "info",
-        "No results can be found for this search",
-        "Try again using different parameters in the search query."
-      );
-      this.displayLoader = false;
-    }
+  handleSuccess() {
+
+    this.pagingLinks = this.searchResult['_Links'];
+    this.searchResult = Array.of(this.searchResult['entries']);
+    this.displaySearchResult = true;
+    this.hideMessage();
+    this.setPaginatorLabel(this.currentPage);
+    this.displayLoader = false;
+  }
+
+  private setPaginatorLabel(currentPage: number) {
+    this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
+      "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
   }
 
   handleErrMessage(err: any) {
@@ -218,6 +240,34 @@ export class FssSearchComponent implements OnInit {
         errmsg += err.error.errors[i]['description'] + '\n';
       }
       this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    }
+  }
+  pageChange(currentPage: number) {
+    this.displayLoader = true;
+    var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
+    this.currentPage = currentPage;
+    if (paginatorAction === "next") {
+      var nextPageLink = this.pagingLinks!.next!.href;
+        this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
+        this.searchResult = res;
+        this.handleSuccess()
+      },
+        (error) => {
+          this.handleErrMessage(error);
+        }
+      );
+    }
+    else if (paginatorAction === "prev") {
+      console.log(this.pagingLinks!);
+      var previousPageLink = this.pagingLinks!.previous!.href;
+      this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
+        this.searchResult = res;
+        this.handleSuccess()
+      },
+        (error) => {
+          this.handleErrMessage(error);
+        }
+      );
     }
   }
 
@@ -256,5 +306,4 @@ export class FssSearchComponent implements OnInit {
     changedFieldRow!.valueIsdisabled = false;
     changedFieldRow!.value = "";
   }
-
 }

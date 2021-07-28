@@ -1,5 +1,5 @@
 import { FssSearchComponent } from './fss-search.component';
-import { ButtonModule,SelectModule,CheckboxModule,TextinputModule,DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule,} from '@ukho/design-system';
+import { ButtonModule,SelectModule,CheckboxModule,TextinputModule,DialogueModule, ExpansionModule, CardModule, TableModule,PaginatorModule, TypeaheadModule } from '@ukho/design-system';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FssSearchRoutingModule } from './fss-search-routing.module';
@@ -20,7 +20,7 @@ import { FilterPipe } from './filter.pipe';
   imports: [
     CommonModule,
     FssSearchRoutingModule,
-    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule, ReactiveFormsModule,DialogueModule,ExpansionModule,CardModule, TableModule, TypeaheadModule,
+    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule, ReactiveFormsModule,DialogueModule,ExpansionModule,CardModule, TableModule,PaginatorModule, TypeaheadModule
   ],
   providers: [FileShareApiService]
 })
