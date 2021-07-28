@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, ViewChild, ElementRef} from '@angular/core';
+import { NO_ERRORS_SCHEMA , ViewChild, ElementRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule } from '@ukho/design-system';
 
@@ -22,6 +22,7 @@ describe('FssSearchComponent', () => {
   let searchFilterservice: FssSearchFilterService;
   let searchService: FssSearchService;
   let elementRef: ElementRef;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,
