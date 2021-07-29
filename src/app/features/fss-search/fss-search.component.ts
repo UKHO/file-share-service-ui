@@ -176,7 +176,7 @@ export class FssSearchComponent implements OnInit {
   getSearchResult() {
     if (this.validateSearchInput()) {
       this.displayLoader = true;
-      var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
+      var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows,this.rowGroupings);
       console.log(filter);
       if (filter != null) {
         this.searchResult = [];

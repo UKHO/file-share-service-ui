@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FssSearchRow } from '../models/fss-search-types';
+import { FssSearchRow, RowGrouping } from '../models/fss-search-types';
 
 @Injectable({
   providedIn: 'root'
@@ -15,22 +15,26 @@ export class FssSearchFilterService {
 
   constructor() { }
 
-  getFilterExpression(fssSearchRows: FssSearchRow[]) {
+  getFilterExpression(fssSearchRows: FssSearchRow[],groupings : RowGrouping[]) {
     
     var filter='';
 
-    for(var i=0; i < fssSearchRows.length; i++) {
+    for(var rowIndex=0; rowIndex < fssSearchRows.length; rowIndex++) {
 
-      var fssSearchRow = fssSearchRows[i];
+      var fssSearchRow = fssSearchRows[rowIndex];
       // getFieldDataType
       const fieldDataType = this.getFieldDataType(fssSearchRow);
       // getOperatorType
       const operaterType = this.getOperatorType(fssSearchRow);
 
       //Append join operator from second search condition
-      if(i != 0) {
+      if(rowIndex != 0) {
         filter = filter.concat(' ',fssSearchRow.selectedJoinOperator, ' ');        
       }
+      //Append opening barckets for grouping query.
+      var openingBracketCount = groupings.filter(g=>g.startIndex === rowIndex).length;
+      filter = filter.concat("(".repeat(openingBracketCount));
+        
       if(fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType){
         if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
@@ -53,6 +57,9 @@ export class FssSearchFilterService {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
         }
       }  
+      //Append closing barckets for grouping query
+      var closingBracketCount = groupings.filter(g=>g.endIndex === rowIndex).length;
+      filter = filter.concat(")".repeat(closingBracketCount));
     }
     return filter;
   }
