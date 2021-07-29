@@ -169,7 +169,7 @@ stages:
              continueOnError: false
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-             
+
            - task: PublishTestResults@2
              condition: succeededOrFailed()
              inputs:
@@ -184,6 +184,7 @@ stages:
               npm run test:a11y
              displayName: 'Run Accessibility Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+             continueOnError: false
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
