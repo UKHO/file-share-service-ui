@@ -32,17 +32,16 @@ export class FssInterceptor implements HttpInterceptor {
         localStorage.setItem('idToken', idToken);
         headers = new HttpHeaders({
           'Authorization': 'Bearer ' + idToken,
-          'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
+          'Access-Control-Allow-Origin': "*"
         });
       });
     } else {
       headers = new HttpHeaders({
         'Authorization': 'Bearer ' + idToken,
-        'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
+        'Access-Control-Allow-Origin': "*"
       });
       //return next.handle(httpRequest.clone({ setHeaders: { headers } }));
     }
-    return next.handle(httpRequest.clone({ headers }));
-
+    return next.handle(httpRequest.clone({ headers, withCredentials:false }));
   }
 }
