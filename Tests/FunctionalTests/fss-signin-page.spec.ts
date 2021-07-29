@@ -11,7 +11,7 @@ describe('Test Sign In Page Scenario', () => {
   let page: Page;
 
   beforeEach(async () => {
-    browser = await chromium.launch();
+    browser = await chromium.launch({slowMo:100});
     context = await browser.newContext();
     page = await context.newPage();
     await page.goto(autoTestConfig.url)

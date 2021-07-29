@@ -10,8 +10,9 @@ let page: Page
 describe('FSS UI Home Page Accessibility Test Scenarios', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   beforeAll(async () => {
-    browser = await chromium.launch()
+    browser = await chromium.launch({slowMo:100})
     page = await browser.newPage()
+    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
     await injectAxe(page)
   })
@@ -167,7 +168,7 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
   })
 
   test('should return no violations for main logo', async() =>{
-    const violations  =await getViolations(page, '#mainContainer >img', {
+    const violations  =await getViolations(page, '#mainContainer > .header-image', {
         axeOptions: {
           runOnly: {
             type: 'tag',
