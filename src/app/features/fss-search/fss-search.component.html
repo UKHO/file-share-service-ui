@@ -1,9 +1,13 @@
-<div class="spinner-wrapper" *ngIf="displayLoader"><i class="fas fa-spinner fa-pulse fa-3x"></i></div>
+<div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
 <div class="container" role="main" id="mainContainer">
-  <ukho-dialogue [type]='messageType' *ngIf="displayMessage">
-    <h3>{{messageTitle}}</h3>
-    <div style="white-space: pre-line">{{messageDesc}}</div>
-  </ukho-dialogue> <br />
+  
+<div #ukhoTarget>
+  <ukho-dialogue [type]='messageType' *ngIf="displayMessage" role="alert" aria-live="polite">
+      <h3>{{messageTitle}}</h3>
+      <div>{{messageDesc}}</div>
+  </ukho-dialogue>
+</div>
+
   <h1>Search files</h1>
   <p class="light">Complete the parameters to create a search query</p>
   <app-fss-search-row [fssSearchRows]="fssSearchRows"  (onFieldChanged)="onFieldChanged($event)"
@@ -19,5 +23,13 @@
 
   <div class="searchResult">
     <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult"></app-fss-search-results>
+  </div>
+  <div class="pagination">
+    <ukho-paginator *ngIf="displaySearchResult"
+                    [label]="paginatorLabel" 
+                    [pages]="pages" 
+                    [currentPage]="currentPage"
+                    (pageChange)="pageChange($event)">
+    </ukho-paginator>
   </div>
 </div>
