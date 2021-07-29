@@ -166,9 +166,9 @@ stages:
 
            - script: |
               npm run test:auto
-             continueOnError: false
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             continueOnError: false
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
@@ -184,10 +184,8 @@ stages:
               npm run test:a11y
              displayName: 'Run Accessibility Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
-             continueOnError: false
 
            - task: PublishTestResults@2
-             condition: succeededOrFailed()
              inputs:
                testRunner: 'JUnit'
                testResultsFiles: 'junit.xml'
