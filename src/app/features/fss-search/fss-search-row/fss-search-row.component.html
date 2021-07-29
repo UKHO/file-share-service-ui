@@ -2,7 +2,8 @@
     <caption class="sr-only">Search Query </caption>
     <thead>
         <tr>
-            <th class="searchFieldBold">Group</th>
+            <th><span class="fa fa-object-group grouping" [class.disabled]="this.enableGrouping == false" (click)="onGroupClick()"></span></th>
+            <th class="groups" [attr.colspan]="groupingLevels.length > 0 ? groupingLevels.length : 1"></th>
             <th class="searchFieldsRow">And/Or</th>
             <th class="searchFieldsRow">Field</th>
             <th class="searchFieldsRow">Operator</th>
@@ -12,8 +13,16 @@
     <tbody>
         <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
             <td>
-                <ukho-checkbox [(ngModel)]="fssSearchRow.group"></ukho-checkbox>
+                <ukho-checkbox [(ngModel)]="fssSearchRow.group" (change)="onCheckboxClick()"></ukho-checkbox>
             </td>
+            <td *ngIf="groupingLevels.length == 0"></td>
+            <ng-container *ngFor="let grouping of uiGroupings | filter:'rowIndex':i">
+                <td 
+                    class="{{grouping.class}} grouping-border"
+                    [attr.colspan]="grouping.colspan">
+                    <i *ngIf="grouping.class == 'group group-start'" class="fa fa-object-ungroup grouping"></i>
+                </td>
+            </ng-container>
             <td>
                 <ukho-select *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
