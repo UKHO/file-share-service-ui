@@ -171,7 +171,6 @@ stages:
              continueOnError: false
 
            - task: PublishTestResults@2
-             condition: succeededOrFailed()
              inputs:
                testRunner: 'JUnit'
                testResultsFiles: 'junit.xml'
