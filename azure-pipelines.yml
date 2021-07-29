@@ -168,7 +168,6 @@ stages:
               npm run test:auto
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-             continueOnError: false
 
            - task: PublishTestResults@2
              inputs:
