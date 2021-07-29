@@ -17,28 +17,49 @@
 p{
 	color: #333;
 }
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0,0,0,0);
+	border: 0;
+}
+
+ukho-dialogue section {
+    margin: 0 0 10px 0;
+}
 
 #mainContainer {
-	img.header-image {
-		width: 100%
+	.header-image {
+		width: 100%;
+		display: inherit;
+		height: 240px;
+		background: url(/assets/images/UKHO-1400x240.jpg) center center;
 	}
 	ukho-card{
 	p {
 		font-size: x-large;
 		font-weight: 300;
+		margin-bottom: 20px;
+	}
+	button{
+		float: left;
 	}
 	a#fss-createaccount {
-		padding: 20px 0;
-		display: inline-block;
+		padding: 20px 0  20px 40px;
+		float: left;
 		&:hover {
 			text-decoration: none;
 		}
 	}
-}
-}
+}}
 
 ukho-phase-banner.phasebanner {
 	padding: 10px;
+	width: auto;
 }
 
 .container {
@@ -230,4 +251,12 @@ ukho-textinput.text-input-wrap{
 
 ukho-textinput.text-input-wrap .error-text{
 	display: none;
+}
+@media screen and (max-width:1024px){
+	#mainContainer {
+	.header-image {
+		height: 240px;
+		background: url(/assets/images/UKHO-17-AW-0005-Web.jpg) center center;
+	}
+}
 }

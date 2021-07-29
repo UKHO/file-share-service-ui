@@ -77,7 +77,7 @@ export class FssSearchResultsComponent implements OnChanges {
         FileName: files[i]["filename"],
         MimeType: files[i]["mimeType"],
         FileSize: formatBytes(files[i]["fileSize"]),
-        Download: '<div class="fileDownload" rel="' + link + '"><i class="fa fa-download fa-1x"></i></div>'
+        Download: '<div class="fileDownload" rel="' + link + '" tabindex="0" role="button" aria-label="Download File"><i class="fa fa-download fa-1x"></i></div>'
       });
     }
 
