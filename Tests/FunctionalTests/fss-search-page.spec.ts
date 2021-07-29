@@ -1,12 +1,12 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig } = require('./pageObjects');
+const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import {LoginPortal,SearchAttribute} from './helpermethod'
 import {stringOperatorList,symbolOperatorList} from './helperconstant'
 
 
 describe('Test Search Attribute Scenario On Search Page', () => {
-  jest.setTimeout(60000);
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   let browser: Browser;
   let context: BrowserContext;
   let page: Page;  
@@ -31,7 +31,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   })
  
   it('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async () => {
-    page.setDefaultTimeout(30000);     
+    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);     
     await page.fill(pageObjectsConfig.inputSearchFieldSelector,"BusinessUnit")    
      const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
     

@@ -1,11 +1,11 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig } = require('./pageObjects');
+const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import {LoginPortal} from './helpermethod'
 
 
 describe('Test Sign In Page Scenario', () => {
-  jest.setTimeout(120000);
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   let browser: Browser;
   let context: BrowserContext;
   let page: Page;

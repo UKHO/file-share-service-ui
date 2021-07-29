@@ -36,6 +36,10 @@
        "operatorDropDownItemsSelector":"#ukho-form-field-2 >option",
        "inputSearchValueSelector":"#ukho-form-field-3",
        "searchQueryTableRowSelector":".querytable tbody tr"
-
+    },
+    "pageTimeOut":
+    {
+      "timeOutInMilliSeconds" : 60000
     }
+	
 }
