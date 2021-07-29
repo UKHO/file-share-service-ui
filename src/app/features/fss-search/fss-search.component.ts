@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
@@ -41,8 +41,9 @@ export class FssSearchComponent implements OnInit {
   currentGroupEndIndex: number=0;
   rowGroupings: RowGrouping[]=[];
   groupingLevels: GroupingLevel[]=[];
-  uiGroupings: UIGrouping[] = [];
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService) { }
+  uiGroupings: UIGrouping[] = [];  
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
+  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -229,6 +230,14 @@ export class FssSearchComponent implements OnInit {
     this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;
     this.displayMessage = true;
+    this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+    this.ukhoDialog.nativeElement.focus();
+    if(this.displayLoader === false){
+      window.scroll({
+        top: 150,
+        behavior: 'smooth' 
+      });
+   }
   }
 
   handleSuccess() {
