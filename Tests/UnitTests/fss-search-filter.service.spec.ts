@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Field, Operator, FssSearchRow, IFssSearchService } from '../../src/app/core/models/fss-search-types';
+import { Field, Operator, FssSearchRow, IFssSearchService, RowGrouping } from '../../src/app/core/models/fss-search-types';
 
 import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
 import { FssSearchService } from '../../src/app/core/services/fss-search.service';
@@ -23,10 +23,11 @@ describe('FssSearchFilterService', () => {
     let searchRows: FssSearchRow[] = [];
     let fields: Field[] = [];
     let operators: Operator[] = [];
+    let groupings: RowGrouping[] = [];
     fields.push({ value: 'FileName', text: '@FileName', type: 'SystemAttribute', dataType: 'string' });
     operators.push({ value: 'eq', text: '=', type: 'operator', supportedDataTypes: ['string', 'number', 'date', 'attribute'] });
     searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'Test.txt', 'text', false));
-    var filter = service.getFilterExpression(searchRows);
+    var filter = service.getFilterExpression(searchRows, groupings);
 
     expect(filter).toBe("FileName eq 'Test.txt'");
   });
@@ -34,6 +35,7 @@ describe('FssSearchFilterService', () => {
   //Test for multiple search criteria
   test('should create valid filter expression for multiple search criteria', () => {
     let searchRows: FssSearchRow[] = [];
+    let groupings: RowGrouping[] = [];
     let fields: Field[] = [
       { value: 'FileName', text: '@FileName', type: 'SystemAttribute', dataType: 'string' },
       { value: 'FileSize', text: '@FileSize', type: 'SystemAttribute', dataType: 'number' },
@@ -44,12 +46,11 @@ describe('FssSearchFilterService', () => {
       { value: 'gt', text: '>', type: 'operator', supportedDataTypes: ['number', 'date'] },
       { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] }
     ];
-    searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
-    searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false));
-    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
-
-    var filter = service.getFilterExpression(searchRows);
-
+    searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
+    searchRows.push(createSearchRow(2, fields, operators, 'OR', 'FileSize', 'le', 3000, 'tel', false));
+    searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
+    var filter = service.getFilterExpression(searchRows, groupings);
+    groupings.push({startIndex: 1,endIndex:3});
     expect(filter).toBe("FileName eq 'TestReport.pdf' OR FileSize le 3000 AND ExpiryDate gt 2021-12-31T13:00:00.000Z");
   });
 });
