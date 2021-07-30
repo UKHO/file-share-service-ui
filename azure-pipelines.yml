@@ -165,9 +165,11 @@ stages:
              displayName: 'Install Jest Playwright Dependencies'
 
            - script: |
+              name: FunctionalTest
               npm run test:auto
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             continueOnError: false
 
            - task: PublishTestResults@2
              inputs:
@@ -177,13 +179,16 @@ stages:
                searchFolder:  '$(System.DefaultWorkingDirectory)/'
                testRunTitle: Functional Test Results
              displayName: 'Publish Functional Test Results'
-          
+             
            - script: |
-              npm run test:a11y
+              npm run test:a11y|
+              dependsOn:FunctionalTest
              displayName: 'Run Accessibility Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+             continueOnError: false
 
            - task: PublishTestResults@2
+             condition: succeededOrFailed()
              inputs:
                testRunner: 'JUnit'
                testResultsFiles: 'junit.xml'
