@@ -287,6 +287,10 @@ stages:
         dependsOn: FunctionalTests
         pool: $(WindowPool)
         displayName: "Acccessibility Tests"
+        variables: 
+         autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
+        workspace:
+         clean: all
         steps:
            - task: NodeTool@0
              inputs:
