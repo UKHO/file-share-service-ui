@@ -51,6 +51,9 @@ export class FileShareApiService {
             const idToken = response.idToken;
             localStorage.setItem('idToken', idToken);
             this.msalService.instance.setActiveAccount(response.account);
+            console.log("idtoken reset after expiry on sign in ")
+            //to be replaced with refreshToken endpoint
+            this.getSearchResult("", false);//set the cookie when user login after token expiry           
         });
     }
 

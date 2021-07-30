@@ -25,22 +25,22 @@ export class FssInterceptor implements HttpInterceptor {
     //Check whether IDToken is expired by comparing expiresOn time with currentDateTime
     //in case of token expiry, user will be asked to log in and new token and claims will be set 
     var headers;
-    if (expiresOn < currentDateTime) {
-      this.msalService.loginPopup().subscribe(response => {
-        localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-        const idToken = response.idToken;
-        localStorage.setItem('idToken', idToken);
-        headers = new HttpHeaders({
-          'Authorization': 'Bearer ' + idToken,
-          'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
-        });
-      });
-    } else {
+    // if (expiresOn < currentDateTime) {
+    //   this.msalService.loginPopup().subscribe(response => {
+    //     localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+    //     const idToken = response.idToken;
+    //     localStorage.setItem('idToken', idToken);
+    //     headers = new HttpHeaders({
+    //       'Authorization': 'Bearer ' + idToken,
+    //       'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
+    //     });
+    //   });
+    // } else {
       headers = new HttpHeaders({
         'Authorization': 'Bearer ' + idToken,
         'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
       });
-    }
+    //}
     return next.handle(httpRequest.clone({ headers, withCredentials: true }));
   }
 }
