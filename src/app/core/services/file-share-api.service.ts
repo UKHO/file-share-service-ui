@@ -6,28 +6,41 @@ import { AppConfigService } from './app-config.service';
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    
+
     constructor(private http: HttpClient) { }
 
-    getSearchResult(payload: string,isPagingRequest : boolean): Observable<any> {
-        if(!isPagingRequest)
-        {
+    getSearchResult(payload: string, isPagingRequest: boolean): Observable<any> {
+        if (!isPagingRequest) {
             if (payload === "") {
                 return this.http.get(this.baseUrl + '/batch');
             }
             else {
                 return this.http.get(this.baseUrl + "/batch?$filter=" + encodeURIComponent(payload));
             }
-
         }
-        else{
+        else {
             return this.http.get(this.baseUrl + payload);
         }
-       
     }
 
     getBatchAttributes(): Observable<any> {
         return this.http.get(this.baseUrl + '/attributes');
     }
 
+    refreshToken(): Observable<any> {
+        return this.http.get(this.baseUrl + '/refreshToken');
+    }
+
+    checkTokenExpiry() {
+        var flag = true;
+        const claims = JSON.parse(localStorage['claims']);
+        //To retrieve the current date time
+        const currentDateTime = new Date().toISOString();
+        //To retrieve the date time when idtoken was received(at the time of user login)
+        const expiresOn = new Date(1000 * claims['exp']).toISOString();
+        if (expiresOn < currentDateTime) {
+            flag = false;
+        }
+        return flag;
+    }
 }

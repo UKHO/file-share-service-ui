@@ -1,8 +1,8 @@
-import { ElementRef, OnChanges } from '@angular/core';
+import { ElementRef, EventEmitter, OnChanges, Output } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
 import { AppConfigService } from '../../../core/services/app-config.service';
-
+import { FileShareApiService } from '../../../core/services/file-share-api.service';
 @Component({
   selector: 'app-fss-search-results',
   templateUrl: './fss-search-results.component.html',
@@ -13,9 +13,10 @@ export class FssSearchResultsComponent implements OnChanges {
   searchResultVM: SearchResultViewModel[] = [];
   baseUrl: string;
   public removeEventListener: () => void;
+  @Output() displayError = new EventEmitter<boolean>();
 
-
-  constructor(private elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef
+    , private fileShareApiService: FileShareApiService) { }
 
   ngOnChanges(): void {
     this.searchResultVM = [];
@@ -35,7 +36,7 @@ export class FssSearchResultsComponent implements OnChanges {
       if (elem) {
         elem.forEach((res: any) => {
           res.style.cursor = 'pointer';
-          res.addEventListener('click', this.downloadFile.bind(res));
+          res.addEventListener('click', this.downloadFile.bind(res, this));
         })
       }
     }, 0);
@@ -97,14 +98,25 @@ export class FssSearchResultsComponent implements OnChanges {
     }
   }
 
-  downloadFile(res: any) {
+  downloadFile(obj: any, res: any) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = res.currentTarget.getAttribute('rel');
 
     if (filePath) {
-      res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
-      window.open(this.baseUrl + filePath);
-      res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
+      if (!obj.checkTokenExpiry()) {
+        //show error message with sign in action
+        this.displayError.emit(true);
+      }
+      else {
+        obj.fileShareApiService.refreshToken().subscribe((result: any) => {
+          console.log(result);
+          if (result == true) {
+            window.open(this.baseUrl + filePath);
+          }
+        });
+        res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
+        res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
+      }
     }
   }
 }
