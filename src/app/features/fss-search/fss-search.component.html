@@ -27,7 +27,7 @@
   </div>
 
   <div class="searchResult">
-    <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult"></app-fss-search-results>
+    <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult" (displayError)="showTokenExpiryError($event)"></app-fss-search-results>
   </div>
   <div class="pagination">
     <ukho-paginator *ngIf="displaySearchResult"

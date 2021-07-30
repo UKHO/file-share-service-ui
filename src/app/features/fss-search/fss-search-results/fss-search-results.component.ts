@@ -101,21 +101,25 @@ export class FssSearchResultsComponent implements OnChanges {
   downloadFile(obj: any, res: any) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = res.currentTarget.getAttribute('rel');
-
+    var fileDownloadEvent = res;
     if (filePath) {
-      if (!obj.checkTokenExpiry()) {
-        //show error message with sign in action
-        this.displayError.emit(true);
-      }
-      else {
-        obj.fileShareApiService.refreshToken().subscribe((result: any) => {
+      if (obj.fileShareApiService.checkTokenExpiry()) {//check if token is expired
+        obj.fileShareApiService.refreshToken().subscribe((result: any) => {//set the cookie if token is not expired
           console.log(result);
-          if (result == true) {
+          if (result) {//download file and change the icon to tick when returns true
+            fileDownloadEvent.path[1].style.pointerEvents = 'none'; //disable download icon after click
+            fileDownloadEvent.path[1].innerHTML = '<i class="fa fa-check"></i>';
             window.open(this.baseUrl + filePath);
           }
-        });
-        res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
-        res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
+        },
+          (error: any) => {//show alert in case download endpoint returns error
+            alert("Error while processing the request.");
+            console.log('Refresh token endpoint error - ' + error.message);
+          },
+        );
+      }
+      else {//display "Token expired" message when token is expired
+        obj.displayError.emit(true);
       }
     }
   }

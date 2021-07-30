@@ -523,4 +523,9 @@ getUIRowGrouping(rowIndex: number, groupingLevel:GroupingLevel){
   return rowGrouping;
 }
 
+showTokenExpiryError(displayError: any) {
+  if (displayError == true)
+    this.handleResError();
+}
+
 } 
