@@ -37,6 +37,7 @@ export class FssSearchComponent implements OnInit {
   pages: number;
   currentPage: number = 0;
   paginatorLabel: string;
+  loginErrorDisplay: boolean = false;
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef) { }
 
@@ -175,33 +176,38 @@ export class FssSearchComponent implements OnInit {
       console.log(filter);
       if (filter != null) {
         this.searchResult = [];
-        this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
-          this.searchResult = res;
-          if (this.searchResult.count > 0) {
-            var searchResultCount = this.searchResult['count'];
-            this.searchResultTotal = this.searchResult['total'];
-            this.currentPage = 1;
-            this.pages = this.searchResultTotal % searchResultCount === 0 ?
-              Math.floor(this.searchResultTotal / searchResultCount) :
-              (Math.floor(this.searchResultTotal / searchResultCount) + 1);
-            this.handleSuccess()
-          }
-          else {
-            this.searchResult = [];
-            this.displaySearchResult = false;
-            this.showMessage(
-              "info",
-              "No results can be found for this search",
-              "Try again using different parameters in the search query."
-            );
-            this.displayLoader = false;
-          }
-
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
+        if(this.fileShareApiService.checkTokenExpiry()){
+          this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
+            this.searchResult = res;
+            if (this.searchResult.count > 0) {
+              var searchResultCount = this.searchResult['count'];
+              this.searchResultTotal = this.searchResult['total'];
+              this.currentPage = 1;
+              this.pages = this.searchResultTotal % searchResultCount === 0 ?
+                Math.floor(this.searchResultTotal / searchResultCount) :
+                (Math.floor(this.searchResultTotal / searchResultCount) + 1);
+              this.handleSuccess()
+            }
+            else {
+              this.searchResult = [];
+              this.displaySearchResult = false;
+              this.showMessage(
+                "info",
+                "No results can be found for this search",
+                "Try again using different parameters in the search query."
+              );
+              this.displayLoader = false;
+            }
+  
+          },
+            (error) => {
+              this.handleErrMessage(error);
+            }
+          );
+        }
+        else{
+          this.handleResError();
+        }
       }
     }
     else {
@@ -217,6 +223,7 @@ export class FssSearchComponent implements OnInit {
     this.messageTitle = "";
     this.messageDesc = "";
     this.displayMessage = false;
+    this.loginErrorDisplay = false;
   }
 
   showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
@@ -259,6 +266,19 @@ export class FssSearchComponent implements OnInit {
       this.showMessage("warning", "An exception occurred when processing this search", errmsg);
     }
   }
+
+  handleResError() {
+    this.showMessage("info", "Token is Expired", "Please sign in and try again");
+    this.loginErrorDisplay = true;
+    this.displayLoader = false;
+  }
+
+  loginPopup() {
+    console.log("Enterrr");
+    this.fileShareApiService.loginpopUp();
+    this.hideMessage();
+  }
+
   pageChange(currentPage: number) {
     this.displayLoader = true;
     var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
