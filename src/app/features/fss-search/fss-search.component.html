@@ -11,10 +11,11 @@
   <h1>Search files</h1>
   <p class="light">Complete the parameters to create a search query</p>
   <p class="light">Please search using your local time. All dates and times are displayed in <b>{{userLocalTimeZone}}</b>.</p>
-  <app-fss-search-row [fssSearchRows]="fssSearchRows" 
+  <app-fss-search-row [fssSearchRows]="fssSearchRows" [groupingLevels]="groupingLevels" [uiGroupings]="uiGroupings"
   (onFieldChanged)="onFieldChanged($event)"
   (onOperatorChanged)="onOperatorChanged($event)"
-  (onSearchRowDeleted)="onSearchRowDeleted($event)">
+  (onSearchRowDeleted)="onSearchRowDeleted($event)"
+  (onGroupClicked)="onGroupClicked()">
   </app-fss-search-row>
   <div class="searchSection">
     <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>

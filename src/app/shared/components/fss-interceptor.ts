@@ -40,9 +40,7 @@ export class FssInterceptor implements HttpInterceptor {
         'Authorization': 'Bearer ' + idToken,
         'Access-Control-Allow-Origin': AppConfigService.settings['fssConfig'].apiUrl
       });
-      //return next.handle(httpRequest.clone({ setHeaders: { headers } }));
     }
     return next.handle(httpRequest.clone({ headers, withCredentials: true }));
-
   }
 }
