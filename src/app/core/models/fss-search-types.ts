@@ -43,3 +43,20 @@ export abstract class IFssSearchService {
   abstract getFields(batchAttributeResult: any): Field[];
   abstract getOperators(): Operator[];
 }
+
+export class RowGrouping {
+  startIndex: number;
+  endIndex: number;  
+}
+
+export class GroupingLevel {
+  level: number;
+  rowGroupings: RowGrouping[]=[];
+}
+
+export class UIGrouping {
+  rowIndex: number;
+  class: string;
+  colspan: number;
+  rowGroupings: RowGrouping[]=[];
+}
