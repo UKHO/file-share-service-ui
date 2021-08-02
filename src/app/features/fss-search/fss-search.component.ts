@@ -172,11 +172,11 @@ export class FssSearchComponent implements OnInit {
   getSearchResult() {
     if (this.validateSearchInput()) {
       this.displayLoader = true;
+      if (!this.fileShareApiService.isTokenExpired()) {
       var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
       console.log(filter);
       if (filter != null) {
         this.searchResult = [];
-        if(this.fileShareApiService.checkTokenExpiry()){
           this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
             this.searchResult = res;
             if (this.searchResult.count > 0) {
@@ -198,17 +198,17 @@ export class FssSearchComponent implements OnInit {
               );
               this.displayLoader = false;
             }
-  
+
           },
             (error) => {
               this.handleErrMessage(error);
             }
           );
         }
-        else{
+      }
+        else {
           this.handleResError();
         }
-      }
     }
     else {
       this.showMessage(
@@ -233,12 +233,12 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = true;
     this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
     this.ukhoDialog.nativeElement.focus();
-    if(this.displayLoader === false){
+    if (this.displayLoader === false) {
       window.scroll({
         top: 150,
-        behavior: 'smooth' 
+        behavior: 'smooth'
       });
-   }
+    }
   }
 
   handleSuccess() {
@@ -280,31 +280,36 @@ export class FssSearchComponent implements OnInit {
   }
 
   pageChange(currentPage: number) {
-    this.displayLoader = true;
     var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
-    this.currentPage = currentPage;
-    if (paginatorAction === "next") {
-      var nextPageLink = this.pagingLinks!.next!.href;
+    if (!this.fileShareApiService.isTokenExpired()) {
+      this.displayLoader = true;
+      this.currentPage = currentPage;
+      if (paginatorAction === "next") {
+        var nextPageLink = this.pagingLinks!.next!.href;
         this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleSuccess()
-      },
-        (error) => {
-          this.handleErrMessage(error);
-        }
-      );
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
+      else if (paginatorAction === "prev") {
+        console.log(this.pagingLinks!);
+        var previousPageLink = this.pagingLinks!.previous!.href;
+        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
     }
-    else if (paginatorAction === "prev") {
-      console.log(this.pagingLinks!);
-      var previousPageLink = this.pagingLinks!.previous!.href;
-      this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleSuccess()
-      },
-        (error) => {
-          this.handleErrMessage(error);
-        }
-      );
+    else {
+      this.handleResError();
     }
   }
 }

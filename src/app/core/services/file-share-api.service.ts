@@ -31,15 +31,15 @@ export class FileShareApiService {
         return this.http.get(this.baseUrl + '/attributes');
     }
 
-    checkTokenExpiry() {
-        var flag = true;
+    isTokenExpired() {
+        var flag = false;
         const claims = JSON.parse(localStorage['claims']);
         //To retrieve the current date time
         const currentDateTime = new Date().toISOString();
         //To retrieve the date time when idtoken was received(at the time of user login)
         const expiresOn = new Date(1000 * claims['exp']).toISOString();
         if (expiresOn < currentDateTime) {
-            flag = false;
+            flag = true;
         }
         return flag
     }
