@@ -2,7 +2,7 @@
     <caption class="sr-only">Search Query </caption>
     <thead>
         <tr>
-            <th><span class="fa fa-object-group grouping" [class.disabled]="this.enableGrouping == false" (click)="onGroupClick()"></span></th>
+            <th><button class="delete grouping" [class.disabled]="this.enableGrouping == false" (click)="onGroupClick()"><img alt="Group" src="..\assets\images\group icon.svg"></button></th>
             <th class="groups" [attr.colspan]="groupingLevels.length > 0 ? groupingLevels.length : 1"></th>
             <th class="searchFieldsRow">And/Or</th>
             <th class="searchFieldsRow">Field</th>
@@ -20,7 +20,8 @@
                 <td 
                     class="{{grouping.class}} grouping-border"
                     [attr.colspan]="grouping.colspan">
-                    <i *ngIf="grouping.class == 'group group-start'" class="fa fa-object-ungroup grouping"></i>
+                    <button *ngIf="grouping.class == 'group group-start'" class="delete fa fa-times fa-1x grouping" 
+                            (click)="onGroupDelete(grouping.rowGroupings)" aria-label="Delete Group"></button>                                            
                 </td>
             </ng-container>
             <td>

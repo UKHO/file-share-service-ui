@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FssSearchRow, GroupingLevel, UIGrouping } from './../../../core/models/fss-search-types';
+import { FssSearchRow, GroupingLevel, RowGrouping, UIGrouping } from './../../../core/models/fss-search-types';
 
 @Component({
   selector: 'app-fss-search-row',
@@ -14,6 +14,7 @@ export class FssSearchRowComponent implements OnInit {
   @Output() onFieldChanged = new EventEmitter<{ fieldValue: string, rowId: number }>();
   @Output() onOperatorChanged = new EventEmitter<{ operatorValue: string, rowId: number }>();
   @Output() onGroupClicked = new EventEmitter();
+  @Output() onGroupDeleted = new EventEmitter<{rowGrouping:RowGrouping[]}>();
   enableGrouping: Boolean = false; 
   constructor() { }
 
@@ -22,7 +23,12 @@ export class FssSearchRowComponent implements OnInit {
 
   onSearchRowDelete(rowId: number) {
     this.onSearchRowDeleted.emit(rowId);
-    this.onCheckboxClick();
+    this.toggleGrouping();
+  }
+
+  onGroupDelete(rowGrouping:RowGrouping[]) {
+    this.onGroupDeleted.emit({rowGrouping});
+    this.toggleGrouping();
   }
 
   onFieldChange(field: any, rowId: number) {
@@ -35,6 +41,11 @@ export class FssSearchRowComponent implements OnInit {
   }
 
   onCheckboxClick(){   
+    this.toggleGrouping();
+  }
+
+  toggleGrouping(){
+    //Enable/disable grouping based on consecutive rows selection
     let rowIndexArray:Array<number>=[];
     for(var i=0; i<this.fssSearchRows.length; i++){
       if(this.fssSearchRows[i].group){

@@ -14,7 +14,8 @@
   (onFieldChanged)="onFieldChanged($event)"
   (onOperatorChanged)="onOperatorChanged($event)"
   (onSearchRowDeleted)="onSearchRowDeleted($event)"
-  (onGroupClicked)="onGroupClicked()">
+  (onGroupClicked)="onGroupClicked()"
+  (onGroupDeleted)="onGroupDeleted($event)">
   </app-fss-search-row>
   <div class="searchSection">
     <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>
