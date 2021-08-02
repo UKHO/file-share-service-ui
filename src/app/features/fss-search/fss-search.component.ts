@@ -4,6 +4,7 @@ import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+import { MsalService } from '@azure/msal-angular';
 
 
 @Component({
@@ -44,7 +45,11 @@ export class FssSearchComponent implements OnInit {
   uiGroupings: UIGrouping[] = [];
   loginErrorDisplay: boolean = false;
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef) { }
+  constructor(private fssSearchTypeService: IFssSearchService,
+    private fssSearchFilterService: FssSearchFilterService,
+    private fileShareApiService: FileShareApiService,
+    private elementRef: ElementRef,
+    private msalService: MsalService) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -178,11 +183,11 @@ export class FssSearchComponent implements OnInit {
   getSearchResult() {
     if (this.validateSearchInput()) {
       this.displayLoader = true;
+      if (!this.fileShareApiService.isTokenExpired()) {
       var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
       console.log(filter);
       if (filter != null) {
         this.searchResult = [];
-        if(this.fileShareApiService.checkTokenExpiry()){
           this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
             this.searchResult = res;
             if (this.searchResult.count > 0) {
@@ -204,17 +209,17 @@ export class FssSearchComponent implements OnInit {
               );
               this.displayLoader = false;
             }
-  
+
           },
             (error) => {
               this.handleErrMessage(error);
             }
           );
         }
-        else{
+      }
+        else {
           this.handleResError();
         }
-      }
     }
     else {
       this.showMessage(
@@ -239,12 +244,12 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = true;
     this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
     this.ukhoDialog.nativeElement.focus();
-    if(this.displayLoader === false){
+    if (this.displayLoader === false) {
       window.scroll({
         top: 150,
-        behavior: 'smooth' 
+        behavior: 'smooth'
       });
-   }
+    }
   }
 
   handleSuccess() {
@@ -281,36 +286,52 @@ export class FssSearchComponent implements OnInit {
 
   loginPopup() {
     console.log("Enterrr");
-    this.fileShareApiService.loginpopUp();
+    this.displayLoader = true;
+    this.msalService.loginPopup().subscribe(response => {
+      localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+      const idToken = response.idToken;
+      localStorage.setItem('idToken', idToken);
+      this.msalService.instance.setActiveAccount(response.account);
+      console.log("idtoken reset after expiry on sign in ")
+      //to be replaced with refreshToken endpoint
+      this.fileShareApiService.getSearchResult("", false).subscribe(res=>{
+        this.displayLoader = false;
+      })//set the cookie when user login after token expiry           
+    });
     this.hideMessage();
   }
 
   pageChange(currentPage: number) {
-    this.displayLoader = true;
     var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
-    this.currentPage = currentPage;
-    if (paginatorAction === "next") {
-      var nextPageLink = this.pagingLinks!.next!.href;
+    if (!this.fileShareApiService.isTokenExpired()) {
+      this.displayLoader = true;
+      this.currentPage = currentPage;
+      if (paginatorAction === "next") {
+        var nextPageLink = this.pagingLinks!.next!.href;
         this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleSuccess()
-      },
-        (error) => {
-          this.handleErrMessage(error);
-        }
-      );
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
+      else if (paginatorAction === "prev") {
+        console.log(this.pagingLinks!);
+        var previousPageLink = this.pagingLinks!.previous!.href;
+        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
     }
-    else if (paginatorAction === "prev") {
-      console.log(this.pagingLinks!);
-      var previousPageLink = this.pagingLinks!.previous!.href;
-      this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleSuccess()
-      },
-        (error) => {
-          this.handleErrMessage(error);
-        }
-      );
+    else {
+      this.handleResError();
     }
   }
 

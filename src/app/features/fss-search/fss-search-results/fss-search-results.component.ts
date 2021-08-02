@@ -102,7 +102,7 @@ export class FssSearchResultsComponent implements OnChanges {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = res.currentTarget.getAttribute('rel');
     if (filePath) {
-      if (obj.fileShareApiService.checkTokenExpiry()) {//check if token is expired
+      if (!obj.fileShareApiService.isTokenExpired()) {//check if token is expired
         //download file and change the icon to tick when returns true
         res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
         res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';

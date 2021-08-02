@@ -8,7 +8,7 @@ import { MsalService } from '@azure/msal-angular';
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     
-    constructor(private http: HttpClient, private msalService: MsalService) { }
+    constructor(private http: HttpClient) { }
 
     getSearchResult(payload: string, isPagingRequest: boolean): Observable<any> {
         if (!isPagingRequest) {
@@ -32,29 +32,17 @@ export class FileShareApiService {
         return this.http.get(this.baseUrl + '/refreshToken');
     }
 
-    checkTokenExpiry() {
-        var flag = true;
+    isTokenExpired() {
+        var flag = false;
         const claims = JSON.parse(localStorage['claims']);
         //To retrieve the current date time
         const currentDateTime = new Date().toISOString();
         //To retrieve the date time when idtoken was received(at the time of user login)
         const expiresOn = new Date(1000 * claims['exp']).toISOString();
         if (expiresOn < currentDateTime) {
-            flag = false;
+            flag = true;
         }
         return flag
-    }
-
-    loginpopUp() {
-        this.msalService.loginPopup().subscribe(response => {
-            localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-            const idToken = response.idToken;
-            localStorage.setItem('idToken', idToken);
-            this.msalService.instance.setActiveAccount(response.account);
-            console.log("idtoken reset after expiry on sign in ")
-            //to be replaced with refreshToken endpoint
-            this.getSearchResult("", false);//set the cookie when user login after token expiry           
-        });
     }
 
 }
