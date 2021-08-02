@@ -182,8 +182,12 @@ stages:
       - job: AccessibilityTests
         dependsOn: FunctionalTests
         pool: $(WindowPool)
-        displayName: "Acccessibility Tests"
+        displayName: "Accessibility Tests"
         steps:
+           - checkout: self
+           - script: 
+              echo "$(autoTestConfig.url)"
+
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
@@ -193,6 +197,13 @@ stages:
               npm install -g @angular/cli
               npm ci
              displayName: 'npm restore'
+
+           - task: FileTransform@1
+             displayName: AppSettings Json tranform for Accessibility Test Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              fileType: 'json'
+              targetFiles: 'appSetting.json'
 
            - script: |
               npm install -D jest jest-playwright-preset playwright
@@ -248,6 +259,7 @@ stages:
            - checkout: self
            - script: 
               echo "$(autoTestConfig.url)"
+
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
@@ -287,11 +299,13 @@ stages:
         dependsOn: FunctionalTests
         pool: $(WindowPool)
         displayName: "Acccessibility Tests"
-        variables: 
-         autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
         workspace:
          clean: all
         steps:
+           - checkout: self
+           - script: 
+              echo "$(autoTestConfig.url)"
+
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
@@ -301,6 +315,13 @@ stages:
               npm install -g @angular/cli
               npm ci
              displayName: 'npm restore'
+
+           - task: FileTransform@1
+             displayName: AppSettings Json tranform for Accessibility Test Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              fileType: 'json'
+              targetFiles: 'appSetting.json'
 
            - script: |
               npm install -D jest jest-playwright-preset playwright
