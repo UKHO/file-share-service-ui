@@ -30,6 +30,10 @@ export class FileShareApiService {
         return this.http.get(this.baseUrl + '/attributes');
     }
 
+    clearCookies(): Observable<any>{
+        return this.http.get(this.baseUrl + '/logout');
+    }
+
     isTokenExpired() {
         var flag = false;
         const claims = JSON.parse(localStorage['claims']);

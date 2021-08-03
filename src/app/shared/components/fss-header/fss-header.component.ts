@@ -5,6 +5,7 @@ import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult, InteractionStatus } from '@azure/msal-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { FileShareApiService } from '../../../core/services/file-share-api.service';
 
 @Component({
   selector: 'app-fss-header',
@@ -21,7 +22,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   isActive: boolean = false;
   constructor(private msalService: MsalService,
     private route: Router,
-    private msalBroadcastService: MsalBroadcastService) {
+    private msalBroadcastService: MsalBroadcastService,
+    private fileShareApiService: FileShareApiService) {
     super();
   }
 
@@ -123,6 +125,15 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   });
   }
 
+  logout(){
+    // this.fileShareApiService.clearCookies().subscribe(res=>{
+    //   console.log(res);
+    // })
+    this.msalService.logout();
+    this.isActive = false;
+    localStorage.clear();
+  }
+
   /** Extract claims of user once user is Signed in */
   getClaims(claims: any) {
     this.firstName = claims ? claims['given_name'] : null;
@@ -132,11 +143,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     {
       signInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => {
-        this.msalService.logout();
-        this.isActive = false;
-        localStorage.clear();
-      }),
+      signOutHandler: (() => { this.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;

@@ -19,11 +19,10 @@ import { PublicClientApplication } from '@azure/msal-browser';
 
 describe('FssSearchComponent', () => {
   let component: FssSearchComponent;
-
+  let msalService: MsalService;
   let fileShareApiService: FileShareApiService;
   let searchFilterservice: FssSearchFilterService;
   let searchService: FssSearchService;
-  let msalService: MsalService;
   let elementRef: ElementRef;
 
   beforeEach(async () => {
