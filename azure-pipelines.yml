@@ -132,10 +132,10 @@ stages:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-Dev-P4052"
 
-      - job: Functional_And_AccessibilityTests
+      - job: FunctionalTests
         dependsOn: DevDeploy
         pool: $(WindowPool)
-        displayName: "Functional and Acccessibility Tests"
+        displayName: "Functional Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
         workspace:
@@ -165,22 +165,6 @@ stages:
              displayName: 'Install Jest Playwright Dependencies'
 
            - script: |
-              npm run test:a11y
-              continueOnError: false
-             displayName: 'Run Accessibility Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Accessibility Test Results
-             displayName: 'Publish Accessibility Test Results'
-
-           - script: |
               npm run test:auto
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
@@ -194,6 +178,51 @@ stages:
                searchFolder:  '$(System.DefaultWorkingDirectory)/'
                testRunTitle: Functional Test Results
              displayName: 'Publish Functional Test Results'
+
+      - job: AccessibilityTests
+        dependsOn: FunctionalTests
+        pool: $(WindowPool)
+        displayName: "Accessibility Tests"
+        steps:
+           - checkout: self
+           - script: 
+              echo "$(autoTestConfig.url)"
+
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm install -g @angular/cli
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@1
+             displayName: AppSettings Json tranform for Accessibility Test Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              fileType: 'json'
+              targetFiles: 'appSetting.json'
+
+           - script: |
+              npm install -D jest jest-playwright-preset playwright
+             displayName: 'Install Jest Playwright Dependencies'
+      
+           - script: |
+              npm run test:a11y
+             displayName: 'Run Accessibility Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Accessibility Test Results
+             displayName: 'Publish Accessibility Test Results'
 
   - stage: QAdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
@@ -218,10 +247,10 @@ stages:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-QA-P4052"
     
-      - job: Functional_And_AccessibilityTests
+      - job: FunctionalTests
         dependsOn: QAdeploy
         pool: $(WindowPool)
-        displayName: "Functional and Acccessibility Tests"
+        displayName: "Functional Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
         workspace:
@@ -230,6 +259,7 @@ stages:
            - checkout: self
            - script: 
               echo "$(autoTestConfig.url)"
+
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
@@ -251,22 +281,6 @@ stages:
              displayName: 'Install Jest Playwright Dependencies'
 
            - script: |
-              npm run test:a11y
-              continueOnError: false
-             displayName: 'Run Accessibility Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Accessibility Test Results
-             displayName: 'Publish Accessibility Test Results'
-
-           - script: |
               npm run test:auto
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
@@ -280,3 +294,50 @@ stages:
                searchFolder:  '$(System.DefaultWorkingDirectory)/'
                testRunTitle: Functional Test Results
              displayName: 'Publish Functional Test Results'
+
+      - job: AccessibilityTests
+        dependsOn: FunctionalTests
+        pool: $(WindowPool)
+        displayName: "Acccessibility Tests"
+        workspace:
+         clean: all
+        steps:
+           - checkout: self
+           - script: 
+              echo "$(autoTestConfig.url)"
+
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm install -g @angular/cli
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@1
+             displayName: AppSettings Json tranform for Accessibility Test Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              fileType: 'json'
+              targetFiles: 'appSetting.json'
+
+           - script: |
+              npm install -D jest jest-playwright-preset playwright
+             displayName: 'Install Jest Playwright Dependencies'
+      
+           - script: |
+              npm run test:a11y
+             displayName: 'Run Accessibility Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Accessibility Test Results
+             displayName: 'Publish Accessibility Test Results'
