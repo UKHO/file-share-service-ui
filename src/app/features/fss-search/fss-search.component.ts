@@ -4,6 +4,7 @@ import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
+  userLocalTimeZone = this.getLocalTimeFormat();
+  valueInputForm: FormControl;
   pageRecordCount: number = 10;
   searchResultTotal: number;
   pagingLinks: any = [];
@@ -38,11 +41,11 @@ export class FssSearchComponent implements OnInit {
   currentPage: number = 0;
   paginatorLabel: string;
   loginErrorDisplay: boolean = false;
-  currentGroupStartIndex: number=0;
-  currentGroupEndIndex: number=0;
-  rowGroupings: RowGrouping[]=[];
-  groupingLevels: GroupingLevel[]=[];
-  uiGroupings: UIGrouping[] = [];  
+  currentGroupStartIndex: number = 0;
+  currentGroupEndIndex: number = 0;
+  rowGroupings: RowGrouping[] = [];
+  groupingLevels: GroupingLevel[] = [];
+  uiGroupings: UIGrouping[] = [];
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef) { }
 
@@ -51,11 +54,36 @@ export class FssSearchComponent implements OnInit {
     this.operators = this.fssSearchTypeService.getOperators();
     /*Call attributes API to retrieve User attributes and send back to search service 
     to append to existing System attributes*/
-    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-      console.log(batchAttributeResult);
-      this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
-      this.addSearchRow();
-    });
+    if (!localStorage['batchAttributes']) {
+      this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+        if (batchAttributeResult.length === 0) {
+          this.handleResError();
+        }
+        else {
+          console.log(batchAttributeResult);
+          localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
+          this.setFields(batchAttributeResult);
+        }
+      });
+    }
+    else {
+      var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
+      this.setFields(batchAttributeResult);
+    }
+  }
+
+  getLocalTimeFormat() {
+    return this.executeRegex(new Date().toTimeString(), /\(([^)]+)\)/);
+  }
+
+  executeRegex(valueField: any, regex: any) {
+    var regExp = new RegExp(regex, "i");
+    return regExp.exec(valueField)![1];
+  }
+
+  setFields(batchAttributeResult: any) {
+    this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
+    this.addSearchRow();
   }
 
   addSearchRow() {
@@ -66,6 +94,7 @@ export class FssSearchComponent implements OnInit {
 
   getDefaultSearchRow() {
     var fssSearchRow = new FssSearchRow();
+    this.valueInputForm = new FormControl();
     fssSearchRow.joinOperators = this.joinOperators;
     fssSearchRow.fields = this.fields;
     fssSearchRow.operators = this.operators.filter(operator => operator.supportedDataTypes.includes("string"));
@@ -75,8 +104,11 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.selectedOperator = this.operators[0].value;
     fssSearchRow.value = '';
     fssSearchRow.valueType = 'text';
-    fssSearchRow.valueIsdisabled = false;
+    fssSearchRow.isValueHidden = false;
     fssSearchRow.rowId = this.rowId;
+    fssSearchRow.time = "";
+    fssSearchRow.valueFormControl = this.valueInputForm
+    fssSearchRow.valueFormControlTime = this.valueInputForm
     return fssSearchRow;
   }
 
@@ -85,6 +117,8 @@ export class FssSearchComponent implements OnInit {
     var fieldDataType = this.getFieldDataType(changedField.fieldValue);
     // getFieldRow
     var changedFieldRow = this.getSearchRow(changedField.rowId);
+    // SetDefaultValueFormControl based on fieldDataType
+    this.setValueFormControl(fieldDataType, changedFieldRow!);
     // getFilteredOperators
     changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
     // getValueType
@@ -94,8 +128,12 @@ export class FssSearchComponent implements OnInit {
     if (!this.isOperatorExist(changedFieldRow!)) {
       changedFieldRow!.selectedOperator = "eq"
     }
-    changedFieldRow!.valueIsdisabled = false;
+    // check for null operators
+    const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
+    this.toggleValueInput(changedFieldRow!, operatorType);
+
     changedFieldRow!.value = "";
+    changedFieldRow!.time = "";
   }
 
   getFieldDataType(fieldValue: string) {
@@ -104,6 +142,20 @@ export class FssSearchComponent implements OnInit {
 
   getSearchRow(rowId: number) {
     return this.fssSearchRows.find(fsr => fsr.rowId === rowId);
+  }
+
+  setValueFormControl(fieldDataType: string, changedFieldRow: FssSearchRow) {
+    if (fieldDataType === 'number') {
+      changedFieldRow!.valueFormControl = new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]);
+    }
+    else if (fieldDataType === 'date') {
+      changedFieldRow!.valueFormControl = new FormControl(null, Validators.required);
+      changedFieldRow!.valueFormControlTime = new FormControl(null, Validators.required);
+    }
+    else {
+      changedFieldRow!.valueFormControl = new FormControl()
+    }
+    return changedFieldRow
   }
 
   getFilteredOperators(fieldDataType: string) {
@@ -134,22 +186,23 @@ export class FssSearchComponent implements OnInit {
   }
 
   onOperatorChanged(changedOperator: any) {
-    var operatorType = this.getOperatorType(changedOperator);
+    var operatorType = this.getOperatorType(changedOperator.operatorValue);
     var changedFieldRow = this.getSearchRow(changedOperator.rowId);
     this.toggleValueInput(changedFieldRow!, operatorType);
   }
 
-  getOperatorType(changedOperator: any) {
-    return this.operators.find(f => f.value === changedOperator.operatorValue)?.type!;
+  getOperatorType(selectedOperator: string) {
+    return this.operators.find(f => f.value === selectedOperator)?.type!;
   }
 
   toggleValueInput(changedFieldRow: FssSearchRow, operatorType: string) {
     if (operatorType === "nullOperator") {
-      changedFieldRow!.valueIsdisabled = true;
+      changedFieldRow!.isValueHidden = true;
       changedFieldRow!.value = "";
+      changedFieldRow!.time = "";
     }
     else {
-      changedFieldRow!.valueIsdisabled = false;
+      changedFieldRow!.isValueHidden = false;
     }
   }
 
@@ -157,18 +210,56 @@ export class FssSearchComponent implements OnInit {
     this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId), 1);
   }
 
+  validateValueFormControl() {
+    for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
+      const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
+      if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
+        if (this.fssSearchRows[rowId].value === "") {
+          if (this.fssSearchRows[rowId].valueFormControl.touched === false) {
+            this.fssSearchRows[rowId].valueFormControl.markAsTouched();
+          }
+        }
+      }
+      if (fieldDataType === 'date') {
+        const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
+        if (operatorType !== 'nullOperator') {
+          if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
+            if (this.fssSearchRows[rowId].valueFormControl.touched === false) {
+              this.fssSearchRows[rowId].valueFormControl.markAsTouched();
+            }
+            if (this.fssSearchRows[rowId].valueFormControlTime.touched === false) {
+              this.fssSearchRows[rowId].valueFormControlTime.markAsTouched();
+            }
+          }
+        }
+      }
+    }
+  }
+
   validateSearchInput() {
     var flag = true;
-
+    this.validateValueFormControl()
     for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
       if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
         var reg = new RegExp(/^\d+$/);
         var isNumber = reg.test(this.fssSearchRows[rowId].value);
         if (!isNumber) {
-          this.errorMessageTitle = "Please provide only Numbers against FileSize";
-          this.errorMessageDescription = "Incorrect value '" + this.fssSearchRows[rowId].value + "' on row " + (rowId + 1);
+          this.errorMessageTitle = "There is a problem with FileSize value field";
+          this.errorMessageDescription = "Only enter numbers in the FileSize Value field. The Search will not run if characters are entered.";
           flag = false;
           break;
+        }
+      }
+      const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
+      if (fieldDataType === 'date') {
+        const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
+        if (operatorType !== 'nullOperator') {
+          if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
+            this.errorMessageTitle = "There is a problem with the Date and/or Time field";
+            this.errorMessageDescription = "You must choose a date or time in these fields. Use your local time to search.";
+            flag = false;
+            break;
+          }
         }
       }
     }
@@ -179,10 +270,10 @@ export class FssSearchComponent implements OnInit {
     if (this.validateSearchInput()) {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
-      var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
-      console.log(filter);
-      if (filter != null) {
-        this.searchResult = [];
+        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
+        console.log(filter);
+        if (filter != null) {
+          this.searchResult = [];
           this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
             this.searchResult = res;
             if (this.searchResult.count > 0) {
@@ -212,11 +303,13 @@ export class FssSearchComponent implements OnInit {
           );
         }
       }
-        else {
-          this.handleResError();
-        }
+      else {
+        this.handleResError();
+      }
     }
     else {
+      this.searchResult = [];
+      this.displaySearchResult = false;
       this.showMessage(
         "warning",
         this.errorMessageTitle,
@@ -248,18 +341,12 @@ export class FssSearchComponent implements OnInit {
   }
 
   handleSuccess() {
-
     this.pagingLinks = this.searchResult['_Links'];
     this.searchResult = Array.of(this.searchResult['entries']);
     this.displaySearchResult = true;
     this.hideMessage();
     this.setPaginatorLabel(this.currentPage);
     this.displayLoader = false;
-  }
-
-  private setPaginatorLabel(currentPage: number) {
-    this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
-      "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
   }
 
   handleErrMessage(err: any) {
@@ -283,6 +370,11 @@ export class FssSearchComponent implements OnInit {
     console.log("Enterrr");
     this.fileShareApiService.loginpopUp();
     this.hideMessage();
+  }
+
+  private setPaginatorLabel(currentPage: number) {
+    this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
+      "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
   }
 
   pageChange(currentPage: number) {
@@ -319,213 +411,213 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-onGroupClicked(){
+  onGroupClicked() {
 
-  this.displaySearchResult = false;
-  this.hideMessage();
-  let rowIndexArray:Array<number>=[];
-  for(var i=0; i<this.fssSearchRows.length; i++){
-    if(this.fssSearchRows[i].group){
-      rowIndexArray.push(i);
+    this.displaySearchResult = false;
+    this.hideMessage();
+    let rowIndexArray: Array<number> = [];
+    for (var i = 0; i < this.fssSearchRows.length; i++) {
+      if (this.fssSearchRows[i].group) {
+        rowIndexArray.push(i);
+      }
     }
-  } 
-  this.currentGroupStartIndex= rowIndexArray[0]; 
-  this.currentGroupEndIndex = rowIndexArray[rowIndexArray.length-1]; 
+    this.currentGroupStartIndex = rowIndexArray[0];
+    this.currentGroupEndIndex = rowIndexArray[rowIndexArray.length - 1];
 
-  if (this.isGroupAlreadyExist()){
+    if (this.isGroupAlreadyExist()) {
       this.showMessage(
         "info",
         "A group already exists for selected clauses.",
         "A duplicate group cannot be created."
       );
-  }
-  else if(this.isGroupIntersectWithOther()){
+    }
+    else if (this.isGroupIntersectWithOther()) {
       this.showMessage(
         "info",
         "Groups can not intersect each other.",
         "A group can only contain complete groups, they cannot contain a part of another group."
       );
+    }
+    else {
+      this.AddGrouping();
+      this.createUIGrouping();
+    }
   }
-  else{       
-      this.AddGrouping();       
-      this.createUIGrouping(); 
+
+  isGroupAlreadyExist() {
+    var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));
+    return grouping !== undefined ? true : false;
   }
-}
 
-isGroupAlreadyExist() {
-  var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));   
-  return grouping !== undefined ? true : false;
-}  
+  isGroupIntersectWithOther() {
+    return (this.rowGroupings.find(g => (this.currentGroupStartIndex < g.startIndex &&
+      (this.currentGroupEndIndex >= g.startIndex &&
+        this.currentGroupEndIndex < g.endIndex))) !== undefined) ||
+      (this.rowGroupings.find(g => ((this.currentGroupStartIndex > g.startIndex &&
+        this.currentGroupStartIndex <= g.endIndex) &&
+        this.currentGroupEndIndex > g.endIndex)) !== undefined)
+  }
 
-isGroupIntersectWithOther() {
-  return (this.rowGroupings.find(g => (this.currentGroupStartIndex < g.startIndex &&
-    (this.currentGroupEndIndex >= g.startIndex &&
-      this.currentGroupEndIndex < g.endIndex))) !== undefined) ||
-    (this.rowGroupings.find(g => ((this.currentGroupStartIndex > g.startIndex &&
-      this.currentGroupStartIndex <= g.endIndex) &&
-      this.currentGroupEndIndex > g.endIndex)) !== undefined)
-}
+  AddGrouping() {
 
-AddGrouping(){
+    this.rowGroupings.push({
+      startIndex: this.currentGroupStartIndex,
+      endIndex: this.currentGroupEndIndex
+    });
 
-  this.rowGroupings.push({        
-    startIndex: this.currentGroupStartIndex, 
-    endIndex: this.currentGroupEndIndex
-  });
-  
-  if(this.groupingLevels.length == 0){   
+    if (this.groupingLevels.length == 0) {
 
-    var groupingLevel = new GroupingLevel();
-    groupingLevel.level = 1;
-    groupingLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
-    this.groupingLevels.push(groupingLevel);
+      var groupingLevel = new GroupingLevel();
+      groupingLevel.level = 1;
+      groupingLevel.rowGroupings.push({ startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex });
+      this.groupingLevels.push(groupingLevel);
 
-  }  
-  else if(this.isOuterLevelGroup()){
-        
-    var matchedGroupingLevel = this.groupingLevels.filter(g=> g.rowGroupings.some( r => 
+    }
+    else if (this.isOuterLevelGroup()) {
+
+      var matchedGroupingLevel = this.groupingLevels.filter(g => g.rowGroupings.some(r =>
         r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
 
-    var newLevel = new GroupingLevel();
-    var matchedLevel = matchedGroupingLevel[matchedGroupingLevel.length-1];
-    
-    if(matchedLevel !== undefined){
-      var currentlevel = this.groupingLevels.find(g => g.level === matchedLevel.level && g.rowGroupings.find(r=> 
-        r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));      
-      
-      if(currentlevel !== undefined) {
-        newLevel = currentlevel;      
+      var newLevel = new GroupingLevel();
+      var matchedLevel = matchedGroupingLevel[matchedGroupingLevel.length - 1];
+
+      if (matchedLevel !== undefined) {
+        var currentlevel = this.groupingLevels.find(g => g.level === matchedLevel.level && g.rowGroupings.find(r =>
+          r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));
+
+        if (currentlevel !== undefined) {
+          newLevel = currentlevel;
+        }
+        else {
+          newLevel.level = matchedLevel.level + 1;
+        }
+      }
+
+      var newLevelIndex = this.groupingLevels.findIndex(i => i.level === newLevel.level);
+      if (newLevelIndex !== -1) {
+        this.groupingLevels[newLevelIndex].rowGroupings.push({ startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex });
       }
       else {
-        newLevel.level = matchedLevel.level + 1;
+        newLevel.rowGroupings.push({ startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex });
+        this.groupingLevels.push(newLevel);
       }
     }
-      
-    var newLevelIndex = this.groupingLevels.findIndex(i => i.level === newLevel.level);           
-    if(newLevelIndex !== -1){
-      this.groupingLevels[newLevelIndex].rowGroupings.push({startIndex:this.currentGroupStartIndex, endIndex:this.currentGroupEndIndex});
+    else if (this.isInnerLevelOfExistingGroup()) {
+      this.showMessage(
+        "info",
+        "Adding an inner group to a group is not supported.",
+        "To add an inner group, first remove the outer group, then add the inner group and re-add the outer group."
+      );
+      this.rowGroupings.pop();
     }
-    else{
-      newLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
-      this.groupingLevels.push(newLevel);
-    }
-  }     
-  else if(this.isInnerLevelOfExistingGroup()) {
-        this.showMessage(
-          "info",
-          "Adding an inner group to a group is not supported.",
-          "To add an inner group, first remove the outer group, then add the inner group and re-add the outer group."
-        );
-        this.rowGroupings.pop();
-  }    
-  else if(this.isInnerLevelGroup()){  
+    else if (this.isInnerLevelGroup()) {
 
-    var existingGroupingLevel = this.groupingLevels.filter(g => g.rowGroupings.some( r =>    
-      (r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) ||
-      (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex )));
+      var existingGroupingLevel = this.groupingLevels.filter(g => g.rowGroupings.some(r =>
+        (r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) ||
+        (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex)));
 
       var existingLevel = existingGroupingLevel[0];
-      var existingLevelIndex = this.groupingLevels.findIndex(i => i === existingLevel);        
-      existingLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
+      var existingLevelIndex = this.groupingLevels.findIndex(i => i === existingLevel);
+      existingLevel.rowGroupings.push({ startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex });
 
       this.groupingLevels[existingLevelIndex] = existingLevel;
-  }    
-}
-
-isOuterLevelGroup(){
-  var outerGroup =  this.groupingLevels.filter(g=> g.rowGroupings.some( 
-    r => r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
-
-  if (outerGroup.length>0){
-    return true;
+    }
   }
-  return false;
-}
 
-isInnerLevelOfExistingGroup(){
-  var innerGroup = this.groupingLevels.filter(g => g.rowGroupings.find(
-                  r => r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));
+  isOuterLevelGroup() {
+    var outerGroup = this.groupingLevels.filter(g => g.rowGroupings.some(
+      r => r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
 
-  if (innerGroup.length>0){
-    return true;
-  }
-  return false;
-}
-
-isInnerLevelGroup(){  
-  var innerGroup = this.groupingLevels.find(g => g.rowGroupings.find( r => 
-    ((r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) && r.startIndex < this.currentGroupEndIndex) ||
-    (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex )));
-
-    if (innerGroup !== undefined){
+    if (outerGroup.length > 0) {
       return true;
     }
     return false;
-}
+  }
 
-createUIGrouping(){
-  this.uiGroupings = [];
+  isInnerLevelOfExistingGroup() {
+    var innerGroup = this.groupingLevels.filter(g => g.rowGroupings.find(
+      r => r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));
 
-  if(this.groupingLevels.length > 0){
-    var maxLevel = this.groupingLevels[this.groupingLevels.length-1].level;
+    if (innerGroup.length > 0) {
+      return true;
+    }
+    return false;
+  }
 
-    for(var i = 0; i < this.fssSearchRows.length; i++){  
-      var j = maxLevel;
+  isInnerLevelGroup() {
+    var innerGroup = this.groupingLevels.find(g => g.rowGroupings.find(r =>
+      ((r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) && r.startIndex < this.currentGroupEndIndex) ||
+      (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex)));
 
-      while(j>=1){
-        var groupingLevel = this.groupingLevels.find(g=>g.level === j);               
-        var uiGrouping = new UIGrouping();
-        uiGrouping.rowIndex = i;
-        uiGrouping.class = this.getUIGroupClass(i, groupingLevel!);
-        uiGrouping.colspan = this.getUIGroupingColspan(i, groupingLevel!);
-        uiGrouping.rowGroupings = this.getUIRowGrouping(i, groupingLevel!);
-        this.uiGroupings.push(uiGrouping);  
-        
-        j = j - uiGrouping.colspan; 
-      }          
+    if (innerGroup !== undefined) {
+      return true;
+    }
+    return false;
+  }
+
+  createUIGrouping() {
+    this.uiGroupings = [];
+
+    if (this.groupingLevels.length > 0) {
+      var maxLevel = this.groupingLevels[this.groupingLevels.length - 1].level;
+
+      for (var i = 0; i < this.fssSearchRows.length; i++) {
+        var j = maxLevel;
+
+        while (j >= 1) {
+          var groupingLevel = this.groupingLevels.find(g => g.level === j);
+          var uiGrouping = new UIGrouping();
+          uiGrouping.rowIndex = i;
+          uiGrouping.class = this.getUIGroupClass(i, groupingLevel!);
+          uiGrouping.colspan = this.getUIGroupingColspan(i, groupingLevel!);
+          uiGrouping.rowGroupings = this.getUIRowGrouping(i, groupingLevel!);
+          this.uiGroupings.push(uiGrouping);
+
+          j = j - uiGrouping.colspan;
+        }
+      }
     }
   }
-}
 
-getUIGroupClass(rowIndex: number, groupingLevel: GroupingLevel){
-  var groupingClass = "";
+  getUIGroupClass(rowIndex: number, groupingLevel: GroupingLevel) {
+    var groupingClass = "";
 
-  if(groupingLevel.rowGroupings.find(g=>g.startIndex == rowIndex)){
-    groupingClass = "group group-start";
+    if (groupingLevel.rowGroupings.find(g => g.startIndex == rowIndex)) {
+      groupingClass = "group group-start";
+    }
+    else if (groupingLevel.rowGroupings.find(g => g.endIndex == rowIndex)) {
+      groupingClass = "group group-end";
+    }
+    else if (groupingLevel.rowGroupings.find(g => g.startIndex < rowIndex && g.endIndex > rowIndex)) {
+      groupingClass = "group";
+    }
+    else {
+      groupingClass = "no-group";
+    }
+
+    return groupingClass;
   }
-  else if(groupingLevel.rowGroupings.find(g=>g.endIndex == rowIndex)){
-    groupingClass = "group group-end";
-  }
-  else if(groupingLevel.rowGroupings.find(g=>g.startIndex < rowIndex && g.endIndex > rowIndex)){
-    groupingClass = "group";
-  }
-  else{
-    groupingClass = "no-group";
-  }
 
-  return groupingClass;
-}
+  getUIGroupingColspan(rowIndex: number, groupingLevel: GroupingLevel) {
+    var groupingLevels = this.groupingLevels.slice().reverse()
+      .filter(gl => gl.level <= groupingLevel.level && gl.rowGroupings
+        .some(g => rowIndex >= g.startIndex &&
+          rowIndex <= g.endIndex));
 
-getUIGroupingColspan(rowIndex:number, groupingLevel: GroupingLevel) {
-  var groupingLevels = this.groupingLevels.slice().reverse()
-       .filter(gl => gl.level <= groupingLevel.level && gl.rowGroupings
-       .some(g => rowIndex >= g.startIndex &&
-        rowIndex <= g.endIndex ));
-
-    if(groupingLevels.length > 1) {
-      return groupingLevels[0].level - groupingLevels[1].level; 
-    } 
-    else if(groupingLevels.length === 1 && groupingLevels[0].level !== groupingLevel.level ) {
+    if (groupingLevels.length > 1) {
+      return groupingLevels[0].level - groupingLevels[1].level;
+    }
+    else if (groupingLevels.length === 1 && groupingLevels[0].level !== groupingLevel.level) {
       return groupingLevels[0].level;
     }
     else {
       return groupingLevel.level;
-    }      
-}
+    }
+  }
 
-getUIRowGrouping(rowIndex: number, groupingLevel:GroupingLevel){
-  var rowGrouping = groupingLevel.rowGroupings.filter(r=>r.startIndex == rowIndex);
-  return rowGrouping;
-}
+  getUIRowGrouping(rowIndex: number, groupingLevel: GroupingLevel) {
+    var rowGrouping = groupingLevel.rowGroupings.filter(r => r.startIndex == rowIndex);
+    return rowGrouping;
+  }
 
-} 
+}

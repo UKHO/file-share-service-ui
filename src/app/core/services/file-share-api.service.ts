@@ -7,12 +7,11 @@ import { MsalService } from '@azure/msal-angular';
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    
+
     constructor(private http: HttpClient, private msalService: MsalService) { }
 
-    getSearchResult(payload: string,isPagingRequest : boolean): Observable<any> {
-        if(!isPagingRequest)
-        {
+    getSearchResult(payload: string, isPagingRequest: boolean): Observable<any> {
+        if (!isPagingRequest) {
             if (payload === "") {
                 return this.http.get(this.baseUrl + '/batch');
             }
@@ -21,10 +20,10 @@ export class FileShareApiService {
             }
 
         }
-        else{
+        else {
             return this.http.get(this.baseUrl + payload);
         }
-       
+
     }
 
     getBatchAttributes(): Observable<any> {
