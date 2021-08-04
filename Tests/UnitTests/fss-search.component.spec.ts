@@ -202,11 +202,11 @@ describe('FssSearchComponent', () => {
     expect(result).toBe(2);
   });
 
-  test('should disable Value input when nullOperator is selected in the row', () => {
+  test('should hide Value input when nullOperator is selected in the row', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
-    component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', false));
+    component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', true));
     component.toggleValueInput(component.fssSearchRows[0], 'nullOperator');
     var result = component.fssSearchRows[0].isValueHidden;
     expect(result).toBe(true);
@@ -228,6 +228,7 @@ export function MockUserAttributeFields() {
     "Key3"
   ]
 }
+
 
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean) {
   var row = new FssSearchRow();

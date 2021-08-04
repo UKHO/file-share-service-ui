@@ -60,16 +60,18 @@ export class FssSearchComponent implements OnInit {
     /*Call attributes API to retrieve User attributes and send back to search service 
     to append to existing System attributes*/
     if (!localStorage['batchAttributes']) {
-      this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-        if (batchAttributeResult.length === 0) {
-          this.handleResError();
-        }
-        else {
+      this.displayLoader = true;
+      if (!this.fileShareApiService.isTokenExpired()) {
+        this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
           console.log(batchAttributeResult);
           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
           this.setFields(batchAttributeResult);
-        }
-      });
+          this.displayLoader = false;
+        });
+      }
+      else {
+        this.handleResError();
+      }
     }
     else {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
@@ -335,8 +337,10 @@ export class FssSearchComponent implements OnInit {
     this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;
     this.displayMessage = true;
-    this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
-    this.ukhoDialog.nativeElement.focus();
+    if (this.ukhoDialog !== undefined) {
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+      this.ukhoDialog.nativeElement.focus();
+    }
     if (this.displayLoader === false) {
       window.scroll({
         top: 150,
@@ -366,9 +370,9 @@ export class FssSearchComponent implements OnInit {
   }
 
   handleResError() {
-    this.showMessage("info", "Token is Expired", "Please sign in and try again");
-    this.loginErrorDisplay = true;
     this.displayLoader = false;
+    this.loginErrorDisplay = true;
+    this.showMessage("info", "Token is Expired", "Please sign in and try again");
   }
 
   loginPopup() {
