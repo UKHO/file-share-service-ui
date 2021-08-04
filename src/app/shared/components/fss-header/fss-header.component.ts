@@ -1,9 +1,9 @@
-import { NavigationEnd, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { AuthenticationResult } from '@azure/msal-browser';
+import { AuthenticationResult, InteractionStatus } from '@azure/msal-browser';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -13,35 +13,55 @@ import { filter } from 'rxjs/operators';
 })
 export class FssHeaderComponent extends HeaderComponent implements OnInit {
   userName: string = "";
+  @Output() isPageOverlay = new EventEmitter<boolean>();
+
   skipToContent:string = "";
+  firstName: string = '';
+  lastName: string = '';
+  isActive: boolean = false;
   constructor(private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService) {
     super();
   }
 
-  ngOnInit(): void {   
-    this.setSkipToContent();    
+  ngOnInit(): void {
+    this.handleSignIn();
+    this.setSkipToContent(); 
+    
+    /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.Login))
       .subscribe(() => {
-        const account = this.msalService.instance.getAllAccounts()[0];
-        if (account != null) {
-          this.getClaims(account.idTokenClaims);          
-          this.msalService.instance.setActiveAccount(account);
-        }
+        this.isPageOverlay.emit(true);
       });
-
-    this.branding = {
-      title: AppConfigService.settings["fssConfig"].fssTitle,
-      logoImgUrl: "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg",
-      logoAltText: "Admiralty - Maritime Data Solutions Logo",
-      logoLinkUrl: "https://datahub.admiralty.co.uk/portal/apps/sites/#/marine-data-portal"
-    };
-
+       
+    this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.None))
+      .subscribe(() => {
+        this.isPageOverlay.emit(false);
+        this.handleSigninAwareness();
+      });
+    
+    this.title = AppConfigService.settings["fssConfig"].fssTitle;
+    this.logoImgUrl = "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg";
+    this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
+    this.logoLinkUrl = "https://www.admiralty.co.uk/";
+    
     this.menuItems = [
       {
         title: 'Search',
-        clickAction: (() => { this.route.navigate(["search"]) })
+        clickAction: (() => {
+          if(this.authOptions?.isSignedIn()){
+            this.route.navigate(["search"]) 
+          }
+          if(!this.authOptions?.isSignedIn()){
+            this.logInPopup();
+          }
+        }),
+        navActive: this.isActive
       }
     ];
 
@@ -52,35 +72,65 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
+    this.handleSigninAwareness();
   }
 
   setSkipToContent() {
-    this.route.events.pipe (
+    this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => { this.skipToContent = `${event.url}#mainContainer`; });
   }
 
+  handleActiveTab(){
+    this.menuItems.find(mt => mt.title === 'Search')!.navActive = this.isActive;
+  }
+
   logInPopup() {
     this.msalService.loginPopup().subscribe(response => {
-      console.log("response after login", response);
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
         localStorage.setItem('idToken', response.idToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-        console.log("from header component", this.userName);
-        this.route.navigate(["/"]);
+        this.route.navigate(['search'])
+        this.isActive = true;
+        this.handleActiveTab()
       }
     });
   }
 
+  handleSignIn() {
+    this.route.events.pipe (
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => { const url = `${event.url}`
+      if(url.includes('search')){
+        if(!this.authOptions?.isSignedIn()){
+          this.route.navigate(['']);
+          this.isActive = false;
+          this.handleActiveTab()
+        }
+        else{
+          this.isActive = true;
+          this.handleActiveTab()
+        }
+      }
+  });
+  }
+
+  /** Extract claims of user once user is Signed in */
   getClaims(claims: any) {
-    this.userName = claims ? claims['given_name'] : null;
+    this.firstName = claims ? claims['given_name'] : null;
+    this.lastName = claims ? claims['family_name'] : null;
+    this.userName = this.firstName + ' ' + this.lastName;
     this.authOptions =
     {
       signInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { this.msalService.logout(); }),
+      signOutHandler: (() => {
+        this.msalService.logout();
+        this.isActive = false;
+        localStorage.clear();
+      }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
@@ -94,5 +144,30 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         });;
       })
     }
-  }  
+  }
+
+  /**Once signed in handles user redirects and also handle expiry if token expires.*/
+  handleSigninAwareness() {
+    const date = new Date()
+    const account = this.msalService.instance.getAllAccounts()[0];
+    if (account != null) {
+      this.getClaims(account.idTokenClaims);
+      if (localStorage['claims'] != null) {
+        const claims = JSON.parse(localStorage['claims']);
+        if (this.userName == claims['given_name']) {
+          this.msalService.instance.setActiveAccount(account);
+          if (this.authOptions?.isSignedIn()) {
+            // Handling token expiry
+            if (new Date(1000 * claims['exp']).toISOString() < date.toISOString()) {
+              this.msalService.loginPopup().subscribe(response => {
+                localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+                localStorage.setItem('idToken', response.idToken);
+              });
+            }
+            this.route.navigateByUrl('/search');
+          }
+        }
+      }
+    }
+  }
 }

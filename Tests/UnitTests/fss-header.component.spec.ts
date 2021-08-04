@@ -55,7 +55,7 @@ describe('FssHeaderComponent', () => {
     expect(footer).toBeFalsy();
   });
 
-  test('should render the branding title element of ukho-header', () => {
+  test('should render the title element of ukho-header', () => {
     const fixture = TestBed.createComponent(FssHeaderComponent);
     fixture.detectChanges();
     const header = fixture.debugElement.query(By.css('ukho-header')).nativeElement;
@@ -68,10 +68,10 @@ describe('FssHeaderComponent', () => {
     expect(component).toBeDefined();
   });
 
-  test('should exist the branding title in header', () => {
+  test('should exist the title in header', () => {
     component = new FssHeaderComponent(msalService, route, msalBroadcastServie);
     component.ngOnInit();
-    expect(component.branding.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
+    expect(component.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist Search menu item in header', () => {
