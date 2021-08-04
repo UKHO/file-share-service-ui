@@ -5,6 +5,7 @@ import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrou
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 import { FormControl, Validators } from '@angular/forms';
+import { MsalService } from '@azure/msal-angular';
 
 
 @Component({
@@ -47,7 +48,11 @@ export class FssSearchComponent implements OnInit {
   groupingLevels: GroupingLevel[] = [];
   uiGroupings: UIGrouping[] = [];
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef) { }
+  constructor(private fssSearchTypeService: IFssSearchService,
+    private fssSearchFilterService: FssSearchFilterService,
+    private fileShareApiService: FileShareApiService,
+    private elementRef: ElementRef,
+    private msalService: MsalService) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -368,7 +373,18 @@ export class FssSearchComponent implements OnInit {
 
   loginPopup() {
     console.log("Enterrr");
-    this.fileShareApiService.loginpopUp();
+    this.displayLoader = true;
+    this.msalService.loginPopup().subscribe(response => {
+      localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+      const idToken = response.idToken;
+      localStorage.setItem('idToken', idToken);
+      this.msalService.instance.setActiveAccount(response.account);
+      console.log("idtoken reset after expiry on sign in ")
+      //to be replaced with refreshToken endpoint
+      this.fileShareApiService.getSearchResult("", false).subscribe(res=>{
+        this.displayLoader = false;
+      })//set the cookie when user login after token expiry           
+    });
     this.hideMessage();
   }
 
@@ -620,4 +636,9 @@ export class FssSearchComponent implements OnInit {
     return rowGrouping;
   }
 
+showTokenExpiryError(displayError: any) {
+  if (displayError == true)
+    this.handleResError();
 }
+
+} 

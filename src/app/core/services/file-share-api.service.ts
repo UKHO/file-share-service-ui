@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfigService } from './app-config.service';
-import { MsalService } from '@azure/msal-angular';
 
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-
-    constructor(private http: HttpClient, private msalService: MsalService) { }
+    
+    constructor(private http: HttpClient) { }
 
     getSearchResult(payload: string, isPagingRequest: boolean): Observable<any> {
         if (!isPagingRequest) {
@@ -18,12 +17,10 @@ export class FileShareApiService {
             else {
                 return this.http.get(this.baseUrl + "/batch?$filter=" + encodeURIComponent(payload));
             }
-
         }
         else {
             return this.http.get(this.baseUrl + payload);
         }
-
     }
 
     getBatchAttributes(): Observable<any> {
@@ -32,6 +29,10 @@ export class FileShareApiService {
 
     clearCookies(): Observable<any>{
         return this.http.get(this.baseUrl + '/logout');
+    }
+    
+    refreshToken(): Observable<any> {
+        return this.http.get(this.baseUrl + '/refreshToken');
     }
 
     isTokenExpired() {
@@ -45,15 +46,6 @@ export class FileShareApiService {
             flag = true;
         }
         return flag
-    }
-
-    loginpopUp() {
-        this.msalService.loginPopup().subscribe(response => {
-            localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-            const idToken = response.idToken;
-            localStorage.setItem('idToken', idToken);
-            this.msalService.instance.setActiveAccount(response.account);
-        });
     }
 
 }
