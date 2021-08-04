@@ -1,24 +1,27 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FssSearchRow, GroupingLevel, RowGrouping, UIGrouping } from './../../../core/models/fss-search-types';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { FssSearchRow, RowGrouping, UIGrouping, UIGroupingDetails } from './../../../core/models/fss-search-types';
 
 @Component({
   selector: 'app-fss-search-row',
   templateUrl: './fss-search-row.component.html',
   styleUrls: ['./fss-search-row.component.scss']
 })
-export class FssSearchRowComponent implements OnInit {
+export class FssSearchRowComponent implements OnChanges {
   @Input() fssSearchRows: FssSearchRow[] = [];
-  @Input() groupingLevels: GroupingLevel[] = [];
-  @Input() uiGroupings: UIGrouping[] = [];
+  @Input() uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();    
   @Output() onSearchRowDeleted = new EventEmitter<number>();
   @Output() onFieldChanged = new EventEmitter<{ fieldValue: string, rowId: number }>();
   @Output() onOperatorChanged = new EventEmitter<{ operatorValue: string, rowId: number }>();
   @Output() onGroupClicked = new EventEmitter();
-  @Output() onGroupDeleted = new EventEmitter<{rowGrouping:RowGrouping[]}>();
+  @Output() onGroupDeleted = new EventEmitter<{rowGrouping:RowGrouping}>();
   enableGrouping: Boolean = false; 
+  maxGroupingLevel: number = 0;
+  uiGroupings: UIGrouping[] = []; 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    this.maxGroupingLevel = this.uiGroupingDetails.maxGroupingLevel;
+    this.uiGroupings = this.uiGroupingDetails.uiGroupings;
   }
 
   onSearchRowDelete(rowId: number) {
@@ -26,7 +29,7 @@ export class FssSearchRowComponent implements OnInit {
     this.toggleGrouping();
   }
 
-  onGroupDelete(rowGrouping:RowGrouping[]) {
+  onGroupDelete(rowGrouping:RowGrouping) {
     this.onGroupDeleted.emit({rowGrouping});
     this.toggleGrouping();
   }

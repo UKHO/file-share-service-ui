@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { FssSearchRow, GroupingLevel, RowGrouping, UIGrouping } from "../models/fss-search-types";
+import { FssSearchRow, GroupingLevel, RowGrouping, UIGrouping, UIGroupingDetails } from "../models/fss-search-types";
 
 
 @Injectable({
@@ -7,118 +7,70 @@ import { FssSearchRow, GroupingLevel, RowGrouping, UIGrouping } from "../models/
   })
 
 export class FssSearchGroupingService{
-  groupingDetails: GroupingDetails;
   groupingLevels: GroupingLevel[] = [];
-  currentGroupStartIndex: number = 0;
-  currentGroupEndIndex: number = 0;
   uiGroupings: UIGrouping[] = [];
   
-  constructor() { }  
-       
+  constructor() { } 
+
+  //Recreate grouping levels and uiGroupings
   resetGroupingDetails(rowGroupings: RowGrouping[], fssSearchRow:FssSearchRow[]){
-    var groupingDetails = new GroupingDetails();
-    var isInnerGroupError = false;
+    var uiGroupingDetails = new UIGroupingDetails();    
     this.groupingLevels = [];
+
+    //copy rowGroupings in rowGroupingsTemp object
+    var rowGroupingsTemp = rowGroupings.slice();
     
-    rowGroupings.forEach(row => {
-      this.currentGroupStartIndex = row.startIndex;
-      this.currentGroupEndIndex = row.endIndex;
-     
-      if(this.groupingLevels.length === 0){   
+    //Execute loop till rowGroupingsTemp becomes empty
+     while(1 === 1) {
+      if(rowGroupingsTemp.length === 0) {
+        break;
+      }
 
-        var groupingLevel = new GroupingLevel();
-        groupingLevel.level = 1;
-        groupingLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
-        this.groupingLevels.push(groupingLevel);
+      //Get inner level groupings for given list of groupings in rowGroupingTemp
+      var currentInnerLevelGroupings = this.getInnerLevelRowGroupings(rowGroupingsTemp);
 
-      }  
-      else if(this.isOuterLevelGroup()){
-          
-        var matchedGroupingLevel = this.groupingLevels.filter(g=> g.rowGroupings.some( r => 
-            r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
+      ///push all current inner groupings to grouping level
+      var groupingLevel = new GroupingLevel();
+        groupingLevel.level = this.groupingLevels.length + 1;
+        currentInnerLevelGroupings.forEach(rowGrouping => {
+          groupingLevel.rowGroupings.push(rowGrouping);
+        });               
+      this.groupingLevels.push(groupingLevel);
+      
+      //remove all current inner groupings from rowGroupingsTemp
+      currentInnerLevelGroupings.forEach(rowGrouping => {
+        var rowGroupingIndex = rowGroupingsTemp.findIndex(rgt => rgt.startIndex === rowGrouping.startIndex &&
+                                                             rgt.endIndex === rowGrouping.endIndex); 
+        rowGroupingsTemp.splice(rowGroupingIndex, 1);
+      });               
+     }
+  
+     this.uiGroupings = this.createUIGrouping(fssSearchRow);
 
-        var newLevel = new GroupingLevel();
-        var matchedLevel = matchedGroupingLevel[matchedGroupingLevel.length-1];
-        
-        if(matchedLevel !== undefined){
-          var currentlevel = this.groupingLevels.find(g => g.level === matchedLevel.level && g.rowGroupings.find(r=> 
-          r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));      
-          
-          if(currentlevel !== undefined) {
-            newLevel = currentlevel;      
-          }
-          else {
-            newLevel.level = matchedLevel.level + 1;
-          }
-        }
-            
-        var newLevelIndex = this.groupingLevels.findIndex(i => i.level === newLevel.level);           
-        if(newLevelIndex !== -1){
-            this.groupingLevels[newLevelIndex].rowGroupings.push({startIndex:this.currentGroupStartIndex, endIndex:this.currentGroupEndIndex});
-        }
-        else{
-            newLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
-            this.groupingLevels.push(newLevel);
-        }
-      }     
-      else if(this.isInnerLevelOfExistingGroup()) {         
-        isInnerGroupError = true;            
-      }    
-      else if(this.isInnerLevelGroup()){  
-
-        var existingGroupingLevel = this.groupingLevels.filter(g => g.rowGroupings.some( r =>    
-          (r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) ||
-          (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex )));
-
-        var existingLevel = existingGroupingLevel[0];
-        var existingLevelIndex = this.groupingLevels.findIndex(i => i === existingLevel);        
-          existingLevel.rowGroupings.push({startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex});
-
-        this.groupingLevels[existingLevelIndex] = existingLevel;
-      }    
-    }); 
-
-    this.uiGroupings = this.createUIGrouping(fssSearchRow);
-
-    groupingDetails = {
-        groupingLevels: this.groupingLevels,
-        isInnerGroupError: isInnerGroupError,
+     uiGroupingDetails = {
+        maxGroupingLevel: this.groupingLevels.length,      
         uiGroupings: this.uiGroupings
-    };
-    return groupingDetails;
-  }
-  
-  isOuterLevelGroup(){
-    var outerGroup =  this.groupingLevels.filter(g=> g.rowGroupings.some( 
-      r => r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
-  
-    if (outerGroup.length>0){
-      return true;
-    }
-    return false;
-  }
-   
-  isInnerLevelOfExistingGroup(){
-    var innerGroup = this.groupingLevels.filter(g => g.rowGroupings.find(
-                    r => r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));
-  
-    if (innerGroup.length>0){
-      return true;
-    }
-    return false;
-  }
-  
-  isInnerLevelGroup(){  
-    var innerGroup = this.groupingLevels.find(g => g.rowGroupings.find( r => 
-      ((r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) && r.startIndex < this.currentGroupEndIndex) ||
-      (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex )));
-  
-    if (innerGroup !== undefined){
-      return true;
-    }
-    return false;
+     };
+     return uiGroupingDetails;
   }
 
+  //Get extreme inner level groupings for given list of groupings in rowGroupingTemp
+  getInnerLevelRowGroupings(rowGroupings: RowGrouping[]) {
+    var innerLevelRowGroupings: RowGrouping[] = [];
+    
+    rowGroupings.forEach(rowGrouping => {
+       var rowGroup = rowGroupings.find(rg => (rg.startIndex > rowGrouping.startIndex && rg.endIndex < rowGrouping.endIndex) || 
+                              (rg.startIndex === rowGrouping.startIndex && rg.endIndex < rowGrouping.endIndex) ||
+                              (rg.startIndex > rowGrouping.startIndex && rg.endIndex === rowGrouping.endIndex));
+
+       if(rowGroup === undefined) {
+        innerLevelRowGroupings.push(rowGrouping);
+       }
+    });
+
+    return innerLevelRowGroupings;    
+  }       
+  
   createUIGrouping(fssSearchRows: FssSearchRow[]){
     this.uiGroupings = [];
   
@@ -134,7 +86,7 @@ export class FssSearchGroupingService{
           uiGrouping.rowIndex = i;
           uiGrouping.class = this.getUIGroupingClass(i, groupingLevel!);
           uiGrouping.colspan = this.getUIGroupingColspan(i, groupingLevel!);
-          uiGrouping.rowGroupings = this.getUIRowGrouping(i, groupingLevel!);
+          uiGrouping.rowGrouping = this.getUIRowGrouping(i, groupingLevel!);
           this.uiGroupings.push(uiGrouping);  
           
           j = j - uiGrouping.colspan; 
@@ -179,10 +131,15 @@ export class FssSearchGroupingService{
       return groupingLevel.level;
     }      
   }
-  
+    
   getUIRowGrouping(rowIndex: number, groupingLevel:GroupingLevel){
-    var rowGrouping = groupingLevel.rowGroupings.filter(r=>r.startIndex === rowIndex);
-    return rowGrouping;
+    const grouping = new RowGrouping();
+    var rowGrouping = groupingLevel.rowGroupings.find(r=>r.startIndex === rowIndex);
+    if(rowGrouping !== undefined){
+      grouping.startIndex = rowGrouping.startIndex;
+      grouping.endIndex = rowGrouping.endIndex;
+    }
+    return grouping;
   }
 
   resetRowGroupings(rowGroupings: RowGrouping[], deleteRowIndex: number){
@@ -209,10 +166,4 @@ export class FssSearchGroupingService{
     return rowGroupings;
   } 
 
-}
-
-export class GroupingDetails{
-  groupingLevels: GroupingLevel[];
-  isInnerGroupError: boolean;
-  uiGroupings:UIGrouping[];
 }

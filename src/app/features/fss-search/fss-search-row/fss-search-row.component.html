@@ -2,8 +2,8 @@
     <caption class="sr-only">Search Query </caption>
     <thead>
         <tr>
-            <th><button class="delete grouping" [class.disabled]="this.enableGrouping == false" (click)="onGroupClick()"><img alt="Group" src="..\assets\images\group icon.svg"></button></th>
-            <th class="groups" [attr.colspan]="groupingLevels.length > 0 ? groupingLevels.length : 1"></th>
+            <th><button class="delete grouping" aria-label="Group selected search rows" [class.disabled]="this.enableGrouping === false" [attr.aria-disabled]="this.enableGrouping === false" (click)="onGroupClick()"><img aria-hidden="true" src="..\assets\images\group icon.svg"></button></th>
+            <th class="groups" [attr.colspan]="maxGroupingLevel > 0 ? maxGroupingLevel : 1"></th>            
             <th class="searchFieldsRow">And/Or</th>
             <th class="searchFieldsRow">Field</th>
             <th class="searchFieldsRow">Operator</th>
@@ -15,13 +15,13 @@
             <td>
                 <ukho-checkbox [(ngModel)]="fssSearchRow.group" (change)="onCheckboxClick()"></ukho-checkbox>
             </td>
-            <td *ngIf="groupingLevels.length == 0"></td>
+            <td *ngIf="maxGroupingLevel === 0"></td>
             <ng-container *ngFor="let grouping of uiGroupings | filter:'rowIndex':i">
                 <td 
                     class="{{grouping.class}} grouping-border"
                     [attr.colspan]="grouping.colspan">
-                    <button *ngIf="grouping.class == 'group group-start'" class="delete fa fa-times fa-1x grouping" 
-                            (click)="onGroupDelete(grouping.rowGroupings)" aria-label="Delete Group"></button>                                            
+                    <button *ngIf="grouping.class === 'group group-start'" class="delete fa fa-times fa-1x grouping" 
+                            (click)="onGroupDelete(grouping.rowGrouping)" aria-label="UnGroup selected search rows"></button>                                            
                 </td>
             </ng-container>
             <td>

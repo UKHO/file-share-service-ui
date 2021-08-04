@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { FssSearchService } from './../../core/services/fss-search.service';
-import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
+import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
@@ -41,8 +41,7 @@ export class FssSearchComponent implements OnInit {
   currentGroupStartIndex: number=0;
   currentGroupEndIndex: number=0;
   rowGroupings: RowGrouping[]=[];
-  groupingLevels: GroupingLevel[]=[];
-  uiGroupings: UIGrouping[] = [];  
+  uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();  
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef, private fssSearchGroupingService: FssSearchGroupingService) { }
 
@@ -61,7 +60,7 @@ export class FssSearchComponent implements OnInit {
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
     this.rowId += 1;
-    this.uiGroupings = this.fssSearchGroupingService.createUIGrouping(this.fssSearchRows);
+    this.setupGrouping();
   }
 
   getDefaultSearchRow() {
@@ -156,7 +155,7 @@ export class FssSearchComponent implements OnInit {
   onSearchRowDeleted(rowId: number) {
     var deleteRowIndex = this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId);    
     this.fssSearchRows.splice(deleteRowIndex, 1);
-
+    //Reset rowGroupings on search row deletion
     this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);    
     this.setupGrouping();
   }
@@ -354,24 +353,13 @@ addGrouping(){
 }
 
 setupGrouping(){
-  var groupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings,this.fssSearchRows);
-  if(groupingDetails.isInnerGroupError)
-  {
-    this.showMessage(
-            "info", 
-            "Adding an inner group to a group is not supported.",
-            "To add an inner group, first remove the outer group, then add the inner group and re-add the outer group."
-        );
-    this.rowGroupings.pop();
-  }
-  this.groupingLevels = groupingDetails.groupingLevels;
-  this.uiGroupings = groupingDetails.uiGroupings;
+  this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings,this.fssSearchRows);
 }
 
-onGroupDeleted(rowGrouping: any) { 
-  var start = rowGrouping.rowGrouping[0].startIndex;
-  var end = rowGrouping.rowGrouping[0].endIndex;
-  this.rowGroupings.splice(this.rowGroupings.findIndex(r => r.startIndex === start && r.endIndex === end),1);  
+onGroupDeleted(grouping: any) { 
+  this.rowGroupings.splice(this.rowGroupings.findIndex(r => 
+    r.startIndex === grouping.rowGrouping.startIndex && 
+    r.endIndex === grouping.rowGrouping.endIndex),1);  
   this.setupGrouping();  
 }
 
