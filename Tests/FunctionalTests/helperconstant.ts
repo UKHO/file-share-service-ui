@@ -9,7 +9,7 @@ export const stringOperatorList= [
     'Not Contains'
   ]
 
-  export const symbolOperatorList= [
+  export const symbolOperatorListForFileSize= [
     '=',
     '<>',
     '>',    
@@ -17,3 +17,14 @@ export const stringOperatorList= [
     '<',
     '<='
  ]
+
+ export const symbolOperatorListForDate= [
+  '=',
+  '<>',
+  '= null',
+  '<> null',
+  '>',    
+  '>=',
+  '<',
+  '<='
+]

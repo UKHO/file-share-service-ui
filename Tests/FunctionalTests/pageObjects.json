@@ -31,10 +31,10 @@
        "searchButtonSelector": "#Search",
        "homePageSignInHeaderInfoSelector" : ".card h1",
        "homePageSignInHeaderInfoText":"Sign in to access your files",
-       "inputSearchFieldSelector":"#ukho-form-field-4",
+       "inputSearchFieldSelector":"#ukho-form-field-3",
        "operatorDropDownSelector":"#ukho-form-field-2",
        "operatorDropDownItemsSelector":"#ukho-form-field-2 >option",
-       "inputSearchValueSelector":"#ukho-form-field-3",
+       "inputSearchValueSelector":"#ukho-form-field-4",
        "searchQueryTableRowSelector":".querytable tbody tr"
     },
     "pageTimeOut":

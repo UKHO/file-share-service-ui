@@ -14,6 +14,8 @@ import { AppConfigService } from '../../src/app/core/services/app-config.service
 import { FssSearchService } from '../../src/app/core/services/fss-search.service';
 import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
 import { Field, FssSearchRow, Operator } from '../../src/app/core/models/fss-search-types';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 describe('FssSearchComponent', () => {
   let component: FssSearchComponent;
@@ -21,6 +23,7 @@ describe('FssSearchComponent', () => {
   let fileShareApiService: FileShareApiService;
   let searchFilterservice: FssSearchFilterService;
   let searchService: FssSearchService;
+  let msalService: MsalService;
   let elementRef: ElementRef;
 
   beforeEach(async () => {
@@ -32,7 +35,11 @@ describe('FssSearchComponent', () => {
         FssSearchRowComponent,
         FssSearchResultsComponent,
         FilterPipe],
-      providers: [FileShareApiService],
+      providers: [FileShareApiService, {
+        provide: MSAL_INSTANCE,
+        useFactory: MockMSALInstanceFactory       
+      },
+       MsalService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -93,7 +100,7 @@ describe('FssSearchComponent', () => {
     component.ngOnInit();
     var expectedOperatorType = "nullOperator";
     var changedOperator = { operatorValue: "ne null", rowId: 1 }
-    var result = component.getOperatorType(changedOperator);
+    var result = component.getOperatorType(changedOperator.operatorValue);
     expect(result).toEqual(expectedOperatorType);
   });
 
@@ -194,13 +201,13 @@ describe('FssSearchComponent', () => {
     expect(result).toBe(2);
   });
 
-  test('should disable Value input when nullOperator is selected in the row', () => {
+  test('should hide Value input when nullOperator is selected in the row', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());    
-    component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', false));
+    component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', true));
     component.toggleValueInput(component.fssSearchRows[0], 'nullOperator');
-    var result = component.fssSearchRows[0].valueIsdisabled;
+    var result = component.fssSearchRows[0].isValueHidden;
     expect(result).toBe(true);
   });
 
@@ -221,7 +228,7 @@ export function MockUserAttributeFields() {
   ]
 }
 
-export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", valueIsdisabled: boolean) {
+export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean) {
   var row = new FssSearchRow();
   row.rowId = rowId;
   row.fields = fields,
@@ -231,6 +238,23 @@ export function createSearchRow(rowId: number, fields: Field[], operators: Opera
   row.selectedOperator = operator;
   row.value = value;
   row.valueType = valueType;
-  row.valueIsdisabled = valueIsdisabled;
+  row.isValueHidden = isValueHidden;
   return row;
 }
+
+export function MockMSALInstanceFactory () {    
+  return new PublicClientApplication ( {
+     auth:{
+       clientId:"",
+       authority: "",
+       redirectUri: "/",
+       knownAuthorities: [],
+       postLogoutRedirectUri: "/",
+       navigateToLoginRequestUrl: false
+     },
+     cache:{
+       cacheLocation: "localStorage",
+       storeAuthStateInCookie: true
+     }
+   })           
+ };

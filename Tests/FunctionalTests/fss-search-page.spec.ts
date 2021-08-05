@@ -2,7 +2,7 @@ import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import {LoginPortal,SearchAttribute} from './helpermethod'
-import {stringOperatorList,symbolOperatorList} from './helperconstant'
+import {stringOperatorList,symbolOperatorListForFileSize, symbolOperatorListForDate} from './helperconstant'
 
 
 describe('Test Search Attribute Scenario On Search Page', () => {
@@ -47,7 +47,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     await SearchAttribute(page,"FileSize");  
     
     const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
-    var match = (symbolOperatorList.length == operatorsOption.length) && symbolOperatorList.every(function(element, index) {
+    var match = (symbolOperatorListForFileSize.length == operatorsOption.length) && symbolOperatorListForFileSize.every(function(element, index) {
         return element === operatorsOption[index]; 
     });
     
@@ -83,7 +83,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     await SearchAttribute(page,"BatchExpiryDate");  
     
     const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
-    var match = (symbolOperatorList.length == operatorsOption.length) && symbolOperatorList.every(function(element, index) {
+    var match = (symbolOperatorListForDate.length == operatorsOption.length) && symbolOperatorListForDate.every(function(element, index) {
         return element === operatorsOption[index]; 
     });
     
@@ -95,10 +95,11 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     await SearchAttribute(page,"BatchPublishedDate");    
     
     const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
-    var match = (symbolOperatorList.length == operatorsOption.length) && symbolOperatorList.every(function(element, index) {
+    var match = (symbolOperatorListForDate.length == operatorsOption.length) && symbolOperatorListForDate.every(function(element, index) {
         return element === operatorsOption[index]; 
     });
-    
+    console.log("operatorsOption", operatorsOption);
+    console.log("match", match);
     expect(match).toBeTruthy();   
 
   })
