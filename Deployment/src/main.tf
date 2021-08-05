@@ -17,7 +17,7 @@ module "storage" {
   allowed_ips         = var.allowed_ips
   tags                = local.tags
   env_name            = local.env_name
-  m_spoke_subnet      = data.azurerm_hub_n_spoke_subnet.id
+  hub_n_spoke_subnet  = data.azurerm_hub_n_spoke_subnet.id
   agent_subnet        = data.azurerm_subnet.agent_subnet.id
 }
 
