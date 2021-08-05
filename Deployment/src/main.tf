@@ -1,4 +1,4 @@
-data "azurerm_subnet" "main_subnet" {
+data "azurerm_subnet" "hub_n_spoke_subnet" {
   name                 = var.spoke_subnet_name
   virtual_network_name = var.spoke_vnet_name
   resource_group_name  = var.spoke_rg
@@ -16,7 +16,7 @@ module "storage" {
   location            = var.location
   tags                = local.tags
   env_name            = local.env_name
-  m_spoke_subnet      = data.azurerm_subnet.main_subnet.id
+  m_spoke_subnet      = data.azurerm_hub_n_spoke_subnet.id
   agent_subnet        = data.azurerm_subnet.agent_subnet.id
 }
 
