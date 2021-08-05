@@ -13,7 +13,7 @@ import { FileShareApiService } from '../../src/app/core/services/file-share-api.
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { FssSearchService } from '../../src/app/core/services/fss-search.service';
 import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
-import { Field, FssSearchRow, Operator } from '../../src/app/core/models/fss-search-types';
+import { Field, FssSearchRow, Operator, RowGrouping } from '../../src/app/core/models/fss-search-types';
 import { FssSearchGroupingService } from '../../src/app/core/services/fss-search-grouping.service';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
@@ -212,6 +212,122 @@ describe('FssSearchComponent', () => {
     component.toggleValueInput(component.fssSearchRows[0], 'nullOperator');
     var result = component.fssSearchRows[0].isValueHidden;
     expect(result).toBe(true);
+  });
+
+  //Test group already exists validation
+  test('should return group already exists validation when duplicate group is added', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, searchGroupingService);
+    component.ngOnInit();
+
+    var groupings: RowGrouping[] =[];    
+    groupings.push({startIndex: 1, endIndex: 2});
+    component.rowGroupings = groupings;  
+    
+    component.currentGroupStartIndex = 1;
+    component.currentGroupEndIndex = 2;               
+    var resultTrue = component.isGroupAlreadyExist(); 
+      
+    component.currentGroupStartIndex = 1;
+    component.currentGroupEndIndex = 3; 
+    var resultFalse = component.isGroupAlreadyExist();  
+    
+    expect(resultTrue).toBe(true);    
+    expect(resultFalse).toBe(false);  
+  });
+
+  //Test group cannot intersect validation
+  test('should return group cannot intersect validation when intersecting group is added', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, searchGroupingService);
+    component.ngOnInit();
+
+    var groupings: RowGrouping[] =[];    
+    groupings.push({startIndex: 1, endIndex: 3});
+    component.rowGroupings = groupings;  
+    
+    component.currentGroupStartIndex = 0;
+    component.currentGroupEndIndex = 2;               
+    var resultTrue = component.isGroupIntersectWithOther(); 
+      
+    component.currentGroupStartIndex = 1;
+    component.currentGroupEndIndex = 2; 
+    var resultFalse = component.isGroupIntersectWithOther();  
+    
+    expect(resultTrue).toBe(true);    
+    expect(resultFalse).toBe(false);  
+  });
+
+  //Test add grouping
+  test('should return group count 2 when 1 groups exist and add group clicked is called', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, searchGroupingService);
+    component.ngOnInit();
+    component.fields = searchService.getFields(MockUserAttributeFields());
+    component.addSearchRow();
+    component.addSearchRow();
+    component.addSearchRow();
+
+    var groupings: RowGrouping[] =[];    
+    groupings.push({startIndex: 1, endIndex: 2});    
+    component.rowGroupings = groupings; 
+
+    component.fssSearchRows[0].group=true;
+    component.fssSearchRows[1].group=true;
+    component.fssSearchRows[2].group=true;
+
+    var expectedGrouping: RowGrouping[]=[{startIndex:1, endIndex:2},{startIndex:0, endIndex:2}];
+            
+    component.onGroupClicked();    
+    var result = component.rowGroupings;
+    
+    expect(result.length).toBe(2);
+    expect(result).toEqual(expectedGrouping);
+  });  
+ 
+  // Test modify grouping on search row deletion
+  test('should return row count 2 & modify grouping when 3 rows exist and delete is called', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, searchGroupingService);
+    component.ngOnInit();
+    component.fields = searchService.getFields(MockUserAttributeFields());
+    component.addSearchRow();
+    component.addSearchRow();
+    component.addSearchRow();
+
+    var groupings: RowGrouping[] =[];    
+    groupings.push({startIndex: 0, endIndex: 2});    
+    component.rowGroupings = groupings; 
+
+    var expectedGrouping: RowGrouping[]=[{startIndex:0, endIndex:1}];
+
+    component.onSearchRowDeleted(3);
+    var resultRowCount = component.fssSearchRows.length;
+    var resultGrouping = component.rowGroupings;
+
+    expect(resultRowCount).toBe(2);
+    expect(resultGrouping.length).toBe(1);
+    expect(resultGrouping).toEqual(expectedGrouping);
+  });
+
+  // Test group deletion
+  test('should return group count 1 when 2 groups exist and delete group is called', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, searchGroupingService);
+    component.ngOnInit();
+    component.fields = searchService.getFields(MockUserAttributeFields());
+    component.addSearchRow();
+    component.addSearchRow();
+    component.addSearchRow();
+
+    var groupings: RowGrouping[] =[];    
+    groupings.push({startIndex: 1, endIndex: 2});
+    groupings.push({startIndex: 0, endIndex: 2}); 
+    component.rowGroupings = groupings;  
+
+    var deleteGrouping ={rowGrouping: groupings[0]}      
+    var expectedGrouping = Array(groupings[1]);
+            
+    component.onGroupDeleted(deleteGrouping);    
+    var result = component.rowGroupings;
+    
+    expect(result.length).toBe(1);
+    expect(result).toEqual(expectedGrouping);
   });
 
 });

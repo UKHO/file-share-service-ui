@@ -1,16 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { FssSearchGroupingService } from '../../src/app/core/services/fss-search-grouping.service';
 import { Field, Operator, FssSearchRow, IFssSearchService, RowGrouping, GroupingLevel, UIGrouping } from '../../src/app/core/models/fss-search-types';
-import { FssSearchService } from '../../src/app/core/services/fss-search.service';
-import { fssConfiguration } from 'appConfig';
 
 describe('FssSearchGroupingService', () => {
   let service: FssSearchGroupingService;
-  let searchService: IFssSearchService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    searchService = TestBed.inject(FssSearchService);
     service = TestBed.inject(FssSearchGroupingService);
   });
 
@@ -55,7 +51,7 @@ describe('FssSearchGroupingService', () => {
  
     searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false, ""));
     searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false, ""));
-    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false, "12:00"));
+    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31', 'date', false, "12:00"));
 
     groupings.push({startIndex: 1, endIndex: 2});        
     
@@ -82,7 +78,7 @@ describe('FssSearchGroupingService', () => {
     
     searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false,""));
     searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false, ""));
-    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false, "12:00"));
+    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31', 'date', false, "12:00"));
     
     groupings.push({startIndex: 1, endIndex: 2});
     groupings.push({startIndex: 0, endIndex: 2}); 
