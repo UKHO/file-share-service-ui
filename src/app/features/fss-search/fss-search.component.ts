@@ -608,4 +608,4 @@ getUIRowGrouping(rowIndex: number, groupingLevel:GroupingLevel){
   return rowGrouping;
 }
 
-}
+} 
