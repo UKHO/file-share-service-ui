@@ -17,12 +17,6 @@ describe('FssSearchRowComponent', () => {
     .compileComponents();
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FssSearchRowComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
   let fields: Field[] = [
     { value: 'FileName', text: '@FileName', type: 'SystemAttribute', dataType: 'string' },
     { value: 'FileSize', text: '@FileSize', type: 'SystemAttribute', dataType: 'number' },

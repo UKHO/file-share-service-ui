@@ -46,7 +46,6 @@ describe('FssSearchGroupingService', () => {
   test('should create valid ui groupings for selected groupings & grouping levels', () => {
     let searchRows: FssSearchRow[] = [];
     let groupings: RowGrouping[] = [];
-    let groupingLevels: GroupingLevel[] = [];
     let expectedUiGroupings: UIGrouping[] = [];
  
     searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false, ""));
