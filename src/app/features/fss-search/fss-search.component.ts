@@ -54,17 +54,7 @@ export class FssSearchComponent implements OnInit {
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-    /*Call attributes API to retrieve User attributes and send back to search service 
-    to append to existing System attributes*/
-    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-      
-      //this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
-      // for (let i = 0; i < this.fields.length; i++) {
-      //   this.filterList.push(this.fields[i].text)
-      // }
-      //this.addSearchRow();
-    });
-    //this.typeaheadFields = this.filter(this.filterList);
+   
     if (!localStorage['batchAttributes']) {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         if (batchAttributeResult.length === 0) {
@@ -643,30 +633,4 @@ export class FssSearchComponent implements OnInit {
     changedFieldRow!.time = "";
     changedFieldRow!.value = "";
   }
-
- 
-  // onFieldChanged(changedField: any) {
-  //   // getFieldDataType
-  //   var fieldDataType = this.getFieldDataType(changedField.fieldValue);
-  //   // getFieldRow
-  //   var changedFieldRow = this.getSearchRow(changedField.rowId);
-  //   // SetDefaultValueFormControl based on fieldDataType
-  //   this.setValueFormControl(fieldDataType, changedFieldRow!);
-  //   // getFilteredOperators
-  //   changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
-  //   // getValueType
-  //   changedFieldRow!.valueType = this.getValueType(fieldDataType);
-
-  //   // setDefault
-  //   if (!this.isOperatorExist(changedFieldRow!)) {
-  //     changedFieldRow!.selectedOperator = "eq"
-  //   }
-  //   // check for null operators
-  //   const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
-  //   this.toggleValueInput(changedFieldRow!, operatorType);
-
-  //   changedFieldRow!.value = "";
-  //   changedFieldRow!.time = "";
-  // }
-
 }
