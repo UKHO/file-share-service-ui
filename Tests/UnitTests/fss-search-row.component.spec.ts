@@ -1,6 +1,8 @@
+import { NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FssSearchRowComponent } from './fss-search-row.component';
+import { FssSearchRowComponent } from '../../src/app/features/fss-search/fss-search-row/fss-search-row.component';
+import { FilterPipe } from '../../src/app/features/fss-search/filter.pipe';
 
 describe('FssSearchRowComponent', () => {
   let component: FssSearchRowComponent;
@@ -8,7 +10,8 @@ describe('FssSearchRowComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FssSearchRowComponent ]
+      declarations: [ FssSearchRowComponent, FilterPipe ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   });
