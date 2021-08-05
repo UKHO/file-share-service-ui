@@ -13,7 +13,6 @@ variable "allowed_ips" {
 
   }
 
-
 variable "spoke_rg" {
   type = string
 }

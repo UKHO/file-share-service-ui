@@ -21,7 +21,7 @@ variable "tags" {
 variable "allowed_ips" {
 
 }
- variable "m_spoke_subnet" {
+ variable "hub_n_spoke_subnet" {
   type = string
 }
 
