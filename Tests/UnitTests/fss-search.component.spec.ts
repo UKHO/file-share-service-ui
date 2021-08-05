@@ -207,16 +207,6 @@ describe('FssSearchComponent', () => {
     component.fields = searchService.getFields(MockUserAttributeFields());    
     component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', true));
     component.toggleValueInput(component.fssSearchRows[0], 'nullOperator');
-    var result = component.fssSearchRows[0];
-    expect(result).toBe(2);
-  });
-
-  test('should hide Value input when nullOperator is selected in the row', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef);
-    component.ngOnInit();
-    component.fields = searchService.getFields(MockUserAttributeFields());    
-    component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', true));
-    component.toggleValueInput(component.fssSearchRows[0], 'nullOperator');
     var result = component.fssSearchRows[0].isValueHidden;
     expect(result).toBe(true);
   });
