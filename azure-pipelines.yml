@@ -171,8 +171,7 @@ stages:
            - script: |
               npm run test:auto
              displayName: 'Run functional Tests'
-              
-     
+                       
   - stage: QAdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
