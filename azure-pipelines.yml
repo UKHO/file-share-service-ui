@@ -341,7 +341,6 @@ stages:
                searchFolder:  '$(System.DefaultWorkingDirectory)/'
                testRunTitle: Accessibility Test Results
              displayName: 'Publish Accessibility Test Results'
-             displayName: 'Run functional Tests'
 
   - stage: LiveDeploy
     displayName: "Livedeploy (inc terraform, website deploy)"
