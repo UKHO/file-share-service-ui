@@ -7,6 +7,7 @@ import { MsalService } from '@azure/msal-angular';
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
+    stateManagementUrl = AppConfigService.settings['fssConfig'].stateManagementApiUrl;
     
     constructor(private http: HttpClient) { }
 
@@ -29,7 +30,7 @@ export class FileShareApiService {
     }
 
     refreshToken(): Observable<any> {
-        return this.http.get(this.baseUrl + '/refreshToken');
+        return this.http.put(this.stateManagementUrl + '/refreshtoken', null);
     }
 
     isTokenExpired() {

@@ -293,10 +293,10 @@ export class FssSearchComponent implements OnInit {
       localStorage.setItem('idToken', idToken);
       this.msalService.instance.setActiveAccount(response.account);
       console.log("idtoken reset after expiry on sign in ")
-      //to be replaced with refreshToken endpoint
-      this.fileShareApiService.getSearchResult("", false).subscribe(res=>{
+      //refreshToken endpoint call to set the cookie after user login
+      this.fileShareApiService.refreshToken().subscribe(res => {
         this.displayLoader = false;
-      })//set the cookie when user login after token expiry           
+      })  
     });
     this.hideMessage();
   }
