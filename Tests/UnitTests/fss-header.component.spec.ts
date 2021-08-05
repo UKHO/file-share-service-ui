@@ -88,7 +88,7 @@ export function MockMSALInstanceFactory () {
     auth:{
       clientId:"",
       authority: "",
-      redirectUri: "/search",
+      redirectUri: "/",
       knownAuthorities: [],
       postLogoutRedirectUri: "/",
       navigateToLoginRequestUrl: false

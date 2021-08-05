@@ -5,6 +5,7 @@ import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrou
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
+import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
@@ -32,6 +33,8 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
+  userLocalTimeZone = this.getLocalTimeFormat();
+  valueInputForm: FormControl;
   pageRecordCount: number = 10;
   searchResultTotal: number;
   pagingLinks: any = [];
@@ -50,11 +53,36 @@ export class FssSearchComponent implements OnInit {
     this.operators = this.fssSearchTypeService.getOperators();
     /*Call attributes API to retrieve User attributes and send back to search service 
     to append to existing System attributes*/
-    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-      console.log(batchAttributeResult);
-      this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
-      this.addSearchRow();
-    });
+    if (!localStorage['batchAttributes']) {
+      this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+        if (batchAttributeResult.length === 0) {
+          this.handleResError();
+        }
+        else {
+          console.log(batchAttributeResult);
+          localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
+          this.setFields(batchAttributeResult);
+        }
+      });
+    }
+    else {
+      var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
+      this.setFields(batchAttributeResult);
+    }
+  }
+
+  getLocalTimeFormat() {
+    return this.executeRegex(new Date().toTimeString(), /\(([^)]+)\)/);
+  }
+
+  executeRegex(valueField: any, regex: any) {
+    var regExp = new RegExp(regex, "i");
+    return regExp.exec(valueField)![1];
+  }
+
+  setFields(batchAttributeResult: any) {
+    this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
+    this.addSearchRow();
   }
 
   addSearchRow() {
@@ -65,6 +93,7 @@ export class FssSearchComponent implements OnInit {
 
   getDefaultSearchRow() {
     var fssSearchRow = new FssSearchRow();
+    this.valueInputForm = new FormControl();
     fssSearchRow.joinOperators = this.joinOperators;
     fssSearchRow.fields = this.fields;
     fssSearchRow.operators = this.operators.filter(operator => operator.supportedDataTypes.includes("string"));
@@ -74,8 +103,11 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.selectedOperator = this.operators[0].value;
     fssSearchRow.value = '';
     fssSearchRow.valueType = 'text';
-    fssSearchRow.valueIsdisabled = false;
+    fssSearchRow.isValueHidden = false;
     fssSearchRow.rowId = this.rowId;
+    fssSearchRow.time = "";
+    fssSearchRow.valueFormControl = this.valueInputForm
+    fssSearchRow.valueFormControlTime = this.valueInputForm
     return fssSearchRow;
   }
 
@@ -84,6 +116,8 @@ export class FssSearchComponent implements OnInit {
     var fieldDataType = this.getFieldDataType(changedField.fieldValue);
     // getFieldRow
     var changedFieldRow = this.getSearchRow(changedField.rowId);
+    // SetDefaultValueFormControl based on fieldDataType
+    this.setValueFormControl(fieldDataType, changedFieldRow!);
     // getFilteredOperators
     changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
     // getValueType
@@ -93,8 +127,12 @@ export class FssSearchComponent implements OnInit {
     if (!this.isOperatorExist(changedFieldRow!)) {
       changedFieldRow!.selectedOperator = "eq"
     }
-    changedFieldRow!.valueIsdisabled = false;
+    // check for null operators
+    const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
+    this.toggleValueInput(changedFieldRow!, operatorType);
+
     changedFieldRow!.value = "";
+    changedFieldRow!.time = "";
   }
 
   getFieldDataType(fieldValue: string) {
@@ -103,6 +141,20 @@ export class FssSearchComponent implements OnInit {
 
   getSearchRow(rowId: number) {
     return this.fssSearchRows.find(fsr => fsr.rowId === rowId);
+  }
+
+  setValueFormControl(fieldDataType: string, changedFieldRow: FssSearchRow) {
+    if (fieldDataType === 'number') {
+      changedFieldRow!.valueFormControl = new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]);
+    }
+    else if (fieldDataType === 'date') {
+      changedFieldRow!.valueFormControl = new FormControl(null, Validators.required);
+      changedFieldRow!.valueFormControlTime = new FormControl(null, Validators.required);
+    }
+    else {
+      changedFieldRow!.valueFormControl = new FormControl()
+    }
+    return changedFieldRow
   }
 
   getFilteredOperators(fieldDataType: string) {
@@ -133,22 +185,23 @@ export class FssSearchComponent implements OnInit {
   }
 
   onOperatorChanged(changedOperator: any) {
-    var operatorType = this.getOperatorType(changedOperator);
+    var operatorType = this.getOperatorType(changedOperator.operatorValue);
     var changedFieldRow = this.getSearchRow(changedOperator.rowId);
     this.toggleValueInput(changedFieldRow!, operatorType);
   }
 
-  getOperatorType(changedOperator: any) {
-    return this.operators.find(f => f.value === changedOperator.operatorValue)?.type!;
+  getOperatorType(selectedOperator: string) {
+    return this.operators.find(f => f.value === selectedOperator)?.type!;
   }
 
   toggleValueInput(changedFieldRow: FssSearchRow, operatorType: string) {
     if (operatorType === "nullOperator") {
-      changedFieldRow!.valueIsdisabled = true;
+      changedFieldRow!.isValueHidden = true;
       changedFieldRow!.value = "";
+      changedFieldRow!.time = "";
     }
     else {
-      changedFieldRow!.valueIsdisabled = false;
+      changedFieldRow!.isValueHidden = false;
     }
   }
 
@@ -160,18 +213,56 @@ export class FssSearchComponent implements OnInit {
     this.setupGrouping();
   }
 
+  validateValueFormControl() {
+    for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
+      const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
+      if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
+        if (this.fssSearchRows[rowId].value === "") {
+          if (this.fssSearchRows[rowId].valueFormControl.touched === false) {
+            this.fssSearchRows[rowId].valueFormControl.markAsTouched();
+          }
+        }
+      }
+      if (fieldDataType === 'date') {
+        const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
+        if (operatorType !== 'nullOperator') {
+          if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
+            if (this.fssSearchRows[rowId].valueFormControl.touched === false) {
+              this.fssSearchRows[rowId].valueFormControl.markAsTouched();
+            }
+            if (this.fssSearchRows[rowId].valueFormControlTime.touched === false) {
+              this.fssSearchRows[rowId].valueFormControlTime.markAsTouched();
+            }
+          }
+        }
+      }
+    }
+  }
+
   validateSearchInput() {
     var flag = true;
-
+    this.validateValueFormControl()
     for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
       if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
         var reg = new RegExp(/^\d+$/);
         var isNumber = reg.test(this.fssSearchRows[rowId].value);
         if (!isNumber) {
-          this.errorMessageTitle = "Please provide only Numbers against FileSize";
-          this.errorMessageDescription = "Incorrect value '" + this.fssSearchRows[rowId].value + "' on row " + (rowId + 1);
+          this.errorMessageTitle = "There is a problem with FileSize value field";
+          this.errorMessageDescription = "Only enter numbers in the FileSize Value field. The Search will not run if characters are entered.";
           flag = false;
           break;
+        }
+      }
+      const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
+      if (fieldDataType === 'date') {
+        const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
+        if (operatorType !== 'nullOperator') {
+          if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
+            this.errorMessageTitle = "There is a problem with the Date and/or Time field";
+            this.errorMessageDescription = "You must choose a date or time in these fields. Use your local time to search.";
+            flag = false;
+            break;
+          }
         }
       }
     }
@@ -186,25 +277,30 @@ export class FssSearchComponent implements OnInit {
       if (filter != null) {
         this.searchResult = [];
         this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
-          this.searchResult = res;
-          if (this.searchResult.count > 0) {
-            var searchResultCount = this.searchResult['count'];
-            this.searchResultTotal = this.searchResult['total'];
-            this.currentPage = 1;
-            this.pages = this.searchResultTotal % searchResultCount === 0 ?
-              Math.floor(this.searchResultTotal / searchResultCount) :
-              (Math.floor(this.searchResultTotal / searchResultCount) + 1);
-            this.handleSuccess()
+          if (res.length === 0) {
+            this.handleResError();
           }
           else {
-            this.searchResult = [];
-            this.displaySearchResult = false;
-            this.showMessage(
-              "info",
-              "No results can be found for this search",
-              "Try again using different parameters in the search query."
-            );
-            this.displayLoader = false;
+            this.searchResult = res;
+            if (this.searchResult.count > 0) {
+              var searchResultCount = this.searchResult['count'];
+              this.searchResultTotal = this.searchResult['total'];
+              this.currentPage = 1;
+              this.pages = this.searchResultTotal % searchResultCount === 0 ?
+                Math.floor(this.searchResultTotal / searchResultCount) :
+                (Math.floor(this.searchResultTotal / searchResultCount) + 1);
+              this.handleSuccess()
+            }
+            else {
+              this.searchResult = [];
+              this.displaySearchResult = false;
+              this.showMessage(
+                "info",
+                "No results can be found for this search",
+                "Try again using different parameters in the search query."
+              );
+              this.displayLoader = false;
+            }
           }
 
         },
@@ -215,6 +311,8 @@ export class FssSearchComponent implements OnInit {
       }
     }
     else {
+      this.searchResult = [];
+      this.displaySearchResult = false;
       this.showMessage(
         "warning",
         this.errorMessageTitle,
@@ -245,18 +343,12 @@ export class FssSearchComponent implements OnInit {
   }
 
   handleSuccess() {
-
     this.pagingLinks = this.searchResult['_Links'];
     this.searchResult = Array.of(this.searchResult['entries']);
     this.displaySearchResult = true;
     this.hideMessage();
     this.setPaginatorLabel(this.currentPage);
     this.displayLoader = false;
-  }
-
-  private setPaginatorLabel(currentPage: number) {
-    this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
-      "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
   }
 
   handleErrMessage(err: any) {
@@ -269,13 +361,26 @@ export class FssSearchComponent implements OnInit {
       this.showMessage("warning", "An exception occurred when processing this search", errmsg);
     }
   }
+
+  handleResError() {
+    this.showMessage("info", "Login in progress", "Due to token expiry timeout we are trying to log you in again");
+    this.displayLoader = false;
+    this.searchResult = [];
+    this.displaySearchResult = false;
+  }
+
+  private setPaginatorLabel(currentPage: number) {
+    this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
+      "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
+  }
+
   pageChange(currentPage: number) {
     this.displayLoader = true;
     var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
     this.currentPage = currentPage;
     if (paginatorAction === "next") {
       var nextPageLink = this.pagingLinks!.next!.href;
-        this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
+      this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
         this.searchResult = res;
         this.handleSuccess()
       },

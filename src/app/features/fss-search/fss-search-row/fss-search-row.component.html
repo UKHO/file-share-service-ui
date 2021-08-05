@@ -12,7 +12,7 @@
     </thead>
     <tbody>
         <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
-            <td>
+            <td width="5%">
                 <ukho-checkbox [(ngModel)]="fssSearchRow.group" (change)="onCheckboxClick()"></ukho-checkbox>
             </td>
             <td *ngIf="maxGroupingLevel === 0"></td>
@@ -24,13 +24,13 @@
                             (click)="onGroupDelete(grouping.rowGrouping)" aria-label="UnGroup selected search rows"></button>                                            
                 </td>
             </ng-container>
-            <td>
+            <td width="10%">
                 <ukho-select *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
                         {{joinOperator.text}}</option>
                 </ukho-select>
             </td>
-            <td>
+            <td width="25%">
                 <ukho-select #fieldSelect [(ngModel)]="fssSearchRow.selectedField"
                 (change)="onFieldChange(fieldSelect, fssSearchRow.rowId)">
                     <optgroup label="System Atributes">
@@ -45,17 +45,23 @@
                     </optgroup>               
                 </ukho-select>
             </td>
-            <td>
+            <td width="20%">
                 <ukho-select #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (change)="onOperatorChange(operatorSelect, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "
                      value="{{Operator.value}}">{{Operator.text}}</option>
                 </ukho-select>
             </td>
-            <td>
+            <td class="valueTD">
                 <ukho-textinput [(ngModel)]="fssSearchRow.value" 
-                [disabled] = "fssSearchRow.valueIsdisabled"
-                [type]= "fssSearchRow.valueType"></ukho-textinput>
+                *ngIf="!fssSearchRow.isValueHidden"
+                [type]= "fssSearchRow.valueType"
+                [formControl] = "fssSearchRow.valueFormControl"></ukho-textinput>
+
+                <ukho-textinput *ngIf="fssSearchRow.valueType == 'date' && !fssSearchRow.isValueHidden"
+                 [(ngModel)]="fssSearchRow.time"
+                type = "time"
+                [formControl] = "fssSearchRow.valueFormControlTime"></ukho-textinput>
              </td>
             <td>
                 <button class="delete fa fa-times fa-1x" (click)="onSearchRowDelete(fssSearchRow.rowId)" aria-label="Delete Row"></button>
