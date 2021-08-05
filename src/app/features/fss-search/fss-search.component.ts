@@ -211,7 +211,7 @@ export class FssSearchComponent implements OnInit {
     //Reset rowGroupings on search row deletion
     this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);    
     this.setupGrouping();
-  }
+  }  
 
   validateValueFormControl() {
     for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {

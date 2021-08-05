@@ -34,9 +34,9 @@ describe('FssSearchGroupingService', () => {
     let searchRows: FssSearchRow[] = [];
     let groupings: RowGrouping[] = [];    
     
-    searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
-    searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false));
-    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
+    searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false, ""));
+    searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false, ""));
+    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31', 'date', false, "12:00"));
 
     groupings.push({startIndex: 1, endIndex: 2});
     groupings.push({startIndex: 0, endIndex: 2}); 
@@ -53,12 +53,11 @@ describe('FssSearchGroupingService', () => {
     let groupingLevels: GroupingLevel[] = [];
     let expectedUiGroupings: UIGrouping[] = [];
  
-    searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
-    searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false));
-    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
+    searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false, ""));
+    searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false, ""));
+    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false, "12:00"));
 
-    groupings.push({startIndex: 1, endIndex: 2});    
-    //groupingLevels.push({ level:1, rowGroupings:[{startIndex:1, endIndex:2}]});        
+    groupings.push({startIndex: 1, endIndex: 2});        
     
     expectedUiGroupings = [
         {rowGrouping: new RowGrouping() , rowIndex: 0, class: "no-group", colspan: 1},
@@ -81,9 +80,9 @@ describe('FssSearchGroupingService', () => {
     let expectedGroupings: RowGrouping[] = [];
     let deleteRowIndex: number = 1;
     
-    searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
-    searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false));
-    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
+    searchRows.push(createSearchRow(1, fields,operators,'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false,""));
+    searchRows.push(createSearchRow(2, fields,operators,'OR', 'FileSize', 'le', 3000, 'tel', false, ""));
+    searchRows.push(createSearchRow(3,fields,operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false, "12:00"));
     
     groupings.push({startIndex: 1, endIndex: 2});
     groupings.push({startIndex: 0, endIndex: 2}); 
@@ -96,7 +95,7 @@ describe('FssSearchGroupingService', () => {
 
 });
 
-export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", valueIsdisabled: boolean) {
+export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean,time: string) {
     var row = new FssSearchRow();
     row.rowId = rowId;
     row.fields = fields,
@@ -106,6 +105,7 @@ export function createSearchRow(rowId: number, fields: Field[], operators: Opera
     row.selectedOperator = operator;
     row.value = value;
     row.valueType = valueType;
-    row.valueIsdisabled = valueIsdisabled;
+    row.isValueHidden = isValueHidden;
+    row.time = time;
     return row;
 } 
