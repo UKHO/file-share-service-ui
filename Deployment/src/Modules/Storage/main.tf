@@ -9,6 +9,12 @@ resource "azurerm_storage_account" "storage" {
   static_website {
     index_document = "index.html"
   }
+    network_rules {
+    default_action             = "Deny"
+    ip_rules                   = var.allowed_ips
+    bypass                     = ["Logging", "Metrics", "AzureServices"]
+    virtual_network_subnet_ids = concat(var.small_exchange_set_subnets,[var.m_spoke_subnet,var.agent_subnet])
+  }
 
   tags = var.tags
 }
