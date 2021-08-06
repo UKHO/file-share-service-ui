@@ -41,4 +41,4 @@ steps:
     inputs:
       targetType: filePath
       filePath: "$(Pipeline.Workspace)/terraformartifact/checkwebsitestatus.ps1"
-      arguments: "-healthEndPointUrl $(website_url)/health -waitTimeInMinute $(waitTimeInMinute)"
+      arguments: "-healthEndPointUrl $(autoTestConfig.url)/health -waitTimeInMinute $(waitTimeInMinute)"
