@@ -17,7 +17,7 @@ export class FileShareApiService {
                 return this.http.get(this.baseUrl + '/batch');
             }
             else {
-                return this.http.get(this.baseUrl + payload);
+                return this.http.get(this.baseUrl + "/batch?$filter=" + encodeURIComponent(payload));
             }
         }
         else {
@@ -30,7 +30,7 @@ export class FileShareApiService {
     }
 
     refreshToken(): Observable<any> {
-        return this.http.put(this.stateManagementUrl + '/refreshtoken', null);
+        return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
     }
 
     isTokenExpired() {
