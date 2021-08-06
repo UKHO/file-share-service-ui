@@ -84,7 +84,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   setSkipToContent() {
     this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => { this.skipToContent = `${event.url}#mainContainer`; });
+    ).subscribe((event: any) => { this.skipToContent = `#mainContainer`; });
   }
 
   handleActiveTab(){

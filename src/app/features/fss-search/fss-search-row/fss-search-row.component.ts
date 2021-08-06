@@ -56,4 +56,8 @@ export class FssSearchRowComponent implements OnInit {
       this.enableGrouping= false;
     }   
   }
+  get totalRowsSearchRow(): number {
+    return this.fssSearchRows.length;
+  }
 }
+
