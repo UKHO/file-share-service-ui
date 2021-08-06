@@ -11,9 +11,14 @@ export class FssSearchHelperService {
 
   onFieldChanged(changedField:any, fields: Field[], operators: Operator[], fssSearchRows: FssSearchRow[]){
     // getFieldDataType
-    var fieldDataType = this.getFieldDataType(changedField.fieldValue, fields);
-    // getFieldRow
     var changedFieldRow = this.getSearchRow(changedField.rowId, fssSearchRows);
+
+    var changedFieldValue = this.getFieldValue(changedField.currentFieldValue, fields);
+    changedFieldRow!.selectedField = changedFieldValue;
+
+    var fieldDataType = this.getFieldDataType(changedFieldValue, fields);
+    // getFieldRow
+
     // SetDefaultValueFormControl based on fieldDataType
     this.setValueFormControl(fieldDataType, changedFieldRow!);
     // getFilteredOperators
@@ -41,6 +46,11 @@ export class FssSearchHelperService {
 
   getSearchRow(rowId: number, fssSearchRows: FssSearchRow[]) {
     return fssSearchRows.find(fsr => fsr.rowId === rowId);
+  }
+
+  getFieldValue(fieldText: string, fields: Field[]) {
+    const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
+    return selectedFieldValue;
   }
 
   setValueFormControl(fieldDataType: string, changedFieldRow: FssSearchRow) {

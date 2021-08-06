@@ -4,7 +4,6 @@ import { Field } from '../../src/app/core/models/fss-search-types';
 import { FssSearchService } from '../../src/app/core/services/fss-search.service';
 
 describe('FssSearchService', () => {
-
   let service: FssSearchService;
 
   beforeEach(() => {

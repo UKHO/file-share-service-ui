@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
+import { Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+import { Observable } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { MsalService } from '@azure/msal-angular';
 import { FssSearchHelperService } from '../../core/services/fss-search-helper.service';
@@ -35,6 +35,9 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
+  filterList: string[] = new Array<string>();
+  typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
+  selectedRow: number;
   userLocalTimeZone = this.getLocalTimeFormat();
   valueInputForm: FormControl;
   pageRecordCount: number = 10;
@@ -61,8 +64,7 @@ export class FssSearchComponent implements OnInit {
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-    /*Call attributes API to retrieve User attributes and send back to search service 
-    to append to existing System attributes*/
+
     if (!localStorage['batchAttributes']) {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
@@ -94,6 +96,10 @@ export class FssSearchComponent implements OnInit {
 
   setFields(batchAttributeResult: any) {
     this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
+    for (let i = 0; i < this.fields.length; i++) {
+      this.filterList.push(this.fields[i].text)
+    }
+    this.typeaheadFields = this.filter(this.filterList);
     this.addSearchRow();
   }
 
@@ -120,11 +126,9 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.time = "";
     fssSearchRow.valueFormControl = this.valueInputForm
     fssSearchRow.valueFormControlTime = this.valueInputForm
+    fssSearchRow.fieldFormControl = new FormControl();
+    fssSearchRow.filterFn = this.typeaheadFields;
     return fssSearchRow;
-  }
-
-  onFieldChanged(changedField: any) {
-    var changedFieldRow = this.fssSearchHelperService.onFieldChanged(changedField, this.fields, this.operators, this.fssSearchRows);
   }
 
   onOperatorChanged(changedOperator: any) {
@@ -249,7 +253,7 @@ export class FssSearchComponent implements OnInit {
       this.msalService.instance.setActiveAccount(response.account);
       console.log("idtoken reset after expiry on sign in ")
       //to be replaced with refreshToken endpoint
-      this.fileShareApiService.getSearchResult("", false).subscribe(res=>{
+      this.fileShareApiService.getSearchResult("", false).subscribe(res => {
         this.displayLoader = false;
       })//set the cookie when user login after token expiry           
     });
@@ -504,9 +508,24 @@ export class FssSearchComponent implements OnInit {
     return rowGrouping;
   }
 
-showTokenExpiryError(displayError: any) {
-  if (displayError == true)
-    this.handleResError();
-}
+  filter(filterList: string[]) {
+    return (text: string) => {
+      // this.fieldFormControl.setValue(text)
+      const filterResult = filterList
+        .filter((field) => {
+          return text === null || text.length < 1 || field.toLowerCase().indexOf(text.toLowerCase()) > -1;
+        })
+      return filterResult;
+    };
+  };
 
-} 
+  onFieldChanged(changedField: any) {
+    var changedFieldRow = this.fssSearchHelperService.onFieldChanged(changedField, this.fields, this.operators, this.fssSearchRows);
+    console.log(changedFieldRow)
+  }
+
+  showTokenExpiryError(displayError: any) {
+    if (displayError == true)
+      this.handleResError();
+  }
+}
