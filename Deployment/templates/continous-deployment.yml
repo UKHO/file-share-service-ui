@@ -40,5 +40,5 @@ steps:
     displayName: "Check the status of Service"
     inputs:
       targetType: filePath
-      filePath: "$(Pipeline.Workspace)/terraformartifact/check_service_status.ps1"
+      filePath: "$(Pipeline.Workspace)/terraformartifact/checkwebsitestatus.ps1"
       arguments: "-healthEndPointUrl $(website_url)/health -waitTimeInMinute $(waitTimeInMinute)"
