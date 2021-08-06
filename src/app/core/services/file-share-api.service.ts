@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 import { MsalService } from '@azure/msal-angular';
 
@@ -17,7 +17,7 @@ export class FileShareApiService {
                 return this.http.get(this.baseUrl + '/batch');
             }
             else {
-                return this.http.get(this.baseUrl + "/batch?$filter=" + encodeURIComponent(payload));
+                return this.http.get(this.baseUrl + payload);
             }
         }
         else {

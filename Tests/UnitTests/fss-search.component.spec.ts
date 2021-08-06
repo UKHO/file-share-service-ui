@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule } from '@ukho/design-system';
+import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule } from '@ukho/design-system';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 
 import { FilterPipe } from '../../src/app/features/fss-search/filter.pipe';
@@ -23,14 +23,14 @@ describe('FssSearchComponent', () => {
   let fileShareApiService: FileShareApiService;
   let searchFilterservice: FssSearchFilterService;
   let searchService: FssSearchService;
-  let elementRef: ElementRef;
   let msalService: MsalService;
+  let elementRef: ElementRef;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,
         FssSearchRoutingModule, HttpClientModule,
-        ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule],
+        ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule],
       declarations: [FssSearchComponent,
         FssSearchRowComponent,
         FssSearchResultsComponent,
@@ -65,7 +65,6 @@ describe('FssSearchComponent', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
-    console.log(component);
     expect(component.getFieldDataType('$batch(product)')).toEqual('attribute');
   });
 
@@ -73,7 +72,6 @@ describe('FssSearchComponent', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
-    console.log(component);
     expect(component.getFieldDataType('FileName')).toEqual('string');
   });
 
@@ -88,7 +86,6 @@ describe('FssSearchComponent', () => {
       { value: 'lt', text: '<', type: 'operator', supportedDataTypes: ['number', 'date'] },
       { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] }];
     var result = component.getFilteredOperators('number');
-    console.log(result);
     expect(result).toEqual(expectedOperators);
   });
 
@@ -97,7 +94,6 @@ describe('FssSearchComponent', () => {
     component.ngOnInit();
     var expectedValueType = "text";
     var result = component.getValueType('string');
-    console.log(result);
     expect(result).toEqual(expectedValueType);
   });
 
@@ -106,8 +102,7 @@ describe('FssSearchComponent', () => {
     component.ngOnInit();
     var expectedOperatorType = "nullOperator";
     var changedOperator = { operatorValue: "ne null", rowId: 1 }
-    var result = component.getOperatorType(changedOperator);
-    console.log(result);
+    var result = component.getOperatorType(changedOperator.operatorValue);
     expect(result).toEqual(expectedOperatorType);
   });
 
@@ -130,7 +125,6 @@ describe('FssSearchComponent', () => {
     searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
     component.fssSearchRows = searchRows;
     var result = component.getSearchRow(2);
-    console.log(result);
     expect(result).toEqual(searchRows[1]);
   });
 
@@ -184,7 +178,6 @@ describe('FssSearchComponent', () => {
     //searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
     component.fssSearchRows = searchRows;
     var result = component.validateSearchInput();
-    console.log(result);
     expect(result).toBe(false);
   });
 
@@ -195,7 +188,6 @@ describe('FssSearchComponent', () => {
     component.addSearchRow();
     component.addSearchRow();
     var result = component.fssSearchRows.length
-    console.log(component);
     expect(result).toBe(2);
   });
 
@@ -208,17 +200,16 @@ describe('FssSearchComponent', () => {
     component.addSearchRow();
     component.onSearchRowDeleted(3);
     var result = component.fssSearchRows.length;
-    console.log(component);
     expect(result).toBe(2);
   });
 
-  test('should disable Value input when nullOperator is selected in the row', () => {
+  test('should hide Value input when nullOperator is selected in the row', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService);
     component.ngOnInit();
-    component.fields = searchService.getFields(MockUserAttributeFields());
-    component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', false));
+    component.fields = searchService.getFields(MockUserAttributeFields());    
+    component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', true));
     component.toggleValueInput(component.fssSearchRows[0], 'nullOperator');
-    var result = component.fssSearchRows[0].valueIsdisabled;
+    var result = component.fssSearchRows[0].isValueHidden;
     expect(result).toBe(true);
   });
 
@@ -239,7 +230,7 @@ export function MockUserAttributeFields() {
   ]
 }
 
-export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", valueIsdisabled: boolean) {
+export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean) {
   var row = new FssSearchRow();
   row.rowId = rowId;
   row.fields = fields,
@@ -249,7 +240,7 @@ export function createSearchRow(rowId: number, fields: Field[], operators: Opera
   row.selectedOperator = operator;
   row.value = value;
   row.valueType = valueType;
-  row.valueIsdisabled = valueIsdisabled;
+  row.isValueHidden = isValueHidden;
   return row;
 }
 export function MockMSALInstanceFactory () {    
@@ -257,7 +248,7 @@ export function MockMSALInstanceFactory () {
      auth:{
        clientId:"",
        authority: "",
-       redirectUri: "/search",
+       redirectUri: "/",
        knownAuthorities: [],
        postLogoutRedirectUri: "/",
        navigateToLoginRequestUrl: false

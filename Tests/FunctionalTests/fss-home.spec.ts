@@ -1,9 +1,10 @@
 import { Browser, BrowserContext, chromium, Page } from 'playwright';
 const { autoTestConfig } = require('./appSetting');
-const {pageObjectsConfig} = require('./pageObjects');
+const {pageObjectsConfig,pageTimeOut} = require('./pageObjects');
+
 
 describe('Test Home Page Scenario', () => {
-    jest.setTimeout(120000);
+    jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
     let browser: Browser;
     let context: BrowserContext;
     let page: Page;
@@ -55,14 +56,14 @@ describe('Test Home Page Scenario', () => {
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
         await page.click(pageObjectsConfig.marinedataportalLinkSelector);
-        page.setDefaultTimeout(60000);
+        page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
         expect(await page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);
     }) 
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
         await page.click(pageObjectsConfig.ukhydrographicLinkSelector);        
-        page.setDefaultTimeout(60000);
+        page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
         expect(page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);
     })

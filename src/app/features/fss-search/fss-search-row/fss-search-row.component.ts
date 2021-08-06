@@ -11,8 +11,9 @@ export class FssSearchRowComponent implements OnInit {
   @Input() groupingLevels: GroupingLevel[] = [];
   @Input() uiGroupings: UIGrouping[] = [];
   @Output() onSearchRowDeleted = new EventEmitter<number>();
-  @Output() onFieldChanged = new EventEmitter<{ fieldValue: string, rowId: number }>();
   @Output() onOperatorChanged = new EventEmitter<{ operatorValue: string, rowId: number }>();
+  @Output() onFieldChanged = new EventEmitter<{ currentFieldValue: string, rowId: number }>();
+  label: string; 
   @Output() onGroupClicked = new EventEmitter();
   enableGrouping: Boolean = false; 
   constructor() { }
@@ -25,13 +26,12 @@ export class FssSearchRowComponent implements OnInit {
     this.onCheckboxClick();
   }
 
-  onFieldChange(field: any, rowId: number) {
-    this.onFieldChanged.emit({ fieldValue: field.select.nativeElement.value, rowId: rowId });
-  }
-
   onOperatorChange(operator: any, rowId: number) {
     this.onOperatorChanged.emit({ operatorValue: operator.select.nativeElement.value, rowId: rowId });
+  }
 
+  onFieldChange(fieldValue: any, rowId: number){
+    this.onFieldChanged.emit({ currentFieldValue: fieldValue, rowId: rowId });
   }
 
   onCheckboxClick(){   
