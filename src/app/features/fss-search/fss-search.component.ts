@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
+import { Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
+import { Observable } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 
 
@@ -33,6 +33,9 @@ export class FssSearchComponent implements OnInit {
   userAttributes: Field[] = [];
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
+  filterList: string[] = new Array<string>();
+  typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
+  selectedRow: number;
   userLocalTimeZone = this.getLocalTimeFormat();
   valueInputForm: FormControl;
   pageRecordCount: number = 10;
@@ -51,8 +54,7 @@ export class FssSearchComponent implements OnInit {
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-    /*Call attributes API to retrieve User attributes and send back to search service 
-    to append to existing System attributes*/
+   
     if (!localStorage['batchAttributes']) {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         if (batchAttributeResult.length === 0) {
@@ -82,8 +84,12 @@ export class FssSearchComponent implements OnInit {
 
   setFields(batchAttributeResult: any) {
     this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
+    for (let i = 0; i < this.fields.length; i++) {
+      this.filterList.push(this.fields[i].text)
+    }
+    this.typeaheadFields = this.filter(this.filterList);
     this.addSearchRow();
-  }
+ }
 
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
@@ -108,32 +114,11 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.time = "";
     fssSearchRow.valueFormControl = this.valueInputForm
     fssSearchRow.valueFormControlTime = this.valueInputForm
+    fssSearchRow.fieldFormControl = new FormControl();
+    fssSearchRow.filterFn = this.typeaheadFields;
     return fssSearchRow;
   }
 
-  onFieldChanged(changedField: any) {
-    // getFieldDataType
-    var fieldDataType = this.getFieldDataType(changedField.fieldValue);
-    // getFieldRow
-    var changedFieldRow = this.getSearchRow(changedField.rowId);
-    // SetDefaultValueFormControl based on fieldDataType
-    this.setValueFormControl(fieldDataType, changedFieldRow!);
-    // getFilteredOperators
-    changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
-    // getValueType
-    changedFieldRow!.valueType = this.getValueType(fieldDataType);
-
-    // setDefault
-    if (!this.isOperatorExist(changedFieldRow!)) {
-      changedFieldRow!.selectedOperator = "eq"
-    }
-    // check for null operators
-    const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
-    this.toggleValueInput(changedFieldRow!, operatorType);
-
-    changedFieldRow!.value = "";
-    changedFieldRow!.time = "";
-  }
 
   getFieldDataType(fieldValue: string) {
     return this.fields.find(f => f.value === fieldValue)?.dataType!;
@@ -334,12 +319,12 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = true;
     this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
     this.ukhoDialog.nativeElement.focus();
-    if(this.displayLoader === false){
+    if (this.displayLoader === false) {
       window.scroll({
         top: 150,
-        behavior: 'smooth' 
+        behavior: 'smooth'
       });
-   }
+    }
   }
 
   handleSuccess() {
@@ -403,69 +388,109 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-onGroupClicked(){
+  onGroupClicked() {
 
-  this.displaySearchResult = false;
-  this.hideMessage();
-  let rowIndexArray:Array<number>=[];
-  for(var i=0; i<this.fssSearchRows.length; i++){
-    if(this.fssSearchRows[i].group){
-      rowIndexArray.push(i);
+    this.displaySearchResult = false;
+    this.hideMessage();
+    let rowIndexArray: Array<number> = [];
+    for (var i = 0; i < this.fssSearchRows.length; i++) {
+      if (this.fssSearchRows[i].group) {
+        rowIndexArray.push(i);
+      }
     }
-  } 
-  this.currentGroupStartIndex= rowIndexArray[0]; 
-  this.currentGroupEndIndex = rowIndexArray[rowIndexArray.length-1]; 
+    this.currentGroupStartIndex = rowIndexArray[0];
+    this.currentGroupEndIndex = rowIndexArray[rowIndexArray.length - 1];
 
-  if (this.isGroupAlreadyExist()){
+    if (this.isGroupAlreadyExist()) {
       this.showMessage(
         "info",
         "A group already exists for selected clauses.",
         "A duplicate group cannot be created."
       );
-  }
-  else if(this.isGroupIntersectWithOther()){
+    }
+    else if (this.isGroupIntersectWithOther()) {
       this.showMessage(
         "info",
         "Groups can not intersect each other.",
         "A group can only contain complete groups, they cannot contain a part of another group."
       );
-  }
-  else{       
+    }   
+    else {       
       this.addGrouping();       
       this.setupGrouping();
+    }
+  }
+
+  isGroupAlreadyExist() {
+    var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));   
+    return grouping !== undefined ? true : false;
+  }  
+
+  isGroupIntersectWithOther() {
+    return (this.rowGroupings.find(g => (this.currentGroupStartIndex < g.startIndex &&
+      (this.currentGroupEndIndex >= g.startIndex &&
+        this.currentGroupEndIndex < g.endIndex))) !== undefined) ||
+      (this.rowGroupings.find(g => ((this.currentGroupStartIndex > g.startIndex &&
+        this.currentGroupStartIndex <= g.endIndex) &&
+        this.currentGroupEndIndex > g.endIndex)) !== undefined)
+  }
+
+  addGrouping(){
+    this.rowGroupings.push({        
+      startIndex: this.currentGroupStartIndex, 
+      endIndex: this.currentGroupEndIndex
+    });
+  }
+
+  setupGrouping(){
+    this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings,this.fssSearchRows);
+  }
+
+  onGroupDeleted(grouping: any) { 
+    this.rowGroupings.splice(this.rowGroupings.findIndex(r => 
+      r.startIndex === grouping.rowGrouping.startIndex && 
+      r.endIndex === grouping.rowGrouping.endIndex),1);  
+    this.setupGrouping();  
+  }
+
+  filter(filterList: string[]) {
+    return (text: string) => {
+      // this.fieldFormControl.setValue(text)
+      const filterResult = filterList
+        .filter((field) => {
+          return text === null || text.length < 1 || field.toLowerCase().indexOf(text.toLowerCase()) > -1;
+        })
+      return filterResult;
+    };
+  };
+
+  getFieldValue(fieldText: string) {
+    const selectedFieldValue: any = this.fields.find(f => f.text === fieldText)?.value!;
+    return selectedFieldValue;
+  }
+
+  onFieldChanged(fieldChanged: any) {
+    // getFieldRow
+    var changedFieldRow = this.getSearchRow(fieldChanged.rowId);
+    //getFieldValue
+    var changedFieldValue = this.getFieldValue(fieldChanged.currentFieldValue);
+    changedFieldRow!.selectedField = changedFieldValue;
+    // getFieldDataType
+    var fieldDataType = this.getFieldDataType(changedFieldValue);
+    // SetDefaultValueFormControl based on fieldDataType
+    this.setValueFormControl(fieldDataType, changedFieldRow!);
+    //getFilteredOperators
+    changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
+    // getValueType
+    changedFieldRow!.valueType = this.getValueType(fieldDataType);
+    // setDefault
+    if (!this.isOperatorExist(changedFieldRow!)) {
+      changedFieldRow!.selectedOperator = "eq"
+    }
+    // check for null operators
+    const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
+    this.toggleValueInput(changedFieldRow!, operatorType);
+    changedFieldRow!.time = "";
+    changedFieldRow!.value = "";
   }
 }
-
-isGroupAlreadyExist() {
-  var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));   
-  return grouping !== undefined ? true : false;
-}  
-
-isGroupIntersectWithOther() {
-  return (this.rowGroupings.find(g => (this.currentGroupStartIndex < g.startIndex &&
-    (this.currentGroupEndIndex >= g.startIndex &&
-      this.currentGroupEndIndex < g.endIndex))) !== undefined) ||
-    (this.rowGroupings.find(g => ((this.currentGroupStartIndex > g.startIndex &&
-      this.currentGroupStartIndex <= g.endIndex) &&
-      this.currentGroupEndIndex > g.endIndex)) !== undefined)
-}
-
-addGrouping(){
-  this.rowGroupings.push({        
-    startIndex: this.currentGroupStartIndex, 
-    endIndex: this.currentGroupEndIndex
-  });
-}
-
-setupGrouping(){
-  this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings,this.fssSearchRows);
-}
-
-onGroupDeleted(grouping: any) { 
-  this.rowGroupings.splice(this.rowGroupings.findIndex(r => 
-    r.startIndex === grouping.rowGrouping.startIndex && 
-    r.endIndex === grouping.rowGrouping.endIndex),1);  
-  this.setupGrouping();  
-}
-
-} 

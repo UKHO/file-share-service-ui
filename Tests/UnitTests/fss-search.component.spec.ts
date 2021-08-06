@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA , ViewChild, ElementRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule } from '@ukho/design-system';
+import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule } from '@ukho/design-system';
 
 import { FilterPipe } from '../../src/app/features/fss-search/filter.pipe';
 import { FssSearchResultsComponent } from '../../src/app/features/fss-search/fss-search-results/fss-search-results.component';
@@ -32,7 +32,7 @@ describe('FssSearchComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,
         FssSearchRoutingModule, HttpClientModule,
-        ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule],
+        ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule],
       declarations: [FssSearchComponent,
         FssSearchRowComponent,
         FssSearchResultsComponent,

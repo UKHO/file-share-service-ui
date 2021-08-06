@@ -10,8 +10,9 @@ export class FssSearchRowComponent implements OnChanges {
   @Input() fssSearchRows: FssSearchRow[] = [];
   @Input() uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();    
   @Output() onSearchRowDeleted = new EventEmitter<number>();
-  @Output() onFieldChanged = new EventEmitter<{ fieldValue: string, rowId: number }>();
   @Output() onOperatorChanged = new EventEmitter<{ operatorValue: string, rowId: number }>();
+  @Output() onFieldChanged = new EventEmitter<{ currentFieldValue: string, rowId: number }>();
+  label: string; 
   @Output() onGroupClicked = new EventEmitter();
   @Output() onGroupDeleted = new EventEmitter<{rowGrouping:RowGrouping}>();
   enableGrouping: Boolean = false; 
@@ -34,13 +35,12 @@ export class FssSearchRowComponent implements OnChanges {
     this.toggleGrouping();
   }
 
-  onFieldChange(field: any, rowId: number) {
-    this.onFieldChanged.emit({ fieldValue: field.select.nativeElement.value, rowId: rowId });
-  }
-
   onOperatorChange(operator: any, rowId: number) {
     this.onOperatorChanged.emit({ operatorValue: operator.select.nativeElement.value, rowId: rowId });
+  }
 
+  onFieldChange(fieldValue: any, rowId: number){
+    this.onFieldChanged.emit({ currentFieldValue: fieldValue, rowId: rowId });
   }
 
   onCheckboxClick(){   
