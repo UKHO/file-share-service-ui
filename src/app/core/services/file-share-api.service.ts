@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    stateManagementApiUrl = AppConfigService.settings['fssConfig'].stateManagementApiUrl;
-
+    stateManagementUrl = AppConfigService.settings['fssConfig'].stateManagementApiUrl;
+    
     constructor(private http: HttpClient) { }
 
     getSearchResult(payload: string, isPagingRequest: boolean): Observable<any> {
@@ -29,11 +29,11 @@ export class FileShareApiService {
     }
 
     clearCookies(): Observable<any> {
-        return this.http.post(this.stateManagementApiUrl + '/logout', null);
+        return this.http.post(this.stateManagementUrl + '/logout', null);
     }
 
     refreshToken(): Observable<any> {
-        return this.http.get(this.baseUrl + '/refreshToken');
+        return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
     }
 
     isTokenExpired() {

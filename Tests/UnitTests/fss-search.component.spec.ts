@@ -24,10 +24,10 @@ describe('FssSearchComponent', () => {
   let fileShareApiService: FileShareApiService;
   let searchFilterservice: FssSearchFilterService;
   let searchService: FssSearchService;
-  let elementRef: ElementRef;
   let msalService: MsalService;
   let fssSearchHelperService: FssSearchHelperService;
   let fssSearchValidatorService: FssSearchValidatorService;
+  let elementRef: ElementRef;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -238,7 +238,6 @@ export function MockUserAttributeFields() {
     "Key3"
   ]
 }
-
 
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean) {
   var row = new FssSearchRow();
