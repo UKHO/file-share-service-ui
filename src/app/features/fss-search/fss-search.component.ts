@@ -64,7 +64,6 @@ export class FssSearchComponent implements OnInit {
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-
     if (!localStorage['batchAttributes']) {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
@@ -101,7 +100,7 @@ export class FssSearchComponent implements OnInit {
     }
     this.typeaheadFields = this.filter(this.filterList);
     this.addSearchRow();
-  }
+ }
 
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
