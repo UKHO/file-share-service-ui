@@ -44,10 +44,10 @@ export class FssSearchComponent implements OnInit {
   pages: number;
   currentPage: number = 0;
   paginatorLabel: string;
-  currentGroupStartIndex: number=0;
-  currentGroupEndIndex: number=0;
-  rowGroupings: RowGrouping[]=[];
-  groupingLevels: GroupingLevel[]=[];
+  currentGroupStartIndex: number = 0;
+  currentGroupEndIndex: number = 0;
+  rowGroupings: RowGrouping[] = [];
+  groupingLevels: GroupingLevel[] = [];
   uiGroupings: UIGrouping[] = [];
   loginErrorDisplay: boolean = false;
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
@@ -60,7 +60,7 @@ export class FssSearchComponent implements OnInit {
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-   
+
     if (!localStorage['batchAttributes']) {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         if (batchAttributeResult.length === 0) {
@@ -95,7 +95,7 @@ export class FssSearchComponent implements OnInit {
     }
     this.typeaheadFields = this.filter(this.filterList);
     this.addSearchRow();
- }
+  }
 
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
@@ -260,45 +260,46 @@ export class FssSearchComponent implements OnInit {
     if (this.validateSearchInput()) {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
-      var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
-      console.log(filter);
-      if (filter != null) {
-        this.searchResult = [];
-        this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
-          if (res.length === 0) {
-            this.handleResError();
-          }
-          else {
-            this.searchResult = res;
-            if (this.searchResult.count > 0) {
-              var searchResultCount = this.searchResult['count'];
-              this.searchResultTotal = this.searchResult['total'];
-              this.currentPage = 1;
-              this.pages = this.searchResultTotal % searchResultCount === 0 ?
-                Math.floor(this.searchResultTotal / searchResultCount) :
-                (Math.floor(this.searchResultTotal / searchResultCount) + 1);
-              this.handleSuccess()
+        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
+        console.log(filter);
+        if (filter != null) {
+          this.searchResult = [];
+          this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
+            if (res.length === 0) {
+              this.handleResError();
             }
             else {
-              this.searchResult = [];
-              this.displaySearchResult = false;
-              this.showMessage(
-                "info",
-                "No results can be found for this search",
-                "Try again using different parameters in the search query."
-              );
-              this.displayLoader = false;
+              this.searchResult = res;
+              if (this.searchResult.count > 0) {
+                var searchResultCount = this.searchResult['count'];
+                this.searchResultTotal = this.searchResult['total'];
+                this.currentPage = 1;
+                this.pages = this.searchResultTotal % searchResultCount === 0 ?
+                  Math.floor(this.searchResultTotal / searchResultCount) :
+                  (Math.floor(this.searchResultTotal / searchResultCount) + 1);
+                this.handleSuccess()
+              }
+              else {
+                this.searchResult = [];
+                this.displaySearchResult = false;
+                this.showMessage(
+                  "info",
+                  "No results can be found for this search",
+                  "Try again using different parameters in the search query."
+                );
+                this.displayLoader = false;
+              }
             }
-          }
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
-      }
-        else {
-          this.handleResError();
+          },
+            (error) => {
+              this.handleErrMessage(error);
+            }
+          );
         }
+      }
+      else {
+        this.handleResError();
+      }
     }
     else {
       this.searchResult = [];
@@ -308,8 +309,8 @@ export class FssSearchComponent implements OnInit {
         this.errorMessageTitle,
         this.errorMessageDescription);
     }
+
   }
-}
 
   hideMessage() {
     this.messageType = "info";
@@ -355,7 +356,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   handleResError() {
-    this.showMessage("info", "Token is Expired", "Please sign in and try again");
+    this.showMessage("info", "Your Sign-in Token has Expired", "");
     this.loginErrorDisplay = true;
     this.displayLoader = false;
   }
@@ -372,7 +373,7 @@ export class FssSearchComponent implements OnInit {
       //refreshToken endpoint call to set the cookie after user login
       this.fileShareApiService.refreshToken().subscribe(res => {
         this.displayLoader = false;
-      })  
+      })
     });
     this.hideMessage();
   }
