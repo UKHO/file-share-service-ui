@@ -14,36 +14,65 @@
 		transform: translateY(20%);
 	}
 }
+p{
+	color: #333;
+}
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0,0,0,0);
+	border: 0;
+}
+
+ukho-dialogue section {
+    margin: 0 0 10px 0;
+}
 
 #mainContainer {
-	img.header-image {
-		width: 100%
+	.header-image {
+		width: 100%;
+		display: inherit;
+		height: 240px;
+		background: url(/assets/images/UKHO-1400x240.jpg) center center;
 	}
+	ukho-card{
 	p {
 		font-size: x-large;
 		font-weight: 300;
+		margin-bottom: 20px;
+	}
+	button{
+		float: left;
 	}
 	a#fss-createaccount {
-		padding: 20px 0;
-		display: inline-block;
+		padding: 20px 0  20px 40px;
+		float: left;
 		&:hover {
 			text-decoration: none;
 		}
 	}
-}
+}}
 
 ukho-phase-banner.phasebanner {
 	padding: 10px;
+	width: auto;
 }
 
 .container {
-	padding: 0 30px 40px;
+	width: 90%;
+	margin:0 auto ;
+	padding: 10px 0;
 	h1 {
-		padding-left: 30px;
+		// padding-left: 30px;
 		margin-bottom: 10px;
 	}
 	p {
-		padding-left: 30px;
+		// padding-left: 30px;
+		margin-bottom: 20px;
 	}	
 }
 
@@ -51,6 +80,9 @@ ukho-phase-banner.phasebanner {
 	border-spacing: 10px;
 	width: 100%;
 	text-align: center;
+	ukho-typeahead{
+		text-align: left;
+	}
 }
 
 table{
@@ -131,6 +163,7 @@ table.cdk-table th, table.cdk-table td{
 
 .searchFieldBold {
 	font-weight: 500;
+	text-align: left;
 }
 
 .spinner-wrapper {
@@ -171,3 +204,62 @@ button{
 		}
 	}
 }}
+
+.valueTD{
+	text-align: left;
+	// width: 33%;
+	ukho-textinput{
+	&.validated, &.invalid {
+		input.form-text-input{
+		padding-right: 0;
+	}
+	}
+}
+
+ukho-textinput.text-input-wrap{
+	&[ng-reflect-type="date"] {
+		display: inline-block;
+		width: 43%;
+	input {
+		padding-right: 3%;
+	}
+}
+	&[ng-reflect-type="time"]{
+		width: 45%;
+		display: inline-block;
+		left: 7%;
+	
+}
+}
+	
+}
+
+
+@media (max-width:1024px){
+	.valueTD {
+		ukho-textinput.text-input-wrap{
+		&[ng-reflect-type=date]{
+		padding-left: 5px;
+		input{
+			padding-left:5px;
+		}
+	}
+	&[ng-reflect-type="time"]{
+		width: 42%;
+		left: 6%;
+	}
+ }
+ }
+}
+
+ukho-textinput.text-input-wrap .error-text{
+	display: none;
+}
+@media screen and (max-width:1024px){
+	#mainContainer {
+	.header-image {
+		height: 240px;
+		background: url(/assets/images/UKHO-17-AW-0005-Web.jpg) center center;
+	}
+}
+}
