@@ -6,6 +6,7 @@ import { AppConfigService } from './app-config.service';
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
+    stateManagementApiUrl = AppConfigService.settings['fssConfig'].stateManagementApiUrl;
 
     constructor(private http: HttpClient) { }
 
@@ -28,7 +29,7 @@ export class FileShareApiService {
     }
 
     clearCookies(): Observable<any> {
-        return this.http.get(this.baseUrl + '/logout');
+        return this.http.post(this.stateManagementApiUrl + '/logout', null);
     }
 
     refreshToken(): Observable<any> {

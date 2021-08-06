@@ -6,6 +6,8 @@ import { FileShareApiService } from '../../core/services/file-share-api.service'
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
 import { FormControl, Validators } from '@angular/forms';
 import { MsalService } from '@azure/msal-angular';
+import { FssSearchHelperService } from '../../core/services/fss-search-helper.service';
+import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
 
 
 @Component({
@@ -52,7 +54,9 @@ export class FssSearchComponent implements OnInit {
     private fssSearchFilterService: FssSearchFilterService,
     private fileShareApiService: FileShareApiService,
     private elementRef: ElementRef,
-    private msalService: MsalService) { }
+    private msalService: MsalService,
+    private fssSearchHelperService: FssSearchHelperService,
+    private fssSearchValidatorService: FssSearchValidatorService) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -120,161 +124,19 @@ export class FssSearchComponent implements OnInit {
   }
 
   onFieldChanged(changedField: any) {
-    // getFieldDataType
-    var fieldDataType = this.getFieldDataType(changedField.fieldValue);
-    // getFieldRow
-    var changedFieldRow = this.getSearchRow(changedField.rowId);
-    // SetDefaultValueFormControl based on fieldDataType
-    this.setValueFormControl(fieldDataType, changedFieldRow!);
-    // getFilteredOperators
-    changedFieldRow!.operators = this.getFilteredOperators(fieldDataType);
-    // getValueType
-    changedFieldRow!.valueType = this.getValueType(fieldDataType);
-
-    // setDefault
-    if (!this.isOperatorExist(changedFieldRow!)) {
-      changedFieldRow!.selectedOperator = "eq"
-    }
-    // check for null operators
-    const operatorType = this.getOperatorType(changedFieldRow!.selectedOperator);
-    this.toggleValueInput(changedFieldRow!, operatorType);
-
-    changedFieldRow!.value = "";
-    changedFieldRow!.time = "";
-  }
-
-  getFieldDataType(fieldValue: string) {
-    return this.fields.find(f => f.value === fieldValue)?.dataType!;
-  }
-
-  getSearchRow(rowId: number) {
-    return this.fssSearchRows.find(fsr => fsr.rowId === rowId);
-  }
-
-  setValueFormControl(fieldDataType: string, changedFieldRow: FssSearchRow) {
-    if (fieldDataType === 'number') {
-      changedFieldRow!.valueFormControl = new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]);
-    }
-    else if (fieldDataType === 'date') {
-      changedFieldRow!.valueFormControl = new FormControl(null, Validators.required);
-      changedFieldRow!.valueFormControlTime = new FormControl(null, Validators.required);
-    }
-    else {
-      changedFieldRow!.valueFormControl = new FormControl()
-    }
-    return changedFieldRow
-  }
-
-  getFilteredOperators(fieldDataType: string) {
-    return this.operators.filter(operator => operator.supportedDataTypes.includes(fieldDataType))
-  }
-
-  getValueType(fieldDataType: string) {
-    var valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url" = "text";
-    if (fieldDataType === "string" || fieldDataType === "attribute")
-      valueType = "text";
-    else if (fieldDataType === "number")
-      valueType = "tel";
-    else if (fieldDataType === "date")
-      valueType = "date";
-
-    return valueType
-  }
-
-
-  isOperatorExist(changedFieldRow: FssSearchRow) {
-    var operator = changedFieldRow.operators.find(operator => operator.value === changedFieldRow?.selectedOperator)
-    if (!operator) {
-      return false;
-    }
-    else {
-      return true
-    }
+    var changedFieldRow = this.fssSearchHelperService.onFieldChanged(changedField, this.fields, this.operators, this.fssSearchRows);
   }
 
   onOperatorChanged(changedOperator: any) {
-    var operatorType = this.getOperatorType(changedOperator.operatorValue);
-    var changedFieldRow = this.getSearchRow(changedOperator.rowId);
-    this.toggleValueInput(changedFieldRow!, operatorType);
-  }
-
-  getOperatorType(selectedOperator: string) {
-    return this.operators.find(f => f.value === selectedOperator)?.type!;
-  }
-
-  toggleValueInput(changedFieldRow: FssSearchRow, operatorType: string) {
-    if (operatorType === "nullOperator") {
-      changedFieldRow!.isValueHidden = true;
-      changedFieldRow!.value = "";
-      changedFieldRow!.time = "";
-    }
-    else {
-      changedFieldRow!.isValueHidden = false;
-    }
+    var changedFieldRow = this.fssSearchHelperService.onOperatorChanged(changedOperator, this.operators, this.fssSearchRows);
   }
 
   onSearchRowDeleted(rowId: number) {
     this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId), 1);
   }
 
-  validateValueFormControl() {
-    for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
-      const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
-      if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
-        if (this.fssSearchRows[rowId].value === "") {
-          if (this.fssSearchRows[rowId].valueFormControl.touched === false) {
-            this.fssSearchRows[rowId].valueFormControl.markAsTouched();
-          }
-        }
-      }
-      if (fieldDataType === 'date') {
-        const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
-        if (operatorType !== 'nullOperator') {
-          if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
-            if (this.fssSearchRows[rowId].valueFormControl.touched === false) {
-              this.fssSearchRows[rowId].valueFormControl.markAsTouched();
-            }
-            if (this.fssSearchRows[rowId].valueFormControlTime.touched === false) {
-              this.fssSearchRows[rowId].valueFormControlTime.markAsTouched();
-            }
-          }
-        }
-      }
-    }
-  }
-
-  validateSearchInput() {
-    var flag = true;
-    this.validateValueFormControl()
-    for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
-      if (this.fssSearchRows[rowId].selectedField === 'FileSize') {
-        var reg = new RegExp(/^\d+$/);
-        var isNumber = reg.test(this.fssSearchRows[rowId].value);
-        if (!isNumber) {
-          this.errorMessageTitle = "There is a problem with FileSize value field";
-          this.errorMessageDescription = "Only enter numbers in the FileSize Value field. The Search will not run if characters are entered.";
-          flag = false;
-          break;
-        }
-      }
-      const fieldDataType = this.getFieldDataType(this.fssSearchRows[rowId].selectedField);
-      if (fieldDataType === 'date') {
-        const operatorType = this.getOperatorType(this.fssSearchRows[rowId].selectedOperator);
-        if (operatorType !== 'nullOperator') {
-          if (this.fssSearchRows[rowId].value === "" || this.fssSearchRows[rowId].time === "") {
-            this.errorMessageTitle = "There is a problem with the Date and/or Time field";
-            this.errorMessageDescription = "You must choose a date or time in these fields. Use your local time to search.";
-            flag = false;
-            break;
-          }
-        }
-      }
-    }
-    return flag;
-  }
-
   getSearchResult() {
-    if (this.validateSearchInput()) {
+    if (this.fssSearchValidatorService.validateSearchInput(this.fssSearchRows, this.fields, this.operators)) {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
@@ -315,6 +177,8 @@ export class FssSearchComponent implements OnInit {
       }
     }
     else {
+      this.errorMessageDescription = this.fssSearchValidatorService.errorMessageDescription;
+      this.errorMessageTitle = this.fssSearchValidatorService.errorMessageTitle;
       this.searchResult = [];
       this.displaySearchResult = false;
       this.showMessage(

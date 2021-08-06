@@ -126,9 +126,9 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   logout(){
-    // this.fileShareApiService.clearCookies().subscribe(res=>{
-    //   console.log(res);
-    // })
+    this.fileShareApiService.clearCookies().subscribe(res=>{
+      console.log(res);
+    });
     this.msalService.logout();
     this.isActive = false;
     localStorage.clear();
