@@ -2,8 +2,7 @@ param (
     [Parameter(Mandatory = $true)] [string] $deploymentResourceGroupName,
     [Parameter(Mandatory = $true)] [string] $deploymentStorageAccountName,
     [Parameter(Mandatory = $true)] [string] $workSpace,
-    [Parameter(Mandatory = $true)] [boolean] $continueEvenIfResourcesAreGettingDestroyed,
-    [Parameter(Mandatory = $true)] [string] $terraformJsonOutputFile
+    [Parameter(Mandatory = $true)] [boolean] $continueEvenIfResourcesAreGettingDestroyed
 )
 
 cd $env:AGENT_BUILDDIRECTORY/terraformartifact/src
@@ -52,6 +51,3 @@ $terraformOutput = terraform output -json | ConvertFrom-Json
 write-output "Set JSON output into pipeline variables"
 Write-Host "##vso[task.setvariable variable=website_url;isOutput=true]$($terraformOutput.website_url.value)"
 Write-Host "##vso[task.setvariable variable=website_storage_account_name]$($terraformOutput.website_storage_account_name.value)"
-
-
-$terraformOutput | ConvertTo-Json > $terraformJsonOutputFile
