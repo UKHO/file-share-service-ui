@@ -1,6 +1,6 @@
 
 Param(
-	[Parameter(mandatory=$true)][string]$healthEndPointUrl,
+	[Parameter(mandatory=$true)][string]$FssUIWebUrl,
     [Parameter(mandatory=$true)][string]$waitTimeInMinute
 )
 
@@ -13,9 +13,9 @@ $stopWatch.Start()
 
 do
 {
-    Write-Host "Polling url: $healthEndPointUrl ..."
+    Write-Host "Polling url: $FssUIWebUrl ..."
     try{
-        $HttpRequest  = [System.Net.WebRequest]::Create("$healthEndPointUrl")
+        $HttpRequest  = [System.Net.WebRequest]::Create("$FssUIWebUrl")
         $HttpResponse = $HttpRequest.GetResponse() 
         $HttpStatus   = $HttpResponse.StatusCode
         Write-Host "Status code of web is $HttpStatus ..."
