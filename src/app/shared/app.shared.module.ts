@@ -4,6 +4,7 @@ import { HeaderModule, FooterModule, PhaseBannerModule, HorizontalRuleModule } f
 import { HttpClientModule } from '@angular/common/http';
 import { FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent } from './components';
 import { MsalConfigDynamicModule } from 'src/app/shared/components/msal-config-dynamic.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { MsalConfigDynamicModule } from 'src/app/shared/components/msal-config-d
 
   imports: [
     HeaderModule, FooterModule, PhaseBannerModule, HorizontalRuleModule,
-    BrowserModule, HttpClientModule,
+    BrowserModule, HttpClientModule, ReactiveFormsModule,
     MsalConfigDynamicModule.forRoot('assets/config/appconfig.json')
   ],
   providers:[],

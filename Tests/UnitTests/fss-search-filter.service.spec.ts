@@ -26,7 +26,7 @@ describe('FssSearchFilterService', () => {
     let groupings: RowGrouping[] = [];
     fields.push({ value: 'FileName', text: '@FileName', type: 'SystemAttribute', dataType: 'string' });
     operators.push({ value: 'eq', text: '=', type: 'operator', supportedDataTypes: ['string', 'number', 'date', 'attribute'] });
-    searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'Test.txt', 'text', false));
+    searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'Test.txt', 'text', false, ""));
     var filter = service.getFilterExpression(searchRows, groupings);
 
     expect(filter).toBe("FileName eq 'Test.txt'");
@@ -46,11 +46,12 @@ describe('FssSearchFilterService', () => {
       { value: 'gt', text: '>', type: 'operator', supportedDataTypes: ['number', 'date'] },
       { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] }
     ];
-    searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
-    searchRows.push(createSearchRow(2, fields, operators, 'OR', 'FileSize', 'le', 3000, 'tel', false));
-    searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
+    searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false,""));
+    searchRows.push(createSearchRow(2, fields, operators, 'OR', 'FileSize', 'le', 3000, 'tel', false,""));
+    searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31', 'date', false, "12:00"));
+    var date = new Date('2021-12-31 12:00').toISOString()
     var filter = service.getFilterExpression(searchRows, groupings);
-    expect(filter).toBe("FileName eq 'TestReport.pdf' OR FileSize le 3000 AND ExpiryDate gt 2021-12-31T13:00:00.000Z");
+    expect(filter).toBe("FileName eq 'TestReport.pdf' OR FileSize le 3000 AND ExpiryDate gt " + date);
   });
 
   //Test for multiple search criteria with qury grouping
@@ -71,11 +72,11 @@ describe('FssSearchFilterService', () => {
       { value: 'gt', text: '<', type: 'operator', supportedDataTypes: ['number', 'date'] },
       { value: 'gt', text: '<', type: 'operator', supportedDataTypes: ['number', 'date'] }
     ];
-    searchRows.push(createSearchRow(1, fields, operators,'AND','FileName', 'eq', 'TestReport.pdf', 'text', false));
-    searchRows.push(createSearchRow(2, fields, operators, 'AND', 'FileSize', 'gt', 10, 'tel', false));
-    searchRows.push(createSearchRow(3, fields, operators, 'OR', 'FileSize', 'lt', 10000000,'tel', false));
-    searchRows.push(createSearchRow(4, fields, operators, 'AND', 'FileSize', 'gt', 100000000,'tel', false));
-    searchRows.push(createSearchRow(5, fields, operators, 'AND', 'FileSize', 'gt', 1000000000,'tel', false));
+    searchRows.push(createSearchRow(1, fields, operators,'AND','FileName', 'eq', 'TestReport.pdf', 'text', false,""));
+    searchRows.push(createSearchRow(2, fields, operators, 'AND', 'FileSize', 'gt', 10, 'tel', false,""));
+    searchRows.push(createSearchRow(3, fields, operators, 'OR', 'FileSize', 'lt', 10000000,'tel', false,""));
+    searchRows.push(createSearchRow(4, fields, operators, 'AND', 'FileSize', 'gt', 100000000,'tel', false,""));
+    searchRows.push(createSearchRow(5, fields, operators, 'AND', 'FileSize', 'gt', 1000000000,'tel', false,""));
     groupings.push({startIndex: 0,endIndex:4});
     groupings.push({startIndex: 1,endIndex:4});
     groupings.push({startIndex: 1,endIndex:2});
@@ -86,19 +87,18 @@ describe('FssSearchFilterService', () => {
   });
 });
 
-
-
-export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", valueIsdisabled: boolean) {
+export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean,time: string) {
   var row = new FssSearchRow();
   row.rowId = rowId;
   row.fields = fields,
-    row.operators = operators;
+  row.operators = operators;
   row.selectedJoinOperator = joinOperator;
   row.selectedField = field;
   row.selectedOperator = operator;
   row.value = value;
   row.valueType = valueType;
-  row.valueIsdisabled = valueIsdisabled;
+  row.isValueHidden = isValueHidden;
+  row.time = time;
   return row;
 }
 

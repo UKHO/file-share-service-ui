@@ -22,7 +22,7 @@ export class FssSearchService implements IFssSearchService {
       {value: 'BusinessUnit',text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string'},
       {value: 'FileName',text: '@FileName', type: 'SystemAttribute', dataType: 'string'},
       {value: 'MimeType',text: '@MimeType', type: 'SystemAttribute', dataType: 'string'},
-      {value: 'FileSize',text: '@FileSize', type: 'SystemAttribute', dataType: 'number'},
+      {value: 'FileSize',text: '@FileSize (in bytes)', type: 'SystemAttribute', dataType: 'number'},
       {value: 'ExpiryDate',text: '@BatchExpiryDate', type: 'SystemAttribute', dataType: 'date'},
       {value: 'BatchPublishedDate',text: '@BatchPublishedDate', type: 'SystemAttribute', dataType: 'date'}
     ];
@@ -35,8 +35,8 @@ export class FssSearchService implements IFssSearchService {
     const Operators: Operator[] = [
       {value: 'eq',text: '=', type:'operator', supportedDataTypes:['string', 'number', 'date', 'attribute']},
       {value: 'ne',text: '<>', type:'operator', supportedDataTypes:['string', 'number', 'date', 'attribute']},
-      {value: 'eq null',text: '= null', type:'nullOperator', supportedDataTypes:['attribute']},
-      {value: 'ne null',text: '<> null', type:'nullOperator', supportedDataTypes:['attribute']},
+      {value: 'eq null',text: '= null', type:'nullOperator', supportedDataTypes:['date','attribute']},
+      {value: 'ne null',text: '<> null', type:'nullOperator', supportedDataTypes:['date','attribute']},
       {value: 'gt',text: '>', type:'operator', supportedDataTypes:['number', 'date']},
       {value: 'ge',text: '>=', type:'operator', supportedDataTypes:['number', 'date']},
       {value: 'lt',text: '<', type:'operator', supportedDataTypes:['number', 'date']},

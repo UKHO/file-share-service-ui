@@ -39,24 +39,27 @@ export class FssSearchFilterService {
         if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
         }
-        else if(operaterType === this.nullOperatorType){
+        else if (operaterType === this.nullOperatorType) {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
         }
-        else if(operaterType === this.functionType){
+        else if (operaterType === this.functionType) {
           filter = filter.concat(fssSearchRow.selectedOperator, "(", fssSearchRow.selectedField, ", '", fssSearchRow.value, "')");
         }
       }
-      if(fieldDataType === this.numberDataType){
-        if(operaterType === this.typeOperator){
+      if (fieldDataType === this.numberDataType) {
+        if (operaterType === this.typeOperator) {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", fssSearchRow.value);
         }
       }
-      if(fieldDataType === this.dateDataType){
-        const value = new Date(fssSearchRow.value).toISOString();
-        if(operaterType === this.typeOperator){
+      if (fieldDataType === this.dateDataType) {
+        if (operaterType === this.typeOperator) {
+          const value = new Date(fssSearchRow.value + ' ' + fssSearchRow.time).toISOString();
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
         }
-      }  
+        else if (operaterType === this.nullOperatorType) {
+          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
+        }
+      }
       //Append closing barckets for grouping query
       var closingBracketCount = groupings.filter(g=>g.endIndex === rowIndex).length;
       filter = filter.concat(")".repeat(closingBracketCount));
@@ -64,13 +67,14 @@ export class FssSearchFilterService {
     return filter;
   }
 
-  getFieldDataType(fssSearchRow: FssSearchRow){
+  getFieldDataType(fssSearchRow: FssSearchRow) {
     const dataType = fssSearchRow.fields.find(f => f.value === fssSearchRow.selectedField)?.dataType!;
     return dataType
   }
 
-  getOperatorType(fssSearchRow: FssSearchRow){
+  getOperatorType(fssSearchRow: FssSearchRow) {
     const operatorType = fssSearchRow.operators.find(o => o.value === fssSearchRow.selectedOperator)?.type!;
     return operatorType
   }
+
 }
