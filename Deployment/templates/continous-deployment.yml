@@ -41,4 +41,4 @@ steps:
     inputs:
       targetType: filePath
       filePath: "$(Pipeline.Workspace)/terraformartifact/checkwebsitestatus.ps1"
-      arguments: "-FssUIWebUrl $(autoTestConfig.url) -waitTimeInMinute $(waitTimeInMinute)"
+      arguments: "-fssUIWebUrl $(autoTestConfig.url) -waitTimeInMinute $(waitTimeInMinute)"

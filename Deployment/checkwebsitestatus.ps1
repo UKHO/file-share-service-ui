@@ -1,6 +1,6 @@
 
 Param(
-	[Parameter(mandatory=$true)][string]$FssUIWebUrl,
+	[Parameter(mandatory=$true)][string]$fssUIWebUrl,
     [Parameter(mandatory=$true)][string]$waitTimeInMinute
 )
 
@@ -13,26 +13,26 @@ $stopWatch.Start()
 
 do
 {
-    Write-Host "Polling url: $FssUIWebUrl ..."
+    Write-Host "Polling url: $fssUIWebUrl ..."
     try{
-        $HttpRequest  = [System.Net.WebRequest]::Create("$FssUIWebUrl")
+        $HttpRequest  = [System.Net.WebRequest]::Create("$fssUIWebUrl")
         $HttpResponse = $HttpRequest.GetResponse() 
         $HttpStatus   = $HttpResponse.StatusCode
         Write-Host "Status code of web is $HttpStatus ..."
     
         If ($HttpStatus -eq 200 ) {
-            Write-Host "Service is up. Stopping Polling ..."
+            Write-Host "Website is up. Stopping Polling ..."
             $isServiceActive = 'true'
             break
         }
         Else {
-            Write-Host "Service not yet Up. Status code: $HttpStatus re-checking after $sleepTimeInSecond sec ..."
+            Write-Host "Website not yet Up. Status code: $HttpStatus re-checking after $sleepTimeInSecond sec ..."
         }
     }
     catch [System.Net.WebException]
     {
         $HttpStatus = $_.Exception.Response.StatusCode
-        Write-Host "Service not yet Up.Status: $HttpStatus re-checking after $sleepTimeInSecond sec ..."
+        Write-Host "Website not yet Up.Status: $HttpStatus re-checking after $sleepTimeInSecond sec ..."
     }    
     
     Start-Sleep -Seconds $sleepTimeInSecond
@@ -45,9 +45,9 @@ If ($HttpResponse -ne $null) {
 }
 
 if ($isServiceActive -eq 'true' ) {
-    Write-Host "Service is up returning from script ..."
+    Write-Host "Website is up returning from script ..."
 }
 Else { 
-    Write-Error "Service was not up in $waitTimeInMinute, error while deployment ..."
+    Write-Error "Website was not up in $waitTimeInMinute, error while deployment ..."
     throw "Error"
 }
