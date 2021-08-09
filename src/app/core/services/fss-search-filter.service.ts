@@ -54,7 +54,6 @@ export class FssSearchFilterService {
       if (fieldDataType === this.dateDataType) {
         if (operaterType === this.typeOperator) {
           const value = new Date(fssSearchRow.value + ' ' + fssSearchRow.time).toISOString();
-          console.log(new Date(fssSearchRow.value + ' ' + fssSearchRow.time), value);
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
         }
         else if (operaterType === this.nullOperatorType) {
