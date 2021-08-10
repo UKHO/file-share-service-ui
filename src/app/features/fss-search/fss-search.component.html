@@ -4,9 +4,10 @@
 <div #ukhoTarget>
   <ukho-dialogue [type]='messageType' *ngIf="displayMessage" role="alert" aria-live="polite">
       <h3>{{messageTitle}}</h3>
-      <div>
+      <div>{{messageDesc}}</div>
+      <div *ngIf="loginErrorDisplay">
         Please
-        <button *ngIf="loginErrorDisplay" class="loginAction" (click)="loginPopup()">click here</button> to sign-in
+        <button  class="loginAction" (click)="loginPopup()">click here</button> to sign-in
       </div>
   </ukho-dialogue>
 </div>
