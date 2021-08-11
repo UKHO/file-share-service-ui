@@ -3,7 +3,7 @@
     <thead>
         <tr>
             <th><button class="delete grouping" aria-label="Group selected search rows" [class.disabled]="this.enableGrouping === false" [attr.aria-disabled]="this.enableGrouping === false" (click)="onGroupClick()"><img aria-hidden="true" src="..\assets\images\group icon.svg"></button></th>
-            <th class="groups" [attr.colspan]="maxGroupingLevel > 0 ? maxGroupingLevel : 1"></th>            
+            <th class="groups" [attr.colspan]="maxGroupingLevel > 0 ? maxGroupingLevel : 1" [attr.aria-hidden]="maxGroupingLevel === 0"></th>            
             <th class="searchFieldsRow">And/Or</th>
             <th class="searchFieldsRow">Field</th>
             <th class="searchFieldsRow">Operator</th>
@@ -15,7 +15,7 @@
             <td width="5%">
                 <ukho-checkbox [(ngModel)]="fssSearchRow.group" (change)="onCheckboxClick()"></ukho-checkbox>
             </td>
-            <td *ngIf="maxGroupingLevel === 0"></td>
+            <td *ngIf="maxGroupingLevel === 0" [attr.aria-hidden]="maxGroupingLevel === 0"></td>
             <ng-container *ngFor="let grouping of uiGroupings | filter:'rowIndex':i">
                 <td 
                     class="{{grouping.class}} grouping-border"
