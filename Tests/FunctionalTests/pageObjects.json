@@ -35,7 +35,12 @@
        "operatorDropDownSelector":"#ukho-form-field-2",
        "operatorDropDownItemsSelector":"#ukho-form-field-2 >option",
        "inputSearchValueSelector":"#ukho-form-field-4",
-       "searchQueryTableRowSelector":".querytable tbody tr"
+       "searchQueryTableRowSelector":".querytable tbody tr",
+       "searchAttributeButton" : "//button[text()='Search']",
+       "searchAttributeTable":".attribute-table",
+       "searchAttributeTableRows":".attribute-table tr",
+       "warningMessageSelector":".dialog.warning >h3",
+       "warningMessageText":"There is a problem with FileSize value field"
     },
     "pageTimeOut":
     {

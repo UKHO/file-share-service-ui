@@ -4,6 +4,7 @@
         "url":"",
         "user":"",
         "password":"",
-        "userFullName" : ""
+        "userFullName" : "",
+        "apiurl": ""
     }
 }

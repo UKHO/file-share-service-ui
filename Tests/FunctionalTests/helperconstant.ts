@@ -28,3 +28,5 @@ export const stringOperatorList= [
   '<',
   '<='
 ]
+
+export const batchAttributeProduct ="FileShareService";
