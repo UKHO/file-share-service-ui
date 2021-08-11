@@ -18,3 +18,9 @@ resource "azurerm_storage_account" "storage" {
 
   tags = var.tags
 }
+
+resource "azurerm_storage_container" "dead_letter_container" {
+  name                  = "dead-letter"
+  storage_account_name  = azurerm_storage_account.storage.name
+  container_access_type = "blob"
+}
