@@ -31,7 +31,7 @@ export class FssSearchFilterService {
       if(rowIndex != 0) {
         filter = filter.concat(' ',fssSearchRow.selectedJoinOperator, ' ');        
       }
-      //Append opening barckets for grouping query.
+      //Append opening brackets for grouping query.
       var openingBracketCount = groupings.filter(g=>g.startIndex === rowIndex).length;
       filter = filter.concat("(".repeat(openingBracketCount));
         
@@ -60,7 +60,7 @@ export class FssSearchFilterService {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
         }
       }
-      //Append closing barckets for grouping query
+      //Append closing brackets for grouping query
       var closingBracketCount = groupings.filter(g=>g.endIndex === rowIndex).length;
       filter = filter.concat(")".repeat(closingBracketCount));
     }
