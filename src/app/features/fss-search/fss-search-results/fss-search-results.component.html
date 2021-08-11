@@ -9,7 +9,20 @@
         <td *ngFor="let attribute of batch.batchAttributes">{{attribute.value}}</td>                               
       </tr>
     </table>
-    <ukho-expansion heading="Choose files to Download" [alignHeadingRight]=true [initialExpanded] = false>              
+    
+    <ukho-expansion heading="Choose files to Download" [alignHeadingRight]=true [initialExpanded] = false>
+      <table class="system-attribute-table">
+        <caption class="sr-only">System Attributes</caption>       
+        <tr>
+          <th *ngFor="let attribute of batch.systemAttributes">{{attribute.key}}</th>
+        </tr>
+        <tr>
+          <td *ngFor="let attribute of batch.systemAttributes" >
+            <span *ngIf='attribute.isDateField'>{{attribute.value | date:'dd/MM/yyyy, HH:mm'}}</span>
+            <span *ngIf='attribute.isDateField==false'>{{attribute.value | uppercase}}</span>
+          </td>
+        </tr>       
+      </table>            
       <ukho-table  [displayedColumns]="batch.batchFileDetails.columnData" [dataSource]="batch.batchFileDetails.rowData"></ukho-table>         
     </ukho-expansion>
   </ukho-card> 

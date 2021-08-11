@@ -1,6 +1,6 @@
 import { ElementRef, EventEmitter, OnChanges, Output } from '@angular/core';
 import { Component, Input } from '@angular/core';
-import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
+import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel, SystemAttribute } from 'src/app/core/models/fss-search-results-types';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 @Component({
@@ -25,7 +25,8 @@ export class FssSearchResultsComponent implements OnChanges {
       for (var i = 0; i < batches.length; i++) {
         this.searchResultVM.push({
           batchAttributes: this.getBatchAttributes(batches[i]),
-          batchFileDetails: this.getBatchFileDetails(batches[i])
+          batchFileDetails: this.getBatchFileDetails(batches[i]),
+          systemAttributes: this.getSystemAttributes(batches[i])
         });
       }
     }
@@ -64,6 +65,28 @@ export class FssSearchResultsComponent implements OnChanges {
     }
 
     return batchAttributes;
+  }
+
+  getSystemAttributes(batch: any) {
+    var systemAttributes: SystemAttribute[] = [];
+
+    systemAttributes.push({
+      key: 'Batch ID',
+      value: batch['batchId'],
+      isDateField: false
+    });
+    systemAttributes.push({
+      key: 'Batch published date',
+      value: new Date(batch['batchPublishedDate']).toString(),
+      isDateField: true
+    });
+    systemAttributes.push({
+      key: 'Batch expiry date',
+      value: batch['expiryDate'] ? new Date(batch['expiryDate']).toString() : '',
+      isDateField: true
+    });
+
+    return systemAttributes;
   }
 
   getBatchFileDetails(batch: any) {
@@ -110,7 +133,7 @@ export class FssSearchResultsComponent implements OnChanges {
       else {//display "Token expired" message when token is expired
         obj.displayError.emit(true);
       }
-    }    
+    }
   }
 }
 
