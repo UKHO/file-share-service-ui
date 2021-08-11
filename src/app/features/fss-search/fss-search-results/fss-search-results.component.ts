@@ -77,7 +77,7 @@ export class FssSearchResultsComponent implements OnChanges {
         FileName: files[i]["filename"],
         MimeType: files[i]["mimeType"],
         FileSize: formatBytes(files[i]["fileSize"]),
-        Download: '<div class="fileDownload" rel="' + link + '"><i class="fa fa-download fa-1x"></i></div>'
+        Download: '<div class="fileDownload" rel="' + link + '" tabindex="0" role="button" aria-label="Download File"><i class="fa fa-download fa-1x"></i></div>'
       });
     }
 
@@ -102,7 +102,6 @@ export class FssSearchResultsComponent implements OnChanges {
     var filePath = res.currentTarget.getAttribute('rel');
 
     if (filePath) {
-      filePath = filePath.substring(1, filePath.length); //remove initial / from the file path
       res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
       window.open(this.baseUrl + filePath);
       res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';

@@ -18,6 +18,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   skipToContent:string = "";
   firstName: string = '';
   lastName: string = '';
+  isActive: boolean = false;
   constructor(private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService) {
@@ -35,6 +36,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       .subscribe(() => {
         this.isPageOverlay.emit(true);
       });
+
+      this.msalBroadcastService.inProgress$.pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
+        .subscribe(() => {
+          this.isPageOverlay.emit(true);
+        })
        
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -59,14 +66,15 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           if(!this.authOptions?.isSignedIn()){
             this.logInPopup();
           }
-        })
+        }),
+        navActive: this.isActive
       }
     ];
 
     this.authOptions = {
       signInButtonText: 'Sign in',
       signInHandler: (() => { this.logInPopup(); }),
-      signOutHandler: (() => { this.msalService.logout(); }),
+      signOutHandler: (() => { }),
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
@@ -79,6 +87,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     ).subscribe((event: any) => { this.skipToContent = `${event.url}#mainContainer`; });
   }
 
+  handleActiveTab(){
+    this.menuItems.find(mt => mt.title === 'Search')!.navActive = this.isActive;
+  }
+
   logInPopup() {
     this.msalService.loginPopup().subscribe(response => {
       if (response != null && response.account != null) {
@@ -87,6 +99,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         localStorage.setItem('idToken', response.idToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
+        this.isActive = true;
+        this.handleActiveTab()
       }
     });
   }
@@ -98,6 +112,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       if(url.includes('search')){
         if(!this.authOptions?.isSignedIn()){
           this.route.navigate(['']);
+          this.isActive = false;
+          this.handleActiveTab()
+        }
+        else{
+          this.isActive = true;
+          this.handleActiveTab()
         }
       }
   });
@@ -114,6 +134,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       signInHandler: (() => { }),
       signOutHandler: (() => {
         this.msalService.logout();
+        this.isActive = false;
         localStorage.clear();
       }),
       isSignedIn: (() => { return true }),

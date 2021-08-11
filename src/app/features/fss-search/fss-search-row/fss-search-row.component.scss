@@ -2,3 +2,45 @@
 {
     height: 58px;
 }
+ 
+table {    
+    border-collapse: collapse;   
+    border-spacing: 0; 
+  }
+ 
+  th, td{    
+    padding: 5px 5px; 
+    border-collapse: collapse;
+  }
+ 
+.grouping{
+    opacity: 1;
+    cursor: pointer;
+}
+ 
+.grouping.disabled{
+    opacity: .25;
+    cursor: default;
+}
+ 
+.group-start{
+    border-top: 1px solid black;
+    border-left: 1px solid black; 
+    background-color: skyblue;     
+}
+ 
+.group-end{
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;    
+  background-color: skyblue;
+ }
+ 
+ .group{    
+  border-left: 1px solid black;    
+  background-color: skyblue;
+  width: 1px;
+ }
+
+ .fa-object-ungroup{
+    font-size: 0.7em;   
+ }

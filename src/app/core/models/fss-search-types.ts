@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 export interface JoinOperator {
   value: string;
@@ -29,8 +31,13 @@ export class FssSearchRow {
   selectedOperator: string = "";
   value: string = "";
   valueType :"time" | "text" | "date" | "email" | "password" | "tel" | "url";
-  valueIsdisabled :boolean =false;
+  isValueHidden :boolean =false;
   rowId:number = 0;
+  fieldFormControl: FormControl;
+  filterFn: (filterTerm: string) => string[] | Observable<string[]>;
+  time: string = "";
+  valueFormControl: FormControl;
+  valueFormControlTime: FormControl;
 }
 
 
@@ -42,4 +49,21 @@ export abstract class IFssSearchService {
   abstract getJoinOperators(): JoinOperator[];
   abstract getFields(batchAttributeResult: any): Field[];
   abstract getOperators(): Operator[];
+}
+
+export class RowGrouping {
+  startIndex: number;
+  endIndex: number;  
+}
+
+export class GroupingLevel {
+  level: number;
+  rowGroupings: RowGrouping[]=[];
+}
+
+export class UIGrouping {
+  rowIndex: number;
+  class: string;
+  colspan: number;
+  rowGroupings: RowGrouping[]=[];
 }
