@@ -13,7 +13,7 @@ let page: Page
 describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   beforeEach(async () => {
-    browser = await chromium.launch({ slowMo: 100 })
+    browser = await chromium.launch({ slowMo: 100, headless: false })
     context = await browser.newContext();
     page = await context.newPage();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
@@ -38,8 +38,9 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       popup.click(pageObjectsConfig.loginPopupNextButtonSelector)
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
       popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInButtonSelector)
-      popup.click(pageObjectsConfig.loginPopupSignInButtonSelector)
+      await popup.waitForTimeout(2000);
+      popup.keyboard.press('Enter');  
+      await popup.waitForTimeout(2000);
     }
     catch (e) {
       const errorPath = name.replace(" ", "") + "failedtest.jpeg"
@@ -56,24 +57,6 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     await injectAxe(page);
     const violations = await getViolations(page, '.addNewLine', {
-      axeOptions: {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag2aa'],
-        },
-      },
-    })
-    if (violations.length > 0) {
-      console.log(violations);
-    }
-    expect(violations.length).toBe(0);
-  })
-
-  test('should return no violation for Group checkbox element', async () => {
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
-    page.waitForSelector("#ukho-form-field-1")
-    await injectAxe(page);
-    const violations = await getViolations(page, '#ukho-form-field-1', {
       axeOptions: {
         runOnly: {
           type: 'tag',
