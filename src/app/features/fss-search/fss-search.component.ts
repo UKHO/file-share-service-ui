@@ -142,7 +142,7 @@ export class FssSearchComponent implements OnInit {
     if (this.fssSearchValidatorService.validateSearchInput(this.fssSearchRows, this.fields, this.operators)) {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
-        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows);
+        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows,this.rowGroupings);
         console.log(filter);
         if (filter != null) {
           this.searchResult = [];
