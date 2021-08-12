@@ -142,7 +142,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     expect(tableRows).toEqual(2);
 
     //delete a row
-    await page.click(".delete");
+    await page.click(".deleteRow");
     tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
     expect(tableRows).toEqual(1);
 
