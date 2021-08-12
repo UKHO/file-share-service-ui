@@ -25,6 +25,9 @@ const routes: Routes = [
     path: 'code',
     component: FssHomeComponent
   },
+  { path: 'accessibility',
+    loadChildren: () => import('./features/accessibility/accessibility.module').then(m => m.AccessibilityModule)
+  },
   {
     path: '**',
     redirectTo: '',

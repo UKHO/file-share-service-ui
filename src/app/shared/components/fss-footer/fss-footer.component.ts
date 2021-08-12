@@ -26,7 +26,7 @@ export class FssFooterComponent extends FooterComponent {
       },
       {
         title: "Accessibility",
-        href: "https://www.admiralty.co.uk/accessibility",
+        href: "#/accessibility",
         newTab: true
       }
     ]
