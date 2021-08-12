@@ -39,7 +39,8 @@
     },
     "pageTimeOut":
     {
-      "timeOutInMilliSeconds" : 60000
+      "timeOutInMilliSeconds" : 60000,
+      "delay" : 5000
     }
 	
 }
