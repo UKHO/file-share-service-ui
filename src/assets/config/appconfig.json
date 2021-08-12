@@ -1,7 +1,7 @@
 {
   "b2cConfig": {
-    "tenantName": "mgiaidtestb2c",
-    "clientId": "dfa49068-7f6d-4ee5-8d8c-d05a132c7dbd",
+    "tenantName": "",
+    "clientId": "",
     "redirectUri": "/",
     "postLogoutRedirectUri": "/",
     "navigateToLoginRequestUrl": true,
@@ -16,6 +16,6 @@
     "fssTitle": "File Share Service",
     "phase": "alpha",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl": "https://uatadmiralty.azure-api.net/fss-qa"
+    "apiUrl": ""
   }
 }
