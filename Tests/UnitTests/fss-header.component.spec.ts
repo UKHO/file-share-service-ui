@@ -9,18 +9,21 @@ import { AppConfigService } from '../../src/app/core/services/app-config.service
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { Router } from '@angular/router';
+import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 
 describe('FssHeaderComponent', () => {
   let component: FssHeaderComponent;
   let msalService: MsalService;
   let route:Router;
   let msalBroadcastServie:MsalBroadcastService;
+  let fileShareApiService: FileShareApiService
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule, MsalModule],
       declarations: [FssHeaderComponent, HeaderComponent],
        providers: [
+         FileShareApiService,
         {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory       
@@ -33,7 +36,8 @@ describe('FssHeaderComponent', () => {
     };
     msalService = TestBed.inject(MsalService);
     route = TestBed.inject(Router);    
-    msalBroadcastServie = TestBed.inject(MsalBroadcastService);          
+    msalBroadcastServie = TestBed.inject(MsalBroadcastService);    
+    fileShareApiService = TestBed.inject(FileShareApiService);      
   });
 
   test('should exist msalService', () => {    
@@ -63,19 +67,19 @@ describe('FssHeaderComponent', () => {
   });
 
   test('should exist', () => {
-    component = new FssHeaderComponent(msalService, route, msalBroadcastServie);
+    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService);
     component.ngOnInit();
     expect(component).toBeDefined();
   });
 
   test('should exist the title in header', () => {
-    component = new FssHeaderComponent(msalService, route, msalBroadcastServie);
+    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService);
     component.ngOnInit();
     expect(component.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist Search menu item in header', () => {
-    component = new FssHeaderComponent(msalService, route, msalBroadcastServie);
+    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService);
     component.ngOnInit();
     expect(component.menuItems.length).toEqual(1);
     expect(component.menuItems[0].title).toEqual("Search");
