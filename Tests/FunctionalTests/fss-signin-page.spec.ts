@@ -54,15 +54,6 @@ describe('Test Sign In Page Scenario', () => {
 
   })
 
-  it('When user navigate to search url without Sign in it should navigate to fss home page', async () => {
-
-    page.goto(autoTestConfig.url + "#/search/");
-
-    await page.waitForSelector(pageObjectsConfig.homePageSignInHeaderInfoSelector);
-    expect(await page.innerHTML(pageObjectsConfig.homePageSignInHeaderInfoSelector)).toEqual(pageObjectsConfig.homePageSignInHeaderInfoText);
-
-  })
-
   it('User clicks on Search link and close the popup window user navigate to fss home page', async () => {
 
     page.click(pageObjectsConfig.searchButtonSelector);

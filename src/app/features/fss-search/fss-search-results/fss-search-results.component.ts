@@ -72,7 +72,7 @@ export class FssSearchResultsComponent implements OnChanges {
 
     for (var i = 0; i < files.length; i++) {
       var link = files[i]["links"]["get"]["href"];
-      console.log(link);
+      
       batchFilesRowData.push({
         FileName: files[i]["filename"],
         MimeType: files[i]["mimeType"],
