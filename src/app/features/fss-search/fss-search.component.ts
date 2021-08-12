@@ -3,6 +3,7 @@ import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+import { MsalService } from '@azure/msal-angular';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
 import { Observable } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
@@ -44,17 +45,18 @@ export class FssSearchComponent implements OnInit {
   pages: number;
   currentPage: number = 0;
   paginatorLabel: string;
+  loginErrorDisplay: boolean = false;
   currentGroupStartIndex: number=0;
   currentGroupEndIndex: number=0;
   rowGroupings: RowGrouping[]=[];
   uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();  
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef, private fssSearchGroupingService: FssSearchGroupingService) { }
+  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef, private msalService: MsalService, private fssSearchGroupingService: FssSearchGroupingService) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-   
+
     if (!localStorage['batchAttributes']) {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         if (batchAttributeResult.length === 0) {
@@ -89,7 +91,7 @@ export class FssSearchComponent implements OnInit {
     }
     this.typeaheadFields = this.filter(this.filterList);
     this.addSearchRow();
- }
+  }
 
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
@@ -257,42 +259,46 @@ export class FssSearchComponent implements OnInit {
   getSearchResult() {
     if (this.validateSearchInput()) {
       this.displayLoader = true;
-      var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows,this.rowGroupings);
-      console.log(filter);
-      if (filter != null) {
-        this.searchResult = [];
-        this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
-          if (res.length === 0) {
-            this.handleResError();
-          }
-          else {
-            this.searchResult = res;
-            if (this.searchResult.count > 0) {
-              var searchResultCount = this.searchResult['count'];
-              this.searchResultTotal = this.searchResult['total'];
-              this.currentPage = 1;
-              this.pages = this.searchResultTotal % searchResultCount === 0 ?
-                Math.floor(this.searchResultTotal / searchResultCount) :
-                (Math.floor(this.searchResultTotal / searchResultCount) + 1);
-              this.handleSuccess()
+      if (!this.fileShareApiService.isTokenExpired()) {
+        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows,this.rowGroupings);
+        console.log(filter);
+        if (filter != null) {
+          this.searchResult = [];
+          this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
+            if (res.length === 0) {
+              this.handleResError();
             }
             else {
-              this.searchResult = [];
-              this.displaySearchResult = false;
-              this.showMessage(
-                "info",
-                "No results can be found for this search",
-                "Try again using different parameters in the search query."
-              );
-              this.displayLoader = false;
+              this.searchResult = res;
+              if (this.searchResult.count > 0) {
+                var searchResultCount = this.searchResult['count'];
+                this.searchResultTotal = this.searchResult['total'];
+                this.currentPage = 1;
+                this.pages = this.searchResultTotal % searchResultCount === 0 ?
+                  Math.floor(this.searchResultTotal / searchResultCount) :
+                  (Math.floor(this.searchResultTotal / searchResultCount) + 1);
+                this.handleSuccess()
+              }
+              else {
+                this.searchResult = [];
+                this.displaySearchResult = false;
+                this.showMessage(
+                  "info",
+                  "No results can be found for this search",
+                  "Try again using different parameters in the search query."
+                );
+                this.displayLoader = false;
+              }
             }
-          }
-
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
+          },
+            (error) => {
+              this.handleErrMessage(error);
+            }
+          );
+        }
+      }
+      else {
+        this.handleResError();
       }
     }
     else {
@@ -303,6 +309,7 @@ export class FssSearchComponent implements OnInit {
         this.errorMessageTitle,
         this.errorMessageDescription);
     }
+
   }
 
   hideMessage() {
@@ -310,6 +317,7 @@ export class FssSearchComponent implements OnInit {
     this.messageTitle = "";
     this.messageDesc = "";
     this.displayMessage = false;
+    this.loginErrorDisplay = false;
   }
 
   showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
@@ -348,11 +356,28 @@ export class FssSearchComponent implements OnInit {
   }
 
   handleResError() {
-    this.showMessage("info", "Login in progress", "Due to token expiry timeout we are trying to log you in again");
+    this.showMessage("info", "Your Sign-in Token has Expired", "");
+    this.loginErrorDisplay = true;
     this.displayLoader = false;
-    this.searchResult = [];
-    this.displaySearchResult = false;
   }
+
+  loginPopup() {
+    console.log("Enterrr");
+    this.displayLoader = true;
+    this.msalService.loginPopup().subscribe(response => {
+      localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+      const idToken = response.idToken;
+      localStorage.setItem('idToken', idToken);
+      this.msalService.instance.setActiveAccount(response.account);
+      console.log("idtoken reset after expiry on sign in ")
+      //refreshToken endpoint call to set the cookie after user login
+      this.fileShareApiService.refreshToken().subscribe(res => {
+        this.displayLoader = false;
+      })
+    });
+    this.hideMessage();
+  }
+
 
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
@@ -360,31 +385,36 @@ export class FssSearchComponent implements OnInit {
   }
 
   pageChange(currentPage: number) {
-    this.displayLoader = true;
     var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
-    this.currentPage = currentPage;
-    if (paginatorAction === "next") {
-      var nextPageLink = this.pagingLinks!.next!.href;
-      this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleSuccess()
-      },
-        (error) => {
-          this.handleErrMessage(error);
-        }
-      );
+    if (!this.fileShareApiService.isTokenExpired()) {
+      this.displayLoader = true;
+      this.currentPage = currentPage;
+      if (paginatorAction === "next") {
+        var nextPageLink = this.pagingLinks!.next!.href;
+        this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
+      else if (paginatorAction === "prev") {
+        console.log(this.pagingLinks!);
+        var previousPageLink = this.pagingLinks!.previous!.href;
+        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
     }
-    else if (paginatorAction === "prev") {
-      console.log(this.pagingLinks!);
-      var previousPageLink = this.pagingLinks!.previous!.href;
-      this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleSuccess()
-      },
-        (error) => {
-          this.handleErrMessage(error);
-        }
-      );
+    else {
+      this.handleResError();
     }
   }
 
@@ -492,5 +522,10 @@ export class FssSearchComponent implements OnInit {
     this.toggleValueInput(changedFieldRow!, operatorType);
     changedFieldRow!.time = "";
     changedFieldRow!.value = "";
+  }
+
+  showTokenExpiryError(displayError: any) {
+    if (displayError == true)
+      this.handleResError();
   }
 }
