@@ -98,8 +98,6 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     var match = (symbolOperatorListForDate.length == operatorsOption.length) && symbolOperatorListForDate.every(function(element, index) {
         return element === operatorsOption[index]; 
     });
-    console.log("operatorsOption", operatorsOption);
-    console.log("match", match);
     expect(match).toBeTruthy();   
 
   })
