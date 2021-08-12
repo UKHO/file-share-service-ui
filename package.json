@@ -15,9 +15,10 @@
     "dns-packet": "~5.2.2",
     "postcss": "~8.2.10",
     "ws": "~7.4.6",
-    "glob-parent": "~5.1.2",
+    "glob-parent": "^5.1.2",
     "chokidar": "~3.5.1",
-    "css-what": "^5.0.1"
+    "css-what": "^5.0.1",
+    "url-parse": "^1.5.2"
   },
   "private": true,
   "dependencies": {
