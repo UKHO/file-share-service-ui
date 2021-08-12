@@ -5,17 +5,22 @@
   <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite">
       <h3>{{messageTitle}}</h3>
       <div>{{messageDesc}}</div>
+      <div *ngIf="loginErrorDisplay">
+        Please
+        <button  class="loginAction" (click)="loginPopup()">click here</button> to sign-in
+      </div>
   </ukho-dialogue>
 </div>
 
   <h1 id="mainContainer" tabindex="-1">Search files</h1>
   <p class="light">Complete the parameters to create a search query</p>
   <p class="light">Please search using your local time. All dates and times are displayed in <b>{{userLocalTimeZone}}</b>.</p>
-  <app-fss-search-row [fssSearchRows]="fssSearchRows" [groupingLevels]="groupingLevels" [uiGroupings]="uiGroupings"
+  <app-fss-search-row [fssSearchRows]="fssSearchRows" [uiGroupingDetails]="uiGroupingDetails"
   (onFieldChanged)="onFieldChanged($event)"
   (onOperatorChanged)="onOperatorChanged($event)"
   (onSearchRowDeleted)="onSearchRowDeleted($event)"
-  (onGroupClicked)="onGroupClicked()">
+  (onGroupClicked)="onGroupClicked()"
+  (onGroupDeleted)="onGroupDeleted($event)">
   </app-fss-search-row>
   <div class="searchSection">
     <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>
@@ -25,7 +30,7 @@
   </div>
 
   <div class="searchResult">
-    <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult"></app-fss-search-results>
+    <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult" (displayError)="showTokenExpiryError($event)"></app-fss-search-results>
   </div>
   <div class="pagination">
     <ukho-paginator *ngIf="displaySearchResult"

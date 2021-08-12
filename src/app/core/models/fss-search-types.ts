@@ -65,5 +65,10 @@ export class UIGrouping {
   rowIndex: number;
   class: string;
   colspan: number;
-  rowGroupings: RowGrouping[]=[];
+  rowGrouping: RowGrouping;
+}
+
+export class UIGroupingDetails{
+  maxGroupingLevel: number;
+  uiGroupings: UIGrouping[];
 }

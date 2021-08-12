@@ -1,29 +1,38 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FssSearchRow, GroupingLevel, UIGrouping } from './../../../core/models/fss-search-types';
+import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { FssSearchRow, RowGrouping, UIGrouping, UIGroupingDetails } from './../../../core/models/fss-search-types';
 
 @Component({
   selector: 'app-fss-search-row',
   templateUrl: './fss-search-row.component.html',
   styleUrls: ['./fss-search-row.component.scss']
 })
-export class FssSearchRowComponent implements OnInit {
+export class FssSearchRowComponent implements OnChanges {
   @Input() fssSearchRows: FssSearchRow[] = [];
-  @Input() groupingLevels: GroupingLevel[] = [];
-  @Input() uiGroupings: UIGrouping[] = [];
+  @Input() uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();    
   @Output() onSearchRowDeleted = new EventEmitter<number>();
   @Output() onOperatorChanged = new EventEmitter<{ operatorValue: string, rowId: number }>();
   @Output() onFieldChanged = new EventEmitter<{ currentFieldValue: string, rowId: number }>();
   label: string; 
   @Output() onGroupClicked = new EventEmitter();
+  @Output() onGroupDeleted = new EventEmitter<{rowGrouping:RowGrouping}>();
   enableGrouping: Boolean = false; 
+  maxGroupingLevel: number = 0;
+  uiGroupings: UIGrouping[] = []; 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    this.maxGroupingLevel = this.uiGroupingDetails.maxGroupingLevel;
+    this.uiGroupings = this.uiGroupingDetails.uiGroupings;
   }
 
   onSearchRowDelete(rowId: number) {
     this.onSearchRowDeleted.emit(rowId);
-    this.onCheckboxClick();
+    this.toggleGrouping();
+  }
+
+  onGroupDelete(rowGrouping:RowGrouping) {
+    this.onGroupDeleted.emit({rowGrouping});
+    this.toggleGrouping();
   }
 
   onOperatorChange(operator: any, rowId: number) {
@@ -35,6 +44,11 @@ export class FssSearchRowComponent implements OnInit {
   }
 
   onCheckboxClick(){   
+    this.toggleGrouping();
+  }
+
+  toggleGrouping(){
+    //Enable/disable grouping based on consecutive rows selection
     let rowIndexArray:Array<number>=[];
     for(var i=0; i<this.fssSearchRows.length; i++){
       if(this.fssSearchRows[i].group){

@@ -1,8 +1,10 @@
 import { Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FssSearchService } from './../../core/services/fss-search.service';
-import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
+import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+import { MsalService } from '@azure/msal-angular';
+import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
 import { Observable } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -43,18 +45,18 @@ export class FssSearchComponent implements OnInit {
   pages: number;
   currentPage: number = 0;
   paginatorLabel: string;
-  currentGroupStartIndex: number = 0;
-  currentGroupEndIndex: number = 0;
-  rowGroupings: RowGrouping[] = [];
-  groupingLevels: GroupingLevel[] = [];
-  uiGroupings: UIGrouping[] = [];
+  loginErrorDisplay: boolean = false;
+  currentGroupStartIndex: number=0;
+  currentGroupEndIndex: number=0;
+  rowGroupings: RowGrouping[]=[];
+  uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();  
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
-  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef) { }
+  constructor(private fssSearchTypeService: IFssSearchService, private fssSearchFilterService: FssSearchFilterService, private fileShareApiService: FileShareApiService, private elementRef: ElementRef, private msalService: MsalService, private fssSearchGroupingService: FssSearchGroupingService) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-   
+
     if (!localStorage['batchAttributes']) {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         if (batchAttributeResult.length === 0) {
@@ -89,7 +91,7 @@ export class FssSearchComponent implements OnInit {
     }
     this.typeaheadFields = this.filter(this.filterList);
     this.addSearchRow();
- }
+  }
 
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
@@ -101,7 +103,7 @@ export class FssSearchComponent implements OnInit {
       }
     },0 );
 
-    this.createUIGrouping();
+    this.setupGrouping();
   }
 
   getDefaultSearchRow() {
@@ -198,8 +200,12 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSearchRowDeleted(rowId: number) {
-    this.fssSearchRows.splice(this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId), 1);
-  }
+    var deleteRowIndex = this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId);    
+    this.fssSearchRows.splice(deleteRowIndex, 1);
+    //Reset rowGroupings on search row deletion
+    this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);    
+    this.setupGrouping();
+  }  
 
   validateValueFormControl() {
     for (let rowId = 0; rowId < this.fssSearchRows.length; rowId++) {
@@ -260,42 +266,46 @@ export class FssSearchComponent implements OnInit {
   getSearchResult() {
     if (this.validateSearchInput()) {
       this.displayLoader = true;
-      var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows,this.rowGroupings);
-      console.log(filter);
-      if (filter != null) {
-        this.searchResult = [];
-        this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
-          if (res.length === 0) {
-            this.handleResError();
-          }
-          else {
-            this.searchResult = res;
-            if (this.searchResult.count > 0) {
-              var searchResultCount = this.searchResult['count'];
-              this.searchResultTotal = this.searchResult['total'];
-              this.currentPage = 1;
-              this.pages = this.searchResultTotal % searchResultCount === 0 ?
-                Math.floor(this.searchResultTotal / searchResultCount) :
-                (Math.floor(this.searchResultTotal / searchResultCount) + 1);
-              this.handleSuccess()
+      if (!this.fileShareApiService.isTokenExpired()) {
+        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows,this.rowGroupings);
+        console.log(filter);
+        if (filter != null) {
+          this.searchResult = [];
+          this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
+            if (res.length === 0) {
+              this.handleResError();
             }
             else {
-              this.searchResult = [];
-              this.displaySearchResult = false;
-              this.showMessage(
-                "info",
-                "No results can be found for this search",
-                "Try again using different parameters in the search query."
-              );
-              this.displayLoader = false;
+              this.searchResult = res;
+              if (this.searchResult.count > 0) {
+                var searchResultCount = this.searchResult['count'];
+                this.searchResultTotal = this.searchResult['total'];
+                this.currentPage = 1;
+                this.pages = this.searchResultTotal % searchResultCount === 0 ?
+                  Math.floor(this.searchResultTotal / searchResultCount) :
+                  (Math.floor(this.searchResultTotal / searchResultCount) + 1);
+                this.handleSuccess()
+              }
+              else {
+                this.searchResult = [];
+                this.displaySearchResult = false;
+                this.showMessage(
+                  "info",
+                  "No results can be found for this search",
+                  "Try again using different parameters in the search query."
+                );
+                this.displayLoader = false;
+              }
             }
-          }
-
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
+          },
+            (error) => {
+              this.handleErrMessage(error);
+            }
+          );
+        }
+      }
+      else {
+        this.handleResError();
       }
     }
     else {
@@ -306,6 +316,7 @@ export class FssSearchComponent implements OnInit {
         this.errorMessageTitle,
         this.errorMessageDescription);
     }
+
   }
 
   hideMessage() {
@@ -313,6 +324,7 @@ export class FssSearchComponent implements OnInit {
     this.messageTitle = "";
     this.messageDesc = "";
     this.displayMessage = false;
+    this.loginErrorDisplay = false;
   }
 
   showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
@@ -351,11 +363,28 @@ export class FssSearchComponent implements OnInit {
   }
 
   handleResError() {
-    this.showMessage("info", "Login in progress", "Due to token expiry timeout we are trying to log you in again");
+    this.showMessage("info", "Your Sign-in Token has Expired", "");
+    this.loginErrorDisplay = true;
     this.displayLoader = false;
-    this.searchResult = [];
-    this.displaySearchResult = false;
   }
+
+  loginPopup() {
+    console.log("Enterrr");
+    this.displayLoader = true;
+    this.msalService.loginPopup().subscribe(response => {
+      localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+      const idToken = response.idToken;
+      localStorage.setItem('idToken', idToken);
+      this.msalService.instance.setActiveAccount(response.account);
+      console.log("idtoken reset after expiry on sign in ")
+      //refreshToken endpoint call to set the cookie after user login
+      this.fileShareApiService.refreshToken().subscribe(res => {
+        this.displayLoader = false;
+      })
+    });
+    this.hideMessage();
+  }
+
 
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
@@ -363,31 +392,36 @@ export class FssSearchComponent implements OnInit {
   }
 
   pageChange(currentPage: number) {
-    this.displayLoader = true;
     var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
-    this.currentPage = currentPage;
-    if (paginatorAction === "next") {
-      var nextPageLink = this.pagingLinks!.next!.href;
-      this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleSuccess()
-      },
-        (error) => {
-          this.handleErrMessage(error);
-        }
-      );
+    if (!this.fileShareApiService.isTokenExpired()) {
+      this.displayLoader = true;
+      this.currentPage = currentPage;
+      if (paginatorAction === "next") {
+        var nextPageLink = this.pagingLinks!.next!.href;
+        this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
+      else if (paginatorAction === "prev") {
+        console.log(this.pagingLinks!);
+        var previousPageLink = this.pagingLinks!.previous!.href;
+        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess()
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
     }
-    else if (paginatorAction === "prev") {
-      console.log(this.pagingLinks!);
-      var previousPageLink = this.pagingLinks!.previous!.href;
-      this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleSuccess()
-      },
-        (error) => {
-          this.handleErrMessage(error);
-        }
-      );
+    else {
+      this.handleResError();
     }
   }
 
@@ -417,17 +451,17 @@ export class FssSearchComponent implements OnInit {
         "Groups can not intersect each other.",
         "A group can only contain complete groups, they cannot contain a part of another group."
       );
-    }
-    else {
-      this.AddGrouping();
-      this.createUIGrouping();
+    }   
+    else {       
+      this.addGrouping();       
+      this.setupGrouping();
     }
   }
 
   isGroupAlreadyExist() {
-    var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));
+    var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));   
     return grouping !== undefined ? true : false;
-  }
+  }  
 
   isGroupIntersectWithOther() {
     return (this.rowGroupings.find(g => (this.currentGroupStartIndex < g.startIndex &&
@@ -438,166 +472,22 @@ export class FssSearchComponent implements OnInit {
         this.currentGroupEndIndex > g.endIndex)) !== undefined)
   }
 
-  AddGrouping() {
-
-    this.rowGroupings.push({
-      startIndex: this.currentGroupStartIndex,
+  addGrouping(){
+    this.rowGroupings.push({        
+      startIndex: this.currentGroupStartIndex, 
       endIndex: this.currentGroupEndIndex
     });
-
-    if (this.groupingLevels.length == 0) {
-
-      var groupingLevel = new GroupingLevel();
-      groupingLevel.level = 1;
-      groupingLevel.rowGroupings.push({ startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex });
-      this.groupingLevels.push(groupingLevel);
-
-    }
-    else if (this.isOuterLevelGroup()) {
-
-      var matchedGroupingLevel = this.groupingLevels.filter(g => g.rowGroupings.some(r =>
-        r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
-
-      var newLevel = new GroupingLevel();
-      var matchedLevel = matchedGroupingLevel[matchedGroupingLevel.length - 1];
-
-      if (matchedLevel !== undefined) {
-        var currentlevel = this.groupingLevels.find(g => g.level === matchedLevel.level && g.rowGroupings.find(r =>
-          r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));
-
-        if (currentlevel !== undefined) {
-          newLevel = currentlevel;
-        }
-        else {
-          newLevel.level = matchedLevel.level + 1;
-        }
-      }
-
-      var newLevelIndex = this.groupingLevels.findIndex(i => i.level === newLevel.level);
-      if (newLevelIndex !== -1) {
-        this.groupingLevels[newLevelIndex].rowGroupings.push({ startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex });
-      }
-      else {
-        newLevel.rowGroupings.push({ startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex });
-        this.groupingLevels.push(newLevel);
-      }
-    }
-    else if (this.isInnerLevelOfExistingGroup()) {
-      this.showMessage(
-        "info",
-        "Adding an inner group to a group is not supported.",
-        "To add an inner group, first remove the outer group, then add the inner group and re-add the outer group."
-      );
-      this.rowGroupings.pop();
-    }
-    else if (this.isInnerLevelGroup()) {
-
-      var existingGroupingLevel = this.groupingLevels.filter(g => g.rowGroupings.some(r =>
-        (r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) ||
-        (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex)));
-
-      var existingLevel = existingGroupingLevel[0];
-      var existingLevelIndex = this.groupingLevels.findIndex(i => i === existingLevel);
-      existingLevel.rowGroupings.push({ startIndex: this.currentGroupStartIndex, endIndex: this.currentGroupEndIndex });
-
-      this.groupingLevels[existingLevelIndex] = existingLevel;
-    }
   }
 
-  isOuterLevelGroup() {
-    var outerGroup = this.groupingLevels.filter(g => g.rowGroupings.some(
-      r => r.startIndex >= this.currentGroupStartIndex && r.endIndex <= this.currentGroupEndIndex));
-
-    if (outerGroup.length > 0) {
-      return true;
-    }
-    return false;
+  setupGrouping(){
+    this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings,this.fssSearchRows);
   }
 
-  isInnerLevelOfExistingGroup() {
-    var innerGroup = this.groupingLevels.filter(g => g.rowGroupings.find(
-      r => r.startIndex <= this.currentGroupStartIndex && r.endIndex >= this.currentGroupEndIndex));
-
-    if (innerGroup.length > 0) {
-      return true;
-    }
-    return false;
-  }
-
-  isInnerLevelGroup() {
-    var innerGroup = this.groupingLevels.find(g => g.rowGroupings.find(r =>
-      ((r.startIndex < this.currentGroupStartIndex && r.endIndex < this.currentGroupEndIndex) && r.startIndex < this.currentGroupEndIndex) ||
-      (r.startIndex > this.currentGroupStartIndex && r.endIndex > this.currentGroupEndIndex)));
-
-    if (innerGroup !== undefined) {
-      return true;
-    }
-    return false;
-  }
-
-  createUIGrouping() {
-    this.uiGroupings = [];
-
-    if (this.groupingLevels.length > 0) {
-      var maxLevel = this.groupingLevels[this.groupingLevels.length - 1].level;
-
-      for (var i = 0; i < this.fssSearchRows.length; i++) {
-        var j = maxLevel;
-
-        while (j >= 1) {
-          var groupingLevel = this.groupingLevels.find(g => g.level === j);
-          var uiGrouping = new UIGrouping();
-          uiGrouping.rowIndex = i;
-          uiGrouping.class = this.getUIGroupClass(i, groupingLevel!);
-          uiGrouping.colspan = this.getUIGroupingColspan(i, groupingLevel!);
-          uiGrouping.rowGroupings = this.getUIRowGrouping(i, groupingLevel!);
-          this.uiGroupings.push(uiGrouping);
-
-          j = j - uiGrouping.colspan;
-        }
-      }
-    }
-  }
-
-  getUIGroupClass(rowIndex: number, groupingLevel: GroupingLevel) {
-    var groupingClass = "";
-
-    if (groupingLevel.rowGroupings.find(g => g.startIndex == rowIndex)) {
-      groupingClass = "group group-start";
-    }
-    else if (groupingLevel.rowGroupings.find(g => g.endIndex == rowIndex)) {
-      groupingClass = "group group-end";
-    }
-    else if (groupingLevel.rowGroupings.find(g => g.startIndex < rowIndex && g.endIndex > rowIndex)) {
-      groupingClass = "group";
-    }
-    else {
-      groupingClass = "no-group";
-    }
-
-    return groupingClass;
-  }
-
-  getUIGroupingColspan(rowIndex: number, groupingLevel: GroupingLevel) {
-    var groupingLevels = this.groupingLevels.slice().reverse()
-      .filter(gl => gl.level <= groupingLevel.level && gl.rowGroupings
-        .some(g => rowIndex >= g.startIndex &&
-          rowIndex <= g.endIndex));
-
-    if (groupingLevels.length > 1) {
-      return groupingLevels[0].level - groupingLevels[1].level;
-    }
-    else if (groupingLevels.length === 1 && groupingLevels[0].level !== groupingLevel.level) {
-      return groupingLevels[0].level;
-    }
-    else {
-      return groupingLevel.level;
-    }
-  }
-
-  getUIRowGrouping(rowIndex: number, groupingLevel: GroupingLevel) {
-    var rowGrouping = groupingLevel.rowGroupings.filter(r => r.startIndex == rowIndex);
-    return rowGrouping;
+  onGroupDeleted(grouping: any) { 
+    this.rowGroupings.splice(this.rowGroupings.findIndex(r => 
+      r.startIndex === grouping.rowGrouping.startIndex && 
+      r.endIndex === grouping.rowGrouping.endIndex),1);  
+    this.setupGrouping();  
   }
 
   filter(filterList: string[]) {
@@ -639,5 +529,10 @@ export class FssSearchComponent implements OnInit {
     this.toggleValueInput(changedFieldRow!, operatorType);
     changedFieldRow!.time = "";
     changedFieldRow!.value = "";
+  }
+
+  showTokenExpiryError(displayError: any) {
+    if (displayError == true)
+      this.handleResError();
   }
 }
