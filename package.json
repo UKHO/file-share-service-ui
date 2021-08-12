@@ -33,7 +33,7 @@
     "@azure/msal-angular": "^2.0.0",
     "@azure/msal-browser": "^2.14.2",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@ukho/design-system": "^2.4.0",
+    "@ukho/design-system": "^3.0.2",
     "jest-junit": "^12.1.0",
     "npm-force-resolutions": "0.0.10",
     "postcss": "^8.3.0",
