@@ -122,7 +122,10 @@ export class FssSearchGroupingService{
           rowIndex <= g.endIndex ));
   
     if(groupingLevels.length > 1) {
-      return groupingLevels[0].level - groupingLevels[1].level; 
+      if(groupingLevels[0].level < groupingLevel.level)
+        return groupingLevel.level- groupingLevels[0].level;
+      else
+        return groupingLevels[0].level - groupingLevels[1].level;
     } 
     else if(groupingLevels.length === 1 && groupingLevels[0].level !== groupingLevel.level ) {
       return groupingLevel.level - groupingLevels[0].level;
