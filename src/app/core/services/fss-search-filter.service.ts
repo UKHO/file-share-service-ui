@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FssSearchRow } from '../models/fss-search-types';
+import { FssSearchRow, RowGrouping } from '../models/fss-search-types';
 
 @Injectable({
   providedIn: 'root'
@@ -15,24 +15,28 @@ export class FssSearchFilterService {
 
   constructor() { }
 
-  getFilterExpression(fssSearchRows: FssSearchRow[]) {
+  getFilterExpression(fssSearchRows: FssSearchRow[],groupings : RowGrouping[]) {
+    
+    var filter='';
 
-    var filter = '';
+    for(var rowIndex=0; rowIndex < fssSearchRows.length; rowIndex++) {
 
-    for (var i = 0; i < fssSearchRows.length; i++) {
-
-      var fssSearchRow = fssSearchRows[i];
+      var fssSearchRow = fssSearchRows[rowIndex];
       // getFieldDataType
       const fieldDataType = this.getFieldDataType(fssSearchRow);
       // getOperatorType
       const operaterType = this.getOperatorType(fssSearchRow);
 
       //Append join operator from second search condition
-      if (i != 0) {
-        filter = filter.concat(' ', fssSearchRow.selectedJoinOperator, ' ');
+      if(rowIndex != 0) {
+        filter = filter.concat(' ',fssSearchRow.selectedJoinOperator, ' ');        
       }
-      if (fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType) {
-        if (operaterType === this.typeOperator) {
+      //Append opening brackets for grouping query.
+      var openingBracketCount = groupings.filter(g=>g.startIndex === rowIndex).length;
+      filter = filter.concat("(".repeat(openingBracketCount));
+        
+      if(fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType){
+        if(operaterType === this.typeOperator){
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
         }
         else if (operaterType === this.nullOperatorType) {
@@ -50,13 +54,15 @@ export class FssSearchFilterService {
       if (fieldDataType === this.dateDataType) {
         if (operaterType === this.typeOperator) {
           const value = new Date(fssSearchRow.value + ' ' + fssSearchRow.time).toISOString();
-          console.log(new Date(fssSearchRow.value + ' ' + fssSearchRow.time), value);
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
         }
         else if (operaterType === this.nullOperatorType) {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
         }
       }
+      //Append closing brackets for grouping query
+      var closingBracketCount = groupings.filter(g=>g.endIndex === rowIndex).length;
+      filter = filter.concat(")".repeat(closingBracketCount));
     }
     return filter;
   }
