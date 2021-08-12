@@ -26,7 +26,7 @@
        "loginSignInLinkSelector" : "#signInButton",
        "loginAccountSelector" : "#accountSection",
        "loginAccountLinkSelector" : "#accountSection #profile > a",
-       "searchPageContainerHeaderSelector" : "#mainContainer >h1",
+       "searchPageContainerHeaderSelector" : "h1",
        "searchPageContainerHeaderText" : "Search files",
        "searchButtonSelector": "#Search",
        "homePageSignInHeaderInfoSelector" : ".card h1",
@@ -40,7 +40,17 @@
        "searchAttributeTable":".attribute-table",
        "searchAttributeTableRows":".attribute-table tr",
        "warningMessageSelector":".dialog.warning >h3",
-       "warningMessageText":"There is a problem with FileSize value field"
+       "warningMessageText":"There is a problem with FileSize value field",
+       "attributeTableDataSelector" : "//tr[2]//td[count((//table[@class='attribute-table'])[1]/tr[1]//th[text()='product']/preceding-sibling::th)+1]",
+       "buttonAddNewRow" : ".addNewLine",
+       "inputSearchFieldSelectorSecondRow": "#ukho-form-field-7",
+       "operatorDropDownSelectorSecondRow": "#ukho-form-field-6",
+       "inputSearchValueSelectorSecondRow": "#ukho-form-field-9",
+       "fileAttributeTableRecordSelector": ".cdk-table >tbody>tr>td:nth-of-type(2)>div",
+       "attributeTableMultipleDataSelector" : "//table[@class='attribute-table']//tr[2]//td[count((//table[@class='attribute-table'])[1]/tr[2]//th[text()='product']/preceding-sibling::th)+2]",
+       "groupCheckBox1Selector" : "#ukho-form-field-1",
+       "groupCheckBox2Selector" : "#ukho-form-field-5",
+       "groupingButton" : ".delete.grouping"
     },
     "pageTimeOut":
     {

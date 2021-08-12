@@ -29,4 +29,6 @@ export const stringOperatorList= [
   '<='
 ]
 
-export const batchAttributeProduct ="FileShareService";
+export const SystemAttributeMimeType ="image/jpeg";
+export const batchAttributeProductContains ="Service";
+export const batchAttributeSpecialChar="$£";

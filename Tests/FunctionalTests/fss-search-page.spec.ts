@@ -148,4 +148,4 @@ describe('Test Search Attribute Scenario On Search Page', () => {
 
   })
 
-})
+}) 

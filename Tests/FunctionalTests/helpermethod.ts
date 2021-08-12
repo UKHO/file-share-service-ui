@@ -21,8 +21,9 @@ const { pageObjectsConfig } = require('./pageObjects');
       popup.click(pageObjectsConfig.loginPopupNextButtonSelector)
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
       popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInButtonSelector)
-      popup.click(pageObjectsConfig.loginPopupSignInButtonSelector) 
+      await popup.waitForTimeout(2000);
+      popup.keyboard.press('Enter'); 
+      await popup.waitForTimeout(2000);
   }  
 
 //<summary>
@@ -35,6 +36,16 @@ export async function SearchAttribute(page:Page, attributeName: string)
   {
     await page.fill(pageObjectsConfig.inputSearchFieldSelector,"");   
     await page.fill(pageObjectsConfig.inputSearchFieldSelector,attributeName);
+    await page.keyboard.press('Backspace');    
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter'); 
+    page.waitForLoadState('domcontentloaded');
+  }
+
+  export async function SearchAttributeSecondRow(page:Page, attributeName: string)
+  {
+    await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,"");   
+    await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,attributeName);
     await page.keyboard.press('Backspace');    
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('Enter'); 

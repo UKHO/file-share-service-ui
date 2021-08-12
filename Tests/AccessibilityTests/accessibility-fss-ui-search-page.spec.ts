@@ -3,6 +3,7 @@ import { injectAxe, getViolations} from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig,pageTimeOut } = require('../FunctionalTests/pageObjects.json');
 import { join } from 'path'
+import {SearchAttribute} from  '../FunctionalTests/helpermethod'
 let name: string;
 
 let browser: Browser
@@ -88,10 +89,10 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for Attributes dropdown element', async() =>{ 
+  test('should return no violation for Attributes element', async() =>{ 
     page.waitForSelector("#ukho-form-field-2")    
     await injectAxe(page);
-    const violations  =await getViolations(page, '#ukho-form-field-2', {
+    const violations  =await getViolations(page, '#ukho-form-field-3', {
         axeOptions: {
           runOnly: {
             type: 'tag',
@@ -107,7 +108,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   })
 
   test('should return no violation for Operator dropdown element', async() =>{ 
-    page.waitForSelector("#ukho-form-field-3")   
+    page.waitForSelector("#ukho-form-field-2")   
     await injectAxe(page);
     const violations  =await getViolations(page, '#ukho-form-field-3', {
         axeOptions: {
@@ -142,11 +143,12 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for search result table', async() =>{    
-    await page.selectOption("#ukho-form-field-2","BusinessUnit");
-    await page.selectOption("#ukho-form-field-3","eq");    
+  test('should return no violation for search result table', async() =>{  
+    
+    await SearchAttribute(page,"BusinessUnit");    
+    await page.selectOption("#ukho-form-field-2","eq");    
     await page.fill("#ukho-form-field-4","adds");
-    await page.click("ukho-button >button");
+    await page.click("//button[text()='Search']");
     await page.waitForSelector(".attribute-table");
 
     const violations  =await getViolations(page, '.attribute-table', {

@@ -14,7 +14,7 @@ describe('FSS UI E2E Scenarios', () => {
     let page: Page;
   
     beforeEach(async () => {
-      browser = await chromium.launch({slowMo:100,headless:false});
+      browser = await chromium.launch({slowMo:100});
       context = await browser.newContext();
       page = await context.newPage();
       await page.goto(autoTestConfig.url)
