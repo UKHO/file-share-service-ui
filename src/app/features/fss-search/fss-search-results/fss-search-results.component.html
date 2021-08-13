@@ -18,7 +18,7 @@
         </tr>
         <tr>
           <td *ngFor="let attribute of batch.systemAttributes" >
-            <span *ngIf='attribute.isDateField'>{{attribute.value | date:'dd/MM/yyyy, HH:mm'}}</span>
+            <span *ngIf='attribute.isDateField'>{{attribute.value | date:'dd/MM/yyyy HH:mm'}}</span>
             <span *ngIf='attribute.isDateField==false'>{{attribute.value | uppercase}}</span>
           </td>
         </tr>       
