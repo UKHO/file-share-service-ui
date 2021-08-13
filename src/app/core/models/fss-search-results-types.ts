@@ -1,7 +1,9 @@
 export interface SearchResultViewModel{
     batchAttributes: BatchAttribute[];
     batchFileDetails: BatchFileDetails;
-    systemAttributes: SystemAttribute[];
+    BatchID: BatchAttribute;
+    BatchPublishedDate: BatchAttribute;
+    ExpiryDate: BatchAttribute;
   }
   
   export interface BatchAttribute {
@@ -26,8 +28,3 @@ export interface SearchResultViewModel{
     Download: string;
   }
 
-  export interface SystemAttribute {
-    key: string;
-    value: string;
-    isDateField: boolean;
-  }
