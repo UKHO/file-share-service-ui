@@ -16,6 +16,7 @@
     "fssTitle": "File Share Service",
     "phase": "alpha",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl": ""
+    "apiUrl": "",
+    "stateManagementApiUrl": ""
   }
 }
