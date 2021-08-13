@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { AppConfigService } from './app-config.service';
-import { MsalService } from '@azure/msal-angular';
 
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
@@ -29,19 +28,25 @@ export class FileShareApiService {
         return this.http.get(this.baseUrl + '/attributes');
     }
 
+    clearCookies(): Observable<any> {
+        return this.http.post(this.stateManagementUrl + '/logout', null);
+    }
+
     refreshToken(): Observable<any> {
         return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
     }
 
     isTokenExpired() {
         var flag = false;
-        const claims = JSON.parse(localStorage['claims']);
-        //To retrieve the current date time
-        const currentDateTime = new Date().toISOString();
-        //To retrieve the date time when idtoken was received(at the time of user login)
-        const expiresOn = new Date(1000 * claims['exp']).toISOString();
-        if (expiresOn < currentDateTime) {
-            flag = true;
+        if (localStorage['claims'] !== undefined) {
+            const claims = JSON.parse(localStorage['claims']);
+            //To retrieve the current date time
+            const currentDateTime = new Date().toISOString();
+            //To retrieve the date time when idtoken was received(at the time of user login)
+            const expiresOn = new Date(1000 * claims['exp']).toISOString();
+            if (expiresOn < currentDateTime) {
+                flag = true;
+            }
         }
         return flag
     }
