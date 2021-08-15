@@ -2,7 +2,7 @@ import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import {LoginPortal,SearchAttribute,SearchAttributeSecondRow} from './helpermethod'
-import {batchAttributeProductContains,batchAttributeSpecialChar,SystemAttributeMimeType} from './helperconstant'
+import {batchAttributeProductContains,batchAttributeSpecialChar,SystemAttributeMimeType,batchAttributeProduct} from './helperconstant'
 
 
 describe('Test Search Query Scenario On Search Page', () => {
@@ -113,7 +113,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     
   })
 
-  it('Test to verify no value field when select operator eq nll or ne null for BatchExpiryDate', async () => {    
+  it('Test to verify no value field displayed when select operator eq nll or ne null for BatchExpiryDate', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BatchExpiryDate");
@@ -130,7 +130,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     
   })
 
-  it('Test to verify no value field when select operator eq nll or ne null for BatchPublishedDate', async () => {    
+  it('Test to verify no value field displayed when select operator eq nll or ne null for BatchPublishedDate', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BatchPublishedDate");
@@ -146,7 +146,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     
   })
 
-  it('Test to verify no value field when select operator eq nll or ne null for batch attributes', async () => {    
+  it('Test to verify no value field displayed when select operator eq nll or ne null for batch attributes', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"product");
@@ -160,6 +160,30 @@ describe('Test Search Query Scenario On Search Page', () => {
     valueField=await page.$$(pageObjectsConfig.inputSearchValueSelector);
     expect(valueField.length).toEqual(0);     
     
+  })
+
+  it('Test to verify file downloaded status changed after click on download button', async () => {        
+   
+    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
+    await SearchAttribute(page,"product");
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");  
+    await page.waitForTimeout(1000);   
+    await page.fill(pageObjectsConfig.inputSearchValueSelector,"FileShareService");
+    await page.click(pageObjectsConfig.searchAttributeButton);
+    
+    // Verifiction of attribute table 
+    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+
+    //Click on expand button
+    await page.click(pageObjectsConfig.chooseFileDownloadSelector);
+
+   // await page.waitForTimeout(1000); 
+    //Click on download button
+    await page.click(pageObjectsConfig.fileDownloadButton);
+
+    //Get the file downloaded status
+    const fileDownloadStatus=await page.getAttribute(pageObjectsConfig.fileDownloadButtonStatus,"class");
+    expect(fileDownloadStatus).toContain("check");    
   })
 
 })

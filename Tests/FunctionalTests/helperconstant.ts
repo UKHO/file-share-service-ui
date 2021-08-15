@@ -32,3 +32,4 @@ export const stringOperatorList= [
 export const SystemAttributeMimeType ="image/jpeg";
 export const batchAttributeProductContains ="Service";
 export const batchAttributeSpecialChar="$£";
+export const batchAttributeProduct="FileShareService";

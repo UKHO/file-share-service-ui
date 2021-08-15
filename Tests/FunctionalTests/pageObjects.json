@@ -50,11 +50,17 @@
        "attributeTableMultipleDataSelector" : "//table[@class='attribute-table']//tr[2]//td[count((//table[@class='attribute-table'])[1]/tr[2]//th[text()='product']/preceding-sibling::th)+2]",
        "groupCheckBox1Selector" : "#ukho-form-field-1",
        "groupCheckBox2Selector" : "#ukho-form-field-5",
-       "groupingButton" : ".delete.grouping"
+       "groupingButton" : ".delete.grouping",
+       "chooseFileDownloadSelector" : "(//h3[text()='Choose files to Download'])[1]",
+       "fileDownloadButton" : "(//div[@class='fileDownload'])[last()]",
+       "fileDownloadButtonStatus" : "(//div[@class='fileDownload']/i)[last()]",
+       "attributeTableCellNameSelector" : "(//table[@class='attribute-table']//tr[2]//td[1])[1]",
+       "systemTableBatchExpirySelector" : "(//table[@class='system-attribute-table']//tr[2]//td[3])[1]"
     },
     "pageTimeOut":
     {
-      "timeOutInMilliSeconds" : 60000
+      "timeOutInMilliSeconds" : 60000,
+      "delay" : 3000
     }
 	
 }

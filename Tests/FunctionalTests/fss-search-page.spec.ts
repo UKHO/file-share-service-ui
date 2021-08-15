@@ -146,6 +146,6 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
     expect(tableRows).toEqual(1);
 
-  })
+  }) 
 
 }) 
