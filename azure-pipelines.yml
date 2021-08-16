@@ -378,7 +378,7 @@ stages:
              displayName: 'Publish End-To-End Test Results'
 
       - job: AccessibilityTests
-        dependsOn: FunctionalTests
+        dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Acccessibility Tests"
         workspace:
