@@ -52,7 +52,7 @@ describe('Test Sign In Page Scenario', () => {
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
 
-  })  
+  })
 
   it('User clicks on Search link and close the popup window user navigate to fss home page', async () => {
 

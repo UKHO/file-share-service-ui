@@ -11,7 +11,7 @@ let page: Page
 describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   beforeAll(async () => {
-    browser = await chromium.launch({slowMo: 100})
+    browser = await chromium.launch({ slowMo: 100})
     context = await browser.newContext();
     page = await context.newPage();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
@@ -37,7 +37,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for search result table', async () => {
+  test('should return no violation for search result table', async () => {
     page.waitForTimeout(pageTimeOut.delay);
     await page.waitForSelector("#ukho-form-field-3");
     await SearchAttribute(page, "BusinessUnit");
@@ -59,8 +59,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for Attributes dropdown element', async () => {
-
+  test('should return no violation for Attributes dropdown element', async () => {    
     page.waitForSelector("#ukho-form-field-3")
     await injectAxe(page);
     const violations = await getViolations(page, '#ukho-form-field-3', {
@@ -77,8 +76,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for Operator dropdown element', async () => {
-
+  test('should return no violation for Operator dropdown element', async () => {    
     page.waitForSelector("#ukho-form-field-2")
     await injectAxe(page);
     const violations = await getViolations(page, '#ukho-form-field-2', {
@@ -95,8 +93,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     expect(violations.length).toBe(0);
   })
 
-  test('should return no violation for value inputbox element', async () => {
-
+  test('should return no violation for value inputbox element', async () => {    
     page.waitForSelector("#ukho-form-field-4")
     await injectAxe(page);
     const violations = await getViolations(page, '#ukho-form-field-4', {

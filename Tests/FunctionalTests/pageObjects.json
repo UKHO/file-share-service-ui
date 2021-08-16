@@ -60,7 +60,7 @@
     "pageTimeOut":
     {
       "timeOutInMilliSeconds" : 60000,
-      "delay" : 3000
+      "delay" : 5000
     }
 	
 }

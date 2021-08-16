@@ -98,8 +98,6 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     var match = (symbolOperatorListForDate.length == operatorsOption.length) && symbolOperatorListForDate.every(function(element, index) {
         return element === operatorsOption[index]; 
     });
-    console.log("operatorsOption", operatorsOption);
-    console.log("match", match);
     expect(match).toBeTruthy();   
 
   })
@@ -142,7 +140,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     expect(tableRows).toEqual(2);
 
     //delete a row
-    await page.click(".delete");
+    await page.click(".deleteRow");
     tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
     expect(tableRows).toEqual(1);
 
