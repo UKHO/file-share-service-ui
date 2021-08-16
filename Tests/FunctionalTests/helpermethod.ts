@@ -21,8 +21,9 @@ const { pageObjectsConfig } = require('./pageObjects');
       popup.click(pageObjectsConfig.loginPopupNextButtonSelector)
       await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
       popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInButtonSelector)
-      popup.click(pageObjectsConfig.loginPopupSignInButtonSelector) 
+      await popup.waitForTimeout(2000);
+      popup.keyboard.press('Enter');  
+      await popup.waitForTimeout(2000);
   }  
 
 //<summary>
