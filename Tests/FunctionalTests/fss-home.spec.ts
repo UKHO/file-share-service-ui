@@ -2,7 +2,6 @@ import { Browser, BrowserContext, chromium, Page } from 'playwright';
 const { autoTestConfig } = require('./appSetting');
 const {pageObjectsConfig,pageTimeOut} = require('./pageObjects');
 
-
 describe('Test Home Page Scenario', () => {
     jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
     let browser: Browser;
