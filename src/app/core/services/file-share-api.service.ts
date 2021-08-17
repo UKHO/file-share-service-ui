@@ -48,6 +48,9 @@ export class FileShareApiService {
                 flag = true;
             }
         }
+        else{
+            flag = true;
+        }
         return flag
     }
 
