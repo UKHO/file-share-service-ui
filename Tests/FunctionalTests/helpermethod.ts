@@ -1,6 +1,6 @@
 import { Page } from 'playwright'
 const { pageObjectsConfig } = require('./pageObjects'); 
-
+let fileSizeInBytes:any;
 //<summary>
 // Sign In to FSS UI using valid credentials
 //</summary>
@@ -50,4 +50,29 @@ export async function SearchAttribute(page:Page, attributeName: string)
     await page.keyboard.press('ArrowDown');
     await page.keyboard.press('Enter'); 
     page.waitForLoadState('domcontentloaded');
+  }
+
+//<summary>
+// Get the file Size in bytes.
+//</summary>
+//<param> filesize </param>
+
+  export function  GetFileSizeInBytes(fileSize: string)
+  {
+        let fileSizeChar=fileSize.split(' ');       
+
+        if (fileSizeChar[1]=='KB')
+        {
+          fileSizeInBytes=parseInt(fileSizeChar[0])*1024
+        }
+        if (fileSizeChar[1]=='MB')
+        {
+          fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024
+        }
+        if (fileSizeChar[1]=='GB')
+        {
+          fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024*1024
+        } 
+        
+      return fileSizeInBytes; 
   }
