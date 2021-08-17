@@ -180,14 +180,10 @@ stages:
              displayName: 'Publish Functional Test Results'
 
       - job: E2ETests
-        dependsOn: FunctionalTests
         pool: $(WindowPool)
         displayName: "End-To-End Tests"
         steps:
            - checkout: self
-           - script: 
-              echo "$(autoTestConfig.url)"
-
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
@@ -225,14 +221,10 @@ stages:
              displayName: 'Publish End-To-End Test Results'
 
       - job: AccessibilityTests
-        dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Accessibility Tests"
         steps:
            - checkout: self
-           - script: 
-              echo "$(autoTestConfig.url)"
-
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
@@ -341,14 +333,10 @@ stages:
              displayName: 'Publish Functional Test Results'
 
       - job: E2ETests
-        dependsOn: FunctionalTests
         pool: $(WindowPool)
         displayName: "End-To-End Tests"
         steps:
            - checkout: self
-           - script: 
-              echo "$(autoTestConfig.url)"
-
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
@@ -382,16 +370,12 @@ stages:
              displayName: 'Publish End-To-End Test Results'
 
       - job: AccessibilityTests
-        dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Acccessibility Tests"
         workspace:
          clean: all
         steps:
            - checkout: self
-           - script: 
-              echo "$(autoTestConfig.url)"
-
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
