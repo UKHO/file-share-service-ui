@@ -38,7 +38,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
     await page.click(pageObjectsConfig.searchAttributeButton);
     
-    // Verifiction of attribute table records
+    // Verification of attribute table records
     await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
@@ -58,7 +58,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeSpecialChar);
     await page.click(pageObjectsConfig.searchAttributeButton);
     
-    // Verifiction of attribute table records
+    // Verification of attribute table records
     await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
@@ -84,7 +84,7 @@ describe('Test Search Query Scenario On Search Page', () => {
 
     await page.click(pageObjectsConfig.searchAttributeButton);
     
-    // Verifiction of attribute table records
+    // Verification of attribute table records
     await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
@@ -169,7 +169,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
     await page.click(pageObjectsConfig.searchAttributeButton);
     
-    // Verifiction of attribute table records
+    // Verification of attribute table records
     await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
@@ -200,8 +200,7 @@ describe('Test Search Query Scenario On Search Page', () => {
 
     //Click on expand button
     await page.click(pageObjectsConfig.chooseFileDownloadSelector);
-
-   // await page.waitForTimeout(1000); 
+  
     //Click on download button
     await page.click(pageObjectsConfig.fileDownloadButton);
 
@@ -224,7 +223,7 @@ describe('Test Search Query Scenario On Search Page', () => {
 
     await page.click(pageObjectsConfig.searchAttributeButton);
     
-    // Verifiction of attribute table records
+    // Verification of attribute table records
     await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const cellNames = await page.$$eval(pageObjectsConfig.SystemAttributeCellName ,options => { return options.map(option => option.textContent) });
     
@@ -259,7 +258,7 @@ describe('Test Search Query Scenario On Search Page', () => {
 
     await page.click(pageObjectsConfig.searchAttributeButton);
     
-    // Verify diaglog info for no records
+    // Verify dialog info for no records
     const infoText=await page.innerText(pageObjectsConfig.dialogInfoSelector);    
     
     expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);    
@@ -296,7 +295,7 @@ describe('Test Search Query Scenario On Search Page', () => {
 
     await page.click(pageObjectsConfig.searchAttributeButton);
     
-    // Verify diaglog info for no records
+    // Verify dialog info for no records
     const infoText=await page.innerText(pageObjectsConfig.dialogInfoSelector);    
     
     expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);    

@@ -60,19 +60,18 @@ export async function SearchAttribute(page:Page, attributeName: string)
   export function  GetFileSizeInBytes(fileSize: string)
   {
         let fileSizeChar=fileSize.split(' ');       
-
-        if (fileSizeChar[1]=='KB')
-        {
-          fileSizeInBytes=parseInt(fileSizeChar[0])*1024
-        }
-        if (fileSizeChar[1]=='MB')
-        {
-          fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024
-        }
-        if (fileSizeChar[1]=='GB')
-        {
-          fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024*1024
-        } 
+        
+        switch (fileSizeChar[1]) {
+          case "KB":
+            fileSizeInBytes=parseInt(fileSizeChar[0])*1024;
+            break;
+          case "MB":
+            fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024;
+            break;
+          case "GB":
+              fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024*1024
+            break;
+          }
         
       return fileSizeInBytes; 
   }

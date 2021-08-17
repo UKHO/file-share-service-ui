@@ -195,7 +195,7 @@ stages:
              displayName: 'npm restore'
 
            - task: FileTransform@1
-             displayName: AppSettings Json tranform for E2E Tests Run
+             displayName: 'AppSettings Json tranform for E2E Tests Run'
              inputs:
               folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
               fileType: 'json'
