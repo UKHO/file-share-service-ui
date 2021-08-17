@@ -112,7 +112,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     
   })
 
-  it('Test to verify no value field displayed when select operator eq nll or ne null for BatchExpiryDate', async () => {    
+  it('Test to verify no value field displayed when select operator eq null or ne null for BatchExpiryDate', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BatchExpiryDate");
@@ -129,7 +129,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     
   })
 
-  it('Test to verify no value field displayed when select operator eq nll or ne null for BatchPublishedDate', async () => {    
+  it('Test to verify no value field displayed when select operator eq null or ne null for BatchPublishedDate', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BatchPublishedDate");
@@ -145,7 +145,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     
   })
 
-  it('Test to verify no value field displayed when select operator eq nll or ne null for batch attributes', async () => {    
+  it('Test to verify no value field displayed when select operator eq null or ne null for batch attributes', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"product");
