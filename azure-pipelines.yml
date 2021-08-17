@@ -179,8 +179,49 @@ stages:
                testRunTitle: Functional Test Results
              displayName: 'Publish Functional Test Results'
 
-      - job: AccessibilityTests
+      - job: E2ETests
         dependsOn: FunctionalTests
+        pool: $(WindowPool)
+        displayName: "End-To-End Tests"
+        steps:
+           - checkout: self
+           - script: 
+              echo "$(autoTestConfig.url)"
+
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm install -g @angular/cli
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@1
+             displayName: AppSettings Json tranform for E2E Tests Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              fileType: 'json'
+              targetFiles: 'appSetting.json'
+     
+           - script: |
+              npm run test:e2e
+             displayName: 'Run E2E Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: E2E Test Results
+             displayName: 'Publish End-To-End Test Results'
+
+      - job: AccessibilityTests
+        dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Accessibility Tests"
         steps:
@@ -295,8 +336,49 @@ stages:
                testRunTitle: Functional Test Results
              displayName: 'Publish Functional Test Results'
 
-      - job: AccessibilityTests
+      - job: E2ETests
         dependsOn: FunctionalTests
+        pool: $(WindowPool)
+        displayName: "End-To-End Tests"
+        steps:
+           - checkout: self
+           - script: 
+              echo "$(autoTestConfig.url)"
+
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm install -g @angular/cli
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@1
+             displayName: AppSettings Json tranform for E2E Tests Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              fileType: 'json'
+              targetFiles: 'appSetting.json'
+     
+           - script: |
+              npm run test:e2e
+             displayName: 'Run E2E Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: E2E Test Results
+             displayName: 'Publish End-To-End Test Results'
+
+      - job: AccessibilityTests
+        dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Acccessibility Tests"
         workspace:
