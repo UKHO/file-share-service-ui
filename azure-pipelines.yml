@@ -204,7 +204,11 @@ stages:
               folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
               fileType: 'json'
               targetFiles: 'appSetting.json'
-     
+
+           - script: |
+              npm install -D jest jest-playwright-preset playwright
+             displayName: 'Install Jest Playwright Dependencies'
+  
            - script: |
               npm run test:e2e
              displayName: 'Run E2E Tests'
