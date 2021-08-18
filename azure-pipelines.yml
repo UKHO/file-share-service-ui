@@ -10,7 +10,7 @@ trigger:
   - main
   - release/*
 
-pool: $(WindowPool)
+pool: $(DeploymentPool)
 
 variables:
   - name: BuildCounter
@@ -89,6 +89,7 @@ stages:
             inputs:
               testRunner: 'JUnit'
               testResultsFiles: 'junit.xml'
+              testRunTitle: Unit Test Results
             displayName: 'Publish Unit Test Results'
 
           - task: PublishCodeCoverageResults@1
@@ -96,11 +97,6 @@ stages:
               codeCoverageTool: 'Cobertura'
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
               reportDirectory: 'coverage/'
-
-          - script: |
-             npm run test:a11y
-            continueOnError: false
-            displayName: 'Accessibility Testing'
 
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"
@@ -122,7 +118,6 @@ stages:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
         environment: "Ess-Dev"
-        pool: $(DeploymentPool)
         container: ${{variables.Container}}
         workspace:
           clean: all
@@ -137,10 +132,10 @@ stages:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-Dev-P4052"
 
-      - job: FunctionalTest
+      - job: FunctionalTests
         dependsOn: DevDeploy
         pool: $(WindowPool)
-        displayName: "Functional Test"
+        displayName: "Functional Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
         workspace:
@@ -168,11 +163,67 @@ stages:
            - script: |
               npm install -D jest jest-playwright-preset playwright
              displayName: 'Install Jest Playwright Dependencies'
-             
+
            - script: |
               npm run test:auto
-             displayName: 'Run functional Tests'
-                       
+             displayName: 'Run Functional Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Functional Test Results
+             displayName: 'Publish Functional Test Results'
+
+      - job: AccessibilityTests
+        dependsOn: FunctionalTests
+        pool: $(WindowPool)
+        displayName: "Accessibility Tests"
+        steps:
+           - checkout: self
+           - script: 
+              echo "$(autoTestConfig.url)"
+
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm install -g @angular/cli
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@1
+             displayName: AppSettings Json tranform for Accessibility Test Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              fileType: 'json'
+              targetFiles: 'appSetting.json'
+
+           - script: |
+              npm install -D jest jest-playwright-preset playwright
+             displayName: 'Install Jest Playwright Dependencies'
+      
+           - script: |
+              npm run test:a11y
+             displayName: 'Run Accessibility Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Accessibility Test Results
+             displayName: 'Publish Accessibility Test Results'
+
   - stage: QAdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
@@ -182,7 +233,6 @@ stages:
       - deployment: QADeploy
         displayName: "QA - deploy terraform and website"
         environment: "FSS-QA"
-        pool: $(DeploymentPool)
         container: ${{variables.Container}}
         workspace:
           clean: all
@@ -197,10 +247,10 @@ stages:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-QA-P4052"
     
-      - job: FunctionalTest
+      - job: FunctionalTests
         dependsOn: QAdeploy
         pool: $(WindowPool)
-        displayName: "Functional Test"
+        displayName: "Functional Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
         workspace:
@@ -209,6 +259,7 @@ stages:
            - checkout: self
            - script: 
               echo "$(autoTestConfig.url)"
+
            - task: NodeTool@0
              inputs:
               versionSpec: '14.x'
@@ -228,10 +279,68 @@ stages:
            - script: |
               npm install -D jest jest-playwright-preset playwright
              displayName: 'Install Jest Playwright Dependencies'
-             
+
            - script: |
               npm run test:auto
-             displayName: 'Run functional Tests'
+             displayName: 'Run Functional Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Functional Test Results
+             displayName: 'Publish Functional Test Results'
+
+      - job: AccessibilityTests
+        dependsOn: FunctionalTests
+        pool: $(WindowPool)
+        displayName: "Acccessibility Tests"
+        workspace:
+         clean: all
+        steps:
+           - checkout: self
+           - script: 
+              echo "$(autoTestConfig.url)"
+
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm install -g @angular/cli
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@1
+             displayName: AppSettings Json tranform for Accessibility Test Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              fileType: 'json'
+              targetFiles: 'appSetting.json'
+
+           - script: |
+              npm install -D jest jest-playwright-preset playwright
+             displayName: 'Install Jest Playwright Dependencies'
+      
+           - script: |
+              npm run test:a11y
+             displayName: 'Run Accessibility Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Accessibility Test Results
+             displayName: 'Publish Accessibility Test Results'
 
   - stage: LiveDeploy
     displayName: "Livedeploy (inc terraform, website deploy)"
@@ -240,7 +349,6 @@ stages:
       - deployment: LiveDeploy
         displayName: "Live - deploy terraform and website"
         environment: "FSS-Live"
-        pool: $(DeploymentPool)
         container: ${{variables.Container}}
         workspace:
           clean: all
