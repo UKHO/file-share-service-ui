@@ -15,7 +15,9 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     AppRoutingModule, HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {provide: 'googleTagManagerId',  useValue: YOUR_GTM_ID}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
