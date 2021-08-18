@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FssSearchValidatorService } from './fss-search-validator.service';
+import { FssSearchValidatorService } from '../../src/app/core/services/fss-search-validator.service';
 
 describe('FssSearchValidatorService', () => {
   let service: FssSearchValidatorService;
