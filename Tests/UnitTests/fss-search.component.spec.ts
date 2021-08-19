@@ -47,7 +47,12 @@ describe('FssSearchComponent', () => {
             provide: MSAL_INSTANCE,
             useFactory: MockMSALInstanceFactory       
           },
-           MsalService],
+          {
+            provide: "googleTagManagerId",
+            useValue: "YOUR_GTM_ID"       
+          },
+           MsalService,
+           AnalyticsService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -63,6 +68,7 @@ describe('FssSearchComponent', () => {
     fssSearchHelperService = TestBed.inject(FssSearchHelperService);
     fssSearchValidatorService = TestBed.inject(FssSearchValidatorService);
     searchGroupingService = TestBed.inject(FssSearchGroupingService);
+    analyticsService = TestBed.inject(AnalyticsService);
   });
 
   it('should create', () => {
@@ -373,6 +379,7 @@ export function createSearchRow(rowId: number, fields: Field[], operators: Opera
   row.isValueHidden = isValueHidden;
   return row;
 }
+
 export function MockMSALInstanceFactory () {    
   return new PublicClientApplication ( {
      auth:{

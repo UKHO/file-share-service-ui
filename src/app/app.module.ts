@@ -16,7 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule, HttpClientModule
   ],
   providers: [
-    {provide: 'googleTagManagerId',  useValue: YOUR_GTM_ID}
+    {provide: 'googleTagManagerId',  useValue: "YOUR_GTM_ID"}
   ],
   bootstrap: [AppComponent]
 })
