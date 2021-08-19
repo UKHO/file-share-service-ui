@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
-import { Field, FssSearchRow, Operator } from '../../src/app/core/models/fss-search-types';
 
+import { Field, FssSearchRow, Operator } from '../../src/app/core/models/fss-search-types';
 import { FssSearchValidatorService } from '../../src/app/core/services/fss-search-validator.service';
 
 describe('FssSearchValidatorService', () => {

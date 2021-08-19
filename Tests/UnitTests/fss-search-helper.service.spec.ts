@@ -19,8 +19,26 @@ describe('FssSearchHelperService', () => {
     expect(service).toBeTruthy();
   });
 
+  test('should return field value "FileName" when field text is changed to "@FileName"', () => {
+    expect(service.getFieldValue("@FileName", getFields())).toEqual('FileName');
+  });
+
+  test('should return false as endswith operator does not exists for BatchExpiryDate', () => {
+    let searchRow: FssSearchRow//[];// = [];
+    searchRow = createSearchRow(1, getFields(), getOperators(), 'AND', 'BatchExpiryDate', 'endswith', 'adds', 'date', false);
+    console.log('searchRow' + searchRow);
+    expect(service.isOperatorExist(searchRow)).toEqual(false);
+  });
+
+  test('should return true as endswith operator exists for BatchExpiryDate', () => {
+    let searchRow: FssSearchRow//[];// = [];
+    searchRow = createSearchRow(1, getFields(), getOperators(), 'AND', 'BatchExpiryDate', 'eq', 'adds', 'date', false);
+    console.log('searchRow' + searchRow);
+    expect(service.isOperatorExist(searchRow)).toEqual(true);
+  });
+
   test('should return datatype as "attribute" when UserAttribute is passed', () => {
-    expect(service.getFieldDataType('$batch(product)',searchService.getFields(MockUserAttributeFields()))).toEqual('attribute');
+    expect(service.getFieldDataType('$batch(product)', searchService.getFields(MockUserAttributeFields()))).toEqual('attribute');
   });
 
   test('should return datatype as "string" when SystemAttribute FileName is passed', () => {
@@ -36,7 +54,7 @@ describe('FssSearchHelperService', () => {
     expect(result).toEqual(searchRows[1]);
   });
 
-  test('should return filtered operators based on number datatype', () => {    
+  test('should return filtered operators based on number datatype', () => {
     const expectedOperators: Operator[] = [
       { value: 'eq', text: '=', type: 'operator', supportedDataTypes: ['string', 'number', 'date', 'attribute'] },
       { value: 'ne', text: '<>', type: 'operator', supportedDataTypes: ['string', 'number', 'date', 'attribute'] },
@@ -49,7 +67,6 @@ describe('FssSearchHelperService', () => {
   });
 
   test('should return value type text based on datatype string', () => {
-   
     var expectedValueType = "text";
     var result = service.getValueType('string');
     expect(result).toEqual(expectedValueType);
@@ -68,6 +85,14 @@ describe('FssSearchHelperService', () => {
     service.toggleValueInput(searchRows[0], 'nullOperator');
     var result = searchRows[0].isValueHidden;
     expect(result).toBe(true);
+  });
+
+  test('should show Value input when other than nullOperator is selected in the row', () => {
+    let searchRows: FssSearchRow[] = [];
+    searchRows.push(createSearchRow(1, searchService.getFields(MockUserAttributeFields()), searchService.getOperators(), 'AND', 'FileSize', 'nullOperator', 'test', 'tel', true));
+    service.toggleValueInput(searchRows[0], 'eq');
+    var result = searchRows[0].isValueHidden;
+    expect(result).toBe(false);
   });
 });
 export function getFields() {
