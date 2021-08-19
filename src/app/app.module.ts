@@ -5,6 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from   './shared/app.shared.module';
 import { HttpClientModule } from '@angular/common/http';
+import { AppConfigService } from './core/services/app-config.service';
+
+export function GTMFactory(config: AppConfigService): any {
+  const googleTagManagerId = AppConfigService.settings.GoogleTagManagerId;
+  return googleTagManagerId;
+}
 
 @NgModule({
   declarations: [
@@ -15,8 +21,10 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     AppRoutingModule, HttpClientModule
   ],
-  providers: [
-    {provide: 'googleTagManagerId',  useValue: "YOUR_GTM_ID"}
+  providers: [AppConfigService,
+    { provide: 'googleTagManagerId',  useFactory: GTMFactory,
+    deps: [AppConfigService]
+    },
   ],
   bootstrap: [AppComponent]
 })

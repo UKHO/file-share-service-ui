@@ -21,8 +21,8 @@ interface GTMEvent {
 
 @Injectable()
 export class AnalyticsService {
-  environment = AppConfigService.settings['Environment'].apiUrl;
-  environmentPrefix ='fss-'+this.environment;
+  environment = AppConfigService.settings['Environment'];
+  environmentPrefix ='fss-'+ this.environment;
   constructor(private gtmService: GoogleTagManagerService) {
     this.gtmService.addGtmToDom();
   }
