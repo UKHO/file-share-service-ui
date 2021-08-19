@@ -16,7 +16,7 @@ describe('FssSearchValidatorService', () => {
     expect(service).toBeTruthy();
   });
 
-  test('should highlight value field when FileSize value is not entered', () => {
+  test('should highlight the value field when FileSize value is not entered', () => {
     let searchRows: FssSearchRow[] = [];
     let frmControl = new FormControl();
     let formControlTime = new FormControl();
@@ -30,7 +30,7 @@ describe('FssSearchValidatorService', () => {
     expect(service.getFieldDataType('ExpiryDate', getFields())).toEqual('date');
   });
 
-  test('should highlight value field when BatchExpiryDate value is not entered when non null operator is selected', () => {
+  test('should highlight the value field when BatchExpiryDate value is not entered when non null operator is selected', () => {
     let searchRows: FssSearchRow[] = [];
     let frmControl = new FormControl();
     let formControlTime = new FormControl();
@@ -38,6 +38,13 @@ describe('FssSearchValidatorService', () => {
     console.log(searchRows);
     service.validateValueFormControl(searchRows, getFields(), getOperators());
     expect(searchRows[0].valueFormControl.touched).toEqual(true);
+  });
+
+  test('should return operator type nullOperator based on operator value ne null', () => {
+    var expectedOperatorType = "nullOperator";
+    var changedOperator = { operatorValue: "ne null", rowId: 1 }
+    var result = service.getOperatorType(changedOperator.operatorValue, getOperators());
+    expect(result).toEqual(expectedOperatorType);
   });
 });
 
@@ -71,7 +78,8 @@ export function getOperators() {
   let operators: Operator[] = [
     { value: 'eq', text: '=', type: 'operator', supportedDataTypes: ['string', 'number', 'date', 'attribute'] },
     { value: 'gt', text: '>', type: 'operator', supportedDataTypes: ['number', 'date'] },
-    { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] }
+    { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] },
+    { value: 'ne null', text: '<> null', type: 'nullOperator', supportedDataTypes: ['date', 'attribute'] },
   ];
   return operators;
 }
