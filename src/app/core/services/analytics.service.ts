@@ -1,5 +1,7 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { GoogleTagManagerService} from 'angular-google-tag-manager';
+import { AppConfigService } from '../../core/services/app-config.service';
 // import { EnhancedForm } from 'src/app/components/enhanced-order-configuration/enhanced-order-configuration.component';
 // import { SelectedItem } from '../../components/selected-items/selectedItem';
 
@@ -7,7 +9,7 @@ enum Categories {
   Login = 'User Login',
   Search = 'Search',
   ErrorHandling = 'ErrorHandling',
-  Validation = 'Validation',
+  Validation = 'Validation'
 }
 
 interface GTMEvent {
@@ -19,12 +21,22 @@ interface GTMEvent {
 
 @Injectable()
 export class AnalyticsService {
+  environment = AppConfigService.settings['Environment'].apiUrl;
+  environmentPrefix ='fss-'+this.environment;
   constructor(private gtmService: GoogleTagManagerService) {
     this.gtmService.addGtmToDom();
   }
+  async login(): Promise<void> {
+    const tag: GTMEvent = {
+      event: this.environmentPrefix+'.login',
+      event_action: 'User Login',
+      event_category: Categories.Login
+    };
+    this.gtmService.pushTag(tag);
+  }
   async searchInIt(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.searchInIt',
+      event: this.environmentPrefix+'.searchInIt',
       event_action: 'Search InIt',
       event_category: Categories.Search
     };
@@ -33,7 +45,7 @@ export class AnalyticsService {
 
   async getSearchResult(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.getSearchResult',
+      event: this.environmentPrefix+'.getSearchResult',
       event_action: 'Get Search Result',
       event_category: Categories.Search
     };
@@ -41,7 +53,7 @@ export class AnalyticsService {
   }
   async SearchRowAdded(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.SearchRowAdded',
+      event: this.environmentPrefix+'.SearchRowAdded',
       event_action: 'Search Row Added',
       event_category: Categories.Search
     };
@@ -49,7 +61,7 @@ export class AnalyticsService {
   }
   async SearchRowDeleted(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.SearchRowDeleted',
+      event: this.environmentPrefix+'.SearchRowDeleted',
       event_action: 'Search Row Deleted',
       event_category: Categories.Search
     };
@@ -57,7 +69,7 @@ export class AnalyticsService {
   }
   async GroupAdded(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.GroupAdded',
+      event: this.environmentPrefix+'.GroupAdded',
       event_action: 'Group Added',
       event_category: Categories.Search
     };
@@ -65,7 +77,7 @@ export class AnalyticsService {
   }
   async GroupDeleted(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.GroupDeleted',
+      event: this.environmentPrefix+'.GroupDeleted',
       event_action: 'Group Deleted',
       event_category: Categories.Search
     };
@@ -73,7 +85,7 @@ export class AnalyticsService {
   }
   async pageChange(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.pageChange',
+      event: this.environmentPrefix+'.pageChange',
       event_action: 'Page Change',
       event_category: Categories.Search
     };
@@ -81,15 +93,15 @@ export class AnalyticsService {
   }
   async errorHandling(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.pageChange',
-      event_action: 'Page Change',
+      event: this.environmentPrefix+'.errorHandling',
+      event_action: 'Error Handling',
       event_category: Categories.ErrorHandling
     };
     this.gtmService.pushTag(tag);
   }
   async validation(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.pageChange',
+      event: this.environmentPrefix+'.pageChange',
       event_action: 'Page Change',
       event_category: Categories.Search
     };
@@ -97,8 +109,16 @@ export class AnalyticsService {
   }
   async tokenExpired(): Promise<void> {
     const tag: GTMEvent = {
-      event: 'fss.tokenExpired',
+      event: this.environmentPrefix+'.tokenExpired',
       event_action: 'Token Expired',
+      event_category: Categories.Login
+    };
+    this.gtmService.pushTag(tag);
+  }
+  async logOut(): Promise<void> {
+    const tag: GTMEvent = {
+      event: this.environmentPrefix+'.logout',
+      event_action: 'Logout',
       event_category: Categories.Login
     };
     this.gtmService.pushTag(tag);

@@ -282,6 +282,7 @@ export class FssSearchComponent implements OnInit {
         this.displayLoader = false;
       })
     });
+    this.analyticsService.login();
     this.hideMessage();
   }
 

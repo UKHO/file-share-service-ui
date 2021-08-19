@@ -1,4 +1,5 @@
 {
+  "Environment": "dev",
   "b2cConfig": {
     "tenantName": "",
     "clientId": "",
