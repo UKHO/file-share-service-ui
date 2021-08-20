@@ -228,7 +228,7 @@ stages:
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-QA-Variables"
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+    #condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
         displayName: "QA - deploy terraform and website"
