@@ -26,7 +26,7 @@
        "loginSignInLinkSelector" : "#signInButton",
        "loginAccountSelector" : "#accountSection",
        "loginAccountLinkSelector" : "#accountSection #profile > a",
-       "searchPageContainerHeaderSelector" : "#mainContainer >h1",
+       "searchPageContainerHeaderSelector" : "h1",
        "searchPageContainerHeaderText" : "Search files",
        "searchButtonSelector": "#Search",
        "homePageSignInHeaderInfoSelector" : ".card h1",
@@ -39,7 +39,8 @@
     },
     "pageTimeOut":
     {
-      "timeOutInMilliSeconds" : 60000
+      "timeOutInMilliSeconds" : 60000,
+      "delay" : 5000
     }
 	
 }

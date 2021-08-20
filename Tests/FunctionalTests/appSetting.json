@@ -1,9 +1,9 @@
 {
     "autoTestConfig":
     {
-       "url":"",
-       "user":"",
-       "password":"",
-       "userFullName" : ""
+        "url":"",
+        "user":"",
+        "password":"",
+        "userFullName" : ""
     }
 }
