@@ -35,7 +35,10 @@
        "operatorDropDownSelector":"#ukho-form-field-2",
        "operatorDropDownItemsSelector":"#ukho-form-field-2 >option",
        "inputSearchValueSelector":"#ukho-form-field-4",
-       "searchQueryTableRowSelector":".querytable tbody tr"
+       "searchQueryTableRowSelector":".querytable tbody tr",
+       "ukhoFooterUrl" : "https://www.gov.uk/government/organisations/uk-hydrographic-office",
+       "ukhoFooterTitle" : "Cookies on GOV.UK",
+       "ukhoFooterPageSelector" : "div[role='region'] h2"
     },
     "pageTimeOut":
     {

@@ -63,8 +63,8 @@ describe('Test Home Page Scenario', () => {
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
         await page.click(pageObjectsConfig.ukhydrographicLinkSelector);        
         page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-        expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
-        expect(page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);
+        expect(await page.innerText(pageObjectsConfig.ukhoFooterPageSelector)).toEqual(pageObjectsConfig.ukhoFooterTitle);
+        expect(page.url()).toEqual(pageObjectsConfig.ukhoFooterUrl);
     })
 
     test('Does it contains correct Copyright text', async () => {
