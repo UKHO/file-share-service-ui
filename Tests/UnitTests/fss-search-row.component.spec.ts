@@ -103,19 +103,6 @@ describe('FssSearchRowComponent', () => {
       expect(component.onGroupDeleted.emit).toHaveBeenCalledWith(deleteGrouping);
     });
 
-    test.skip('should emit when operator is changed in search row', () => {
-      
-      const op = fixture.debugElement.nativeElement.querySelector('#operatorSelect');
-
-      let operator: any= {value: 'eq',text: '=', type:'operator', supportedDataTypes:['string', 'number', 'date', 'attribute']}
-      let rowId: number = 2;
-      var expectedEmitValue = { operatorValue: operator, rowId: rowId }
-
-      jest.spyOn(component.onOperatorChanged, 'emit');
-      component.onOperatorChange(operator,rowId);
-      expect(component.onOperatorChanged.emit).toHaveBeenCalledWith(expectedEmitValue);
-    });
-
     // Test to check emit value when onFieldChanged
     test('should emit when filed change in search row', () => {
       let changedField: any= {value: 'FileSize',text: '@FileSize (in bytes)', type: 'SystemAttribute', dataType: 'number'}
