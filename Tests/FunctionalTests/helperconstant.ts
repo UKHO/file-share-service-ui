@@ -28,3 +28,11 @@ export const stringOperatorList= [
   '<',
   '<='
 ]
+
+export const systemAttributeMimeType ="image/jpeg";
+export const batchAttributeProductContains ="Service";
+export const batchAttributeSpecialChar="$£";
+export const batchAttributeProduct="FileShareService";
+export const batchAttributeCellName="GB10001";
+export const batchAttributeFileSize=10000000;
+export const searchQuerySqlInjection="adds''; drop table BatchAttribute";
