@@ -20,7 +20,7 @@ variables:
   - name: DeploymentPool
     value: "UKHO Ubuntu 1804"
   - name: WindowPool
-    value: "NautilusBuild"
+    value: "NautilusRelease"
 
 stages:
   - stage: Perfrom_Build_Test_Publish
