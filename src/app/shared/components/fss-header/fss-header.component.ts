@@ -28,7 +28,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.handleSSOlogout();
+    // this.handleSSOlogout();
     this.handleSignIn();
     this.setSkipToContent();
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
@@ -126,25 +126,25 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     });
   }
 
-  handleSSOlogout() {
-    this.route.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      const url = `${event.url}`
-      if (url === '/?logout=true') {
-        console.log(url);
-        this.logout();
-        this.route.navigateByUrl('/');
-        this.authOptions = {
-          signInButtonText: 'Sign in',
-          signInHandler: (() => { this.logInPopup(); }),
-          signOutHandler: (() => { }),
-          isSignedIn: (() => { return false }),
-          userProfileHandler: (() => { })
-        }
-      }
-    });
-  }
+  // handleSSOlogout() {
+  //   this.route.events.pipe(
+  //     filter(event => event instanceof NavigationEnd)
+  //   ).subscribe((event: any) => {
+  //     const url = `${event.url}`
+  //     if (url === '/?logout=true') {
+  //       console.log(url);
+  //       this.logout();
+  //       this.route.navigateByUrl('/');
+  //       this.authOptions = {
+  //         signInButtonText: 'Sign in',
+  //         signInHandler: (() => { this.logInPopup(); }),
+  //         signOutHandler: (() => { }),
+  //         isSignedIn: (() => { return false }),
+  //         userProfileHandler: (() => { })
+  //       }
+  //     }
+  //   });
+  // }
 
   logout() {
     this.fileShareApiService.clearCookies().subscribe(res => {
@@ -163,7 +163,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     {
       signInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => {this.msalService.logout(); }),
+      signOutHandler: (() => { this.msalService.logout();
+      this.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
@@ -184,7 +185,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     const date = new Date()
     const account = this.msalService.instance.getAllAccounts()[0];
     if (account != null) {
-      if (localStorage['claims'] !== null) {
+      if (localStorage['claims'] !== undefined) {
         this.getClaims(account.idTokenClaims);
         const claims = JSON.parse(localStorage['claims']);
         if (this.userName == claims['given_name']) {
