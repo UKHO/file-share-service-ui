@@ -1,5 +1,5 @@
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 
 import { formatBytes, FssSearchResultsComponent } from '../../src/app/features/fss-search/fss-search-results/fss-search-results.component';
@@ -8,6 +8,7 @@ import { AppConfigService } from '../../src/app/core/services/app-config.service
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { BatchFileDetailsColumnData } from 'src/app/core/models/fss-search-results-types';
+import { By } from '@angular/platform-browser';
 
 describe('FssSearchResultsComponent', () => {
   let component: FssSearchResultsComponent;  
@@ -123,6 +124,26 @@ describe('FssSearchResultsComponent', () => {
     expect(batchfileDetails.rowData.length).toEqual(1);
     expect(batchfileDetails).toEqual(expectedBatchFileDetails);    
   });
+
+  //Test for file download link - setTimeout()
+  test('should return file download link when search result data is provided', fakeAsync( () => {
+    const fixture = TestBed.createComponent(FssSearchResultsComponent);
+    component = fixture.componentInstance;
+    component.searchResult = Array.of(SearchResultMockData['entries']); 
+    component.ngOnChanges();
+    tick(100);
+    fixture.detectChanges();
+
+    fixture.whenStable().then(() => {
+      var ExpectedDownloadElement = component.searchResultVM[0].batchFileDetails.rowData[0].Download;
+      const element = fixture.debugElement.query(By.css('ukho-table')).nativeElement;
+      let link = element['dataSource'][0]['Download']; 
+      
+      expect(element).not.toBeNull();    
+      expect(link).toContain('rel');    
+      expect(link).toEqual(ExpectedDownloadElement);      
+    })
+  }));
 
   //Test for file size conversion 
   test('should convert file size from bytes to respective size units', () => {
