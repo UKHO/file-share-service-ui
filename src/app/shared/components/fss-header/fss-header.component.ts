@@ -28,7 +28,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.handleSSOlogout();
     this.handleSignIn();
     this.setSkipToContent();
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
@@ -126,34 +125,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     });
   }
 
-  // handleSSOlogout() {
-  //   this.route.events.pipe(
-  //     filter(event => event instanceof NavigationEnd)
-  //   ).subscribe((event: any) => {
-  //     const url = `${event.url}`
-  //     if (url === '/?logout=true') {
-  //       console.log(url);
-  //       this.logout();
-  //       this.route.navigateByUrl('/');
-  //       this.authOptions = {
-  //         signInButtonText: 'Sign in',
-  //         signInHandler: (() => { this.logInPopup(); }),
-  //         signOutHandler: (() => { }),
-  //         isSignedIn: (() => { return false }),
-  //         userProfileHandler: (() => { })
-  //       }
-  //     }
-  //   });
-  // }
-
-  logout() {
-    this.fileShareApiService.clearCookies().subscribe(res => {
-      console.log(res);
-    });
-    this.isActive = false;
-    localStorage.clear();
-  }
-
   /** Extract claims of user once user is Signed in */
   getClaims(claims: any) {
     this.firstName = claims ? claims['given_name'] : null;
@@ -163,8 +134,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     {
       signInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { this.msalService.logout();
-      this.logout(); }),
+      signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
