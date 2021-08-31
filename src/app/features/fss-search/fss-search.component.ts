@@ -401,4 +401,8 @@ export class FssSearchComponent implements OnInit {
     if (displayError == true)
       this.handleResError();
   }
+
+  getPopularSearch(popularSearch:any){
+    console.log(popularSearch)
+  }
 }

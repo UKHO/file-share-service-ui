@@ -1,0 +1,82 @@
+{
+    "currentWeekBatches": {
+        "displayName": "Current week files",
+        "isActive": true,
+        "groupings": [
+            {
+                "startIndex": 0,
+                "endIndex": 1
+            },
+            {
+                "startIndex": 0,
+                "endIndex": 2
+            }
+        ],
+        "rows": [
+            {
+                "field": "@BusinessUnit",
+                "operator": "eq",
+                "isDynamicValue": false,
+                "value": "adds"
+            },
+            {
+                "andOr": "and",
+                "field": "@batchpublisheddate",
+                "operator": "eq",
+                "isDynamicValue": true,
+                "value": "cwsd"
+            },
+            {
+                "group": [
+                    true,
+                    true
+                ],
+                "andOr": "and",
+                "field": "@batchpublisheddate",
+                "operator": "eq",
+                "isDynamicValue": true,
+                "value": "cwed"
+            }
+        ]
+    },
+    "previousWeekBatches": {
+        "displayName": "Previous week files",
+        "isActive": true,
+        "groupings": [
+            {
+                "startIndex": 0,
+                "endIndex": 1
+            },
+            {
+                "startIndex": 0,
+                "endIndex": 2
+            }
+        ],
+        "rows": [
+            {
+                "field": "@BusinessUnit",
+                "operator": "eq",
+                "isDynamicValue": false,
+                "value": "adds"
+            },
+            {
+                "andOr": "and",
+                "field": "@batchpublisheddate",
+                "operator": "eq",
+                "isDynamicValue": true,
+                "value": "pwsd"
+            },
+            {
+                "group": [
+                    true,
+                    true
+                ],
+                "andOr": "and",
+                "field": "@batchpublisheddate",
+                "operator": "eq",
+                "isDynamicValue": true,
+                "value": "pwed"
+            }
+        ]
+    }
+}

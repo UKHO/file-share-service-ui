@@ -29,6 +29,9 @@
     </div>
   </div>
 
+  <ukho-hr aria-hidden="true"></ukho-hr>
+  <app-fss-popular-search-batches (isPopularSearch)="getPopularSearch($event)"></app-fss-popular-search-batches>
+
   <div class="searchResult">
     <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult" (displayError)="showTokenExpiryError($event)"></app-fss-search-results>
   </div>
