@@ -7,7 +7,7 @@ import { PopularSearchConfigService } from 'src/app/core/services/popular-search
   styleUrls: ['./fss-popular-search-batches.component.scss']
 })
 export class FssPopularSearchBatchesComponent implements OnInit {
-
+  
   @Output() isPopularSearch = new EventEmitter<boolean>();
   popularSearches:any = [];
 
@@ -25,7 +25,7 @@ export class FssPopularSearchBatchesComponent implements OnInit {
 
   getPopularSearch(popularSearch:any){
     console.log(popularSearch);
-    this.isPopularSearch.emit(popularSearch)
+    this.isPopularSearch.emit(popularSearch);
   }
 
 }

@@ -9,6 +9,7 @@ import { MsalService } from '@azure/msal-angular';
 import { FssSearchHelperService } from '../../core/services/fss-search-helper.service';
 import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -54,6 +55,8 @@ export class FssSearchComponent implements OnInit {
   rowGroupings: RowGrouping[] = [];
   groupingLevels: GroupingLevel[] = [];
   uiGroupings: UIGrouping[] = [];
+  displayQueryEditor: boolean = true;
+  displaySearchBatchWeekFiles: boolean = false;
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   constructor(private fssSearchTypeService: IFssSearchService,
     private fssSearchFilterService: FssSearchFilterService,
@@ -62,7 +65,8 @@ export class FssSearchComponent implements OnInit {
     private msalService: MsalService,
     private fssSearchHelperService: FssSearchHelperService,
     private fssSearchValidatorService: FssSearchValidatorService,
-    private fssSearchGroupingService: FssSearchGroupingService) { }
+    private fssSearchGroupingService: FssSearchGroupingService,
+    private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -403,6 +407,12 @@ export class FssSearchComponent implements OnInit {
   }
 
   getPopularSearch(popularSearch:any){
-    console.log(popularSearch)
+    console.log(popularSearch);
+    this.displayQueryEditor = false;
+    // this.displayQueryEditor = this.displayQueryEditor ? false : true;
+  }
+
+  goToSearchEditor(){
+    this.displayQueryEditor = true;
   }
 }

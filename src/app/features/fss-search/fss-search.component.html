@@ -15,19 +15,23 @@
   <h1>Search files</h1>
   <p class="light">Complete the parameters to create a search query</p>
   <p class="light">Please search using your local time. All dates and times are displayed in <b>{{userLocalTimeZone}}</b>.</p>
-  <app-fss-search-row [fssSearchRows]="fssSearchRows" [uiGroupingDetails]="uiGroupingDetails"
+  <app-fss-search-row *ngIf="displayQueryEditor" [fssSearchRows]="fssSearchRows" [uiGroupingDetails]="uiGroupingDetails"
   (onFieldChanged)="onFieldChanged($event)"
   (onOperatorChanged)="onOperatorChanged($event)"
   (onSearchRowDeleted)="onSearchRowDeleted($event)"
   (onGroupClicked)="onGroupClicked()"
   (onGroupDeleted)="onGroupDeleted($event)">
   </app-fss-search-row>
-  <div class="searchSection">
+  <div *ngIf="displayQueryEditor" class="searchSection">
     <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>
     <div class="searchBtn">
       <ukho-button (click)="getSearchResult()">Search</ukho-button>
     </div>
   </div>
+  
+  <div *ngIf="!displayQueryEditor">
+    <button (click)="goToSearchEditor()"><i class="fas fa-arrow-circle-left"></i>&nbsp; Back </button>
+ </div>
 
   <ukho-hr aria-hidden="true"></ukho-hr>
   <app-fss-popular-search-batches (isPopularSearch)="getPopularSearch($event)"></app-fss-popular-search-batches>
