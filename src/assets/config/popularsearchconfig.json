@@ -14,28 +14,17 @@
         ],
         "rows": [
             {
-                "field": "@BusinessUnit",
+                "field": "BusinessUnit",
                 "operator": "eq",
                 "isDynamicValue": false,
                 "value": "adds"
             },
             {
                 "andOr": "and",
-                "field": "@batchpublisheddate",
-                "operator": "eq",
+                "field": "BatchPublishedDate",
+                "operator": "ge",
                 "isDynamicValue": true,
-                "value": "cwsd"
-            },
-            {
-                "group": [
-                    true,
-                    true
-                ],
-                "andOr": "and",
-                "field": "@batchpublisheddate",
-                "operator": "eq",
-                "isDynamicValue": true,
-                "value": "cwed"
+                "value": "new Date(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0) - 7*24*60*60*1000)"
             }
         ]
     },
@@ -54,28 +43,24 @@
         ],
         "rows": [
             {
-                "field": "@BusinessUnit",
+                "field": "BusinessUnit",
                 "operator": "eq",
                 "isDynamicValue": false,
                 "value": "adds"
             },
             {
                 "andOr": "and",
-                "field": "@batchpublisheddate",
-                "operator": "eq",
+                "field": "BatchPublishedDate",
+                "operator": "ge",
                 "isDynamicValue": true,
-                "value": "pwsd"
+                "value": "new Date(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0) - 14*24*60*60*1000)"
             },
             {
-                "group": [
-                    true,
-                    true
-                ],
                 "andOr": "and",
-                "field": "@batchpublisheddate",
-                "operator": "eq",
+                "field": "BatchPublishedDate",
+                "operator": "le",
                 "isDynamicValue": true,
-                "value": "pwed"
+                "value": "new Date(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 23, 59) - 7*24*60*60*1000)"
             }
         ]
     }

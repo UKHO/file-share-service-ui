@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
@@ -9,7 +9,7 @@ import { MsalService } from '@azure/msal-angular';
 import { FssSearchHelperService } from '../../core/services/fss-search-helper.service';
 import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
-import { DatePipe } from '@angular/common';
+import { FssPopularSearchService } from 'src/app/core/services/fss-popular-search.service';
 
 
 @Component({
@@ -49,7 +49,7 @@ export class FssSearchComponent implements OnInit {
   currentPage: number = 0;
   paginatorLabel: string;
   loginErrorDisplay: boolean = false;
-  uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();  
+  uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();
   currentGroupStartIndex: number = 0;
   currentGroupEndIndex: number = 0;
   rowGroupings: RowGrouping[] = [];
@@ -66,7 +66,7 @@ export class FssSearchComponent implements OnInit {
     private fssSearchHelperService: FssSearchHelperService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
-    private datePipe: DatePipe) { }
+    private fssPopularSearchService: FssPopularSearchService) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -125,7 +125,7 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.selectedJoinOperator = this.joinOperators[0].value;
     fssSearchRow.selectedField = this.fields[0].value;
     fssSearchRow.selectedOperator = this.operators[0].value;
-    fssSearchRow.value = '';
+    fssSearchRow.value = "";
     fssSearchRow.valueType = 'text';
     fssSearchRow.isValueHidden = false;
     fssSearchRow.rowId = this.rowId;
@@ -142,18 +142,18 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSearchRowDeleted(rowId: number) {
-    var deleteRowIndex = this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId);    
+    var deleteRowIndex = this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId);
     this.fssSearchRows.splice(deleteRowIndex, 1);
     //Reset rowGroupings on search row deletion
-    this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);    
+    this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);
     this.setupGrouping();
-  }  
+  }
 
   getSearchResult() {
     if (this.fssSearchValidatorService.validateSearchInput(this.fssSearchRows, this.fields, this.operators)) {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
-        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows,this.rowGroupings);
+        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows, this.rowGroupings);
         console.log(filter);
         if (filter != null) {
           this.searchResult = [];
@@ -347,17 +347,17 @@ export class FssSearchComponent implements OnInit {
         "Groups can not intersect each other.",
         "A group can only contain complete groups, they cannot contain a part of another group."
       );
-    }   
-    else {       
-      this.addGrouping();       
+    }
+    else {
+      this.addGrouping();
       this.setupGrouping();
     }
   }
 
   isGroupAlreadyExist() {
-    var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));   
+    var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));
     return grouping !== undefined ? true : false;
-  }  
+  }
 
   isGroupIntersectWithOther() {
     return (this.rowGroupings.find(g => (this.currentGroupStartIndex < g.startIndex &&
@@ -368,22 +368,22 @@ export class FssSearchComponent implements OnInit {
         this.currentGroupEndIndex > g.endIndex)) !== undefined)
   }
 
-  addGrouping(){
-    this.rowGroupings.push({        
-      startIndex: this.currentGroupStartIndex, 
+  addGrouping() {
+    this.rowGroupings.push({
+      startIndex: this.currentGroupStartIndex,
       endIndex: this.currentGroupEndIndex
     });
   }
 
-  setupGrouping(){
-    this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings,this.fssSearchRows);
+  setupGrouping() {
+    this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings, this.fssSearchRows);
   }
 
-  onGroupDeleted(grouping: any) { 
-    this.rowGroupings.splice(this.rowGroupings.findIndex(r => 
-      r.startIndex === grouping.rowGrouping.startIndex && 
-      r.endIndex === grouping.rowGrouping.endIndex),1);  
-    this.setupGrouping();  
+  onGroupDeleted(grouping: any) {
+    this.rowGroupings.splice(this.rowGroupings.findIndex(r =>
+      r.startIndex === grouping.rowGrouping.startIndex &&
+      r.endIndex === grouping.rowGrouping.endIndex), 1);
+    this.setupGrouping();
   }
 
   filter(filterList: string[]) {
@@ -406,13 +406,20 @@ export class FssSearchComponent implements OnInit {
       this.handleResError();
   }
 
-  getPopularSearch(popularSearch:any){
-    console.log(popularSearch);
-    this.displayQueryEditor = false;
-    // this.displayQueryEditor = this.displayQueryEditor ? false : true;
-  }
-
   goToSearchEditor(){
     this.displayQueryEditor = true;
+  }
+
+  getPopularSearch(popularSearch: any) {
+    this.displayQueryEditor = false;
+    this.fssSearchRows = [];
+    this.fssSearchRows.push(this.getDefaultSearchRow());
+    for (let i = 0; i < popularSearch.rows.length; i++) {
+      if (this.fssSearchRows[i] === undefined) {
+        this.addSearchRow();
+      }
+    }
+    this.fssPopularSearchService.getSearchQuery(this.fssSearchRows, popularSearch, this.operators);
+    this.getSearchResult();
   }
 }

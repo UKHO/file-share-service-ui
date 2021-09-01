@@ -19,13 +19,11 @@ export class FssPopularSearchBatchesComponent implements OnInit {
       for(let key in configJson){
         this.popularSearches.push(configJson[key]);
       }
-      console.log("Popular Search Batches",this.popularSearches);
     });
   }
 
   getPopularSearch(popularSearch:any){
-    console.log(popularSearch);
-    this.isPopularSearch.emit(popularSearch);
+    this.isPopularSearch.emit(popularSearch)
   }
 
 }
