@@ -33,12 +33,11 @@
     <button (click)="goToSearchEditor()"><i class="fas fa-arrow-circle-left"></i>&nbsp; Back </button>
  </div>
 
-  <ukho-hr aria-hidden="true"></ukho-hr>
-  <app-fss-popular-search-batches (isPopularSearch)="getPopularSearch($event)"></app-fss-popular-search-batches>
 
   <div class="searchResult">
     <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult" (displayError)="showTokenExpiryError($event)"></app-fss-search-results>
   </div>
+  <br/>
   <div class="pagination">
     <ukho-paginator *ngIf="displaySearchResult"
                     [label]="paginatorLabel" 
@@ -47,4 +46,7 @@
                     (pageChange)="pageChange($event)">
     </ukho-paginator>
   </div>
+  <br/>
+  <ukho-hr aria-hidden="true"></ukho-hr>
+  <app-fss-popular-search-batches (isPopularSearch)="getPopularSearch($event)"></app-fss-popular-search-batches>
 </div>

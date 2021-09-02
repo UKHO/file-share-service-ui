@@ -21,20 +21,20 @@ export class FssPopularSearchService {
       fssSearchRows[i].operators = this.getFilteredOperators(fieldDataType, operators);
       if (popularSearchRow.isDynamicValue) {
         popularSearchRow.value = popularSearchRow.value.replace(/^"(.*)"$/, '$1');
-        fssSearchRows[i].valueType = 'date';
         var value = eval(popularSearchRow.value)
-        console.log(value);
-        fssSearchRows[i] = this.getDateTime(value, fssSearchRows[i]);
+        var dateTime = this.getDateTime(value);
+        fssSearchRows[i].value = dateTime[0];
+        fssSearchRows[i].time = dateTime[1];
       }
       else {
         fssSearchRows[i].value = popularSearchRow.value;
       }
-      // fssSearchRows[i].valueType = this.getValueType(fieldDataType);
+      fssSearchRows[i].valueType = this.getValueType(fieldDataType);
     }
     console.log("After Value change", fssSearchRows, popularSearch);
   }
 
-  getDateTime(value: any, fssSearchRow: FssSearchRow) {
+  getDateTime(value: any) {
     var month = (value.getMonth() + 1).toString();
     var getDate = (value.getDate()).toString();
     var hours = (value.getHours()).toString();
@@ -46,9 +46,7 @@ export class FssPopularSearchService {
     console.log(month, getDate, minutes, hours);
     var date = (value.getFullYear()).toString() + '-' + month + '-' + getDate;
     var time = hours + ':' + minutes;
-    fssSearchRow.value = date;
-    fssSearchRow.time = time;
-    return fssSearchRow;
+    return [date, time];
   }
 
   getFieldDataType(fieldValue: string, fields: Field[]) {

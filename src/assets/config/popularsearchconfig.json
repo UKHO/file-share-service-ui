@@ -1,6 +1,6 @@
 {
-    "currentWeekBatches": {
-        "displayName": "Current week files",
+    "last7daybatches": {
+        "displayName": "Last 7 day batches",
         "isActive": true,
         "groupings": [
             {
@@ -28,8 +28,8 @@
             }
         ]
     },
-    "previousWeekBatches": {
-        "displayName": "Previous week files",
+    "last7to14daybatches": {
+        "displayName": "Last 7 to 14 days batches",
         "isActive": true,
         "groupings": [
             {

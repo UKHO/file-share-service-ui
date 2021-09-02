@@ -10,6 +10,7 @@ import { FssSearchHelperService } from '../../core/services/fss-search-helper.se
 import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
 import { FssPopularSearchService } from 'src/app/core/services/fss-popular-search.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -41,7 +42,6 @@ export class FssSearchComponent implements OnInit {
   typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
   selectedRow: number;
   userLocalTimeZone = this.getLocalTimeFormat();
-  valueInputForm: FormControl;
   pageRecordCount: number = 10;
   searchResultTotal: number;
   pagingLinks: any = [];
@@ -66,7 +66,8 @@ export class FssSearchComponent implements OnInit {
     private fssSearchHelperService: FssSearchHelperService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
-    private fssPopularSearchService: FssPopularSearchService) { }
+    private fssPopularSearchService: FssPopularSearchService,
+    private route: Router) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -117,7 +118,6 @@ export class FssSearchComponent implements OnInit {
 
   getDefaultSearchRow() {
     var fssSearchRow = new FssSearchRow();
-    this.valueInputForm = new FormControl();
     fssSearchRow.joinOperators = this.joinOperators;
     fssSearchRow.fields = this.fields;
     fssSearchRow.operators = this.operators.filter(operator => operator.supportedDataTypes.includes("string"));
@@ -130,8 +130,8 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.isValueHidden = false;
     fssSearchRow.rowId = this.rowId;
     fssSearchRow.time = "";
-    fssSearchRow.valueFormControl = this.valueInputForm
-    fssSearchRow.valueFormControlTime = this.valueInputForm
+    fssSearchRow.valueFormControl = new FormControl();
+    fssSearchRow.valueFormControlTime = new FormControl();
     fssSearchRow.fieldFormControl = new FormControl();
     fssSearchRow.filterFn = this.typeaheadFields;
     return fssSearchRow;
@@ -407,11 +407,11 @@ export class FssSearchComponent implements OnInit {
   }
 
   goToSearchEditor(){
-    this.displayQueryEditor = true;
+    window.location.reload();
   }
 
   getPopularSearch(popularSearch: any) {
-    this.displayQueryEditor = false;
+    // this.displayQueryEditor = false;
     this.fssSearchRows = [];
     this.fssSearchRows.push(this.getDefaultSearchRow());
     for (let i = 0; i < popularSearch.rows.length; i++) {
