@@ -16,7 +16,6 @@ export class FssPopularSearchService {
       fssSearchRows[i].selectedJoinOperator = popularSearchRow.andOr;
       fssSearchRows[i].group = popularSearchRow.group;
       fssSearchRows[i].selectedOperator = popularSearchRow.operator;
-
       var fieldDataType = this.getFieldDataType(fssSearchRows[i].selectedField, fssSearchRows[i].fields);
       fssSearchRows[i].operators = this.getFilteredOperators(fieldDataType, operators);
       if (popularSearchRow.isDynamicValue) {
@@ -35,16 +34,15 @@ export class FssPopularSearchService {
   }
 
   getDateTime(value: any) {
-    var month = (value.getMonth() + 1).toString();
-    var getDate = (value.getDate()).toString();
-    var hours = (value.getHours()).toString();
-    var minutes = (value.getMinutes()).toString();
+    var month = value.getMonth() + 1;
+    var getDate = value.getDate();
+    var hours = value.getHours();
+    var minutes = value.getMinutes();
     month = (month < 10) ? ("0" + month) : month;
     getDate = (getDate < 10) ? ("0" + getDate) : getDate;
     hours = (hours < 10) ? ("0" + hours) : hours;
     minutes = (minutes < 10) ? ("0" + minutes) : minutes;
-    console.log(month, getDate, minutes, hours);
-    var date = (value.getFullYear()).toString() + '-' + month + '-' + getDate;
+    var date = value.getFullYear()+ '-' + month + '-' + getDate;
     var time = hours + ':' + minutes;
     return [date, time];
   }
