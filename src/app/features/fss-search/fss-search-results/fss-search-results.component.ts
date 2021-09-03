@@ -25,7 +25,10 @@ export class FssSearchResultsComponent implements OnChanges {
       for (var i = 0; i < batches.length; i++) {
         this.searchResultVM.push({
           batchAttributes: this.getBatchAttributes(batches[i]),
-          batchFileDetails: this.getBatchFileDetails(batches[i])
+          batchFileDetails: this.getBatchFileDetails(batches[i]),
+          BatchID: { key: 'Batch ID', value: batches[i]['batchId'] },
+          BatchPublishedDate: { key: 'Batch published date', value: batches[i]['batchPublishedDate'] },
+          ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] }
         });
       }
     }
@@ -110,7 +113,7 @@ export class FssSearchResultsComponent implements OnChanges {
       else {//display "Token expired" message when token is expired
         obj.displayError.emit(true);
       }
-    }    
+    }
   }
 }
 

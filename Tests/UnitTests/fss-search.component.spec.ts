@@ -20,6 +20,7 @@ import { PublicClientApplication } from '@azure/msal-browser';
 import { FssSearchHelperService } from '../../src/app/core/services/fss-search-helper.service';
 import { FssSearchValidatorService } from '../../src/app/core/services/fss-search-validator.service';
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
+import { getOperators } from './fss-search-helper.service.spec';
 
 describe('FssSearchComponent', () => {
   let component: FssSearchComponent;
@@ -64,7 +65,7 @@ describe('FssSearchComponent', () => {
     searchService = TestBed.inject(FssSearchService);
     searchFilterservice = TestBed.inject(FssSearchFilterService);
     fileShareApiService = TestBed.inject(FileShareApiService);
-    msalService =TestBed.inject(MsalService);
+    msalService = TestBed.inject(MsalService);
     fssSearchHelperService = TestBed.inject(FssSearchHelperService);
     fssSearchValidatorService = TestBed.inject(FssSearchValidatorService);
     searchGroupingService = TestBed.inject(FssSearchGroupingService);
@@ -81,7 +82,7 @@ describe('FssSearchComponent', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
-    expect(fssSearchHelperService.getFieldDataType('$batch(product)',component.fields)).toEqual('attribute');
+    expect(fssSearchHelperService.getFieldDataType('$batch(product)', component.fields)).toEqual('attribute');
   });
 
   test('should return datatype as "string" when SystemAttribute FileName is passed', () => {
@@ -238,20 +239,20 @@ describe('FssSearchComponent', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
 
-    var groupings: RowGrouping[] =[];    
-    groupings.push({startIndex: 1, endIndex: 2});
-    component.rowGroupings = groupings;  
-    
+    var groupings: RowGrouping[] = [];
+    groupings.push({ startIndex: 1, endIndex: 2 });
+    component.rowGroupings = groupings;
+
     component.currentGroupStartIndex = 1;
-    component.currentGroupEndIndex = 2;               
-    var resultTrue = component.isGroupAlreadyExist(); 
-      
+    component.currentGroupEndIndex = 2;
+    var resultTrue = component.isGroupAlreadyExist();
+
     component.currentGroupStartIndex = 1;
-    component.currentGroupEndIndex = 3; 
-    var resultFalse = component.isGroupAlreadyExist();  
-    
-    expect(resultTrue).toBe(true);    
-    expect(resultFalse).toBe(false);  
+    component.currentGroupEndIndex = 3;
+    var resultFalse = component.isGroupAlreadyExist();
+
+    expect(resultTrue).toBe(true);
+    expect(resultFalse).toBe(false);
   });
 
   //Test group cannot intersect validation
@@ -259,20 +260,20 @@ describe('FssSearchComponent', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
 
-    var groupings: RowGrouping[] =[];    
-    groupings.push({startIndex: 1, endIndex: 3});
-    component.rowGroupings = groupings;  
-    
+    var groupings: RowGrouping[] = [];
+    groupings.push({ startIndex: 1, endIndex: 3 });
+    component.rowGroupings = groupings;
+
     component.currentGroupStartIndex = 0;
-    component.currentGroupEndIndex = 2;               
-    var resultTrue = component.isGroupIntersectWithOther(); 
-      
+    component.currentGroupEndIndex = 2;
+    var resultTrue = component.isGroupIntersectWithOther();
+
     component.currentGroupStartIndex = 1;
-    component.currentGroupEndIndex = 2; 
-    var resultFalse = component.isGroupIntersectWithOther();  
-    
-    expect(resultTrue).toBe(true);    
-    expect(resultFalse).toBe(false);  
+    component.currentGroupEndIndex = 2;
+    var resultFalse = component.isGroupIntersectWithOther();
+
+    expect(resultTrue).toBe(true);
+    expect(resultFalse).toBe(false);
   });
 
   //Test add grouping
@@ -284,23 +285,23 @@ describe('FssSearchComponent', () => {
     component.addSearchRow();
     component.addSearchRow();
 
-    var groupings: RowGrouping[] =[];    
-    groupings.push({startIndex: 1, endIndex: 2});    
-    component.rowGroupings = groupings; 
+    var groupings: RowGrouping[] = [];
+    groupings.push({ startIndex: 1, endIndex: 2 });
+    component.rowGroupings = groupings;
 
-    component.fssSearchRows[0].group=true;
-    component.fssSearchRows[1].group=true;
-    component.fssSearchRows[2].group=true;
+    component.fssSearchRows[0].group = true;
+    component.fssSearchRows[1].group = true;
+    component.fssSearchRows[2].group = true;
 
-    var expectedGrouping: RowGrouping[]=[{startIndex:1, endIndex:2},{startIndex:0, endIndex:2}];
-            
-    component.onGroupClicked();    
+    var expectedGrouping: RowGrouping[] = [{ startIndex: 1, endIndex: 2 }, { startIndex: 0, endIndex: 2 }];
+
+    component.onGroupClicked();
     var result = component.rowGroupings;
-    
+
     expect(result.length).toBe(2);
     expect(result).toEqual(expectedGrouping);
-  });  
- 
+  });
+
   // Test modify grouping on search row deletion
   test('should return row count 2 & modify grouping when 3 rows exist and delete is called', () => {
     component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
@@ -310,11 +311,11 @@ describe('FssSearchComponent', () => {
     component.addSearchRow();
     component.addSearchRow();
 
-    var groupings: RowGrouping[] =[];    
-    groupings.push({startIndex: 0, endIndex: 2});    
-    component.rowGroupings = groupings; 
+    var groupings: RowGrouping[] = [];
+    groupings.push({ startIndex: 0, endIndex: 2 });
+    component.rowGroupings = groupings;
 
-    var expectedGrouping: RowGrouping[]=[{startIndex:0, endIndex:1}];
+    var expectedGrouping: RowGrouping[] = [{ startIndex: 0, endIndex: 1 }];
 
     component.onSearchRowDeleted(3);
     var resultRowCount = component.fssSearchRows.length;
@@ -334,21 +335,40 @@ describe('FssSearchComponent', () => {
     component.addSearchRow();
     component.addSearchRow();
 
-    var groupings: RowGrouping[] =[];    
-    groupings.push({startIndex: 1, endIndex: 2});
-    groupings.push({startIndex: 0, endIndex: 2}); 
-    component.rowGroupings = groupings;  
+    var groupings: RowGrouping[] = [];
+    groupings.push({ startIndex: 1, endIndex: 2 });
+    groupings.push({ startIndex: 0, endIndex: 2 });
+    component.rowGroupings = groupings;
 
-    var deleteGrouping ={rowGrouping: groupings[0]}      
+    var deleteGrouping = { rowGrouping: groupings[0] }
     var expectedGrouping = Array(groupings[1]);
-            
-    component.onGroupDeleted(deleteGrouping);    
+
+    component.onGroupDeleted(deleteGrouping);
     var result = component.rowGroupings;
-    
+
     expect(result.length).toBe(1);
     expect(result).toEqual(expectedGrouping);
   });
 
+  test('should return row count 2 when setFields function is called', () => {
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, analyticsService);
+    component.ngOnInit();
+    component.setFields(MockUserAttributeFields());
+    component.setFields(MockUserAttributeFields());
+    expect(component.fssSearchRows.length).toBe(2);
+  });
+
+  // test('should return search result', () => {
+  //   component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+  //   component.ngOnInit();
+  //   component.fields = searchService.getFields(MockUserAttributeFields());
+  //   component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'BusinessUnit', 'eq', 'adds', 'text', false));
+  //   component.operators = getOperators()
+  //   component.getSearchResult();
+  //   component.searchResult=[];
+  //   console.log(component.searchResult);
+  //   expect(component.searchResult.count).toBe(0);
+  // });
 });
 
 export function MockUserAttributeFields() {
@@ -379,20 +399,19 @@ export function createSearchRow(rowId: number, fields: Field[], operators: Opera
   row.isValueHidden = isValueHidden;
   return row;
 }
-
-export function MockMSALInstanceFactory () {    
-  return new PublicClientApplication ( {
-     auth:{
-       clientId:"",
-       authority: "",
-       redirectUri: "/",
-       knownAuthorities: [],
-       postLogoutRedirectUri: "/",
-       navigateToLoginRequestUrl: false
-     },
-     cache:{
-       cacheLocation: "localStorage",
-       storeAuthStateInCookie: true
-     }
-   })           
- };
+export function MockMSALInstanceFactory() {
+  return new PublicClientApplication({
+    auth: {
+      clientId: "",
+      authority: "",
+      redirectUri: "/",
+      knownAuthorities: [],
+      postLogoutRedirectUri: "/",
+      navigateToLoginRequestUrl: false
+    },
+    cache: {
+      cacheLocation: "localStorage",
+      storeAuthStateInCookie: true
+    }
+  })
+};

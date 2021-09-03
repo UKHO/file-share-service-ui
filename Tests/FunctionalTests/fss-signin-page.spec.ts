@@ -3,7 +3,6 @@ const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import {LoginPortal} from './helpermethod'
 
-
 describe('Test Sign In Page Scenario', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   let browser: Browser;
@@ -84,4 +83,4 @@ describe('Test Sign In Page Scenario', () => {
 
   })
 
-})
+}) 

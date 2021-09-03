@@ -8,6 +8,7 @@
     "test:unit": "jest --config=jest.config.js",
     "test:auto": "jest --config=Tests/FunctionalTests/jest.config.js",
     "test:a11y": "jest --config=Tests/AccessibilityTests/jest.config.js",
+    "test:e2e": "jest --config=Tests/E2ETests/jest.config.js",
     "lint": "ng lint",
     "preinstall": "npx npm-force-resolutions"
   },
@@ -50,6 +51,7 @@
     "@angular/compiler-cli": "~11.2.13",
     "@types/jest": "^26.0.23",
     "@types/node": "^12.11.1",
+    "@types/request": "^2.48.7",
     "axe-playwright": "^1.1.8",
     "codelyzer": "^6.0.0",
     "expect-playwright": "^0.4.0",
