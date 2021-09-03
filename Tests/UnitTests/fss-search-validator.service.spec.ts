@@ -1,15 +1,29 @@
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 
+import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 import { Field, FssSearchRow, Operator } from '../../src/app/core/models/fss-search-types';
 import { FssSearchValidatorService } from '../../src/app/core/services/fss-search-validator.service';
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 
 describe('FssSearchValidatorService', () => {
   let service: FssSearchValidatorService;
-
+  let analyticsService: AnalyticsService;
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [{
+        provide: "googleTagManagerId",
+        useValue: "YOUR_GTM_ID"
+      },
+      AnalyticsService]
+    }) .compileComponents();
+    AppConfigService.settings = {
+      fssConfig: {
+        "apiUrl": "https://dummyfssapiurl "
+      }
+    };
     service = TestBed.inject(FssSearchValidatorService);
+    analyticsService = TestBed.inject(AnalyticsService);
   });
 
   it('should be created', () => {

@@ -19,6 +19,7 @@ import { FssSearchGroupingService } from '../../src/app/core/services/fss-search
 import { PublicClientApplication } from '@azure/msal-browser';
 import { FssSearchHelperService } from '../../src/app/core/services/fss-search-helper.service';
 import { FssSearchValidatorService } from '../../src/app/core/services/fss-search-validator.service';
+import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 import { getOperators } from './fss-search-helper.service.spec';
 
 describe('FssSearchComponent', () => {
@@ -31,6 +32,7 @@ describe('FssSearchComponent', () => {
   let fssSearchValidatorService: FssSearchValidatorService;
   let elementRef: ElementRef;
   let searchGroupingService: FssSearchGroupingService;
+  let analyticsService: AnalyticsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,12 +43,17 @@ describe('FssSearchComponent', () => {
         FssSearchRowComponent,
         FssSearchResultsComponent,
         FilterPipe],
-      providers: [
-        {
-          provide: MSAL_INSTANCE,
-          useFactory: MockMSALInstanceFactory
-        },
-        MsalService],
+        providers: [
+          {
+            provide: MSAL_INSTANCE,
+            useFactory: MockMSALInstanceFactory       
+          },
+          {
+            provide: "googleTagManagerId",
+            useValue: "YOUR_GTM_ID"       
+          },
+           MsalService,
+           AnalyticsService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -62,6 +69,7 @@ describe('FssSearchComponent', () => {
     fssSearchHelperService = TestBed.inject(FssSearchHelperService);
     fssSearchValidatorService = TestBed.inject(FssSearchValidatorService);
     searchGroupingService = TestBed.inject(FssSearchGroupingService);
+    analyticsService = TestBed.inject(AnalyticsService);
   });
 
   it('should create', () => {
@@ -71,21 +79,21 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return datatype as "attribute" when UserAttribute is passed', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     expect(fssSearchHelperService.getFieldDataType('$batch(product)', component.fields)).toEqual('attribute');
   });
 
   test('should return datatype as "string" when SystemAttribute FileName is passed', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     expect(fssSearchHelperService.getFieldDataType('FileName', component.fields)).toEqual('string');
   });
 
   test('should return filtered operators based on number datatype', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.operators = searchService.getOperators();
     const expectedOperators: Operator[] = [
@@ -100,7 +108,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return value type text based on datatype string', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     var expectedValueType = "text";
     var result = fssSearchHelperService.getValueType('string');
@@ -108,7 +116,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return operator type nullOperator based on operator value ne null', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.operators = searchService.getOperators();
     var expectedOperatorType = "nullOperator";
@@ -118,7 +126,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return second row based on rowid passed', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     let searchRows: FssSearchRow[] = [];
     let fields: Field[] = [
@@ -171,7 +179,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return flag false when FileSize value is passed as number', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     let searchRows: FssSearchRow[] = [];
     let fields: Field[] = [
@@ -195,7 +203,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return row count 2 when Add new line is called twice', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -205,7 +213,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return row count 2 when 3 rows exist and delete is called', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -217,7 +225,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should hide Value input when nullOperator is selected in the row', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', true));
@@ -228,7 +236,7 @@ describe('FssSearchComponent', () => {
 
   //Test group already exists validation
   test('should return group already exists validation when duplicate group is added', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
 
     var groupings: RowGrouping[] = [];
@@ -249,7 +257,7 @@ describe('FssSearchComponent', () => {
 
   //Test group cannot intersect validation
   test('should return group cannot intersect validation when intersecting group is added', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
 
     var groupings: RowGrouping[] = [];
@@ -270,7 +278,7 @@ describe('FssSearchComponent', () => {
 
   //Test add grouping
   test('should return group count 2 when 1 groups exist and add group clicked is called', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -296,7 +304,7 @@ describe('FssSearchComponent', () => {
 
   // Test modify grouping on search row deletion
   test('should return row count 2 & modify grouping when 3 rows exist and delete is called', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -320,7 +328,7 @@ describe('FssSearchComponent', () => {
 
   // Test group deletion
   test('should return group count 1 when 2 groups exist and delete group is called', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService,analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -343,7 +351,7 @@ describe('FssSearchComponent', () => {
   });
 
   test('should return row count 2 when setFields function is called', () => {
-    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService);
+    component = new FssSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, analyticsService);
     component.ngOnInit();
     component.setFields(MockUserAttributeFields());
     component.setFields(MockUserAttributeFields());

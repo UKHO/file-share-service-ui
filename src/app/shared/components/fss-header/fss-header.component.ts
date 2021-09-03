@@ -6,6 +6,7 @@ import { AuthenticationResult, InteractionStatus } from '@azure/msal-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
+import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
   selector: 'app-fss-header',
@@ -23,7 +24,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   constructor(private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
-    private fileShareApiService: FileShareApiService) {
+    private fileShareApiService: FileShareApiService,
+    private analyticsService: AnalyticsService) {
     super();
   }
 
@@ -102,6 +104,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         this.route.navigate(['search'])
         this.isActive = true;
         this.handleActiveTab()
+        this.analyticsService.login();
       }
     });
   }
@@ -134,7 +137,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     {
       signInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { this.msalService.logout(); }),
+      signOutHandler: (() => { this.msalService.logout();
+        this.analyticsService.login(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
