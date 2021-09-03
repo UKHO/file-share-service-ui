@@ -1,13 +1,16 @@
 export interface SearchResultViewModel{
     batchAttributes: BatchAttribute[];
     batchFileDetails: BatchFileDetails;
+    BatchID: BatchAttribute;
+    BatchPublishedDate: BatchAttribute;
+    ExpiryDate: BatchAttribute;
   }
   
   export interface BatchAttribute {
     key: string;
     value: string;
   }
-  
+ 
   export interface BatchFileDetails{
     columnData: BatchFileDetailsColumnData[];
     rowData:BatchFileDetailsRowData[];
@@ -24,3 +27,4 @@ export interface SearchResultViewModel{
     FileSize: string;
     Download: string;
   }
+
