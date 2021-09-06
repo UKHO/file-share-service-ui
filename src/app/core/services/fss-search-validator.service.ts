@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Field, FssSearchRow, Operator } from '../models/fss-search-types';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class FssSearchValidatorService {
   errorMessageTitle = "";
   errorMessageDescription = "";
 
-  constructor() { }
+  constructor(private analyticsService: AnalyticsService) { }
 
   validateSearchInput(fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[]) {
     var flag = true;
@@ -40,6 +41,7 @@ export class FssSearchValidatorService {
       }
     }
     return flag;
+    this.analyticsService.validation();
   }
 
 

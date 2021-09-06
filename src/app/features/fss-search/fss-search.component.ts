@@ -10,7 +10,7 @@ import { FssSearchHelperService } from '../../core/services/fss-search-helper.se
 import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
 import { FssPopularSearchService } from 'src/app/core/services/fss-popular-search.service';
-import { Router } from '@angular/router';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 
 @Component({
@@ -67,7 +67,7 @@ export class FssSearchComponent implements OnInit {
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
     private fssPopularSearchService: FssPopularSearchService,
-    private route: Router) { }
+    private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -80,6 +80,7 @@ export class FssSearchComponent implements OnInit {
           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
           this.setFields(batchAttributeResult);
           this.displayLoader = false;
+          this.analyticsService.searchInIt();
         });
       }
       else {
@@ -114,6 +115,7 @@ export class FssSearchComponent implements OnInit {
     this.fssSearchRows.push(this.getDefaultSearchRow());
     this.rowId += 1;
     this.setupGrouping();
+    this.analyticsService.SearchRowAdded();
   }
 
   getDefaultSearchRow() {
@@ -147,7 +149,8 @@ export class FssSearchComponent implements OnInit {
     //Reset rowGroupings on search row deletion
     this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);
     this.setupGrouping();
-  }
+    this.analyticsService.SearchRowDeleted();
+  }  
 
   getSearchResult() {
     if (this.fssSearchValidatorService.validateSearchInput(this.fssSearchRows, this.fields, this.operators)) {
@@ -211,7 +214,7 @@ export class FssSearchComponent implements OnInit {
         this.errorMessageTitle,
         this.errorMessageDescription);
     }
-
+    this.analyticsService.getSearchResult();
   }
 
   hideMessage() {
@@ -250,19 +253,22 @@ export class FssSearchComponent implements OnInit {
 
   handleErrMessage(err: any) {
     this.displayLoader = false;
+    this.displaySearchResult = false;
     var errmsg = "";
-    if (err.error != undefined && err.error.total > 0) {
+    if (err.error != undefined && err.error.errors.length > 0) {
       for (let i = 0; i < err.error.errors.length; i++) {
         errmsg += err.error.errors[i]['description'] + '\n';
       }
       this.showMessage("warning", "An exception occurred when processing this search", errmsg);
     }
+    this.analyticsService.errorHandling();
   }
 
   handleResError() {
     this.showMessage("info", "Your Sign-in Token has Expired", "");
     this.loginErrorDisplay = true;
     this.displayLoader = false;
+    this.analyticsService.tokenExpired();
   }
 
   loginPopup() {
@@ -279,6 +285,7 @@ export class FssSearchComponent implements OnInit {
         this.displayLoader = false;
       })
     });
+    this.analyticsService.login();
     this.hideMessage();
   }
 
@@ -322,7 +329,6 @@ export class FssSearchComponent implements OnInit {
   }
 
   onGroupClicked() {
-
     this.displaySearchResult = false;
     this.hideMessage();
     let rowIndexArray: Array<number> = [];
@@ -352,6 +358,7 @@ export class FssSearchComponent implements OnInit {
       this.addGrouping();
       this.setupGrouping();
     }
+    this.analyticsService.GroupAdded();
   }
 
   isGroupAlreadyExist() {
@@ -379,11 +386,12 @@ export class FssSearchComponent implements OnInit {
     this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings, this.fssSearchRows);
   }
 
-  onGroupDeleted(grouping: any) {
-    this.rowGroupings.splice(this.rowGroupings.findIndex(r =>
-      r.startIndex === grouping.rowGrouping.startIndex &&
-      r.endIndex === grouping.rowGrouping.endIndex), 1);
-    this.setupGrouping();
+  onGroupDeleted(grouping: any) { 
+    this.rowGroupings.splice(this.rowGroupings.findIndex(r => 
+      r.startIndex === grouping.rowGrouping.startIndex && 
+      r.endIndex === grouping.rowGrouping.endIndex),1);  
+    this.setupGrouping();  
+    this.analyticsService.GroupDeleted();
   }
 
   filter(filterList: string[]) {
