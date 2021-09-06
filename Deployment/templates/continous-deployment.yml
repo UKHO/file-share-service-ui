@@ -12,7 +12,7 @@ steps:
     inputs:
       targetType: filePath
       filePath: '$(Pipeline.Workspace)/terraformartifact/terraform_conditional_run.ps1'
-      arguments: '-deploymentResourceGroupName $(DeploymentResourceGroupName) -deploymentStorageAccountName $(DeploymentStorageAccountName) -workSpace $(Environment) -continueEvenIfResourcesAreGettingDestroyed $${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}'
+      arguments: '-deploymentResourceGroupName $(DeploymentResourceGroupName) -deploymentStorageAccountName $(DeploymentStorageAccountName) -workSpace $(Environment) -continueEvenIfResourcesAreGettingDestroyed $${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }} '
     env:
       ARM_CLIENT_ID: $(TERRAFORM-CLIENT-ID)
       ARM_CLIENT_SECRET: $(TERRAFORM-CLIENT-SECRET)
@@ -43,3 +43,10 @@ steps:
       inlineScript: |
         az storage blob delete-batch -s '$web' --account-name $(website_storage_account_name)
         az storage blob upload-batch -d '$web' --account-name $(website_storage_account_name) -s "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
+
+  - task: PowerShell@2
+    displayName: "Check the status of Service"
+    inputs:
+      targetType: filePath
+      filePath: "$(Pipeline.Workspace)/terraformartifact/checkwebsitestatus.ps1"
+      arguments: "-fssUIWebUrl $(autoTestConfig.url) -waitTimeInMinute $(waitTimeInMinute)"
