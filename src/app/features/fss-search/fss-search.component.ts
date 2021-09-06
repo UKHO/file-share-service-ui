@@ -9,7 +9,7 @@ import { MsalService } from '@azure/msal-angular';
 import { FssSearchHelperService } from '../../core/services/fss-search-helper.service';
 import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
-import { FssPopularSearchService } from 'src/app/core/services/fss-popular-search.service';
+import { FssPopularSearchService } from '../../core/services/fss-popular-search.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
 
 
