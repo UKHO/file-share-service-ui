@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
+import { AnalyticsService } from 'src/app/core/services/analytics.service';
 import { FileShareApiService } from 'src/app/core/services/file-share-api.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class FssSsoLogoutComponent implements OnInit {
 
   constructor(private route: Router,
     private fileShareApiService: FileShareApiService,
-    private msalService: MsalService) { }
+    private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
     this.logout();
@@ -24,6 +24,7 @@ export class FssSsoLogoutComponent implements OnInit {
     });
     localStorage.clear();
     this.route.navigate(['']);
+    this.analyticsService.logOut();
   }
 
 }

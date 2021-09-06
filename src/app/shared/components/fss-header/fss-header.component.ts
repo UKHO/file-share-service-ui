@@ -137,8 +137,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     {
       signInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { this.msalService.logout();
-        this.analyticsService.login(); }),
+      signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
