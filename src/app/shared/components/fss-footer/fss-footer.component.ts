@@ -14,7 +14,7 @@ export class FssFooterComponent extends FooterComponent {
   }
 
   ngOnInit(): void {
-    this.imageLink = "https://www.admiralty.co.uk/";
+    this.imageLink = "https://www.gov.uk/ukho";
     this.imageSrc = "https://design.ukho.dev/svg/UKHO stacked logo.svg";
     this.imageAlt = "Admirality Maritime Data Solutions | UK Hydrographic office";
     this.text = "© Crown copyright " + new Date().getUTCFullYear() + " UK Hydrographic Office";
