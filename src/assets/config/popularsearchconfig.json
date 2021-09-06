@@ -1,6 +1,6 @@
 {
-    "last7daybatches": {
-        "displayName": "Last 7 day batches",
+    "batchespublishedinprevious7days": {
+        "displayName": "Batches published in previous 7 days",
         "isActive": true,
         "groupings": [
             {
@@ -28,8 +28,8 @@
             }
         ]
     },
-    "last7to14daybatches": {
-        "displayName": "Last 7 to 14 days batches",
+    "batchespublishedfrom7to14days": {
+        "displayName": "Batches published from 7 to 14 days",
         "isActive": true,
         "groupings": [
             {

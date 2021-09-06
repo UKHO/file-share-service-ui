@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FssPopularSearchService } from './fss-popular-search.service';
+import { FssPopularSearchService } from '../../src/app/core/services/fss-popular-search.service';
 
 describe('FssPopularSearchService', () => {
   let service: FssPopularSearchService;

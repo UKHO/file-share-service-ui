@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { PopularSearchConfigService } from 'src/app/core/services/popular-search-config.service';
+import { PopularSearchConfigService } from '../../../core/services/popular-search-config.service';
 
 @Component({
   selector: 'app-fss-popular-search-batches',
