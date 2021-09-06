@@ -44,17 +44,17 @@ describe('FssSearchComponent', () => {
         FssSearchRowComponent,
         FssSearchResultsComponent,
         FilterPipe],
-        providers: [
-          {
-            provide: MSAL_INSTANCE,
-            useFactory: MockMSALInstanceFactory       
-          },
-          {
-            provide: "googleTagManagerId",
-            useValue: "YOUR_GTM_ID"       
-          },
-           MsalService,
-           AnalyticsService],
+      providers: [
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        {
+          provide: "googleTagManagerId",
+          useValue: "YOUR_GTM_ID"
+        },
+        MsalService,
+        AnalyticsService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -368,7 +368,6 @@ describe('FssSearchComponent', () => {
   //   component.operators = getOperators()
   //   component.getSearchResult();
   //   component.searchResult=[];
-  //   console.log(component.searchResult);
   //   expect(component.searchResult.count).toBe(0);
   // });
 });
@@ -391,8 +390,8 @@ export function MockUserAttributeFields() {
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean) {
   var row = new FssSearchRow();
   row.rowId = rowId;
-  row.fields = fields,
-    row.operators = operators;
+  row.fields = fields;
+  row.operators = operators;
   row.selectedJoinOperator = joinOperator;
   row.selectedField = field;
   row.selectedOperator = operator;
