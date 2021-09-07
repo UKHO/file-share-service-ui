@@ -281,9 +281,9 @@ export class FssSearchComponent implements OnInit {
       //refreshToken endpoint call to set the cookie after user login
       this.fileShareApiService.refreshToken().subscribe(res => {
         this.displayLoader = false;
+        this.analyticsService.login();
       })
     });
-    this.analyticsService.login();
     this.hideMessage();
   }
 
