@@ -16,7 +16,10 @@ describe('Test Search Query Scenario On Search Page', () => {
     context = await browser.newContext();
     page = await context.newPage();    
     await page.goto(autoTestConfig.url)
-    
+    await page.waitForTimeout(pageTimeOut.delay)
+    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
+      await page.click(pageObjectsConfig.acceptCookieSelector);
+    }
     page.click(pageObjectsConfig.searchButtonSelector);
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);    
     

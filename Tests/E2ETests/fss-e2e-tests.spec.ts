@@ -16,6 +16,10 @@ describe('FSS UI E2E Scenarios', () => {
     context = await browser.newContext();
     page = await context.newPage();
     await page.goto(autoTestConfig.url)
+    await page.waitForTimeout(pageTimeOut.delay)
+    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
+      await page.click(pageObjectsConfig.acceptCookieSelector);
+    }
   })
 
   afterEach(async () => {

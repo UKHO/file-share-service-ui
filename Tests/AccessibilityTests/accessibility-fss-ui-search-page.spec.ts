@@ -11,17 +11,22 @@ let page: Page
 describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   beforeAll(async () => {
-    browser = await chromium.launch({ slowMo: 100})
+    browser = await chromium.launch({ slowMo: 100 })
     context = await browser.newContext();
     page = await context.newPage();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
+    await page.waitForTimeout(pageTimeOut.delay)
+    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
+      await page.click(pageObjectsConfig.acceptCookieSelector);
+    }
     page.click(pageObjectsConfig.loginSignInLinkSelector);
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
   })  
 
   test('should return no violation for add rows element', async () => {
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
+    await page.waitForSelector('.addNewLine');
     await injectAxe(page);
     const violations = await getViolations(page, '.addNewLine', {
       axeOptions: {
