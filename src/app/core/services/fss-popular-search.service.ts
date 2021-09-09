@@ -23,9 +23,15 @@ export class FssPopularSearchService {
       fssSearchRow.valueType = this.getValueType(fieldDataType);
 
       if (popularSearchRow.isDynamicValue) {
-        popularSearchRow.value = popularSearchRow.value.replace(/^"(.*)"$/, '$1');
         var value = eval(popularSearchRow.value);
-        this.getDateTime(value, fssSearchRow);
+        if (fieldDataType === 'date') {
+          var dateTime = this.getDateTime(value, fssSearchRow);
+          fssSearchRow.value = dateTime[0];
+          fssSearchRow.time = dateTime[1];
+        }
+        else {
+          fssSearchRow.value = value;
+        }
       }
       else {
         fssSearchRow.value = popularSearchRow.value;
@@ -42,8 +48,9 @@ export class FssPopularSearchService {
   }
 
   getDateTime(value: any, fssSearchRow: FssSearchRow) {
-    fssSearchRow.value = value.toLocaleDateString('fr-CA');
-    fssSearchRow.time = value.toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
+    var date = value.toLocaleDateString('fr-CA');
+    var time = value.toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
+    return [date, time]
   }
 
   getFieldDataType(fieldValue: string, fields: Field[]) {

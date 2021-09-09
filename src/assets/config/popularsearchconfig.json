@@ -2,16 +2,6 @@
     "batchespublishedinprevious7days": {
         "displayName": "Batches published in previous 7 days",
         "isActive": true,
-        "groupings": [
-            {
-                "startIndex": 0,
-                "endIndex": 1
-            },
-            {
-                "startIndex": 0,
-                "endIndex": 2
-            }
-        ],
         "rows": [
             {
                 "field": "BusinessUnit",
@@ -26,12 +16,8 @@
                 "isDynamicValue": true,
                 "value": "this.getDateBeforeNDays(7,0,0)"
             }
-        ]
-    },
-    "batchespublishedfrom7to14days": {
-        "displayName": "Batches published from 7 to 14 days",
-        "isActive": true,
-        "groupings": [
+        ],
+        "rowGroupings": [
             {
                 "startIndex": 0,
                 "endIndex": 1
@@ -40,7 +26,11 @@
                 "startIndex": 0,
                 "endIndex": 2
             }
-        ],
+        ]
+    },
+    "batchespublishedfrom7to14days": {
+        "displayName": "Batches published from 7 to 14 days",
+        "isActive": true,
         "rows": [
             {
                 "field": "BusinessUnit",
@@ -61,6 +51,16 @@
                 "operator": "le",
                 "isDynamicValue": true,
                 "value": "this.getDateBeforeNDays(7,23,59)"
+            }
+        ],
+        "rowGroupings": [
+            {
+                "startIndex": 0,
+                "endIndex": 1
+            },
+            {
+                "startIndex": 0,
+                "endIndex": 2
             }
         ]
     }
