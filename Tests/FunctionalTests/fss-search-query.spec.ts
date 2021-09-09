@@ -36,7 +36,7 @@ describe('Test Search Query Scenario On Search Page', () => {
   it('Batch Attribute table returns correct product on attribute search', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"product");
+    await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
     await page.click(pageObjectsConfig.searchAttributeButton);
@@ -56,7 +56,7 @@ describe('Test Search Query Scenario On Search Page', () => {
   it('Batch Attribute table returns correct product on special characters search', async () => {        
    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"product");
+    await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeSpecialChar);
     await page.click(pageObjectsConfig.searchAttributeButton);
@@ -76,7 +76,7 @@ describe('Test Search Query Scenario On Search Page', () => {
   it('Batch Attribute table returns correct values on multiple attributes search', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"product");
+    await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
     await page.click(pageObjectsConfig.buttonAddNewRow);
@@ -151,7 +151,7 @@ describe('Test Search Query Scenario On Search Page', () => {
   it('Test to verify no value field displayed when select operator eq null or ne null for batch attributes', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"product");
+    await SearchAttribute(page,"productid");
     //select operator eq null 
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq null");
     let valueField=await page.$$(pageObjectsConfig.inputSearchValueSelector);
@@ -167,7 +167,7 @@ describe('Test Search Query Scenario On Search Page', () => {
   it('Test to verify pagination count for user attribute search', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"product");
+    await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
     await page.click(pageObjectsConfig.searchAttributeButton);
@@ -192,7 +192,7 @@ describe('Test Search Query Scenario On Search Page', () => {
   it('Test to verify file downloaded status changed after click on download button', async () => {        
    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"product");
+    await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");  
     await page.waitForTimeout(1000);   
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProduct);

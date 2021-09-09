@@ -17,7 +17,7 @@ describe('Test Home Page Scenario', () => {
         await page.goto(autoTestConfig.url)
         await page.waitForTimeout(pageTimeOut.delay)
         if ((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0) {
-            await page.click(pageObjectsConfig.acceptCookieSelector);
+            await page.click(pageObjectsConfig.acceptCookieSelector);            
         }
     })
 
@@ -58,6 +58,8 @@ describe('Test Home Page Scenario', () => {
     })
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
+        await page.goto(autoTestConfig.url)
+        await page.waitForTimeout(pageTimeOut.delay);
         await page.click(pageObjectsConfig.marinedataportalLinkSelector);
         page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector, "title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);

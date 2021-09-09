@@ -12,7 +12,7 @@ describe('FSS UI E2E Scenarios', () => {
   let page: Page;
 
   beforeEach(async () => {
-    browser = await chromium.launch({ slowMo: 100 });
+    browser = await chromium.launch({slowMo: 100});
     context = await browser.newContext();
     page = await context.newPage();
     await page.goto(autoTestConfig.url)
@@ -39,7 +39,7 @@ describe('FSS UI E2E Scenarios', () => {
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page, "BusinessUnit");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
-    await page.fill(pageObjectsConfig.inputSearchValueSelector, businessUnitValue);
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, businessUnitValue);    
     await page.click(pageObjectsConfig.searchAttributeButton);
 
     // Verification of attribute table records
@@ -64,12 +64,12 @@ describe('FSS UI E2E Scenarios', () => {
 
     page.click(pageObjectsConfig.searchButtonSelector);
     await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
-
+    await page.waitForTimeout(2000);
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
 
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page, "product");
+    await SearchAttribute(page, "productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeProduct);
     await page.click(pageObjectsConfig.searchAttributeButton);
@@ -108,6 +108,7 @@ describe('FSS UI E2E Scenarios', () => {
     await SearchAttribute(page, "FileSize");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, `'${fileSizeValue}'`);
+    await page.waitForTimeout(2000);
     await page.click(pageObjectsConfig.searchAttributeButton);
 
     //Verification of warning message

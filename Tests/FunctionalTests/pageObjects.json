@@ -26,7 +26,7 @@
        "loginSignInLinkSelector" : "#signInButton",
        "loginAccountSelector" : "#accountSection",
        "loginAccountLinkSelector" : "#accountSection #profile > a",
-       "searchPageContainerHeaderSelector" : "h1",
+       "searchPageContainerHeaderSelector" : "#mainContainer[class='container'] h1",
        "searchPageContainerHeaderText" : "Search files",
        "searchButtonSelector": "#Search",
        "homePageSignInHeaderInfoSelector" : ".card h1",
@@ -65,11 +65,12 @@
        "dialogWarningSelector" : ".dialog.warning>h3",
        "dialogWarningText" : "There is a problem with FileSize value field",
        "paginatorSelector" : "ukho-paginator p",
-       "acceptCookieSelector" : "#onetrust-accept-btn-handler"
+       "acceptCookieSelector" : "#onetrust-accept-btn-handler",
+       "skipContentSelector" : "a.skip-to-content-link"
     },
     "pageTimeOut":
     {
-      "timeOutInMilliSeconds" : 60000,
+      "timeOutInMilliSeconds" : 90000,
       "delay" : 5000
     }
 	
