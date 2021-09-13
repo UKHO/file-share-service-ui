@@ -1,6 +1,6 @@
 import { Browser, BrowserContext, chromium, Page } from 'playwright';
 const { autoTestConfig } = require('./appSetting');
-const {pageObjectsConfig,pageTimeOut} = require('./pageObjects');
+const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 
 describe('Test Home Page Scenario', () => {
     jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -8,13 +8,17 @@ describe('Test Home Page Scenario', () => {
     let context: BrowserContext;
     let page: Page;
     beforeAll(async () => {
-        browser = await chromium.launch({slowMo:100});
+        browser = await chromium.launch({ slowMo: 100 });
     })
 
     beforeEach(async () => {
         context = await browser.newContext();
         page = await context.newPage();
         await page.goto(autoTestConfig.url)
+        await page.waitForTimeout(pageTimeOut.delay)
+        if ((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0) {
+            await page.click(pageObjectsConfig.acceptCookieSelector);            
+        }
     })
 
     afterEach(async () => {
@@ -28,13 +32,13 @@ describe('Test Home Page Scenario', () => {
 
     test('Does it contains correct header text', async () => {
         expect(await page.innerText(pageObjectsConfig.homePageHeaderSelector)).toEqual(pageObjectsConfig.homePageHeaderText);
-       
+
     })
 
     test('Does Search and Sign in link appear on header', async () => {
         expect(await page.innerText(pageObjectsConfig.searchLinkSelector)).toEqual(pageObjectsConfig.searchLinkText);
         expect(await page.innerText(pageObjectsConfig.signinLinkSelector)).toEqual(pageObjectsConfig.signinLinkText);
-       
+
     })
 
     test('Does it navigate to accessibility page once click on Accessibility link', async () => {
@@ -54,14 +58,16 @@ describe('Test Home Page Scenario', () => {
     })
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
+        await page.goto(autoTestConfig.url)
+        await page.waitForTimeout(pageTimeOut.delay);
         await page.click(pageObjectsConfig.marinedataportalLinkSelector);
         page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-        expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector,"title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
+        expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector, "title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
         expect(await page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);
-    }) 
+    })
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
-        await page.click(pageObjectsConfig.ukhydrographicLinkSelector);        
+        await page.click(pageObjectsConfig.ukhydrographicLinkSelector);
         page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
         expect(await page.innerText(pageObjectsConfig.ukhoFooterPageSelector)).toEqual(pageObjectsConfig.ukhoFooterTitle);
         expect(page.url()).toEqual(pageObjectsConfig.ukhoFooterUrl);
@@ -69,12 +75,12 @@ describe('Test Home Page Scenario', () => {
 
     test('Does it contains correct Copyright text', async () => {
         expect(await page.innerText(pageObjectsConfig.copyrightTextSelector)).toEqual("© Crown copyright " + new Date().getFullYear() + " UK Hydrographic Office");
-       
+
     })
 
-    test('Does it contains correct body text', async () => {        
+    test('Does it contains correct body text', async () => {
         expect(await page.innerText(pageObjectsConfig.homePageBodySelector)).toEqual(pageObjectsConfig.homePageBodyText);
-       
+
     })
 
-}) 
+})

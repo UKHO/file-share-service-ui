@@ -29,6 +29,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/accessibility/accessibility.module').then(m => m.AccessibilityModule)
   },
   {
+   path: 'logout',
+   loadChildren: () => import('./features/fss-sso-logout/fss-sso-logout.module').then(m => m.FssSsoLogoutModule) 
+  },
+  {
     path: '**',
     redirectTo: '',
     pathMatch: 'full'
