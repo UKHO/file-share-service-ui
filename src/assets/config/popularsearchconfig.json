@@ -16,16 +16,6 @@
                 "isDynamicValue": true,
                 "value": "this.getDateBeforeNDays(7,0,0)"
             }
-        ],
-        "rowGroupings": [
-            {
-                "startIndex": 0,
-                "endIndex": 1
-            },
-            {
-                "startIndex": 0,
-                "endIndex": 2
-            }
         ]
     },
     "batchespublishedfrom7to14days": {
@@ -56,10 +46,10 @@
         "rowGroupings": [
             {
                 "startIndex": 0,
-                "endIndex": 1
+                "endIndex": 2
             },
             {
-                "startIndex": 0,
+                "startIndex": 1,
                 "endIndex": 2
             }
         ]

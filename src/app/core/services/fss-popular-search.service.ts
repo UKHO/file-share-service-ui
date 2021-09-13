@@ -25,7 +25,7 @@ export class FssPopularSearchService {
       if (popularSearchRow.isDynamicValue) {
         var value = eval(popularSearchRow.value);
         if (fieldDataType === 'date') {
-          var dateTime = this.getDateTime(value, fssSearchRow);
+          var dateTime = this.getDateTime(value);
           fssSearchRow.value = dateTime[0];
           fssSearchRow.time = dateTime[1];
         }
@@ -47,7 +47,7 @@ export class FssPopularSearchService {
     return date;
   }
 
-  getDateTime(value: any, fssSearchRow: FssSearchRow) {
+  getDateTime(value: any) {
     var date = value.toLocaleDateString('fr-CA');
     var time = value.toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
     return [date, time]
