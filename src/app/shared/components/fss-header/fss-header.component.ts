@@ -17,7 +17,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   userName: string = "";
   @Output() isPageOverlay = new EventEmitter<boolean>();
 
-  skipToContent:string = "";
+  skipToContent: string = "";
   firstName: string = '';
   lastName: string = '';
   isActive: boolean = false;
@@ -31,8 +31,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.handleSignIn();
-    this.setSkipToContent(); 
-    
+    this.setSkipToContent();
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -41,12 +40,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         this.isPageOverlay.emit(true);
       });
 
-      this.msalBroadcastService.inProgress$.pipe(
-        filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
-        .subscribe(() => {
-          this.isPageOverlay.emit(true);
-        })
-       
+    this.msalBroadcastService.inProgress$.pipe(
+      filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
+      .subscribe(() => {
+        this.isPageOverlay.emit(true);
+      })
+
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None))
@@ -54,20 +53,20 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         this.isPageOverlay.emit(false);
         this.handleSigninAwareness();
       });
-    
+
     this.title = AppConfigService.settings["fssConfig"].fssTitle;
     this.logoImgUrl = "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg";
     this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
     this.logoLinkUrl = "https://www.admiralty.co.uk/";
-    
+
     this.menuItems = [
       {
         title: 'Search',
         clickAction: (() => {
-          if(this.authOptions?.isSignedIn()){
-            this.route.navigate(["search"]) 
+          if (this.authOptions?.isSignedIn()) {
+            this.route.navigate(["search"])
           }
-          if(!this.authOptions?.isSignedIn()){
+          if (!this.authOptions?.isSignedIn()) {
             this.logInPopup();
           }
         }),
@@ -91,7 +90,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     ).subscribe((event: any) => { this.skipToContent = `${event.url}#mainContainer`; });
   }
 
-  handleActiveTab(){
+  handleActiveTab() {
     this.menuItems.find(mt => mt.title === 'Search')!.navActive = this.isActive;
   }
 
@@ -111,31 +110,22 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   }
 
   handleSignIn() {
-    this.route.events.pipe (
+    this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => { const url = `${event.url}`
-      if(url.includes('search')){
-        if(!this.authOptions?.isSignedIn()){
+    ).subscribe((event: any) => {
+      const url = `${event.url}`
+      if (url.includes('search')) {
+        if (!this.authOptions?.isSignedIn()) {
           this.route.navigate(['']);
           this.isActive = false;
           this.handleActiveTab()
         }
-        else{
+        else {
           this.isActive = true;
           this.handleActiveTab()
         }
       }
-  });
-  }
-
-  logout(){
-    this.fileShareApiService.clearCookies().subscribe(res=>{
-      console.log(res);
     });
-    this.msalService.logout();
-    this.isActive = false;
-    localStorage.clear();
-    this.analyticsService.login();
   }
 
   /** Extract claims of user once user is Signed in */
@@ -147,7 +137,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     {
       signInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { this.logout(); }),
+      signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
@@ -168,8 +158,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     const date = new Date()
     const account = this.msalService.instance.getAllAccounts()[0];
     if (account != null) {
-      this.getClaims(account.idTokenClaims);
-      if (localStorage['claims'] != null) {
+      if (localStorage['claims'] !== undefined) {
+        this.getClaims(account.idTokenClaims);
         const claims = JSON.parse(localStorage['claims']);
         if (this.userName == claims['given_name']) {
           this.msalService.instance.setActiveAccount(account);
