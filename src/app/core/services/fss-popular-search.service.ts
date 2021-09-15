@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Field, FssSearchRow, Operator } from '../models/fss-search-types';
+import { Field, FssSearchRow, Operator, RowGrouping } from '../models/fss-search-types';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +8,8 @@ export class FssPopularSearchService {
 
   constructor() { }
 
-  getSearchQuery(fssSearchRows: FssSearchRow[], popularSearch: any, operators: Operator[]) {
-    console.log("Before Value change", fssSearchRows, popularSearch);
+  populateQueryEditor(fssSearchRows: FssSearchRow[], popularSearch: any, operators: Operator[], rowGroupings: RowGrouping[]) {
+    console.log("Before Value change", fssSearchRows, popularSearch, rowGroupings);
     for (let rowIndex = 0; rowIndex < fssSearchRows.length; rowIndex++) {
       var popularSearchRow = popularSearch.rows[rowIndex];
       var fssSearchRow = fssSearchRows[rowIndex];
@@ -37,7 +37,15 @@ export class FssPopularSearchService {
         fssSearchRow.value = popularSearchRow.value;
       }
     }
-    console.log("After Value change", fssSearchRows, popularSearch);
+    if(popularSearch.rowGroupings !== undefined){
+      for(let rowGroup = 0; rowGroup < popularSearch.rowGroupings.length; rowGroup++){
+        rowGroupings.push({
+          startIndex: popularSearch.rowGroupings[rowGroup]['startIndex'],
+          endIndex: popularSearch.rowGroupings[rowGroup]['endIndex']
+        });
+      }
+    }
+    console.log("After Value change", fssSearchRows, popularSearch, rowGroupings);
   }
 
   getDateBeforeNDays(nDays:number, startHour:any, startMinutes:any){
