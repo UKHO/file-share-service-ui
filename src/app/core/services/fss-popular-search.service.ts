@@ -54,6 +54,14 @@ export class FssPopularSearchService {
     var date = new Date(currentDate - startDate)
     return date;
   }
+ 
+  getWeekNumber(currentDate: any) {
+    currentDate = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()));
+    currentDate.setUTCDate(currentDate.getUTCDate() + 4 - (currentDate.getUTCDay()||7));
+    var startYear: any = new Date(Date.UTC(currentDate.getUTCFullYear(),0,1));
+    var weekNumber = Math.ceil((( (currentDate - startYear) / 86400000) + 1)/7);
+    return weekNumber;
+  }
 
   getDateTime(value: any) {
     var date = value.toLocaleDateString('fr-CA');

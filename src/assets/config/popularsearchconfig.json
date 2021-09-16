@@ -53,5 +53,17 @@
                 "endIndex": 2
             }
         ]
-    }
+    },
+    "currentweekfiles": {
+        "displayName": "Current Week Number Files",
+        "isActive": true,
+        "rows": [
+            {
+                "field": "$batch('Week Number')",
+                "operator": "eq",
+                "isDynamicValue": true,
+                "value": "this.getWeekNumber(new Date())"
+            }
+        ]
+    }    
 }
