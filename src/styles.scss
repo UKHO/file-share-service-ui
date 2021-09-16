@@ -209,8 +209,12 @@ button{
 		}
 	}
 	&.backToEditor i{
+		color: #09315b;
 		position: relative;
 		top:2px;
+	}
+	&.backToEditor, &.backToEditor:hover{
+		color: #09315b;
 	}
 }}
 

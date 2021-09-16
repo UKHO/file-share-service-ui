@@ -415,7 +415,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   getPopularSearch(popularSearch: any) {
-    this.displayQueryEditor = false;
+    // this.displayQueryEditor = false;
     this.rowGroupings = [];
     this.setupGrouping();
     this.fssSearchRows = [];

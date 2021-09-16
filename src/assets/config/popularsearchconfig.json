@@ -59,7 +59,7 @@
         "isActive": true,
         "rows": [
             {
-                "field": "$batch('Week Number')",
+                "field": "$batch(Week Number)",
                 "operator": "eq",
                 "isDynamicValue": true,
                 "value": "this.getWeekNumber(new Date())"
