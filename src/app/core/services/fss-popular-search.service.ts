@@ -55,12 +55,18 @@ export class FssPopularSearchService {
     return date;
   }
  
-  getWeekNumber(currentDate: any) {
-    currentDate = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()));
-    currentDate.setUTCDate(currentDate.getUTCDate() + 4 - (currentDate.getUTCDay()||7));
-    var startYear: any = new Date(Date.UTC(currentDate.getUTCFullYear(),0,1));
-    var weekNumber = Math.ceil((( (currentDate - startYear) / 86400000) + 1)/7);
-    return weekNumber;
+  getWeekNumber(date: any) {
+      date = new Date(date.valueOf());
+      var dayNumber = (date.getDay() + 3) % 7;
+      date.setDate(date.getDate() - dayNumber - 3);
+      var firstThursday = date.valueOf();
+      date.setMonth(0, 1);
+      if (date.getDay() !== 4)
+        {
+       date.setMonth(0, 1 + ((4 - date.getDay()) + 7) % 7);
+         }
+      var weekNumber = 1 + Math.ceil((firstThursday - date) / 604800000);    
+      return weekNumber;
   }
 
   getDateTime(value: any) {
