@@ -77,6 +77,10 @@ ukho-phase-banner.phasebanner {
 		// padding-left: 30px;
 		margin-bottom: 20px;
 	}	
+	h3 {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
 }
 
 .querytable {
@@ -129,7 +133,7 @@ table.cdk-table th, table.cdk-table td{
 	display: flex;
 	flex-direction: row;
 	margin-bottom: 10px;
-	padding: 0 35px;
+	padding: 0 42px;
 	strong {
 		cursor: pointer;
 	}
@@ -188,7 +192,8 @@ table.cdk-table th, table.cdk-table td{
 
 
 button{
-	&.delete, &.delete:hover, &.addNewLine, &.addNewLine:hover, &.loginAction, &.loginAction:hover {
+	&.delete, &.delete:hover, &.addNewLine, &.addNewLine:hover, &.loginAction, &.loginAction:hover, &.popular-search,
+	&.popular-search:hover {
 		background: #fff;
     	border: none;
     	min-width: auto;
@@ -269,6 +274,17 @@ ukho-textinput.text-input-wrap .error-text{
 		background: url(/assets/images/UKHO-17-AW-0005-Web.jpg) center center;
 	}
 }
+}
+
+.SearchBatch{
+	cursor: pointer;
+	width: 25%;
+	.popular-search-para{
+		margin-bottom: 20px;
+		button{
+			float: right;
+		}
+	}
 }
 
 .system-attribute-table

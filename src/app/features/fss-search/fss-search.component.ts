@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FssSearchService } from './../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails, GroupingLevel, UIGrouping } from './../../core/models/fss-search-types';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
@@ -9,6 +9,7 @@ import { MsalService } from '@azure/msal-angular';
 import { FssSearchHelperService } from '../../core/services/fss-search-helper.service';
 import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
+import { FssPopularSearchService } from '../../core/services/fss-popular-search.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
 
 
@@ -41,7 +42,6 @@ export class FssSearchComponent implements OnInit {
   typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
   selectedRow: number;
   userLocalTimeZone = this.getLocalTimeFormat();
-  valueInputForm: FormControl;
   pageRecordCount: number = 10;
   searchResultTotal: number;
   pagingLinks: any = [];
@@ -49,12 +49,14 @@ export class FssSearchComponent implements OnInit {
   currentPage: number = 0;
   paginatorLabel: string;
   loginErrorDisplay: boolean = false;
-  uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();  
+  uiGroupingDetails: UIGroupingDetails = new UIGroupingDetails();
   currentGroupStartIndex: number = 0;
   currentGroupEndIndex: number = 0;
   rowGroupings: RowGrouping[] = [];
   groupingLevels: GroupingLevel[] = [];
   uiGroupings: UIGrouping[] = [];
+  displayQueryEditor: boolean = true;
+  displaySearchBatchWeekFiles: boolean = false;
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   constructor(private fssSearchTypeService: IFssSearchService,
     private fssSearchFilterService: FssSearchFilterService,
@@ -64,6 +66,7 @@ export class FssSearchComponent implements OnInit {
     private fssSearchHelperService: FssSearchHelperService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
+    private fssPopularSearchService: FssPopularSearchService,
     private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
@@ -124,7 +127,6 @@ export class FssSearchComponent implements OnInit {
 
   getDefaultSearchRow() {
     var fssSearchRow = new FssSearchRow();
-    this.valueInputForm = new FormControl();
     fssSearchRow.joinOperators = this.joinOperators;
     fssSearchRow.fields = this.fields;
     fssSearchRow.operators = this.operators.filter(operator => operator.supportedDataTypes.includes("string"));
@@ -132,13 +134,13 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.selectedJoinOperator = this.joinOperators[0].value;
     fssSearchRow.selectedField = this.fields[0].value;
     fssSearchRow.selectedOperator = this.operators[0].value;
-    fssSearchRow.value = '';
+    fssSearchRow.value = "";
     fssSearchRow.valueType = 'text';
     fssSearchRow.isValueHidden = false;
     fssSearchRow.rowId = this.rowId;
     fssSearchRow.time = "";
-    fssSearchRow.valueFormControl = this.valueInputForm
-    fssSearchRow.valueFormControlTime = this.valueInputForm
+    fssSearchRow.valueFormControl = new FormControl();
+    fssSearchRow.valueFormControlTime = new FormControl();
     fssSearchRow.fieldFormControl = new FormControl();
     fssSearchRow.filterFn = this.typeaheadFields;
     return fssSearchRow;
@@ -149,10 +151,10 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSearchRowDeleted(rowId: number) {
-    var deleteRowIndex = this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId);    
+    var deleteRowIndex = this.fssSearchRows.findIndex(fsr => fsr.rowId === rowId);
     this.fssSearchRows.splice(deleteRowIndex, 1);
     //Reset rowGroupings on search row deletion
-    this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);    
+    this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);
     this.setupGrouping();
     this.analyticsService.SearchRowDeleted();
   }  
@@ -161,7 +163,7 @@ export class FssSearchComponent implements OnInit {
     if (this.fssSearchValidatorService.validateSearchInput(this.fssSearchRows, this.fields, this.operators)) {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
-        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows,this.rowGroupings);
+        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows, this.rowGroupings);
         console.log(filter);
         if (filter != null) {
           this.searchResult = [];
@@ -358,18 +360,18 @@ export class FssSearchComponent implements OnInit {
         "Groups can not intersect each other.",
         "A group can only contain complete groups, they cannot contain a part of another group."
       );
-    }   
-    else {       
-      this.addGrouping();       
+    }
+    else {
+      this.addGrouping();
       this.setupGrouping();
     }
     this.analyticsService.GroupAdded();
   }
 
   isGroupAlreadyExist() {
-    var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));   
+    var grouping = this.rowGroupings.find(g => (g.startIndex === this.currentGroupStartIndex && g.endIndex === this.currentGroupEndIndex));
     return grouping !== undefined ? true : false;
-  }  
+  }
 
   isGroupIntersectWithOther() {
     return (this.rowGroupings.find(g => (this.currentGroupStartIndex < g.startIndex &&
@@ -380,15 +382,15 @@ export class FssSearchComponent implements OnInit {
         this.currentGroupEndIndex > g.endIndex)) !== undefined)
   }
 
-  addGrouping(){
-    this.rowGroupings.push({        
-      startIndex: this.currentGroupStartIndex, 
+  addGrouping() {
+    this.rowGroupings.push({
+      startIndex: this.currentGroupStartIndex,
       endIndex: this.currentGroupEndIndex
     });
   }
 
-  setupGrouping(){
-    this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings,this.fssSearchRows);
+  setupGrouping() {
+    this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings, this.fssSearchRows);
   }
 
   onGroupDeleted(grouping: any) { 
@@ -417,5 +419,22 @@ export class FssSearchComponent implements OnInit {
   showTokenExpiryError(displayError: any) {
     if (displayError == true)
       this.handleResError();
+  }
+
+  goToSearchEditor(){
+    window.location.reload();
+  }
+
+  getPopularSearch(popularSearch: any) {
+    // this.displayQueryEditor = false;
+    this.fssSearchRows = [];
+    this.fssSearchRows.push(this.getDefaultSearchRow());
+    for (let i = 0; i < popularSearch.rows.length; i++) {
+      if (this.fssSearchRows[i] === undefined) {
+        this.addSearchRow();
+      }
+    }
+    this.fssPopularSearchService.getSearchQuery(this.fssSearchRows, popularSearch, this.operators);
+    this.getSearchResult();
   }
 }
