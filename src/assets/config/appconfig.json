@@ -1,9 +1,11 @@
 {
+  "Environment": "",
+  "GoogleTagManagerId":"Not-Needed-For-Running-Locally",
   "b2cConfig": {
     "tenantName": "",
     "clientId": "",
     "redirectUri": "/",
-    "postLogoutRedirectUri": "/",
+    "postLogoutRedirectUri": "/logout.html",
     "navigateToLoginRequestUrl": true,
     "signUpSignIn": "B2C_1A_SignIn_SPA",
     "editProfile": "B2C_1A_UserProfile",

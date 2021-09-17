@@ -8,6 +8,23 @@ variable "resource_group_name" {
   default = "fss-ui"
 }
 
+variable "allowed_ips" {
+  type = list
+
+  }
+
+variable "spoke_rg" {
+  type = string
+}
+
+variable "spoke_vnet_name" {
+  type = string
+}
+
+variable "spoke_subnet_name" {
+  type = string
+}
+
 locals {
   env_name				= lower(terraform.workspace)
   service_name			= "fss"
@@ -19,4 +36,20 @@ locals {
     CALLOUT_TEAM     = "On-Call_N/A"
     COST_CENTRE      = "P4052"
   }
+}
+
+variable "agent_rg" {
+  type = string
+}
+
+variable "agent_vnet_name" {
+  type = string
+}
+
+variable "agent_subnet_name" {
+  type = string
+}
+
+variable "agent_subscription_id" {
+  type = string
 }

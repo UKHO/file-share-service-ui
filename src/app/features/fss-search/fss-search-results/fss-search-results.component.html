@@ -1,17 +1,31 @@
-<div class="result-margin" *ngFor="let batch of searchResultVM">  
+<div class="result-margin" *ngFor="let batch of searchResultVM">
   <ukho-card>
-    <table class="attribute-table">  
-      <caption class="sr-only">Batch Attributes</caption>       
+    <table class="attribute-table">
+      <caption class="sr-only">Batch Attributes</caption>
       <tr>
         <th *ngFor="let attribute of batch.batchAttributes">{{attribute.key}}</th>
       </tr>
       <tr>
-        <td *ngFor="let attribute of batch.batchAttributes">{{attribute.value}}</td>                               
+        <td *ngFor="let attribute of batch.batchAttributes">{{attribute.value}}</td>
       </tr>
     </table>
-    <ukho-expansion heading="Choose files to Download" [alignHeadingRight]=true [initialExpanded] = false>              
-      <ukho-table  [displayedColumns]="batch.batchFileDetails.columnData" [dataSource]="batch.batchFileDetails.rowData"></ukho-table>         
+
+    <ukho-expansion heading="Choose files to Download" [alignHeadingRight]=true [initialExpanded]=false>
+      <table class="system-attribute-table">
+        <caption class="sr-only">System Attributes</caption>
+        <tr>
+          <th>{{batch.BatchID.key}}</th>
+          <th>{{batch.BatchPublishedDate.key}}</th>
+          <th>{{batch.ExpiryDate.key}}</th>
+        </tr>
+        <tr>
+          <td>{{batch.BatchID.value| uppercase}}</td>
+          <td>{{batch.BatchPublishedDate.value| date:'dd/MM/yyyy HH:mm'}}</td>
+          <td>{{batch.ExpiryDate.value| date:'dd/MM/yyyy HH:mm'}}</td>
+        </tr>
+      </table>
+      <ukho-table [displayedColumns]="batch.batchFileDetails.columnData" [dataSource]="batch.batchFileDetails.rowData">
+      </ukho-table>
     </ukho-expansion>
-  </ukho-card> 
+  </ukho-card>
 </div>
-  

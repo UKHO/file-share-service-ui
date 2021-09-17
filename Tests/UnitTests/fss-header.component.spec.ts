@@ -10,13 +10,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { Router } from '@angular/router';
 import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
+import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 
 describe('FssHeaderComponent', () => {
   let component: FssHeaderComponent;
   let msalService: MsalService;
   let route:Router;
   let msalBroadcastServie:MsalBroadcastService;
-  let fileShareApiService: FileShareApiService
+  let fileShareApiService: FileShareApiService;
+  let analyticsService: AnalyticsService
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -28,7 +30,12 @@ describe('FssHeaderComponent', () => {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory       
         },
-         MsalService],
+        {
+          provide: "googleTagManagerId",
+          useValue: "YOUR_GTM_ID"       
+        },
+         MsalService,
+         AnalyticsService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
     AppConfigService.settings = { 
@@ -67,19 +74,19 @@ describe('FssHeaderComponent', () => {
   });
 
   test('should exist', () => {
-    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService);
+    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService,analyticsService);
     component.ngOnInit();
     expect(component).toBeDefined();
   });
 
   test('should exist the title in header', () => {
-    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService);
+    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService,analyticsService);
     component.ngOnInit();
     expect(component.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist Search menu item in header', () => {
-    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService);
+    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService,analyticsService);
     component.ngOnInit();
     expect(component.menuItems.length).toEqual(1);
     expect(component.menuItems[0].title).toEqual("Search");
