@@ -70,4 +70,8 @@ export class FssSearchRowComponent implements OnChanges {
       this.enableGrouping= false;
     }   
   }
+  get totalRowsSearchRow(): number {
+    return this.fssSearchRows.length;
+  }
 }
+

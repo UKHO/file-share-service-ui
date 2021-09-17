@@ -114,6 +114,13 @@ export class FssSearchComponent implements OnInit {
   addSearchRow() {
     this.fssSearchRows.push(this.getDefaultSearchRow());
     this.rowId += 1;
+    setTimeout(() => {
+      var inputs = this.elementRef.nativeElement.querySelectorAll('.ukhoTypeahead ukho-textinput input');
+      if (this.fssSearchRows.length > 1) {
+        inputs[this.fssSearchRows.length-1].focus();
+      }
+    },0 );
+
     this.setupGrouping();
     this.analyticsService.SearchRowAdded();
   }
