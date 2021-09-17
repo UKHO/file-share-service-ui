@@ -90,7 +90,7 @@ describe('FssSearchFilterService', () => {
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean,time: string) {
   var row = new FssSearchRow();
   row.rowId = rowId;
-  row.fields = fields,
+  row.fields = fields;
   row.operators = operators;
   row.selectedJoinOperator = joinOperator;
   row.selectedField = field;

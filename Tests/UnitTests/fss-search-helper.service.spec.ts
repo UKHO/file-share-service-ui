@@ -26,14 +26,12 @@ describe('FssSearchHelperService', () => {
   test('should return false as endswith operator does not exists for BatchExpiryDate', () => {
     let searchRow: FssSearchRow//[];// = [];
     searchRow = createSearchRow(1, getFields(), getOperators(), 'AND', 'BatchExpiryDate', 'endswith', 'adds', 'date', false);
-    console.log('searchRow' + searchRow);
     expect(service.isOperatorExist(searchRow)).toEqual(false);
   });
 
   test('should return true as endswith operator exists for BatchExpiryDate', () => {
     let searchRow: FssSearchRow//[];// = [];
     searchRow = createSearchRow(1, getFields(), getOperators(), 'AND', 'BatchExpiryDate', 'eq', 'adds', 'date', false);
-    console.log('searchRow' + searchRow);
     expect(service.isOperatorExist(searchRow)).toEqual(true);
   });
 
@@ -117,8 +115,8 @@ export function getOperators() {
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean) {
   var row = new FssSearchRow();
   row.rowId = rowId;
-  row.fields = fields,
-    row.operators = operators;
+  row.fields = fields;
+  row.operators = operators;
   row.selectedJoinOperator = joinOperator;
   row.selectedField = field;
   row.selectedOperator = operator;

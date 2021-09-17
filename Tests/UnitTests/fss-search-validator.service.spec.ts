@@ -15,8 +15,8 @@ describe('FssSearchValidatorService', () => {
         provide: "googleTagManagerId",
         useValue: "YOUR_GTM_ID"
       },
-      AnalyticsService]
-    }) .compileComponents();
+        AnalyticsService]
+    }).compileComponents();
     AppConfigService.settings = {
       fssConfig: {
         "apiUrl": "https://dummyfssapiurl "
@@ -35,7 +35,6 @@ describe('FssSearchValidatorService', () => {
     let frmControl = new FormControl();
     let formControlTime = new FormControl();
     searchRows.push(createSearchRow(2, getFields(), getOperators(), 'OR', 'FileSize', 'eq', '', 'tel', false, frmControl, formControlTime, ''));
-    console.log(searchRows);
     service.validateValueFormControl(searchRows, getFields(), getOperators());
     expect(searchRows[0].valueFormControl.touched).toEqual(true);
   });
@@ -49,7 +48,6 @@ describe('FssSearchValidatorService', () => {
     let frmControl = new FormControl();
     let formControlTime = new FormControl();
     searchRows.push(createSearchRow(2, getFields(), getOperators(), 'OR', 'ExpiryDate', 'eq', '', 'date', false, frmControl, formControlTime, ''));
-    console.log(searchRows);
     service.validateValueFormControl(searchRows, getFields(), getOperators());
     expect(searchRows[0].valueFormControl.touched).toEqual(true);
   });
@@ -65,8 +63,8 @@ describe('FssSearchValidatorService', () => {
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean, formControl: FormControl, formControlTime: FormControl, time: string) {
   var row = new FssSearchRow();
   row.rowId = rowId;
-  row.fields = fields,
-    row.operators = operators;
+  row.fields = fields;
+  row.operators = operators;
   row.selectedJoinOperator = joinOperator;
   row.selectedField = field;
   row.selectedOperator = operator;
