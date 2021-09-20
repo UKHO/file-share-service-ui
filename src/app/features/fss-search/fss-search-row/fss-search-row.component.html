@@ -31,7 +31,7 @@
                 </ukho-select>
             </td>
             <td width="25%">
-                <ukho-typeahead [label]="label" [FormControl]="fssSearchRow.fieldFormControl" [showResultsOnInitialFocus]="true"
+                <ukho-typeahead class="ukhoTypeahead" [label]="label" [FormControl]="fssSearchRow.fieldFormControl" [showResultsOnInitialFocus]="true"
                 [filterFn]="fssSearchRow.filterFn" (valueChanged)="onFieldChange($event, fssSearchRow.rowId)"></ukho-typeahead>
             </td>
             <td width="20%">
@@ -58,3 +58,4 @@
         </tr>
     </tbody>
 </table>
+<span aria-live="polite" class="sr-only">Showing 1 to {{totalRowsSearchRow}} Rows </span>
