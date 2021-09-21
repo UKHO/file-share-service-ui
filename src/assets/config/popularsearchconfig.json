@@ -55,7 +55,7 @@
         ]
     },
     "currentweekfiles": {
-        "displayName": "Current Week Number Files",
+        "displayName": "Current Week Files",
         "isActive": true,
         "rows": [
             {
