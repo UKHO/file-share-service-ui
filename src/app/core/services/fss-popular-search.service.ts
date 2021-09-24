@@ -58,7 +58,7 @@ export class FssPopularSearchService {
   getWeekNumber(date: any) {
       date = new Date(date.valueOf());
       var dayNumber = (date.getDay() + 3) % 7;
-      date.setDate(date.getDate() - dayNumber - 3);
+      date.setDate(date.getDate() - dayNumber);
       var firstThursday = date.valueOf();
       date.setMonth(0, 1);
       if (date.getDay() !== 4)
@@ -67,6 +67,16 @@ export class FssPopularSearchService {
          }
       var weekNumber = 1 + Math.ceil((firstThursday - date) / 604800000);    
       return weekNumber;
+  }
+
+  getYear(date:any){
+    date = new Date(date.valueOf());
+    var year = date.getFullYear();
+    var weekNumber = this.getWeekNumber(date);
+    if(date.getMonth() == 0 && weekNumber >= 52){
+      year = year - 1;
+    }
+    return year;
   }
 
   getDateTime(value: any) {

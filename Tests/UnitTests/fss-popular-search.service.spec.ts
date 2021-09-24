@@ -57,6 +57,20 @@ describe('FssPopularSearchService', () => {
         expect(result).toEqual(expectedResult);
       });
 
+      test('should return Year 2020 when date passed is 2021-01-01 and week number is 53', () => {
+        var expectedResult: any = 2020;
+        var result = service.getYear(new Date("2021-01-01"));
+        console.log(result);
+        expect(result).toEqual(expectedResult);
+      });
+
+      test('should return Year 2021 when date passed is 2021-01-07 and week number is 1', () => {
+        var expectedResult: any = 2021;
+        var result = service.getYear(new Date("2021-01-07"));
+        console.log(result);
+        expect(result).toEqual(expectedResult);
+      });
+
 });
 
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean) {

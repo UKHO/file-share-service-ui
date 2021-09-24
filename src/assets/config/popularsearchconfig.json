@@ -65,5 +65,24 @@
                 "value": "this.getWeekNumber(new Date())"
             }
         ]
+    },
+    "currentyearfiles": {
+        "displayName": "Current Year Files",
+        "isActive": true,
+        "rows": [
+            {
+                "field": "$batch(Week Number)",
+                "operator": "eq",
+                "isDynamicValue": true,
+                "value": "this.getWeekNumber(new Date('2021-01-01'))"
+            },
+            {
+                "andOr": "and",
+                "field": "$batch(Year)",
+                "operator": "eq",
+                "isDynamicValue": true,
+                "value": "this.getYear(new Date('2021-01-01'))"
+            }
+        ]
     }    
 }
