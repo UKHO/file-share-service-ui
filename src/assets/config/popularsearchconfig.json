@@ -66,8 +66,8 @@
             }
         ]
     },
-    "currentyearfiles": {
-        "displayName": "Current Year Files",
+    "currentweekyearfiles": {
+        "displayName": "Current Week Year Files",
         "isActive": true,
         "rows": [
             {
