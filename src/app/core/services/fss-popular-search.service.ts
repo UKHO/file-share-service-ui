@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Field, FssSearchRow, Operator } from '../models/fss-search-types';
+import { Field, FssSearchRow, Operator, RowGrouping } from '../models/fss-search-types';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +8,8 @@ export class FssPopularSearchService {
 
   constructor() { }
 
-  getSearchQuery(fssSearchRows: FssSearchRow[], popularSearch: any, operators: Operator[]) {
-    console.log("Before Value change", fssSearchRows, popularSearch);
+  populateQueryEditor(fssSearchRows: FssSearchRow[], popularSearch: any, operators: Operator[], rowGroupings: RowGrouping[]) {
+    console.log("Before Value change", fssSearchRows, popularSearch, rowGroupings);
     for (let rowIndex = 0; rowIndex < fssSearchRows.length; rowIndex++) {
       var popularSearchRow = popularSearch.rows[rowIndex];
       var fssSearchRow = fssSearchRows[rowIndex];
@@ -23,15 +23,29 @@ export class FssPopularSearchService {
       fssSearchRow.valueType = this.getValueType(fieldDataType);
 
       if (popularSearchRow.isDynamicValue) {
-        popularSearchRow.value = popularSearchRow.value.replace(/^"(.*)"$/, '$1');
         var value = eval(popularSearchRow.value);
-        this.getDateTime(value, fssSearchRow);
+        if (fieldDataType === 'date') {
+          var dateTime = this.getDateTime(value);
+          fssSearchRow.value = dateTime[0];
+          fssSearchRow.time = dateTime[1];
+        }
+        else {
+          fssSearchRow.value = value;
+        }
       }
       else {
         fssSearchRow.value = popularSearchRow.value;
       }
     }
-    console.log("After Value change", fssSearchRows, popularSearch);
+    if(popularSearch.rowGroupings !== undefined){
+      for(let rowGroup = 0; rowGroup < popularSearch.rowGroupings.length; rowGroup++){
+        rowGroupings.push({
+          startIndex: popularSearch.rowGroupings[rowGroup]['startIndex'],
+          endIndex: popularSearch.rowGroupings[rowGroup]['endIndex']
+        });
+      }
+    }
+    console.log("After Value change", fssSearchRows, popularSearch, rowGroupings);
   }
 
   getDateBeforeNDays(nDays:number, startHour:any, startMinutes:any){
@@ -40,10 +54,25 @@ export class FssPopularSearchService {
     var date = new Date(currentDate - startDate)
     return date;
   }
+ 
+  getWeekNumber(date: any) {
+      date = new Date(date.valueOf());
+      var dayNumber = (date.getDay() + 3) % 7;
+      date.setDate(date.getDate() - dayNumber - 3);
+      var firstThursday = date.valueOf();
+      date.setMonth(0, 1);
+      if (date.getDay() !== 4)
+        {
+       date.setMonth(0, 1 + ((4 - date.getDay()) + 7) % 7);
+         }
+      var weekNumber = 1 + Math.ceil((firstThursday - date) / 604800000);    
+      return weekNumber;
+  }
 
-  getDateTime(value: any, fssSearchRow: FssSearchRow) {
-    fssSearchRow.value = value.toLocaleDateString('fr-CA');
-    fssSearchRow.time = value.toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
+  getDateTime(value: any) {
+    var date = value.toLocaleDateString('fr-CA');
+    var time = value.toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
+    return [date, time]
   }
 
   getFieldDataType(fieldValue: string, fields: Field[]) {

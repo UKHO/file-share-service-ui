@@ -50,6 +50,13 @@ describe('FssPopularSearchService', () => {
         expect(result).toEqual(expectedResult);
       });
 
+      test('should return week number 36 when date passed is 2021-09-15', () => {
+        var expectedResult: any = 36;
+        var result = service.getWeekNumber(new Date("2021-09-15"));
+        console.log(result);
+        expect(result).toEqual(expectedResult);
+      });
+
 });
 
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean) {

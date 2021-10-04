@@ -192,7 +192,7 @@ table.cdk-table th, table.cdk-table td{
 
 
 button{
-	&.delete, &.delete:hover, &.addNewLine, &.addNewLine:hover, &.loginAction, &.loginAction:hover, &.popular-search,
+	&.delete, &.delete:hover, &.addNewLine, &.addNewLine:hover,&.backToEditor, &.backToEditor:hover, &.loginAction, &.loginAction:hover, &.popular-search,
 	&.popular-search:hover {
 		background: #fff;
     	border: none;
@@ -205,11 +205,19 @@ button{
     	color: #000;
     	padding: 0;
 	}
-	&.addNewLine{
+	&.addNewLine,&.backToEditor{
 		font-size: 18px;
 		i{
 			padding: 0 5px 0 0;
 		}
+	}
+	&.backToEditor i{
+		color: #09315b;
+		position: relative;
+		top:2px;
+	}
+	&.backToEditor, &.backToEditor:hover{
+		color: #09315b;
 	}
 }}
 
@@ -278,7 +286,7 @@ ukho-textinput.text-input-wrap .error-text{
 
 .SearchBatch{
 	cursor: pointer;
-	width: 25%;
+	width: 35%;
 	.popular-search-para{
 		margin-bottom: 20px;
 		button{

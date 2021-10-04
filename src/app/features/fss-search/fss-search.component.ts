@@ -76,7 +76,6 @@ export class FssSearchComponent implements OnInit {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
         this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-          console.log(batchAttributeResult);
           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
           this.setFields(batchAttributeResult);
           this.displayLoader = false;
@@ -157,7 +156,7 @@ export class FssSearchComponent implements OnInit {
     this.rowGroupings = this.fssSearchGroupingService.resetRowGroupings(this.rowGroupings, deleteRowIndex);
     this.setupGrouping();
     this.analyticsService.SearchRowDeleted();
-  }  
+  }
 
   getSearchResult() {
     if (this.fssSearchValidatorService.validateSearchInput(this.fssSearchRows, this.fields, this.operators)) {
@@ -279,14 +278,12 @@ export class FssSearchComponent implements OnInit {
   }
 
   loginPopup() {
-    console.log("Enterrr");
     this.displayLoader = true;
     this.msalService.loginPopup().subscribe(response => {
       localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
       const idToken = response.idToken;
       localStorage.setItem('idToken', idToken);
       this.msalService.instance.setActiveAccount(response.account);
-      console.log("idtoken reset after expiry on sign in ")
       //refreshToken endpoint call to set the cookie after user login
       this.fileShareApiService.refreshToken().subscribe(res => {
         this.displayLoader = false;
@@ -318,7 +315,6 @@ export class FssSearchComponent implements OnInit {
         );
       }
       else if (paginatorAction === "prev") {
-        console.log(this.pagingLinks!);
         var previousPageLink = this.pagingLinks!.previous!.href;
         this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
           this.searchResult = res;
@@ -393,11 +389,11 @@ export class FssSearchComponent implements OnInit {
     this.uiGroupingDetails = this.fssSearchGroupingService.resetGroupingDetails(this.rowGroupings, this.fssSearchRows);
   }
 
-  onGroupDeleted(grouping: any) { 
-    this.rowGroupings.splice(this.rowGroupings.findIndex(r => 
-      r.startIndex === grouping.rowGrouping.startIndex && 
-      r.endIndex === grouping.rowGrouping.endIndex),1);  
-    this.setupGrouping();  
+  onGroupDeleted(grouping: any) {
+    this.rowGroupings.splice(this.rowGroupings.findIndex(r =>
+      r.startIndex === grouping.rowGrouping.startIndex &&
+      r.endIndex === grouping.rowGrouping.endIndex), 1);
+    this.setupGrouping();
     this.analyticsService.GroupDeleted();
   }
 
@@ -421,20 +417,20 @@ export class FssSearchComponent implements OnInit {
       this.handleResError();
   }
 
-  goToSearchEditor(){
+  goToSearchEditor() {
     window.location.reload();
   }
 
   getPopularSearch(popularSearch: any) {
     // this.displayQueryEditor = false;
+    this.rowGroupings = [];
+    this.setupGrouping();
     this.fssSearchRows = [];
-    this.fssSearchRows.push(this.getDefaultSearchRow());
     for (let i = 0; i < popularSearch.rows.length; i++) {
-      if (this.fssSearchRows[i] === undefined) {
-        this.addSearchRow();
-      }
+      this.addSearchRow();
     }
-    this.fssPopularSearchService.getSearchQuery(this.fssSearchRows, popularSearch, this.operators);
+    this.fssPopularSearchService.populateQueryEditor(this.fssSearchRows, popularSearch, this.operators, this.rowGroupings);
+    this.setupGrouping();
     this.getSearchResult();
   }
 }
