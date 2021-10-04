@@ -80,6 +80,8 @@ export class FssPopularSearchService {
   }
 
   getDateTime(value: any) {
+    //  Providing a date value to html to display, it should be in 'YYYY-MM-DD' format
+    //  French Canadian format uses that particular format.
     var date = value.toLocaleDateString('fr-CA');
     var time = value.toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
     return [date, time]
