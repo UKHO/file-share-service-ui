@@ -58,7 +58,7 @@ export class FssPopularSearchService {
   getWeekNumber(date: any) {
       date = new Date(date.valueOf());
       var dayNumber = (date.getDay() + 3) % 7;
-      date.setDate(date.getDate() - dayNumber - 3);
+      date.setDate(date.getDate() - dayNumber);
       var firstThursday = date.valueOf();
       date.setMonth(0, 1);
       if (date.getDay() !== 4)
@@ -69,7 +69,19 @@ export class FssPopularSearchService {
       return weekNumber;
   }
 
+  getYear(date:any){
+    date = new Date(date.valueOf());
+    var year = date.getFullYear();
+    var weekNumber = this.getWeekNumber(date);
+    if(date.getMonth() == 0 && weekNumber >= 52){
+      year = year - 1;
+    }
+    return year;
+  }
+
   getDateTime(value: any) {
+    //  Providing a date value to html to display, it should be in 'YYYY-MM-DD' format
+    //  French Canadian format uses that particular format.
     var date = value.toLocaleDateString('fr-CA');
     var time = value.toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
     return [date, time]
