@@ -74,14 +74,14 @@
                 "field": "$batch(Week Number)",
                 "operator": "eq",
                 "isDynamicValue": true,
-                "value": "this.getWeekNumber(new Date('2021-01-01'))"
+                "value": "this.getWeekNumber(new Date())"
             },
             {
                 "andOr": "and",
                 "field": "$batch(Year)",
                 "operator": "eq",
                 "isDynamicValue": true,
-                "value": "this.getYear(new Date('2021-01-01'))"
+                "value": "this.getYear(new Date())"
             }
         ]
     }    
