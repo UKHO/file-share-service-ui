@@ -67,7 +67,18 @@ describe('FssPopularSearchService', () => {
       test('should return Year 2021 when date passed is 2021-01-07 and week number is 1', () => {
         var expectedResult: any = 2021;
         var result = service.getYear(new Date("2021-01-07"));
-        console.log(result);
+        expect(result).toEqual(expectedResult);
+      });
+
+      test('should return System attribute test as @BusinessUnit when value passed is BusinessUnit', () => {
+        var expectedResult: any = '@BusinessUnit';
+        var result = service.getFieldText('BusinessUnit', searchService.getFields(MockUserAttributeFields()))
+        expect(result).toEqual(expectedResult);
+      });
+
+      test('should return User attribute test as Week Number when value passed is $batch(Week Number)', () => {
+        var expectedResult: any = 'Week Number';
+        var result = service.getFieldText('$batch(Week Number)', searchService.getFields(MockUserAttributeFields()))
         expect(result).toEqual(expectedResult);
       });
 

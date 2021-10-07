@@ -11,6 +11,7 @@ import { FssSearchValidatorService } from '../../core/services/fss-search-valida
 import { FssSearchGroupingService } from '../../core/services/fss-search-grouping.service';
 import { FssPopularSearchService } from '../../core/services/fss-popular-search.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { AppConfigService } from '../../core/services/app-config.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ import { AnalyticsService } from '../../core/services/analytics.service';
 })
 export class FssSearchComponent implements OnInit {
 
+  displayPopularSearch: boolean;
   joinOperators: JoinOperator[] = [];
   fields: Field[] = [];
   operators: Operator[] = [];
@@ -67,7 +69,10 @@ export class FssSearchComponent implements OnInit {
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
     private fssPopularSearchService: FssPopularSearchService,
-    private analyticsService: AnalyticsService) { }
+    private analyticsService: AnalyticsService) { 
+      this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+      console.log(this.displayPopularSearch);
+    }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
