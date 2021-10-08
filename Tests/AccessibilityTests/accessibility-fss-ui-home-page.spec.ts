@@ -1,8 +1,7 @@
 import { chromium, Browser, Page } from 'playwright'
 import { injectAxe, getViolations} from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
-const{pageTimeOut} =require('../FunctionalTests/pageObjects.json')
-
+const{pageTimeOut, pageObjectsConfig} =require('../FunctionalTests/pageObjects.json');
 
 let browser: Browser
 let page: Page
@@ -14,6 +13,10 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
     page = await browser.newPage()
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
+    await page.waitForTimeout(pageTimeOut.delay)
+        if ((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0) {
+            await page.click(pageObjectsConfig.acceptCookieSelector);            
+        }
     await injectAxe(page)
   })
 
