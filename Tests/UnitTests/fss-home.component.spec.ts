@@ -43,7 +43,7 @@ import { PublicClientApplication } from '@azure/msal-browser';
         fixture.detectChanges();     
         const home = fixture.debugElement.query(By.css('ukho-card')).nativeElement;
         expect(home.querySelector('p').textContent).not.toBeNull();
-        expect(home.querySelector('p').textContent).toEqual('The ADMIRALTY File Share Service allows you to search and download files.');
+        expect(home.querySelector('p').textContent).toEqual('The ADMIRALTY File Share Service allows you to search for and download files.');
         });
      
       test('should render SignIn button inside ukho-card', () =>{
