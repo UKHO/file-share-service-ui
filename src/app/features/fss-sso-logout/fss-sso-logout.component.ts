@@ -20,7 +20,6 @@ export class FssSsoLogoutComponent implements OnInit {
 
   logout(){
     this.fileShareApiService.clearCookies().subscribe(res => {
-      console.log(res);
     });
     localStorage.clear();
     this.route.navigate(['']);

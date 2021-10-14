@@ -19,7 +19,6 @@ export class AppConfigService {
           this.http.get(endpoint).pipe(map(result => result))
             .subscribe(value => {
               AppConfigService.settings = value;
-              //console.log(AppConfigService.settings);
               resolve(true);
             },
             (error) => {

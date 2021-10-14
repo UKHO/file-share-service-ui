@@ -53,14 +53,12 @@ describe('FssPopularSearchService', () => {
       test('should return week number 36 when date passed is 2021-09-15', () => {
         var expectedResult: any = 36;
         var result = service.getWeekNumber(new Date("2021-09-15"));
-        console.log(result);
         expect(result).toEqual(expectedResult);
       });
 
       test('should return Year 2020 when date passed is 2021-01-01 and week number is 53', () => {
         var expectedResult: any = 2020;
         var result = service.getYear(new Date("2021-01-01"));
-        console.log(result);
         expect(result).toEqual(expectedResult);
       });
 

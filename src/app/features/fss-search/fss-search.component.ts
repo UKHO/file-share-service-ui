@@ -71,7 +71,6 @@ export class FssSearchComponent implements OnInit {
     private fssPopularSearchService: FssPopularSearchService,
     private analyticsService: AnalyticsService) { 
       this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
-      console.log(this.displayPopularSearch);
     }
 
   ngOnInit(): void {
@@ -115,15 +114,17 @@ export class FssSearchComponent implements OnInit {
     this.addSearchRow();
   }
 
-  addSearchRow() {
+  addSearchRow(isPopularSearch?: boolean) {
     this.fssSearchRows.push(this.getDefaultSearchRow());
     this.rowId += 1;
-    setTimeout(() => {
-      var inputs = this.elementRef.nativeElement.querySelectorAll('.ukhoTypeahead ukho-textinput input');
-      if (this.fssSearchRows.length > 1) {
-        inputs[this.fssSearchRows.length-1].focus();
-      }
-    },0 );
+    if(!isPopularSearch){
+      setTimeout(() => {
+        var inputs = this.elementRef.nativeElement.querySelectorAll('.ukhoTypeahead ukho-textinput input');
+        if (this.fssSearchRows.length > 1) {
+          inputs[this.fssSearchRows.length-1].focus();
+        }
+      },0 );
+    }
 
     this.setupGrouping();
     this.analyticsService.SearchRowAdded();
@@ -431,8 +432,9 @@ export class FssSearchComponent implements OnInit {
     this.rowGroupings = [];
     this.setupGrouping();
     this.fssSearchRows = [];
+    var isPopularSearch = true;
     for (let i = 0; i < popularSearch.rows.length; i++) {
-      this.addSearchRow();
+      this.addSearchRow(isPopularSearch);
     }
     this.fssPopularSearchService.populateQueryEditor(this.fssSearchRows, popularSearch, this.operators, this.rowGroupings);
     this.setupGrouping();
