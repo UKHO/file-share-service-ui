@@ -17,7 +17,7 @@
     "copyright": "@ Crown copyright 2021 UK Hydrographic office",
     "fssTitle": "File Share Service",
     "displayPopularSearch": true,
-    "phase": "alpha",
+    "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
     "apiUrl": "",
     "stateManagementApiUrl": ""
