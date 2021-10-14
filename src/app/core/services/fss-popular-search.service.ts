@@ -9,15 +9,14 @@ export class FssPopularSearchService {
   constructor() { }
 
   populateQueryEditor(fssSearchRows: FssSearchRow[], popularSearch: any, operators: Operator[], rowGroupings: RowGrouping[]) {
-    console.log("Before Value change", fssSearchRows, popularSearch, rowGroupings);
     for (let rowIndex = 0; rowIndex < fssSearchRows.length; rowIndex++) {
       var popularSearchRow = popularSearch.rows[rowIndex];
       var fssSearchRow = fssSearchRows[rowIndex];
       fssSearchRow.selectedField = popularSearchRow.field;
+      var selectedFieldText = this.getFieldText(fssSearchRow.selectedField, fssSearchRow.fields);
+      fssSearchRow.fieldFormControl.setValue(selectedFieldText);
       fssSearchRow.selectedJoinOperator = popularSearchRow.andOr;
-      fssSearchRow.group = popularSearchRow.group;
       fssSearchRow.selectedOperator = popularSearchRow.operator;
-
       var fieldDataType = this.getFieldDataType(fssSearchRow.selectedField, fssSearchRow.fields);
       fssSearchRow.operators = this.getFilteredOperators(fieldDataType, operators);
       fssSearchRow.valueType = this.getValueType(fieldDataType);
@@ -45,7 +44,6 @@ export class FssPopularSearchService {
         });
       }
     }
-    console.log("After Value change", fssSearchRows, popularSearch, rowGroupings);
   }
 
   getDateBeforeNDays(nDays:number, startHour:any, startMinutes:any){
@@ -85,6 +83,10 @@ export class FssPopularSearchService {
     var date = value.toLocaleDateString('fr-CA');
     var time = value.toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
     return [date, time]
+  }
+
+  getFieldText(fieldValue: string, fields: Field[]){
+    return fields.find(f => f.value === fieldValue)?.text!;
   }
 
   getFieldDataType(fieldValue: string, fields: Field[]) {

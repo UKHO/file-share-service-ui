@@ -46,7 +46,7 @@
                     (pageChange)="pageChange($event)">
     </ukho-paginator>    
   </div>
-  <br/>
-  <ukho-hr aria-hidden="true"></ukho-hr>
-  <app-fss-popular-search-batches (isPopularSearch)="getPopularSearch($event)"></app-fss-popular-search-batches>
+  <br *ngIf="displayPopularSearch"/>
+  <ukho-hr aria-hidden="true" *ngIf="displayPopularSearch"></ukho-hr>
+  <app-fss-popular-search-batches *ngIf="displayPopularSearch" (isPopularSearch)="getPopularSearch($event)"></app-fss-popular-search-batches>
 </div>
