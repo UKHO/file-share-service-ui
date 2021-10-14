@@ -17,7 +17,7 @@ describe('FssPhaseBannerComponent', () => {
     }).compileComponents();
     AppConfigService.settings = { 
       fssConfig:{
-        phase: 'alpha',
+        phase: 'beta',
         feedbackEmailId: 'products.feedback.dev@UKHO.gov.uk' }
       };    
   });
@@ -30,13 +30,13 @@ describe('FssPhaseBannerComponent', () => {
     expect(header).toBeFalsy();
   });
 
-  test('should render the phase-value "alpha" in ukho-phase-banner', () => {
+  test('should render the phase-value "beta" in ukho-phase-banner', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('strong').textContent).toContain(AppConfigService.settings["fssConfig"].phase);
   });
 
-  test('should render the phase-value "alpha" in ukho-phase-banner', () => {
+  test('should render the phase-value "beta" in ukho-phase-banner', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     fixture.detectChanges();
     const phase = fixture.nativeElement.querySelector('strong').textContent;
@@ -59,7 +59,7 @@ describe('FssPhaseBannerComponent', () => {
   test('should exist phase in banner', () => {
     component = new FssPhaseBannerComponent();
     component.ngOnInit();
-    expect(component.phase).toEqual('alpha');
+    expect(component.phase).toEqual('beta');
   });
 
   test('should exist mailto link in banner', () => {
