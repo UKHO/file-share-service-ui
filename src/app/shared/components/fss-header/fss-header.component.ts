@@ -158,8 +158,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     const date = new Date()
     const account = this.msalService.instance.getAllAccounts()[0];
     if (account != null) {
+      this.getClaims(account.idTokenClaims);
       if (localStorage['claims'] !== undefined) {
-        this.getClaims(account.idTokenClaims);
         const claims = JSON.parse(localStorage['claims']);
         if (this.userName == claims['given_name']) {
           this.msalService.instance.setActiveAccount(account);

@@ -15,12 +15,9 @@ export class FssHomeComponent implements OnInit {
   ngOnInit(): void {
     this.handleSignIn();
   }
+  
   Signin() {
-    this.msalService.loginPopup().subscribe(response => {
-      localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-      localStorage.setItem('idToken', response.idToken);
-      this.route.navigate(['search']);
-    });
+    document.getElementById('signInButton')?.click();
   }
 
   handleSignIn() {
