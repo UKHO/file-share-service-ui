@@ -1,8 +1,8 @@
-# file-share-service
+# file-share-service-ui
 
-The File Share Service will be the single external place for external people to download files from the UKHO. This repository provides an Angular GUI to the File Share Service.
+The File Share Service UI will be the single place for external people to download files from the UKHO. This repository provides an Angular GUI to the underlying File Share Service.
 
-# UkhoFileshareserviceUi
+## UkhoFileshareserviceUi
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.12.
 
@@ -24,13 +24,11 @@ Run `npm run test:unit` to execute the unit tests via [Jest](https://jestjs.io/)
 
 ## Running functional tests
 
-Run `npm run test:auto` to execute the functional tests via [Jest-Playwright]
-(https://www.npmjs.com/package/jest-playwright-preset).
+Run `npm run test:auto` to execute the functional tests via [Jest-Playwright](https://www.npmjs.com/package/jest-playwright-preset).
 
-## Running functional tests
+## Running accessibility tests
 
-Run `npm run test:a11y` to execute the accessibility tests via [Jest-Axe]
-(https://www.npmjs.com/package/jest-axe).
+Run `npm run test:a11y` to execute the accessibility tests via [Axe-Playwright](https://www.npmjs.com/package/axe-playwright).
 
 ## Further help
 
