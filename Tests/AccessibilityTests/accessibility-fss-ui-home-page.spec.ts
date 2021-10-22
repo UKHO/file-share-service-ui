@@ -20,15 +20,6 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
     await injectAxe(page)
   })
 
-  test('should return no violations Page Accessibility check', async () => {
-    const violations = await getViolations(page)
-    if (violations.length>0)
-    {
-      console.log(violations);
-    }
-    expect(violations.length).toBe(0);
-  })
-
   test('should return no violation for "Skip to content" anchor tag', async() =>{
     const violations  =await getViolations(page, 'a.skip-to-content-link', {
         axeOptions: {
