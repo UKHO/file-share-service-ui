@@ -12,6 +12,14 @@
     "lint": "ng lint",
     "preinstall": "npx npm-force-resolutions"
   },
+  "coverageThreshold":{
+    "global": {
+      "branches": 80,
+      "functions": 80,
+      "lines": 80,
+      "statements": 80
+    }
+  },
   "resolutions": {
     "dns-packet": "~5.2.2",
     "postcss": "~8.2.10",
@@ -65,4 +73,5 @@
     "tslint": "~6.1.0",
     "typescript": "~4.1.5"
   }
+  
 }
