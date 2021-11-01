@@ -1,7 +1,30 @@
 .accessibilitySection{
-    padding: 15px 35px 40px;
-    ul{
-      padding-left: 30px;
-      margin-bottom: 0px;
+    padding: 15px 32px;
+    color: #09315b;
+    .accessibility-heading {
+      font-size: 2.05rem;
+      line-height: 1.1111111111;
+      margin-bottom: 30px;
     }
+    .accessibility-fss-Subheading strong {
+      font-size: 24px!important;
+      line-height: 1.25;
+    }
+    ul {
+      list-style-type: disc;
+      li{
+        font-size: 17px;
+        line-height: 1.3157894737;
+        padding-right: 35px;
+        margin-bottom: 5px;
+        &:before {
+          content: "";
+        }
+      }
+    }
+     p, div {
+      font-size: 17px;
+      line-height: 1.3157894737;
+      margin-bottom: 20px;
+     }
 }
