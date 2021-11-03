@@ -47,7 +47,7 @@ export class FssSearchValidatorService {
           }
         }
         this.errorMessageTitle = "There is a problem with a field";
-        this.errorMessageDescription = "Please enter a search Field value.";
+        this.errorMessageDescription = "Please enter a search field value.";
         flag = false;
         break;
       }
