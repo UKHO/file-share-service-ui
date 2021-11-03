@@ -107,6 +107,8 @@ table{
 	}
 }
 
+
+
 .attribute-table{
     table-layout: fixed !important;		
 	th, td{
@@ -254,20 +256,7 @@ ukho-textinput.text-input-wrap{
 
 
 @media (max-width:1024px){
-	.valueTD {
-		ukho-textinput.text-input-wrap{
-		&[ng-reflect-type=date]{
-		padding-left: 5px;
-		input{
-			padding-left:5px;
-		}
-	}
-	&[ng-reflect-type="time"]{
-		width: 42%;
-		left: 6%;
-	}
- }
- }
+
 }
 
 ukho-textinput.text-input-wrap .error-text{
@@ -279,9 +268,26 @@ ukho-textinput.text-input-wrap .error-text{
 
 @media screen and (min-width:1700px){
 	ukho-footer {position: fixed;bottom: 0;width: 100%;}
+	#contentArea{
+		margin-bottom:150px ;
+	}
 }
 
 @media screen and (max-width:1024px){
+	.valueTD {
+		ukho-textinput.text-input-wrap{
+		&[ng-reflect-type=date]{
+		padding-left: 5px;
+		input{
+			padding-left:5px;
+		}
+	}
+	&[ng-reflect-type=time]{
+		width: 42%;
+		left: 6%;
+	}
+ }
+ }
 	#mainContainer {
 	.header-image {
 		height: 240px;
