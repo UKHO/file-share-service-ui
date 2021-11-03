@@ -32,10 +32,16 @@ describe('Test Search Attribute Scenario On Search Page', () => {
      await context.close()
      await browser.close()
   })
+
+  it('Verify if click search button without selecting a field value', async () => {
+    await page.click(pageObjectsConfig.searchAttributeButton);
+
+    var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
+    expect(errorMessage).toContain(pageObjectsConfig.warningMessageValue);
+  })
  
-  it('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async () => {
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);     
-    await page.fill(pageObjectsConfig.inputSearchFieldSelector,"BusinessUnit")    
+  it('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async () => { 
+    await SearchAttribute(page,"BusinessUnit"); 
      const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
     
     var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function(element, index) {
