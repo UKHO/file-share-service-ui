@@ -1,5 +1,5 @@
 <app-fss-header (isPageOverlay) = "changeOverlay($event)"></app-fss-header>
 <app-fss-phase-banner role="banner"></app-fss-phase-banner>
-<router-outlet></router-outlet>
+<div id="contentArea"><router-outlet></router-outlet></div>
 <app-fss-footer role="contentinfo"></app-fss-footer>
 <div id="overlay" [class.pageOverlay]="isOverlay"></div>
