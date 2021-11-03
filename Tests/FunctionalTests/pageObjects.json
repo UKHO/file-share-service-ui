@@ -67,7 +67,7 @@
        "paginatorSelector" : "ukho-paginator p",
        "acceptCookieSelector" : "#onetrust-accept-btn-handler",
        "skipContentSelector" : "a.skip-to-content-link",
-       "warningMessageValue": "There is a problem with a Field"
+       "warningMessageValue": "There is a problem with a field"
     },
     "pageTimeOut":
     {
