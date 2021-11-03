@@ -46,7 +46,7 @@ export class FssSearchValidatorService {
             fssSearchRows[rowId].fieldFormControl.markAsTouched();
           }
         }
-        this.errorMessageTitle = "There is a problem with a Field";
+        this.errorMessageTitle = "There is a problem with a field";
         this.errorMessageDescription = "Please enter a search Field value.";
         flag = false;
         break;
