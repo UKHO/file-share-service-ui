@@ -69,9 +69,9 @@ export class FssSearchComponent implements OnInit {
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
     private fssPopularSearchService: FssPopularSearchService,
-    private analyticsService: AnalyticsService) { 
-      this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
-    }
+    private analyticsService: AnalyticsService) {
+    this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+  }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
@@ -117,13 +117,13 @@ export class FssSearchComponent implements OnInit {
   addSearchRow(isPopularSearch?: boolean) {
     this.fssSearchRows.push(this.getDefaultSearchRow());
     this.rowId += 1;
-    if(!isPopularSearch){
+    if (!isPopularSearch) {
       setTimeout(() => {
         var inputs = this.elementRef.nativeElement.querySelectorAll('.ukhoTypeahead ukho-textinput input');
         if (this.fssSearchRows.length > 1) {
-          inputs[this.fssSearchRows.length-1].focus();
+          inputs[this.fssSearchRows.length - 1].focus();
         }
-      },0 );
+      }, 0);
     }
 
     this.setupGrouping();
@@ -134,11 +134,11 @@ export class FssSearchComponent implements OnInit {
     var fssSearchRow = new FssSearchRow();
     fssSearchRow.joinOperators = this.joinOperators;
     fssSearchRow.fields = this.fields;
-    fssSearchRow.operators = this.operators.filter(operator => operator.supportedDataTypes.includes("string"));
+    fssSearchRow.operators = [];
     fssSearchRow.group = false;
     fssSearchRow.selectedJoinOperator = this.joinOperators[0].value;
-    fssSearchRow.selectedField = this.fields[0].value;
-    fssSearchRow.selectedOperator = this.operators[0].value;
+    fssSearchRow.selectedField = "";
+    fssSearchRow.selectedOperator = "";
     fssSearchRow.value = "";
     fssSearchRow.valueType = 'text';
     fssSearchRow.isValueHidden = false;
@@ -148,6 +148,7 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.valueFormControlTime = new FormControl();
     fssSearchRow.fieldFormControl = new FormControl();
     fssSearchRow.filterFn = this.typeaheadFields;
+    fssSearchRow.fieldFormControl = new FormControl('', [Validators.required, this.fssSearchValidatorService.FieldValidator(this.fields)]);
     return fssSearchRow;
   }
 

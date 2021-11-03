@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Field, FssSearchRow, Operator } from '../models/fss-search-types';
 import { AnalyticsService } from '../../core/services/analytics.service';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -39,11 +40,21 @@ export class FssSearchValidatorService {
           }
         }
       }
+      if (!fieldDataType) {
+        if (fssSearchRows[rowId].selectedField === "" || fssSearchRows[rowId].selectedOperator === "") {
+          if (fssSearchRows[rowId].fieldFormControl.touched === false) {
+            fssSearchRows[rowId].fieldFormControl.markAsTouched();
+          }
+        }
+        this.errorMessageTitle = "There is a problem with a field";
+        this.errorMessageDescription = "Please enter a search field value.";
+        flag = false;
+        break;
+      }
     }
     return flag;
     this.analyticsService.validation();
   }
-
 
   validateValueFormControl(fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[]) {
     for (let rowId = 0; rowId < fssSearchRows.length; rowId++) {
@@ -77,6 +88,21 @@ export class FssSearchValidatorService {
 
   getFieldDataType(fieldValue: string, fields: Field[]) {
     return fields.find(f => f.value === fieldValue)?.dataType!;
+  }
+
+  getFieldDataTypeOnText(fieldValue: string, fields: Field[]) {
+    return fields.find(f => f.text === fieldValue)?.dataType!;
+  }
+
+  FieldValidator(fields: Field[]): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      var fieldDataType = this.getFieldDataTypeOnText(control.value, fields);
+      console.log(fieldDataType, control.value, control, fields);
+      if (!fieldDataType) {
+        return { 'fieldValue': true };
+      }
+      return null;
+    };
   }
 
 }
