@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-
+<suppress>
+   <notes><![CDATA[
+   file name: ansi-html:0.0.7
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/ansi\-html@.*$</packageUrl>
+   <vulnerabilityName>1002522</vulnerabilityName>
+</suppress>
 </suppressions>
