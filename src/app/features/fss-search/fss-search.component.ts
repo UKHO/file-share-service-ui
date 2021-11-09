@@ -314,7 +314,7 @@ export class FssSearchComponent implements OnInit {
         var nextPageLink = this.pagingLinks!.next!.href;
         this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
           this.searchResult = res;
-          this.handleSuccess()
+          this.handleSuccess();
         },
           (error) => {
             this.handleErrMessage(error);
@@ -325,7 +325,7 @@ export class FssSearchComponent implements OnInit {
         var previousPageLink = this.pagingLinks!.previous!.href;
         this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
           this.searchResult = res;
-          this.handleSuccess()
+          this.handleSuccess();
         },
           (error) => {
             this.handleErrMessage(error);
