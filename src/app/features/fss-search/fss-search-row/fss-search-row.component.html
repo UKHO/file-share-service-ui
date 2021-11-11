@@ -32,7 +32,8 @@
             </td>
             <td width="25%">
                 <ukho-typeahead class="ukhoTypeahead" [label]="label" [FormControl]="fssSearchRow.fieldFormControl" [showResultsOnInitialFocus]="true"
-                [filterFn]="fssSearchRow.filterFn" (valueChanged)="onFieldChange($event, fssSearchRow.rowId)"></ukho-typeahead>
+                [filterFn]="fssSearchRow.filterFn" [value] = "fssSearchRow.fieldValue"
+                (valueChanged)="onFieldChange($event, fssSearchRow.rowId)"></ukho-typeahead>
             </td>
             <td width="20%">
                 <ukho-select #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
@@ -41,7 +42,7 @@
                      value="{{Operator.value}}">{{Operator.text}}</option>
                 </ukho-select>
             </td>
-            <td class="valueTD" width = "35%">
+            <td class="valueTD" width="35.5%">
                 <ukho-textinput [(ngModel)]="fssSearchRow.value" 
                 *ngIf="!fssSearchRow.isValueHidden"
                 [type]= "fssSearchRow.valueType"

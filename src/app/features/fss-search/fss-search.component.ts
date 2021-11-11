@@ -149,6 +149,7 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.fieldFormControl = new FormControl();
     fssSearchRow.filterFn = this.typeaheadFields;
     fssSearchRow.fieldFormControl = new FormControl('', [Validators.required, this.fssSearchValidatorService.FieldValidator(this.fields)]);
+    fssSearchRow.fieldValue = "";
     return fssSearchRow;
   }
 
