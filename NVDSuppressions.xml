@@ -4,6 +4,17 @@
 <suppress>
    <notes><![CDATA[
    file name: ansi-html:0.0.7
+   Vunerability is if an attacker provides a malicious string, it will get stuck processing the input for an extremely long time.
+   For now there is no patch available for this vulnerability.
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/ansi\-html@.*$</packageUrl>
+   <vulnerabilityName>CVE-2021-23424</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: ansi-html:0.0.7
+   Vunerability is if an attacker provides a malicious string, it will get stuck processing the input for an extremely long time.
+   For now there is no patch available for this vulnerability.
    ]]></notes>
    <packageUrl regex="true">^pkg:npm/ansi\-html@.*$</packageUrl>
    <vulnerabilityName>1002522</vulnerabilityName>

@@ -97,7 +97,6 @@ export class FssSearchValidatorService {
   FieldValidator(fields: Field[]): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       var fieldDataType = this.getFieldDataTypeOnText(control.value, fields);
-      console.log(fieldDataType, control.value, control, fields);
       if (!fieldDataType) {
         return { 'fieldValue': true };
       }
