@@ -14,7 +14,6 @@ export class FssPopularSearchService {
       var fssSearchRow = fssSearchRows[rowIndex];
       fssSearchRow.selectedField = popularSearchRow.field;
       var selectedFieldText = this.getFieldText(fssSearchRow.selectedField, fssSearchRow.fields);
-      // fssSearchRow.fieldFormControl.setValue(selectedFieldText);
       fssSearchRow.fieldValue = selectedFieldText;
       fssSearchRow.selectedJoinOperator = popularSearchRow.andOr;
       fssSearchRow.selectedOperator = popularSearchRow.operator;
