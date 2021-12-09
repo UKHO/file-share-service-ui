@@ -17,7 +17,7 @@
    For now there is no patch available for this vulnerability.
    ]]></notes>
    <packageUrl regex="true">^pkg:npm/ansi\-html@.*$</packageUrl>
-   <vulnerabilityName>1002522</vulnerabilityName>
+   <vulnerabilityName>1005059</vulnerabilityName>
 </suppress>
 <suppress>
    <notes><![CDATA[
