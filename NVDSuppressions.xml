@@ -17,6 +17,10 @@
    For now there is no patch available for this vulnerability.
    ]]></notes>
    <packageUrl regex="true">^pkg:npm/ansi\-html@.*$</packageUrl>
+   <!-- 
+      this vulnerability ID needed for build agents HTFSPRDUAG01-Melanie-A01 + HTFSPRDUAG02-Melanie-A01 
+      because at the time of writing their vulnerability database is out-of-date
+   -->
    <vulnerabilityName>1002522</vulnerabilityName>
 </suppress>
 <suppress>
