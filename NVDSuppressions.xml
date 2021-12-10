@@ -33,6 +33,8 @@
    file name: json-schema:0.2.3
    json-schema is vulnerable to Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')
    CVE-2021-3918
+   json-schema:0.2.3 is a dev dependency needed by "@angular/cli". It is not included in or used by our production code. On this 
+   basis it was deemed acceptable to suppress the vulnerability. 
    ]]>
    </notes>
    <packageUrl regex="true">^pkg:npm/json\-schema@0\.2\.3$</packageUrl>
