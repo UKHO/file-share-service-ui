@@ -19,4 +19,25 @@
    <packageUrl regex="true">^pkg:npm/ansi\-html@.*$</packageUrl>
    <vulnerabilityName>1002522</vulnerabilityName>
 </suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: ansi-html:0.0.7
+   Vunerability is if an attacker provides a malicious string, it will get stuck processing the input for an extremely long time.
+   For now there is no patch available for this vulnerability.
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/ansi\-html@.*$</packageUrl>
+   <vulnerabilityName>1005059</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: json-schema:0.2.3
+   json-schema is vulnerable to Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')
+   CVE-2021-3918
+   json-schema:0.2.3 is a dev dependency needed by "@angular/cli". It is not included in or used by our production code. On this 
+   basis it was deemed acceptable to suppress the vulnerability. 
+   ]]>
+   </notes>
+   <packageUrl regex="true">^pkg:npm/json\-schema@0\.2\.3$</packageUrl>
+   <vulnerabilityName>1006724</vulnerabilityName>
+</suppress>
 </suppressions>
