@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from   './shared/app.shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppConfigService } from './core/services/app-config.service';
+import { EssUiComponent } from './features/ess-ui/ess-ui.component';
 
 export function GTMFactory(config: AppConfigService): any {
   const googleTagManagerId = AppConfigService.settings.GoogleTagManagerId;
@@ -14,7 +15,8 @@ export function GTMFactory(config: AppConfigService): any {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EssUiComponent
   ],
   imports: [
     BrowserModule,FormsModule, ReactiveFormsModule,
