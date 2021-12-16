@@ -61,6 +61,13 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
     this.menuItems = [
       {
+        title: 'Ess Ui',
+        clickAction: (() => {
+          this.route.navigate(["essui"]);
+        }),
+        navActive: this.isActive
+      },
+      {
         title: 'Search',
         clickAction: (() => {
           if (this.authOptions?.isSignedIn()) {

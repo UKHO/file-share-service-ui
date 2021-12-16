@@ -32,6 +32,9 @@ const routes: Routes = [
    path: 'logout',
    loadChildren: () => import('./features/fss-sso-logout/fss-sso-logout.module').then(m => m.FssSsoLogoutModule) 
   },
+  { path: 'essui', 
+   loadChildren: () => import('./features/ess-ui-parse/ess-ui-parse.module').then(m => m.EssUiParseModule)
+  },
   {
     path: '**',
     redirectTo: '',
