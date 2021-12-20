@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EssUiParseComponent } from './ess-ui-parse.component';
+import { EssUiComponent } from './ess-ui.component';
 
-const routes: Routes = [{ path: '', component: EssUiParseComponent }];
+const routes: Routes = [{ path: '', component: EssUiComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class EssUiParseRoutingModule { }
+export class EssUiRoutingModule { }

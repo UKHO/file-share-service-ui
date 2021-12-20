@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EssUiParseComponent } from './ess-ui-parse.component';
+import { EssUiComponent } from './ess-ui.component';
 
-describe('EssUiParseComponent', () => {
-  let component: EssUiParseComponent;
-  let fixture: ComponentFixture<EssUiParseComponent>;
+describe('EssUiComponent', () => {
+  let component: EssUiComponent;
+  let fixture: ComponentFixture<EssUiComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EssUiParseComponent ]
+      declarations: [ EssUiComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EssUiParseComponent);
+    fixture = TestBed.createComponent(EssUiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
