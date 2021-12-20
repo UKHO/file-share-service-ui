@@ -19,6 +19,7 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
   errorMessageExtension = '';
   public records: any[] = [];
   @Input() label = 'Click to choose a file';
+  fileInputLabel = "ESS UI File upload for csv file";
   @ViewChild('csvReader') csvReader: any;
   jsondatadisplay: any;
   
@@ -29,7 +30,6 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
       let input = $event.target;
       let reader = new FileReader();
       reader.readAsText(input.files[0]);
-
       reader.onload = () => {
         let csvData = reader.result;
         let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
@@ -47,7 +47,7 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
         console.log('error is occured while reading file!');
       };
     } else {
-      this.errorMessageExtension = ' Please upload file in CSV format.';
+      this.errorMessageExtension = 'Given file type is not supported. Please upload file in CSV format.';
       this.isDataShow = false;
     }
   }
