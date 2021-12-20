@@ -149,6 +149,7 @@ export class FssSearchComponent implements OnInit {
     fssSearchRow.fieldFormControl = new FormControl();
     fssSearchRow.filterFn = this.typeaheadFields;
     fssSearchRow.fieldFormControl = new FormControl('', [Validators.required, this.fssSearchValidatorService.FieldValidator(this.fields)]);
+    fssSearchRow.fieldValue = "";
     return fssSearchRow;
   }
 
@@ -314,7 +315,7 @@ export class FssSearchComponent implements OnInit {
         var nextPageLink = this.pagingLinks!.next!.href;
         this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
           this.searchResult = res;
-          this.handleSuccess()
+          this.handleSuccess();
         },
           (error) => {
             this.handleErrMessage(error);
@@ -325,7 +326,7 @@ export class FssSearchComponent implements OnInit {
         var previousPageLink = this.pagingLinks!.previous!.href;
         this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
           this.searchResult = res;
-          this.handleSuccess()
+          this.handleSuccess();
         },
           (error) => {
             this.handleErrMessage(error);
