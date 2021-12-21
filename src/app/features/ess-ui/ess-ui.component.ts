@@ -102,6 +102,7 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
     this.errorMessageTitle = "";
     this.errorMessageDescription = "";
     var flag = true;
+    
     if(csvRecordsArray[0] == '' && csvRecordsArray[1] == '')
         {
           this.errorMessageDescription = "Given csv file is empty or invalid.";
