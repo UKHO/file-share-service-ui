@@ -6,32 +6,26 @@ import { FileInputComponent } from '@ukho/design-system';
   templateUrl: './ess-ui.component.html',
   styleUrls: ['./ess-ui.component.scss']
 })
-export class EssUiComponent extends FileInputComponent implements OnInit {
+export class EssUiComponent implements OnInit {
 
-  constructor() { 
-    super();
-  }
+  constructor() {}
 
   ngOnInit(): void {
   }
   csvRecordsArray: any;
   headersRow:any;
   isDataShow: boolean = false;
-  errorMessageExtension = '';
   public records: any[] = [];
-  @Input() label = 'Click to choose a file';
+  label = 'Click to choose a file';
   fileInputLabel = "ESS UI File upload for csv file";
   @ViewChild('csvReader') csvReader: any;
   jsondatadisplay: any;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
-  messageTitle: string = "";
   messageDesc: string = "";
   displayMessage: boolean = false;
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
-  errorMessageTitle = "";
   errorMessageDescription = "";
 
-  
   uploadFileCsv($event: any): void {
     this.displayMessage = false;
     let files = $event.srcElement.files;
@@ -47,10 +41,8 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
         if(!this.ValidateCSVFile(this.csvRecordsArray,this.headersRow))
         {
           this.errorMessageDescription = this.errorMessageDescription;
-          this.errorMessageTitle = this.errorMessageTitle;
           this.showMessage(
             "warning",
-            this.errorMessageTitle,
             this.errorMessageDescription);
           this.isDataShow = false;
         }
@@ -60,7 +52,6 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
             this.csvRecordsArray,
             this.headersRow.length
           );
-          this.errorMessageExtension ="";
           this.isDataShow = true;
           
          }
@@ -70,10 +61,8 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
       };
     } else {
       this.errorMessageDescription = this.errorMessageDescription;
-          this.errorMessageTitle = this.errorMessageTitle;
           this.showMessage(
             "warning",
-            this.errorMessageTitle,
             this.errorMessageDescription);
           this.isDataShow = false;
     }
@@ -101,7 +90,6 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
 
   ValidateCSVFile(csvRecordsArray = this.csvRecordsArray,headersRow = this.headersRow)
   {
-    this.errorMessageTitle = "";
     this.errorMessageDescription = "";
     var flag = true;
 
@@ -121,10 +109,8 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
     return flag;
   }
   
-
-  showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
+  showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageDesc: string = "") {
     this.messageType = messageType;
-    this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;
     this.displayMessage = true;
     if (this.ukhoDialog !== undefined) {
@@ -141,7 +127,6 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
     }
     return headerArray;
   }
-
 }
 
 export class CsvData {
