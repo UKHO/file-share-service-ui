@@ -1,8 +1,8 @@
 import { chromium, BrowserContext, Browser, Page } from 'playwright'
-import { injectAxe, getViolations } from 'axe-playwright'
+import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { SearchAttribute,LoginPortal } from '../FunctionalTests/helpermethod'
+import { LoginPortal } from '../FunctionalTests/helpermethod'
 
 let browser: Browser
 let context: BrowserContext;
@@ -21,24 +21,24 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     }
     page.click(pageObjectsConfig.loginSignInLinkSelector);
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
+    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);    
+    await injectAxe(page);
   })  
 
-  test('should return no violations for FSS search page accessibility check', async () => {
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
-    await page.waitForSelector('.addNewLine');
-    await injectAxe(page);
-    const violations = await getViolations(page, '', {
+  test('check a11y for the whole page and axe run options', async () => {
+    await checkA11y(page, undefined, {
       axeOptions: {
-        runOnly: {
+         rules :{'duplicate-id': { enabled: false },
+                 'label': { enabled: false },
+                 'select-name': { enabled: false }},       
+        runOnly: {         
           type: 'tag',
           values: ['wcag2a'],
         },
       },
       detailedReport: true,
-      detailedReportOptions: { html: true }      
-      
-    }) 
-    expect(violations.length).toBe(0);
+      detailedReportOptions: { html: true }
+    });
   })
  
   afterAll(async () => {

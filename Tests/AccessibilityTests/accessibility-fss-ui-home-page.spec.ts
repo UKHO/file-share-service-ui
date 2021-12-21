@@ -1,5 +1,5 @@
 import { chromium, Browser, Page } from 'playwright'
-import { injectAxe, getViolations} from 'axe-playwright'
+import { injectAxe, checkA11y} from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const{pageTimeOut, pageObjectsConfig} =require('../FunctionalTests/pageObjects.json');
 
@@ -20,19 +20,18 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
     await injectAxe(page)
   })
 
-  test('should return no violations for FSS home page accessibility check', async() =>{
-    const violations  =await getViolations(page, '', {
-        axeOptions: {
-          runOnly: {
-            type: 'tag',
-            values: ['wcag2a'],
-          },
+  test('check a11y for the whole page and axe run options', async () => {
+    await checkA11y(page, undefined, {
+      axeOptions: {
+        runOnly: {
+          type: 'tag',
+          values: ['wcag2a'],
         },
-        detailedReport: true,
-        detailedReportOptions: { html: true }
-      })
-      expect(violations.length).toBe(0);
-    })
+      },
+      detailedReport: true,
+      detailedReportOptions: { html: true }
+    });
+  })
 
   afterAll(async () => {
     await page.close();
