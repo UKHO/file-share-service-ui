@@ -14,7 +14,6 @@ import { EssUiComponent } from './ess-ui.component';
     EssUiRoutingModule,
     FileInputModule,
     CardModule,
-    
     DialogueModule
   ]
 })

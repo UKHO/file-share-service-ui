@@ -33,6 +33,7 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
 
   
   uploadFileCsv($event: any): void {
+    this.displayMessage = false;
     let files = $event.srcElement.files;
     if (this.isValidCSVFile(files[0])) {
       let input = $event.target;
@@ -94,6 +95,7 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
 
   //check etension
   isValidCSVFile(file: any) {
+    this.errorMessageDescription = 'Given file type is not supported. Please upload file in CSV format';
     return file.name.endsWith('.csv');
   }
 
@@ -102,7 +104,7 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
     this.errorMessageTitle = "";
     this.errorMessageDescription = "";
     var flag = true;
-    
+
     if(csvRecordsArray[0] == '' && csvRecordsArray[1] == '')
         {
           this.errorMessageDescription = "Given csv file is empty or invalid.";
