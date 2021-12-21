@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { FileInputComponent } from '@ukho/design-system';
 
 @Component({
@@ -14,7 +14,8 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  csvRecordsArray: any;
+  headersRow:any;
   isDataShow: boolean = false;
   errorMessageExtension = '';
   public records: any[] = [];
@@ -22,9 +23,16 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
   fileInputLabel = "ESS UI File upload for csv file";
   @ViewChild('csvReader') csvReader: any;
   jsondatadisplay: any;
+  messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
+  messageTitle: string = "";
+  messageDesc: string = "";
+  displayMessage: boolean = false;
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
+  errorMessageTitle = "";
+  errorMessageDescription = "";
+
   
   uploadFileCsv($event: any): void {
-    let text = [];
     let files = $event.srcElement.files;
     if (this.isValidCSVFile(files[0])) {
       let input = $event.target;
@@ -32,23 +40,41 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
       reader.readAsText(input.files[0]);
       reader.onload = () => {
         let csvData = reader.result;
-        let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
-        csvRecordsArray = csvRecordsArray.map(str => str.replace(/[�]/g, ''));
-        let headersRow = this.getHeaderArray(csvRecordsArray);
-
-        this.records = this.getDataRecordsArrayFromCSVFile(
-          csvRecordsArray,
-          headersRow.length
-        );
-      };
-      this.errorMessageExtension ="";
-      this.isDataShow = true;
+        this.csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
+        this.csvRecordsArray = this.csvRecordsArray.map((str: string) => str.replace(/[�]/g, ''));
+        this.headersRow = this.getHeaderArray(this.csvRecordsArray);
+        if(!this.ValidateCSVFile(this.csvRecordsArray,this.headersRow))
+        {
+          this.errorMessageDescription = this.errorMessageDescription;
+          this.errorMessageTitle = this.errorMessageTitle;
+          this.showMessage(
+            "warning",
+            this.errorMessageTitle,
+            this.errorMessageDescription);
+          this.isDataShow = false;
+        }
+        else
+        {
+          this.records = this.getDataRecordsArrayFromCSVFile(
+            this.csvRecordsArray,
+            this.headersRow.length
+          );
+          this.errorMessageExtension ="";
+          this.isDataShow = true;
+          
+         }
+      }
       reader.onerror = function () {
         console.log('error is occured while reading file!');
       };
     } else {
-      this.errorMessageExtension = 'Given file type is not supported. Please upload file in CSV format.';
-      this.isDataShow = false;
+      this.errorMessageDescription = this.errorMessageDescription;
+          this.errorMessageTitle = this.errorMessageTitle;
+          this.showMessage(
+            "warning",
+            this.errorMessageTitle,
+            this.errorMessageDescription);
+          this.isDataShow = false;
     }
   }
 
@@ -69,6 +95,39 @@ export class EssUiComponent extends FileInputComponent implements OnInit {
   //check etension
   isValidCSVFile(file: any) {
     return file.name.endsWith('.csv');
+  }
+
+  ValidateCSVFile(csvRecordsArray = this.csvRecordsArray,headersRow = this.headersRow)
+  {
+    this.errorMessageTitle = "";
+    this.errorMessageDescription = "";
+    var flag = true;
+    if(csvRecordsArray[0] == '' && csvRecordsArray[1] == '')
+        {
+          this.errorMessageDescription = "Given csv file is empty or invalid.";
+          this.isDataShow = false; 
+          flag = false
+        }
+        var areEqual = headersRow[0].toUpperCase() === 'ENC Data'.toUpperCase();
+    if(!areEqual || (areEqual && csvRecordsArray[1] == ''))
+        {
+          this.errorMessageDescription = 'Given csv file is empty or invalid.';
+          this.isDataShow = false;
+          flag = false;
+        }
+    return flag;
+  }
+  
+
+  showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
+    this.messageType = messageType;
+    this.messageTitle = messageTitle;
+    this.messageDesc = messageDesc;
+    this.displayMessage = true;
+    if (this.ukhoDialog !== undefined) {
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+      this.ukhoDialog.nativeElement.focus();
+    }
   }
 
   getHeaderArray(csvRecordsArr: any) {

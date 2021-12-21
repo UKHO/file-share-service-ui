@@ -2,6 +2,8 @@
   <h3>
    <label for="csv">{{fileInputLabel}}</label> <br>
   </h3>
+  <div> <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite">
+    <h3>{{errorMessageDescription}}</h3></ukho-dialogue></div>
     <ukho-file-input
         [label]=label
         #csvReader
@@ -11,7 +13,7 @@
         accept=".csv"
     ></ukho-file-input>
     <div style="color: red;">{{errorMessageExtension}}</div>
-
+   
     <div *ngIf="isDataShow">
       <ukho-card>
         <table class="Enctable" *ngIf="records.length > 0">
@@ -22,13 +24,11 @@
           </thead>
            <tbody>
             <tr *ngFor="let record of records; let i = index">
-              <!-- <th scope="row">{{ record.id }}</th>
-              <td>{{ record.name }}</td>
-              <td>{{ record.lastname }}</td> -->
               <td>{{ record.encnumber }}</td>
             </tr>
            </tbody>
         </table>
       </ukho-card>  
     </div>
+      
 </div>
