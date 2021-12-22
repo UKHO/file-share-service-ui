@@ -42,7 +42,7 @@ export class EssUiComponent implements OnInit {
         {
           this.errorMessageDescription = this.errorMessageDescription;
           this.showMessage(
-            "warning",
+            "error",
             this.errorMessageDescription);
           this.isDataShow = false;
         }
@@ -62,7 +62,7 @@ export class EssUiComponent implements OnInit {
     } else {
       this.errorMessageDescription = this.errorMessageDescription;
           this.showMessage(
-            "warning",
+            "error",
             this.errorMessageDescription);
           this.isDataShow = false;
     }
