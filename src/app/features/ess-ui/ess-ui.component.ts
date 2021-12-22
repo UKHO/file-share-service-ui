@@ -84,7 +84,7 @@ export class EssUiComponent implements OnInit {
 
   //check etension
   isValidCSVFile(file: any) {
-    this.errorMessageDescription = 'Given file type is not supported. Please upload file in CSV format';
+    this.errorMessageDescription = 'Given file type is not supported. Please upload file in CSV format.';
     return file.name.endsWith('.csv');
   }
 
@@ -92,19 +92,20 @@ export class EssUiComponent implements OnInit {
   {
     this.errorMessageDescription = "";
     var flag = true;
-
     if(csvRecordsArray[0] == '' && csvRecordsArray[1] == '')
         {
-          this.errorMessageDescription = "Given csv file is empty or invalid.";
+          this.errorMessageDescription = "Given csv file is empty.";
           this.isDataShow = false; 
           flag = false
+          return flag;
         }
-        var areEqual = headersRow[0].toUpperCase() === 'ENC Data'.toUpperCase();
+    var areEqual = headersRow[0].toUpperCase() === 'ENC Data'.toUpperCase();
     if(!areEqual || (areEqual && csvRecordsArray[1] == ''))
         {
-          this.errorMessageDescription = 'Given csv file is empty or invalid.';
+          this.errorMessageDescription = 'Given csv file is invalid.';
           this.isDataShow = false;
           flag = false;
+          return flag;
         }
     return flag;
   }
