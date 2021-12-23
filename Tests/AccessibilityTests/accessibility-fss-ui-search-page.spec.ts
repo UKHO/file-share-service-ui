@@ -1,8 +1,9 @@
 import { chromium, BrowserContext, Browser, Page } from 'playwright'
-import { injectAxe, getViolations } from 'axe-playwright'
+import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { SearchAttribute,LoginPortal } from '../FunctionalTests/helpermethod'
+import { LoginPortal,SearchAttribute } from '../FunctionalTests/helpermethod'
+import {batchAttributeProductContains} from '../FunctionalTests/helperconstant'
 
 let browser: Browser
 let context: BrowserContext;
@@ -11,9 +12,8 @@ let page: Page
 describe('FSS UI Search Page Accessibility Test Scenarios', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   beforeAll(async () => {
-    browser = await chromium.launch({ slowMo: 100 })
-    context = await browser.newContext();
-    page = await context.newPage();
+    browser = await chromium.launch({ slowMo: 100})    
+    page = await browser.newPage();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
     await page.waitForTimeout(pageTimeOut.delay)
@@ -22,102 +22,38 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     }
     page.click(pageObjectsConfig.loginSignInLinkSelector);
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
+    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
+    
+    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
+    await SearchAttribute(page,"productid");
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
+    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
+    await page.click(pageObjectsConfig.searchAttributeButton);
+    
+    // Verification of attribute table records
+    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
+    await injectAxe(page);
   })  
 
-  test('should return no violation for add rows element', async () => {
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
-    await page.waitForSelector('.addNewLine');
-    await injectAxe(page);
-    const violations = await getViolations(page, '.addNewLine', {
+  test('check a11y for the whole page and axe run options', async () => {
+    await checkA11y(page, undefined, {
       axeOptions: {
-        runOnly: {
+         rules :{'duplicate-id': { enabled: false },
+                 'label': { enabled: false },
+                 'select-name': { enabled: false }},       
+        runOnly: {         
           type: 'tag',
-          values: ['wcag2aa'],
+          values: ['wcag2a'],
         },
       },
-    })
-    if (violations.length > 0) {
-      console.log(violations);
-    }
-    expect(violations.length).toBe(0);
+      detailedReport: true,
+      detailedReportOptions: { html: true }
+    });
   })
-
-  test('should return no violation for search result table', async () => {
-    page.waitForTimeout(pageTimeOut.delay);
-    await page.waitForSelector("#ukho-form-field-3");
-    await SearchAttribute(page, "BusinessUnit");
-    await page.selectOption("#ukho-form-field-2", "eq");
-    await page.fill("#ukho-form-field-4", "adds");
-    await page.click("//button[text()='Search']");
-    page.waitForTimeout(pageTimeOut.delay);
-    await page.waitForSelector(".attribute-table");
-    const violations = await getViolations(page, '.attribute-table', {
-      axeOptions: {
-        runOnly: {
-          type: 'tag', values: ['wcag2aa'],
-        },
-      },
-    })
-    if (violations.length > 0) {
-      console.log(violations);
-    }
-    expect(violations.length).toBe(0);
-  })
-
-  test('should return no violation for Attributes dropdown element', async () => {    
-    page.waitForSelector("#ukho-form-field-3")
-    await injectAxe(page);
-    const violations = await getViolations(page, '#ukho-form-field-3', {
-      axeOptions: {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag2aa'],
-        },
-      },
-    })
-    if (violations.length > 0) {
-      console.log(violations);
-    }
-    expect(violations.length).toBe(0);
-  })
-
-  test('should return no violation for Operator dropdown element', async () => {    
-    page.waitForSelector("#ukho-form-field-2")
-    await injectAxe(page);
-    const violations = await getViolations(page, '#ukho-form-field-2', {
-      axeOptions: {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag2aa'],
-        },
-      },
-    })
-    if (violations.length > 0) {
-      console.log(violations);
-    }
-    expect(violations.length).toBe(0);
-  })
-
-  test('should return no violation for value inputbox element', async () => {    
-    page.waitForSelector("#ukho-form-field-4")
-    await injectAxe(page);
-    const violations = await getViolations(page, '#ukho-form-field-4', {
-      axeOptions: {
-        runOnly: {
-          type: 'tag',
-          values: ['wcag2aa'],
-        },
-      },
-    })
-    if (violations.length > 0) {
-      console.log(violations);
-    }
-    expect(violations.length).toBe(0);
-  }) 
-
+ 
   afterAll(async () => {
-    await page.close();
-    await context.close();
+    await page.close();  
     await browser.close();
   })
 
