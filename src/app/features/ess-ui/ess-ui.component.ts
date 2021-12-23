@@ -60,7 +60,7 @@ export class EssUiComponent implements OnInit {
         console.log('error is occured while reading file!');
       };
     } else {
-      this.errorMessageDescription = this.errorMessageDescription;
+      this.errorMessageDescription = 'Given file type is not supported. Please upload file in CSV format.';
           this.showMessage(
             "error",
             this.errorMessageDescription);
@@ -84,7 +84,6 @@ export class EssUiComponent implements OnInit {
 
   //check etension
   isValidCSVFile(file: any) {
-    this.errorMessageDescription = 'Given file type is not supported. Please upload file in CSV format.';
     return file.name.endsWith('.csv');
   }
 
