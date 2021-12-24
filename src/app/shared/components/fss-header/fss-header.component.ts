@@ -61,6 +61,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
     this.menuItems = [
       {
+        title: 'Ess Ui',
+        clickAction: (() => {
+          this.route.navigate(["essui"]);
+          this.handleActiveTab('Ess Ui'); //Value should be same as title
+        }),
+        navActive:this.isActive
+      },
+      {
         title: 'Search',
         clickAction: (() => {
           if (this.authOptions?.isSignedIn()) {
@@ -69,6 +77,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           if (!this.authOptions?.isSignedIn()) {
             this.logInPopup();
           }
+          this.handleActiveTab('Search'); //Value should be same as title
         }),
         navActive: this.isActive
       }
@@ -90,8 +99,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     ).subscribe((event: any) => { this.skipToContent = `#mainContainer`; });
   }
 
-  handleActiveTab() {
-    this.menuItems.find(mt => mt.title === 'Search')!.navActive = this.isActive;
+  handleActiveTab(title:any) {
+    for (var item of this.menuItems) {
+      item.navActive = false;
+      if(item.title == title)
+      {
+         item.navActive = true;
+      }
+    }
   }
 
   logInPopup() {
@@ -103,7 +118,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
         this.isActive = true;
-        this.handleActiveTab()
+        this.handleActiveTab(this.menuItems[1].title)
         this.analyticsService.login();
       }
     });
@@ -118,11 +133,11 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         if (!this.authOptions?.isSignedIn()) {
           this.route.navigate(['']);
           this.isActive = false;
-          this.handleActiveTab()
+          this.handleActiveTab(this.menuItems[1].title)
         }
         else {
           this.isActive = true;
-          this.handleActiveTab()
+          this.handleActiveTab(this.menuItems[1].title)
         }
       }
     });
