@@ -36,7 +36,7 @@ export class EssUiComponent implements OnInit {
       reader.onload = () => {
         let csvData = reader.result;
         this.csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
-        this.csvRecordsArray = this.csvRecordsArray.map((str: string) => str.replace(/[�]/g, ''));
+        this.csvRecordsArray = this.csvRecordsArray.map((str: string) => str.replace(/[�]| {2,}/g, ''));
         this.headersRow = this.getHeaderArray(this.csvRecordsArray);
         if(!this.ValidateCSVFile(this.csvRecordsArray,this.headersRow))
         {
@@ -99,7 +99,7 @@ export class EssUiComponent implements OnInit {
           return flag;
         }
     var areEqual = headersRow[0].toUpperCase() === 'ENC Data'.toUpperCase();
-    if(!areEqual || (areEqual && csvRecordsArray[1] == ''))
+    if(!areEqual || (areEqual && (typeof csvRecordsArray[1] == 'undefined' || csvRecordsArray[1] == '')))
         {
           this.errorMessageDescription = 'Given csv file is invalid.';
           this.isDataShow = false;
