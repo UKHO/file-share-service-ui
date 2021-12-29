@@ -16,7 +16,6 @@ export class EssUiComponent implements OnInit {
   headersRow:any;
   isDataShow: boolean = false;
   public records: any[] = [];
-  label = 'Click to choose a file';
   fileInputLabel = "ESS UI File upload for csv file";
   @ViewChild('csvReader') csvReader: any;
   jsondatadisplay: any;
@@ -28,11 +27,18 @@ export class EssUiComponent implements OnInit {
 
   uploadFileCsv($event: any): void {
     this.displayMessage = false;
-    let files = $event.srcElement.files;
-    if (this.isValidCSVFile(files[0])) {
-      let input = $event.target;
+    let file;
+    if($event.type == 'drop')
+    {
+    file = $event.dataTransfer.files[0];
+    }
+    else 
+    {
+    file = $event.srcElement.files[0];
+    }    
+    if (this.isValidCSVFile(file)) {
       let reader = new FileReader();
-      reader.readAsText(input.files[0]);
+      reader.readAsText(file);
       reader.onload = () => {
         let csvData = reader.result;
         this.csvRecordsArray = (<string>csvData).split(/\r\n|\n/);

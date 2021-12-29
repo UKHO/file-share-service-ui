@@ -6,12 +6,12 @@
     <h3>{{errorMessageDescription}}</h3>
   </ukho-dialogue></div> 
     <ukho-file-input
-        [label]=label
         #csvReader
         name="Upload CSV"
         id="txtFileUpload"
         (change)="uploadFileCsv($event)"
         accept=".csv"
+        fileDragDrop (filesChangeEmiter)="uploadFileCsv($event)"
     ></ukho-file-input>
    
     <div *ngIf="isDataShow">
