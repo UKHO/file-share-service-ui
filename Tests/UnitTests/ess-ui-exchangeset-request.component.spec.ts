@@ -1,38 +1,36 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CardModule, DialogueModule, FileInputModule } from '@ukho/design-system';
-import { EssUiRoutingModule } from '../../src/app/features/ess-ui/ess-ui-routing.module';
+import { EssUiExchangesetRequestComponent } from '../../src/app/features/ess-ui/ess-ui-exchangeset-request/ess-ui-exchangeset-request.component';
 
-import { EssUiComponent } from '../../src/app/features/ess-ui/ess-ui.component';
 
-describe('EssUiComponent', () => {
-  let component: EssUiComponent;
-  let fixture: ComponentFixture<EssUiComponent>;
+describe('EssUiExchangesetRequestComponent', () => {
+  let component: EssUiExchangesetRequestComponent;
+  let fixture: ComponentFixture<EssUiExchangesetRequestComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,
-        EssUiRoutingModule,
         FileInputModule, CardModule, DialogueModule ],
-      declarations: [EssUiComponent],
+      declarations: [EssUiExchangesetRequestComponent],
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EssUiComponent);
+    fixture = TestBed.createComponent(EssUiExchangesetRequestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    const fixture = TestBed.createComponent(EssUiComponent);
+    const fixture = TestBed.createComponent(EssUiExchangesetRequestComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
 
   test('should return flag true when file extension is CSV.', () => {
-    component = new EssUiComponent();
+    component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     var testfile = sampleCsvData();
     var result = component.isValidCSVFile(testfile);
@@ -40,7 +38,7 @@ describe('EssUiComponent', () => {
   });
 
   test('should return flag false when file extension is other than CSV.', () => {
-    component = new EssUiComponent();
+    component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     var testfile = new File([SampleCSV], "sample.pdf", { type: 'text/pdf' });
     var result = component.isValidCSVFile(testfile);
@@ -49,7 +47,7 @@ describe('EssUiComponent', () => {
 
   test('should not return given file type empty', () => {
     const csvRecordsArray = new Array('Enc Data','US2FAS01');
-    component = new EssUiComponent();
+    component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     var result = component.ValidateCSVFile(csvRecordsArray,csvRecordsArray);
     expect(result).toBe(true); 
@@ -58,7 +56,7 @@ describe('EssUiComponent', () => {
 
   test('should return given file type empty', () => {
     const csvRecordsArray = new Array(2).fill('');
-    component = new EssUiComponent();
+    component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     var result = component.ValidateCSVFile(csvRecordsArray,csvRecordsArray);
     expect(component.errorMessageDescription).toEqual('Given csv file is empty.');
@@ -68,7 +66,7 @@ describe('EssUiComponent', () => {
   test('should not return given csv file is invalid', () => {
     const csvRecordsArray = new Array('Enc Data','US2FAS01');
     let headersRow : any;
-    component = new EssUiComponent();
+    component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     headersRow = component.getHeaderArray(csvRecordsArray);
     var result = component.ValidateCSVFile(csvRecordsArray,headersRow);
@@ -79,7 +77,7 @@ describe('EssUiComponent', () => {
   test('should return given csv file is invalid for invalid header', () => {
     const csvRecordsArray = new Array('Enc Numbers','');
     let headersRow : any;
-    component = new EssUiComponent();
+    component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     headersRow = component.getHeaderArray(csvRecordsArray);
     var result = component.ValidateCSVFile(csvRecordsArray,headersRow);
@@ -90,7 +88,7 @@ describe('EssUiComponent', () => {
   test('should return given csv file is invalid for valid header with empty rows', () => {
     const csvRecordsArray = new Array('Enc Data','');
     let headersRow : any;
-    component = new EssUiComponent();
+    component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     headersRow = component.getHeaderArray(csvRecordsArray);
     var result = component.ValidateCSVFile(csvRecordsArray,headersRow);
@@ -101,7 +99,7 @@ describe('EssUiComponent', () => {
   test('should return all ENC data', () => {
     const csvRecordsArray = ['ENC Data','US2FAS01'];
     let headersRow : any;
-    component = new EssUiComponent();
+    component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     headersRow = component.getHeaderArray(csvRecordsArray);
     var csvResult = component.getDataRecordsArrayFromCSVFile(
@@ -111,7 +109,6 @@ describe('EssUiComponent', () => {
     var expectedENCDataDisplay = fillCSVData();
     expect(expectedENCDataDisplay).toEqual(csvResult);
   });
-
 });
 
     const SampleCSV = `ENC Data

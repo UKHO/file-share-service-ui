@@ -1,33 +1,3 @@
-<div class="container">
-  <h3>
-   <label for="csv">{{fileInputLabel}}</label> <br>
-  </h3>
-  <div> <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite">
-    <h3>{{errorMessageDescription}}</h3>
-  </ukho-dialogue></div> 
-    <ukho-file-input
-        #csvReader
-        name="Upload CSV"
-        id="txtFileUpload"
-        (change)="uploadFileCsv($event)"
-        accept=".csv"
-        fileDragDrop (filesChangeEmiter)="uploadFileCsv($event)"
-    ></ukho-file-input>
-   
-    <div *ngIf="isDataShow">
-      <ukho-card>
-        <table class="Enctable" *ngIf="records.length > 0">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Enc Number</th>
-            </tr>
-          </thead>
-           <tbody>
-            <tr *ngFor="let record of records; let i = index">
-              <td>{{ record.encnumber }}</td>
-            </tr>
-           </tbody>
-        </table>
-      </ukho-card>  
-    </div>
-</div>
+  <div>
+    <app-ess-ui-exchangeset-request></app-ess-ui-exchangeset-request>
+  </div>  

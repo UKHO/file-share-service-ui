@@ -21,6 +21,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   firstName: string = '';
   lastName: string = '';
   isActive: boolean = false;
+  currentMenu:any;
   constructor(private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
@@ -63,7 +64,13 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       {
         title: 'Ess Ui',
         clickAction: (() => {
+          if (this.authOptions?.isSignedIn()) {
           this.route.navigate(["essui"]);
+          }
+          if (!this.authOptions?.isSignedIn()) {
+            this.logInPopup();
+          }
+          localStorage.setItem('currentMenu', 'Ess Ui');    
           this.handleActiveTab('Ess Ui'); //Value should be same as title
         }),
         navActive:this.isActive
@@ -77,6 +84,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           if (!this.authOptions?.isSignedIn()) {
             this.logInPopup();
           }
+          localStorage.setItem('currentMenu', 'Search');    
           this.handleActiveTab('Search'); //Value should be same as title
         }),
         navActive: this.isActive
@@ -91,6 +99,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       userProfileHandler: (() => { })
     }
     this.handleSigninAwareness();
+    this.handleActiveTab(localStorage.getItem('currentMenu'));
   }
 
   setSkipToContent() {
