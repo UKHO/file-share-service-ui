@@ -14,9 +14,9 @@
           fileDragDrop (filesChangeEmiter)="uploadFileCsv($event)"
       ></ukho-file-input>
      
-      <div *ngIf="isDataShow">
+      <div *ngIf="hasRecordsToShow()">
         <ukho-card>
-          <table class="Enctable" *ngIf="records.length > 0">
+          <table class="Enctable">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Enc Number</th>

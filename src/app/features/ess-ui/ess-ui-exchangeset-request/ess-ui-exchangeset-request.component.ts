@@ -8,13 +8,12 @@ import { FileInputComponent } from '@ukho/design-system';
 })
 export class EssUiExchangesetRequestComponent implements OnInit {
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
   }
   csvRecordsArray: any;
-  headersRow:any;
-  isDataShow: boolean = false;
+  headersRow: any;
   public records: any[] = [];
   fileInputLabel = "ESS UI File upload for csv file";
   @ViewChild('csvReader') csvReader: any;
@@ -26,16 +25,15 @@ export class EssUiExchangesetRequestComponent implements OnInit {
   errorMessageDescription = "";
 
   uploadFileCsv($event: any): void {
+    this.records = [];
     this.displayMessage = false;
     let file;
-    if($event.type == 'drop')
-    {
-    file = $event.dataTransfer.files[0];
+    if ($event.type == 'drop') {
+      file = $event.dataTransfer.files[0];
     }
-    else 
-    {
-    file = $event.srcElement.files[0];
-    }    
+    else {
+      file = $event.srcElement.files[0];
+    }
     if (this.isValidCSVFile(file)) {
       let reader = new FileReader();
       reader.readAsText(file);
@@ -44,39 +42,36 @@ export class EssUiExchangesetRequestComponent implements OnInit {
         this.csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
         this.csvRecordsArray = this.csvRecordsArray.map((str: string) => str.replace(/[�]| {2,}/g, ''));
         this.headersRow = this.getHeaderArray(this.csvRecordsArray);
-        if(!this.ValidateCSVFile(this.csvRecordsArray,this.headersRow))
-        {
+        if (!this.ValidateCSVFile(this.csvRecordsArray, this.headersRow)) {
           this.errorMessageDescription = this.errorMessageDescription;
           this.showMessage(
             "error",
             this.errorMessageDescription);
-          this.isDataShow = false;
+          this.hasRecordsToShow();
         }
-        else
-        {
+        else {
           this.records = this.getDataRecordsArrayFromCSVFile(
             this.csvRecordsArray,
             this.headersRow.length
           );
-          this.isDataShow = true;
-          
-         }
+          this.hasRecordsToShow();
+        }
       }
       reader.onerror = function () {
-        console.log('error is occured while reading file!');
+        console.log('an error has occured while reading the file.');
       };
     } else {
       this.errorMessageDescription = 'Given file type is not supported. Please upload file in CSV format.';
-          this.showMessage(
-            "error",
-            this.errorMessageDescription);
-          this.isDataShow = false;
+      this.showMessage(
+        "error",
+        this.errorMessageDescription);
+      this.hasRecordsToShow();
     }
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
     let csvArr = [];
-    
+
     for (let i = 1; i < csvRecordsArray.length; i++) {
       let curruntRecord = (<string>csvRecordsArray[i]).split(',');
       if (curruntRecord.length == headerLength) {
@@ -90,31 +85,32 @@ export class EssUiExchangesetRequestComponent implements OnInit {
 
   //check etension
   isValidCSVFile(file: any) {
-    return file.name.endsWith('.csv');
+    return file.name.toString().toLowerCase().endsWith('.csv');
   }
 
-  ValidateCSVFile(csvRecordsArray = this.csvRecordsArray,headersRow = this.headersRow)
-  {
+  hasRecordsToShow(): boolean {
+    return this.records.length > 0;
+  }
+
+  ValidateCSVFile(csvRecordsArray = this.csvRecordsArray, headersRow = this.headersRow) {
     this.errorMessageDescription = "";
     var flag = true;
-    if(csvRecordsArray[0] == '' && csvRecordsArray[1] == '')
-        {
-          this.errorMessageDescription = "Given csv file is empty.";
-          this.isDataShow = false; 
-          flag = false
-          return flag;
-        }
+    if (csvRecordsArray[0] === '' && csvRecordsArray[1] === '') {
+      this.errorMessageDescription = "Given csv file is empty.";
+      this.hasRecordsToShow();
+      flag = false
+      return flag;
+    }
     var areEqual = headersRow[0].toUpperCase() === 'ENC Data'.toUpperCase();
-    if(!areEqual || (areEqual && (typeof csvRecordsArray[1] == 'undefined' || csvRecordsArray[1] == '')))
-        {
-          this.errorMessageDescription = 'Given csv file is invalid.';
-          this.isDataShow = false;
-          flag = false;
-          return flag;
-        }
+    if (!areEqual || (areEqual && (typeof csvRecordsArray[1] === 'undefined' || csvRecordsArray[1] === ''))) {
+      this.errorMessageDescription = 'Given csv file is invalid.';
+      this.hasRecordsToShow();
+      flag = false;
+      return flag;
+    }
     return flag;
   }
-  
+
   showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageDesc: string = "") {
     this.messageType = messageType;
     this.messageDesc = messageDesc;
@@ -127,11 +123,7 @@ export class EssUiExchangesetRequestComponent implements OnInit {
 
   getHeaderArray(csvRecordsArr: any) {
     let headers = (<string>csvRecordsArr[0]).split(',');
-    let headerArray = [];
-    for (let j = 0; j < headers.length; j++) {
-      headerArray.push(headers[j]);
-    }
-    return headerArray;
+    return headers;
   }
 }
 
