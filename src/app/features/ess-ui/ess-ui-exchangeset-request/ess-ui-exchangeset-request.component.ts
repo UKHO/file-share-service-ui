@@ -15,7 +15,7 @@ export class EssUiExchangesetRequestComponent implements OnInit {
   csvRecordsArray: any;
   headersRow: any;
   public records: any[] = [];
-  fileInputLabel = "Ess ui file upload for csv file";
+  fileInputLabel = "ESS UI file upload for csv file";
   @ViewChild('csvReader') csvReader: any;
   jsondatadisplay: any;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
