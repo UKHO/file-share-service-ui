@@ -15,7 +15,7 @@ export class EssUiExchangesetRequestComponent implements OnInit {
   csvRecordsArray: any;
   headersRow: any;
   public records: any[] = [];
-  fileInputLabel = "ESS UI File upload for csv file";
+  fileInputLabel = "Ess ui file upload for csv file";
   @ViewChild('csvReader') csvReader: any;
   jsondatadisplay: any;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
@@ -42,15 +42,14 @@ export class EssUiExchangesetRequestComponent implements OnInit {
         this.csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
         this.csvRecordsArray = this.csvRecordsArray.map((str: string) => str.replace(/[�]| {2,}/g, ''));
         this.headersRow = this.getHeaderArray(this.csvRecordsArray);
-        if (!this.ValidateCSVFile(this.csvRecordsArray, this.headersRow)) {
+        if (!this.validateCSVFile(this.csvRecordsArray, this.headersRow)) {
           this.errorMessageDescription = this.errorMessageDescription;
           this.showMessage(
             "error",
             this.errorMessageDescription);
-          this.hasRecordsToShow();
         }
         else {
-          this.records = this.getDataRecordsArrayFromCSVFile(
+          this.records = this.getDataRecordsFromCSVFile(
             this.csvRecordsArray,
             this.headersRow.length
           );
@@ -65,25 +64,22 @@ export class EssUiExchangesetRequestComponent implements OnInit {
       this.showMessage(
         "error",
         this.errorMessageDescription);
-      this.hasRecordsToShow();
     }
   }
 
-  getDataRecordsArrayFromCSVFile(csvRecordsArray: any, headerLength: any) {
-    let csvArr = [];
-
+  getDataRecordsFromCSVFile(csvRecordsArray: any, headerLength: any) {
+    let dataRecords = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
       let curruntRecord = (<string>csvRecordsArray[i]).split(',');
-      if (curruntRecord.length == headerLength) {
+      if (curruntRecord.length === headerLength) {
         let csvRecord: CsvData = new CsvData();
         csvRecord.encnumber = curruntRecord[0].trim();
-        csvArr.push(csvRecord);
+        dataRecords.push(csvRecord);
       }
     }
-    return csvArr;
+    return dataRecords;
   }
 
-  //check etension
   isValidCSVFile(file: any) {
     return file.name.toString().toLowerCase().endsWith('.csv');
   }
@@ -92,23 +88,18 @@ export class EssUiExchangesetRequestComponent implements OnInit {
     return this.records.length > 0;
   }
 
-  ValidateCSVFile(csvRecordsArray = this.csvRecordsArray, headersRow = this.headersRow) {
+  validateCSVFile(csvRecordsArray = this.csvRecordsArray, headersRow = this.headersRow) {
     this.errorMessageDescription = "";
-    var flag = true;
     if (csvRecordsArray[0] === '' && csvRecordsArray[1] === '') {
       this.errorMessageDescription = "Given csv file is empty.";
-      this.hasRecordsToShow();
-      flag = false
-      return flag;
+      return false;
     }
     var areEqual = headersRow[0].toUpperCase() === 'ENC Data'.toUpperCase();
     if (!areEqual || (areEqual && (typeof csvRecordsArray[1] === 'undefined' || csvRecordsArray[1] === ''))) {
       this.errorMessageDescription = 'Given csv file is invalid.';
-      this.hasRecordsToShow();
-      flag = false;
-      return flag;
+      return false;
     }
-    return flag;
+    return true;
   }
 
   showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageDesc: string = "") {

@@ -62,7 +62,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
 
     this.menuItems = [
       {
-        title: 'Ess Ui',
+        title: 'ESS UI',
         clickAction: (() => {
           if (this.authOptions?.isSignedIn()) {
           this.route.navigate(["essui"]);
@@ -70,8 +70,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           if (!this.authOptions?.isSignedIn()) {
             this.logInPopup();
           }
-          localStorage.setItem('currentMenu', 'Ess Ui');    
-          this.handleActiveTab('Ess Ui'); //Value should be same as title
+          localStorage.setItem('currentMenu', 'ESS UI');    
+          this.handleActiveTab('ESS UI'); //Value should be same as title
         }),
         navActive:this.isActive
       },
