@@ -49,7 +49,7 @@ describe('EssUiExchangesetRequestComponent', () => {
     const csvRecordsArray = new Array('Enc Data','US2FAS01');
     component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
-    var result = component.ValidateCSVFile(csvRecordsArray,csvRecordsArray);
+    var result = component.validateCSVFile(csvRecordsArray,csvRecordsArray);
     expect(result).toBe(true); 
     expect(component.errorMessageDescription).toEqual('');
   });
@@ -58,7 +58,7 @@ describe('EssUiExchangesetRequestComponent', () => {
     const csvRecordsArray = new Array(2).fill('');
     component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
-    var result = component.ValidateCSVFile(csvRecordsArray,csvRecordsArray);
+    var result = component.validateCSVFile(csvRecordsArray,csvRecordsArray);
     expect(component.errorMessageDescription).toEqual('Given csv file is empty.');
     expect(result).toBe(false); 
   });
@@ -69,7 +69,7 @@ describe('EssUiExchangesetRequestComponent', () => {
     component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     headersRow = component.getHeaderArray(csvRecordsArray);
-    var result = component.ValidateCSVFile(csvRecordsArray,headersRow);
+    var result = component.validateCSVFile(csvRecordsArray,headersRow);
     expect(result).toBe(true); 
     expect(component.errorMessageDescription).toEqual('');
   });
@@ -80,7 +80,7 @@ describe('EssUiExchangesetRequestComponent', () => {
     component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     headersRow = component.getHeaderArray(csvRecordsArray);
-    var result = component.ValidateCSVFile(csvRecordsArray,headersRow);
+    var result = component.validateCSVFile(csvRecordsArray,headersRow);
     expect(result).toBe(false); 
     expect(component.errorMessageDescription).toEqual('Given csv file is invalid.');
   });
@@ -91,7 +91,7 @@ describe('EssUiExchangesetRequestComponent', () => {
     component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     headersRow = component.getHeaderArray(csvRecordsArray);
-    var result = component.ValidateCSVFile(csvRecordsArray,headersRow);
+    var result = component.validateCSVFile(csvRecordsArray,headersRow);
     expect(result).toBe(false); 
     expect(component.errorMessageDescription).toEqual('Given csv file is invalid.');
   });
@@ -102,7 +102,7 @@ describe('EssUiExchangesetRequestComponent', () => {
     component = new EssUiExchangesetRequestComponent();
     component.ngOnInit();
     headersRow = component.getHeaderArray(csvRecordsArray);
-    var csvResult = component.getDataRecordsArrayFromCSVFile(
+    var csvResult = component.getDataRecordsFromCSVFile(
       csvRecordsArray,
       headersRow.length
     );
@@ -127,11 +127,11 @@ describe('EssUiExchangesetRequestComponent', () => {
  
     export function fillCSVData()
     {
-        let csvArr = [];
+        let dataRecords = [];
         let csvRecord: CsvData = new CsvData();
         csvRecord.encnumber ='US2FAS01';
-        csvArr.push(csvRecord);
-        return csvArr;
+        dataRecords.push(csvRecord);
+        return dataRecords;
     }
 
     

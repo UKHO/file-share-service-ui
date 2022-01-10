@@ -85,12 +85,12 @@ describe('FssHeaderComponent', () => {
     expect(component.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
-  test('should exist Ess Ui and Search menu item in header', () => {
+  test('should exist ESS UI and Search menu item in header', () => {
     component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService,analyticsService);
     component.ngOnInit();
     expect(component.menuItems.length).toEqual(2);
     expect(component.menuItems[1].title).toEqual("Search");
-    expect(component.menuItems[0].title).toEqual("Ess Ui");
+    expect(component.menuItems[0].title).toEqual("ESS UI");
   });
 });
 
