@@ -53,7 +53,6 @@ export class EssUiExchangesetRequestComponent implements OnInit {
             this.csvRecordsArray,
             this.headersRow.length
           );
-          this.hasRecordsToShow();
         }
       }
       reader.onerror = function () {
