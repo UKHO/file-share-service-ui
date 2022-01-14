@@ -9,15 +9,19 @@ import { FileShareApiService } from '../../core/services/file-share-api.service'
 import { FssSearchResultsComponent } from './fss-search-results/fss-search-results.component';
 import { FilterPipe } from './filter.pipe';
 import { FssPopularSearchBatchesComponent } from './fss-popular-search-batches/fss-popular-search-batches.component';
+import { FssAdvancedSearchComponent } from './fss-advanced-search/fss-advanced-search.component';
+import { FssSimplifiedSearchComponent } from './fss-simplified-search/fss-simplified-search.component';
 
 
 @NgModule({
   declarations: [
     FssSearchComponent,
     FssSearchRowComponent,
-    FssSearchResultsComponent,
     FilterPipe,
-    FssPopularSearchBatchesComponent
+    FssSearchResultsComponent,
+    FssPopularSearchBatchesComponent,
+    FssAdvancedSearchComponent,
+    FssSimplifiedSearchComponent
   ],
   imports: [
     CommonModule,

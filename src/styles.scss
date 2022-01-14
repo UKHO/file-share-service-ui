@@ -145,6 +145,16 @@ table.cdk-table th, table.cdk-table td{
 		display: flex;
 		flex-direction: row-reverse;
 		flex-grow: 1;
+
+		.switchToSimplified{
+			display: flex;
+			align-self: center;
+			margin-right: 25px;
+			color: #000;
+			font-weight: 400;
+			cursor: pointer;
+			text-decoration: underline;
+		}
 	}
 }
 

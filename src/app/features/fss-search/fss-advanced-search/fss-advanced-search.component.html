@@ -1,0 +1,50 @@
+<div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
+<div>
+    <div #ukhoTarget>
+    <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite">
+        <h3>{{messageTitle}}</h3>
+        <div>{{messageDesc}}</div>
+        <div *ngIf="loginErrorDisplay">
+            Please
+            <button  class="loginAction" (click)="loginPopup()">click here</button> to sign-in
+        </div>
+    </ukho-dialogue>
+
+    <p class="light">Please search using your local time. All dates and times are displayed in <b>{{userLocalTimeZone}}</b>.</p>
+    <app-fss-search-row *ngIf="displayQueryEditor" [fssSearchRows]="fssSearchRows" [uiGroupingDetails]="uiGroupingDetails"
+    (onFieldChanged)="onFieldChanged($event)"
+    (onOperatorChanged)="onOperatorChanged($event)"
+    (onSearchRowDeleted)="onSearchRowDeleted($event)"
+    (onGroupClicked)="onGroupClicked()"
+    (onGroupDeleted)="onGroupDeleted($event)">
+    </app-fss-search-row>
+    <div *ngIf="displayQueryEditor" class="searchSection">
+        <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>
+        <div class="searchBtn">
+        <ukho-button (click)="getSearchResult()">Search</ukho-button>
+        <a class="switchToSimplified" *ngIf="displaySimplifiedSearchLink" (click)="searchToAdvancedSearch()">Simplified Search</a> 
+        </div>
+    </div>
+    
+    <div *ngIf="!displayQueryEditor">
+        <button (click)="goToSearchEditor()" class="backToEditor"><i class="fas fa-arrow-circle-left"></i>Back </button>
+    </div>
+
+
+    <div class="searchResult">
+        <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult" (displayError)="showTokenExpiryError($event)"></app-fss-search-results>
+    </div>
+    <br/>
+    <div class="pagination">
+        <ukho-paginator *ngIf="displaySearchResult"
+                        [label]="paginatorLabel" 
+                        [pages]="pages" 
+                        [currentPage]="currentPage"
+                        (pageChange)="pageChange($event)">
+        </ukho-paginator>    
+    </div>
+    <br *ngIf="displayPopularSearch"/>
+    <ukho-hr aria-hidden="true" *ngIf="displayPopularSearch"></ukho-hr>
+    <app-fss-popular-search-batches *ngIf="displayPopularSearch" (isPopularSearch)="getPopularSearch($event)"></app-fss-popular-search-batches>
+    </div>
+</div>

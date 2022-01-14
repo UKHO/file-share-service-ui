@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { FssSearchHelperService } from '../../src/app/core/services/fss-search-helper.service';
-import { MockUserAttributeFields } from './fss-search.component.spec';
+import { MockUserAttributeFields } from './fss-advanced-search.component.spec';
 import { Field, FssSearchRow, Operator } from '../../src/app/core/models/fss-search-types';
 import { FssSearchService } from '../../src/app/core/services/fss-search.service';
 
