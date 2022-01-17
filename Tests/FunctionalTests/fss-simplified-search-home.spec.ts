@@ -39,7 +39,7 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
     expect(simplifiedSearchLink).toEqual(pageObjectsConfig.simplifiedSeatchLinkText);
   })
 
-  it('User clicks on "Simplified Search" link navigates to Simplified Search page', async () => {
+  it('Verify user clicks on "Simplified Search" link navigates to Simplified Search page', async () => {
     await page.click(pageObjectsConfig.simplifiedSeatchLinkSelector);
     //Verify element in advance search page count should be zero after navigating to simplified search page
     
@@ -64,7 +64,7 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
     expect(errorMessage).toContain(pageObjectsConfig.warningMessageValue);
   }) 
 
-  it('User clicks on "Advanced Search" link navigates to Advanced Search page', async () => {
+  it('Veify user clicks on "Advanced Search" link navigates to Advanced Search page', async () => {
     await page.click(pageObjectsConfig.advancedSeatchLinkSelector);
 
     await page.waitForSelector(pageObjectsConfig.advancedSearchTableSelector);
