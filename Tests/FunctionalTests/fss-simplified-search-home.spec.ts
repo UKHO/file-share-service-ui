@@ -73,7 +73,8 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
     
     var advanceSearchElements =(await page.$$(pageObjectsConfig.advancedSearchTableSelector)).length
     expect(advanceSearchElements).toEqual(3);
-
+    
+    //search box for simplified search is not present on advanced search page.
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSerachBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(0);
     

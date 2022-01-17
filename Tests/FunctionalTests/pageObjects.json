@@ -70,7 +70,7 @@
        "warningMessageValue": "There is a problem with a field",
        "simplifiedSeatchLinkSelector" : "a.switchToSimplified",
        "simplifiedSeatchLinkText" : "Simplified Search",
-       "inputSimplifiedSerachBoxSelector" : "ukho-textinput >input.form-text-input",
+       "inputSimplifiedSerachBoxSelector" : "app-fss-simplified-search ukho-textinput >input.form-text-input",
        "advancedSeatchLinkSelector" : "a.switchToAdvanded",
        "advancedSeatchLink" : "Advanced Search",
        "simplifiedSearchButtonSelector": "div.simplifiedSection button",
