@@ -73,7 +73,8 @@
        "inputSimplifiedSerachBoxSelector" : "ukho-textinput >input.form-text-input",
        "advancedSeatchLinkSelector" : "a.switchToAdvanded",
        "advancedSeatchLink" : "Advanced Search",
-       "simplifiedSearchButtonSelector": "div.simplifiedSection button"
+       "simplifiedSearchButtonSelector": "div.simplifiedSection button",
+       "advancedSearchTableSelector" : ".querytable tbody tr input"
     },
     "pageTimeOut":
     {

@@ -67,11 +67,11 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
   it('User clicks on "Advanced Search" link navigates to Advanced Search page', async () => {
     await page.click(pageObjectsConfig.advancedSeatchLinkSelector);
 
-    await page.waitForSelector(pageObjectsConfig.inputSearchFieldSelector);
+    await page.waitForSelector(pageObjectsConfig.advancedSearchTableSelector);
 
     //Verify element in simplified search page count should be zero after navigating to advanced search page
     
-    var advanceSearchElements =(await page.$$(".querytable tbody tr input")).length
+    var advanceSearchElements =(await page.$$(pageObjectsConfig.advancedSearchTableSelector)).length
     expect(advanceSearchElements).toEqual(3);
 
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSerachBoxSelector)).length
