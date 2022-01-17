@@ -4,7 +4,7 @@ const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import {LoginPortal,SearchAttribute} from './helpermethod'
 
 
-describe('Test Search Attribute Scenario On Search Page', () => {
+describe('Test Search Attribute Scenario On Simplified Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   let browser: Browser;
   let context: BrowserContext;
@@ -71,7 +71,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
 
     //Verify element in simplified search page count should be zero after navigating to advanced search page
     
-    var advanceSearchElements =(await page.$$("#ukho-form-field-2,#ukho-form-field-3,#ukho-form-field-4")).length
+    var advanceSearchElements =(await page.$$(".querytable tbody tr input")).length
     expect(advanceSearchElements).toEqual(3);
 
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSerachBoxSelector)).length
