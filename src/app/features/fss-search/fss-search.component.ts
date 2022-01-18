@@ -107,7 +107,6 @@ export class FssSearchComponent implements OnInit {
   }
 
   refreshFields(batchAttributeResult: any) {
-    console.log(this.fields);
     this.filterList = [];
     this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
     for (let i = 0; i < this.fields.length; i++) {
@@ -175,7 +174,6 @@ export class FssSearchComponent implements OnInit {
       this.displayLoader = true;
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows, this.rowGroupings);
-        console.log(filter);
         if (filter != null) {
           this.searchResult = [];
           this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
