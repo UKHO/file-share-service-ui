@@ -81,7 +81,8 @@ export class FssSearchComponent implements OnInit {
       if (!this.fileShareApiService.isTokenExpired()) {
         this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
-          this.setFields(batchAttributeResult);
+          this.refreshFields(batchAttributeResult);
+          this.addSearchRow();
           this.displayLoader = false;
           this.analyticsService.searchInIt();
         });
@@ -92,7 +93,7 @@ export class FssSearchComponent implements OnInit {
     }
     else {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
-      this.setFields(batchAttributeResult);
+      this.refreshFields(batchAttributeResult);
     }
   }
 
@@ -105,14 +106,17 @@ export class FssSearchComponent implements OnInit {
     return regExp.exec(valueField)![1];
   }
 
-  setFields(batchAttributeResult: any) {
+  refreshFields(batchAttributeResult: any) {
+    console.log(this.fields);
+    this.filterList = [];
     this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
     for (let i = 0; i < this.fields.length; i++) {
       this.filterList.push(this.fields[i].text)
     }
     this.typeaheadFields = this.filter(this.filterList);
-    this.addSearchRow();
   }
+
+
 
   addSearchRow(isPopularSearch?: boolean) {
     this.fssSearchRows.push(this.getDefaultSearchRow());
@@ -297,8 +301,21 @@ export class FssSearchComponent implements OnInit {
         this.displayLoader = false;
         this.analyticsService.login();
       })
+      this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
+        this.refreshFields(batchAttributeResult);
+        this.refreshExistingFssRowsFields();
+      });    
     });
     this.hideMessage();
+  }
+
+  refreshExistingFssRowsFields()
+  {
+    this.fssSearchRows.forEach(fssSearchRow => {
+      fssSearchRow.fields = this.fields;
+      fssSearchRow.filterFn = this.typeaheadFields;
+    });
   }
 
   private setPaginatorLabel(currentPage: number) {
