@@ -67,7 +67,14 @@
        "paginatorSelector" : "ukho-paginator p",
        "acceptCookieSelector" : "#onetrust-accept-btn-handler",
        "skipContentSelector" : "a.skip-to-content-link",
-       "warningMessageValue": "There is a problem with a field"
+       "warningMessageValue": "There is a problem with a field",
+       "simplifiedSeatchLinkSelector" : "a.switchToSimplified",
+       "simplifiedSeatchLinkText" : "Simplified Search",
+       "inputSimplifiedSerachBoxSelector" : "app-fss-simplified-search ukho-textinput >input.form-text-input",
+       "advancedSeatchLinkSelector" : "a.switchToAdvanded",
+       "advancedSeatchLink" : "Advanced Search",
+       "simplifiedSearchButtonSelector": "div.simplifiedSection button",
+       "advancedSearchTableSelector" : ".querytable tbody tr input"
     },
     "pageTimeOut":
     {
