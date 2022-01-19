@@ -33,6 +33,13 @@ describe('Test Search Attribute Scenario On Search Page', () => {
      await browser.close()
   })
 
+  it('Does it display "Simplified Search" link on advanced Search page', async () => {
+    await page.waitForSelector(pageObjectsConfig.simplifiedSearchLinkSelector);
+
+    var simplifiedSearchLink = await page.innerText(pageObjectsConfig.simplifiedSearchLinkSelector);
+    expect(simplifiedSearchLink).toEqual(pageObjectsConfig.simplifiedSearchLinkText);
+  })
+  
   it('Verify if click search button without selecting a field value', async () => {
     await page.click(pageObjectsConfig.searchAttributeButton);
 
