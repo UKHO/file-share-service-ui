@@ -22,7 +22,7 @@ describe('FssSearchService', () => {
     fields.push({ value: '$batch(cellname)', text: 'cellname', type: 'UserAttribute', dataType: 'attribute' });
 
     let userAttributes = ['product', 'cellname'];
-    var result = service.convertToArray(userAttributes);
+    var result = service.refreshUserAttributes(userAttributes);
     expect(result).toStrictEqual(fields);
   });
 

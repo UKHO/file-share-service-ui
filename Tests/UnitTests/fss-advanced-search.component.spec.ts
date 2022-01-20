@@ -356,11 +356,13 @@ describe('FssAdvancedSearchComponent', () => {
     expect(result).toEqual(expectedGrouping);
   });
 
-  test('should return row count 2 when setFields function is called', () => {
+
+  test('should return row count 2 when addSearchRow function is called twice', () => {
     component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
-    component.setFields(MockUserAttributeFields());
-    component.setFields(MockUserAttributeFields());
+    component.refreshFields(MockUserAttributeFields());
+    component.addSearchRow();
+    component.addSearchRow();
     expect(component.fssSearchRows.length).toBe(2);
   });
 

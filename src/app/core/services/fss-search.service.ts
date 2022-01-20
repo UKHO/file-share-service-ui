@@ -17,7 +17,7 @@ export class FssSearchService implements IFssSearchService {
     return joinOperators;
   }
 
-  getFields(batchAttributeResult: any) {
+  getFields(batchAttributeResult: any) {  
     const fields: Field[] = [
       {value: 'BusinessUnit',text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string'},
       {value: 'FileName',text: '@FileName', type: 'SystemAttribute', dataType: 'string'},
@@ -27,7 +27,7 @@ export class FssSearchService implements IFssSearchService {
       {value: 'BatchPublishedDate',text: '@BatchPublishedDate', type: 'SystemAttribute', dataType: 'date'}
     ];
 
-    this.userAttributes = this.convertToArray(batchAttributeResult);
+    this.userAttributes = this.refreshUserAttributes(batchAttributeResult);
     return fields.concat(this.userAttributes);
   }
 
@@ -52,8 +52,8 @@ export class FssSearchService implements IFssSearchService {
     return Operators;
   }
 
-  convertToArray(batchAttributeResult: string | any[]) {
-
+  refreshUserAttributes(batchAttributeResult: string | any[]) {
+    this.userAttributes = [];
     for (let i = 0; i < batchAttributeResult.length; i++) {
       const batchAttributes: Field =
         { value: '$batch(' + batchAttributeResult[i] + ')', text: batchAttributeResult[i], type: 'UserAttribute', dataType: 'attribute' };
