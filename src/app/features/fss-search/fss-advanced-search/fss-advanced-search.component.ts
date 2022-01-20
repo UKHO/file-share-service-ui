@@ -318,7 +318,6 @@ export class FssAdvancedSearchComponent implements OnInit {
     });
   }
 
-
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
