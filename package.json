@@ -22,7 +22,8 @@
     "url-parse": "^1.5.2",
     "set-value": "4.0.1",
     "ansi-regex": "5.0.1",
-    "node-forge": "1.0.0"
+    "node-forge": "1.0.0",
+    "nanoid": "3.2.0"
   },
   "private": true,
   "dependencies": {
