@@ -97,6 +97,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     else {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
       this.refreshFields(batchAttributeResult);
+      this.addSearchRow();
     }
   }
 

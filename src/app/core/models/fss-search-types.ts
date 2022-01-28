@@ -73,3 +73,14 @@ export class UIGroupingDetails{
   maxGroupingLevel: number;
   uiGroupings: UIGrouping[];
 }
+
+export interface SimplifiedSearchFilter {
+  title: string;
+  items: SimplifiedSearchFilterItem[];
+  expanded?: boolean;
+}
+
+export interface SimplifiedSearchFilterItem {
+  title: string;
+  selected?: boolean;
+}
