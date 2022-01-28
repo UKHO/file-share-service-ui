@@ -97,6 +97,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     else {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
       this.refreshFields(batchAttributeResult);
+      this.addSearchRow();
     }
   }
 
@@ -191,25 +192,15 @@ export class FssAdvancedSearchComponent implements OnInit {
             }
             else {
               this.searchResult = res;
-              if (this.searchResult.count > 0) {
-                var searchResultCount = this.searchResult['count'];
-                this.searchResultTotal = this.searchResult['total'];
-                this.currentPage = 1;
-                this.pages = this.searchResultTotal % searchResultCount === 0 ?
-                  Math.floor(this.searchResultTotal / searchResultCount) :
-                  (Math.floor(this.searchResultTotal / searchResultCount) + 1);
-                this.handleSuccess()
-              }
-              else {
-                this.searchResult = [];
-                this.displaySearchResult = false;
-                this.showMessage(
+              
+              this.searchResult = [];
+              this.displaySearchResult = false;
+              this.showMessage(
                   "info",
                   "No results can be found for this search",
                   "Try again using different parameters in the search query."
                 );
-                this.displayLoader = false;
-              }
+              this.displayLoader = false;
             }
           },
             (error) => {

@@ -67,6 +67,12 @@ export class FssSearchFilterService {
     return filter;
   }
 
+  getFilterExpressionForSimplifiedSearch() {
+    var filter = "BusinessUnit eq 'ADDS'";
+
+    return filter;
+  }
+
   getFieldDataType(fssSearchRow: FssSearchRow) {
     const dataType = fssSearchRow.fields.find(f => f.value === fssSearchRow.selectedField)?.dataType!;
     return dataType
