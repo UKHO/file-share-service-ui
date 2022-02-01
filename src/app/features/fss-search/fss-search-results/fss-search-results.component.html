@@ -24,8 +24,27 @@
           <td>{{batch.ExpiryDate.value| date:'dd/MM/yyyy HH:mm'}}</td>
         </tr>
       </table>
-      <ukho-table [displayedColumns]="batch.batchFileDetails.columnData" [dataSource]="batch.batchFileDetails.rowData">
-      </ukho-table>
+      
+      <table ukho-table [dataSource]="batch.batchFileDetails.rowData">
+        <ng-container ukhoColumnDef="FileName">
+          <th ukho-header-cell *ukhoHeaderCellDef> FileName </th>
+          <td ukho-cell *ukhoCellDef="let element"> {{element.FileName}} </td>
+        </ng-container>
+        <ng-container ukhoColumnDef="MimeType">
+          <th ukho-header-cell *ukhoHeaderCellDef> MimeType </th>
+          <td ukho-cell *ukhoCellDef="let element"> {{element.MimeType}} </td>
+        </ng-container>
+        <ng-container ukhoColumnDef="FileSize">
+          <th ukho-header-cell *ukhoHeaderCellDef> FileSize </th>
+          <td ukho-cell *ukhoCellDef="let element"> {{element.FileSize}} </td>
+        </ng-container>
+        <ng-container ukhoColumnDef="Download">
+          <th ukho-header-cell *ukhoHeaderCellDef> Download</th>
+          <td ukho-cell *ukhoCellDef="let element"> {{element.Download}} </td>
+        </ng-container>
+        <tr ukho-header-row *ukhoHeaderRowDef="['FileName', 'MimeType', 'FileSize', 'Download']"></tr>
+        <tr ukho-row *ukhoRowDef="let row; columns: ['FileName', 'MimeType', 'FileSize', 'Download']"></tr>
+      </table>
     </ukho-expansion>
   </ukho-card>
 </div>
