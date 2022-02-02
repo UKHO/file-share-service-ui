@@ -83,7 +83,7 @@ export class FssSearchFilterService {
     var filterExpression = "";
     for (var i in searchKeywords) {
       if (searchKeywords[i] != "") {
-        var searchKeyword = searchKeywords[i].replace("'", "''");
+        var searchKeyword = searchKeywords[i].replace(/'/g, "''");
         if (filterExpression == "")
           filterExpression = "$batchContains('" + searchKeyword + "')";
         else
