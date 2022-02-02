@@ -26,7 +26,7 @@ export class FssSimplifiedSearchComponent implements OnInit {
 
   getSimplifiedSearchResult(){
     if (this.fieldValue.trim() !== "") {
-      var filterExpression=this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(this.fieldValue.trim());     
+      let filterExpression=this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(this.fieldValue.trim());     
       this.displayDialogMessage = false;
     }else{
       this.errorMessageTitle = "There is a problem with a field";
