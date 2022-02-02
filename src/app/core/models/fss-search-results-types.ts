@@ -12,19 +12,14 @@ export interface SearchResultViewModel{
   }
  
   export interface BatchFileDetails{
-    columnData: BatchFileDetailsColumnData[];
+    columnData: string[];
     rowData:BatchFileDetailsRowData[];
-  }
-  
-  export interface BatchFileDetailsColumnData {  
-    headerTitle: string;
-    propertyName: string;
   }
   
   export interface BatchFileDetailsRowData {
     FileName: string;
     MimeType: string;
     FileSize: string;
-    Download: string;
+    FileLink: string;
   }
 

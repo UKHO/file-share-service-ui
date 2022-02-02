@@ -1,6 +1,6 @@
 import { ElementRef, EventEmitter, OnChanges, Output } from '@angular/core';
 import { Component, Input } from '@angular/core';
-import { BatchAttribute, BatchFileDetails, BatchFileDetailsColumnData, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
+import { BatchAttribute, BatchFileDetails, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 @Component({
@@ -45,15 +45,9 @@ export class FssSearchResultsComponent implements OnChanges {
     }, 0);
   }
 
-  getfileDetailsColumnData(): BatchFileDetailsColumnData[] {
-    var fileDetailsColumnData: BatchFileDetailsColumnData[] = [
-      { headerTitle: 'File name', propertyName: 'FileName' },
-      { headerTitle: 'MIME type', propertyName: 'MimeType' },
-      { headerTitle: 'File size', propertyName: 'FileSize' },
-      { headerTitle: 'Download', propertyName: 'Download' }
-    ];
-
-    return fileDetailsColumnData;
+  getfileDetailsColumnData(): string[] {
+    
+    return ['FileName', 'MimeType', 'FileSize', 'FileLink'];
   }
 
   getBatchAttributes(batch: any) {
@@ -80,7 +74,7 @@ export class FssSearchResultsComponent implements OnChanges {
         FileName: files[i]["filename"],
         MimeType: files[i]["mimeType"],
         FileSize: formatBytes(files[i]["fileSize"]),
-        Download: '<div class="fileDownload" rel="' + link + '" tabindex="0" role="button" aria-label="Download File"><i class="fa fa-download fa-1x"></i></div>'
+        FileLink: link
       });
     }
 
