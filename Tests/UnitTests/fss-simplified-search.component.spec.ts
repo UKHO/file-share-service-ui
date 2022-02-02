@@ -52,4 +52,10 @@ describe('FssSimplifiedSearchComponent', () => {
     expect(filterExpression).toEqual(expectedfilterExpression);
   });
 
+  test('should strip all single quotes from simplified search text', () => {
+    var expectedfilterExpression = "$batchContains('AVCS') OR $batchContains('DVD') OR $batchContains('2022')";
+    var filterExpression = searchFilterservice.getFilterExpressionForSimplifiedSearch("AVCS 'DVD' 2022");
+    expect(filterExpression).toEqual(expectedfilterExpression);
+  });
+
 });
