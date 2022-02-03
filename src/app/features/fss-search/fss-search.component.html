@@ -11,7 +11,7 @@
     <div>{{messageDesc}}</div>
     <div *ngIf="loginErrorDisplay">
         Please
-        <button  class="loginAction" (click)="loginPopup()">click here</button> to sign-in
+        <button  class="loginAction" (click)="refreshToken()">click here</button> to sign-in
     </div>
 </ukho-dialogue>
 
@@ -23,10 +23,11 @@
   (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()"
   (onAdvancedSearchClicked)="onAdvancedSearchClicked($event)"
   [observablePopularSearch]="eventPopularSearch.asObservable()"
-  [observableTokenRenewal]="eventTokenRenewal.asObservable()"></app-fss-advanced-search>
+  [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
   <div class="searchResult">
-    <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult" (displayError)="showTokenExpiryError($event)"></app-fss-search-results>
+    <app-fss-search-results *ngIf="displaySearchResult" 
+    [searchResult]="searchResult" (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
   </div>
   <br/>
   <div class="pagination">

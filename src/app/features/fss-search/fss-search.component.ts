@@ -8,7 +8,6 @@ import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
 
-
 @Component({
   selector: 'app-fss-search',
   templateUrl: './fss-search.component.html',
@@ -21,7 +20,6 @@ export class FssSearchComponent implements OnInit {
   messageDesc: string = "";
   displayMessage: boolean = false;
   loginErrorDisplay: boolean = false;
-
   displaySearchResult: Boolean = false;
   searchResult: any = [];
   pagingLinks: any = [];
@@ -32,24 +30,20 @@ export class FssSearchComponent implements OnInit {
   pageRecordCount: number = 10;
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
-
-  eventPopularSearch: Subject<void> = new Subject<void>();
-  eventTokenRenewal: Subject<void> = new Subject<void>();
-  displayPopularSearch: boolean;
-
-  public SearchTypeEnum = SearchType;
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;  
   activeSearchType: SearchType;
+  displayPopularSearch: boolean;
+  eventPopularSearch: Subject<void> = new Subject<void>();  
+  eventAdvancedSearchTokenRefresh: Subject<void> = new Subject<void>();
+  SearchTypeEnum = SearchType;
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService) {
-      this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+      this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;      
      }
-
-     
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.AdvancedSearch;
@@ -65,7 +59,7 @@ export class FssSearchComponent implements OnInit {
     this.displaySearchResult = false;
   }
 
-  loginPopup() {
+  refreshToken() {
     this.displayLoader = true;
     this.msalService.loginPopup().subscribe(response => {
       localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
@@ -76,15 +70,15 @@ export class FssSearchComponent implements OnInit {
       this.fileShareApiService.refreshToken().subscribe(res => {
         this.displayLoader = false;
         this.analyticsService.login();
-        this.tokenRenewalProcess();
+        this.handleAdvancedSearchTokenRefresh();
       });      
     });
     this.hideMessage();
   }
 
   onAdvancedSearchClicked(fssAdvancedSearch: any) {    
-    if (this.fssSearchValidatorService.validateSearchInput(fssAdvancedSearch.fssSearchRows, 
-          fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
+    if (this.fssSearchValidatorService.validateSearchInput(
+        fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpression(
           fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
@@ -99,12 +93,9 @@ export class FssSearchComponent implements OnInit {
       this.errorMessageTitle = this.fssSearchValidatorService.errorMessageTitle;
       this.searchResult = [];
       this.displaySearchResult = false;
-      this.showMessage(
-        "warning",
-        this.errorMessageTitle,
-        this.errorMessageDescription);
+      this.showMessage("warning", this.errorMessageTitle, this.errorMessageDescription);
     }
-    this.analyticsService.getSearchResult();
+    this.analyticsService.getAdvancedSearchResult();
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
@@ -119,18 +110,14 @@ export class FssSearchComponent implements OnInit {
       }
     }else{
       this.messageTitle = "There is a problem with a field";
-      this.messageDesc = "Please enter a search field value.";
-      this.displayMessage = true;
-      this.showMessage(
-        "warning",
-        this.messageTitle,
-        this.messageDesc);
+      this.messageDesc = "Please enter a search field value.";      
+      this.showMessage("warning", this.messageTitle, this.messageDesc);
     }
+    this.analyticsService.getSimplifiedSearchResult();
   }
 
   getSearchResult(filter: string) {
-    this.displayLoader = true;
-    console.log(filter);
+    this.displayLoader = true;    
     if (filter != null) {
       this.searchResult = [];
       this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
@@ -142,31 +129,23 @@ export class FssSearchComponent implements OnInit {
           this.pages = this.searchResultTotal % searchResultCount === 0 ?
             Math.floor(this.searchResultTotal / searchResultCount) :
             (Math.floor(this.searchResultTotal / searchResultCount) + 1);
-          this.handleSuccess()
+          this.handleGetSearchResultSuccess()
         }
         else {
-          this.searchResult = res;
-          
           this.searchResult = [];
           this.displaySearchResult = false;
-          this.showMessage(
-              "info",
-              "No results can be found for this search",
-              "Try again using different parameters in the search query."
-            );
+          this.showMessage("info", "No results can be found for this search", "Try again using different parameters in the search query.");
           this.displayLoader = false;
         }
       },
           (error) => {
-            this.handleErrMessage(error);
+            this.handleGetSearchResultFailure(error);
           }
         );
-      }
-         
-    this.analyticsService.getSearchResult();
+      }             
   }
 
-  handleSuccess() {
+  handleGetSearchResultSuccess() {
     this.pagingLinks = this.searchResult['_Links'];
     this.searchResult = Array.of(this.searchResult['entries']);
     this.displaySearchResult = true;
@@ -175,7 +154,7 @@ export class FssSearchComponent implements OnInit {
     this.displayLoader = false;
   }
 
-  handleErrMessage(err: any) {
+  handleGetSearchResultFailure(err: any) {
     this.displayLoader = false;
     this.displaySearchResult = false;
     var errmsg = "";
@@ -219,12 +198,7 @@ export class FssSearchComponent implements OnInit {
     this.displayLoader = false;
     this.analyticsService.tokenExpired();
   }
-
-  showTokenExpiryError(displayError: any) {
-    if (displayError == true)
-      this.handleTokenExpiry();
-  }
-
+  
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
@@ -239,10 +213,10 @@ export class FssSearchComponent implements OnInit {
         var nextPageLink = this.pagingLinks!.next!.href;
         this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
           this.searchResult = res;
-          this.handleSuccess();
+          this.handleGetSearchResultSuccess();
         },
           (error) => {
-            this.handleErrMessage(error);
+            this.handleGetSearchResultFailure(error);
           }
         );
       }
@@ -250,10 +224,10 @@ export class FssSearchComponent implements OnInit {
         var previousPageLink = this.pagingLinks!.previous!.href;
         this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
           this.searchResult = res;
-          this.handleSuccess();
+          this.handleGetSearchResultSuccess();
         },
           (error) => {
-            this.handleErrMessage(error);
+            this.handleGetSearchResultFailure(error);
           }
         );
       }
@@ -267,8 +241,8 @@ export class FssSearchComponent implements OnInit {
     this.eventPopularSearch.next(popularSearch);    
   }
 
-  tokenRenewalProcess() {
-    this.eventTokenRenewal.next();
+  handleAdvancedSearchTokenRefresh() {
+    this.eventAdvancedSearchTokenRefresh.next();
   }
 
 }

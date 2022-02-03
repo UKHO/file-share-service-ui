@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input }
 import { FssSearchService } from './../../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails, GroupingLevel, UIGrouping } from './../../../core/models/fss-search-types';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
-import { FssSearchFilterService } from '../../../core/services/fss-search-filter.service';
 import { Observable, Subscription } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { FssSearchHelperService } from '../../../core/services/fss-search-helper.service';
@@ -22,7 +21,6 @@ import { AppConfigService } from '../../../core/services/app-config.service';
 })
 export class FssAdvancedSearchComponent implements OnInit {
 
-  displayPopularSearch: boolean; 
   joinOperators: JoinOperator[] = [];
   fields: Field[] = [];
   operators: Operator[] = [];
@@ -63,21 +61,20 @@ export class FssAdvancedSearchComponent implements OnInit {
   @Output() ShowSimplifiedSearchClicked = new EventEmitter<boolean>();
   @Output() onAdvancedSearchClicked = new EventEmitter<{ fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[], rowGroupings: RowGrouping[] }>();
   
-  private eventPopularSearchSubscription: Subscription;
+  private subscriptionPopularSearch: Subscription;
   @Input() observablePopularSearch: Observable<any>;
 
-  private eventTokenRenewalSubscription: Subscription;
-  @Input() observableTokenRenewal: Observable<void>;
+  private subscriptionAdvancedSearchTokenRefresh: Subscription;
+  @Input() observableAdvancedSearchTokenRefresh: Observable<void>;
 
-  constructor(private fssSearchTypeService: IFssSearchService,
-    private fssSearchFilterService: FssSearchFilterService,
+  constructor(private fssSearchTypeService: IFssSearchService,    
     private fileShareApiService: FileShareApiService,
     private elementRef: ElementRef,    
     private fssSearchHelperService: FssSearchHelperService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
     private fssPopularSearchService: FssPopularSearchService,
-    private analyticsService: AnalyticsService) {   
+    private analyticsService: AnalyticsService) { 
     this.displaySimplifiedSearchLink = AppConfigService.settings["fssConfig"].displaySimplifiedSearchLink;
   }
 
@@ -118,16 +115,16 @@ export class FssAdvancedSearchComponent implements OnInit {
       this.addSearchRow();
     }
 
-    this.eventPopularSearchSubscription = this.observablePopularSearch.subscribe((data) => 
+    this.subscriptionPopularSearch = this.observablePopularSearch.subscribe((data) => 
       this.getPopularSearch(data));
 
-    this.eventTokenRenewalSubscription = this.observableTokenRenewal.subscribe(() => 
+    this.subscriptionAdvancedSearchTokenRefresh = this.observableAdvancedSearchTokenRefresh.subscribe(() => 
       this.getBatchAttributes());
   }
 
   ngOnDestroy() {
-    this.eventPopularSearchSubscription.unsubscribe();
-    this.eventTokenRenewalSubscription.unsubscribe();
+    this.subscriptionPopularSearch.unsubscribe();
+    this.subscriptionAdvancedSearchTokenRefresh.unsubscribe();
   }
 
   getLocalTimeFormat() {
@@ -216,7 +213,6 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.analyticsService.SearchRowDeleted();
   }
 
-  
   getAdvancedSearchResult() {
     this.onAdvancedSearchClicked.emit({ fssSearchRows: this.fssSearchRows, fields: this.fields, 
         operators: this.operators, rowGroupings: this.rowGroupings});
@@ -254,11 +250,6 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.analyticsService.tokenExpired();
   }
 
-  private setPaginatorLabel(currentPage: number) {
-    this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
-      "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
-  }
-
   onGroupClicked() {
     this.displaySearchResult = false;
     this.hideMessage();
@@ -272,17 +263,12 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.currentGroupEndIndex = rowIndexArray[rowIndexArray.length - 1];
 
     if (this.isGroupAlreadyExist()) {
-      this.showMessage(
-        "info",
-        "A group already exists for selected clauses.",
-        "A duplicate group cannot be created."
+      this.showMessage("info", "A group already exists for selected clauses.", "A duplicate group cannot be created."
       );
     }
     else if (this.isGroupIntersectWithOther()) {
-      this.showMessage(
-        "info",
-        "Groups can not intersect each other.",
-        "A group can only contain complete groups, they cannot contain a part of another group."
+      this.showMessage("info", "Groups can not intersect each other.",
+            "A group can only contain complete groups, they cannot contain a part of another group."
       );
     }
     else {
