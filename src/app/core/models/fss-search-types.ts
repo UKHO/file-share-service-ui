@@ -73,3 +73,8 @@ export class UIGroupingDetails{
   maxGroupingLevel: number;
   uiGroupings: UIGrouping[];
 }
+
+export enum SearchType {
+  SimplifiedSearch,
+  AdvancedSearch  
+}

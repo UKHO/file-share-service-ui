@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { FssSearchService } from './../../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails, GroupingLevel, UIGrouping } from './../../../core/models/fss-search-types';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 import { FssSearchFilterService } from '../../../core/services/fss-search-filter.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
-import { MsalService } from '@azure/msal-angular';
 import { FssSearchHelperService } from '../../../core/services/fss-search-helper.service';
 import { FssSearchValidatorService } from '../../../core/services/fss-search-validator.service';
 import { FssSearchGroupingService } from '../../../core/services/fss-search-grouping.service';
@@ -62,18 +61,37 @@ export class FssAdvancedSearchComponent implements OnInit {
   ShowAdvancedSearch: boolean = true;
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   @Output() ShowSimplifiedSearchClicked = new EventEmitter<boolean>();
+  @Output() onAdvancedSearchClicked = new EventEmitter<{ fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[], rowGroupings: RowGrouping[] }>();
+  
+  private eventPopularSearchSubscription: Subscription;
+  @Input() observablePopularSearch: Observable<any>;
+
+  private eventTokenRenewalSubscription: Subscription;
+  @Input() observableTokenRenewal: Observable<void>;
+
   constructor(private fssSearchTypeService: IFssSearchService,
     private fssSearchFilterService: FssSearchFilterService,
     private fileShareApiService: FileShareApiService,
-    private elementRef: ElementRef,
-    private msalService: MsalService,
+    private elementRef: ElementRef,    
     private fssSearchHelperService: FssSearchHelperService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
     private fssPopularSearchService: FssPopularSearchService,
-    private analyticsService: AnalyticsService) {
-    this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+    private analyticsService: AnalyticsService) {   
     this.displaySimplifiedSearchLink = AppConfigService.settings["fssConfig"].displaySimplifiedSearchLink;
+  }
+
+  getPopularSearch(popularSearch: any) {
+    this.rowGroupings = [];
+    this.setupGrouping();
+    this.fssSearchRows = [];
+    var isPopularSearch = true;
+    for (let i = 0; i < popularSearch.rows.length; i++) {
+      this.addSearchRow(isPopularSearch);
+    }
+    this.fssPopularSearchService.populateQueryEditor(this.fssSearchRows, popularSearch, this.operators, this.rowGroupings);
+    this.setupGrouping();  
+    this.getAdvancedSearchResult();
   }
 
   ngOnInit(): void {
@@ -91,7 +109,7 @@ export class FssAdvancedSearchComponent implements OnInit {
         });
       }
       else {
-        this.handleResError();
+        this.handleTokenExpiry();
       }
     }
     else {
@@ -99,6 +117,17 @@ export class FssAdvancedSearchComponent implements OnInit {
       this.refreshFields(batchAttributeResult);
       this.addSearchRow();
     }
+
+    this.eventPopularSearchSubscription = this.observablePopularSearch.subscribe((data) => 
+      this.getPopularSearch(data));
+
+    this.eventTokenRenewalSubscription = this.observableTokenRenewal.subscribe(() => 
+      this.getBatchAttributes());
+  }
+
+  ngOnDestroy() {
+    this.eventPopularSearchSubscription.unsubscribe();
+    this.eventTokenRenewalSubscription.unsubscribe();
   }
 
   getLocalTimeFormat() {
@@ -110,6 +139,14 @@ export class FssAdvancedSearchComponent implements OnInit {
     return regExp.exec(valueField)![1];
   }
 
+  getBatchAttributes() {
+    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
+        this.refreshFields(batchAttributeResult);
+        this.refreshExistingFssRowsFields();
+      });    
+  }
+
   refreshFields(batchAttributeResult: any) {
     this.filterList = [];
     this.fields = this.fssSearchTypeService.getFields(batchAttributeResult);
@@ -117,6 +154,14 @@ export class FssAdvancedSearchComponent implements OnInit {
       this.filterList.push(this.fields[i].text)
     }
     this.typeaheadFields = this.filter(this.filterList);
+  }
+
+  refreshExistingFssRowsFields()
+  {
+    this.fssSearchRows.forEach(fssSearchRow => {
+      fssSearchRow.fields = this.fields;
+      fssSearchRow.filterFn = this.typeaheadFields;
+    });
   }
 
   addSearchRow(isPopularSearch?: boolean) {
@@ -171,61 +216,12 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.analyticsService.SearchRowDeleted();
   }
 
-  getSearchResult() {
-    if (this.fssSearchValidatorService.validateSearchInput(this.fssSearchRows, this.fields, this.operators)) {
-      this.displayLoader = true;
-      if (!this.fileShareApiService.isTokenExpired()) {
-        var filter = this.fssSearchFilterService.getFilterExpression(this.fssSearchRows, this.rowGroupings);
-        console.log(filter);
-        if (filter != null) {
-          this.searchResult = [];
-          this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
-            this.searchResult = res;
-            if (this.searchResult.count > 0) {
-              var searchResultCount = this.searchResult['count'];
-              this.searchResultTotal = this.searchResult['total'];
-              this.currentPage = 1;
-              this.pages = this.searchResultTotal % searchResultCount === 0 ?
-                Math.floor(this.searchResultTotal / searchResultCount) :
-                (Math.floor(this.searchResultTotal / searchResultCount) + 1);
-              this.handleSuccess()
-            }
-            else {
-              this.searchResult = res;
-              
-              this.searchResult = [];
-              this.displaySearchResult = false;
-              this.showMessage(
-                  "info",
-                  "No results can be found for this search",
-                  "Try again using different parameters in the search query."
-                );
-              this.displayLoader = false;
-            }
-          },
-            (error) => {
-              this.handleErrMessage(error);
-            }
-          );
-        }
-      }
-      else {
-        this.handleResError();
-      }
+  
+  getAdvancedSearchResult() {
+    this.onAdvancedSearchClicked.emit({ fssSearchRows: this.fssSearchRows, fields: this.fields, 
+        operators: this.operators, rowGroupings: this.rowGroupings});
     }
-    else {
-      this.errorMessageDescription = this.fssSearchValidatorService.errorMessageDescription;
-      this.errorMessageTitle = this.fssSearchValidatorService.errorMessageTitle;
-      this.searchResult = [];
-      this.displaySearchResult = false;
-      this.showMessage(
-        "warning",
-        this.errorMessageTitle,
-        this.errorMessageDescription);
-    }
-    this.analyticsService.getSearchResult();
-  }
-
+  
   hideMessage() {
     this.messageType = "info";
     this.messageTitle = "";
@@ -251,100 +247,16 @@ export class FssAdvancedSearchComponent implements OnInit {
     }
   }
 
-  handleSuccess() {
-    this.pagingLinks = this.searchResult['_Links'];
-    this.searchResult = Array.of(this.searchResult['entries']);
-    this.displaySearchResult = true;
-    this.hideMessage();
-    this.setPaginatorLabel(this.currentPage);
-    this.displayLoader = false;
-  }
-
-  handleErrMessage(err: any) {
-    this.displayLoader = false;
-    this.displaySearchResult = false;
-    var errmsg = "";
-    if (err.error != undefined && err.error.errors.length > 0) {
-      for (let i = 0; i < err.error.errors.length; i++) {
-        errmsg += err.error.errors[i]['description'] + '\n';
-      }
-      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
-    }
-    this.analyticsService.errorHandling();
-  }
-
-  handleResError() {
+  handleTokenExpiry() {
     this.showMessage("info", "Your Sign-in Token has Expired", "");
     this.loginErrorDisplay = true;
     this.displayLoader = false;
     this.analyticsService.tokenExpired();
   }
 
-  loginPopup() {
-    this.displayLoader = true;
-    this.msalService.loginPopup().subscribe(response => {
-      localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-      const idToken = response.idToken;
-      localStorage.setItem('idToken', idToken);
-      this.msalService.instance.setActiveAccount(response.account);
-      //refreshToken endpoint call to set the cookie after user login
-      this.fileShareApiService.refreshToken().subscribe(res => {
-        this.displayLoader = false;
-        this.analyticsService.login();
-      })
-      this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
-        this.refreshFields(batchAttributeResult);
-        this.refreshExistingFssRowsFields();
-      });    
-    });
-    this.hideMessage();
-  }
-
-  refreshExistingFssRowsFields()
-  {
-    this.fssSearchRows.forEach(fssSearchRow => {
-      fssSearchRow.fields = this.fields;
-      fssSearchRow.filterFn = this.typeaheadFields;
-    });
-  }
-
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
-  }
-
-  pageChange(currentPage: number) {
-    var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
-    if (!this.fileShareApiService.isTokenExpired()) {
-      this.displayLoader = true;
-      this.currentPage = currentPage;
-      if (paginatorAction === "next") {
-        var nextPageLink = this.pagingLinks!.next!.href;
-        this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
-          this.searchResult = res;
-          this.handleSuccess();
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
-      }
-      else if (paginatorAction === "prev") {
-        var previousPageLink = this.pagingLinks!.previous!.href;
-        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
-          this.searchResult = res;
-          this.handleSuccess();
-        },
-          (error) => {
-            this.handleErrMessage(error);
-          }
-        );
-      }
-    }
-    else {
-      this.handleResError();
-    }
   }
 
   onGroupClicked() {
@@ -428,27 +340,8 @@ export class FssAdvancedSearchComponent implements OnInit {
     var changedFieldRow = this.fssSearchHelperService.onFieldChanged(changedField, this.fields, this.operators, this.fssSearchRows);
   }
 
-  showTokenExpiryError(displayError: any) {
-    if (displayError == true)
-      this.handleResError();
-  }
-
   goToSearchEditor() {
     window.location.reload();
-  }
-
-  getPopularSearch(popularSearch: any) {
-    // this.displayQueryEditor = false;
-    this.rowGroupings = [];
-    this.setupGrouping();
-    this.fssSearchRows = [];
-    var isPopularSearch = true;
-    for (let i = 0; i < popularSearch.rows.length; i++) {
-      this.addSearchRow(isPopularSearch);
-    }
-    this.fssPopularSearchService.populateQueryEditor(this.fssSearchRows, popularSearch, this.operators, this.rowGroupings);
-    this.setupGrouping();
-    this.getSearchResult();
   }
 
   searchToAdvancedSearch(){

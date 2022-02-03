@@ -67,7 +67,7 @@ export class FssSearchFilterService {
     return filter;
   }
 
-  getFilterExpressionForSimplifiedSearch() {
+  getFilterExpressionForSimplifiedSearch(searchFilter: string) {
     var filter = "BusinessUnit eq 'ADDS'";
 
     return filter;

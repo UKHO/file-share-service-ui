@@ -1,4 +1,13 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { MsalService } from '@azure/msal-angular';
+import { FileShareApiService } from '../../core/services/file-share-api.service';
+import { AnalyticsService } from '../../core/services/analytics.service';
+import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
+import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
+import { Subject } from 'rxjs';
+import { AppConfigService } from '../../core/services/app-config.service';
+import { SearchType } from '../../core/models/fss-search-types';
+
 
 @Component({
   selector: 'app-fss-search',
@@ -6,23 +15,260 @@ import { Component, OnInit} from '@angular/core';
   styleUrls: ['./fss-search.component.scss']
 })
 export class FssSearchComponent implements OnInit {
-  ShowAdvancedSearch:boolean;
-  ShowSimplifiedSearch:boolean;
-  constructor() { }
+  displayLoader: boolean = false;  
+  messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
+  messageTitle: string = "";
+  messageDesc: string = "";
+  displayMessage: boolean = false;
+  loginErrorDisplay: boolean = false;
+
+  displaySearchResult: Boolean = false;
+  searchResult: any = [];
+  pagingLinks: any = [];
+  searchResultTotal: number;
+  pages: number;
+  currentPage: number = 0;
+  paginatorLabel: string;
+  pageRecordCount: number = 10;
+  errorMessageTitle: string = "";
+  errorMessageDescription: string = "";
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
+
+  eventPopularSearch: Subject<void> = new Subject<void>();
+  eventTokenRenewal: Subject<void> = new Subject<void>();
+  displayPopularSearch: boolean;
+
+  public SearchTypeEnum = SearchType;
+  activeSearchType: SearchType;
+
+  constructor(private msalService: MsalService,
+    private fileShareApiService: FileShareApiService,
+    private fssSearchValidatorService: FssSearchValidatorService,
+    private fssSearchFilterService: FssSearchFilterService,
+    private analyticsService: AnalyticsService) {
+      this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+     }
+
+     
 
   ngOnInit(): void {
-    this.ShowAdvancedSearch = true;
-    this.ShowSimplifiedSearch = false;
+    this.activeSearchType = SearchType.AdvancedSearch;
   }
 
   ShowAdvancedSearchClicked(){
-    this.ShowAdvancedSearch = true;
-    this.ShowSimplifiedSearch = false;
+    this.activeSearchType = SearchType.AdvancedSearch;
+    this.displaySearchResult = false;
   }
 
   ShowSimplifiedSearchClicked(){
-    this.ShowAdvancedSearch = false;
-    this.ShowSimplifiedSearch = true;
+    this.activeSearchType = SearchType.SimplifiedSearch;
+    this.displaySearchResult = false;
+  }
+
+  loginPopup() {
+    this.displayLoader = true;
+    this.msalService.loginPopup().subscribe(response => {
+      localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+      const idToken = response.idToken;
+      localStorage.setItem('idToken', idToken);
+      this.msalService.instance.setActiveAccount(response.account);
+      //refreshToken endpoint call to set the cookie after user login
+      this.fileShareApiService.refreshToken().subscribe(res => {
+        this.displayLoader = false;
+        this.analyticsService.login();
+        this.tokenRenewalProcess();
+      });      
+    });
+    this.hideMessage();
+  }
+
+  onAdvancedSearchClicked(fssAdvancedSearch: any) {    
+    if (this.fssSearchValidatorService.validateSearchInput(fssAdvancedSearch.fssSearchRows, 
+          fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
+      if (!this.fileShareApiService.isTokenExpired()) {
+        var filter = this.fssSearchFilterService.getFilterExpression(
+          fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
+        this.getSearchResult(filter);
+      }
+      else {
+        this.handleTokenExpiry();        
+      }
+    }
+    else {
+      this.errorMessageDescription = this.fssSearchValidatorService.errorMessageDescription;
+      this.errorMessageTitle = this.fssSearchValidatorService.errorMessageTitle;
+      this.searchResult = [];
+      this.displaySearchResult = false;
+      this.showMessage(
+        "warning",
+        this.errorMessageTitle,
+        this.errorMessageDescription);
+    }
+    this.analyticsService.getSearchResult();
+  }
+
+  onSimplifiedSearchClicked(searchFilterText: string) {
+    if (searchFilterText.trim() !== "") {
+      this.displayMessage = false;
+      if (!this.fileShareApiService.isTokenExpired()) {
+        var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
+        this.getSearchResult(filter);
+      }
+      else {
+        this.handleTokenExpiry();        
+      }
+    }else{
+      this.messageTitle = "There is a problem with a field";
+      this.messageDesc = "Please enter a search field value.";
+      this.displayMessage = true;
+      this.showMessage(
+        "warning",
+        this.messageTitle,
+        this.messageDesc);
+    }
+  }
+
+  getSearchResult(filter: string) {
+    this.displayLoader = true;
+    console.log(filter);
+    if (filter != null) {
+      this.searchResult = [];
+      this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
+        this.searchResult = res;
+        if (this.searchResult.count > 0) {
+          var searchResultCount = this.searchResult['count'];
+          this.searchResultTotal = this.searchResult['total'];
+          this.currentPage = 1;
+          this.pages = this.searchResultTotal % searchResultCount === 0 ?
+            Math.floor(this.searchResultTotal / searchResultCount) :
+            (Math.floor(this.searchResultTotal / searchResultCount) + 1);
+          this.handleSuccess()
+        }
+        else {
+          this.searchResult = res;
+          
+          this.searchResult = [];
+          this.displaySearchResult = false;
+          this.showMessage(
+              "info",
+              "No results can be found for this search",
+              "Try again using different parameters in the search query."
+            );
+          this.displayLoader = false;
+        }
+      },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
+         
+    this.analyticsService.getSearchResult();
+  }
+
+  handleSuccess() {
+    this.pagingLinks = this.searchResult['_Links'];
+    this.searchResult = Array.of(this.searchResult['entries']);
+    this.displaySearchResult = true;
+    this.hideMessage();
+    this.setPaginatorLabel(this.currentPage);
+    this.displayLoader = false;
+  }
+
+  handleErrMessage(err: any) {
+    this.displayLoader = false;
+    this.displaySearchResult = false;
+    var errmsg = "";
+    if (err.error != undefined && err.error.errors.length > 0) {
+      for (let i = 0; i < err.error.errors.length; i++) {
+        errmsg += err.error.errors[i]['description'] + '\n';
+      }
+      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    }
+    this.analyticsService.errorHandling();
+  }
+
+  showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
+    this.messageType = messageType;
+    this.messageTitle = messageTitle;
+    this.messageDesc = messageDesc;
+    this.displayMessage = true;
+    if (this.ukhoDialog !== undefined) {
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+      this.ukhoDialog.nativeElement.focus();
+    }
+    if (this.displayLoader === false) {
+      window.scroll({
+        top: 150,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  hideMessage() {
+    this.messageType = "info";
+    this.messageTitle = "";
+    this.messageDesc = "";
+    this.displayMessage = false;
+    this.loginErrorDisplay = false;
+  }
+
+  handleTokenExpiry() {
+    this.showMessage("info", "Your Sign-in Token has Expired", "");
+    this.loginErrorDisplay = true;
+    this.displayLoader = false;
+    this.analyticsService.tokenExpired();
+  }
+
+  showTokenExpiryError(displayError: any) {
+    if (displayError == true)
+      this.handleTokenExpiry();
+  }
+
+  private setPaginatorLabel(currentPage: number) {
+    this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
+      "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
+  }
+
+  pageChange(currentPage: number) {
+    var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
+    if (!this.fileShareApiService.isTokenExpired()) {
+      this.displayLoader = true;
+      this.currentPage = currentPage;
+      if (paginatorAction === "next") {
+        var nextPageLink = this.pagingLinks!.next!.href;
+        this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess();
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
+      else if (paginatorAction === "prev") {
+        var previousPageLink = this.pagingLinks!.previous!.href;
+        this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
+          this.searchResult = res;
+          this.handleSuccess();
+        },
+          (error) => {
+            this.handleErrMessage(error);
+          }
+        );
+      }
+    }
+    else {
+      this.handleTokenExpiry();
+    }
+  }
+
+  popularSearchClicked(popularSearch: any) {    
+    this.eventPopularSearch.next(popularSearch);    
+  }
+
+  tokenRenewalProcess() {
+    this.eventTokenRenewal.next();
   }
 
 }

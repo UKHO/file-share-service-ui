@@ -1,32 +1,8 @@
 <div>
-    <ukho-dialogue [type]='messageType' *ngIf="displayDialogMessage" aria-live="polite">
-      <h3>{{messageTitle}}</h3>
-      <div>{{messageDesc}}</div>
-      <div *ngIf="loginErrorDisplay">
-        Please
-        <button  class="loginAction" (click)="loginPopup()">click here</button> to sign-in
-    </div>
-   </ukho-dialogue>
-
     <div class="simplifiedSection">
       <label for="Search">Search</label> <br>   
         <ukho-textinput class="simplifiedTextbox" [(ngModel)]="fieldValue"></ukho-textinput>
         <ukho-button (click)="getSimplifiedSearchResult()">Search</ukho-button>
     </div>
     <a class="switchToAdvanced" (click)="searchToSimplifiedSearch()">Advanced Search</a>
-
-    <div class="searchResult">
-      <app-fss-search-results *ngIf="displaySearchResult" [searchResult]="searchResult"></app-fss-search-results>
-  </div>
-  <br/>
-  <div class="pagination">
-      <ukho-paginator *ngIf="displaySearchResult"
-                      [label]="paginatorLabel" 
-                      [pages]="pages" 
-                      [currentPage]="currentPage"
-                      (pageChange)="pageChange($event)"
-                      >
-      </ukho-paginator>    
-  </div>
-
 </div>
