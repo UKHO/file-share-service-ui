@@ -9,7 +9,7 @@
         <ukho-textinput class="simplifiedTextbox" [(ngModel)]="fieldValue"></ukho-textinput>
         <ukho-button (click)="getSimplifiedSearchResult()">Search</ukho-button>
     </div>
-    <a class="switchToAdvanced" (click)="searchToSimplifiedSearch()">Advanced Search</a>
+    <a class="switchToAdvanced" (click)="searchToSimplifiedSearch()" [routerLink]="">Advanced Search</a>
 </div>
 
 <div class="SimplifiedSearch">

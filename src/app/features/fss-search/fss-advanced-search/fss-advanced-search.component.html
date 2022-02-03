@@ -22,7 +22,7 @@
         <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>
         <div class="searchBtn">
         <ukho-button (click)="getSearchResult()">Search</ukho-button>
-        <a class="switchToSimplified" *ngIf="displaySimplifiedSearchLink" (click)="searchToAdvancedSearch()">Simplified Search</a> 
+        <a class="switchToSimplified" *ngIf="displaySimplifiedSearchLink" (click)="searchToAdvancedSearch()" [routerLink]="">Simplified Search</a> 
         </div>
     </div>
     
