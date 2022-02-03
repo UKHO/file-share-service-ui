@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FssSearchFilterService } from '../../../core/services/fss-search-filter.service';
 
 @Component({
   selector: 'app-fss-simplified-search',
@@ -14,7 +15,7 @@ export class FssSimplifiedSearchComponent implements OnInit {
   messageTitle: string = "";
   messageDesc: string = "";
   @Output() ShowAdvancedSearchClicked = new EventEmitter<boolean>();
-  constructor() { }
+  constructor(private fssSearchFilterService: FssSearchFilterService,) { }
 
   ngOnInit(): void {
   }
@@ -25,6 +26,7 @@ export class FssSimplifiedSearchComponent implements OnInit {
 
   getSimplifiedSearchResult(){
     if (this.fieldValue.trim() !== "") {
+      let filterExpression=this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(this.fieldValue.trim());     
       this.displayDialogMessage = false;
     }else{
       this.errorMessageTitle = "There is a problem with a field";
