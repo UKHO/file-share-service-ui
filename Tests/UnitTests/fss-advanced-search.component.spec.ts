@@ -21,7 +21,7 @@ import { FssSearchHelperService } from '../../src/app/core/services/fss-search-h
 import { FssSearchValidatorService } from '../../src/app/core/services/fss-search-validator.service';
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 import { FssPopularSearchService } from '../../src/app/core/services/fss-popular-search.service';
-import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 describe('FssAdvancedSearchComponent', () => {
   let component: FssAdvancedSearchComponent;
@@ -74,9 +74,10 @@ describe('FssAdvancedSearchComponent', () => {
     searchGroupingService = TestBed.inject(FssSearchGroupingService);
     analyticsService = TestBed.inject(AnalyticsService);
     popularSearchService = TestBed.inject(FssPopularSearchService);
-  
-
+      
     component = new FssAdvancedSearchComponent(searchService, fileShareApiService, elementRef, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
+    component.observablePopularSearch = of(null);
+    component.observableAdvancedSearchTokenRefresh = of();
   });
 
   it('should create', () => {
@@ -357,8 +358,10 @@ describe('FssAdvancedSearchComponent', () => {
     expect(component.ShowSimplifiedSearchClicked.emit).toHaveBeenCalledWith();
   });
 
-  test('should show simplified search Link if displaySimplifiedSearchLink is true', () => {
-    const fixture = TestBed.createComponent(FssAdvancedSearchComponent);
+  test('should show simplified search Link if displaySimplifiedSearchLink is true', () => {    
+    const fixture = TestBed.createComponent(FssAdvancedSearchComponent);    
+    fixture.componentInstance.observablePopularSearch = of(null);
+    fixture.componentInstance.observableAdvancedSearchTokenRefresh = of();
     fixture.detectChanges();
     var displaySimplifiedSearchLink = AppConfigService.settings["fssConfig"].displaySimplifiedSearchLink;
     if(displaySimplifiedSearchLink){

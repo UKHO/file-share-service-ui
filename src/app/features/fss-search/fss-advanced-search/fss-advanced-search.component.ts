@@ -123,8 +123,14 @@ export class FssAdvancedSearchComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscriptionPopularSearch.unsubscribe();
-    this.subscriptionAdvancedSearchTokenRefresh.unsubscribe();
+    if (this.subscriptionPopularSearch)
+    {
+      this.subscriptionPopularSearch.unsubscribe();
+    }
+    if (this.subscriptionAdvancedSearchTokenRefresh)
+    {
+      this.subscriptionAdvancedSearchTokenRefresh.unsubscribe();
+    }
   }
 
   getLocalTimeFormat() {
