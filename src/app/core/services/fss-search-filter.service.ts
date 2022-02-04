@@ -67,12 +67,6 @@ export class FssSearchFilterService {
     return filter;
   }
 
-  getFilterExpressionForSimplifiedSearch(searchFilter: string) {
-    var filter = "BusinessUnit eq 'ADDS'";
-
-    return filter;
-  }
-
   getFieldDataType(fssSearchRow: FssSearchRow) {
     const dataType = fssSearchRow.fields.find(f => f.value === fssSearchRow.selectedField)?.dataType!;
     return dataType
@@ -81,6 +75,22 @@ export class FssSearchFilterService {
   getOperatorType(fssSearchRow: FssSearchRow) {
     const operatorType = fssSearchRow.operators.find(o => o.value === fssSearchRow.selectedOperator)?.type!;
     return operatorType
+  }
+
+  getFilterExpressionForSimplifiedSearch(fssSearchFilter: string): string {
+    let searchKeywords = fssSearchFilter.split(" ");
+     
+    let filterExpression = "";
+    for (let i in searchKeywords) {
+      if (searchKeywords[i] !== "") {
+        let searchKeyword = searchKeywords[i].replace(/'/g, "''");
+        if (filterExpression === "")
+          filterExpression = "$batchContains('" + searchKeyword + "')";
+        else
+          filterExpression = (filterExpression.concat(" OR ")).concat("$batchContains('" + searchKeyword + "')");
+      }
+    }
+    return filterExpression;
   }
 
 }
