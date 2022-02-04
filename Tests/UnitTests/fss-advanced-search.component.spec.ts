@@ -2,9 +2,8 @@ import { CommonModule } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule } from '@ukho/design-system';
+import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule, FilterModule } from '@ukho/design-system';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-// import {jest} from '@jest/globals';
 import { FssSearchComponent } from '../../src/app/features/fss-search/fss-search.component';
 import { FilterPipe } from '../../src/app/features/fss-search/filter.pipe';
 import { FssSearchResultsComponent } from '../../src/app/features/fss-search/fss-search-results/fss-search-results.component';
@@ -23,6 +22,8 @@ import { FssSearchValidatorService } from '../../src/app/core/services/fss-searc
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 import { FssPopularSearchService } from '../../src/app/core/services/fss-popular-search.service';
 import { By } from '@angular/platform-browser';
+import { FssSimplifiedSearchComponent } from './../../src/app/features/fss-search/fss-simplified-search/fss-simplified-search.component';
+import { FssSimplifiedFilterComponent } from '../../src/app/features/fss-search/fss-simplified-search/fss-simplified-filter/fss-simplified-filter.component';
 
 describe('FssAdvancedSearchComponent', () => {
   let component: FssAdvancedSearchComponent;
@@ -41,12 +42,14 @@ describe('FssAdvancedSearchComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,
         FssSearchRoutingModule, HttpClientModule,
-        ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule],
+        ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule, FilterModule],
       declarations: [FssAdvancedSearchComponent,
         FssSearchRowComponent,
         FssSearchResultsComponent,
         FilterPipe,
-        FssSearchComponent],
+        FssSearchComponent,
+        FssSimplifiedFilterComponent,
+        FssSimplifiedSearchComponent],
       providers: [
         {
           provide: MSAL_INSTANCE,

@@ -47,7 +47,7 @@ export class FssSearchResultsComponent implements OnChanges {
 
   getfileDetailsColumnData(): string[] {
     
-    return ['FileName', 'MimeType', 'FileSize', 'FileLink'];
+    return ['FileName', 'MimeType', 'FileSize', 'Download'];
   }
 
   getBatchAttributes(batch: any) {
