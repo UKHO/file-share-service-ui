@@ -77,4 +77,20 @@ export class FssSearchFilterService {
     return operatorType
   }
 
+  getFilterExpressionForSimplifiedSearch(fssSearchFilter: string): string {
+    let searchKeywords = fssSearchFilter.split(" ");
+     
+    let filterExpression = "";
+    for (let i in searchKeywords) {
+      if (searchKeywords[i] !== "") {
+        let searchKeyword = searchKeywords[i].replace(/'/g, "''");
+        if (filterExpression === "")
+          filterExpression = "$batchContains('" + searchKeyword + "')";
+        else
+          filterExpression = (filterExpression.concat(" OR ")).concat("$batchContains('" + searchKeyword + "')");
+      }
+    }
+    return filterExpression;
+  }
+
 }
