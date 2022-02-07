@@ -26,7 +26,8 @@
   [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
   <div class="searchResult">    
-    <h2 *ngIf="displaySearchResult">Results <span class="text-link"> {{this.paginatorLabel}}</span></h2>
+    <h2 *ngIf="displaySearchResult">{{this.searchResultTotal}} result(s) found
+      <span *ngIf="searchResultTotal > pageRecordCount" class="text-link"> {{this.paginatorLabel}}</span></h2>
     <app-fss-search-results *ngIf="displaySearchResult" 
     [searchResult]="searchResult" (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
   </div>

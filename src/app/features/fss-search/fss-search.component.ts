@@ -52,11 +52,13 @@ export class FssSearchComponent implements OnInit {
   ShowAdvancedSearchClicked(){
     this.activeSearchType = SearchType.AdvancedSearch;
     this.displaySearchResult = false;
+    this.displayMessage = false;
   }
 
   ShowSimplifiedSearchClicked(){
     this.activeSearchType = SearchType.SimplifiedSearch;
     this.displaySearchResult = false;
+    this.displayMessage = false;
   }
 
   refreshToken() {
