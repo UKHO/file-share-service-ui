@@ -26,6 +26,7 @@
   [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
   <div class="searchResult">
+    <div *ngIf="displaySearchResult" ><h2>Results <span class="text-link"> Showing {{this.searchResultTotal}} results</span></h2></div>
     <app-fss-search-results *ngIf="displaySearchResult" 
     [searchResult]="searchResult" (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
   </div>
@@ -42,8 +43,5 @@
 <br *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch"/>
     <ukho-hr aria-hidden="true" *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch"></ukho-hr>
     <app-fss-popular-search-batches *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch" (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
-    
-
-
-</div>
+  </div>
 </div>

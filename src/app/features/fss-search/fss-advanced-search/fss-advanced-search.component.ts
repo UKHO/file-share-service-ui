@@ -40,8 +40,7 @@ export class FssAdvancedSearchComponent implements OnInit {
   typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
   selectedRow: number;
   userLocalTimeZone = this.getLocalTimeFormat();
-  pageRecordCount: number = 10;
-  searchResultTotal: number;
+  pageRecordCount: number = 10;  
   pagingLinks: any = [];
   pages: number;
   currentPage: number = 0;
