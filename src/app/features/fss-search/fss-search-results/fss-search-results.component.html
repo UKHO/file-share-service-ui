@@ -41,7 +41,7 @@
         </ng-container>
         <ng-container ukhoColumnDef="Download">
           <th ukho-header-cell *ukhoHeaderCellDef>Download</th>
-          <td ukho-cell *ukhoCellDef="let element"><div class="fileDownload" [attr.rel]="element.Download" tabindex="0" role="button" attr.aria-label="Download File for {{element.FileName}}"><i class="fa fa-download fa-1x"></i></div></td>
+          <td ukho-cell *ukhoCellDef="let element"><div class="fileDownload" [attr.rel]="element.FileLink" tabindex="0" role="button" attr.aria-label="Download File for {{element.FileName}}"><i class="fa fa-download fa-1x"></i></div></td>
         </ng-container>
         <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
         <tr ukho-row *ukhoRowDef="let row; columns: batch.batchFileDetails.columnData"></tr>

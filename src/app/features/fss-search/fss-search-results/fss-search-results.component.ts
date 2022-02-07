@@ -45,8 +45,7 @@ export class FssSearchResultsComponent implements OnChanges {
     }, 0);
   }
 
-  getfileDetailsColumnData(): string[] {
-    
+  getfileDetailsColumnData(): string[] {    
     return ['FileName', 'MimeType', 'FileSize', 'Download'];
   }
 

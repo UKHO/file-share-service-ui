@@ -1,0 +1,25 @@
+.SimplifiedSearch{
+    display: flex;
+    flex-direction: row;
+    .SimplifiedSearchResult{
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+		margin-left: 70px;
+    }
+  }
+  
+.totalResultLabel {		
+    font-size:35px;
+    font-weight: 400;
+    padding-left: 70px;	
+}
+
+.paginatorLabel{    
+    padding-left: 80px;   
+    color: rgb(41, 39, 39);
+}
+
+.pagination{    
+	padding-left:70%;
+}
