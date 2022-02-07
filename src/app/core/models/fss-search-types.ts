@@ -84,3 +84,8 @@ export interface SimplifiedSearchFilterItem {
   title: string;
   selected?: boolean;
 }
+
+export enum SearchType {
+  SimplifiedSearch,
+  AdvancedSearch  
+}

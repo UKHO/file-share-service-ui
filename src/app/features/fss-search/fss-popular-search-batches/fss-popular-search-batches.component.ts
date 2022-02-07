@@ -8,7 +8,7 @@ import { PopularSearchConfigService } from '../../../core/services/popular-searc
 })
 export class FssPopularSearchBatchesComponent implements OnInit {
   
-  @Output() isPopularSearch = new EventEmitter<boolean>();
+  @Output() popularSearchClicked = new EventEmitter<boolean>();
   popularSearches:any = [];
 
   constructor(private popularSearchConfigService: PopularSearchConfigService) { }
@@ -22,8 +22,8 @@ export class FssPopularSearchBatchesComponent implements OnInit {
     });
   }
 
-  getPopularSearch(popularSearch:any){
-    this.isPopularSearch.emit(popularSearch)
+  onPopularSearchClick(popularSearch:any){
+    this.popularSearchClicked.emit(popularSearch)
   }
 
 }

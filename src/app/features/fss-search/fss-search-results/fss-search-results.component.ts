@@ -13,7 +13,7 @@ export class FssSearchResultsComponent implements OnChanges {
   searchResultVM: SearchResultViewModel[] = [];
   baseUrl: string;
   public removeEventListener: () => void;
-  @Output() displayError = new EventEmitter<boolean>();
+  @Output() handleTokenExpiry = new EventEmitter<boolean>();
 
   constructor(private elementRef: ElementRef
     , private fileShareApiService: FileShareApiService) { }
@@ -35,11 +35,11 @@ export class FssSearchResultsComponent implements OnChanges {
 
     setTimeout(() => {
       // Bind click event to each file download link
-      var elem = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
-      if (elem) {
-        elem.forEach((res: any) => {
-          res.style.cursor = 'pointer';
-          res.addEventListener('click', this.downloadFile.bind(res, this));
+      var downloadButtonElements = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
+      if (downloadButtonElements) {
+        downloadButtonElements.forEach((downloadButtonElement: any) => {
+          downloadButtonElement.style.cursor = 'pointer';
+          downloadButtonElement.addEventListener('click', this.downloadFile.bind(downloadButtonElement, this));
         })
       }
     }, 0);
@@ -86,26 +86,26 @@ export class FssSearchResultsComponent implements OnChanges {
 
   public ngOnDestroy() {
     // Cleanup by removing the event listener on destroy    
-    var elem = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
-    if (elem) {
-      elem.forEach((res: any) => {
-        res.removeEventListener('click', this.downloadFile.bind(res));
+    var downloadButtonElements = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
+    if (downloadButtonElements) {
+      downloadButtonElements.forEach((downloadButtonElement: any) => {
+        downloadButtonElement.removeEventListener('click', this.downloadFile.bind(downloadButtonElement));
       })
     }
   }
 
-  downloadFile(obj: any, res: any) {
+  downloadFile(obj: any, downloadButtonElement: any) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    var filePath = res.currentTarget.getAttribute('rel');
+    var filePath = downloadButtonElement.currentTarget.getAttribute('rel');
     if (filePath) {
       if (!obj.fileShareApiService.isTokenExpired()) {//check if token is expired
         //download file and change the icon to tick when returns true
-        res.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
-        res.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
+        downloadButtonElement.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
+        downloadButtonElement.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
         window.open(this.baseUrl + filePath);
       }
-      else {//display "Token expired" message when token is expired
-        obj.displayError.emit(true);
+      else {//display "Token expired" message when token is expired        
+        obj.handleTokenExpiry.emit(true);
       }
     }
   }

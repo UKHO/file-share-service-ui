@@ -192,7 +192,12 @@ table.cdk-table th, table.cdk-table td{
 }
 
 .searchResult {
-	padding: 0 30px;
+	padding: 0 30px; 
+	h2 span{
+		font-weight:400;
+		padding-left: 30px;
+		}
+
 }
 
 .searchFieldBold {

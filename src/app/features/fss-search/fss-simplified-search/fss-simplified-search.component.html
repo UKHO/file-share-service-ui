@@ -1,9 +1,4 @@
 <div>
-    <ukho-dialogue [type]='messageType' *ngIf="displayDialogMessage" aria-live="polite">
-      <h3>{{errorMessageTitle}}</h3>
-      <div>{{errorMessageDescription}}</div>
-   </ukho-dialogue>
-
     <div class="simplifiedSection">
       <label for="Search">Search</label> <br>   
         <ukho-textinput class="simplifiedTextbox" [(ngModel)]="fieldValue"></ukho-textinput>
