@@ -2,6 +2,6 @@
 <div *ngFor="let popularSearch of popularSearches" (click)="getPopularSearch(popularSearch)" class="SearchBatch">
     <p *ngIf="popularSearch.isActive === true" class='popular-search-para'>
         {{popularSearch.displayName}} 
-        <button class="popular-search fa fa-chevron-right" aria-label="Popular Search Row"></button>
+        <button class="popular-search fa fa-chevron-right" attr.aria-label="Popular Search for {{popularSearch.displayName}} "></button>
     </p>
 </div>

@@ -1,7 +1,7 @@
 <div class="result-margin" *ngFor="let batch of searchResultVM">
   <ukho-card>
     <table class="attribute-table">
-      <caption class="sr-only">Batch Attributes</caption>
+      <caption class="sr-only">Attributes for Batch ID {{batch.BatchID.value}} </caption>
       <tr>
         <th *ngFor="let attribute of batch.batchAttributes">{{attribute.key}}</th>
       </tr>
@@ -12,7 +12,7 @@
 
     <ukho-expansion class="expansionLabel" heading="Choose files to download" [alignHeadingRight]=true [initialExpanded]=false>
       <table class="system-attribute-table">
-        <caption class="sr-only">System Attributes</caption>
+        <caption class="sr-only">Details for Batch ID {{batch.BatchID.value}} </caption>
         <tr>
           <th>{{batch.BatchID.key}}</th>
           <th>{{batch.BatchPublishedDate.key}}</th>
@@ -26,6 +26,7 @@
       </table>
       
       <table ukho-table [dataSource]="batch.batchFileDetails.rowData">
+        <caption class="sr-only">Dowload files for Batch ID {{batch.BatchID.value}}</caption>
         <ng-container ukhoColumnDef="FileName">
           <th ukho-header-cell *ukhoHeaderCellDef>FileName </th>
           <td ukho-cell *ukhoCellDef="let element">{{element.FileName}}</td>
@@ -40,7 +41,7 @@
         </ng-container>
         <ng-container ukhoColumnDef="Download">
           <th ukho-header-cell *ukhoHeaderCellDef>Download</th>
-          <td ukho-cell *ukhoCellDef="let element"><div class="fileDownload" [attr.rel]="element.Download" tabindex="0" role="button" aria-label="Download File"><i class="fa fa-download fa-1x"></i></div></td>
+          <td ukho-cell *ukhoCellDef="let element"><div class="fileDownload" [attr.rel]="element.Download" tabindex="0" role="button" attr.aria-label="Download File for {{element.FileName}}"><i class="fa fa-download fa-1x"></i></div></td>
         </ng-container>
         <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
         <tr ukho-row *ukhoRowDef="let row; columns: batch.batchFileDetails.columnData"></tr>

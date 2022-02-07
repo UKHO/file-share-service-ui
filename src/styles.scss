@@ -89,6 +89,11 @@ ukho-phase-banner.phasebanner {
 	border-spacing: 10px;
 	width: 100%;
 	text-align: center;
+	border: none;
+	margin: 0;
+	thead, th,td{
+		border:none;
+	}
 	ukho-typeahead{
 		text-align: left;
 	}
@@ -110,13 +115,18 @@ table{
 	}
 }
 
-
-
 .attribute-table{
-    table-layout: fixed !important;		
+    table-layout: fixed !important;	
+	margin-bottom: 0;	
 	th, td{
 		width: fit-content;
 		padding: 0 5px;
+	}
+}
+
+ukho-expansion{
+	section{
+		border-bottom: none;
 	}
 }
 
@@ -240,8 +250,14 @@ button{
 
 .valueTD{
 	text-align: left;
-	// width: 33%;
+	
 	ukho-textinput{
+	&[ng-reflect-type="date"], &[ng-reflect-type="time"] {
+		display: inline-block;
+		width: 47%;
+		margin: 0 10px 0 0;
+		vertical-align: top;
+	}
 	&.validated, &.invalid {
 		input.form-text-input{
 		padding-right: 0;
