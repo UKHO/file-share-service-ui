@@ -25,11 +25,17 @@
   [observablePopularSearch]="eventPopularSearch.asObservable()"
   [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
-  <div class="searchResult">    
-    <h2 *ngIf="displaySearchResult">{{this.searchResultTotal}} result(s) found
-      <span *ngIf="searchResultTotal > pageRecordCount" class="text-link"> {{this.paginatorLabel}}</span></h2>
-    <app-fss-search-results *ngIf="displaySearchResult" 
-    [searchResult]="searchResult" (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
+  <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
+    <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch && displaySearchResult"></app-fss-simplified-filter>    
+    <div>    
+      <h2 *ngIf="displaySearchResult"> 
+        <span class="totalResultLabel" *ngIf="searchResultTotal == 1">{{this.searchResultTotal}} result found</span>
+        <span class="totalResultLabel" *ngIf="searchResultTotal > 1">{{this.searchResultTotal}} results found</span>
+        <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel"> {{this.paginatorLabel}}</span>
+      </h2>
+      <app-fss-search-results class="SimplifiedSearchResult" *ngIf="displaySearchResult" 
+      [searchResult]="searchResult" (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
+    </div>
   </div>
   <br/>
   <div class="pagination">

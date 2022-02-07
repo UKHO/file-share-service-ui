@@ -52,7 +52,6 @@ export class FssAdvancedSearchComponent implements OnInit {
   rowGroupings: RowGrouping[] = [];
   groupingLevels: GroupingLevel[] = [];
   uiGroupings: UIGrouping[] = [];
-  displayQueryEditor: boolean = true;
   displaySearchBatchWeekFiles: boolean = false;
   displaySimplifiedSearchLink: boolean;
   ShowAdvancedSearch: boolean = true;
@@ -237,7 +236,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.messageDesc = messageDesc;
     this.displayMessage = true;
     if (this.ukhoDialog !== undefined) {
-      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '-1');
       this.ukhoDialog.nativeElement.focus();
     }
     if (this.displayLoader === false) {

@@ -40,6 +40,12 @@ describe('FssSimplifiedSearchComponent', () => {
     expect(component.ShowAdvancedSearchClicked.emit).toHaveBeenCalled();
   });
 
+  test('should show Advanced search Link', () => {
+    const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('a').textContent).toBe('Advanced Search');
+  });
+
   test('should return filterExpression when the simplified search button is clicked with extra blank space', () => {
     var expectedfilterExpression = "$batchContains('AVCS') OR $batchContains('DVD') OR $batchContains('2022')";
     var filterExpression = searchFilterservice.getFilterExpressionForSimplifiedSearch("AVCS    DVD  2022");

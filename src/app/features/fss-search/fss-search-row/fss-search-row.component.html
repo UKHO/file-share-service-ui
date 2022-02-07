@@ -2,7 +2,7 @@
     <caption class="sr-only">Search Query </caption>
     <thead>
         <tr>
-            <th><button class="delete grouping" aria-label="Group selected search rows" [class.disabled]="this.enableGrouping === false" [attr.aria-disabled]="this.enableGrouping === false" (click)="onGroupClick()"><img aria-hidden="true" src="..\assets\images\group icon.svg"></button></th>
+            <th><button class="delete grouping" aria-label="Group selected search rows" [class.disabled]="this.enableGrouping === false" [attr.aria-disabled]="this.enableGrouping === false" (click)="onGroupClick()"><img aria-hidden="true" src="..\assets\images\group icon.svg" alt=""></button></th>
             <th class="groups" [attr.colspan]="maxGroupingLevel > 0 ? maxGroupingLevel : 1" [attr.aria-hidden]="maxGroupingLevel === 0"></th>            
             <th class="searchFieldsRow">And/Or</th>
             <th class="searchFieldsRow">Field</th>
@@ -13,7 +13,7 @@
     <tbody>
         <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
             <td width="5%">
-                <ukho-checkbox [(ngModel)]="fssSearchRow.group" (change)="onCheckboxClick()"></ukho-checkbox>
+                <ukho-checkbox id="fss-querytable-group-{{i+1}}" [(ngModel)]="fssSearchRow.group" (change)="onCheckboxClick()"></ukho-checkbox>
             </td>
             <td *ngIf="maxGroupingLevel === 0" [attr.aria-hidden]="maxGroupingLevel === 0"></td>
             <ng-container *ngFor="let grouping of uiGroupings | filter:'rowIndex':i">
@@ -25,30 +25,30 @@
                 </td>
             </ng-container>
             <td width="10%">
-                <ukho-select *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
+                <ukho-select id="fss-querytable-joinoperator-{{i+1}}" *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
                         {{joinOperator.text}}</option>
                 </ukho-select>
             </td>
             <td width="25%">
-                <ukho-typeahead class="ukhoTypeahead" [label]="label" [FormControl]="fssSearchRow.fieldFormControl" [showResultsOnInitialFocus]="true"
+                <ukho-typeahead id="fss-querytable-field-{{i+1}}" class="ukhoTypeahead" [label]="label" [FormControl]="fssSearchRow.fieldFormControl" [showResultsOnInitialFocus]="true"
                 [filterFn]="fssSearchRow.filterFn" [value] = "fssSearchRow.fieldValue"
                 (valueChanged)="onFieldChange($event, fssSearchRow.rowId)"></ukho-typeahead>
             </td>
             <td width="20%">
-                <ukho-select #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
+                <ukho-select id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (change)="onOperatorChange(operatorSelect, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "
                      value="{{Operator.value}}">{{Operator.text}}</option>
                 </ukho-select>
             </td>
             <td class="valueTD" width="35.5%">
-                <ukho-textinput [(ngModel)]="fssSearchRow.value" 
+                <ukho-textinput id="fss-querytable-value-{{i+1}}" [(ngModel)]="fssSearchRow.value" 
                 *ngIf="!fssSearchRow.isValueHidden"
                 [type]= "fssSearchRow.valueType"
                 [formControl] = "fssSearchRow.valueFormControl"></ukho-textinput>
 
-                <ukho-textinput *ngIf="fssSearchRow.valueType == 'date' && !fssSearchRow.isValueHidden"
+                <ukho-textinput id="fss-querytable-time-{{i+1}}" *ngIf="fssSearchRow.valueType == 'date' && !fssSearchRow.isValueHidden"
                  [(ngModel)]="fssSearchRow.time"
                 type = "time"
                 [formControl] = "fssSearchRow.valueFormControlTime"></ukho-textinput>

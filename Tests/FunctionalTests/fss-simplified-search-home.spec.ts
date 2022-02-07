@@ -39,7 +39,7 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(1);
 
-    var advanceSearchElements =(await page.$$("#ukho-form-field-2,#ukho-form-field-3,#ukho-form-field-4")).length
+    var advanceSearchElements =(await page.$$("#fss-querytable-field-1 input,fss-querytable-operator-1 select,#fss-querytable-value-1 input")).length
     expect(advanceSearchElements).toEqual(0);
   })
 
@@ -61,8 +61,7 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
     await page.click(pageObjectsConfig.advancedSearchLinkSelector);
     await page.waitForSelector(pageObjectsConfig.advancedSearchAddLineSelector);
     await page.click(pageObjectsConfig.advancedSearchAddLineSelector);
-    await page.waitForSelector(pageObjectsConfig.advancedSearchTableSelector);
-        
+    await page.waitForSelector(pageObjectsConfig.advancedSearchTableSelector);   
     //search box for simplified search is not present on advanced search page.
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(0);

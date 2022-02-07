@@ -1,13 +1,12 @@
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-
+import { TableModule } from '@ukho/design-system';
 import { formatBytes, FssSearchResultsComponent } from '../../src/app/features/fss-search/fss-search-results/fss-search-results.component';
 import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
-import { BatchFileDetailsColumnData } from 'src/app/core/models/fss-search-results-types';
 import { By } from '@angular/platform-browser';
 
 describe('FssSearchResultsComponent', () => {
@@ -18,7 +17,7 @@ describe('FssSearchResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientModule,        ],
+      imports: [HttpClientModule, TableModule],
       declarations: [FssSearchResultsComponent],
       providers: [FileShareApiService, MsalService, {
         provide: MSAL_INSTANCE,
@@ -114,7 +113,7 @@ describe('FssSearchResultsComponent', () => {
           FileName: 'My Test File.txt',
           MimeType: 'image/jpeg',
           FileSize: '3.81 MB',
-          Download: '<div class="fileDownload" rel="/batch/9439e409-e545-435c-afd7-f3a5cce527e3/files/My%20Test%20File.txt" tabindex="0" role="button" aria-label="Download File"><i class="fa fa-download fa-1x"></i></div>'
+          FileLink: '/batch/9439e409-e545-435c-afd7-f3a5cce527e3/files/My%20Test%20File.txt'
         }
       ]
     };
@@ -125,24 +124,21 @@ describe('FssSearchResultsComponent', () => {
     expect(batchfileDetails).toEqual(expectedBatchFileDetails);    
   });
 
-  //Test for file download link - setTimeout()
   test('should return file download link when search result data is provided', fakeAsync( () => {
     const fixture = TestBed.createComponent(FssSearchResultsComponent);
     component = fixture.componentInstance;
-    component.searchResult = Array.of(SearchResultMockData['entries']); 
+    component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
     tick(100);
     fixture.detectChanges();
-
     fixture.whenStable().then(() => {
-      var ExpectedDownloadElement = component.searchResultVM[0].batchFileDetails.rowData[0].Download;
-      const element = fixture.debugElement.query(By.css('ukho-table')).nativeElement;
-      let link = element['dataSource'][0]['Download']; 
-      
-      expect(element).not.toBeNull();    
-      expect(link).toContain('rel');    
-      expect(link).toEqual(ExpectedDownloadElement);      
+      var ExpectedDownloadFileName = component.searchResultVM[0].batchFileDetails.rowData[0].FileName;
+      const element = fixture.nativeElement.querySelectorAll('tr')[5];
+      let fileName = element.cells[0].innerHTML;
+      expect(element).not.toBeNull(); 
+      expect(fileName).toEqual(ExpectedDownloadFileName);      
     })
+
   }));
 
   //Test for file size conversion 
@@ -235,9 +231,4 @@ export function MockMSALInstanceFactory () {
     }
  };
 
- export const ColumnHeader:BatchFileDetailsColumnData[] = [
-  { headerTitle: 'File name', propertyName: 'FileName' },
-  { headerTitle: 'MIME type', propertyName: 'MimeType' },
-  { headerTitle: 'File size', propertyName: 'FileSize' },
-  { headerTitle: 'Download', propertyName: 'Download' }
-];
+ export const ColumnHeader:string[] = ['FileName', 'MimeType', 'FileSize', 'Download'];
