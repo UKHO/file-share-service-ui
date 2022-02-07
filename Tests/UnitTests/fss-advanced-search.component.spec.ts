@@ -14,7 +14,6 @@ import { FssAdvancedSearchComponent } from '../../src/app/features/fss-search/fs
 import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { FssSearchService } from '../../src/app/core/services/fss-search.service';
-import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
 import { Field, FssSearchRow, Operator, RowGrouping } from '../../src/app/core/models/fss-search-types';
 import { FssSearchGroupingService } from '../../src/app/core/services/fss-search-grouping.service';
 import { PublicClientApplication } from '@azure/msal-browser';
@@ -22,12 +21,11 @@ import { FssSearchHelperService } from '../../src/app/core/services/fss-search-h
 import { FssSearchValidatorService } from '../../src/app/core/services/fss-search-validator.service';
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 import { FssPopularSearchService } from '../../src/app/core/services/fss-popular-search.service';
-import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 describe('FssAdvancedSearchComponent', () => {
   let component: FssAdvancedSearchComponent;
-  let fileShareApiService: FileShareApiService;
-  let searchFilterservice: FssSearchFilterService;
+  let fileShareApiService: FileShareApiService;  
   let searchService: FssSearchService;
   let msalService: MsalService;
   let fssSearchHelperService: FssSearchHelperService;
@@ -37,6 +35,7 @@ describe('FssAdvancedSearchComponent', () => {
   let analyticsService: AnalyticsService;
   let popularSearchService: FssPopularSearchService;
 
+  
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,
@@ -67,8 +66,7 @@ describe('FssAdvancedSearchComponent', () => {
          displaySimplifiedSearchLink: true
       }
     };
-    searchService = TestBed.inject(FssSearchService);
-    searchFilterservice = TestBed.inject(FssSearchFilterService);
+    searchService = TestBed.inject(FssSearchService);    
     fileShareApiService = TestBed.inject(FileShareApiService);
     msalService = TestBed.inject(MsalService);
     fssSearchHelperService = TestBed.inject(FssSearchHelperService);
@@ -76,6 +74,10 @@ describe('FssAdvancedSearchComponent', () => {
     searchGroupingService = TestBed.inject(FssSearchGroupingService);
     analyticsService = TestBed.inject(AnalyticsService);
     popularSearchService = TestBed.inject(FssPopularSearchService);
+      
+    component = new FssAdvancedSearchComponent(searchService, fileShareApiService, elementRef, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
+    component.observablePopularSearch = of(null);
+    component.observableAdvancedSearchTokenRefresh = of();
   });
 
   it('should create', () => {
@@ -85,21 +87,18 @@ describe('FssAdvancedSearchComponent', () => {
   });
 
   test('should return datatype as "attribute" when UserAttribute is passed', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     expect(fssSearchHelperService.getFieldDataType('$batch(product)', component.fields)).toEqual('attribute');
   });
 
-  test('should return datatype as "string" when SystemAttribute FileName is passed', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
+  test('should return datatype as "string" when SystemAttribute FileName is passed', () => {    
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     expect(fssSearchHelperService.getFieldDataType('FileName', component.fields)).toEqual('string');
   });
 
-  test('should return filtered operators based on number datatype', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
+  test('should return filtered operators based on number datatype', () => {    
     component.ngOnInit();
     component.operators = searchService.getOperators();
     const expectedOperators: Operator[] = [
@@ -113,16 +112,14 @@ describe('FssAdvancedSearchComponent', () => {
     expect(result).toEqual(expectedOperators);
   });
 
-  test('should return value type text based on datatype string', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
+  test('should return value type text based on datatype string', () => {    
     component.ngOnInit();
     var expectedValueType = "text";
     var result = fssSearchHelperService.getValueType('string');
     expect(result).toEqual(expectedValueType);
   });
 
-  test('should return operator type nullOperator based on operator value ne null', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
+  test('should return operator type nullOperator based on operator value ne null', () => {    
     component.ngOnInit();
     component.operators = searchService.getOperators();
     var expectedOperatorType = "nullOperator";
@@ -132,7 +129,6 @@ describe('FssAdvancedSearchComponent', () => {
   });
 
   test('should return second row based on rowid passed', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     let searchRows: FssSearchRow[] = [];
     let fields: Field[] = [
@@ -185,7 +181,6 @@ describe('FssAdvancedSearchComponent', () => {
   });
 
   test('should return flag false when FileSize value is passed as number', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     let searchRows: FssSearchRow[] = [];
     let fields: Field[] = [
@@ -209,7 +204,6 @@ describe('FssAdvancedSearchComponent', () => {
   });
 
   test('should return row count 2 when Add new line is called twice', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -219,7 +213,6 @@ describe('FssAdvancedSearchComponent', () => {
   });
 
   test('should return row count 2 when 3 rows exist and delete is called', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -231,7 +224,6 @@ describe('FssAdvancedSearchComponent', () => {
   });
 
   test('should hide Value input when nullOperator is selected in the row', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.fssSearchRows.push(createSearchRow(1, component.fields, component.operators, 'AND', 'FileSize', 'nullOperator', 'test', 'tel', true));
@@ -242,7 +234,6 @@ describe('FssAdvancedSearchComponent', () => {
 
   //Test group already exists validation
   test('should return group already exists validation when duplicate group is added', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
 
     var groupings: RowGrouping[] = [];
@@ -263,7 +254,6 @@ describe('FssAdvancedSearchComponent', () => {
 
   //Test group cannot intersect validation
   test('should return group cannot intersect validation when intersecting group is added', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
 
     var groupings: RowGrouping[] = [];
@@ -284,7 +274,6 @@ describe('FssAdvancedSearchComponent', () => {
 
   //Test add grouping
   test('should return group count 2 when 1 groups exist and add group clicked is called', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -310,7 +299,6 @@ describe('FssAdvancedSearchComponent', () => {
 
   // Test modify grouping on search row deletion
   test('should return row count 2 & modify grouping when 3 rows exist and delete is called', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -334,7 +322,6 @@ describe('FssAdvancedSearchComponent', () => {
 
   // Test group deletion
   test('should return group count 1 when 2 groups exist and delete group is called', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     component.fields = searchService.getFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -358,7 +345,6 @@ describe('FssAdvancedSearchComponent', () => {
 
 
   test('should return row count 2 when addSearchRow function is called twice', () => {
-    component = new FssAdvancedSearchComponent(searchService, searchFilterservice, fileShareApiService, elementRef, msalService, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
     component.ngOnInit();
     component.refreshFields(MockUserAttributeFields());
     component.addSearchRow();
@@ -372,8 +358,10 @@ describe('FssAdvancedSearchComponent', () => {
     expect(component.ShowSimplifiedSearchClicked.emit).toHaveBeenCalledWith();
   });
 
-  test('should show simplified search Link if displaySimplifiedSearchLink is true', () => {
-    const fixture = TestBed.createComponent(FssAdvancedSearchComponent);
+  test('should show simplified search Link if displaySimplifiedSearchLink is true', () => {    
+    const fixture = TestBed.createComponent(FssAdvancedSearchComponent);    
+    fixture.componentInstance.observablePopularSearch = of(null);
+    fixture.componentInstance.observableAdvancedSearchTokenRefresh = of();
     fixture.detectChanges();
     var displaySimplifiedSearchLink = AppConfigService.settings["fssConfig"].displaySimplifiedSearchLink;
     if(displaySimplifiedSearchLink){

@@ -62,12 +62,7 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
     await page.waitForSelector(pageObjectsConfig.advancedSearchAddLineSelector);
     await page.click(pageObjectsConfig.advancedSearchAddLineSelector);
     await page.waitForSelector(pageObjectsConfig.advancedSearchTableSelector);
-
-    //Verify element in simplified search page count should be zero after navigating to advanced search page
-    
-    var advanceSearchElements =(await page.$$(pageObjectsConfig.advancedSearchTableSelector)).length
-    expect(advanceSearchElements).toEqual(3);
-    
+        
     //search box for simplified search is not present on advanced search page.
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(0);

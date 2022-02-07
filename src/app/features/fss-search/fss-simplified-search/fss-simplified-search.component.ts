@@ -8,14 +8,11 @@ import { FssSearchFilterService } from '../../../core/services/fss-search-filter
 })
 export class FssSimplifiedSearchComponent implements OnInit {
   fieldValue: string = "";
-  displayDialogMessage: boolean = false;
-  messageType: 'info' | 'warning' | 'error' = 'info';
-  errorMessageDescription= "";
-  errorMessageTitle ="";
-  messageTitle: string = "";
-  messageDesc: string = "";
+
   @Output() ShowAdvancedSearchClicked = new EventEmitter<boolean>();
-  constructor(private fssSearchFilterService: FssSearchFilterService,) { }
+  @Output() onSimplifiedSearchClicked = new EventEmitter<string>();
+  
+  constructor() { }
 
   ngOnInit(): void {
   }
@@ -24,27 +21,8 @@ export class FssSimplifiedSearchComponent implements OnInit {
     this.ShowAdvancedSearchClicked.emit();
   }
 
-  getSimplifiedSearchResult(){
-    if (this.fieldValue.trim() !== "") {
-      let filterExpression=this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(this.fieldValue.trim());     
-      this.displayDialogMessage = false;
-    }else{
-      this.errorMessageTitle = "There is a problem with a field";
-      this.errorMessageDescription = "Please enter a search field value.";
-      this.displayDialogMessage = true;
-      this.showErrMessage(
-        "warning",
-        this.errorMessageTitle,
-        this.errorMessageDescription);
-    }
-  }
-
-  showErrMessage(messageType: 'info' | 'warning' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
-    this.messageType = messageType;
-    this.messageTitle = messageTitle;
-    this.messageDesc = messageDesc;
-    this.displayDialogMessage = true;
-  }
-  
+  getSimplifiedSearchResult() {
+    this.onSimplifiedSearchClicked.emit(this.fieldValue);
+  }  
 }
 

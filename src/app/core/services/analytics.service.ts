@@ -43,14 +43,24 @@ export class AnalyticsService {
     this.gtmService.pushTag(tag);
   }
 
-  async getSearchResult(): Promise<void> {
+  async getAdvancedSearchResult(): Promise<void> {
     const tag: GTMEvent = {
-      event: this.environmentPrefix+'.getSearchResult',
-      event_action: 'Get Search Result',
+      event: this.environmentPrefix+'.getAdvancedSearchResult',
+      event_action: 'Get Advanced Search Result',
       event_category: Categories.Search
     };
     this.gtmService.pushTag(tag);
   }
+
+  async getSimplifiedSearchResult(): Promise<void> {
+    const tag: GTMEvent = {
+      event: this.environmentPrefix+'.getSimplifiedSearchResult',
+      event_action: 'Get Simplified Search Result',
+      event_category: Categories.Search
+    };
+    this.gtmService.pushTag(tag);
+  }
+
   async SearchRowAdded(): Promise<void> {
     const tag: GTMEvent = {
       event: this.environmentPrefix+'.SearchRowAdded',
