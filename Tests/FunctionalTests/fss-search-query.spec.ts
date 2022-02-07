@@ -188,7 +188,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     expect(paginatorText).toContain(`Showing 1-${productsCount}`);
     
   })
-/*
+
   it('Test to verify file downloaded status changed after click on download button', async () => {        
    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -211,7 +211,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     const fileDownloadStatus=await page.getAttribute(pageObjectsConfig.fileDownloadButtonStatus,"class");
     expect(fileDownloadStatus).toContain("check");    
   })
-*/
+
   it('Batch Attribute table returns records less than filesize search', async () => {    
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
