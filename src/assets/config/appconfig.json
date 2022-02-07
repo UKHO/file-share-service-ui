@@ -1,9 +1,9 @@
 {
   "Environment": "",
-  "GoogleTagManagerId": "Not-Needed-For-Running-Locally",
+  "GoogleTagManagerId":"Not-Needed-For-Running-Locally",
   "b2cConfig": {
-    "tenantName": "mgiaidtestb2c",
-    "clientId": "d4ab354e-a3b2-480e-ad50-4e60f2ca0021",
+    "tenantName": "",
+    "clientId": "",
     "redirectUri": "/",
     "postLogoutRedirectUri": "/logout.html",
     "navigateToLoginRequestUrl": true,
@@ -20,7 +20,7 @@
     "displaySimplifiedSearchLink": true,
     "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl": "https://uatadmiralty.azure-api.net/fss-qa",
-    "stateManagementApiUrl": "https://uatadmiralty.azure-api.net/fss-ui-auth-qa"
+    "apiUrl": "",
+    "stateManagementApiUrl": ""
   }
 }
