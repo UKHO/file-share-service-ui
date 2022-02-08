@@ -38,13 +38,10 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
 
   test('check a11y for the whole page and axe run options', async () => {
     await checkA11y(page, undefined, {
-      axeOptions: {
-         rules :{'duplicate-id': { enabled: false },
-                 'label': { enabled: false },
-                 'select-name': { enabled: false }},       
+      axeOptions: {               
         runOnly: {         
           type: 'tag',
-          values: ['wcag2a'],
+          values: ['wcag2aa'],
         },
       },
       detailedReport: true,

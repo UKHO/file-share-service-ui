@@ -25,7 +25,7 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
       axeOptions: {
         runOnly: {
           type: 'tag',
-          values: ['wcag2a'],
+          values: ['wcag2aa'],
         },
       },
       detailedReport: true,

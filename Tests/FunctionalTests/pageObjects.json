@@ -75,7 +75,8 @@
        "advancedSearchLink" : "Advanced Search",
        "simplifiedSearchButtonSelector": "div.simplifiedSection button",
        "advancedSearchTableSelector" : ".querytable tbody tr input",
-       "advancedSearchAddLineSelector": "button.addNewLine"
+       "advancedSearchAddLineSelector" : "button.addNewLine",
+       "searchResultTableSelector" : ".SimplifiedSearchResult .attribute-table"      
     },
     "pageTimeOut":
     {
