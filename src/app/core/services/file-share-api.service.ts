@@ -24,6 +24,11 @@ export class FileShareApiService {
         }
     }
 
+    getAttributeSearchResult(payload: string): Observable<any> {
+        console.log(encodeURIComponent(payload));
+                return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload));
+    }
+    
     getBatchAttributes(): Observable<any> {
         return this.http.get(this.baseUrl + '/attributes');
     }

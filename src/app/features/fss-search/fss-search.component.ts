@@ -22,6 +22,7 @@ export class FssSearchComponent implements OnInit {
   loginErrorDisplay: boolean = false;
   displaySearchResult: Boolean = false;
   searchResult: any = [];
+  filterResult: any = [];
   pagingLinks: any = [];
   searchResultTotal: number;
   pages: number;
@@ -101,10 +102,14 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
+    this.filterResult = [];
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
+        this.fileShareApiService.getAttributeSearchResult(filter).subscribe((result) => {
+          this.filterResult = result.batchAttributes;
+        });
         this.getSearchResult(filter);
       }
       else {

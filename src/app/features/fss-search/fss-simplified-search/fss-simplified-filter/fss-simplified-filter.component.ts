@@ -1,92 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { SimplifiedSearchFilter } from './../../../../core/models/fss-search-types';
+import { Component, Input, OnChanges } from '@angular/core';
+import { SimplifiedSearchFilter, SimplifiedSearchFilterItem } from './../../../../core/models/fss-search-types';
 @Component({
   selector: 'app-fss-simplified-filter',
   templateUrl: './fss-simplified-filter.component.html',
   styleUrls: ['./fss-simplified-filter.component.scss']
 })
-export class FssSimplifiedFilterComponent implements OnInit {
-  groups: SimplifiedSearchFilter[];
+export class FssSimplifiedFilterComponent implements OnChanges {
+  @Input() public filterResult: Array<any> = [];
+  filterGroups: SimplifiedSearchFilter[] = [];
   constructor() { }
 
-  ngOnInit(): void {
-    this.groups = [
-      {
-        title: 'Product',
-        items: [
-          {
-            title: 'AVCS',
-            selected: false
-          },
-          {
-            title: 'ADP',
-            selected: false
-          },
-          {
-            title: 'eNP',
-            selected: false
-          },
-        ],
-        expanded: true
-      },
-      {
-        title: 'Media Type',
-        items: [
-          {
-            title: 'DVD',
-            selected: false
-          },
-          {
-            title: 'CD',
-            selected: false
-          },
-          {
-            title: 'BASE',
-            selected: false
-          },
-          {
-            title: 'ZIP',
-            selected: false
-          },
-        ],
-        expanded: true
-      },
-      {
-        title: 'Week number',
-        items: [
-          {
-            title: 'Week 39',
-            selected: false
-          },
-          {
-            title: 'Week 40',
-            selected: false
-          },
-          {
-            title: 'Week 41',
-            selected: false
-          },
-        ],
-        expanded: true
-      },
-      {
-        title: 'Year',
-        items: [
-          {
-            title: '2022',
-            selected: false
-          },
-          {
-            title: '2021',
-            selected: false
-          },
-          {
-            title: '2020',
-            selected: false
-          },
-        ],
-        expanded: true
+  ngOnChanges(): void {
+    this.filterGroups = [];
+    if (this.filterResult.length > 0) {
+      var batches = this.filterResult;
+      for (var i = 0; i < batches.length; i++) {
+        this.filterGroups.push({
+          title : batches[i].key,
+          items : this.getAttributesValues(batches[i].values),
+          expanded : true
+        });
       }
-    ]
+    }
   }
-}
+    
+  getAttributesValues(batch:Array<any> = []) {
+      var batchAttributesValues: SimplifiedSearchFilterItem[] = [];
+      for (var i = 0; i < batch.length; i++) {
+        batchAttributesValues.push({
+          title : batch[i],
+          selected : false
+        });
+      }
+      return batchAttributesValues;
+    } 
+  } 
+
