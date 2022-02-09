@@ -74,16 +74,16 @@ export class UIGroupingDetails{
   uiGroupings: UIGrouping[];
 }
 
-export interface SimplifiedSearchFilter {
-  title: string;
-  items: SimplifiedSearchFilterItem[];
-  expanded?: boolean;
-}
+// export interface FilterGroup {
+//   title: string;
+//   items: FilterItem[];
+//   expanded?: boolean;
+// }
 
-export interface SimplifiedSearchFilterItem {
-  title: string;
-  selected?: boolean;
-}
+// export interface FilterItem {
+//   title: string;
+//   selected?: boolean;
+// }
 
 export enum SearchType {
   SimplifiedSearch,

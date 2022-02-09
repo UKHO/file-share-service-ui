@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { SimplifiedSearchFilter } from './../../../../core/models/fss-search-types';
+import { FilterGroup } from '@ukho/design-system/filter/filter.types';
+
 @Component({
   selector: 'app-fss-simplified-filter',
   templateUrl: './fss-simplified-filter.component.html',
   styleUrls: ['./fss-simplified-filter.component.scss']
 })
 export class FssSimplifiedFilterComponent implements OnInit {
-  groups: SimplifiedSearchFilter[];
-  constructor() { }
+  groups: FilterGroup[];
+  constructor() {}
 
   ngOnInit(): void {
     this.groups = [
@@ -88,5 +89,10 @@ export class FssSimplifiedFilterComponent implements OnInit {
         expanded: true
       }
     ]
+  }
+
+  onApplyFilterClick(groups: FilterGroup[])
+  {
+    
   }
 }
