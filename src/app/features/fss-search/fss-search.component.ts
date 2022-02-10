@@ -7,6 +7,7 @@ import { FssSearchFilterService } from '../../core/services/fss-search-filter.se
 import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
+import { FilterGroup, FilterItem } from '@ukho/design-system';
 
 @Component({
   selector: 'app-fss-search',
@@ -22,7 +23,7 @@ export class FssSearchComponent implements OnInit {
   loginErrorDisplay: boolean = false;
   displaySearchResult: Boolean = false;
   searchResult: any = [];
-  filterResult: any = [];
+  searchAttributesResult: any = [];
   pagingLinks: any = [];
   searchResultTotal: number;
   pages: number;
@@ -37,6 +38,8 @@ export class FssSearchComponent implements OnInit {
   eventPopularSearch: Subject<void> = new Subject<void>();  
   eventAdvancedSearchTokenRefresh: Subject<void> = new Subject<void>();
   SearchTypeEnum = SearchType;
+  filterGroups: FilterGroup[] = [];
+
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
@@ -102,13 +105,14 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
-    this.filterResult = [];
+    this.searchAttributesResult = [];
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
         this.fileShareApiService.getAttributeSearchResult(filter).subscribe((result) => {
-          this.filterResult = result.batchAttributes;
+          this.searchAttributesResult = result.batchAttributes;
+          this.transformSearchAttributesToFilter(this.searchAttributesResult);
         });
         this.getSearchResult(filter);
       }
@@ -121,6 +125,31 @@ export class FssSearchComponent implements OnInit {
       this.showMessage("warning", this.messageTitle, this.messageDesc);
     }
     this.analyticsService.getSimplifiedSearchResult();
+  }
+
+  transformSearchAttributesToFilter(batchAttributesResult :any) {
+    this.filterGroups = [];
+    if (batchAttributesResult.length > 0) {
+      var batches = batchAttributesResult;
+      for (var i = 0; i < batches.length; i++) {
+        this.filterGroups.push({
+          title : batches[i].key,
+          items : this.getAttributesValues(batches[i].values),
+          expanded : true
+        });
+      }
+    }
+  }
+
+  getAttributesValues(batch:Array<any> = []) {
+    var batchAttributesValues: FilterItem[] = [];
+    for (var i = 0; i < batch.length; i++) {
+      batchAttributesValues.push({
+        title : batch[i],
+        selected : false
+      });
+    }
+    return batchAttributesValues;
   }
 
   getSearchResult(filter: string) {
