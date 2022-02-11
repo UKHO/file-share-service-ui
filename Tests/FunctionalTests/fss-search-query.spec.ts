@@ -34,7 +34,7 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Batch Attribute table returns correct product on attribute search', async () => {    
-    
+    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     

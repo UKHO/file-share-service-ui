@@ -38,3 +38,4 @@ export const batchAttributeFileSize=10000000;
 export const searchQuerySqlInjection="adds''; drop table BatchAttribute";
 export const searchBatchAttribute="testu";
 export const searchMultipleBatchAttributes="testu service";
+export const searchNonExistBatchAttribute="pqtestresult";

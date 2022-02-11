@@ -41,6 +41,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   })
   
   it('Verify if click search button without selecting a field value', async () => {
+    await page.reload();
     await page.click(pageObjectsConfig.searchAttributeButton);
 
     var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);

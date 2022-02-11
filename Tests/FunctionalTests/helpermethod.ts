@@ -106,5 +106,6 @@ export async function InsertSearchText(page:Page,searchBatchAttribute :string) {
     await page.fill(pageObjectsConfig.inputSimplifiedSearchBoxSelector,searchBatchAttribute);
     await page.waitForTimeout(2000);
     await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
+    await page.waitForTimeout(1000);
   
 }
