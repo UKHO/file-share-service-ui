@@ -34,15 +34,19 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Batch Attribute table returns correct product on attribute search', async () => {    
-    await page.reload();
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
     await page.click(pageObjectsConfig.searchAttributeButton);
-    
-    // Verification of attribute table records
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+    try
+    {
+      await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+    }catch{
+      await page.click(pageObjectsConfig.searchAttributeButton);
+      await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+    }
+
+    // Verification of attribute table records    
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
     for (let index = 0; index < productNames.length; index++) {

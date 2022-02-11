@@ -2,7 +2,7 @@ import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import {LoginPortal,DataCollectionComparison,InsertSearchText} from './helpermethod'
-import{searchBatchAttribute,searchMultipleBatchAttributes} from './helperconstant'
+import{searchBatchAttribute,searchMultipleBatchAttributes,searchNonExistBatchAttribute} from './helperconstant'
 
 
 describe('Test Search Result Scenario On Simplified Search Page', () => {
@@ -37,9 +37,15 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
  
   it('Verify No results for non existing batch attribute value search', async () => {
     //Enter non existing value in search box
-    await page.fill(pageObjectsConfig.inputSimplifiedSearchBoxSelector,"pqtestresult");
-    await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
+    await InsertSearchText(page,searchNonExistBatchAttribute); 
+    try{ 
+         await page.waitForSelector(pageObjectsConfig.dialogInfoSelector);
 
+       }catch{
+        await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
+        await page.waitForSelector(pageObjectsConfig.dialogInfoSelector);
+       }
+  
     const infoText=await page.innerText(pageObjectsConfig.dialogInfoSelector);    
     
     expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);    
