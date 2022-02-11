@@ -1,4 +1,5 @@
 import { Page } from 'playwright'
+import { Collection } from 'typescript';
 const { pageObjectsConfig } = require('./pageObjects'); 
 let fileSizeInBytes:any;
 //<summary>
@@ -75,3 +76,35 @@ export async function SearchAttribute(page:Page, attributeName: string)
         
       return fileSizeInBytes; 
   }
+
+
+export function DataCollectionComparison(collectionSource : any, collectionTarget : any)
+{
+  let checkFlag=false;
+    for(let index=0; index<collectionSource.length; index++)
+       {   
+         for(let ba=0; ba<collectionTarget.length;ba++ )   
+         {    
+           if (collectionSource[index].toLowerCase().includes(collectionTarget[ba].toLowerCase()))
+           {
+            checkFlag=true;
+            break;
+           }    
+          }  
+          if(checkFlag==false)
+          {
+            break;
+          }
+       }  
+
+       return checkFlag;
+}
+
+export async function InsertSearchText(page:Page,searchBatchAttribute :string) {
+    await page.waitForTimeout(2000);
+    await page.fill(pageObjectsConfig.inputSimplifiedSearchBoxSelector,"");  
+    await page.fill(pageObjectsConfig.inputSimplifiedSearchBoxSelector,searchBatchAttribute);
+    await page.waitForTimeout(2000);
+    await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
+  
+}

@@ -1,0 +1,130 @@
+import { chromium, Browser, BrowserContext, Page } from 'playwright'
+const { autoTestConfig } = require('./appSetting');
+const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
+import {LoginPortal,DataCollectionComparison,InsertSearchText} from './helpermethod'
+import{searchBatchAttribute,searchMultipleBatchAttributes} from './helperconstant'
+
+
+describe('Test Search Result Scenario On Simplified Search Page', () => {
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
+  let browser: Browser;
+  let context: BrowserContext;
+  let page: Page;  
+
+  beforeAll(async () => {
+    browser = await chromium.launch({slowMo:100});
+    context = await browser.newContext();
+    page = await context.newPage();    
+    await page.goto(autoTestConfig.url)
+    await page.waitForTimeout(pageTimeOut.delay)
+    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
+      await page.click(pageObjectsConfig.acceptCookieSelector);
+    }
+    page.click(pageObjectsConfig.searchButtonSelector);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);    
+    
+    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
+    expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
+  
+    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
+})
+
+  afterAll(async () => {
+     await page.close()
+     await context.close()
+     await browser.close()
+  })
+ 
+  it('Verify No results for non existing batch attribute value search', async () => {
+    //Enter non existing value in search box
+    await page.fill(pageObjectsConfig.inputSimplifiedSearchBoxSelector,"pqtestresult");
+    await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
+
+    const infoText=await page.innerText(pageObjectsConfig.dialogInfoSelector);    
+    
+    expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);    
+    
+  })
+  
+  it('Verify search results for single batch attribute search', async () => {
+    await InsertSearchText(page,searchBatchAttribute);    
+
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+    var totalResult=await page.innerText(pageObjectsConfig.totalResultCountSelector);
+    //get the total batches count from display text
+    var recordCount=parseInt(totalResult.split(" ")[0]);
+
+    //Get the table records batch count
+    var tableRowsCount=(await page.$$(pageObjectsConfig.simplifiedTableRowsSelector)).length;
+    
+    //Search count matches with batches count
+    expect(recordCount).toEqual(tableRowsCount); 
+
+    var tableRowsText=await page.$$eval(pageObjectsConfig.simplifiedTableRowsSelector,rows => { return rows.map(row => row.textContent) });
+    
+    //verify search attributes present in table rows 
+    for(let index=0; index<tableRowsText.length; index++)
+       {
+           expect(tableRowsText[index].toLowerCase()).toContain(searchBatchAttribute.toLowerCase());
+       }     
+
+    //verify paginator links are available on the page
+    expect(await page.isVisible(pageObjectsConfig.paginatorLinkPrevious)).toBeTruthy();
+    expect(await page.isVisible(pageObjectsConfig.paginatorLinkNext)).toBeTruthy();    
+    
+  })
+
+  it('Verify paginator text showing correct values for search results on first page', async () => {
+    await InsertSearchText(page,searchBatchAttribute);    
+    
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+    var totalResult=await page.innerText(pageObjectsConfig.totalResultCountSelector);
+    //get the total batches count
+    var recordCount=parseInt(totalResult.split(" ")[0]);
+
+    var paginatorText=await page.innerText(pageObjectsConfig.paginatorTextSelector);
+
+    if (recordCount<=10)
+    {
+        expect(paginatorText).toEqual(`Showing 1-${recordCount} of ${recordCount}`);         
+    }
+    else
+    {
+        expect(paginatorText).toEqual(`Showing 1-10 of ${recordCount}`);
+    }   
+    
+  })
+
+  it('Verify search results for multiple batch attributes search', async () => {
+    await InsertSearchText(page,searchMultipleBatchAttributes);    
+   
+    let batchAttributesValue=searchMultipleBatchAttributes.toLowerCase().split(" ");
+
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+    
+    var tableRowsText=await page.$$eval(pageObjectsConfig.simplifiedTableRowsSelector,rows => { return rows.map(row => row.textContent.toLowerCase()) });
+
+    expect(DataCollectionComparison(tableRowsText,batchAttributesValue)).toBeTruthy();
+  })
+  
+  it('Verify file downloaded status changed after click on download button', async () => {
+    await InsertSearchText(page,searchBatchAttribute);    
+    
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+
+    //verify Choose files to download and  Download buttons are available on the page
+    expect(await page.isVisible(pageObjectsConfig.chooseFileDownloadSelector)).toBeTruthy();
+    expect(await page.isVisible(pageObjectsConfig.fileDownloadButton)).toBeTruthy();    
+    
+     //Click on expand button
+     await page.click(pageObjectsConfig.chooseFileDownloadSelector);
+  
+     //Click on download button
+     await page.click(pageObjectsConfig.fileDownloadButton);
+ 
+     //Get the file downloaded status
+     const fileDownloadStatus=await page.getAttribute(pageObjectsConfig.fileDownloadButtonStatus,"class");
+     expect(fileDownloadStatus).toContain("check");    
+  })
+
+})
