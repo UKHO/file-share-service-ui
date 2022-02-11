@@ -31,7 +31,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const atag = fixture.debugElement.query(By.css('a')).nativeElement;
-    console.log("atag", atag);
     expect(atag.textContent).toContain('Skip to Main Content');
   });
 
