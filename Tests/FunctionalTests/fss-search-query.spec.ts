@@ -13,6 +13,10 @@ describe('Test Search Query Scenario On Search Page', () => {
 
   beforeAll(async () => {
     browser = await chromium.launch({slowMo:100});
+   
+  })
+
+  beforeEach(async () => {   
     context = await browser.newContext();
     page = await context.newPage();    
     await page.goto(autoTestConfig.url)
@@ -27,9 +31,12 @@ describe('Test Search Query Scenario On Search Page', () => {
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
   })
 
-  afterAll(async () => {
-     await page.close()
-     await context.close()
+  afterEach(async () => {
+    await page.close()
+    await context.close()  
+ })
+
+  afterAll(async () => {   
      await browser.close()
   })
 
@@ -58,7 +65,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Batch Attribute table returns correct product on special characters search', async () => {        
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
@@ -78,7 +84,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Batch Attribute table returns correct values on multiple attributes search', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
@@ -112,7 +117,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify grouping button is disabled', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     const groupingBeforeAriaDisabled=await page.getAttribute(pageObjectsConfig.groupingButton,"aria-disabled");
     expect(groupingBeforeAriaDisabled).toEqual("true");   
@@ -120,7 +124,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify no value field displayed when select operator eq null or ne null for BatchExpiryDate', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BatchExpiryDate");
     //select operator eq null 
@@ -137,7 +140,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify no value field displayed when select operator eq null or ne null for BatchPublishedDate', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BatchPublishedDate");
     //select operator eq null 
@@ -153,7 +155,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify no value field displayed when select operator eq null or ne null for batch attributes', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     //select operator eq null 
@@ -169,7 +170,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify pagination count for user attribute search', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
@@ -194,7 +194,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify file downloaded status changed after click on download button', async () => {        
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");  
@@ -217,7 +216,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Batch Attribute table returns records less than filesize search', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"cellname");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
@@ -252,7 +250,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   }) 
 
   it('Test to verify no result for search query', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"cellname");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
@@ -273,7 +270,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify warning message for invalid field value', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"cellname");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
@@ -294,7 +290,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify no result for "Sql Injection" query', async () => {    
-    await page.reload();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BusinessUnit");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
