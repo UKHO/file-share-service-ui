@@ -7,6 +7,7 @@ import { FssSearchFilterService } from '../../core/services/fss-search-filter.se
 import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
+import { FilterGroup, FilterItem } from '@ukho/design-system';
 
 @Component({
   selector: 'app-fss-search',
@@ -22,6 +23,7 @@ export class FssSearchComponent implements OnInit {
   loginErrorDisplay: boolean = false;
   displaySearchResult: Boolean = false;
   searchResult: any = [];
+  attributeSearchResult: any = [];
   pagingLinks: any = [];
   searchResultTotal: number;
   pages: number;
@@ -36,13 +38,15 @@ export class FssSearchComponent implements OnInit {
   eventPopularSearch: Subject<void> = new Subject<void>();  
   eventAdvancedSearchTokenRefresh: Subject<void> = new Subject<void>();
   SearchTypeEnum = SearchType;
+  filterGroups: FilterGroup[] = [];
+
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService) {
-      this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;      
+    this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;      
      }
 
   ngOnInit(): void {
@@ -101,10 +105,15 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
+    this.attributeSearchResult = [];
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
+        this.fileShareApiService.getAttributeSearchResult(filter).subscribe((result) => {
+          this.attributeSearchResult = result.batchAttributes;
+          this.transformSearchAttributesToFilter();
+        });
         this.getSearchResult(filter);
       }
       else {
@@ -247,4 +256,44 @@ export class FssSearchComponent implements OnInit {
     this.eventAdvancedSearchTokenRefresh.next();
   }
 
+  transformSearchAttributesToFilter() {
+    let configAttributes: any[] = [];
+    this.filterGroups = [];
+
+    configAttributes = AppConfigService.settings["fssConfig"].batchAttributes ;
+      console.log("configAttributes", configAttributes)
+      if(configAttributes.length > 0 && this.attributeSearchResult.length > 0)
+      {
+       let result = configAttributes.every((item: any) => {
+        var attribute = this.attributeSearchResult.filter((function(data: { key: any; }) {
+           return data.key === item;
+        }));
+
+        if(attribute.length > 0){
+            console.log("attribute",attribute)
+          this.filterGroups.push({
+            title : attribute[0]["key"],
+            items : this.getAttributesValues(attribute[0]["values"]),
+            expanded : true
+
+          });
+        }
+        return attribute;
+      });
+
+         console.log("this.filterGroups", this.filterGroups)
+      }
+  }
+
+  getAttributesValues(attributeValues:Array<any> = []) {
+    var batchAttributeValues: FilterItem[] = [];
+    for (var i = 0; i < attributeValues.length; i++) {
+      batchAttributeValues.push({
+        title : attributeValues[i],
+        selected : false
+      });
+    }
+    return batchAttributeValues;
+  } 
+ 
 }

@@ -54,4 +54,7 @@ export class FileShareApiService {
         return flag;
     }
 
+    getAttributeSearchResult(payload: string): Observable<any> {
+                return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload));
+    }
 }
