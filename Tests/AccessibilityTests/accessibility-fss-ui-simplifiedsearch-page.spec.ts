@@ -1,11 +1,10 @@
-import { chromium, BrowserContext, Browser, Page } from 'playwright'
+import { chromium, Browser, Page } from 'playwright'
 import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
 import { LoginPortal} from '../FunctionalTests/helpermethod'
 
 let browser: Browser
-let context: BrowserContext;
 let page: Page
 
 describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
@@ -28,7 +27,7 @@ describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(1);  
     
-  })  
+  })    
 
   test('check a11y for the initial page load and axe run options', async () => {
     await injectAxe(page);

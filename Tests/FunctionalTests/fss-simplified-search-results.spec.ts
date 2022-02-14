@@ -12,7 +12,10 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
   let page: Page;  
 
   beforeAll(async () => {
-    browser = await chromium.launch({slowMo:100});
+    browser = await chromium.launch({slowMo:100});    
+  })
+
+  beforeEach(async () => { 
     context = await browser.newContext();
     page = await context.newPage();    
     await page.goto(autoTestConfig.url)
@@ -25,14 +28,16 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
     
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
-  
-    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
-})
 
+    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
+  })
+
+  afterEach(async () => {
+    await page.close()
+    await context.close() 
+  })
   afterAll(async () => {
-     await page.close()
-     await context.close()
-     await browser.close()
+    await browser.close()
   })
  
   it('Verify No results for non existing batch attribute value search', async () => {

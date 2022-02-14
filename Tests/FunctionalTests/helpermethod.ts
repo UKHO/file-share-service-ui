@@ -1,5 +1,4 @@
 import { Page } from 'playwright'
-import { Collection } from 'typescript';
 const { pageObjectsConfig } = require('./pageObjects'); 
 let fileSizeInBytes:any;
 //<summary>

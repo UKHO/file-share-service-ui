@@ -1,4 +1,4 @@
-import { chromium, BrowserContext, Browser, Page } from 'playwright'
+import { chromium,Browser, Page } from 'playwright'
 import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
@@ -6,7 +6,6 @@ import { LoginPortal,SearchAttribute } from '../FunctionalTests/helpermethod'
 import {batchAttributeProductContains} from '../FunctionalTests/helperconstant'
 
 let browser: Browser
-let context: BrowserContext;
 let page: Page
 
 describe('FSS UI Search Page Accessibility Test Scenarios', () => {
