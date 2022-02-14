@@ -23,7 +23,8 @@
     "set-value": "4.0.1",
     "ansi-regex": "5.0.1",
     "node-forge": "1.0.0",
-    "nanoid": "3.2.0"
+    "nanoid": "3.2.0",
+    "follow-redirects": "1.14.8"
   },
   "private": true,
   "dependencies": {
