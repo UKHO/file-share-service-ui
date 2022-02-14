@@ -23,7 +23,6 @@ export class FssSearchComponent implements OnInit {
   loginErrorDisplay: boolean = false;
   displaySearchResult: Boolean = false;
   searchResult: any = [];
-  attributeSearchResult: any = [];
   pagingLinks: any = [];
   searchResultTotal: number;
   pages: number;
@@ -105,14 +104,12 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
-    this.attributeSearchResult = [];
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
         this.fileShareApiService.getAttributeSearchResult(filter).subscribe((result) => {
-          this.attributeSearchResult = result.batchAttributes;
-          this.transformSearchAttributesToFilter();
+        this.transformSearchAttributesToFilter(result.batchAttributes);
         });
         this.getSearchResult(filter);
       }
@@ -256,21 +253,21 @@ export class FssSearchComponent implements OnInit {
     this.eventAdvancedSearchTokenRefresh.next();
   }
 
-  transformSearchAttributesToFilter() {
+  transformSearchAttributesToFilter(attributeSearchResult: any) {
     let configAttributes: any[] = [];
     this.filterGroups = [];
 
     configAttributes = AppConfigService.settings["fssConfig"].batchAttributes ;
-      console.log("configAttributes", configAttributes)
-      if(configAttributes.length > 0 && this.attributeSearchResult.length > 0)
+      
+      if(configAttributes.length > 0 && attributeSearchResult.length > 0)
       {
        let result = configAttributes.every((item: any) => {
-        var attribute = this.attributeSearchResult.filter((function(data: { key: any; }) {
+        var attribute = attributeSearchResult.filter((function(data: { key: any; }) {
            return data.key === item;
         }));
 
         if(attribute.length > 0){
-            console.log("attribute",attribute)
+           
           this.filterGroups.push({
             title : attribute[0]["key"],
             items : this.getAttributesValues(attribute[0]["values"]),
@@ -280,9 +277,7 @@ export class FssSearchComponent implements OnInit {
         }
         return attribute;
       });
-
-         console.log("this.filterGroups", this.filterGroups)
-      }
+    }
   }
 
   getAttributesValues(attributeValues:Array<any> = []) {

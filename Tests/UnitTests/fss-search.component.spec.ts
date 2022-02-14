@@ -35,7 +35,8 @@ describe('FssSearchComponent', () => {
     AppConfigService.settings = {
       fssConfig: {
         "apiUrl": "https://dummyfssapiurl ",
-         displaySimplifiedSearchLink: true
+         displaySimplifiedSearchLink: true,
+         "batchAttributes": ["product","cellname","weeknumber"]
       }};
     msalService = TestBed.inject(MsalService);
     analyticsService = TestBed.inject(AnalyticsService);
@@ -52,7 +53,93 @@ describe('FssSearchComponent', () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
+
+  it('should search attribute transformation returns same attributes and priority order as defined in configuration', () => {
+    var inputSearchResultData = <JSON>inputSearchResultMockData;
+    component.transformSearchAttributesToFilter(inputSearchResultData);
+    
+    expect(component.filterGroups.length).toEqual(3);
+     
+    expect(component.filterGroups.filter(function(valu){ return valu.hasOwnProperty("title");}).map(function (valu){ return valu["title"];}))
+                      .toEqual(AppConfigService.settings["fssConfig"].batchAttributes);
+    
+  });
+ 
 });
+
+
+
+export var inputSearchResultMockData: any =
+[
+  {
+     "key":"product",
+     "values":[
+        "avcs"
+     ]
+  },
+  {
+     "key":"product-name",
+     "values":[
+        "AVCS"
+     ]
+  },
+  {
+     "key":"weeknumber",
+     "values":[
+        "10"
+     ]
+  },
+  {
+     "key":"cellname",
+     "values":[
+        "AVCS"
+     ]
+  }
+]
+
+export const attributeSearchFilterMockData: any =  
+  [
+    {
+       "title":"product",
+       "items":[
+          {
+             "title":"avcs",
+             "selected":false
+          }
+       ],
+       "expanded":true
+    },
+    {
+       "title":"product-name",
+       "items":[
+          {
+             "title":"AVCS",
+             "selected":false
+          }
+       ],
+       "expanded":true
+    },
+    {
+       "title":"weeknumber",
+       "items":[
+          {
+             "title":"10",
+             "selected":false
+          }
+       ],
+       "expanded":true
+    },
+    {
+      "title":"cellname",
+      "items":[
+         {
+            "title":"AVCS",
+            "selected":false
+         }
+      ],
+      "expanded":true
+   }
+ ] 
 
 export function MockMSALInstanceFactory() {
   return new PublicClientApplication({
@@ -70,3 +157,4 @@ export function MockMSALInstanceFactory() {
     }
   })
 };
+
