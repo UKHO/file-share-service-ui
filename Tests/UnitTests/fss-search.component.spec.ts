@@ -57,9 +57,9 @@ describe('FssSearchComponent', () => {
   it('should return filter groups when search result data is provided', () => {
     var inputSearchResultData = <JSON>inputSearchResultMockData;
     var expectedResultBatchAttributes = <JSON>attributeSearchFilterMockData;
-    var filterGroup = component.transformSearchAttributesToFilter(inputSearchResultData);
-    expect(filterGroup.length).toEqual(4);
-    expect(filterGroup).toEqual(expectedResultBatchAttributes);
+    component.transformSearchAttributesToFilter(inputSearchResultData);
+    expect(component.filterGroups.length).toEqual(4);
+    expect(component.filterGroups).toEqual(expectedResultBatchAttributes);
   });
 });
 

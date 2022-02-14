@@ -105,14 +105,12 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
-    this.searchAttributesResult = [];
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
         this.fileShareApiService.getAttributeSearchResult(filter).subscribe((result) => {
-          this.searchAttributesResult = result.batchAttributes;
-          this.transformSearchAttributesToFilter(this.searchAttributesResult);
+          this.transformSearchAttributesToFilter(result.batchAttributes);
         });
         this.getSearchResult(filter);
       }
@@ -130,16 +128,14 @@ export class FssSearchComponent implements OnInit {
   transformSearchAttributesToFilter(batchAttributesResult :any) {
     this.filterGroups = [];
     if (batchAttributesResult.length > 0) {
-      var batches = batchAttributesResult;
-      for (var i = 0; i < batches.length; i++) {
+      for (var i = 0; i < batchAttributesResult.length; i++) {
         this.filterGroups.push({
-          title : batches[i].key,
-          items : this.getAttributesValues(batches[i].values),
+          title : batchAttributesResult[i].key,
+          items : this.getAttributesValues(batchAttributesResult[i].values),
           expanded : true
         });
       }
     }
-    return this.filterGroups;
   }
 
   getAttributesValues(batch:Array<any> = []) {
