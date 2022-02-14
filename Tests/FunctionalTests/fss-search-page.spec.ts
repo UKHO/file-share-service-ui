@@ -160,6 +160,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
 
   it('When click on "Delete" button a row deleted from the query table', async () => {
     await page.waitForSelector(pageObjectsConfig.inputSearchFieldSelector);  
+    await page.click(".addNewLine");
     let tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
     expect(tableRows).toEqual(2);
 
