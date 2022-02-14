@@ -12,6 +12,7 @@ describe('FssSearchComponent', () => {
   let fixture: ComponentFixture<FssSearchComponent>;
   let msalService: MsalService;
   let analyticsService:AnalyticsService;
+  
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -52,7 +53,91 @@ describe('FssSearchComponent', () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
+
+  it('should return filter groups when search result data is provided', () => {
+    var inputSearchResultData = <JSON>inputSearchResultMockData;
+    var expectedResultBatchAttributes = <JSON>attributeSearchFilterMockData;
+    var filterGroup = component.transformSearchAttributesToFilter(inputSearchResultData);
+    expect(filterGroup.length).toEqual(4);
+    expect(filterGroup).toEqual(expectedResultBatchAttributes);
+  });
 });
+
+
+export var inputSearchResultMockData: any =
+[
+  {
+     "key":"product",
+     "values":[
+        "avcs"
+     ]
+  },
+  {
+     "key":"product-name",
+     "values":[
+        "AVCS"
+     ]
+  },
+  {
+     "key":"weeknumber",
+     "values":[
+        "10"
+     ]
+  },
+  {
+     "key":"cellname",
+     "values":[
+        "AVCS"
+     ]
+  }
+]
+
+
+export const attributeSearchFilterMockData: any =  
+  [
+    {
+       "title":"product",
+       "items":[
+          {
+             "title":"avcs",
+             "selected":false
+          }
+       ],
+       "expanded":true
+    },
+    {
+       "title":"product-name",
+       "items":[
+          {
+             "title":"AVCS",
+             "selected":false
+          }
+       ],
+       "expanded":true
+    },
+    {
+       "title":"weeknumber",
+       "items":[
+          {
+             "title":"10",
+             "selected":false
+          }
+       ],
+       "expanded":true
+    },
+    {
+      "title":"cellname",
+      "items":[
+         {
+            "title":"AVCS",
+            "selected":false
+         }
+      ],
+      "expanded":true
+   }
+ ] 
+
+
 
 export function MockMSALInstanceFactory() {
   return new PublicClientApplication({

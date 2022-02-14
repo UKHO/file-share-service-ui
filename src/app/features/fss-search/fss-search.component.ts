@@ -139,6 +139,7 @@ export class FssSearchComponent implements OnInit {
         });
       }
     }
+    return this.filterGroups;
   }
 
   getAttributesValues(batch:Array<any> = []) {
