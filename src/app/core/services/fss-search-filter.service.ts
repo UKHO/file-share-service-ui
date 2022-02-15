@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FssSearchRow, RowGrouping } from '../models/fss-search-types';
+import { FilterGroup } from '@ukho/design-system/filter/filter.types';
 
 @Injectable({
   providedIn: 'root'
@@ -91,6 +92,31 @@ export class FssSearchFilterService {
       }
     }
     return filterExpression;
+  }
+
+  getFilterExpressionForApplyFilter(fssFilterItem: FilterGroup[]){
+   var MainFilter = "$batchContains('" + "avcs" + "')";
+   var FilterExpressionForApplyFilter = "";
+    for(var i=0; i < fssFilterItem.length; i++) {
+      var FilterExpressionForItems = "";
+      for(var j=0; j < fssFilterItem[i].items.length; j++){
+          if(fssFilterItem[i].items[j].selected === true){
+            if (FilterExpressionForItems === ""){
+              FilterExpressionForItems = "$batchContains('" + fssFilterItem[i].items[j].title + "')";
+            }
+            else{
+              FilterExpressionForItems = (FilterExpressionForItems.concat(" OR ")).concat("$batchContains('" + fssFilterItem[i].items[j].title + "')");
+          }
+        }
+        
+      }
+      if(FilterExpressionForItems != ""){
+        FilterExpressionForApplyFilter = (FilterExpressionForApplyFilter.concat(" AND ")).concat("(" + FilterExpressionForItems + ")" );
+      }
+    }
+    console.log(FilterExpressionForApplyFilter);
+    // $batchContains('avcs') AND (($batchContains('AVCS') OR $batchContains('ADP')) AND ($batchContains('DVD') OR $batchContains('CD')))    
+    return FilterExpressionForApplyFilter;
   }
 
 }

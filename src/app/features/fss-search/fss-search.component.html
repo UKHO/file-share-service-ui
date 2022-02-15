@@ -26,7 +26,8 @@
   [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
   <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
-    <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch && displaySearchResult"></app-fss-simplified-filter>    
+    <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch && displaySearchResult"
+    (onApplyFilterButtonClick)="onApplyFilterButtonClick($event)"></app-fss-simplified-filter>    
     <div>    
       <h2 *ngIf="displaySearchResult"> 
         <span class="totalResultLabel" *ngIf="searchResultTotal == 1">{{this.searchResultTotal}} result found</span>

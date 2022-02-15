@@ -7,6 +7,7 @@ import { FssSearchFilterService } from '../../core/services/fss-search-filter.se
 import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
+import { FilterGroup } from '@ukho/design-system';
 
 @Component({
   selector: 'app-fss-search',
@@ -145,6 +146,16 @@ export class FssSearchComponent implements OnInit {
           }
         );
       }             
+  }
+
+  onApplyFilterButtonClick(filterItem: FilterGroup[]){
+    if (!this.fileShareApiService.isTokenExpired()) {
+      var getfilterItem = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
+      this.getSearchResult(getfilterItem);
+    }
+    else {
+      this.handleTokenExpiry();        
+    }
   }
 
   handleGetSearchResultSuccess() {
