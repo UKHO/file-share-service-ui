@@ -12,7 +12,7 @@
        "marinedataportalLinkSelector" : "a > img[alt='Admiralty - Maritime Data Solutions Logo']",
        "marinedataportalPageSelector" : "div.navbar-header + h2",
        "marinedataportalPageText": "Marine Data Portal",       
-       "ukhydrographicLinkSelector" : "a > img[alt='Admirality Maritime Data Solutions | UK Hydrographic office']",
+       "ukhydrographicLinkSelector" : "a > img[alt='Admiralty Maritime Data Solutions | UK Hydrographic office']",
        "ukhydrographicPageSelector" : "a.logo__link",
        "ukhydrographicPageTitle" : "Admiralty - Maritime Data Solutions",
        "ukhydrographicPageUrl" : "https://www.admiralty.co.uk/",
