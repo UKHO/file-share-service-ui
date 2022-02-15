@@ -105,7 +105,6 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
-    this.filterGroups = [];
     this.displaySearchResult = false;
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
