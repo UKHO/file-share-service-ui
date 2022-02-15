@@ -9,8 +9,11 @@ describe('Test Sign In Page Scenario', () => {
   let context: BrowserContext;
   let page: Page;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     browser = await chromium.launch({slowMo:100});
+  })
+
+  beforeEach(async () => {    
     context = await browser.newContext();
     page = await context.newPage();
     await page.goto(autoTestConfig.url)
@@ -22,7 +25,10 @@ describe('Test Sign In Page Scenario', () => {
 
   afterEach(async () => {
     await page.close()
-    await context.close()
+    await context.close()   
+  }) 
+
+  afterAll(async () => {  
     await browser.close()
   }) 
   
