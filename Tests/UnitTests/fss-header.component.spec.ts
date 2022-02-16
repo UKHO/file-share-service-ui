@@ -51,13 +51,6 @@ describe('FssHeaderComponent', () => {
     expect(msalService).toBeDefined();
   });
 
-  test('should render "Skip to content" in an anchor tag', () => {
-    const fixture = TestBed.createComponent(FssHeaderComponent);
-    fixture.detectChanges();
-    const atag = fixture.debugElement.query(By.css('a')).nativeElement;
-    expect(atag.textContent).toContain('Skip to content');
-  });
-
   test('should have header component', () => {
     const fixture = TestBed.createComponent(FssHeaderComponent);
     const header = fixture.debugElement.nativeElement.querySelector('ukho-header');

@@ -3,13 +3,14 @@
 @use '~@fortawesome/fontawesome-free/scss/brands';
 @use '~@ukho/design-system/styles/core.scss';
 .skip-to-content-link {
-	left: 2%;
-	position: absolute;
-	transform: translateY(-100%);
-	background: #f0f0f0;
-	padding: 10px;
-	border: none;
-	box-shadow: none;
+	left: 47%;
+    position: absolute;
+    transform: translateY(-100%);
+    background: #15315b;
+    padding: 10px;
+    border: none;
+    box-shadow: none;
+    color: #fff;
 	&:focus {
 		transform: translateY(20%);
 	}
@@ -85,7 +86,13 @@ ukho-phase-banner.phasebanner {
 	}
 }
 
-.querytable {
+ukho-expansion{
+	section.expansion.bordered{
+		border-bottom: none !important;
+	}
+}
+
+.querytable, .attribute-table, .system-attribute-table {
 	border-spacing: 10px;
 	width: 100%;
 	text-align: center;
@@ -115,12 +122,18 @@ table{
 	}
 }
 
-.attribute-table{
+table.attribute-table, .system-attribute-table{
     table-layout: fixed !important;	
-	margin-bottom: 0;	
+	margin-bottom: 0;
+	border-spacing:0;
+	text-align: left;
+	tr:nth-child(1n){
+		background: none;
+	}
+		
 	th, td{
 		width: fit-content;
-		padding: 0 5px;
+		padding: 5px;
 	}
 }
 
@@ -334,6 +347,7 @@ ukho-textinput.text-input-wrap .error-text{
 .system-attribute-table
 {
 	margin-bottom: 20px;
+	table-layout: auto !important;
 }
 
 .expansionLabel label {
