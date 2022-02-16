@@ -11,8 +11,12 @@ describe('Test Search Query Scenario On Search Page', () => {
   let context: BrowserContext;
   let page: Page;  
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     browser = await chromium.launch({slowMo:100});
+   
+  })
+
+  beforeEach(async () => {   
     context = await browser.newContext();
     page = await context.newPage();    
     await page.goto(autoTestConfig.url)
@@ -28,21 +32,28 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   afterEach(async () => {
-     await page.close()
-     await context.close()
+    await page.close()
+    await context.close()  
+ })
+
+  afterAll(async () => {   
      await browser.close()
   })
 
   it('Batch Attribute table returns correct product on attribute search', async () => {    
-    
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
     await page.click(pageObjectsConfig.searchAttributeButton);
-    
-    // Verification of attribute table records
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+    try
+    {
+      await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+    }catch{
+      await page.click(pageObjectsConfig.searchAttributeButton);
+      await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+    }
+
+    // Verification of attribute table records    
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
     for (let index = 0; index < productNames.length; index++) {
@@ -54,7 +65,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Batch Attribute table returns correct product on special characters search', async () => {        
-   
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
@@ -74,7 +84,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Batch Attribute table returns correct values on multiple attributes search', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
@@ -108,7 +117,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify grouping button is disabled', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     const groupingBeforeAriaDisabled=await page.getAttribute(pageObjectsConfig.groupingButton,"aria-disabled");
     expect(groupingBeforeAriaDisabled).toEqual("true");   
@@ -116,7 +124,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify no value field displayed when select operator eq null or ne null for BatchExpiryDate', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BatchExpiryDate");
     //select operator eq null 
@@ -133,7 +140,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify no value field displayed when select operator eq null or ne null for BatchPublishedDate', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BatchPublishedDate");
     //select operator eq null 
@@ -149,7 +155,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify no value field displayed when select operator eq null or ne null for batch attributes', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     //select operator eq null 
@@ -165,7 +170,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify pagination count for user attribute search', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
@@ -190,7 +194,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify file downloaded status changed after click on download button', async () => {        
-   
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");  
@@ -213,7 +216,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Batch Attribute table returns records less than filesize search', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"cellname");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
@@ -248,7 +250,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   }) 
 
   it('Test to verify no result for search query', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"cellname");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
@@ -269,7 +270,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify warning message for invalid field value', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"cellname");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
@@ -290,7 +290,6 @@ describe('Test Search Query Scenario On Search Page', () => {
   })
 
   it('Test to verify no result for "Sql Injection" query', async () => {    
-    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"BusinessUnit");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
