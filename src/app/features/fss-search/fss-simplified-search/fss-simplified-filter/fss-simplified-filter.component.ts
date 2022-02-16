@@ -9,7 +9,7 @@ import { FssSearchFilterService } from 'src/app/core/services/fss-search-filter.
 })
 export class FssSimplifiedFilterComponent implements OnInit {
   groups: FilterGroup[];
-  @Output() onApplyFilterButtonClick = new EventEmitter<FilterGroup[]>(); 
+  @Output() onApplyFilterButtonClicked = new EventEmitter<FilterGroup[]>(); 
   constructor(private fssSearchFilterService: FssSearchFilterService) {}
 
   ngOnInit(): void {
@@ -95,7 +95,6 @@ export class FssSimplifiedFilterComponent implements OnInit {
 
   onApplyFilterClick(groups: FilterGroup[])
   {
-    // var getfilterItem = this.fssSearchFilterService.getFilterExpressionForApplyFilter(groups);
-    this.onApplyFilterButtonClick.emit(groups);
+    this.onApplyFilterButtonClicked.emit(groups);
   }
 }

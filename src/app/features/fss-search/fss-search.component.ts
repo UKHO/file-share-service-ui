@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
@@ -37,6 +38,7 @@ export class FssSearchComponent implements OnInit {
   eventPopularSearch: Subject<void> = new Subject<void>();  
   eventAdvancedSearchTokenRefresh: Subject<void> = new Subject<void>();
   SearchTypeEnum = SearchType;
+  MainQueryFilterExpression: string = "";
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
@@ -105,8 +107,8 @@ export class FssSearchComponent implements OnInit {
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
-        var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
-        this.getSearchResult(filter);
+        this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
+        this.getSearchResult(this.MainQueryFilterExpression);
       }
       else {
         this.handleTokenExpiry();        
@@ -148,14 +150,10 @@ export class FssSearchComponent implements OnInit {
       }             
   }
 
-  onApplyFilterButtonClick(filterItem: FilterGroup[]){
-    if (!this.fileShareApiService.isTokenExpired()) {
-      var getfilterItem = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
-      this.getSearchResult(getfilterItem);
-    }
-    else {
-      this.handleTokenExpiry();        
-    }
+  onApplyFilterButtonClicked(filterItem: FilterGroup[]){
+      var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
+      var applyFilter_FilterExpression = this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")");
+      this.getSearchResult(applyFilter_FilterExpression);
   }
 
   handleGetSearchResultSuccess() {

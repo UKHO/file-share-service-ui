@@ -16,11 +16,11 @@ export class FssSearchFilterService {
 
   constructor() { }
 
-  getFilterExpression(fssSearchRows: FssSearchRow[],groupings : RowGrouping[]) {
-    
-    var filter='';
+  getFilterExpression(fssSearchRows: FssSearchRow[], groupings: RowGrouping[]) {
 
-    for(var rowIndex=0; rowIndex < fssSearchRows.length; rowIndex++) {
+    var filter = '';
+
+    for (var rowIndex = 0; rowIndex < fssSearchRows.length; rowIndex++) {
 
       var fssSearchRow = fssSearchRows[rowIndex];
       // getFieldDataType
@@ -29,15 +29,15 @@ export class FssSearchFilterService {
       const operaterType = this.getOperatorType(fssSearchRow);
 
       //Append join operator from second search condition
-      if(rowIndex != 0) {
-        filter = filter.concat(' ',fssSearchRow.selectedJoinOperator, ' ');        
+      if (rowIndex != 0) {
+        filter = filter.concat(' ', fssSearchRow.selectedJoinOperator, ' ');
       }
       //Append opening brackets for grouping query.
-      var openingBracketCount = groupings.filter(g=>g.startIndex === rowIndex).length;
+      var openingBracketCount = groupings.filter(g => g.startIndex === rowIndex).length;
       filter = filter.concat("(".repeat(openingBracketCount));
-        
-      if(fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType){
-        if(operaterType === this.typeOperator){
+
+      if (fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType) {
+        if (operaterType === this.typeOperator) {
           filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
         }
         else if (operaterType === this.nullOperatorType) {
@@ -62,7 +62,7 @@ export class FssSearchFilterService {
         }
       }
       //Append closing brackets for grouping query
-      var closingBracketCount = groupings.filter(g=>g.endIndex === rowIndex).length;
+      var closingBracketCount = groupings.filter(g => g.endIndex === rowIndex).length;
       filter = filter.concat(")".repeat(closingBracketCount));
     }
     return filter;
@@ -80,7 +80,7 @@ export class FssSearchFilterService {
 
   getFilterExpressionForSimplifiedSearch(fssSearchFilter: string): string {
     let searchKeywords = fssSearchFilter.split(" ");
-     
+
     let filterExpression = "";
     for (let i in searchKeywords) {
       if (searchKeywords[i] !== "") {
@@ -94,29 +94,29 @@ export class FssSearchFilterService {
     return filterExpression;
   }
 
-  getFilterExpressionForApplyFilter(fssFilterItem: FilterGroup[]){
-   var MainFilter = "$batchContains('" + "avcs" + "')";
-   var FilterExpressionForApplyFilter = "";
-    for(var i=0; i < fssFilterItem.length; i++) {
-      var FilterExpressionForItems = "";
-      for(var j=0; j < fssFilterItem[i].items.length; j++){
-          if(fssFilterItem[i].items[j].selected === true){
-            if (FilterExpressionForItems === ""){
-              FilterExpressionForItems = "$batchContains('" + fssFilterItem[i].items[j].title + "')";
-            }
-            else{
-              FilterExpressionForItems = (FilterExpressionForItems.concat(" OR ")).concat("$batchContains('" + fssFilterItem[i].items[j].title + "')");
+  getFilterExpressionForApplyFilter(fssFilterGroup: FilterGroup[]) {
+    var filterExpressionForApplyFilter = "";
+    fssFilterGroup.forEach(fg => {
+      var filterExpressionPerFilterGroup = "";
+      fg.items.forEach(item => {
+        if (item.selected === true) {
+          if (filterExpressionPerFilterGroup === "") {
+            filterExpressionPerFilterGroup = "$batchContains('" + item.title.replace(/'/g, "''") + "')";
+          }
+          else {
+            filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(" OR ").concat("$batchContains('" + item.title.replace(/'/g, "''") + "')");
           }
         }
-        
+      });
+      if (filterExpressionPerFilterGroup != "") {
+        if (filterExpressionForApplyFilter === "") {
+          filterExpressionForApplyFilter = "(" + filterExpressionPerFilterGroup + ")";
+        } else {
+          filterExpressionForApplyFilter = filterExpressionForApplyFilter.concat(" AND ").concat("(" + filterExpressionPerFilterGroup + ")");
+        }
       }
-      if(FilterExpressionForItems != ""){
-        FilterExpressionForApplyFilter = (FilterExpressionForApplyFilter.concat(" AND ")).concat("(" + FilterExpressionForItems + ")" );
-      }
-    }
-    console.log(FilterExpressionForApplyFilter);
-    // $batchContains('avcs') AND (($batchContains('AVCS') OR $batchContains('ADP')) AND ($batchContains('DVD') OR $batchContains('CD')))    
-    return FilterExpressionForApplyFilter;
+    });
+  
+    return filterExpressionForApplyFilter;
   }
-
 }
