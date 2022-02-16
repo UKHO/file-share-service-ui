@@ -18,9 +18,9 @@ export class FssSearchFilterService {
 
   getFilterExpression(fssSearchRows: FssSearchRow[], groupings: RowGrouping[]) {
 
-    var filter = '';
+    let filter = '';
 
-    for (var rowIndex = 0; rowIndex < fssSearchRows.length; rowIndex++) {
+    for (let rowIndex = 0; rowIndex < fssSearchRows.length; rowIndex++) {
 
       var fssSearchRow = fssSearchRows[rowIndex];
       // getFieldDataType
@@ -99,16 +99,17 @@ export class FssSearchFilterService {
     fssFilterGroup.forEach(fg => {
       var filterExpressionPerFilterGroup = "";
       fg.items.forEach(item => {
+        const formattedTitle = item.title.replace(/'/g, "''");
         if (item.selected === true) {
           if (filterExpressionPerFilterGroup === "") {
-            filterExpressionPerFilterGroup = "$batchContains('" + item.title.replace(/'/g, "''") + "')";
+            filterExpressionPerFilterGroup = "$batchContains('" + formattedTitle + "')";
           }
           else {
-            filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(" OR ").concat("$batchContains('" + item.title.replace(/'/g, "''") + "')");
+            filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(" OR ").concat("$batchContains('" + formattedTitle + "')");
           }
         }
       });
-      if (filterExpressionPerFilterGroup != "") {
+      if (filterExpressionPerFilterGroup !== "") {
         if (filterExpressionForApplyFilter === "") {
           filterExpressionForApplyFilter = "(" + filterExpressionPerFilterGroup + ")";
         } else {
