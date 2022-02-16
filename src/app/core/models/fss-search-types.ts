@@ -74,17 +74,6 @@ export class UIGroupingDetails{
   uiGroupings: UIGrouping[];
 }
 
-// export interface FilterGroup {
-//   title: string;
-//   items: FilterItem[];
-//   expanded?: boolean;
-// }
-
-// export interface FilterItem {
-//   title: string;
-//   selected?: boolean;
-// }
-
 export enum SearchType {
   SimplifiedSearch,
   AdvancedSearch  
