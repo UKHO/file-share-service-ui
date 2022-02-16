@@ -126,7 +126,7 @@ export class FssSearchComponent implements OnInit {
     this.analyticsService.getSimplifiedSearchResult();
   }
 
-  transformSearchAttributesToFilter(batchAttributesResult: any) {
+  transformSearchAttributesToFilter(batchAttributesResult: any[]) {
     this.filterGroups = [];
     if (batchAttributesResult.length > 0) {
       for (let i = 0; i < batchAttributesResult.length; i++) {
