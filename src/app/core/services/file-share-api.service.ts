@@ -7,7 +7,7 @@ import { AppConfigService } from './app-config.service';
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     stateManagementUrl = AppConfigService.settings['fssConfig'].stateManagementApiUrl;
-    
+
     constructor(private http: HttpClient) { }
 
     getSearchResult(payload: string, isPagingRequest: boolean): Observable<any> {
@@ -48,13 +48,13 @@ export class FileShareApiService {
                 flag = true;
             }
         }
-        else{
+        else {
             flag = true;
         }
         return flag;
     }
 
     getAttributeSearchResult(payload: string): Observable<any> {
-                return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload));
+        return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload));
     }
 }
