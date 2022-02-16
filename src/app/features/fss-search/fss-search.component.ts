@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -15,7 +15,7 @@ import { FilterGroup, FilterItem } from '@ukho/design-system';
   styleUrls: ['./fss-search.component.scss']
 })
 export class FssSearchComponent implements OnInit {
-  displayLoader: boolean = false;  
+  displayLoader: boolean = false;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageTitle: string = "";
   messageDesc: string = "";
@@ -32,10 +32,10 @@ export class FssSearchComponent implements OnInit {
   pageRecordCount: number = 10;
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;  
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   activeSearchType: SearchType;
   displayPopularSearch: boolean;
-  eventPopularSearch: Subject<void> = new Subject<void>();  
+  eventPopularSearch: Subject<void> = new Subject<void>();
   eventAdvancedSearchTokenRefresh: Subject<void> = new Subject<void>();
   SearchTypeEnum = SearchType;
   filterGroups: FilterGroup[] = [];
@@ -46,20 +46,20 @@ export class FssSearchComponent implements OnInit {
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService) {
-      this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;      
-     }
+    this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+  }
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.AdvancedSearch;
   }
 
-  ShowAdvancedSearchClicked(){
+  ShowAdvancedSearchClicked() {
     this.activeSearchType = SearchType.AdvancedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
   }
 
-  ShowSimplifiedSearchClicked(){
+  ShowSimplifiedSearchClicked() {
     this.activeSearchType = SearchType.SimplifiedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
@@ -77,21 +77,21 @@ export class FssSearchComponent implements OnInit {
         this.displayLoader = false;
         this.analyticsService.login();
         this.handleAdvancedSearchTokenRefresh();
-      });      
+      });
     });
     this.hideMessage();
   }
 
-  onAdvancedSearchClicked(fssAdvancedSearch: any) {    
+  onAdvancedSearchClicked(fssAdvancedSearch: any) {
     if (this.fssSearchValidatorService.validateSearchInput(
-        fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
+      fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpression(
           fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
         this.getSearchResult(filter);
       }
       else {
-        this.handleTokenExpiry();        
+        this.handleTokenExpiry();
       }
     }
     else {
@@ -116,42 +116,42 @@ export class FssSearchComponent implements OnInit {
         this.getSearchResult(filter);
       }
       else {
-        this.handleTokenExpiry();        
+        this.handleTokenExpiry();
       }
-    }else{
+    } else {
       this.messageTitle = "There is a problem with a field";
-      this.messageDesc = "Please enter a search field value.";      
+      this.messageDesc = "Please enter a search field value.";
       this.showMessage("warning", this.messageTitle, this.messageDesc);
     }
     this.analyticsService.getSimplifiedSearchResult();
   }
 
-  transformSearchAttributesToFilter(batchAttributesResult :any) {
+  transformSearchAttributesToFilter(batchAttributesResult: any) {
     this.filterGroups = [];
     if (batchAttributesResult.length > 0) {
-      for (var i = 0; i < batchAttributesResult.length; i++) {
+      for (let i = 0; i < batchAttributesResult.length; i++) {
         this.filterGroups.push({
-          title : batchAttributesResult[i].key,
-          items : this.getAttributesValues(batchAttributesResult[i].values),
-          expanded : true
+          title: batchAttributesResult[i].key,
+          items: this.getAttributesValues(batchAttributesResult[i].values),
+          expanded: true
         });
       }
     }
   }
 
-  getAttributesValues(batch:Array<any> = []) {
-    var batchAttributesValues: FilterItem[] = [];
-    for (var i = 0; i < batch.length; i++) {
+  getAttributesValues(batch: Array<any> = []) {
+    const batchAttributesValues: FilterItem[] = [];
+    for (let i = 0; i < batch.length; i++) {
       batchAttributesValues.push({
-        title : batch[i],
-        selected : false
+        title: batch[i],
+        selected: false
       });
     }
     return batchAttributesValues;
   }
 
   getSearchResult(filter: string) {
-    this.displayLoader = true;    
+    this.displayLoader = true;
     if (filter != null) {
       this.searchResult = [];
       this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
@@ -172,11 +172,11 @@ export class FssSearchComponent implements OnInit {
           this.displayLoader = false;
         }
       },
-          (error) => {
-            this.handleGetSearchResultFailure(error);
-          }
-        );
-      }             
+        (error) => {
+          this.handleGetSearchResultFailure(error);
+        }
+      );
+    }
   }
 
   handleGetSearchResultSuccess() {
@@ -232,7 +232,7 @@ export class FssSearchComponent implements OnInit {
     this.displayLoader = false;
     this.analyticsService.tokenExpired();
   }
-  
+
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
@@ -271,8 +271,8 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-  popularSearchClicked(popularSearch: any) {    
-    this.eventPopularSearch.next(popularSearch);    
+  popularSearchClicked(popularSearch: any) {
+    this.eventPopularSearch.next(popularSearch);
   }
 
   handleAdvancedSearchTokenRefresh() {
