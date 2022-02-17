@@ -14,6 +14,7 @@ describe('FssSearchComponent', () => {
    let analyticsService: AnalyticsService;
 
 
+
    beforeEach(async () => {
       await TestBed.configureTestingModule({
          imports: [HttpClientModule],
@@ -36,7 +37,8 @@ describe('FssSearchComponent', () => {
       AppConfigService.settings = {
          fssConfig: {
             "apiUrl": "https://dummyfssapiurl ",
-            displaySimplifiedSearchLink: true
+            displaySimplifiedSearchLink: true,
+            "batchAttributes": ["product", "cellname", "weeknumber"]
          }
       };
       msalService = TestBed.inject(MsalService);
@@ -55,12 +57,21 @@ describe('FssSearchComponent', () => {
       expect(app).toBeTruthy();
    });
 
-   it('should return filter groups when search result data is provided', () => {
+   it('should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called', () => {
+      const batchAttributesFromConfig = AppConfigService.settings["fssConfig"].batchAttributes;
+      //as we defined 3 attributes in test configuration, i.e. "batchAttributes": ["product","cellname","weeknumber"]
+      const expectedFilterGroupLengthFromConfig = 3;
+
       component.transformSearchAttributesToFilter(inputSearchResultMockData);
-      expect(component.filterGroups.length).toEqual(4);
-      expect(component.filterGroups).toEqual(attributeSearchFilterMockData);
+      console.log("component.filterGroups", component.filterGroups)
+      expect(component.filterGroups.length).toEqual(expectedFilterGroupLengthFromConfig);
+
+      expect(component.filterGroups.filter(filterGroup => filterGroup.hasOwnProperty("title")).map(filterGroup => filterGroup["title"]))
+         .toEqual(batchAttributesFromConfig);
    });
+
 });
+
 
 
 export const inputSearchResultMockData: any =
@@ -90,7 +101,6 @@ export const inputSearchResultMockData: any =
          ]
       }
    ]
-
 
 export const attributeSearchFilterMockData: any =
    [
@@ -136,8 +146,6 @@ export const attributeSearchFilterMockData: any =
       }
    ]
 
-
-
 export function MockMSALInstanceFactory() {
    return new PublicClientApplication({
       auth: {
@@ -154,3 +162,4 @@ export function MockMSALInstanceFactory() {
       }
    })
 };
+

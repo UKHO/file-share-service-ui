@@ -126,29 +126,6 @@ export class FssSearchComponent implements OnInit {
     this.analyticsService.getSimplifiedSearchResult();
   }
 
-  transformSearchAttributesToFilter(batchAttributesResult: any[]) {
-    this.filterGroups = [];
-    if (batchAttributesResult.length > 0) {
-      for (let i = 0; i < batchAttributesResult.length; i++) {
-        this.filterGroups.push({
-          title: batchAttributesResult[i].key,
-          items: this.getAttributesValues(batchAttributesResult[i].values),
-          expanded: true
-        });
-      }
-    }
-  }
-
-  getAttributesValues(batch: Array<any> = []) {
-    const batchAttributesValues: FilterItem[] = [];
-    for (let i = 0; i < batch.length; i++) {
-      batchAttributesValues.push({
-        title: batch[i],
-        selected: false
-      });
-    }
-    return batchAttributesValues;
-  }
 
   getSearchResult(filter: string) {
     this.displayLoader = true;
@@ -277,6 +254,36 @@ export class FssSearchComponent implements OnInit {
 
   handleAdvancedSearchTokenRefresh() {
     this.eventAdvancedSearchTokenRefresh.next();
+  }
+
+  transformSearchAttributesToFilter(attributeSearchResults: any[]) {
+    let configAttributes: any[] = [];
+    this.filterGroups = [];
+    configAttributes = AppConfigService.settings["fssConfig"].batchAttributes;
+
+    if (configAttributes.length > 0 && attributeSearchResults.length > 0) {
+      configAttributes.forEach(element => {
+        const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.toLowerCase());
+        if (attribute) {
+          this.filterGroups.push({
+            title: element,
+            items: this.getAttributesValues(attribute["values"]),
+            expanded: true
+          });
+        }
+      });
+    }
+  }
+
+  getAttributesValues(attributeValues: Array<any> = []) {
+    const batchAttributeValues: FilterItem[] = [];
+    for (let i = 0; i < attributeValues.length; i++) {
+      batchAttributeValues.push({
+        title: attributeValues[i],
+        selected: false
+      });
+    }
+    return batchAttributeValues;
   }
 
 }
