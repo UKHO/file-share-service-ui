@@ -1,57 +1,57 @@
-<div  class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
+<div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
+    class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
 
-<div class="container" >
+<div class="container">
   <h1 id="main" tabindex="-1">Search files</h1>
   <p class="light">Complete the parameters to create a search query.</p>
 
-  <div #ukhoTarget >
+  <div #ukhoTarget>
 
-  <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite">
-    <h3>{{messageTitle}}</h3>
-    <div>{{messageDesc}}</div>
-    <div *ngIf="loginErrorDisplay">
+    <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite">
+      <h3>{{messageTitle}}</h3>
+      <div>{{messageDesc}}</div>
+      <div *ngIf="loginErrorDisplay">
         Please
-        <button  class="loginAction" (click)="refreshToken()">click here</button> to sign-in
-    </div>
-</ukho-dialogue>
-</div>
+        <button class="loginAction" (click)="refreshToken()">click here</button> to sign-in
+      </div>
+    </ukho-dialogue>
+  </div>
 
-  <app-fss-simplified-search *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" 
-  (ShowAdvancedSearchClicked)="ShowAdvancedSearchClicked()"
-  (onSimplifiedSearchClicked)="onSimplifiedSearchClicked($event)"></app-fss-simplified-search>
+  <app-fss-simplified-search *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"
+    (ShowAdvancedSearchClicked)="ShowAdvancedSearchClicked()"
+    (onSimplifiedSearchClicked)="onSimplifiedSearchClicked($event)"></app-fss-simplified-search>
 
-  <app-fss-advanced-search *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch" 
-  (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()"
-  (onAdvancedSearchClicked)="onAdvancedSearchClicked($event)"
-  [observablePopularSearch]="eventPopularSearch.asObservable()"
-  [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
+  <app-fss-advanced-search *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch"
+    (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()"
+    (onAdvancedSearchClicked)="onAdvancedSearchClicked($event)"
+    [observablePopularSearch]="eventPopularSearch.asObservable()"
+    [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
   <div *ngIf="displaySearchResult">
-  <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
-    <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"  
-    [filterGroups]="filterGroups"></app-fss-simplified-filter>    
-    <div>    
-      <h2> 
-        <span class="totalResultLabel" *ngIf="searchResultTotal == 1">{{this.searchResultTotal}} result found</span>
-        <span class="totalResultLabel" *ngIf="searchResultTotal > 1">{{this.searchResultTotal}} results found</span>
-        <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel"> {{this.paginatorLabel}}</span>
-      </h2>
-      <app-fss-search-results class="SimplifiedSearchResult" 
-      [searchResult]="searchResult" (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
+    <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
+      <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"
+        [filterGroups]="filterGroups"></app-fss-simplified-filter>
+      <div>
+        <h2>
+          <span class="totalResultLabel" *ngIf="searchResultTotal == 1">{{this.searchResultTotal}} result found</span>
+          <span class="totalResultLabel" *ngIf="searchResultTotal > 1">{{this.searchResultTotal}} results found</span>
+          <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel"> {{this.paginatorLabel}}</span>
+        </h2>
+        <app-fss-search-results class="SimplifiedSearchResult" [searchResult]="searchResult"
+          (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
+      </div>
+    </div>
+    <br />
+    <div class="pagination">
+      <ukho-paginator [label]="paginatorLabel" [pages]="pages" [currentPage]="currentPage"
+        (pageChange)="pageChange($event)">
+      </ukho-paginator>
     </div>
   </div>
-  <br/>
-  <div class="pagination">
-    <ukho-paginator
-                    [label]="paginatorLabel" 
-                    [pages]="pages" 
-                    [currentPage]="currentPage"
-                    (pageChange)="pageChange($event)">
-    </ukho-paginator>    
-</div>
-</div>
 
-<br *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch"/>
-    <ukho-hr aria-hidden="true" *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch"></ukho-hr>
-    <app-fss-popular-search-batches *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch" (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
+  <br *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch" />
+  <ukho-hr aria-hidden="true" *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch">
+  </ukho-hr>
+  <app-fss-popular-search-batches *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch"
+    (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
 </div>
