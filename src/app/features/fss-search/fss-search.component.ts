@@ -260,10 +260,10 @@ export class FssSearchComponent implements OnInit {
 
     if (configAttributes.length > 0 && attributeSearchResults.length > 0) {
       configAttributes.forEach(element => {
-        const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key === element);
+        const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.toLowerCase());
         if (attribute) {
           this.filterGroups.push({
-            title: attribute["key"],
+            title: element,
             items: this.getAttributesValues(attribute["values"]),
             expanded: true
           });
