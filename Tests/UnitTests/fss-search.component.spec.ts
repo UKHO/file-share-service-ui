@@ -12,9 +12,7 @@ describe('FssSearchComponent', () => {
    let fixture: ComponentFixture<FssSearchComponent>;
    let msalService: MsalService;
    let analyticsService: AnalyticsService;
-
-
-
+   
    beforeEach(async () => {
       await TestBed.configureTestingModule({
          imports: [HttpClientModule],

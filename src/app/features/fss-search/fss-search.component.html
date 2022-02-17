@@ -28,7 +28,7 @@
 
   <div *ngIf="displaySearchResult">
   <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
-    <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" 
+    <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"  
     [filterGroups]="filterGroups"></app-fss-simplified-filter>    
     <div>    
       <h2> 
