@@ -23,7 +23,6 @@ export class FssSearchComponent implements OnInit {
   loginErrorDisplay: boolean = false;
   displaySearchResult: Boolean = false;
   searchResult: any = [];
-  searchAttributesResult: any = [];
   pagingLinks: any = [];
   searchResultTotal: number;
   pages: number;
