@@ -104,6 +104,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
+    this.displaySearchResult = false;
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
@@ -123,6 +124,7 @@ export class FssSearchComponent implements OnInit {
     }
     this.analyticsService.getSimplifiedSearchResult();
   }
+
 
   getSearchResult(filter: string) {
     this.displayLoader = true;

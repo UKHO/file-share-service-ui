@@ -61,7 +61,6 @@ describe('FssSearchComponent', () => {
       const expectedFilterGroupLengthFromConfig = 3;
 
       component.transformSearchAttributesToFilter(inputSearchResultMockData);
-      console.log("component.filterGroups", component.filterGroups)
       expect(component.filterGroups.length).toEqual(expectedFilterGroupLengthFromConfig);
 
       expect(component.filterGroups.filter(filterGroup => filterGroup.hasOwnProperty("title")).map(filterGroup => filterGroup["title"]))
