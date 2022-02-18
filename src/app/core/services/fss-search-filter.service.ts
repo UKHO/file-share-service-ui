@@ -13,7 +13,7 @@ export class FssSearchFilterService {
   typeOperator: string = "operator";
   nullOperatorType: string = "nullOperator";
   functionType: string = "function";
-
+  currentSearchRowValue: any;
   constructor() { }
 
   getFilterExpression(fssSearchRows: FssSearchRow[], groupings: RowGrouping[]) {
@@ -21,12 +21,15 @@ export class FssSearchFilterService {
     let filter = '';
 
     for (let rowIndex = 0; rowIndex < fssSearchRows.length; rowIndex++) {
-
       var fssSearchRow = fssSearchRows[rowIndex];
       var currentSearchRowJoinOperator = fssSearchRow.selectedJoinOperator;
       var currentSearchRowField = fssSearchRow.selectedField.replace(/'/g, "''");
       var currentSearchRowOperator = fssSearchRow.selectedOperator;
-      var currentSearchRowValue = fssSearchRow.value.replace(/'/g, "''");
+      if (typeof fssSearchRow.value === "string") {
+        this.currentSearchRowValue = fssSearchRow.value.replace(/'/g, "''");
+      } else {
+        this.currentSearchRowValue = fssSearchRow.value;
+      }
 
       // getFieldDataType
       const fieldDataType = this.getFieldDataType(fssSearchRow);
@@ -43,23 +46,23 @@ export class FssSearchFilterService {
 
       if (fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType) {
         if (operaterType === this.typeOperator) {
-          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " '", currentSearchRowValue, "'");
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " '", this.currentSearchRowValue, "'");
         }
         else if (operaterType === this.nullOperatorType) {
           filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator);
         }
         else if (operaterType === this.functionType) {
-          filter = filter.concat(currentSearchRowOperator, "(", currentSearchRowField, ", '", currentSearchRowValue, "')");
+          filter = filter.concat(currentSearchRowOperator, "(", currentSearchRowField, ", '", this.currentSearchRowValue, "')");
         }
       }
       if (fieldDataType === this.numberDataType) {
         if (operaterType === this.typeOperator) {
-          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " ", currentSearchRowValue);
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " ", this.currentSearchRowValue);
         }
       }
       if (fieldDataType === this.dateDataType) {
         if (operaterType === this.typeOperator) {
-          const value = new Date(currentSearchRowValue + ' ' + fssSearchRow.time).toISOString();
+          const value = new Date(this.currentSearchRowValue + ' ' + fssSearchRow.time).toISOString();
           filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " ", value);
         }
         else if (operaterType === this.nullOperatorType) {
@@ -122,7 +125,7 @@ export class FssSearchFilterService {
         }
       }
     });
-  
+
     return filterExpressionForApplyFilter;
   }
 }

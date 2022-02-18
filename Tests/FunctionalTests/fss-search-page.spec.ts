@@ -12,7 +12,10 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   let page: Page;  
 
   beforeAll(async () => {
-    browser = await chromium.launch({slowMo:100});
+    browser = await chromium.launch({slowMo:100});   
+  })
+  
+  beforeEach(async () => {
     context = await browser.newContext();
     page = await context.newPage();    
     await page.goto(autoTestConfig.url)
@@ -27,9 +30,12 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
   })
 
-  afterAll(async () => {
-     await page.close()
-     await context.close()
+  afterEach(async () => {
+    await page.close()
+    await context.close()
+    })
+
+  afterAll(async () => {     
      await browser.close()
   })
 
@@ -40,7 +46,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     expect(simplifiedSearchLink).toEqual(pageObjectsConfig.simplifiedSearchLinkText);
   })
   
-  it('Verify if click search button without selecting a field value', async () => {
+  it('Verify if click search button without selecting a field value', async () => {   
     await page.click(pageObjectsConfig.searchAttributeButton);
 
     var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
@@ -48,7 +54,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   })
  
   it('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async () => { 
-    await SearchAttribute(page,"BusinessUnit"); 
+     await SearchAttribute(page,"BusinessUnit"); 
      const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
     
     var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function(element, index) {
@@ -108,6 +114,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   })
 
   it('Verify Operator dropdown contains correct values when "BatchPublishedDate" attribute field selected', async () => {
+   
     await SearchAttribute(page,"BatchPublishedDate");    
     
     const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector ,options => { return options.map(option => option.textContent) });
@@ -133,13 +140,14 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   })
 
   it('Verify when "BatchPublishedDate" attribute field selected, input value field change to "date" type', async () => {
+    
     await SearchAttribute(page,"BatchPublishedDate");  
     
     const inputValueFieldAttribute=await page.getAttribute(pageObjectsConfig.inputSearchValueSelector,"type");
     expect(inputValueFieldAttribute).toEqual("date");
   })
 
-  it('When click on "Add new line" button a new row added to the query table', async () => {
+  it('When click on "Add new line" button a new row added to the query table', async () => {    
     await page.waitForSelector(pageObjectsConfig.inputSearchFieldSelector); 
     let tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;  
     expect(tableRows).toEqual(1); 
@@ -152,6 +160,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
 
   it('When click on "Delete" button a row deleted from the query table', async () => {
     await page.waitForSelector(pageObjectsConfig.inputSearchFieldSelector);  
+    await page.click(".addNewLine");
     let tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
     expect(tableRows).toEqual(2);
 
@@ -159,7 +168,6 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     await page.click(".deleteRow");
     tableRows=(await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;    
     expect(tableRows).toEqual(1);
-
   }) 
 
 }) 
