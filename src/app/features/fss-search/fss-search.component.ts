@@ -110,12 +110,10 @@ export class FssSearchComponent implements OnInit {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
         this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
-        this.getSearchResult(this.MainQueryFilterExpression);
-        var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
-        this.fileShareApiService.getAttributeSearchResult(filter).subscribe((result) => {
+        this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
           this.transformSearchAttributesToFilter(result.batchAttributes);
         });
-        this.getSearchResult(filter);
+        this.getSearchResult(this.MainQueryFilterExpression);
       }
       else {
         this.handleTokenExpiry();
