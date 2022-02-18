@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FilterGroup } from '@ukho/design-system/filter/filter.types';
-import { FssSearchFilterService } from 'src/app/core/services/fss-search-filter.service';
 
 @Component({
   selector: 'app-fss-simplified-filter',
@@ -10,7 +9,7 @@ import { FssSearchFilterService } from 'src/app/core/services/fss-search-filter.
 export class FssSimplifiedFilterComponent implements OnInit {
   groups: FilterGroup[];
   @Output() onApplyFilterButtonClicked = new EventEmitter<FilterGroup[]>(); 
-  constructor(private fssSearchFilterService: FssSearchFilterService) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.groups = [

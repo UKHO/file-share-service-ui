@@ -23,6 +23,11 @@ export class FssSearchFilterService {
     for (let rowIndex = 0; rowIndex < fssSearchRows.length; rowIndex++) {
 
       var fssSearchRow = fssSearchRows[rowIndex];
+      var currentSearchRowJoinOperator = fssSearchRow.selectedJoinOperator;
+      var currentSearchRowField = fssSearchRow.selectedField.replace(/'/g, "''");
+      var currentSearchRowOperator = fssSearchRow.selectedOperator;
+      var currentSearchRowValue = fssSearchRow.value.replace(/'/g, "''");
+
       // getFieldDataType
       const fieldDataType = this.getFieldDataType(fssSearchRow);
       // getOperatorType
@@ -30,7 +35,7 @@ export class FssSearchFilterService {
 
       //Append join operator from second search condition
       if (rowIndex != 0) {
-        filter = filter.concat(' ', fssSearchRow.selectedJoinOperator, ' ');
+        filter = filter.concat(' ', currentSearchRowJoinOperator, ' ');
       }
       //Append opening brackets for grouping query.
       var openingBracketCount = groupings.filter(g => g.startIndex === rowIndex).length;
@@ -38,27 +43,27 @@ export class FssSearchFilterService {
 
       if (fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType) {
         if (operaterType === this.typeOperator) {
-          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " '", fssSearchRow.value, "'");
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " '", currentSearchRowValue, "'");
         }
         else if (operaterType === this.nullOperatorType) {
-          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator);
         }
         else if (operaterType === this.functionType) {
-          filter = filter.concat(fssSearchRow.selectedOperator, "(", fssSearchRow.selectedField, ", '", fssSearchRow.value, "')");
+          filter = filter.concat(currentSearchRowOperator, "(", currentSearchRowField, ", '", currentSearchRowValue, "')");
         }
       }
       if (fieldDataType === this.numberDataType) {
         if (operaterType === this.typeOperator) {
-          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", fssSearchRow.value);
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " ", currentSearchRowValue);
         }
       }
       if (fieldDataType === this.dateDataType) {
         if (operaterType === this.typeOperator) {
-          const value = new Date(fssSearchRow.value + ' ' + fssSearchRow.time).toISOString();
-          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator, " ", value);
+          const value = new Date(currentSearchRowValue + ' ' + fssSearchRow.time).toISOString();
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " ", value);
         }
         else if (operaterType === this.nullOperatorType) {
-          filter = filter.concat(fssSearchRow.selectedField, " ", fssSearchRow.selectedOperator);
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator);
         }
       }
       //Append closing brackets for grouping query
