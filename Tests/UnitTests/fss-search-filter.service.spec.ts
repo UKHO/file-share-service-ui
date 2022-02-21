@@ -47,7 +47,7 @@ describe('FssSearchFilterService', () => {
       { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] }
     ];
     searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false,""));
-    searchRows.push(createSearchRow(2, fields, operators, 'OR', 'FileSize', 'le', 3000, 'tel', false,""));
+    searchRows.push(createSearchRow(2, fields, operators, 'OR', 'FileSize', 'le', '3000', 'tel', false,""));
     searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31', 'date', false, "12:00"));
     var date = new Date('2021-12-31 12:00').toISOString()
     var filter = service.getFilterExpression(searchRows, groupings);
@@ -73,10 +73,10 @@ describe('FssSearchFilterService', () => {
       { value: 'gt', text: '<', type: 'operator', supportedDataTypes: ['number', 'date'] }
     ];
     searchRows.push(createSearchRow(1, fields, operators,'AND','FileName', 'eq', 'TestReport.pdf', 'text', false,""));
-    searchRows.push(createSearchRow(2, fields, operators, 'AND', 'FileSize', 'gt', 10, 'tel', false,""));
-    searchRows.push(createSearchRow(3, fields, operators, 'OR', 'FileSize', 'lt', 10000000,'tel', false,""));
-    searchRows.push(createSearchRow(4, fields, operators, 'AND', 'FileSize', 'gt', 100000000,'tel', false,""));
-    searchRows.push(createSearchRow(5, fields, operators, 'AND', 'FileSize', 'gt', 1000000000,'tel', false,""));
+    searchRows.push(createSearchRow(2, fields, operators, 'AND', 'FileSize', 'gt', "10", 'tel', false,""));
+    searchRows.push(createSearchRow(3, fields, operators, 'OR', 'FileSize', 'lt', "10000000",'tel', false,""));
+    searchRows.push(createSearchRow(4, fields, operators, 'AND', 'FileSize', 'gt', "100000000",'tel', false,""));
+    searchRows.push(createSearchRow(5, fields, operators, 'AND', 'FileSize', 'gt', "1000000000",'tel', false,""));
     groupings.push({startIndex: 0,endIndex:4});
     groupings.push({startIndex: 1,endIndex:4});
     groupings.push({startIndex: 1,endIndex:2});

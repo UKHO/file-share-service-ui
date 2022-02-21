@@ -13,7 +13,6 @@ export class FssSearchFilterService {
   typeOperator: string = "operator";
   nullOperatorType: string = "nullOperator";
   functionType: string = "function";
-  currentSearchRowValue: any;
   constructor() { }
 
   getFilterExpression(fssSearchRows: FssSearchRow[], groupings: RowGrouping[]) {
@@ -25,11 +24,7 @@ export class FssSearchFilterService {
       var currentSearchRowJoinOperator = fssSearchRow.selectedJoinOperator;
       var currentSearchRowField = fssSearchRow.selectedField.replace(/'/g, "''");
       var currentSearchRowOperator = fssSearchRow.selectedOperator;
-      if (typeof fssSearchRow.value === "string") {
-        this.currentSearchRowValue = fssSearchRow.value.replace(/'/g, "''");
-      } else {
-        this.currentSearchRowValue = fssSearchRow.value;
-      }
+      var currentSearchRowValue = fssSearchRow.value.replace(/'/g, "''");
 
       // getFieldDataType
       const fieldDataType = this.getFieldDataType(fssSearchRow);
@@ -46,23 +41,23 @@ export class FssSearchFilterService {
 
       if (fieldDataType === this.stringDataType || fieldDataType === this.attributeDataType) {
         if (operaterType === this.typeOperator) {
-          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " '", this.currentSearchRowValue, "'");
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " '", currentSearchRowValue, "'");
         }
         else if (operaterType === this.nullOperatorType) {
           filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator);
         }
         else if (operaterType === this.functionType) {
-          filter = filter.concat(currentSearchRowOperator, "(", currentSearchRowField, ", '", this.currentSearchRowValue, "')");
+          filter = filter.concat(currentSearchRowOperator, "(", currentSearchRowField, ", '", currentSearchRowValue, "')");
         }
       }
       if (fieldDataType === this.numberDataType) {
         if (operaterType === this.typeOperator) {
-          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " ", this.currentSearchRowValue);
+          filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " ", currentSearchRowValue);
         }
       }
       if (fieldDataType === this.dateDataType) {
         if (operaterType === this.typeOperator) {
-          const value = new Date(this.currentSearchRowValue + ' ' + fssSearchRow.time).toISOString();
+          const value = new Date(currentSearchRowValue + ' ' + fssSearchRow.time).toISOString();
           filter = filter.concat(currentSearchRowField, " ", currentSearchRowOperator, " ", value);
         }
         else if (operaterType === this.nullOperatorType) {
