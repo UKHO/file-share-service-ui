@@ -37,6 +37,7 @@ export class FssSearchComponent implements OnInit {
   eventPopularSearch: Subject<void> = new Subject<void>();
   eventAdvancedSearchTokenRefresh: Subject<void> = new Subject<void>();
   SearchTypeEnum = SearchType;
+  MainQueryFilterExpression: string = "";
   filterGroups: FilterGroup[] = [];
 
 
@@ -108,11 +109,11 @@ export class FssSearchComponent implements OnInit {
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
-        var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
-        this.fileShareApiService.getAttributeSearchResult(filter).subscribe((result) => {
+        this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
+        this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
           this.transformSearchAttributesToFilter(result.batchAttributes);
         });
-        this.getSearchResult(filter);
+        this.getSearchResult(this.MainQueryFilterExpression);
       }
       else {
         this.handleTokenExpiry();
@@ -155,6 +156,18 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
+  onApplyFilterButtonClicked(filterItem: FilterGroup[]){
+    if (!this.fileShareApiService.isTokenExpired()) {
+      var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
+      var applyFilter_FilterExpression = this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")");
+      console.log(applyFilter_FilterExpression);
+      this.getSearchResult(applyFilter_FilterExpression);
+    }
+    else {
+      this.handleTokenExpiry();        
+    }
+  }
+
   handleGetSearchResultSuccess() {
     this.pagingLinks = this.searchResult['_Links'];
     this.searchResult = Array.of(this.searchResult['entries']);
@@ -168,11 +181,20 @@ export class FssSearchComponent implements OnInit {
     this.displayLoader = false;
     this.displaySearchResult = false;
     var errmsg = "";
-    if (err.error != undefined && err.error.errors.length > 0) {
+    if (err.error != undefined && err.error.errors != undefined && err.error.errors.length > 0) {
       for (let i = 0; i < err.error.errors.length; i++) {
         errmsg += err.error.errors[i]['description'] + '\n';
       }
-      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    }
+    else if(err.error != undefined && err.error.message != undefined){
+      errmsg = err.error.message;
+    }
+    if(this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch)
+      {
+        this.showMessage("error", "There has been an error", "please contact customer services");
+      }
+      else{
+        this.showMessage("warning", "An exception occurred when processing this search", errmsg);
     }
     this.analyticsService.errorHandling();
   }
