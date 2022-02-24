@@ -31,7 +31,7 @@ resources:
       type: github
       name: UKHO/coverityscan-buildtemplates
       endpoint: UKHO
-      ref: refs/heads/add-npm-typescript
+      ref: refs/heads/master
 
 stages:
   - stage: CoverityScan
