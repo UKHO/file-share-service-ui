@@ -59,7 +59,7 @@ stages:
             CovPwd: "$(CovPwd)"
             StreamName: "file-share-service-ui"
             BuildCommand: "run build"
-            StripPath: $(Build.Repository.LocalPath)
+            StripPath: $(Build.Repository.LocalPath)/file-share-service-ui
             CoverityScanPath: $(Build.Repository.LocalPath)/coverityscan-buildtemplates
 
   - stage: Perfrom_Build_Test_Publish
