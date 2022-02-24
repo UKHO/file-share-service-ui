@@ -21,10 +21,50 @@ variables:
     value: "UKHO Ubuntu 1804"
   - name: WindowPool
     value: "NautilusBuild"
+  - name: coverityPool
+    value: NautilusBuild
+  - group: Covscan-vars
+
+resources:
+  repositories:
+    - repository: covscan
+      type: github
+      name: UKHO/coverityscan-buildtemplates
+      endpoint: UKHO
+      ref: refs/heads/add-npm-typescript
 
 stages:
+  - stage: CoverityScan
+    displayName: "Coverity Scan"
+    pool:
+      name: $(coverityPool)
+    jobs:
+    - job: Coverity
+      workspace:
+        clean: all
+      steps:
+        - checkout: self
+          submodules: recursive
+        - task: UseDotNet@2
+          displayName: 'Use .NET Core sdk'
+          inputs:
+            packageType: sdk
+            version: 3.1.x
+            installationPath: $(Agent.ToolsDirectory)/dotnet
+        - checkout: covscan
+        - template: npm-typescript-cov.yml@covScan
+          parameters:
+            CovHostUrl: "$(CovHostUrl)"
+            CovUser: "$(CovUser)"
+            CovPwd: "$(CovPwd)"
+            StreamName: "file-share-service-ui"
+            BuildCommand: "run build"
+            StripPath: $(Build.Repository.LocalPath)
+            CoverityScanPath: $(Build.Repository.LocalPath)/coverityscan-buildtemplates
+
   - stage: Perfrom_Build_Test_Publish
     displayName: "Build (Build ,test and publish artifact )"
+    dependsOn: []
     jobs:
      - job: Dependencychecker
        pool: $(WindowPool)
