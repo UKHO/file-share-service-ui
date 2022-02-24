@@ -31,7 +31,7 @@ resources:
       type: github
       name: UKHO/coverityscan-buildtemplates
       endpoint: UKHO
-      ref: refs/heads/add-npm-typescript
+      ref: refs/heads/add-npm-typescript-test
 
 stages:
   - stage: CoverityScan
@@ -52,7 +52,7 @@ stages:
             version: 3.1.x
             installationPath: $(Agent.ToolsDirectory)/dotnet
         - checkout: covscan
-        - template: npm-typescript-cov.yml@covScan
+        - template: npm-typescript-cov.yml@covscan
           parameters:
             CovHostUrl: "$(CovHostUrl)"
             CovUser: "$(CovUser)"
