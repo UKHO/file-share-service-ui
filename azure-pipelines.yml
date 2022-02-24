@@ -61,6 +61,7 @@ stages:
             BuildCommand: "run build"
             StripPath: $(Build.Repository.LocalPath)/file-share-service-ui
             CoverityScanPath: $(Build.Repository.LocalPath)/coverityscan-buildtemplates
+            FsCaptureSearch: $(Build.Repository.LocalPath)/src
 
   - stage: Perfrom_Build_Test_Publish
     displayName: "Build (Build ,test and publish artifact )"
