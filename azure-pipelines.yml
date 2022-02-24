@@ -45,12 +45,6 @@ stages:
       steps:
         - checkout: self
           submodules: recursive
-        - task: UseDotNet@2
-          displayName: 'Use .NET Core sdk'
-          inputs:
-            packageType: sdk
-            version: 3.1.x
-            installationPath: $(Agent.ToolsDirectory)/dotnet
         - checkout: covscan
         - template: typescript-cov.yml@covscan
           parameters:
