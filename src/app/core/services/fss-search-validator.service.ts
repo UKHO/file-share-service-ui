@@ -52,8 +52,8 @@ export class FssSearchValidatorService {
         break;
       }
     }
-    return flag;
     this.analyticsService.validation();
+    return flag;
   }
 
   validateValueFormControl(fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[]) {
