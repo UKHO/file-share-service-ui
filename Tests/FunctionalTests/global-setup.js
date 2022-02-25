@@ -4,7 +4,7 @@ const { autoTestConfig } = require('./appSetting');
 const LoginPortal = require( './helpermethod').LoginPortal;
 
 module.exports = async function globalSetup(globalConfig) {
-  const browser = await chromium.launch({slowMo:100, headless:false});
+  const browser = await chromium.launch();
   const page = await browser.newPage();
 
   await page.goto(autoTestConfig.url);
