@@ -1,17 +1,11 @@
-import { chromium, Browser, BrowserContext, Page } from 'playwright'
+import { BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
+const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 import {LoginPortal} from './helpermethod'
 
 describe('Test Sign In Page Scenario', () => {
-  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-  let browser: Browser;
   let context: BrowserContext;
   let page: Page;
-
-  beforeAll(async () => {
-    browser = await chromium.launch({slowMo:100});
-  })
 
   beforeEach(async () => {    
     context = await browser.newContext();
@@ -27,11 +21,7 @@ describe('Test Sign In Page Scenario', () => {
     await page.close()
     await context.close()   
   }) 
-
-  afterAll(async () => {  
-    await browser.close()
-  }) 
-  
+ 
   it('User clicks Sign in link with valid credentials should display FullName after login successfully', async () => {
 
     page.click(pageObjectsConfig.loginSignInLinkSelector);

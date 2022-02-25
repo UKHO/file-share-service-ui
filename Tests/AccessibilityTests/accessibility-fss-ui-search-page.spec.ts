@@ -15,11 +15,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     page = await browser.newPage();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
-    await page.waitForTimeout(pageTimeOut.delay)
-    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
-      await page.click(pageObjectsConfig.acceptCookieSelector);
-    }
-    page.click(pageObjectsConfig.loginSignInLinkSelector);
+
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
     

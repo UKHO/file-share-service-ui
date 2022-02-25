@@ -1,15 +1,10 @@
-import { Browser, BrowserContext, chromium, Page } from 'playwright';
+import { BrowserContext, Page } from 'playwright';
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 
 describe('Test Home Page Scenario', () => {
-    jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-    let browser: Browser;
     let context: BrowserContext;
     let page: Page;
-    beforeAll(async () => {
-        browser = await chromium.launch({ slowMo: 100 });
-    })
 
     beforeEach(async () => {
         context = await browser.newContext();
@@ -24,10 +19,6 @@ describe('Test Home Page Scenario', () => {
     afterEach(async () => {
         await page.close()
         await context.close()
-    })
-
-    afterAll(async () => {
-        await browser.close()
     })
 
     test('Does it contains correct header text', async () => {

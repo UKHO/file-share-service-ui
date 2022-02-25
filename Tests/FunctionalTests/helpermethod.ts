@@ -1,5 +1,5 @@
 import { Page } from 'playwright'
-const { pageObjectsConfig } = require('./pageObjects'); 
+const { pageObjectsConfig, pageTimeOut } = require('./pageObjects'); 
 let fileSizeInBytes:any;
 //<summary>
 // Sign In to FSS UI using valid credentials
@@ -8,22 +8,26 @@ let fileSizeInBytes:any;
 //<param> userName </param>
 //<param> password </param>
  export async function LoginPortal(page:Page, userName: string, password: string) {
-    
-    const [popup] = await Promise.all([
-      page.waitForEvent('popup')
+
+  const [popup] = await Promise.all([
+      page.waitForEvent('popup'),
+      page.click(pageObjectsConfig.loginSignInLinkSelector)
     ]);
-    
-      popup.setDefaultTimeout(60000);
-      popup.setViewportSize({ 'width': 800, 'height': 1024 })
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)
-      popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, userName)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupNextButtonSelector)
-      popup.click(pageObjectsConfig.loginPopupNextButtonSelector)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
-      popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
-      await popup.waitForTimeout(2000);
-      popup.keyboard.press('Enter');  
-      await popup.waitForTimeout(2000);
+    await popup.setViewportSize({ 'width': 800, 'height': 1024 });
+    await popup.waitForLoadState();
+
+    await popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, userName);
+    await popup.click(pageObjectsConfig.loginPopupNextButtonSelector);
+    await popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password);
+
+    await popup.click(pageObjectsConfig.loginPopupSignInButtonSelector);
+
+    await page.waitForNavigation();
+
+    await page.waitForTimeout(pageTimeOut.delay);
+    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
+      await page.click(pageObjectsConfig.acceptCookieSelector);
+    }
   }  
 
 //<summary>

@@ -1,43 +1,17 @@
-import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
-import {LoginPortal,DataCollectionComparison,InsertSearchText} from './helpermethod'
-import{searchBatchAttribute,searchMultipleBatchAttributes,searchNonExistBatchAttribute} from './helperconstant'
-
+const { pageObjectsConfig } = require('./pageObjects');
+import {DataCollectionComparison,InsertSearchText} from './helpermethod'
+import {searchBatchAttribute,searchMultipleBatchAttributes,searchNonExistBatchAttribute} from './helperconstant'
 
 describe('Test Search Result Scenario On Simplified Search Page', () => {
-  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-  let browser: Browser;
-  let context: BrowserContext;
-  let page: Page;  
-
-  beforeAll(async () => {
-    browser = await chromium.launch({slowMo:100});    
-  })
 
   beforeEach(async () => { 
-    context = await browser.newContext();
-    page = await context.newPage();    
     await page.goto(autoTestConfig.url)
-    await page.waitForTimeout(pageTimeOut.delay)
-    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
-      await page.click(pageObjectsConfig.acceptCookieSelector);
-    }
-    page.click(pageObjectsConfig.searchButtonSelector);
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);    
-    
+
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
 
     await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
-  })
-
-  afterEach(async () => {
-    await page.close()
-    await context.close() 
-  })
-  afterAll(async () => {
-    await browser.close()
   })
  
   it('Verify No results for non existing batch attribute value search', async () => {
