@@ -1,9 +1,10 @@
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig } = require('./pageObjects');
+const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 import {DataCollectionComparison,InsertSearchText} from './helpermethod'
 import {searchBatchAttribute,searchMultipleBatchAttributes,searchNonExistBatchAttribute} from './helperconstant'
 
 describe('Test Search Result Scenario On Simplified Search Page', () => {
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
 
   beforeEach(async () => { 
     await page.goto(autoTestConfig.url)

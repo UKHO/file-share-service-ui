@@ -1,7 +1,9 @@
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig } = require('./pageObjects');
+const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 
 describe('Test Search Attribute Scenario On Simplified Search Page', () => {
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
+
   beforeEach(async () => {
       await page.goto(autoTestConfig.url)
 

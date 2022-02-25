@@ -4,6 +4,7 @@ const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 import {LoginPortal} from './helpermethod'
 
 describe('Test Sign In Page Scenario', () => {
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
   let context: BrowserContext;
   let page: Page;
 

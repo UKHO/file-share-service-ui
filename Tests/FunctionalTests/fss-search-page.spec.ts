@@ -3,8 +3,9 @@ const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
 import {SearchAttribute} from './helpermethod'
 import {stringOperatorList,symbolOperatorListForFileSize, symbolOperatorListForDate} from './helperconstant'
 
-
 describe('Test Search Attribute Scenario On Search Page', () => {
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
+  
   beforeEach(async () => {
     await page.goto(autoTestConfig.url)
 

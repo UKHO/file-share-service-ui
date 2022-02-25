@@ -5,7 +5,8 @@ import {batchAttributeProductContains,batchAttributeSpecialChar,systemAttributeM
 import {batchAttributeProduct,batchAttributeCellName,batchAttributeFileSize,searchQuerySqlInjection} from './helperconstant'
 
 describe('Test Search Query Scenario On Search Page', () => {
-
+  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
+  
   beforeEach(async () => {   
     await page.goto(autoTestConfig.url)
     

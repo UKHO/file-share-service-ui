@@ -3,6 +3,7 @@ const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 
 describe('Test Home Page Scenario', () => {
+    jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
     let context: BrowserContext;
     let page: Page;
 
