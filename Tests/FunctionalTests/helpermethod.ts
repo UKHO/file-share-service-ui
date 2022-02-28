@@ -37,25 +37,25 @@ export async function LoginPortal(page: Page, userName: string, password: string
 //<param> page Object </param>
 //<param> attributeName </param>
 
-export async function SearchAttribute(page:Page, attributeName: string)
-  {
-    await page.fill(pageObjectsConfig.inputSearchFieldSelector,"");   
-    await page.fill(pageObjectsConfig.inputSearchFieldSelector,attributeName);
-    await page.keyboard.press('Backspace');    
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter'); 
-    page.waitForLoadState('domcontentloaded');
-  }
+export async function SearchAttribute(page: Page, attributeName: string)
+{
+  await page.fill(pageObjectsConfig.inputSearchFieldSelector, "");
+  await page.fill(pageObjectsConfig.inputSearchFieldSelector, attributeName);
+  await page.keyboard.press('Backspace');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await page.waitForLoadState('domcontentloaded');
+}
 
-  export async function SearchAttributeSecondRow(page:Page, attributeName: string)
-  {
-    await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,"");   
-    await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,attributeName);
-    await page.keyboard.press('Backspace');    
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter'); 
-    page.waitForLoadState('domcontentloaded');
-  }
+export async function SearchAttributeSecondRow(page:Page, attributeName: string)
+{
+  await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,"");
+  await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,attributeName);
+  await page.keyboard.press('Backspace');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter'); 
+  await page.waitForLoadState('domcontentloaded');
+}
 
 //<summary>
 // Get the file Size in bytes.
@@ -112,4 +112,25 @@ export async function InsertSearchText(page:Page,searchBatchAttribute :string) {
     await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
     await page.waitForTimeout(1000);
   
+}
+
+export async function ClickWaitRetry(buttonToClick: string, selectorToWaitFor: string, timeout: number = 300, step: number = 1000){
+  const maxtime = Date.now() + timeout;
+  let success = false;
+
+  while (Date.now() < maxtime && !success)
+  {
+    await page.click(buttonToClick);
+
+    try {
+      await page.waitForSelector(selectorToWaitFor, {timeout: step});
+      success = true;
+    } catch (error) {
+    }
+  }
+
+  if (!success)
+  {
+    throw Error("Couldn't load (" + selectorToWaitFor +") after pressing (" + buttonToClick + ")");
+  }
 }

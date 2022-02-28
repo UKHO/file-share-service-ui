@@ -1,31 +1,26 @@
 const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
-import {SearchAttribute,SearchAttributeSecondRow,GetFileSizeInBytes} from './helpermethod'
-import {batchAttributeProductContains,batchAttributeSpecialChar,systemAttributeMimeType} from './helperconstant'
-import {batchAttributeProduct,batchAttributeCellName,batchAttributeFileSize,searchQuerySqlInjection} from './helperconstant'
+const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
+import {SearchAttribute, SearchAttributeSecondRow, GetFileSizeInBytes, ClickWaitRetry} from './helpermethod';
+import {batchAttributeProductContains, batchAttributeSpecialChar, systemAttributeMimeType} from './helperconstant';
+import {batchAttributeProduct, batchAttributeCellName, batchAttributeFileSize, searchQuerySqlInjection} from './helperconstant';
 
 describe('Test Search Query Scenario On Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-  
-  beforeEach(async () => {   
-    await page.goto(autoTestConfig.url)
-    
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
-    expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
-  })
 
-  it('Batch Attribute table returns correct product on attribute search', async () => {    
+  beforeEach(async () => {
+    await page.goto(autoTestConfig.url);
+
+    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
+    expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector))
+        .toEqual(pageObjectsConfig.searchPageContainerHeaderText);
+  });
+
+  it('Batch Attribute table returns correct product on attribute search', async () => {
     await SearchAttribute(page,"productid");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
-    await page.click(pageObjectsConfig.searchAttributeButton);
-    try
-    {
-      await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
-    }catch{
-      await page.click(pageObjectsConfig.searchAttributeButton);
-      await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
-    }
+
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
     // Verification of attribute table records    
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
@@ -36,17 +31,16 @@ describe('Test Search Query Scenario On Search Page', () => {
         expect(productName.toUpperCase()).toContain(batchAttributeProductContains.toUpperCase());            
     }    
     
-  })
+  });
 
   it('Batch Attribute table returns correct product on special characters search', async () => {        
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeSpecialChar);
-    await page.click(pageObjectsConfig.searchAttributeButton);
-    
-    // Verification of attribute table records
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
     for (let index = 0; index < productNames.length; index++) {
@@ -55,7 +49,7 @@ describe('Test Search Query Scenario On Search Page', () => {
         expect(productName.toUpperCase()).toContain(batchAttributeSpecialChar.toUpperCase());            
     }
     
-  })
+  });
 
   it('Batch Attribute table returns correct values on multiple attributes search', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -68,10 +62,9 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow,"eq");     
     await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow,systemAttributeMimeType);
 
-    await page.click(pageObjectsConfig.searchAttributeButton);
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
     
     // Verification of attribute table records
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
     for (let index = 0; index < productNames.length; index++) {
@@ -88,14 +81,14 @@ describe('Test Search Query Scenario On Search Page', () => {
         expect(mimeType.toUpperCase()).toContain(systemAttributeMimeType.toUpperCase());            
     }  
 
-  })
+  });
 
   it('Test to verify grouping button is disabled', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     const groupingBeforeAriaDisabled=await page.getAttribute(pageObjectsConfig.groupingButton,"aria-disabled");
     expect(groupingBeforeAriaDisabled).toEqual("true");   
     
-  })
+  });
 
   it('Test to verify no value field displayed when select operator eq null or ne null for BatchExpiryDate', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -111,7 +104,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     expect(valueField.length).toEqual(0); 
     
     
-  })
+  });
 
   it('Test to verify no value field displayed when select operator eq null or ne null for BatchPublishedDate', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -126,7 +119,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     valueField=await page.$$(pageObjectsConfig.inputSearchValueSelector);
     expect(valueField.length).toEqual(0);     
     
-  })
+  });
 
   it('Test to verify no value field displayed when select operator eq null or ne null for batch attributes', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -141,17 +134,17 @@ describe('Test Search Query Scenario On Search Page', () => {
     valueField=await page.$$(pageObjectsConfig.inputSearchValueSelector);
     expect(valueField.length).toEqual(0);     
     
-  })
+  });
 
   it('Test to verify pagination count for user attribute search', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page,"productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
-    await page.click(pageObjectsConfig.searchAttributeButton);
-    
+
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+
     // Verification of attribute table records
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
     for (let index = 0; index < productNames.length; index++) {
@@ -165,29 +158,26 @@ describe('Test Search Query Scenario On Search Page', () => {
     const paginatorText=await page.innerText(pageObjectsConfig.paginatorSelector);    
     expect(paginatorText).toContain(`Showing 1-${productsCount}`);
     
-  })
+  });
 
-  it('Test to verify file downloaded status changed after click on download button', async () => {        
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"productid");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");  
-    await page.waitForTimeout(1000);   
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProduct);
-    await page.click(pageObjectsConfig.searchAttributeButton);
-    
-    // Verifiction of attribute table 
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
+  it('Test to verify file downloaded status changed after click on download button', async () => {
 
-    //Click on expand button
+    await SearchAttribute(page, "productid");
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeProduct);
+
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+
+    // Click on expand button
     await page.click(pageObjectsConfig.chooseFileDownloadSelector);
-  
-    //Click on download button
+
+    // Click on download button
     await page.click(pageObjectsConfig.fileDownloadButton);
 
-    //Get the file downloaded status
-    const fileDownloadStatus=await page.getAttribute(pageObjectsConfig.fileDownloadButtonStatus,"class");
-    expect(fileDownloadStatus).toContain("check");    
-  })
+    // Get the file downloaded status
+    const fileDownloadStatus = await page.getAttribute(pageObjectsConfig.fileDownloadButtonStatus, "class");
+    expect(fileDownloadStatus).toContain("check");
+  });
 
   it('Batch Attribute table returns records less than filesize search', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -200,10 +190,9 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow,"lt");     
     await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow,batchAttributeFileSize.toString());
 
-    await page.click(pageObjectsConfig.searchAttributeButton);
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
     
     // Verification of attribute table records
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const cellNames = await page.$$eval(pageObjectsConfig.SystemAttributeCellName ,options => { return options.map(option => option.textContent) });
     
     for (let index = 0; index < cellNames.length; index++) {
@@ -221,7 +210,7 @@ describe('Test Search Query Scenario On Search Page', () => {
                 
     }  
 
-  }) 
+  });
 
   it('Test to verify no result for search query', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -241,7 +230,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     
     expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);    
 
-  })
+  });
 
   it('Test to verify warning message for invalid field value', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -261,7 +250,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     
     expect(warningMessage).toEqual(pageObjectsConfig.dialogWarningText);    
 
-  })
+  });
 
   it('Test to verify no result for "Sql Injection" query', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -276,6 +265,6 @@ describe('Test Search Query Scenario On Search Page', () => {
     
     expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);    
 
-  })
+  });
 
-})
+});
