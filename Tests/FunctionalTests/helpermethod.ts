@@ -1,34 +1,35 @@
-import { Page } from 'playwright'
-const { pageObjectsConfig, pageTimeOut } = require('./pageObjects'); 
-let fileSizeInBytes:any;
+import { Page } from 'playwright';
+const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
+let fileSizeInBytes: any;
+
 //<summary>
 // Sign In to FSS UI using valid credentials
 //</summary>
 //<param> page Object </param>
 //<param> userName </param>
 //<param> password </param>
- export async function LoginPortal(page:Page, userName: string, password: string) {
+export async function LoginPortal(page: Page, userName: string, password: string, loginLink: string) {
 
   const [popup] = await Promise.all([
-      page.waitForEvent('popup'),
-      page.click(pageObjectsConfig.loginSignInLinkSelector)
-    ]);
-    await popup.setViewportSize({ 'width': 800, 'height': 1024 });
-    await popup.waitForLoadState();
+    page.waitForEvent('popup'),
+    page.click(loginLink)
+  ]);
+  await popup.setViewportSize({ width: 800, height: 1024 });
+  await popup.waitForLoadState();
 
-    await popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, userName);
-    await popup.click(pageObjectsConfig.loginPopupNextButtonSelector);
-    await popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password);
+  await popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, userName);
+  await popup.click(pageObjectsConfig.loginPopupNextButtonSelector);
+  await popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password);
 
-    await popup.click(pageObjectsConfig.loginPopupSignInButtonSelector);
+  await popup.click(pageObjectsConfig.loginPopupSignInButtonSelector);
 
-    await page.waitForNavigation();
+  await page.waitForNavigation();
 
-    await page.waitForTimeout(pageTimeOut.delay);
-    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
-      await page.click(pageObjectsConfig.acceptCookieSelector);
-    }
-  }  
+  await page.waitForTimeout(pageTimeOut.delay);
+  if ((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
+    await page.click(pageObjectsConfig.acceptCookieSelector);
+  }
+}
 
 //<summary>
 // Search attribute on FSS UI

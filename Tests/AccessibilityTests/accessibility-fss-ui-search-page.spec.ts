@@ -16,7 +16,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
 
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);

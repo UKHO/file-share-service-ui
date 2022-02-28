@@ -20,7 +20,7 @@ describe('FSS UI E2E Scenarios', () => {
     page = await context.newPage();
     await page.goto(autoTestConfig.url);
 
-    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
 
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
