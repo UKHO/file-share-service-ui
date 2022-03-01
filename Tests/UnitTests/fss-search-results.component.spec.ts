@@ -167,7 +167,6 @@ describe('FssSearchResultsComponent', () => {
     component = fixture.componentInstance;
     component.searchResult = Array.of(SearchResultMockData['entries']);
     var batches = component.searchResult[0];
-    var batchdetails = batches[0];
     component.ngOnChanges();
     tick(100);
     fixture.detectChanges();
