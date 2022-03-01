@@ -22,6 +22,11 @@
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
     "apiUrl": "",
     "stateManagementApiUrl": "",
-    "batchAttributes": []
+    "batchAttributes": [
+    {
+        "attributeType":"",
+        "attribute":""
+    }
+  ]
   }
 }
