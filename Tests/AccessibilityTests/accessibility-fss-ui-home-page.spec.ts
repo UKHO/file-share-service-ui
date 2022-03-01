@@ -23,9 +23,12 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
   test('check a11y for the whole page and axe run options', async () => {
     await checkA11y(page, undefined, {
       axeOptions: {
+        rules: {
+          'color-contrast': { enabled: false }    
+        },
         runOnly: {
           type: 'tag',
-          values: ['wcag2a'],
+          values: ['wcag2aa'],
         },
       },
       detailedReport: true,

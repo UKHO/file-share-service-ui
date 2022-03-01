@@ -21,10 +21,45 @@ variables:
     value: "UKHO Ubuntu 1804"
   - name: WindowPool
     value: "NautilusBuild"
+  - name: coverityPool
+    value: NautilusBuild
+  - group: Covscan-vars
+
+resources:
+  repositories:
+    - repository: covscan
+      type: github
+      name: UKHO/coverityscan-buildtemplates
+      endpoint: UKHO
+      ref: refs/heads/master
 
 stages:
+  - stage: CoverityScan
+    displayName: "Coverity Scan"
+    pool:
+      name: $(coverityPool)
+    jobs:
+    - job: Coverity
+      workspace:
+        clean: all
+      steps:
+        - checkout: self
+          submodules: recursive
+        - checkout: covscan
+        - template: typescript-cov.yml@covscan
+          parameters:
+            CovHostUrl: "$(CovHostUrl)"
+            CovUser: "$(CovUser)"
+            CovPwd: "$(CovPwd)"
+            StreamName: "file-share-service-ui"
+            BuildCommand: "run build"
+            StripPath: $(Build.Repository.LocalPath)/file-share-service-ui
+            CoverityScanPath: $(Build.Repository.LocalPath)/coverityscan-buildtemplates
+            FsCaptureSearch: $(Build.Repository.LocalPath)/file-share-service-ui/src
+
   - stage: Perfrom_Build_Test_Publish
     displayName: "Build (Build ,test and publish artifact )"
+    dependsOn: []
     jobs:
      - job: Dependencychecker
        pool: $(WindowPool)

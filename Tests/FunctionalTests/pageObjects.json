@@ -12,7 +12,7 @@
        "marinedataportalLinkSelector" : "a > img[alt='Admiralty - Maritime Data Solutions Logo']",
        "marinedataportalPageSelector" : "div.navbar-header + h2",
        "marinedataportalPageText": "Marine Data Portal",       
-       "ukhydrographicLinkSelector" : "a > img[alt='Admirality Maritime Data Solutions | UK Hydrographic office']",
+       "ukhydrographicLinkSelector" : "a > img[alt='Admiralty Maritime Data Solutions | UK Hydrographic office']",
        "ukhydrographicPageSelector" : "a.logo__link",
        "ukhydrographicPageTitle" : "Admiralty - Maritime Data Solutions",
        "ukhydrographicPageUrl" : "https://www.admiralty.co.uk/",
@@ -26,7 +26,7 @@
        "loginSignInLinkSelector" : "#signInButton",
        "loginAccountSelector" : "#accountSection",
        "loginAccountLinkSelector" : "#accountSection #profile > a",
-       "searchPageContainerHeaderSelector" : "h1#mainContainer",
+       "searchPageContainerHeaderSelector" : "h1#main",
        "searchPageContainerHeaderText" : "Search files",
        "searchButtonSelector": "#Search",
        "homePageSignInHeaderInfoSelector" : ".card h1",
@@ -55,8 +55,8 @@
        "groupCheckBox2Selector" : "#fss-querytable-group-2 input",
        "groupingButton" : ".delete.grouping",
        "chooseFileDownloadSelector" : "(//h3[text()='Choose files to download'])[1]",
-       "fileDownloadButton" : "(//div[@class='fileDownload'])[last()]",
-       "fileDownloadButtonStatus" : "(//div[@class='fileDownload']/i)[last()]",
+       "fileDownloadButton" : "(//h3[text()='Choose files to download'])[1]/following::div[@class='fileDownload'][1]",
+       "fileDownloadButtonStatus" : "(//h3[text()='Choose files to download'])[1]/following::div[@class='fileDownload'][1]/i",
        "attributeTableCellNameSelector" : "(//table[@class='attribute-table']//tr[2]//td[1])[1]",
        "systemTableBatchExpirySelector" : "(//table[@class='system-attribute-table']//tr[2]//td[3])[1]",
        "SystemAttributeCellName" : "//table[@class='attribute-table']//tr[2]//td[1]",
@@ -75,12 +75,18 @@
        "advancedSearchLink" : "Advanced Search",
        "simplifiedSearchButtonSelector": "div.simplifiedSection button",
        "advancedSearchTableSelector" : ".querytable tbody tr input",
-       "advancedSearchAddLineSelector": "button.addNewLine"
+       "advancedSearchAddLineSelector" : "button.addNewLine",
+       "searchResultTableSelector" : ".SimplifiedSearchResult .attribute-table",
+       "totalResultCountSelector": "span.totalResultLabel",
+       "simplifiedTableRowsSelector" :  "//*[contains(@class, 'SimplifiedSearchResult')]//table[@class='attribute-table']//tr[.//td]",
+       "paginatorTextSelector" : "[aria-label='pagination']>p",
+       "paginatorLinkPrevious" : "a[aria-label='Previous Page']",
+       "paginatorLinkNext":"a[aria-label='Next Page']"  
     },
     "pageTimeOut":
     {
       "timeOutInMilliSeconds" : 90000,
-      "delay" : 5000
+      "delay" : 5000      
     }
 	
 }

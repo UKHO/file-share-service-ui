@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { FileShareApiService } from '../../core/services/file-share-api.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -7,6 +7,7 @@ import { FssSearchFilterService } from '../../core/services/fss-search-filter.se
 import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
+import { FilterGroup, FilterItem } from '@ukho/design-system';
 
 @Component({
   selector: 'app-fss-search',
@@ -14,7 +15,7 @@ import { SearchType } from '../../core/models/fss-search-types';
   styleUrls: ['./fss-search.component.scss']
 })
 export class FssSearchComponent implements OnInit {
-  displayLoader: boolean = false;  
+  displayLoader: boolean = false;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageTitle: string = "";
   messageDesc: string = "";
@@ -30,32 +31,35 @@ export class FssSearchComponent implements OnInit {
   pageRecordCount: number = 10;
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;  
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   activeSearchType: SearchType;
   displayPopularSearch: boolean;
-  eventPopularSearch: Subject<void> = new Subject<void>();  
+  eventPopularSearch: Subject<void> = new Subject<void>();
   eventAdvancedSearchTokenRefresh: Subject<void> = new Subject<void>();
   SearchTypeEnum = SearchType;
+  MainQueryFilterExpression: string = "";
+  filterGroups: FilterGroup[] = [];
+
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService) {
-      this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;      
-     }
+    this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+  }
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.AdvancedSearch;
   }
 
-  ShowAdvancedSearchClicked(){
+  ShowAdvancedSearchClicked() {
     this.activeSearchType = SearchType.AdvancedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
   }
 
-  ShowSimplifiedSearchClicked(){
+  ShowSimplifiedSearchClicked() {
     this.activeSearchType = SearchType.SimplifiedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
@@ -73,21 +77,21 @@ export class FssSearchComponent implements OnInit {
         this.displayLoader = false;
         this.analyticsService.login();
         this.handleAdvancedSearchTokenRefresh();
-      });      
+      });
     });
     this.hideMessage();
   }
 
-  onAdvancedSearchClicked(fssAdvancedSearch: any) {    
+  onAdvancedSearchClicked(fssAdvancedSearch: any) {
     if (this.fssSearchValidatorService.validateSearchInput(
-        fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
+      fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       if (!this.fileShareApiService.isTokenExpired()) {
         var filter = this.fssSearchFilterService.getFilterExpression(
           fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
         this.getSearchResult(filter);
       }
       else {
-        this.handleTokenExpiry();        
+        this.handleTokenExpiry();
       }
     }
     else {
@@ -101,25 +105,30 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
+    this.displaySearchResult = false;
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       if (!this.fileShareApiService.isTokenExpired()) {
-        var filter = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
-        this.getSearchResult(filter);
+        this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
+        this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
+          this.transformSearchAttributesToFilter(result.batchAttributes);
+        });
+        this.getSearchResult(this.MainQueryFilterExpression);
       }
       else {
-        this.handleTokenExpiry();        
+        this.handleTokenExpiry();
       }
-    }else{
+    } else {
       this.messageTitle = "There is a problem with a field";
-      this.messageDesc = "Please enter a search field value.";      
+      this.messageDesc = "Please enter a search field value.";
       this.showMessage("warning", this.messageTitle, this.messageDesc);
     }
     this.analyticsService.getSimplifiedSearchResult();
   }
 
+
   getSearchResult(filter: string) {
-    this.displayLoader = true;    
+    this.displayLoader = true;
     if (filter != null) {
       this.searchResult = [];
       this.fileShareApiService.getSearchResult(filter, false).subscribe((res) => {
@@ -140,11 +149,23 @@ export class FssSearchComponent implements OnInit {
           this.displayLoader = false;
         }
       },
-          (error) => {
-            this.handleGetSearchResultFailure(error);
-          }
-        );
-      }             
+        (error) => {
+          this.handleGetSearchResultFailure(error);
+        }
+      );
+    }
+  }
+
+  onApplyFilterButtonClicked(filterItem: FilterGroup[]){
+    if (!this.fileShareApiService.isTokenExpired()) {
+      var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
+      var applyFilter_FilterExpression = this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")");
+      console.log(applyFilter_FilterExpression);
+      this.getSearchResult(applyFilter_FilterExpression);
+    }
+    else {
+      this.handleTokenExpiry();        
+    }
   }
 
   handleGetSearchResultSuccess() {
@@ -160,11 +181,20 @@ export class FssSearchComponent implements OnInit {
     this.displayLoader = false;
     this.displaySearchResult = false;
     var errmsg = "";
-    if (err.error != undefined && err.error.errors.length > 0) {
+    if (err.error != undefined && err.error.errors != undefined && err.error.errors.length > 0) {
       for (let i = 0; i < err.error.errors.length; i++) {
         errmsg += err.error.errors[i]['description'] + '\n';
       }
-      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    }
+    else if(err.error != undefined && err.error.message != undefined){
+      errmsg = err.error.message;
+    }
+    if(this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch)
+      {
+        this.showMessage("error", "There has been an error", "please contact customer services");
+      }
+      else{
+        this.showMessage("warning", "An exception occurred when processing this search", errmsg);
     }
     this.analyticsService.errorHandling();
   }
@@ -200,7 +230,7 @@ export class FssSearchComponent implements OnInit {
     this.displayLoader = false;
     this.analyticsService.tokenExpired();
   }
-  
+
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
@@ -239,12 +269,42 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-  popularSearchClicked(popularSearch: any) {    
-    this.eventPopularSearch.next(popularSearch);    
+  popularSearchClicked(popularSearch: any) {
+    this.eventPopularSearch.next(popularSearch);
   }
 
   handleAdvancedSearchTokenRefresh() {
     this.eventAdvancedSearchTokenRefresh.next();
+  }
+
+  transformSearchAttributesToFilter(attributeSearchResults: any[]) {
+    let configAttributes: any[] = [];
+    this.filterGroups = [];
+    configAttributes = AppConfigService.settings["fssConfig"].batchAttributes;
+
+    if (configAttributes.length > 0 && attributeSearchResults.length > 0) {
+      configAttributes.forEach(element => {
+        const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.toLowerCase());
+        if (attribute) {
+          this.filterGroups.push({
+            title: element,
+            items: this.getAttributesValues(attribute["values"]),
+            expanded: true
+          });
+        }
+      });
+    }
+  }
+
+  getAttributesValues(attributeValues: Array<any> = []) {
+    const batchAttributeValues: FilterItem[] = [];
+    for (let i = 0; i < attributeValues.length; i++) {
+      batchAttributeValues.push({
+        title: attributeValues[i],
+        selected: false
+      });
+    }
+    return batchAttributeValues;
   }
 
 }
