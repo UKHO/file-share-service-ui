@@ -212,58 +212,58 @@ describe('Test Search Query Scenario On Search Page', () => {
 
   });
 
-  it('Test to verify no result for search query', async () => {    
+  it('Test to verify no result for search query', async () => {
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"cellname");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeCellName);
+    await SearchAttribute(page, "cellname");
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeCellName);
     await page.click(pageObjectsConfig.buttonAddNewRow);
 
     await SearchAttributeSecondRow(page, "filesize");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow,"eq");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow,batchAttributeFileSize.toString());
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow, "eq");
+    await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow, batchAttributeFileSize.toString());
 
-    await page.click(pageObjectsConfig.searchAttributeButton);
-    
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogInfoSelector);
+
     // Verify dialog info for no records
-    const infoText=await page.innerText(pageObjectsConfig.dialogInfoSelector);    
-    
-    expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);    
+    const infoText = await page.innerText(pageObjectsConfig.dialogInfoSelector);
+
+    expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);
 
   });
 
-  it('Test to verify warning message for invalid field value', async () => {    
+  it('Test to verify warning message for invalid field value', async () => {
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"cellname");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeCellName);
+    await SearchAttribute(page, "cellname");
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeCellName);
     await page.click(pageObjectsConfig.buttonAddNewRow);
 
     await SearchAttributeSecondRow(page, "filesize");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow,"lt");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow,'1000MB');
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow, "lt");
+    await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow, '1000MB');
 
-    await page.click(pageObjectsConfig.searchAttributeButton);
-    
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector);
+
     // Verify warning message
-    const warningMessage=await page.innerText(pageObjectsConfig.dialogWarningSelector);    
-    
-    expect(warningMessage).toEqual(pageObjectsConfig.dialogWarningText);    
+    const warningMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
+
+    expect(warningMessage).toEqual(pageObjectsConfig.dialogWarningText);
 
   });
 
-  it('Test to verify no result for "Sql Injection" query', async () => {    
+  it('Test to verify no result for "Sql Injection" query', async () => {
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"BusinessUnit");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,searchQuerySqlInjection);    
+    await SearchAttribute(page, "BusinessUnit");
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, searchQuerySqlInjection);
 
-    await page.click(pageObjectsConfig.searchAttributeButton);
-    
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogInfoSelector);
+
     // Verify dialog info for no records
-    const infoText=await page.innerText(pageObjectsConfig.dialogInfoSelector);    
-    
-    expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);    
+    const infoText = await page.innerText(pageObjectsConfig.dialogInfoSelector);
+
+    expect(infoText).toEqual(pageObjectsConfig.dialogInfoText);
 
   });
 

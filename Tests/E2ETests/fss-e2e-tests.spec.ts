@@ -1,7 +1,7 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal, SearchAttribute } from '../FunctionalTests/helpermethod'
+import { LoginPortal, SearchAttribute, ClickWaitRetry } from '../FunctionalTests/helpermethod'
 import { businessUnitValue, fileSizeValue, batchAttributeProduct } from './helperattributevalues'
 import { GetApiDetails } from './apiRequest'
 
@@ -39,10 +39,10 @@ describe('FSS UI E2E Scenarios', () => {
     await SearchAttribute(page, "BusinessUnit");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, businessUnitValue);    
-    await page.click(pageObjectsConfig.searchAttributeButton);
+
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
     // Verification of attribute table records
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const noOfRecods = (await page.$$(pageObjectsConfig.searchAttributeTableRows)).length;
     expect(noOfRecods).toBeGreaterThanOrEqual(2);
 
@@ -64,10 +64,10 @@ describe('FSS UI E2E Scenarios', () => {
     await SearchAttribute(page, "productid");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeProduct);
-    await page.click(pageObjectsConfig.searchAttributeButton);
+
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
     // Verification of attribute table records
-    await page.waitForSelector(pageObjectsConfig.searchAttributeTable);
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector, options => { return options.map(option => option.textContent) });
 
     for (let index = 0; index < productNames.length; index++) {
@@ -94,10 +94,10 @@ describe('FSS UI E2E Scenarios', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, `'${fileSizeValue}'`);
     await page.waitForTimeout(2000);
-    await page.click(pageObjectsConfig.searchAttributeButton);
+
+    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.warningMessageSelector);
 
     //Verification of warning message
-    await page.waitForSelector(pageObjectsConfig.warningMessageSelector);
     const warningMessage = await page.innerText(pageObjectsConfig.warningMessageSelector);
 
     expect(warningMessage).toContain(pageObjectsConfig.warningMessageText);
