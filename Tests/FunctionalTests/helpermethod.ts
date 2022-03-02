@@ -114,7 +114,8 @@ export async function InsertSearchText(page:Page,searchBatchAttribute :string) {
   
 }
 
-export async function ClickWaitRetry(buttonToClick: string, selectorToWaitFor: string, timeout: number = 30000, step: number = 1000){
+export async function ClickWaitRetry(page: Page, buttonToClick: string, selectorToWaitFor: string,
+                                     timeout: number = 30000, step: number = 1000){
   const maxtime = Date.now() + timeout;
   let success = false;
 

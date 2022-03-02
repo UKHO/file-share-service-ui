@@ -20,7 +20,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
     // Verification of attribute table records    
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
@@ -39,7 +39,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeSpecialChar);
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
     
@@ -62,7 +62,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow,"eq");     
     await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow,systemAttributeMimeType);
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
     
     // Verification of attribute table records
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
@@ -142,7 +142,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
     await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
     // Verification of attribute table records
     const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
@@ -166,7 +166,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeProduct);
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
     // Click on expand button
     await page.click(pageObjectsConfig.chooseFileDownloadSelector);
@@ -190,7 +190,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow,"lt");     
     await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow,batchAttributeFileSize.toString());
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
     
     // Verification of attribute table records
     const cellNames = await page.$$eval(pageObjectsConfig.SystemAttributeCellName ,options => { return options.map(option => option.textContent) });
@@ -223,7 +223,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow, batchAttributeFileSize.toString());
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogInfoSelector);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogInfoSelector);
 
     // Verify dialog info for no records
     const infoText = await page.innerText(pageObjectsConfig.dialogInfoSelector);
@@ -243,7 +243,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow, "lt");
     await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow, '1000MB');
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector);
 
     // Verify warning message
     const warningMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
@@ -258,7 +258,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, searchQuerySqlInjection);
 
-    await ClickWaitRetry(pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogInfoSelector);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogInfoSelector);
 
     // Verify dialog info for no records
     const infoText = await page.innerText(pageObjectsConfig.dialogInfoSelector);
