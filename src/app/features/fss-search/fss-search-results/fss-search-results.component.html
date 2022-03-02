@@ -50,15 +50,11 @@
         <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
         <tr ukho-row *ukhoRowDef="let row; columns: batch.batchFileDetails.columnData"></tr>
       </table>
-
-
-      <ng-container *ngIf="batch.allFilesZipSize!=null">
+      <ng-container *ngIf="batch.allFilesZipSize">
         <p class="downloadAllTextRight">
           <ukho-button [secondary]="true">Download all</ukho-button>
         </p>
       </ng-container>
-
-
     </ukho-expansion>
   </ukho-card>
 </div>

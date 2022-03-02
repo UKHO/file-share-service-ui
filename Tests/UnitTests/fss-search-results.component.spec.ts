@@ -165,23 +165,21 @@ describe('FssSearchResultsComponent', () => {
   test('should show Download All button when allFilesZipSize is not null', fakeAsync(() => {
     const fixture = TestBed.createComponent(FssSearchResultsComponent);
     component = fixture.componentInstance;
-    component.searchResult = Array.of(SearchResultMockData['entries']);
+    component.searchResult = Array.of(SearchResultMockDataforShowDownloadAllButton['entries']);
     var batches = component.searchResult[0];
     component.ngOnChanges();
     tick(100);
     fixture.detectChanges();
-
     fixture.whenStable().then(() => {
       batches.forEach((item: SearchResultViewModel) => {
         let css = "[id='" + item.BatchID.value + "']";
         const home = fixture.debugElement.query(By.css(css)).nativeElement;
-        if (item.allFilesZipSize != undefined && item.allFilesZipSize != null) {
+        if (item.allFilesZipSize) {
           expect(home.querySelector("ukho-button").textContent).toEqual("Download all");
         }
       });
     });
   }));
-
 });
 
 export function MockMSALInstanceFactory() {
@@ -202,6 +200,60 @@ export function MockMSALInstanceFactory() {
 };
 
 export const SearchResultMockData: any = {
+  "count": 1,
+  "total": 1,
+  "entries": [
+    {
+      "batchId": "9439e409-e545-435c-afd7-f3a5cce527e3",
+      "status": "Committed",
+      "attributes": [
+        {
+          "key": "product",
+          "value": "TidalPredictionService"
+        },
+        {
+          "key": "cellname",
+          "value": "AVCS"
+        }
+      ],
+      "businessUnit": "TEST",
+      "batchPublishedDate": "2021-06-18T12:57:48.853Z",
+      "expiryDate": "2022-02-28T13:05:10.14Z",
+      "files": [
+        {
+          "filename": "My Test File.txt",
+          "fileSize": 4000000,
+          "mimeType": "image/jpeg",
+          "hash": null,
+          "attributes": [
+            {
+              "key": "filetype",
+              "value": "Country Delight"
+            }
+          ],
+          "links": {
+            "get": {
+              "href": "/batch/9439e409-e545-435c-afd7-f3a5cce527e3/files/My%20Test%20File.txt"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "_Links": {
+    "self": {
+      "href": "/batch?limit=100&start=0&$filter=filesize%20gt%201000"
+    },
+    "first": {
+      "href": "/batch?limit=100&start=0&$filter=filesize%20gt%201000"
+    },
+    "last": {
+      "href": "/batch?limit=100&start=0&$filter=filesize%20gt%201000"
+    }
+  }
+};
+
+export const SearchResultMockDataforShowDownloadAllButton: any = {
   "count": 1,
   "total": 1,
   "entries": [
