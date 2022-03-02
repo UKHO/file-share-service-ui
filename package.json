@@ -19,14 +19,16 @@
     "glob-parent": "5.1.2",
     "chokidar": "~3.5.1",
     "css-what": "^5.0.1",
-    "url-parse": "^1.5.2",
+    "url-parse": "^1.5.7",
     "set-value": "4.0.1",
-    "ansi-regex": "5.0.1"
+    "ansi-regex": "5.0.1",
+    "node-forge": "1.0.0",
+    "nanoid": "3.2.0"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~11.2.13",
-    "@angular/cdk": "^12.1.2",
+    "@angular/cdk": "~11.2.13",
     "@angular/common": "~11.2.13",
     "@angular/compiler": "~11.2.13",
     "@angular/core": "~11.2.13",
