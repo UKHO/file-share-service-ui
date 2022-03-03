@@ -1,6 +1,6 @@
 import { chromium, Browser, Page } from 'playwright'
 import { injectAxe, checkA11y} from 'axe-playwright'
-import { AcceptCookies } from 'Tests/FunctionalTests/helpermethod';
+import { AcceptCookies } from '../FunctionalTests/helpermethod';
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const{pageTimeOut, pageObjectsConfig} =require('../FunctionalTests/pageObjects.json');
 
