@@ -1,30 +1,30 @@
-import { Page } from 'playwright'
-const { pageObjectsConfig } = require('./pageObjects'); 
-let fileSizeInBytes:any;
+import { Page } from 'playwright';
+const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
+let fileSizeInBytes: any;
+
 //<summary>
 // Sign In to FSS UI using valid credentials
 //</summary>
 //<param> page Object </param>
 //<param> userName </param>
 //<param> password </param>
- export async function LoginPortal(page:Page, userName: string, password: string) {
-    
-    const [popup] = await Promise.all([
-      page.waitForEvent('popup')
-    ]);
-    
-      popup.setDefaultTimeout(60000);
-      popup.setViewportSize({ 'width': 800, 'height': 1024 })
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInEmailSelector)
-      popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, userName)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupNextButtonSelector)
-      popup.click(pageObjectsConfig.loginPopupNextButtonSelector)
-      await popup.waitForSelector(pageObjectsConfig.loginPopupSignInPasswordSelector)
-      popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password)
-      await popup.waitForTimeout(2000);
-      popup.keyboard.press('Enter');  
-      await popup.waitForTimeout(2000);
-  }  
+export async function LoginPortal(page: Page, userName: string, password: string, loginLink: string) {
+
+  const [popup] = await Promise.all([
+    page.waitForEvent('popup'),
+    page.click(loginLink)
+  ]);
+  await popup.setViewportSize({ width: 800, height: 1024 });
+  await popup.waitForLoadState();
+
+  await popup.fill(pageObjectsConfig.loginPopupSignInEmailSelector, userName);
+  await popup.click(pageObjectsConfig.loginPopupNextButtonSelector);
+  await popup.fill(pageObjectsConfig.loginPopupSignInPasswordSelector, password);
+
+  await popup.click(pageObjectsConfig.loginPopupSignInButtonSelector);
+
+  await page.waitForNavigation();
+}
 
 //<summary>
 // Search attribute on FSS UI
@@ -32,25 +32,25 @@ let fileSizeInBytes:any;
 //<param> page Object </param>
 //<param> attributeName </param>
 
-export async function SearchAttribute(page:Page, attributeName: string)
-  {
-    await page.fill(pageObjectsConfig.inputSearchFieldSelector,"");   
-    await page.fill(pageObjectsConfig.inputSearchFieldSelector,attributeName);
-    await page.keyboard.press('Backspace');    
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter'); 
-    page.waitForLoadState('domcontentloaded');
-  }
+export async function SearchAttribute(page: Page, attributeName: string)
+{
+  await page.fill(pageObjectsConfig.inputSearchFieldSelector, "");
+  await page.fill(pageObjectsConfig.inputSearchFieldSelector, attributeName);
+  await page.keyboard.press('Backspace');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await page.waitForLoadState('domcontentloaded');
+}
 
-  export async function SearchAttributeSecondRow(page:Page, attributeName: string)
-  {
-    await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,"");   
-    await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,attributeName);
-    await page.keyboard.press('Backspace');    
-    await page.keyboard.press('ArrowDown');
-    await page.keyboard.press('Enter'); 
-    page.waitForLoadState('domcontentloaded');
-  }
+export async function SearchAttributeSecondRow(page:Page, attributeName: string)
+{
+  await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,"");
+  await page.fill(pageObjectsConfig.inputSearchFieldSelectorSecondRow,attributeName);
+  await page.keyboard.press('Backspace');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter'); 
+  await page.waitForLoadState('domcontentloaded');
+}
 
 //<summary>
 // Get the file Size in bytes.
@@ -107,4 +107,43 @@ export async function InsertSearchText(page:Page,searchBatchAttribute :string) {
     await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
     await page.waitForTimeout(1000);
   
+}
+
+export async function ClickWaitRetry(page: Page, buttonToClick: string, selectorToWaitFor: string,
+                                     timeout: number = 30000, step: number = 1000){
+  const maxtime = Date.now() + timeout;
+  let success = false;
+
+  while (Date.now() < maxtime && !success)
+  {
+    await page.click(buttonToClick);
+
+    try {
+      await page.waitForSelector(selectorToWaitFor, {timeout: step});
+      success = true;
+    } catch (error) {
+    }
+  }
+
+  if (!success)
+  {
+    throw Error("Couldn't load (" + selectorToWaitFor +") after pressing (" + buttonToClick + ")");
+  }
+}
+
+export async function AcceptCookies(page: Page) {
+  const maxtime = Date.now() + pageTimeOut.delay;
+  const step = 500;
+  let cookiesAccepted = false;
+
+  // Some environments (but not all) need cookies to be accepted
+  while (Date.now() < maxtime && !cookiesAccepted) {
+    if (await page.locator(pageObjectsConfig.acceptCookieSelector).isVisible()) {
+      await page.click(pageObjectsConfig.acceptCookieSelector);
+      cookiesAccepted = true;
+    }
+    else {
+      await page.waitForTimeout(step);
+    }
+  }
 }
