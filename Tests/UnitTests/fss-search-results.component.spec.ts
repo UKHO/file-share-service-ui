@@ -177,6 +177,10 @@ describe('FssSearchResultsComponent', () => {
         if (item.allFilesZipSize) {
           expect(home.querySelector("ukho-button").textContent).toEqual("Download all");
         }
+        else
+        {
+          expect(home.querySelector("ukho-button")).toBeNull;
+        }
       });
     });
   }));
