@@ -278,10 +278,7 @@ export class FssSearchComponent implements OnInit {
     if(attributeType==="numeric"){
       attributeValues.sort((a,b) => a.localeCompare(b, 'en', {numeric: true}));
     }
-    else{
-      attributeValues.sort();
-    }
-    
+
     const batchAttributeValues: FilterItem[] = [];
     for (let i = 0; i < attributeValues.length; i++) {
       batchAttributeValues.push({
