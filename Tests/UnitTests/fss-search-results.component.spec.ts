@@ -179,7 +179,7 @@ describe('FssSearchResultsComponent', () => {
         }
         else
         {
-          expect(home.querySelector("ukho-button")).toBeNull;
+          expect(home.querySelector("ukho-button")).toBeNull();
         }
       });
     });
