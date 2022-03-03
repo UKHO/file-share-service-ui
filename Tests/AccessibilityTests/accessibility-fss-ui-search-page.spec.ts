@@ -2,7 +2,7 @@ import { chromium,Browser, Page } from 'playwright'
 import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal, SearchAttribute, ClickWaitRetry } from '../FunctionalTests/helpermethod'
+import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies } from '../FunctionalTests/helpermethod'
 import {batchAttributeProductContains} from '../FunctionalTests/helperconstant'
 
 let browser: Browser
@@ -15,7 +15,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     page = await browser.newPage();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
-
+    await AcceptCookies(page);
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
     

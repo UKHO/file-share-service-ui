@@ -1,6 +1,6 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import {DataCollectionComparison,InsertSearchText} from './helpermethod'
+import {AcceptCookies, DataCollectionComparison,InsertSearchText} from './helpermethod'
 import {searchBatchAttribute,searchMultipleBatchAttributes,searchNonExistBatchAttribute} from './helperconstant'
 
 describe('Test Search Result Scenario On Simplified Search Page', () => {
@@ -8,7 +8,8 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   beforeEach(async () => { 
     await page.goto(autoTestConfig.url)
-
+    await AcceptCookies(page);
+    
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
 

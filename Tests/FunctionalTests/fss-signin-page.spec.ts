@@ -1,7 +1,7 @@
 import { BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import {LoginPortal} from './helpermethod'
+import {AcceptCookies, LoginPortal} from './helpermethod'
 
 describe('Test Sign In Page Scenario', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -12,10 +12,7 @@ describe('Test Sign In Page Scenario', () => {
     context = await browser.newContext();
     page = await context.newPage();
     await page.goto(autoTestConfig.url)
-    await page.waitForTimeout(pageTimeOut.delay)
-    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
-      await page.click(pageObjectsConfig.acceptCookieSelector);
-    }
+    await AcceptCookies(page);
   })
 
   afterEach(async () => {

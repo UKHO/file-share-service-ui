@@ -1,6 +1,6 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import {SearchAttribute, SearchAttributeSecondRow, GetFileSizeInBytes, ClickWaitRetry} from './helpermethod';
+import {SearchAttribute, SearchAttributeSecondRow, GetFileSizeInBytes, ClickWaitRetry, AcceptCookies} from './helpermethod';
 import {batchAttributeProductContains, batchAttributeSpecialChar, systemAttributeMimeType} from './helperconstant';
 import {batchAttributeProduct, batchAttributeCellName, batchAttributeFileSize, searchQuerySqlInjection} from './helperconstant';
 
@@ -9,6 +9,7 @@ describe('Test Search Query Scenario On Search Page', () => {
 
   beforeEach(async () => {
     await page.goto(autoTestConfig.url);
+    await AcceptCookies(page);
 
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector))

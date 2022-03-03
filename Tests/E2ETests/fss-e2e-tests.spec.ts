@@ -1,7 +1,7 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal, SearchAttribute, ClickWaitRetry } from '../FunctionalTests/helpermethod'
+import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies } from '../FunctionalTests/helpermethod'
 import { businessUnitValue, fileSizeValue, batchAttributeProduct } from './helperattributevalues'
 import { GetApiDetails } from './apiRequest'
 
@@ -19,7 +19,7 @@ describe('FSS UI E2E Scenarios', () => {
     context = await browser.newContext();
     page = await context.newPage();
     await page.goto(autoTestConfig.url);
-
+    await AcceptCookies(page);
     await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
 
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);

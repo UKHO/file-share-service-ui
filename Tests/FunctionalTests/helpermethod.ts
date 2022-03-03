@@ -24,11 +24,6 @@ export async function LoginPortal(page: Page, userName: string, password: string
   await popup.click(pageObjectsConfig.loginPopupSignInButtonSelector);
 
   await page.waitForNavigation();
-
-  await page.waitForTimeout(pageTimeOut.delay);
-  if ((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
-    await page.click(pageObjectsConfig.acceptCookieSelector);
-  }
 }
 
 //<summary>
@@ -133,5 +128,22 @@ export async function ClickWaitRetry(page: Page, buttonToClick: string, selector
   if (!success)
   {
     throw Error("Couldn't load (" + selectorToWaitFor +") after pressing (" + buttonToClick + ")");
+  }
+}
+
+export async function AcceptCookies(page: Page) {
+  const maxtime = Date.now() + pageTimeOut.delay;
+  const step = 500;
+  let cookiesAccepted = false;
+
+  // Some environments (but not all) need cookies to be accepted
+  while (Date.now() < maxtime && !cookiesAccepted) {
+    if (await page.locator(pageObjectsConfig.acceptCookieSelector).isVisible()) {
+      await page.click(pageObjectsConfig.acceptCookieSelector);
+      cookiesAccepted = true;
+    }
+    else {
+      await page.waitForTimeout(step);
+    }
   }
 }

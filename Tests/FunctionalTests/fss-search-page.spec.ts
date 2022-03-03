@@ -1,6 +1,6 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
-import {SearchAttribute} from './helpermethod'
+import {AcceptCookies, SearchAttribute} from './helpermethod'
 import {stringOperatorList,symbolOperatorListForFileSize, symbolOperatorListForDate} from './helperconstant'
 
 describe('Test Search Attribute Scenario On Search Page', () => {
@@ -8,7 +8,8 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   
   beforeEach(async () => {
     await page.goto(autoTestConfig.url)
-
+    await AcceptCookies(page);
+    
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
   })
