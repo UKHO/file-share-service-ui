@@ -265,8 +265,8 @@ export class FssSearchComponent implements OnInit {
         const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
         if (attribute) {
           this.filterGroups.push({
-            title: element.attribute.toLowerCase(),
-            items: this.getAttributesValues(attribute["values"], element.attributeType.toLowerCase()),
+            title: element.attribute,
+            items: this.getAttributesValues(attribute["values"], element.attributeSortType),
             expanded: true
           });
         }
@@ -274,8 +274,8 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-  getAttributesValues(attributeValues: Array<any> = [],attributeType: any) {
-    if(attributeType==="numeric"){
+  getAttributesValues(attributeValues: Array<any> = [],attributeSortType: any) {
+    if(attributeSortType==="numeric"){
       attributeValues.sort((a,b) => a.localeCompare(b, 'en', {numeric: true}));
     }
 

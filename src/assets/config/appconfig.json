@@ -23,10 +23,18 @@
     "apiUrl": "",
     "stateManagementApiUrl": "",
     "batchAttributes": [
-    {
-        "attributeType":"",
-        "attribute":""
-    }
-  ]
+      {
+          "attributeSortType":"alphabetical",
+          "attribute":"Media Type"
+      },
+      {
+          "attributeSortType":"alphabetical",
+          "attribute":"Product Type"
+      },
+      {
+        "attributeSortType":"numeric",
+        "attribute":"Week Number"
+      }
+    ]
   }
 }
