@@ -1,9 +1,10 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import {SearchAttribute, SearchAttributeSecondRow, GetFileSizeInBytes, ClickWaitRetry, AcceptCookies} from './helpermethod';
-import {batchAttributeProductContains, batchAttributeSpecialChar, systemAttributeMimeType} from './helperconstant';
-import {batchAttributeProduct, batchAttributeCellName, batchAttributeFileSize, searchQuerySqlInjection} from './helperconstant';
-
+import {SearchAttribute, SearchAttributeSecondRow, GetFileSizeInBytes, ClickWaitRetry, 
+  AcceptCookies, ExpectAllSearchResultsToHaveBatchAttributeValue} from './helpermethod';
+import {batchAttributeSpecialChar, systemAttributeMimeType} from './helperconstant';
+import {batchAttributeCellName, batchAttributeFileSize, searchQuerySqlInjection} from './helperconstant';
+import {attributeProductType, attributeMimeType} from './helperattributevalues';
 describe('Test Search Query Scenario On Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
 
@@ -17,65 +18,47 @@ describe('Test Search Query Scenario On Search Page', () => {
   });
 
   it('Batch Attribute table returns correct product on attribute search', async () => {
-    await SearchAttribute(page,"productid");
+    const containsVal = attributeProductType.value.substring(1);
+    await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, containsVal);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
-
-    // Verification of attribute table records    
-    const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
-    
-    for (let index = 0; index < productNames.length; index++) {
-        const productName = productNames[index];  
-        
-        expect(productName.toUpperCase()).toContain(batchAttributeProductContains.toUpperCase());            
-    }    
-    
+    await ExpectAllSearchResultsToHaveBatchAttributeValue(page, attributeProductType.key, 
+      attributeProductType.value);
   });
 
   it('Batch Attribute table returns correct product on special characters search', async () => {        
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"productid");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeSpecialChar);
+    await SearchAttribute(page, attributeProductType.key);
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "contains");     
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeSpecialChar);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
-
-    const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
-    
-    for (let index = 0; index < productNames.length; index++) {
-        const productName = productNames[index];  
-        
-        expect(productName.toUpperCase()).toContain(batchAttributeSpecialChar.toUpperCase());            
-    }
-    
+    await ExpectAllSearchResultsToHaveBatchAttributeValue(page, attributeProductType.key, 
+      batchAttributeSpecialChar, true);
   });
 
   it('Batch Attribute table returns correct values on multiple attributes search', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"productid");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
+    await SearchAttribute(page, attributeProductType.key);
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "contains");     
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
     await page.click(pageObjectsConfig.buttonAddNewRow);
 
-    await SearchAttributeSecondRow(page, "MimeType");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow,"eq");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow,systemAttributeMimeType);
+    await SearchAttributeSecondRow(page, attributeMimeType.key);
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelectorSecondRow, "eq");     
+    await page.fill(pageObjectsConfig.inputSearchValueSelectorSecondRow, attributeMimeType.value);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
-    
-    // Verification of attribute table records
-    const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
-    
-    for (let index = 0; index < productNames.length; index++) {
-        const productName = productNames[index];  
-        
-        expect(productName.toUpperCase()).toContain(batchAttributeProductContains.toUpperCase());            
-    }  
-    
+    await ExpectAllSearchResultsToHaveBatchAttributeValue(page, attributeProductType.key,
+      attributeProductType.value);
+
+    // Verification of file attribute table records
     const mimeTypes = await page.$$eval(pageObjectsConfig.fileAttributeTableRecordSelector ,options => { return options.map(option => option.textContent) });
     
+    expect(mimeTypes.length).toBeTruthy();
+
     for (let index = 0; index < mimeTypes.length; index++) {
         const mimeType = mimeTypes[index];  
         
@@ -124,7 +107,7 @@ describe('Test Search Query Scenario On Search Page', () => {
 
   it('Test to verify no value field displayed when select operator eq null or ne null for batch attributes', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"productid");
+    await SearchAttribute(page, attributeProductType.key);
     //select operator eq null 
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"eq null");
     let valueField=await page.$$(pageObjectsConfig.inputSearchValueSelector);
@@ -139,33 +122,26 @@ describe('Test Search Query Scenario On Search Page', () => {
 
   it('Test to verify pagination count for user attribute search', async () => {    
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"productid");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
+    await SearchAttribute(page, attributeProductType.key);
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");     
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
-    // Verification of attribute table records
-    const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector ,options => { return options.map(option => option.textContent) });
-    
-    for (let index = 0; index < productNames.length; index++) {
-        const productName = productNames[index];  
+    const resultCount = await ExpectAllSearchResultsToHaveBatchAttributeValue(page, attributeProductType.key,
+      attributeProductType.value);
         
-        expect(productName.toUpperCase()).toContain(batchAttributeProductContains.toUpperCase());            
-    }  
-    
     //Get the product counts on UI
-    const productsCount=productNames.length;    
     const paginatorText=await page.innerText(pageObjectsConfig.paginatorSelector);    
-    expect(paginatorText).toContain(`Showing 1-${productsCount}`);
+    expect(paginatorText).toContain(`Showing 1-${resultCount}`);
     
   });
 
   it('Test to verify file downloaded status changed after click on download button', async () => {
 
-    await SearchAttribute(page, "productid");
+    await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
-    await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeProduct);
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 

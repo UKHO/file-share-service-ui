@@ -1,8 +1,9 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies } from '../FunctionalTests/helpermethod'
-import { attributeFileSize, attributeBusinessUnit, attributeProductType } from '../helperattributevalues'
+import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies, 
+  ExpectAllSearchResultsToHaveBatchAttributeValue} from '../FunctionalTests/helpermethod';
+import { attributeFileSize, attributeBusinessUnit, attributeProductType } from '../FunctionalTests/helperattributevalues'
 import { GetApiDetails } from './apiRequest'
 
 describe('FSS UI E2E Scenarios', () => {
@@ -68,19 +69,8 @@ describe('FSS UI E2E Scenarios', () => {
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
-    //  count the resulting batches
-    const batchCount = await page.$$eval(`//table[@class='attribute-table']`, 
-      matches => matches.length);
-
-    // must be at least one search result for this test to be useful
-    expect(batchCount).toBeGreaterThan(0);
-
-    // count the resulting batches with the searched-for attribute value
-    const batchesWithAttributeCount = await page.$$eval(`//td[text()="${attributeProductType.value}"]/ancestor::table[@class='attribute-table']`, 
-      matches => matches.length);
-
-    // assert all the resulting batches have the attribute value
-    expect(batchesWithAttributeCount).toEqual(batchCount);
+    await ExpectAllSearchResultsToHaveBatchAttributeValue(page, attributeProductType.key,
+      attributeProductType.value, false);
 
     // Get the token from local storage once user logged in
     const idToken = await page.evaluate(() => { return localStorage.getItem('idToken') });

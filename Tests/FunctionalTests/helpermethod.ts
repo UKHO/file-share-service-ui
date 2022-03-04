@@ -147,3 +147,28 @@ export async function AcceptCookies(page: Page) {
     }
   }
 }
+
+export async function ExpectAllSearchResultsToHaveBatchAttributeValue(
+    page: Page, attributeKey: string, expectedValue: string, contains: boolean = false): Promise<number> {
+
+    // attributeKey is currently not used
+    //  count the result rows
+    const resultCount = await page.$$eval(`//table[@class='attribute-table']`,
+      matches => matches.length);
+
+    // must be at least one result row for this test to be useful
+    expect(resultCount).toBeTruthy();
+
+    let xpath = `//table[@class='attribute-table' and 0 < count(.//td[text()="${expectedValue}"])]`;
+    if (contains) {
+      xpath = `//table[@class='attribute-table' and 0 < count(.//td[contains(text(), "${expectedValue}"]))]`;
+    }
+
+    // count the result rows with the attribute value
+    const withValueCount = await page.$$eval(xpath, matches => matches.length);
+
+    // assert all the resulting batches have the attribute value
+    expect(withValueCount).toEqual(resultCount);
+
+    return resultCount;
+}

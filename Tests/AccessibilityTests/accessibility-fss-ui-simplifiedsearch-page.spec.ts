@@ -3,7 +3,7 @@ import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
 import { AcceptCookies, LoginPortal} from '../FunctionalTests/helpermethod'
-import {attributeProductType} from '../helperattributevalues';
+import {attributeProductType} from '../FunctionalTests/helperattributevalues';
 
 let browser: Browser
 let page: Page

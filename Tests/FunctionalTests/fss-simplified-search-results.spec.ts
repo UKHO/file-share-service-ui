@@ -1,7 +1,8 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import {AcceptCookies, DataCollectionComparison,InsertSearchText} from './helpermethod'
-import {searchBatchAttribute,searchMultipleBatchAttributes,searchNonExistBatchAttribute} from './helperconstant'
+import {AcceptCookies, DataCollectionComparison,ExpectAllSearchResultsToHaveBatchAttributeValue,InsertSearchText} from './helpermethod';
+import {searchMultipleBatchAttributes,searchNonExistBatchAttribute} from './helperconstant';
+import {attributeProductType} from './helperattributevalues';
 
 describe('Test Search Result Scenario On Simplified Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -34,7 +35,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
   })
   
   it('Verify search results for single batch attribute search', async () => {
-    await InsertSearchText(page,searchBatchAttribute);    
+    await InsertSearchText(page, attributeProductType.value);
 
     await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
     var totalResult=await page.innerText(pageObjectsConfig.totalResultCountSelector);
@@ -47,13 +48,8 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
     //Search count matches with batches count
     expect(recordCount).toEqual(tableRowsCount); 
 
-    var tableRowsText=await page.$$eval(pageObjectsConfig.simplifiedTableRowsSelector,rows => { return rows.map(row => row.textContent) });
-    
-    //verify search attributes present in table rows 
-    for(let index=0; index<tableRowsText.length; index++)
-       {
-           expect(tableRowsText[index].toLowerCase()).toContain(searchBatchAttribute.toLowerCase());
-       }     
+    await ExpectAllSearchResultsToHaveBatchAttributeValue(page, attributeProductType.key,
+      attributeProductType.value);
 
     //verify paginator links are available on the page
     expect(await page.isVisible(pageObjectsConfig.paginatorLinkPrevious)).toBeTruthy();
@@ -62,7 +58,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
   })
 
   it('Verify paginator text showing correct values for search results on first page', async () => {
-    await InsertSearchText(page,searchBatchAttribute);    
+    await InsertSearchText(page,attributeProductType.value);    
     
     await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
     var totalResult=await page.innerText(pageObjectsConfig.totalResultCountSelector);
@@ -95,7 +91,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
   })
   
   it('Verify file downloaded status changed after click on download button', async () => {
-    await InsertSearchText(page,searchBatchAttribute);    
+    await InsertSearchText(page,attributeProductType.value);    
     
     await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
 
