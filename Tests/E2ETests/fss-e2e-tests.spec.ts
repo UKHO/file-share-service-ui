@@ -12,7 +12,7 @@ describe('FSS UI E2E Scenarios', () => {
   let page: Page;
 
   beforeAll(async () => {
-    browser = await chromium.launch({slowMo: 100});   
+    browser = await chromium.launch({slowMo: 100, headless: false});   
   })
 
   beforeEach(async () => {    
@@ -61,25 +61,30 @@ describe('FSS UI E2E Scenarios', () => {
 
   it('Valid search user attributes query to verify data returns on UI and API response status 200', async () => {
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page, "productid");
+    await SearchAttribute(page, "Product Type");
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, batchAttributeProduct);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 
-    // Verification of attribute table records
-    const productNames = await page.$$eval(pageObjectsConfig.attributeTableDataSelector, options => { return options.map(option => option.textContent) });
+    //  count the resulting batches
+    const batchCount = await page.$$eval(`//table[@class='attribute-table']`, matches => matches.length);
+    
+    // must be at least one search result for this test to be useful
+    expect(batchCount).toBeGreaterThan(0);
 
-    for (let index = 0; index < productNames.length; index++) {
-      const productName = productNames[index];
+    // count the resulting batches with the searched-for attribute value
+    const batchesWithAttributeCount = await page.$$eval(`//td[text()="${batchAttributeProduct}"]/ancestor::table[@class='attribute-table']`, 
+      matches => matches.length);
 
-      expect(productName.toUpperCase()).toEqual(batchAttributeProduct.toUpperCase());
-    }
-    //Get the token from local storage once user logged in
+    // assert all the resulting batches have the attribute value
+    expect(batchesWithAttributeCount).toEqual(batchCount);
+
+    // Get the token from local storage once user logged in
     const idToken = await page.evaluate(() => { return localStorage.getItem('idToken') });
 
     //Search Query String
-    const queryString = `$batch(product) eq '${batchAttributeProduct}'`;
+    const queryString = `$batch("Product Type") eq '${batchAttributeProduct}'`;
 
     //Validate api response status code matches 200 
     var statusCode = await GetApiDetails(autoTestConfig.apiurl, queryString, idToken!);

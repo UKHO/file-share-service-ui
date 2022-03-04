@@ -106,9 +106,6 @@ stages:
           - script: |
               npm install -g @angular/cli
               npm ci
-              npm list -g
-              npm list --depth=0 -g
-              npm outdated
             displayName: 'npm restore'
           
           - script: |
