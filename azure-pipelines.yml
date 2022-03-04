@@ -29,6 +29,7 @@ stages:
      - job: Dependencychecker
        pool: $(WindowPool)
        displayName: "Dependency checker"
+       condition: ${{ false }}
        workspace:
         clean: all
        steps:
@@ -54,7 +55,7 @@ stages:
                 Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
 
      - job: BuildTestPublish
-       dependsOn: Dependencychecker
+       dependsOn: []
        pool: $(DeploymentPool)
        container: ${{variables.Container}}
        workspace:
