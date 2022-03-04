@@ -28,7 +28,8 @@ export class FssSearchResultsComponent implements OnChanges {
           batchFileDetails: this.getBatchFileDetails(batches[i]),
           BatchID: { key: 'Batch ID', value: batches[i]['batchId'] },
           BatchPublishedDate: { key: 'Batch published date', value: batches[i]['batchPublishedDate'] },
-          ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] }
+          ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] },
+          allFilesZipSize:batches[i]['allFilesZipSize']
         });
       }
     }
@@ -66,7 +67,6 @@ export class FssSearchResultsComponent implements OnChanges {
     var files = batch["files"];
     var batchFilesRowData: BatchFileDetailsRowData[] = [];
     var batchFileDetails: BatchFileDetails = { columnData: [], rowData: [] };
-
     for (var i = 0; i < files.length; i++) {
       var link = files[i]["links"]["get"]["href"];
       batchFilesRowData.push({
