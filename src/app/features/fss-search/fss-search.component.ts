@@ -160,7 +160,6 @@ export class FssSearchComponent implements OnInit {
     if (!this.fileShareApiService.isTokenExpired()) {
       var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
       var applyFilter_FilterExpression = this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")");
-      console.log(applyFilter_FilterExpression);
       this.getSearchResult(applyFilter_FilterExpression);
     }
     else {
