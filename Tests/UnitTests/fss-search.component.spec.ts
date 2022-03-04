@@ -38,15 +38,15 @@ describe('FssSearchComponent', () => {
             displaySimplifiedSearchLink: true,
             "batchAttributes": [
                {
-                   "attributeType":"alphabetical",
+                   "attributeSortType":"alphabetical",
                    "attribute":"product"
                },
                {
-                   "attributeType":"alphabetical",
+                   "attributeSortType":"alphabetical",
                    "attribute":"cellname"
                },
                {
-                 "attributeType":"numeric",
+                 "attributeSortType":"numeric",
                  "attribute":"weeknumber"
                }
              ]
