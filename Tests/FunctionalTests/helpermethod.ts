@@ -148,27 +148,46 @@ export async function AcceptCookies(page: Page) {
   }
 }
 
-export async function ExpectAllSearchResultsToHaveBatchAttributeValue(
-    page: Page, attributeKey: string, expectedValue: string, contains: boolean = false): Promise<number> {
+export async function ExpectAllResultsHaveBatchAttributeValue(
+  page: Page, preciseValue: string): Promise<number> {
 
-    // attributeKey is currently not used
-    //  count the result rows
-    const resultCount = await page.$$eval(`//table[@class='attribute-table']`,
-      matches => matches.length);
+  return await ExpectAllResultsBatchAttributeValue(page,
+    `//table[@class='attribute-table' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+}
 
-    // must be at least one result row for this test to be useful
-    expect(resultCount).toBeTruthy();
+export async function ExpectAllResultsContainBatchAttributeValue(
+  page: Page, containsValue: string): Promise<number> {
 
-    let xpath = `//table[@class='attribute-table' and 0 < count(.//td[text()="${expectedValue}"])]`;
-    if (contains) {
-      xpath = `//table[@class='attribute-table' and 0 < count(.//td[contains(text(), "${expectedValue}"]))]`;
-    }
+  return await ExpectAllResultsBatchAttributeValue(page,
+    `//table[@class='attribute-table' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
+}
 
-    // count the result rows with the attribute value
-    const withValueCount = await page.$$eval(xpath, matches => matches.length);
+export async function ExpectAllResultsContainOneBatchAttributeValue(
+  page: Page, containsOneOf: string[]): Promise<number> {
 
-    // assert all the resulting batches have the attribute value
-    expect(withValueCount).toEqual(resultCount);
+  expect(containsOneOf.length).toBeTruthy();
 
-    return resultCount;
+  const tdPredicate = containsOneOf
+    .map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
+    .join(' or ');
+
+  return await ExpectAllResultsBatchAttributeValue(page,
+    `//table[@class='attribute-table' and 0 < count(.//td[${tdPredicate}])]`);
+}
+
+async function ExpectAllResultsBatchAttributeValue(page: Page, xpath: string): Promise<number> {
+  //  count the result rows
+  const resultCount = await page.$$eval(`//table[@class='attribute-table']`,
+    matches => matches.length);
+
+  // fail there are no results
+  expect(resultCount).toBeTruthy();
+
+  // count the result rows with the attribute value
+  const withValueCount = await page.$$eval(xpath, matches => matches.length);
+
+  // assert all the resulting batches have the attribute value
+  expect(withValueCount).toEqual(resultCount);
+
+  return resultCount;
 }

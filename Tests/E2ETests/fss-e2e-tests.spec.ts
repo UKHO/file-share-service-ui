@@ -2,7 +2,7 @@ import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
 import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies, 
-  ExpectAllSearchResultsToHaveBatchAttributeValue} from '../FunctionalTests/helpermethod';
+  ExpectAllResultsHaveBatchAttributeValue} from '../FunctionalTests/helpermethod';
 import { attributeFileSize, attributeBusinessUnit, attributeProductType } from '../FunctionalTests/helperattributevalues'
 import { GetApiDetails } from './apiRequest'
 
@@ -68,9 +68,7 @@ describe('FSS UI E2E Scenarios', () => {
     await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
-
-    await ExpectAllSearchResultsToHaveBatchAttributeValue(page, attributeProductType.key,
-      attributeProductType.value, false);
+    await ExpectAllResultsHaveBatchAttributeValue(page, attributeProductType.value);
 
     // Get the token from local storage once user logged in
     const idToken = await page.evaluate(() => { return localStorage.getItem('idToken') });
