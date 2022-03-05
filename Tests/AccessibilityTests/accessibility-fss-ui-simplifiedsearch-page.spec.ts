@@ -2,11 +2,11 @@ import { chromium, Browser, Page } from 'playwright'
 import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { AcceptCookies, LoginPortal} from '../FunctionalTests/helpermethod'
-import {attributeProductType} from '../FunctionalTests/helperattributevalues';
+import { AcceptCookies, LoginPortal} from '../FunctionalTests/helpermethod';
+import { attributeProductType } from '../FunctionalTests/helperconstant';
 
-let browser: Browser
-let page: Page
+let browser: Browser;
+let page: Page;
 
 describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);

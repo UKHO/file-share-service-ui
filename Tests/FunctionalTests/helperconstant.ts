@@ -1,4 +1,4 @@
-export const stringOperatorList= [
+export const stringOperatorList = [
     '=',
     '<>',
     'StartsWith',    
@@ -9,7 +9,7 @@ export const stringOperatorList= [
     'Not Contains'
   ]
 
-  export const symbolOperatorListForFileSize= [
+export const symbolOperatorListForFileSize = [
     '=',
     '<>',
     '>',    
@@ -18,7 +18,7 @@ export const stringOperatorList= [
     '<='
  ]
 
- export const symbolOperatorListForDate= [
+export const symbolOperatorListForDate = [
   '=',
   '<>',
   '= null',
@@ -29,11 +29,16 @@ export const stringOperatorList= [
   '<='
 ]
 
-export const systemAttributeMimeType ="image/jpeg";
-export const batchAttributeProductContains ="Service";
-export const batchAttributeSpecialChar="$£";
-export const batchAttributeCellName="GB10001";
-export const batchAttributeFileSize=10000000;
-export const searchQuerySqlInjection="adds''; drop table BatchAttribute";
-export const searchMultipleBatchAttributes="testu service";
-export const searchNonExistBatchAttribute="pqtestresult";
+export const searchQuerySqlInjection = "adds''; drop table BatchAttribute";
+export const searchNonExistBatchAttribute = 'pqtestresult';
+export const batchAttributeSpecialChar = '$£';
+
+type BatchAttribute = {
+  key: string;
+  value: string;
+};
+
+export const attributeBusinessUnit: BatchAttribute = { key: 'BusinessUnit', value: 'ADDS' };
+export const attributeProductType: BatchAttribute = { key: 'Product Type', value: 'AVCS' };
+export const attributeFileSize: BatchAttribute = {key: 'FileSize', value: '1000'};
+export const attributeMimeType: BatchAttribute = {key: 'MimeType', value: 'text/plain'};

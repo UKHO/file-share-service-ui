@@ -2,8 +2,8 @@ import { chromium,Browser, Page } from 'playwright'
 import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies } from '../FunctionalTests/helpermethod'
-import {attributeProductType} from '../FunctionalTests/helperattributevalues';
+import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies } from '../FunctionalTests/helpermethod';
+import {attributeProductType} from '../FunctionalTests/helperconstant';
 
 let browser: Browser
 let page: Page

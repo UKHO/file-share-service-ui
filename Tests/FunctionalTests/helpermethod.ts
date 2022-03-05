@@ -148,21 +148,23 @@ export async function AcceptCookies(page: Page) {
   }
 }
 
-export async function ExpectAllResultsHaveBatchAttributeValue(
+export async function ExpectAllResultsHaveBatchUserAttValue(
   page: Page, preciseValue: string): Promise<number> {
 
-  return await ExpectAllResultsBatchAttributeValue(page,
-    `//table[@class='attribute-table' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+  return await ExpectSelectionsAreEqual(page,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
 }
 
-export async function ExpectAllResultsContainBatchAttributeValue(
+export async function ExpectAllResultsContainBatchUserAttValue(
   page: Page, containsValue: string): Promise<number> {
 
-  return await ExpectAllResultsBatchAttributeValue(page,
-    `//table[@class='attribute-table' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
+  return await ExpectSelectionsAreEqual(page,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
 }
 
-export async function ExpectAllResultsContainOneBatchAttributeValue(
+export async function ExpectAllResultsContainOneBatchUserAttValue(
   page: Page, containsOneOf: string[]): Promise<number> {
 
   expect(containsOneOf.length).toBeTruthy();
@@ -171,23 +173,37 @@ export async function ExpectAllResultsContainOneBatchAttributeValue(
     .map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
     .join(' or ');
 
-  return await ExpectAllResultsBatchAttributeValue(page,
-    `//table[@class='attribute-table' and 0 < count(.//td[${tdPredicate}])]`);
+  return await ExpectSelectionsAreEqual(page,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
 }
 
-async function ExpectAllResultsBatchAttributeValue(page: Page, xpath: string): Promise<number> {
-  //  count the result rows
-  const resultCount = await page.$$eval(`//table[@class='attribute-table']`,
-    matches => matches.length);
+export async function ExpectAllResultsHaveFileAttributeValue(
+  page: Page, preciseValue: string): Promise<number> {
 
-  // fail there are no results
+    return await ExpectSelectionsAreEqual(page,
+      `//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}']`,
+      `//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+}
+
+async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<number> {
+  //  count the result rows
+  const resultCount = await page.$$eval(tablePath, matches => matches.length);
+
+  // fail if there are no matching selections
   expect(resultCount).toBeTruthy();
 
   // count the result rows with the attribute value
-  const withValueCount = await page.$$eval(xpath, matches => matches.length);
+  const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
 
   // assert all the resulting batches have the attribute value
   expect(withValueCount).toEqual(resultCount);
 
   return resultCount;
+}
+
+
+export async function GetTotalResultCount(page: Page): Promise<number>  {
+  const totalResult = await page.innerText(pageObjectsConfig.totalResultCountSelector);
+  return parseInt(totalResult.split(' ')[0], 10);
 }

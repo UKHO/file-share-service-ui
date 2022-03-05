@@ -1,10 +1,10 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import {AcceptCookies, DataCollectionComparison,InsertSearchText,
-  ExpectAllResultsHaveBatchAttributeValue,
-  ExpectAllResultsContainOneBatchAttributeValue} from './helpermethod';
-import {searchMultipleBatchAttributes,searchNonExistBatchAttribute} from './helperconstant';
-import {attributeProductType} from './helperattributevalues';
+import {AcceptCookies, InsertSearchText,
+  ExpectAllResultsHaveBatchUserAttValue,
+  ExpectAllResultsContainOneBatchUserAttValue,
+  GetTotalResultCount} from './helpermethod';
+import {attributeProductType, searchNonExistBatchAttribute} from './helperconstant';
 
 describe('Test Search Result Scenario On Simplified Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -21,7 +21,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
  
   it('Verify No results for non existing batch attribute value search', async () => {
     //Enter non existing value in search box
-    await InsertSearchText(page,searchNonExistBatchAttribute); 
+    await InsertSearchText(page, searchNonExistBatchAttribute); 
     try{ 
          await page.waitForSelector(pageObjectsConfig.dialogInfoSelector);
 
@@ -40,7 +40,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
     await InsertSearchText(page, attributeProductType.value);
 
     await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsHaveBatchAttributeValue(page, attributeProductType.value);
+    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
 
     // verify paginator links are available on the page
     expect(await page.isVisible(pageObjectsConfig.paginatorLinkPrevious)).toBeTruthy();
@@ -52,15 +52,12 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
     await InsertSearchText(page, attributeProductType.value);    
     
     await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
-    var totalResult=await page.innerText(pageObjectsConfig.totalResultCountSelector);
-    //get the total batches count
-    var recordCount=parseInt(totalResult.split(" ")[0]);
-
-    var paginatorText=await page.innerText(pageObjectsConfig.paginatorTextSelector);
+    const recordCount = await GetTotalResultCount(page);
+    const paginatorText = await page.innerText(pageObjectsConfig.paginatorTextSelector);
 
     if (recordCount<=10)
     {
-        expect(paginatorText).toEqual(`Showing 1-${recordCount} of ${recordCount}`);         
+        expect(paginatorText).toEqual(`Showing 1-${recordCount} of ${recordCount}`);
     }
     else
     {
@@ -70,11 +67,11 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
   })
 
   it('Verify search results for multiple batch attributes search', async () => {
-    const searchText = `ZZ ${attributeProductType.value}`;
+    const searchText = `L1K2 ${attributeProductType.value}`;
     await InsertSearchText(page, searchText);
    
     const batchAttributesValue = searchText.split(' ');
-    await ExpectAllResultsContainOneBatchAttributeValue(page, batchAttributesValue);
+    await ExpectAllResultsContainOneBatchUserAttValue(page, batchAttributesValue);
   })
   
   it('Verify file downloaded status changed after click on download button', async () => {

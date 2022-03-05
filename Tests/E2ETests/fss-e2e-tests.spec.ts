@@ -1,10 +1,10 @@
-import { chromium, Browser, BrowserContext, Page } from 'playwright'
+import { chromium, Browser, BrowserContext, Page } from 'playwright';
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies, 
-  ExpectAllResultsHaveBatchAttributeValue} from '../FunctionalTests/helpermethod';
-import { attributeFileSize, attributeBusinessUnit, attributeProductType } from '../FunctionalTests/helperattributevalues'
-import { GetApiDetails } from './apiRequest'
+import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies,
+  ExpectAllResultsHaveBatchUserAttValue} from '../FunctionalTests/helpermethod';
+import { attributeFileSize, attributeBusinessUnit, attributeProductType } from '../FunctionalTests/helperconstant';
+import { GetApiDetails } from './apiRequest';
 
 describe('FSS UI E2E Scenarios', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -68,7 +68,7 @@ describe('FSS UI E2E Scenarios', () => {
     await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
-    await ExpectAllResultsHaveBatchAttributeValue(page, attributeProductType.value);
+    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
 
     // Get the token from local storage once user logged in
     const idToken = await page.evaluate(() => { return localStorage.getItem('idToken') });
