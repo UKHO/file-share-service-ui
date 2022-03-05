@@ -1,11 +1,12 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import {SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, 
+import {SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, TryGetFileSizeInBytes,
   AcceptCookies, ExpectAllResultsHaveBatchUserAttValue,
   ExpectAllResultsContainBatchUserAttValue,
   ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount} from './helpermethod';
 import {batchAttributeSpecialChar, searchQuerySqlInjection,
   attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize} from './helperconstant';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 describe('Test Search Query Scenario On Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -157,8 +158,25 @@ describe('Test Search Query Scenario On Search Page', () => {
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
     const countWithFileSizeFilter = await GetTotalResultCount(page);
     expect(countWithFileSizeFilter).toBeTruthy();
-    
     expect(countWithFileSizeFilter).toBeLessThan(countWithoutFileSizeFilter);
+
+    // get all the file attribute tables (one per batch)
+    const fileAttTables = await page.$$(`//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}']`);
+    expect(fileAttTables.length).toBeTruthy();
+
+    const filterFileSize = parseInt(attributeFileSize.value, 10);
+
+    // each table must contain at least one file smaller than the filter 
+    for (const fileAttTable of fileAttTables) {
+      const tds = await fileAttTable.$$eval('td', nodes => nodes.map(node => node.innerText));
+      const fileCount = tds
+          .filter(innerText => innerText)
+          .map(innerText => TryGetFileSizeInBytes(innerText))
+          .filter(fileSize => fileSize && fileSize < filterFileSize)
+          .length;
+
+      expect(fileCount).toBeTruthy();
+    }
   });
 
   it('Test to verify no result for search query', async () => {

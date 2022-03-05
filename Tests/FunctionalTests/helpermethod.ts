@@ -57,24 +57,33 @@ export async function SearchAttributeSecondRow(page:Page, attributeName: string)
 //</summary>
 //<param> filesize </param>
 
-  export function  GetFileSizeInBytes(fileSize: string)
-  {
-        let fileSizeChar=fileSize.split(' ');       
-        
-        switch (fileSizeChar[1]) {
-          case "KB":
-            fileSizeInBytes=parseInt(fileSizeChar[0])*1024;
-            break;
-          case "MB":
-            fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024;
-            break;
-          case "GB":
-              fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024*1024
-            break;
-          }
-        
-      return fileSizeInBytes; 
+export function GetFileSizeInBytes(fileSize: string)
+{
+  const [digits, units] = fileSize.split(' ');
+  const digitsInt = parseInt(digits, 10);
+
+  switch (units) {
+    case 'KB':
+      return digitsInt*1024;
+    case 'MB':
+      return digitsInt*1024*1024;
+    case 'GB':
+      return digitsInt*1024*1024*1024;
   }
+
+  return digitsInt;
+}
+
+export function TryGetFileSizeInBytes(fileSize: string): number | null
+{
+  const regex = /^\S+\s(B|KB|MB|GB)$/;
+
+  if (fileSize.match(regex)) {
+    return GetFileSizeInBytes(fileSize);
+  }
+
+  return null;
+}
 
 
 export function DataCollectionComparison(collectionSource : any, collectionTarget : any)
@@ -201,7 +210,6 @@ async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePath
 
   return resultCount;
 }
-
 
 export async function GetTotalResultCount(page: Page): Promise<number>  {
   const totalResult = await page.innerText(pageObjectsConfig.totalResultCountSelector);
