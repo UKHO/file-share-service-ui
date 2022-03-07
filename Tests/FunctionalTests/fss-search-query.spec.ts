@@ -3,7 +3,8 @@ const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 import {SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, TryGetFileSizeInBytes,
   AcceptCookies, ExpectAllResultsHaveBatchUserAttValue,
   ExpectAllResultsContainBatchUserAttValue,
-  ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount} from './helpermethod';
+  ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount,
+  GetDisplayedBatchCount} from './helpermethod';
 import {batchAttributeSpecialChar, searchQuerySqlInjection,
   attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize} from './helperconstant';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
@@ -114,7 +115,8 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
-    const resultCount = await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
+    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
+    const resultCount = await GetDisplayedBatchCount(page);
         
     //Get the product counts on UI
     const paginatorText=await page.innerText(pageObjectsConfig.paginatorSelector);

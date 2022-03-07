@@ -158,23 +158,23 @@ export async function AcceptCookies(page: Page) {
 }
 
 export async function ExpectAllResultsHaveBatchUserAttValue(
-  page: Page, preciseValue: string): Promise<number> {
+  page: Page, preciseValue: string) {
 
-  return await ExpectSelectionsAreEqual(page,
+  await ExpectSelectionsAreEqual(page,
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
 }
 
 export async function ExpectAllResultsContainBatchUserAttValue(
-  page: Page, containsValue: string): Promise<number> {
+  page: Page, containsValue: string) {
 
-  return await ExpectSelectionsAreEqual(page,
+  await ExpectSelectionsAreEqual(page,
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAttValue(
-  page: Page, containsOneOf: string[]): Promise<number> {
+  page: Page, containsOneOf: string[])  {
 
   expect(containsOneOf.length).toBeTruthy();
 
@@ -182,20 +182,20 @@ export async function ExpectAllResultsContainAnyBatchUserAttValue(
     .map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
     .join(' or ');
 
-  return await ExpectSelectionsAreEqual(page,
+  await ExpectSelectionsAreEqual(page,
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
 }
 
 export async function ExpectAllResultsHaveFileAttributeValue(
-  page: Page, preciseValue: string): Promise<number> {
+  page: Page, preciseValue: string) {
 
-    return await ExpectSelectionsAreEqual(page,
+    await ExpectSelectionsAreEqual(page,
       `//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}']`,
       `//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
 }
 
-async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<number> {
+async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string) {
   //  count the result rows
   const resultCount = await page.$$eval(tablePath, matches => matches.length);
 
@@ -207,11 +207,14 @@ async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePath
 
   // assert all the resulting batches have the attribute value
   expect(withValueCount).toEqual(resultCount);
-
-  return resultCount;
 }
 
 export async function GetTotalResultCount(page: Page): Promise<number>  {
   const totalResult = await page.innerText(pageObjectsConfig.totalResultCountSelector);
   return parseInt(totalResult.split(' ')[0], 10);
+}
+
+export async function GetDisplayedBatchCount(page: Page): Promise<number> {
+  //  count the result rows
+  return await page.$$eval(`//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
 }
