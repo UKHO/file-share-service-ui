@@ -13,7 +13,7 @@ describe('FSS UI E2E Scenarios', () => {
   let page: Page;
 
   beforeAll(async () => {
-    browser = await chromium.launch({slowMo: 100, headless: true});
+    browser = await chromium.launch({slowMo: 100});
   })
 
   beforeEach(async () => {

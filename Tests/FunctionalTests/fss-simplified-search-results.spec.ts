@@ -2,7 +2,7 @@ const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 import {AcceptCookies, InsertSearchText,
   ExpectAllResultsHaveBatchUserAttValue,
-  ExpectAllResultsContainOneBatchUserAttValue,
+  ExpectAllResultsContainAnyBatchUserAttValue,
   GetTotalResultCount} from './helpermethod';
 import {attributeProductType, searchNonExistBatchAttribute} from './helperconstant';
 
@@ -71,7 +71,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
     await InsertSearchText(page, searchText);
    
     const batchAttributesValue = searchText.split(' ');
-    await ExpectAllResultsContainOneBatchUserAttValue(page, batchAttributesValue);
+    await ExpectAllResultsContainAnyBatchUserAttValue(page, batchAttributesValue);
   })
   
   it('Verify file downloaded status changed after click on download button', async () => {

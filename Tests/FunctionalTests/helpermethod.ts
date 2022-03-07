@@ -173,7 +173,7 @@ export async function ExpectAllResultsContainBatchUserAttValue(
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
 }
 
-export async function ExpectAllResultsContainOneBatchUserAttValue(
+export async function ExpectAllResultsContainAnyBatchUserAttValue(
   page: Page, containsOneOf: string[]): Promise<number> {
 
   expect(containsOneOf.length).toBeTruthy();
