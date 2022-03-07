@@ -36,7 +36,20 @@ describe('FssSearchComponent', () => {
          fssConfig: {
             "apiUrl": "https://dummyfssapiurl ",
             displaySimplifiedSearchLink: true,
-            "batchAttributes": ["product", "cellname", "weeknumber"]
+            "batchAttributes": [
+               {
+                   "attributeSortType":"alphabetical",
+                   "attribute":"product"
+               },
+               {
+                   "attributeSortType":"alphabetical",
+                   "attribute":"cellname"
+               },
+               {
+                 "attributeSortType":"numeric",
+                 "attribute":"weeknumber"
+               }
+             ]
          }
       };
       msalService = TestBed.inject(MsalService);
@@ -59,12 +72,10 @@ describe('FssSearchComponent', () => {
       const batchAttributesFromConfig = AppConfigService.settings["fssConfig"].batchAttributes;
       //as we defined 3 attributes in test configuration, i.e. "batchAttributes": ["product","cellname","weeknumber"]
       const expectedFilterGroupLengthFromConfig = 3;
-
       component.transformSearchAttributesToFilter(inputSearchResultMockData);
       expect(component.filterGroups.length).toEqual(expectedFilterGroupLengthFromConfig);
-
       expect(component.filterGroups.filter(filterGroup => filterGroup.hasOwnProperty("title")).map(filterGroup => filterGroup["title"]))
-         .toEqual(batchAttributesFromConfig);
+         .toEqual(batchAttributesFromConfig.map((x:any)=>x["attribute"]));
    });
 
 });

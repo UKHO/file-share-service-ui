@@ -282,20 +282,24 @@ export class FssSearchComponent implements OnInit {
     configAttributes = AppConfigService.settings["fssConfig"].batchAttributes;
 
     if (configAttributes.length > 0 && attributeSearchResults.length > 0) {
-      configAttributes.forEach(element => {
-        const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.toLowerCase());
+      for(let element of configAttributes){
+        const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
         if (attribute) {
           this.filterGroups.push({
-            title: element,
-            items: this.getAttributesValues(attribute["values"]),
+            title: element.attribute,
+            items: this.getAttributesValues(attribute["values"], element.attributeSortType),
             expanded: true
           });
         }
-      });
+      }
     }
   }
 
-  getAttributesValues(attributeValues: Array<any> = []) {
+  getAttributesValues(attributeValues: Array<any> = [],attributeSortType: any) {
+    if(attributeSortType==="numeric"){
+      attributeValues.sort((a,b) => a.localeCompare(b, 'en', {numeric: true}));
+    }
+
     const batchAttributeValues: FilterItem[] = [];
     for (let i = 0; i < attributeValues.length; i++) {
       batchAttributeValues.push({
