@@ -2,8 +2,8 @@ import { chromium,Browser, Page } from 'playwright'
 import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies } from '../FunctionalTests/helpermethod'
-import {batchAttributeProductContains} from '../FunctionalTests/helperconstant'
+import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies } from '../FunctionalTests/helpermethod';
+import {attributeProductType} from '../FunctionalTests/helperconstant';
 
 let browser: Browser
 let page: Page
@@ -20,9 +20,9 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
     
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-    await SearchAttribute(page,"productid");
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");     
-    await page.fill(pageObjectsConfig.inputSearchValueSelector,batchAttributeProductContains);
+    await SearchAttribute(page, attributeProductType.key);
+    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");
+    await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
 

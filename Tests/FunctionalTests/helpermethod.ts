@@ -1,6 +1,5 @@
 import { Page } from 'playwright';
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-let fileSizeInBytes: any;
 
 //<summary>
 // Sign In to FSS UI using valid credentials
@@ -57,24 +56,33 @@ export async function SearchAttributeSecondRow(page:Page, attributeName: string)
 //</summary>
 //<param> filesize </param>
 
-  export function  GetFileSizeInBytes(fileSize: string)
-  {
-        let fileSizeChar=fileSize.split(' ');       
-        
-        switch (fileSizeChar[1]) {
-          case "KB":
-            fileSizeInBytes=parseInt(fileSizeChar[0])*1024;
-            break;
-          case "MB":
-            fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024;
-            break;
-          case "GB":
-              fileSizeInBytes=parseInt(fileSizeChar[0])*1024*1024*1024
-            break;
-          }
-        
-      return fileSizeInBytes; 
+export function GetFileSizeInBytes(fileSize: string)
+{
+  const [digits, units] = fileSize.split(' ');
+  const digitsInt = parseInt(digits, 10);
+
+  switch (units) {
+    case 'KB':
+      return digitsInt*1024;
+    case 'MB':
+      return digitsInt*1024*1024;
+    case 'GB':
+      return digitsInt*1024*1024*1024;
   }
+
+  return digitsInt;
+}
+
+export function TryGetFileSizeInBytes(fileSize: string): number | null
+{
+  const regex = /^\S+\s(B|KB|MB|GB)$/;
+
+  if (fileSize.match(regex)) {
+    return GetFileSizeInBytes(fileSize);
+  }
+
+  return null;
+}
 
 
 export function DataCollectionComparison(collectionSource : any, collectionTarget : any)
@@ -146,4 +154,66 @@ export async function AcceptCookies(page: Page) {
       await page.waitForTimeout(step);
     }
   }
+}
+
+export async function ExpectAllResultsHaveBatchUserAttValue(
+  page: Page, preciseValue: string): Promise<void> {
+
+  await ExpectSelectionsAreEqual(page,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+}
+
+export async function ExpectAllResultsContainBatchUserAttValue(
+  page: Page, containsValue: string): Promise<void> {
+
+  await ExpectSelectionsAreEqual(page,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
+}
+
+export async function ExpectAllResultsContainAnyBatchUserAttValue(
+  page: Page, containsOneOf: string[]): Promise<void>  {
+
+  expect(containsOneOf.length).toBeTruthy();
+
+  const tdPredicate = containsOneOf
+    .map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
+    .join(' or ');
+
+  await ExpectSelectionsAreEqual(page,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
+    `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
+}
+
+export async function ExpectAllResultsHaveFileAttributeValue(
+  page: Page, preciseValue: string): Promise<void> {
+
+    await ExpectSelectionsAreEqual(page,
+      `//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}']`,
+      `//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+}
+
+async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {
+  //  count the result rows
+  const resultCount = await page.$$eval(tablePath, matches => matches.length);
+
+  // fail if there are no matching selections
+  expect(resultCount).toBeTruthy();
+
+  // count the result rows with the attribute value
+  const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
+
+  // assert all the resulting batches have the attribute value
+  expect(withValueCount).toEqual(resultCount);
+}
+
+export async function GetTotalResultCount(page: Page): Promise<number>  {
+  const totalResult = await page.innerText(pageObjectsConfig.totalResultCountSelector);
+  return parseInt(totalResult.split(' ')[0], 10);
+}
+
+export async function GetCountOfBatchRows(page: Page): Promise<number> {
+  //  count the result rows
+  return await page.$$eval(`//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
 }
