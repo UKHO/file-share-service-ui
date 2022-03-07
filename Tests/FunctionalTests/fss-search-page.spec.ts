@@ -1,42 +1,17 @@
-import { chromium, Browser, BrowserContext, Page } from 'playwright'
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
-import {LoginPortal,SearchAttribute} from './helpermethod'
+import {AcceptCookies, SearchAttribute} from './helpermethod'
 import {stringOperatorList,symbolOperatorListForFileSize, symbolOperatorListForDate} from './helperconstant'
-
 
 describe('Test Search Attribute Scenario On Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-  let browser: Browser;
-  let context: BrowserContext;
-  let page: Page;  
-
-  beforeAll(async () => {
-    browser = await chromium.launch({slowMo:100});   
-  })
   
   beforeEach(async () => {
-    context = await browser.newContext();
-    page = await context.newPage();    
     await page.goto(autoTestConfig.url)
-    await page.waitForTimeout(pageTimeOut.delay)
-    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
-      await page.click(pageObjectsConfig.acceptCookieSelector);
-    }
-    page.click(pageObjectsConfig.searchButtonSelector);
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);    
+    await AcceptCookies(page);
     
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
-  })
-
-  afterEach(async () => {
-    await page.close()
-    await context.close()
-    })
-
-  afterAll(async () => {     
-     await browser.close()
   })
 
   it('Does it display "Simplified Search" link on advanced Search page', async () => {

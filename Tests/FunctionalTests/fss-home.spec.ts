@@ -1,33 +1,23 @@
-import { Browser, BrowserContext, chromium, Page } from 'playwright';
+import { BrowserContext, Page } from 'playwright';
+import { AcceptCookies } from './helpermethod';
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 
 describe('Test Home Page Scenario', () => {
     jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-    let browser: Browser;
     let context: BrowserContext;
     let page: Page;
-    beforeAll(async () => {
-        browser = await chromium.launch({ slowMo: 100 });
-    })
 
     beforeEach(async () => {
         context = await browser.newContext();
         page = await context.newPage();
         await page.goto(autoTestConfig.url)
-        await page.waitForTimeout(pageTimeOut.delay)
-        if ((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0) {
-            await page.click(pageObjectsConfig.acceptCookieSelector);            
-        }
+        await AcceptCookies(page);
     })
 
     afterEach(async () => {
         await page.close()
         await context.close()
-    })
-
-    afterAll(async () => {
-        await browser.close()
     })
 
     test('Does it contains correct header text', async () => {
@@ -58,8 +48,6 @@ describe('Test Home Page Scenario', () => {
     })
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
-        await page.goto(autoTestConfig.url)
-        await page.waitForTimeout(pageTimeOut.delay);
         await page.click(pageObjectsConfig.marinedataportalLinkSelector);
         page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
         expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector, "title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);

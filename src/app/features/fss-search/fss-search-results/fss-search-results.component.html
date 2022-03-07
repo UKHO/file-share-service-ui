@@ -1,4 +1,4 @@
-<div class="result-margin" *ngFor="let batch of searchResultVM">
+<div class="result-margin" *ngFor="let batch of searchResultVM" id="{{batch.BatchID.value}}">
   <ukho-card>
     <table class="attribute-table">
       <caption class="sr-only">Attributes for Batch ID {{batch.BatchID.value}} </caption>
@@ -10,7 +10,8 @@
       </tr>
     </table>
 
-    <ukho-expansion class="expansionLabel" heading="Choose files to download" [alignHeadingRight]=true [initialExpanded]=false>
+    <ukho-expansion class="expansionLabel" heading="Choose files to download" [alignHeadingRight]=true
+      [initialExpanded]=false>
       <table class="system-attribute-table">
         <caption class="sr-only">Details for Batch ID {{batch.BatchID.value}} </caption>
         <tr>
@@ -24,7 +25,7 @@
           <td>{{batch.ExpiryDate.value| date:'dd/MM/yyyy HH:mm'}}</td>
         </tr>
       </table>
-      
+
       <table ukho-table [dataSource]="batch.batchFileDetails.rowData">
         <caption class="sr-only">Dowload files for Batch ID {{batch.BatchID.value}}</caption>
         <ng-container ukhoColumnDef="FileName">
@@ -41,11 +42,19 @@
         </ng-container>
         <ng-container ukhoColumnDef="Download">
           <th ukho-header-cell *ukhoHeaderCellDef>Download</th>
-          <td ukho-cell *ukhoCellDef="let element"><div class="fileDownload" [attr.rel]="element.FileLink" tabindex="0" role="button" attr.aria-label="Download File for {{element.FileName}}"><i class="fa fa-download fa-1x"></i></div></td>
+          <td ukho-cell *ukhoCellDef="let element">
+            <div class="fileDownload" [attr.rel]="element.FileLink" tabindex="0" role="button"
+              attr.aria-label="Download File for {{element.FileName}}"><i class="fa fa-download fa-1x"></i></div>
+          </td>
         </ng-container>
         <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
         <tr ukho-row *ukhoRowDef="let row; columns: batch.batchFileDetails.columnData"></tr>
       </table>
+      <ng-container *ngIf="batch.allFilesZipSize">
+        <p class="downloadAllTextRight">
+          <ukho-button [secondary]="true">Download all</ukho-button>
+        </p>
+      </ng-container>
     </ukho-expansion>
   </ukho-card>
 </div>

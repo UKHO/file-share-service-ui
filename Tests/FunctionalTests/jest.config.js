@@ -8,11 +8,8 @@
     transform: {
       "^.+\\.(ts)$": "ts-jest",
     },
-    testEnvironmentOptions: {
-      'jest-playwright': {
-      },
-    },
     testPathIgnorePatterns: ['/node_modules/'],
-    testTimeout: 120000
+    testTimeout: 120000,
+    globalSetup: "./global-setup.js"
   }
 

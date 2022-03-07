@@ -2,10 +2,11 @@ import { chromium, Browser, Page } from 'playwright'
 import { injectAxe,checkA11y } from 'axe-playwright'
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
 const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal} from '../FunctionalTests/helpermethod'
+import { AcceptCookies, LoginPortal} from '../FunctionalTests/helpermethod';
+import { attributeProductType } from '../FunctionalTests/helperconstant';
 
-let browser: Browser
-let page: Page
+let browser: Browser;
+let page: Page;
 
 describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -14,12 +15,9 @@ describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
     page = await browser.newPage();
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
-    await page.waitForTimeout(pageTimeOut.delay)
-    if((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0){
-      await page.click(pageObjectsConfig.acceptCookieSelector);
-    }
-    page.click(pageObjectsConfig.loginSignInLinkSelector);
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
+    await AcceptCookies(page);
+
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
 
     await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
@@ -60,7 +58,7 @@ describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
   })
 
   test('check a11y for simplified search result html and axe run options', async () => {
-    await page.fill(pageObjectsConfig.inputSimplifiedSearchBoxSelector,"tes");
+    await page.fill(pageObjectsConfig.inputSimplifiedSearchBoxSelector, attributeProductType.value);
     await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
     await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
     await injectAxe(page);

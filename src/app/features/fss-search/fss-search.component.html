@@ -30,7 +30,7 @@
   <div *ngIf="displaySearchResult">
     <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
       <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"
-        [filterGroups]="filterGroups"></app-fss-simplified-filter>
+      (onApplyFilterButtonClicked)="onApplyFilterButtonClicked($event)" [filterGroups]="filterGroups"></app-fss-simplified-filter>
       <div>
         <h2>
           <span class="totalResultLabel" *ngIf="searchResultTotal == 1">{{this.searchResultTotal}} result found</span>

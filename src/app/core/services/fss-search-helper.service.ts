@@ -18,7 +18,10 @@ export class FssSearchHelperService {
 
     var fieldDataType = this.getFieldDataType(changedFieldValue, fields);
     // getFieldRow
-
+    
+    if(fieldDataType && changedFieldRow!.value){
+      return changedFieldRow;
+    }
     // SetDefaultValueFormControl based on fieldDataType
     this.setValueFormControl(fieldDataType, changedFieldRow!);
     // getFilteredOperators

@@ -4,6 +4,7 @@ export interface SearchResultViewModel{
     BatchID: BatchAttribute;
     BatchPublishedDate: BatchAttribute;
     ExpiryDate: BatchAttribute;
+    allFilesZipSize:number;
   }
   
   export interface BatchAttribute {

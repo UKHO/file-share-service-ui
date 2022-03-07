@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FilterGroup } from '@ukho/design-system';
 
 @Component({
@@ -9,9 +9,15 @@ import { FilterGroup } from '@ukho/design-system';
 export class FssSimplifiedFilterComponent implements OnInit{
 
   @Input() public filterGroups: FilterGroup[] = [];
- 
+  @Output() onApplyFilterButtonClicked = new EventEmitter<FilterGroup[]>();
 
   constructor() { }
   ngOnInit(): void { }
+
+
+  onApplyFilterClick(filterGroups: FilterGroup[])
+  {
+    this.onApplyFilterButtonClicked.emit(filterGroups);
+  }
 
 } 

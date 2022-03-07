@@ -74,7 +74,6 @@ export class UIGroupingDetails{
   uiGroupings: UIGrouping[];
 }
 
-
 export enum SearchType {
   SimplifiedSearch,
   AdvancedSearch  

@@ -1,7 +1,8 @@
 import { chromium, Browser, Page } from 'playwright'
 import { injectAxe, checkA11y} from 'axe-playwright'
+import { AcceptCookies } from '../FunctionalTests/helpermethod';
 const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
-const{pageTimeOut, pageObjectsConfig} =require('../FunctionalTests/pageObjects.json');
+const{ pageTimeOut } = require('../FunctionalTests/pageObjects.json');
 
 let browser: Browser
 let page: Page
@@ -13,16 +14,16 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
     page = await browser.newPage()
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
     await page.goto(autoTestConfig.url)
-    await page.waitForTimeout(pageTimeOut.delay)
-        if ((await page.$$(pageObjectsConfig.acceptCookieSelector)).length > 0) {
-            await page.click(pageObjectsConfig.acceptCookieSelector);            
-        }
+    await AcceptCookies(page);
     await injectAxe(page)
   })
 
   test('check a11y for the whole page and axe run options', async () => {
     await checkA11y(page, undefined, {
       axeOptions: {
+        rules: {
+          'color-contrast': { enabled: false }    
+        },
         runOnly: {
           type: 'tag',
           values: ['wcag2aa'],
