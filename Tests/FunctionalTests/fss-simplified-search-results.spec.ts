@@ -69,7 +69,8 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
   it('Verify search results for multiple batch attributes search', async () => {
     const searchText = `L1K2 ${attributeProductType.value}`;
     await InsertSearchText(page, searchText);
-   
+    
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
     const batchAttributesValue = searchText.split(' ');
     await ExpectAllResultsContainAnyBatchUserAttValue(page, batchAttributesValue);
   })

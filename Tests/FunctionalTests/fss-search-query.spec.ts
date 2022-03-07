@@ -4,7 +4,7 @@ import {SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, TryGetFileSiz
   AcceptCookies, ExpectAllResultsHaveBatchUserAttValue,
   ExpectAllResultsContainBatchUserAttValue,
   ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount,
-  GetDisplayedBatchCount} from './helpermethod';
+  GetCountOfBatchRows} from './helpermethod';
 import {batchAttributeSpecialChar, searchQuerySqlInjection,
   attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize} from './helperconstant';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
@@ -116,7 +116,7 @@ describe('Test Search Query Scenario On Search Page', () => {
 
     await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
-    const resultCount = await GetDisplayedBatchCount(page);
+    const resultCount = await GetCountOfBatchRows(page);
         
     //Get the product counts on UI
     const paginatorText=await page.innerText(pageObjectsConfig.paginatorSelector);

@@ -1,6 +1,5 @@
 import { Page } from 'playwright';
 const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-let fileSizeInBytes: any;
 
 //<summary>
 // Sign In to FSS UI using valid credentials
@@ -158,7 +157,7 @@ export async function AcceptCookies(page: Page) {
 }
 
 export async function ExpectAllResultsHaveBatchUserAttValue(
-  page: Page, preciseValue: string) {
+  page: Page, preciseValue: string): Promise<void> {
 
   await ExpectSelectionsAreEqual(page,
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
@@ -166,7 +165,7 @@ export async function ExpectAllResultsHaveBatchUserAttValue(
 }
 
 export async function ExpectAllResultsContainBatchUserAttValue(
-  page: Page, containsValue: string) {
+  page: Page, containsValue: string): Promise<void> {
 
   await ExpectSelectionsAreEqual(page,
     `//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`,
@@ -174,7 +173,7 @@ export async function ExpectAllResultsContainBatchUserAttValue(
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAttValue(
-  page: Page, containsOneOf: string[])  {
+  page: Page, containsOneOf: string[]): Promise<void>  {
 
   expect(containsOneOf.length).toBeTruthy();
 
@@ -188,14 +187,14 @@ export async function ExpectAllResultsContainAnyBatchUserAttValue(
 }
 
 export async function ExpectAllResultsHaveFileAttributeValue(
-  page: Page, preciseValue: string) {
+  page: Page, preciseValue: string): Promise<void> {
 
     await ExpectSelectionsAreEqual(page,
       `//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}']`,
       `//table[@class='${pageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
 }
 
-async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string) {
+async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {
   //  count the result rows
   const resultCount = await page.$$eval(tablePath, matches => matches.length);
 
@@ -214,7 +213,7 @@ export async function GetTotalResultCount(page: Page): Promise<number>  {
   return parseInt(totalResult.split(' ')[0], 10);
 }
 
-export async function GetDisplayedBatchCount(page: Page): Promise<number> {
+export async function GetCountOfBatchRows(page: Page): Promise<number> {
   //  count the result rows
   return await page.$$eval(`//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
 }
