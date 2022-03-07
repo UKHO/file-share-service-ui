@@ -5,9 +5,10 @@ import {SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, TryGetFileSiz
   ExpectAllResultsContainBatchUserAttValue,
   ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount,
   GetCountOfBatchRows} from './helpermethod';
-import {batchAttributeSpecialChar, searchQuerySqlInjection,
-  attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize} from './helperconstant';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize, searchNonExistBatchAttribute} from './helperconstant';
+
+const searchQuerySqlInjection = "adds''; drop table BatchAttribute";
+const batchAttributeSpecialChar = '$£';
 
 describe('Test Search Query Scenario On Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
