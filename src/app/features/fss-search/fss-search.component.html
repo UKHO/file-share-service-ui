@@ -37,7 +37,7 @@
         <h2>
           <span class="totalResultLabel" *ngIf="searchResultTotal == 1" role="alert">{{this.searchResultTotal}} result found</span>
           <span class="totalResultLabel" *ngIf="searchResultTotal > 1" role="alert">{{this.searchResultTotal}} results found</span>
-          <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel" role="alert"> {{this.paginatorLabel}}</span>
+          <span #showSearchResult *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel" role="alert"> {{this.paginatorLabel}}</span>
         </h2>
         <app-fss-search-results class="SimplifiedSearchResult" id="skipResultsLink" tabindex="-1" [searchResult]="searchResult"
           (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>

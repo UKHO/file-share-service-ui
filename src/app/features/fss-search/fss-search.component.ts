@@ -33,7 +33,8 @@ export class FssSearchComponent implements OnInit {
   pageRecordCount: number = 10;
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;  
+  @ViewChild("showSearchResult") showSearchResult: ElementRef;
   activeSearchType: SearchType;
   displayPopularSearch: boolean;
   eventPopularSearch: Subject<void> = new Subject<void>();
@@ -284,6 +285,12 @@ export class FssSearchComponent implements OnInit {
     }
     else {
       this.handleTokenExpiry();
+    }
+    if (this.searchResult.length > 0) {
+      if (this.showSearchResult !== undefined) {
+        this.showSearchResult.nativeElement.setAttribute('tabindex', '0');
+        this.showSearchResult.nativeElement.focus();
+      }
     }
   }
 
