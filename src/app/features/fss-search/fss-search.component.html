@@ -28,16 +28,18 @@
     [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
   <div *ngIf="displaySearchResult">
+    <a class="skip-to-content-link skipResults section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" [routerLink]="[currentUrl]" [fragment]="'skipResultsLink'" >Skip to Search Results </a>
     <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
+      
       <app-fss-simplified-filter *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"
       (onApplyFilterButtonClicked)="onApplyFilterButtonClicked($event)" [filterGroups]="filterGroups"></app-fss-simplified-filter>
-      <div>
+      <div >
         <h2>
-          <span class="totalResultLabel" *ngIf="searchResultTotal == 1">{{this.searchResultTotal}} result found</span>
-          <span class="totalResultLabel" *ngIf="searchResultTotal > 1">{{this.searchResultTotal}} results found</span>
-          <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel"> {{this.paginatorLabel}}</span>
+          <span class="totalResultLabel" *ngIf="searchResultTotal == 1" role="alert">{{this.searchResultTotal}} result found</span>
+          <span class="totalResultLabel" *ngIf="searchResultTotal > 1" role="alert">{{this.searchResultTotal}} results found</span>
+          <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel" role="alert"> {{this.paginatorLabel}}</span>
         </h2>
-        <app-fss-search-results class="SimplifiedSearchResult" [searchResult]="searchResult"
+        <app-fss-search-results class="SimplifiedSearchResult" id="skipResultsLink" tabindex="-1" [searchResult]="searchResult"
           (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
       </div>
     </div>

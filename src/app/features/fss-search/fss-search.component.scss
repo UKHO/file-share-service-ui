@@ -23,3 +23,11 @@
 .pagination{    
 	padding-left:70%;
 }
+
+.skipResults{
+    left:-15%;
+    &:focus{
+        left: 5%;
+        transform: translateY(-100%);
+    }
+}
