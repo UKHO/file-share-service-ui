@@ -1,8 +1,7 @@
 <div>
     <div class="simplifiedSection">
-      <label for="Search">Search</label> <br>   
-        <ukho-textinput class="simplifiedTextbox" [(ngModel)]="fieldValue"></ukho-textinput>
-        <ukho-button (click)="getSimplifiedSearchResult()">Search</ukho-button>
+        <ukho-textinput label="Search" class="simplifiedTextbox" [(ngModel)]="fieldValue"  (keyup.enter)="getSimplifiedSearchResult()"></ukho-textinput>
+        <ukho-button class="siplifideSearchBtn" (click)="getSimplifiedSearchResult()">Search</ukho-button>
     </div>
     <a href="javascript:void(0)" class="switchToAdvanced" (click)="searchToSimplifiedSearch()">Advanced Search</a>
 </div>

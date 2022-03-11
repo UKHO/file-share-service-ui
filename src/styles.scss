@@ -294,8 +294,9 @@ ukho-textinput.text-input-wrap{
 }
 
 
-@media (max-width:1024px){
-
+.siplifideSearchBtn button.primary{
+	margin-top: 28px;
+    height: 55px;
 }
 
 ukho-textinput.text-input-wrap .error-text{
