@@ -31,3 +31,12 @@
         transform: translateY(-100%);
     }
 }
+
+
+.SkipToFilter {
+    left: -10%;
+    &:focus{
+        left: 45%;
+        transform: translateY(-100%);
+    }
+}
