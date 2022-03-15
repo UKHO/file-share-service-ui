@@ -7,7 +7,7 @@
 
   <div #ukhoTarget>
 
-    <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite">
+    <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite" tabindex="-1">
       <h3>{{messageTitle}}</h3>
       <div>{{messageDesc}}</div>
       <div *ngIf="loginErrorDisplay">

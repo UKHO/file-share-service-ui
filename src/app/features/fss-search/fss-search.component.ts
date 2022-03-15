@@ -284,16 +284,17 @@ export class FssSearchComponent implements OnInit {
           }
         );
       }
+      if (this.searchResult.length > 0) {
+        if (this.showSearchResult !== undefined) {
+          this.showSearchResult.nativeElement.setAttribute('tabindex', '0');
+          this.showSearchResult.nativeElement.focus();
+        }
+      }
     }
     else {
       this.handleTokenExpiry();
     }
-    if (this.searchResult.length > 0) {
-      if (this.showSearchResult !== undefined) {
-        this.showSearchResult.nativeElement.setAttribute('tabindex', '0');
-        this.showSearchResult.nativeElement.focus();
-      }
-    }
+   
   }
 
   popularSearchClicked(popularSearch: any) {
