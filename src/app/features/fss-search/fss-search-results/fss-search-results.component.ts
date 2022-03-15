@@ -108,6 +108,10 @@ export class FssSearchResultsComponent implements OnChanges {
       }
     }
   }
+
+  DownloadAll(){
+    
+  }
 }
 
 // Convert file size from bytes to respective size units

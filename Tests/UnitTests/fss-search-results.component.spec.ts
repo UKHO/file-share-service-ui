@@ -175,11 +175,12 @@ describe('FssSearchResultsComponent', () => {
         let css = "[id='" + item.BatchID.value + "']";
         const home = fixture.debugElement.query(By.css(css)).nativeElement;
         if (item.allFilesZipSize) {
-          expect(home.querySelector("ukho-button").textContent).toEqual("Download all");
+          expect(home.querySelector("a").textContent).toEqual("Download all");
         }
         else
         {
-          expect(home.querySelector("ukho-button")).toBeNull();
+          expect(home.querySelector("ukho-dialogue").textContent).toEqual("'Download all' function will be available when the files have been prepared You can select and download individual files, or try again later ");
+          expect(home.querySelector("a").textContent).toEqual("Download all");
         }
       });
     });
