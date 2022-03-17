@@ -26,7 +26,7 @@ describe('FSS UI E2E Scenarios', () => {
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector))
       .toEqual(pageObjectsConfig.searchPageContainerHeaderText);
-    await page.click(pageObjectsConfig.advancedSearchLinkSelector);
+    await page.click(pageObjectsConfig.advancedSearchLinkSelector, {force: true});
 
   })
 

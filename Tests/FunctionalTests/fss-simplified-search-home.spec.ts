@@ -38,7 +38,7 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
 
   it('Verify user clicks on "Advanced Search" link navigates to Advanced Search page', async () => {
     await page.waitForSelector(pageObjectsConfig.advancedSearchLinkSelector);
-    await page.click(pageObjectsConfig.advancedSearchLinkSelector);
+    await page.click(pageObjectsConfig.advancedSearchLinkSelector, {force: true});
     await page.waitForSelector(pageObjectsConfig.advancedSearchAddLineSelector);
     await page.click(pageObjectsConfig.advancedSearchAddLineSelector);
     await page.waitForSelector(pageObjectsConfig.advancedSearchTableSelector);   

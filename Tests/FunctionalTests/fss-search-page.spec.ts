@@ -12,7 +12,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
-    await page.click(pageObjectsConfig.advancedSearchLinkSelector);
+    await page.click(pageObjectsConfig.advancedSearchLinkSelector, {force: true});
   })
 
   it('Does it display "Simplified Search" link on advanced Search page', async () => {

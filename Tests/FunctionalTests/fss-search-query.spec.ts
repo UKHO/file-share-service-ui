@@ -20,7 +20,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector))
         .toEqual(pageObjectsConfig.searchPageContainerHeaderText);
-    await page.click(pageObjectsConfig.advancedSearchLinkSelector);
+    await page.click(pageObjectsConfig.advancedSearchLinkSelector, {force: true});
   });
 
   it('Batch Attribute table returns correct product on attribute search', async () => {
@@ -137,7 +137,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.click(pageObjectsConfig.chooseFileDownloadSelector);
 
     // Click on download button
-    await page.click(pageObjectsConfig.fileDownloadButton);
+    await page.click(pageObjectsConfig.fileDownloadButton, {force: true});
 
     // Get the file downloaded status
     const fileDownloadStatus = await page.getAttribute(pageObjectsConfig.fileDownloadButtonStatus, "class");
