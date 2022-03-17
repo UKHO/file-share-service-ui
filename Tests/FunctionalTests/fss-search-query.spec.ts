@@ -20,6 +20,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector))
         .toEqual(pageObjectsConfig.searchPageContainerHeaderText);
+    await page.click(pageObjectsConfig.advancedSearchLinkSelector);
   });
 
   it('Batch Attribute table returns correct product on attribute search', async () => {
