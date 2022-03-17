@@ -3,8 +3,8 @@ const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 import {AcceptCookies, InsertSearchText,
   ExpectAllResultsHaveBatchUserAttValue,
   ExpectAllResultsContainAnyBatchUserAttValue,
-  GetTotalResultCount} from './helpermethod';
-import {attributeProductType, searchNonExistBatchAttribute} from './helperconstant';
+  GetTotalResultCount,GetSpecificAttributeCount,filterCheckBox,ExpectAllResultsContainBatchUserAttValue} from './helpermethod';
+import {attributeProductType, searchNonExistBatchAttribute,batchAttributeKeys,attributeMediaType} from './helperconstant';
 
 describe('Test Search Result Scenario On Simplified Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -94,5 +94,78 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
      const fileDownloadStatus=await page.getAttribute(pageObjectsConfig.fileDownloadButtonStatus,"class");
      expect(fileDownloadStatus).toContain("check");    
   })
+
+  it('Verify search results specific batch attributes on filter panel', async () => {
+    await InsertSearchText(page, attributeProductType.value);
+
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
+
+    const filterSpeficAttributeCount=await GetSpecificAttributeCount(page, attributeProductType.key, attributeProductType.value );
+    
+    expect(filterSpeficAttributeCount).toEqual(1);    
+    
+  })
+
+  it('Verify configured batch attributes will be displayed on the filter panel', async () => {
+    await InsertSearchText(page, attributeProductType.value);
+
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
+
+    const configuredBatchAttibutes=await page.$$eval(pageObjectsConfig.filterBatchAttributes ,elements => { return elements.map(element => element.textContent) });
+    
+    var match = (batchAttributeKeys.length == configuredBatchAttibutes.length) && batchAttributeKeys.every(function(element, index) {
+      return element === configuredBatchAttibutes[index]; 
+     });
+  
+    expect(match).toBeTruthy();           
+    
+  })
+
+  it('Verify batch attributes filter can select or deselect', async () => {
+    await InsertSearchText(page, attributeProductType.value);
+
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
+    //select filter check box 
+    await page.check(await filterCheckBox(attributeProductType.key, attributeProductType.value));
+    await page.check(await filterCheckBox(attributeMediaType.key, attributeMediaType.value)); 
+    
+    // Assert the filter checked state
+    expect(await page.isChecked(await filterCheckBox(attributeProductType.key, attributeProductType.value))).toBeTruthy()
+    expect(await page.isChecked(await filterCheckBox(attributeMediaType.key, attributeMediaType.value))).toBeTruthy()   
+  
+   //clicks on clear filter buttton
+    await page.click(pageObjectsConfig.clearFilterButton);
+
+    // Assert the filter checked state
+    expect(await page.isChecked(await filterCheckBox(attributeProductType.key, attributeProductType.value))).toBeFalsy()
+    expect(await page.isChecked(await filterCheckBox(attributeMediaType.key, attributeMediaType.value))).toBeFalsy()   
+  
+  })
+
+  it('Select batch attributes filter and clicks on Apply filters button and refine the search', async () => {
+    await InsertSearchText(page, attributeProductType.value);
+
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
+    //select batch attributes filter
+    await page.check(await filterCheckBox(attributeProductType.key, attributeProductType.value));
+    await page.check(await filterCheckBox(attributeMediaType.key, attributeMediaType.value)); 
+    
+    // Assert the filter checked state
+    expect(await page.isChecked(await filterCheckBox(attributeProductType.key, attributeProductType.value))).toBeTruthy()
+    expect(await page.isChecked(await filterCheckBox(attributeMediaType.key, attributeMediaType.value))).toBeTruthy()   
+  
+   //clicks on clear filter buttton
+    await page.click(pageObjectsConfig.applyFilterButton);
+
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+    await ExpectAllResultsContainBatchUserAttValue(page,attributeProductType.value);
+    await ExpectAllResultsContainBatchUserAttValue(page,attributeMediaType.value);  
+  })
+
+
 
 })

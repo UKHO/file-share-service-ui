@@ -81,7 +81,10 @@
        "simplifiedTableRowsSelector" :  "//*[contains(@class, 'SimplifiedSearchResult')]//table[@class='attribute-table']//tr[.//td]",
        "paginatorTextSelector" : "[aria-label='pagination']>p",
        "paginatorLinkPrevious" : "a[aria-label='Previous Page']",
-       "paginatorLinkNext":"a[aria-label='Next Page']"  
+       "paginatorLinkNext":"a[aria-label='Next Page']",
+       "filterBatchAttributes" : ".filters h3",
+       "clearFilterButton": "button.text-link[type='reset']",
+       "applyFilterButton": "//button[text()='Apply filters']"
     },
     "pageTimeOut":
     {
