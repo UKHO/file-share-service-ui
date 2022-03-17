@@ -1,6 +1,6 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
-import {AcceptCookies, SearchAttribute} from './helpermethod'
+import {AcceptCookies, SearchAttribute,ClickWaitRetry} from './helpermethod'
 import {stringOperatorList,symbolOperatorListForFileSize, symbolOperatorListForDate} from './helperconstant'
 
 describe('Test Search Attribute Scenario On Search Page', () => {
@@ -22,9 +22,8 @@ describe('Test Search Attribute Scenario On Search Page', () => {
     expect(simplifiedSearchLink).toEqual(pageObjectsConfig.simplifiedSearchLinkText);
   })
   
-  it('Verify if click search button without selecting a field value', async () => {   
-    await page.click(pageObjectsConfig.searchAttributeButton);
-
+  it('Verify if click search button without selecting a field value', async () => { 
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector);
     var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
     expect(errorMessage).toContain(pageObjectsConfig.warningMessageValue);
   })
