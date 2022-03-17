@@ -63,7 +63,7 @@ describe('FssHeaderComponent', () => {
     const fixture = TestBed.createComponent(FssHeaderComponent);
     fixture.detectChanges();
     const header = fixture.debugElement.query(By.css('ukho-header')).nativeElement;
-    expect(header.querySelector('h2').textContent).toContain(AppConfigService.settings["fssConfig"].fssTitle);
+    expect(header.querySelector('h1').textContent).toContain(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist', () => {
