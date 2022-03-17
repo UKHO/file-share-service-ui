@@ -109,7 +109,7 @@ export class FssSearchResultsComponent implements OnChanges {
     }
   }
 
-  DownloadAll(){
+  downloadAll(){
     
   }
 }
