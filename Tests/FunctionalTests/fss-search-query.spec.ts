@@ -136,7 +136,7 @@ describe('Test Search Query Scenario On Search Page', () => {
     await page.click(pageObjectsConfig.chooseFileDownloadSelector);
 
     // Click on download button
-    await page.click(pageObjectsConfig.fileDownloadButton);
+    await page.click(pageObjectsConfig.fileDownloadButton, {force: true});
 
     // Get the file downloaded status
     const fileDownloadStatus = await page.getAttribute(pageObjectsConfig.fileDownloadButtonStatus, "class");
