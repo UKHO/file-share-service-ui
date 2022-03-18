@@ -6,16 +6,20 @@ import { PublicClientApplication } from '@azure/msal-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router } from '@angular/router';
 
 describe('FssSearchComponent', () => {
    let component: FssSearchComponent;
    let fixture: ComponentFixture<FssSearchComponent>;
    let msalService: MsalService;
    let analyticsService: AnalyticsService;
+   let router : Router;
+   let route : ActivatedRoute;
 
    beforeEach(async () => {
       await TestBed.configureTestingModule({
-         imports: [HttpClientModule],
+         imports: [HttpClientModule, RouterTestingModule.withRoutes([])],
          declarations: [FssSearchComponent],
          schemas: [NO_ERRORS_SCHEMA],
          providers: [
@@ -58,8 +62,11 @@ describe('FssSearchComponent', () => {
 
    beforeEach(() => {
       fixture = TestBed.createComponent(FssSearchComponent);
+      router = TestBed.get(Router);
+      route = TestBed.get(ActivatedRoute);
       component = fixture.componentInstance;
       fixture.detectChanges();
+
    });
 
    it('should create FssSearchComponent', () => {

@@ -100,7 +100,7 @@ export class FssSearchResultsComponent implements OnChanges {
       if (!obj.fileShareApiService.isTokenExpired()) {//check if token is expired
         //download file and change the icon to tick when returns true
         downloadButtonElement.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
-        downloadButtonElement.currentTarget.innerHTML = '<i class="fa fa-check"></i>';
+        downloadButtonElement.currentTarget.className = 'fa fa-check';
         window.open(this.baseUrl + filePath);
       }
       else {//display "Token expired" message when token is expired        

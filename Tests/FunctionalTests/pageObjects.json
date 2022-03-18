@@ -1,11 +1,11 @@
 {
     "pageObjectsConfig":
     {
-       "homePageHeaderSelector":"#main-menu h2",
+       "homePageHeaderSelector":"#main-menu h1",
        "homePageHeaderText":"File Share Service",
        "searchLinkSelector":"ukho-header #Search >a",
        "searchLinkText":"Search",
-       "signinLinkSelector":"ukho-header [id='signInButton'] >a",
+       "signinLinkSelector":"ukho-header [id='signInButton']",
        "signinLinkText":"Sign In",
        "accessibilityLinkSelector": "text=Accessibility",
        "privacypolicyLinkSelector": "text=Privacy policy",
@@ -24,8 +24,8 @@
        "loginPopupSignInPasswordSelector" : "#password",
        "loginPopupSignInButtonSelector" : "#next",
        "loginSignInLinkSelector" : "#signInButton",
-       "loginAccountSelector" : "#accountSection",
-       "loginAccountLinkSelector" : "#accountSection #profile > a",
+       "loginAccountSelector" : ".sectionDropdown",
+       "loginAccountLinkSelector" : ".sectionDropdown .sectionDropdownItem > button",
        "searchPageContainerHeaderSelector" : "h1#main",
        "searchPageContainerHeaderText" : "Search files",
        "searchButtonSelector": "#Search",
