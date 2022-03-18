@@ -1,3 +1,24 @@
 .downloadAllTextRight{
     text-align: right;
 }
+
+div.downloadAllElement{
+    display: flex;
+    column-gap: 10px;
+}
+
+div.downloadAllDialogItem{
+    width: 88%;
+}
+
+div.downloadAllButtonItem{
+    width: 12%;
+    text-align: right;
+    margin-left: auto; 
+    margin-right: 0;
+}
+
+a.isDownloadAllDisabled {
+    cursor: not-allowed;
+    opacity: .65;
+  }
