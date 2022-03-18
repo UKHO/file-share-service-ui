@@ -16,7 +16,6 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
 
-    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
   })
  
   it('Verify No results for non existing batch attribute value search', async () => {
