@@ -81,8 +81,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
 
     //verify Choose files to download and  Download buttons are available on the page
     expect(await page.isVisible(pageObjectsConfig.chooseFileDownloadSelector)).toBeTruthy();
-    expect(await page.isVisible(pageObjectsConfig.fileDownloadButton)).toBeTruthy();    
-    
+        
      //Click on expand button
      await page.click(pageObjectsConfig.chooseFileDownloadSelector);
   
