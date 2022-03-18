@@ -19,8 +19,6 @@ describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
 
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
-
-    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
         
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(1);  

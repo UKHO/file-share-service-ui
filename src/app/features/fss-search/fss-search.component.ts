@@ -50,7 +50,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activeSearchType = SearchType.AdvancedSearch;
+    this.activeSearchType = SearchType.SimplifiedSearch;
   }
 
   ShowAdvancedSearchClicked() {
