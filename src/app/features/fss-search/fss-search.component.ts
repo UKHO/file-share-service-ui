@@ -8,6 +8,8 @@ import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
 import { FilterGroup, FilterItem } from '@ukho/design-system';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-fss-search',
@@ -31,7 +33,8 @@ export class FssSearchComponent implements OnInit {
   pageRecordCount: number = 10;
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;  
+  @ViewChild("showSearchResult") showSearchResult: ElementRef;
   activeSearchType: SearchType;
   displayPopularSearch: boolean;
   eventPopularSearch: Subject<void> = new Subject<void>();
@@ -40,13 +43,32 @@ export class FssSearchComponent implements OnInit {
   MainQueryFilterExpression: string = "";
   filterGroups: FilterGroup[] = [];
 
+  currentUrl: any = '';
+
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
-    private analyticsService: AnalyticsService) {
+    private analyticsService: AnalyticsService, private activatedRoute: ActivatedRoute,  private titleService: Title, private router: Router) {
     this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return true;
+    };
+    
+    
+     router.events.subscribe((e) => {
+        if (e instanceof NavigationEnd) {
+          if (e.url != '') {
+            this.currentUrl = e.url;
+          } else {
+            this.currentUrl ='';
+          }
+        }
+      });
+    
+   
   }
 
   ngOnInit(): void {
@@ -262,10 +284,17 @@ export class FssSearchComponent implements OnInit {
           }
         );
       }
+      if (this.searchResult.length > 0) {
+        if (this.showSearchResult !== undefined) {
+          this.showSearchResult.nativeElement.setAttribute('tabindex', '0');
+          this.showSearchResult.nativeElement.focus();
+        }
+      }
     }
     else {
       this.handleTokenExpiry();
     }
+   
   }
 
   popularSearchClicked(popularSearch: any) {

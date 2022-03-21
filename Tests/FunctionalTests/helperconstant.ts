@@ -39,5 +39,13 @@ export const attributeBusinessUnit: BatchAttribute = { key: 'BusinessUnit', valu
 export const attributeProductType: BatchAttribute = { key: 'Product Type', value: 'AVCS' };
 export const attributeFileSize: BatchAttribute = {key: 'FileSize', value: '1000'};
 export const attributeMimeType: BatchAttribute = {key: 'MimeType', value: 'text/plain'};
+export const attributeMediaType: BatchAttribute = {key: 'Media Type', value: 'DVD'};
 
 export const searchNonExistBatchAttribute = 'pqtestresult';
+
+export const batchAttributeKeys = [
+  'Media Type',
+  'Product Type',
+  'Week Number',
+  'Year'
+]

@@ -23,7 +23,8 @@
     "set-value": "4.0.1",
     "ansi-regex": "5.0.1",
     "node-forge": "1.0.0",
-    "nanoid": "3.2.0"
+    "nanoid": "3.2.0",
+    "ansi-html": "0.0.8"
   },
   "private": true,
   "dependencies": {
@@ -39,7 +40,7 @@
     "@azure/msal-angular": "^2.0.0",
     "@azure/msal-browser": "^2.14.2",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@ukho/design-system": "^4.1.2",
+    "@ukho/design-system": "^4.5.0",
     "angular-google-tag-manager": "^1.4.2",
     "jest-junit": "^12.1.0",
     "npm-force-resolutions": "0.0.10",

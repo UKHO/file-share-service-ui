@@ -170,16 +170,21 @@ describe('FssSearchResultsComponent', () => {
     component.ngOnChanges();
     tick(100);
     fixture.detectChanges();
+    expect(batches.length).toBeGreaterThan(0);
     fixture.whenStable().then(() => {
       batches.forEach((item: SearchResultViewModel) => {
-        let css = "[id='" + item.BatchID.value + "']";
-        const home = fixture.debugElement.query(By.css(css)).nativeElement;
+        let pnlBatchDetailsId = "[id='" + item.BatchID.value + "']";
+        const pnlBatchDetails = fixture.debugElement.query(By.css(pnlBatchDetailsId)).nativeElement;
         if (item.allFilesZipSize) {
-          expect(home.querySelector("ukho-button").textContent).toEqual("Download all");
+          expect(pnlBatchDetails.querySelector("a").textContent).toEqual("Download all");
+          expect(pnlBatchDetails.querySelector("a").classList.contains('isDownloadAllDisabled')).toBe(false);
+          expect(pnlBatchDetails.querySelector("ukho-dialogue")).toBeNull();
         }
         else
         {
-          expect(home.querySelector("ukho-button")).toBeNull();
+          expect(pnlBatchDetails.querySelector("a").textContent).toEqual("Download all");
+          expect(pnlBatchDetails.querySelector("a").classList.contains('isDownloadAllDisabled')).toBe(true);
+          expect(pnlBatchDetails.querySelector("ukho-dialogue").textContent).toEqual("'Download all' function will be available when the files have been prepared You can select and download individual files, or try again later ");
         }
       });
     });
