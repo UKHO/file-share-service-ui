@@ -75,7 +75,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     ];
 
     this.authOptions = {
-      signInButtonText: 'Sign in',
+      signedInButtonText: 'Sign in',
       signInHandler: (() => { this.logInPopup(); }),
       signOutHandler: (() => { }),
       isSignedIn: (() => { return false }),
@@ -135,7 +135,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.userName = this.firstName + ' ' + this.lastName;
     this.authOptions =
     {
-      signInButtonText: this.userName,
+      signedInButtonText: this.userName,
       signInHandler: (() => { }),
       signOutHandler: (() => { this.msalService.logout(); }),
       isSignedIn: (() => { return true }),

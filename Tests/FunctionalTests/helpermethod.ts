@@ -217,3 +217,18 @@ export async function GetCountOfBatchRows(page: Page): Promise<number> {
   //  count the result rows
   return await page.$$eval(`//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
 }
+
+export async function GetSpecificAttributeCount(page: Page,batchAtributeType : string, batchAttributeValue : string) : Promise<number>{
+
+  let searchString=`//ukho-expansion[.//h3[text()='${batchAtributeType}']]//ukho-checkbox/label[text()='${batchAttributeValue}']`
+  const resultCount = await page.$$eval(searchString, matches => matches.length);
+  return resultCount
+  
+}
+
+export async function filterCheckBox(batchAtributeType: string, batchAttributeValue : string) : Promise<string>{
+  
+  let checkBoxMatch=`//ukho-expansion[.//h3[text()='${batchAtributeType}']]//ukho-checkbox/label[text()='${batchAttributeValue}']`;
+  return checkBoxMatch;
+ 
+}

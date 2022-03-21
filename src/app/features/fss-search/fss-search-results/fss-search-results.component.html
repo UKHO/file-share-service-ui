@@ -43,17 +43,28 @@
         <ng-container ukhoColumnDef="Download">
           <th ukho-header-cell *ukhoHeaderCellDef>Download</th>
           <td ukho-cell *ukhoCellDef="let element">
-            <div class="fileDownload" [attr.rel]="element.FileLink" tabindex="0" role="button"
-              attr.aria-label="Download File for {{element.FileName}}"><i class="fa fa-download fa-1x"></i></div>
+            <button class="fileDownload fa fa-download fa-1x" [attr.rel]="element.FileLink" tabindex="0" role="button"
+              attr.aria-label="Download File for {{element.FileName}}"></button>
           </td>
         </ng-container>
         <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
         <tr ukho-row *ukhoRowDef="let row; columns: batch.batchFileDetails.columnData"></tr>
       </table>
-      <ng-container *ngIf="batch.allFilesZipSize">
-        <p class="downloadAllTextRight">
-          <ukho-button [secondary]="true">Download all</ukho-button>
-        </p>
+      <ng-container>
+         <div class="downloadAllElement" >
+          <div class="downloadAllDialogItem" *ngIf="!batch.allFilesZipSize">
+            <ukho-dialogue>
+              <h3>'Download all' function will be available when the files have been prepared</h3>
+              <div>
+                You can select and download individual files, or try again later
+              </div>
+            </ukho-dialogue>
+           </div>
+           <div class="downloadAllButtonItem">
+            <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)"
+             class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll()">Download all</a>
+           </div>
+         </div>
       </ng-container>
     </ukho-expansion>
   </ukho-card>

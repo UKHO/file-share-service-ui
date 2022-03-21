@@ -1,12 +1,12 @@
 {
     "pageObjectsConfig":
     {
-       "homePageHeaderSelector":"#main-menu h2",
+       "homePageHeaderSelector":"#main-menu h1",
        "homePageHeaderText":"File Share Service",
        "searchLinkSelector":"ukho-header #Search >a",
        "searchLinkText":"Search",
-       "signinLinkSelector":"ukho-header [id='signInButton'] >a",
-       "signinLinkText":"Sign In",
+       "signinLinkSelector":"ukho-header [id='signInButton']",
+       "signinLinkText":"Sign in",
        "accessibilityLinkSelector": "text=Accessibility",
        "privacypolicyLinkSelector": "text=Privacy policy",
        "marinedataportalLinkSelector" : "a > img[alt='Admiralty - Maritime Data Solutions Logo']",
@@ -24,8 +24,8 @@
        "loginPopupSignInPasswordSelector" : "#password",
        "loginPopupSignInButtonSelector" : "#next",
        "loginSignInLinkSelector" : "#signInButton",
-       "loginAccountSelector" : "#accountSection",
-       "loginAccountLinkSelector" : "#accountSection #profile > a",
+       "loginAccountSelector" : ".sectionDropdown",
+       "loginAccountLinkSelector" : "button[aria-describedby='signedInButtonTextDescription']",
        "searchPageContainerHeaderSelector" : "h1#main",
        "searchPageContainerHeaderText" : "Search files",
        "searchButtonSelector": "#Search",
@@ -55,8 +55,8 @@
        "groupCheckBox2Selector" : "#fss-querytable-group-2 input",
        "groupingButton" : ".delete.grouping",
        "chooseFileDownloadSelector" : "(//h3[text()='Choose files to download'])[1]",
-       "fileDownloadButton" : "(//h3[text()='Choose files to download'])[1]/following::div[@class='fileDownload'][1]",
-       "fileDownloadButtonStatus" : "(//h3[text()='Choose files to download'])[1]/following::div[@class='fileDownload'][1]/i",
+       "fileDownloadButton" : "(//h3[text()='Choose files to download'])[1]/following::button[contains(@aria-label,'Download')][1]",
+       "fileDownloadButtonStatus" : "(//h3[text()='Choose files to download'])[1]/following::button[contains(@aria-label,'Download')][1]",
        "attributeTableCellNameSelector" : "(//table[@class='attribute-table']//tr[2]//td[1])[1]",
        "systemTableBatchExpirySelector" : "(//table[@class='system-attribute-table']//tr[2]//td[3])[1]",
        "SystemAttributeCellName" : "//table[@class='attribute-table']//tr[2]//td[1]",
@@ -81,7 +81,10 @@
        "simplifiedTableRowsSelector" :  "//*[contains(@class, 'SimplifiedSearchResult')]//table[@class='attribute-table']//tr[.//td]",
        "paginatorTextSelector" : "[aria-label='pagination']>p",
        "paginatorLinkPrevious" : "a[aria-label='Previous Page']",
-       "paginatorLinkNext":"a[aria-label='Next Page']"  
+       "paginatorLinkNext":"a[aria-label='Next Page']",
+       "filterBatchAttributes" : ".filters h3",
+       "clearFilterButton": "button.text-link[type='reset']",
+       "applyFilterButton": "//button[text()='Apply filters']"
     },
     "pageTimeOut":
     {

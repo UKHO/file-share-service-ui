@@ -14,10 +14,8 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
       expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
   })
 
-  it('Verify user clicks on "Simplified Search" link navigates to Simplified Search page', async () => {
-    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
-    //Verify element in advance search page count should be zero after navigating to simplified search page
-    
+  it('Verify user landed on "Simplified Search" page', async () => {
+       
     var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(1);
 
@@ -26,14 +24,12 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
   })
 
   it('Does it display "Advanced Search" link on Simplified Search page', async () => {
-    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);    
     var advancedSearchLink = await page.innerText(pageObjectsConfig.advancedSearchLinkSelector);
     expect(advancedSearchLink).toEqual(pageObjectsConfig.advancedSearchLink);
 
   })
 
   it('Does it display "Error message" if user clicks on search button and simplified search box is empty', async () => {
-    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
     await page.waitForSelector(pageObjectsConfig.inputSimplifiedSearchBoxSelector);
     await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
     var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
@@ -41,9 +37,8 @@ describe('Test Search Attribute Scenario On Simplified Search Page', () => {
   }) 
 
   it('Verify user clicks on "Advanced Search" link navigates to Advanced Search page', async () => {
-    await page.click(pageObjectsConfig.simplifiedSearchLinkSelector);
     await page.waitForSelector(pageObjectsConfig.advancedSearchLinkSelector);
-    await page.click(pageObjectsConfig.advancedSearchLinkSelector);
+    await page.click(pageObjectsConfig.advancedSearchLinkSelector, {force: true});
     await page.waitForSelector(pageObjectsConfig.advancedSearchAddLineSelector);
     await page.click(pageObjectsConfig.advancedSearchAddLineSelector);
     await page.waitForSelector(pageObjectsConfig.advancedSearchTableSelector);   

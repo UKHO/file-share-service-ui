@@ -25,7 +25,7 @@ describe('Test Sign In Page Scenario', () => {
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
 
     await page.waitForSelector(pageObjectsConfig.loginAccountSelector);
-    expect(await page.innerHTML(pageObjectsConfig.loginAccountLinkSelector)).toEqual(autoTestConfig.userFullName);
+    expect(await page.innerHTML(pageObjectsConfig.loginAccountLinkSelector)).toContain(autoTestConfig.userFullName);
 
   })
 

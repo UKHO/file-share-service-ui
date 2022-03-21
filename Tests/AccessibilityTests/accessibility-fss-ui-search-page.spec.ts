@@ -18,7 +18,8 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     await AcceptCookies(page);
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
     await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
-    
+    await page.click(pageObjectsConfig.advancedSearchLinkSelector, {force: true});
+
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");
