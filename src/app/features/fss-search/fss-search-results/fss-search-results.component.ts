@@ -29,7 +29,8 @@ export class FssSearchResultsComponent implements OnChanges {
           BatchID: { key: 'Batch ID', value: batches[i]['batchId'] },
           BatchPublishedDate: { key: 'Batch published date', value: batches[i]['batchPublishedDate'] },
           ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] },
-          allFilesZipSize:batches[i]['allFilesZipSize']
+          allFilesZipSize:batches[i]['allFilesZipSize'],
+          SrNo:i+1
         });
       }
     }

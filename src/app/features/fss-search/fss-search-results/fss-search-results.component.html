@@ -1,7 +1,7 @@
 <div class="result-margin" *ngFor="let batch of searchResultVM" id="{{batch.BatchID.value}}">
   <ukho-card>
     <table class="attribute-table">
-      <caption class="sr-only">Attributes for Batch ID {{batch.BatchID.value}} </caption>
+      <caption class="sr-only">Attributes for Batch ID {{batch.SrNo}} </caption>
       <tr>
         <th *ngFor="let attribute of batch.batchAttributes">{{attribute.key}}</th>
       </tr>
