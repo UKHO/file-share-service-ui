@@ -151,7 +151,7 @@ stages:
       - group: "File-Share-Service-UI-Dev-Variables"
     jobs:
       - deployment: DevDeploy
-        condition: {{false}}
+        condition: ${{false}}
         displayName: "Dev - deploy terraform and website"
         environment: "FSS-Dev"
         container: ${{variables.Container}}
