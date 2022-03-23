@@ -43,15 +43,18 @@ describe('FssSearchComponent', () => {
             "batchAttributes": [
                {
                    "attributeSortType":"alphabetical",
-                   "attribute":"product"
+                   "attribute":"product",
+                   "sortOrder":"ascending"
                },
                {
                    "attributeSortType":"alphabetical",
-                   "attribute":"cellname"
+                   "attribute":"cellname",
+                   "sortOrder":"ascending"
                },
                {
                  "attributeSortType":"numeric",
-                 "attribute":"weeknumber"
+                 "attribute":"Year / Week",
+                 "sortOrder":"descending"
                }
              ]
          }
@@ -77,7 +80,7 @@ describe('FssSearchComponent', () => {
 
    it('should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called', () => {
       const batchAttributesFromConfig = AppConfigService.settings["fssConfig"].batchAttributes;
-      //as we defined 3 attributes in test configuration, i.e. "batchAttributes": ["product","cellname","weeknumber"]
+      //as we defined 3 attributes in test configuration, i.e. "batchAttributes": ["product","cellname","Year / Week"]
       const expectedFilterGroupLengthFromConfig = 3;
       component.transformSearchAttributesToFilter(inputSearchResultMockData);
       expect(component.filterGroups.length).toEqual(expectedFilterGroupLengthFromConfig);
@@ -86,8 +89,6 @@ describe('FssSearchComponent', () => {
    });
 
 });
-
-
 
 export const inputSearchResultMockData: any =
    [
@@ -104,9 +105,9 @@ export const inputSearchResultMockData: any =
          ]
       },
       {
-         "key": "weeknumber",
+         "key": "Year / Week",
          "values": [
-            "10"
+            "2022 / 10"
          ]
       },
       {
@@ -140,10 +141,10 @@ export const attributeSearchFilterMockData: any =
          "expanded": true
       },
       {
-         "title": "weeknumber",
+         "title": "Year / Week",
          "items": [
             {
-               "title": "10",
+               "title": "2022 / 10",
                "selected": false
             }
          ],

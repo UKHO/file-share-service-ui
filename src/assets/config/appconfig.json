@@ -25,19 +25,23 @@
     "batchAttributes": [
       {
           "attributeSortType":"alphabetical",
-          "attribute":"Media Type"
+          "attribute":"Media Type",
+          "sortOrder":"ascending"
       },
       {
           "attributeSortType":"alphabetical",
-          "attribute":"Product Type"
+          "attribute":"Product Type",
+          "sortOrder":"ascending"
       },
       {
         "attributeSortType":"numeric",
-        "attribute":"Week Number"
+        "attribute":"Year / Week",
+        "sortOrder":"descending"
       },
       {
         "attributeSortType":"numeric",
-        "attribute":"Year"
+        "attribute":"Year",
+        "sortOrder":"descending"
       }
     ]
   }
