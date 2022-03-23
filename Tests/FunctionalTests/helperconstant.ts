@@ -46,6 +46,6 @@ export const searchNonExistBatchAttribute = 'pqtestresult';
 export const batchAttributeKeys = [
   'Media Type',
   'Product Type',
-  'Week Number',
+  'Year / Week',
   'Year'
 ]
