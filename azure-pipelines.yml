@@ -216,6 +216,7 @@ stages:
              displayName: 'Publish Functional Test Results'
 
       - job: E2ETests
+        dependsOn: FunctionalTests
         pool: $(WindowPool)
         displayName: "End-To-End Tests"
         steps:
@@ -257,6 +258,7 @@ stages:
              displayName: 'Publish End-To-End Test Results'
 
       - job: AccessibilityTests
+        dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Accessibility Tests"
         steps:
@@ -369,6 +371,7 @@ stages:
              displayName: 'Publish Functional Test Results'
 
       - job: E2ETests
+        dependsOn: FunctionalTests
         pool: $(WindowPool)
         displayName: "End-To-End Tests"
         steps:
@@ -410,6 +413,7 @@ stages:
              displayName: 'Publish End-To-End Test Results'
 
       - job: AccessibilityTests
+        dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Acccessibility Tests"
         workspace:
