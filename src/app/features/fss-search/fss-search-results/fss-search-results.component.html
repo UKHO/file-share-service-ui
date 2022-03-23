@@ -61,7 +61,7 @@
             </ukho-dialogue>
            </div>
            <div class="downloadAllButtonItem">
-            <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)"
+            <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)" attr.aria-label="Download all files in zip format for batch {{batch.SrNo}}"
              class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll()">Download all</a>
            </div>
          </div>
