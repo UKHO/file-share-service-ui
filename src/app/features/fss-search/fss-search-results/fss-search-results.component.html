@@ -62,7 +62,8 @@
            </div>
            <div class="downloadAllButtonItem">
             <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)"
-             class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll()">Download all</a>
+             class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll(batch.BatchID.value)"
+             [class.disabled]="!batch.allFilesZipSize" [attr.aria-disabled]="!batch.allFilesZipSize">Download all</a>
            </div>
          </div>
       </ng-container>

@@ -13,6 +13,7 @@ export class FssSearchResultsComponent implements OnChanges {
   searchResultVM: SearchResultViewModel[] = [];
   baseUrl: string;
   public removeEventListener: () => void;
+  elements: any;
   @Output() handleTokenExpiry = new EventEmitter<boolean>();
 
   constructor(private elementRef: ElementRef
@@ -42,6 +43,7 @@ export class FssSearchResultsComponent implements OnChanges {
           downloadButtonElement.style.cursor = 'pointer';
           downloadButtonElement.addEventListener('click', this.downloadFile.bind(downloadButtonElement, this));
         })
+        this.elements = downloadButtonElements;
       }
     }, 0);
   }
@@ -109,8 +111,25 @@ export class FssSearchResultsComponent implements OnChanges {
     }
   }
 
-  downloadAll(){
-    
+  downloadAll(batchId: string){
+    this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;    
+    var filePath = `/batch/${batchId}/files`; 
+
+    if (filePath) {
+      //check if token is expired
+      if (!this.fileShareApiService.isTokenExpired()) {              
+       window.open(this.baseUrl + filePath);
+
+      for (let element of this.elements){  
+        if (element.getAttribute('rel').includes(batchId))       
+           element.className = 'fa fa-check';
+       }
+      }
+      else {
+        //display "Token expired" message when token is expired        
+        this.handleTokenExpiry.emit(true);
+      }
+    }    
   }
 }
 
