@@ -105,7 +105,7 @@ export const inputSearchResultMockData: any =
          ]
       },
       {
-         "key": "Year / Week",
+         "key": "YEAR / week",
          "values": [
             "2022 / 10"
          ]
@@ -115,50 +115,6 @@ export const inputSearchResultMockData: any =
          "values": [
             "AVCS"
          ]
-      }
-   ]
-
-export const attributeSearchFilterMockData: any =
-   [
-      {
-         "title": "product",
-         "items": [
-            {
-               "title": "avcs",
-               "selected": false
-            }
-         ],
-         "expanded": true
-      },
-      {
-         "title": "product-name",
-         "items": [
-            {
-               "title": "AVCS",
-               "selected": false
-            }
-         ],
-         "expanded": true
-      },
-      {
-         "title": "Year / Week",
-         "items": [
-            {
-               "title": "2022 / 10",
-               "selected": false
-            }
-         ],
-         "expanded": true
-      },
-      {
-         "title": "cellname",
-         "items": [
-            {
-               "title": "AVCS",
-               "selected": false
-            }
-         ],
-         "expanded": true
       }
    ]
 
