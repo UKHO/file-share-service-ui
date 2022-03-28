@@ -43,8 +43,8 @@
         <ng-container ukhoColumnDef="Download">
           <th ukho-header-cell *ukhoHeaderCellDef>Download</th>
           <td ukho-cell *ukhoCellDef="let element">
-            <button class="fileDownload fa fa-download fa-1x" [attr.rel]="element.FileLink" tabindex="0" role="button"
-              attr.aria-label="Download File for {{element.FileName}}"></button>
+            <button class="fileDownload fa fa-download fa-1x cursorPointer" [attr.rel]="element.FileLink" tabindex="0" role="button"
+              attr.aria-label="Download File for {{element.FileName}}" (click)="downloadFile($event.target, element)"></button>
           </td>
         </ng-container>
         <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
@@ -62,7 +62,7 @@
            </div>
            <div class="downloadAllButtonItem">
             <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)"
-             class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll(batch.BatchID.value)"
+             class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll(batch.BatchID.value, batch.batchFileDetails.rowData)"
              [class.disabled]="!batch.allFilesZipSize" [attr.aria-disabled]="!batch.allFilesZipSize">Download all</a>
            </div>
          </div>

@@ -12,8 +12,7 @@ export class FssSearchResultsComponent implements OnChanges {
   @Input() public searchResult: Array<any> = [];
   searchResultVM: SearchResultViewModel[] = [];
   baseUrl: string;
-  public removeEventListener: () => void;
-  elements: any;
+  public removeEventListener: () => void;  
   @Output() handleTokenExpiry = new EventEmitter<boolean>();
 
   constructor(private elementRef: ElementRef
@@ -33,20 +32,8 @@ export class FssSearchResultsComponent implements OnChanges {
           allFilesZipSize:batches[i]['allFilesZipSize']
         });
       }
-    }
-
-    setTimeout(() => {
-      // Bind click event to each file download link
-      var downloadButtonElements = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
-      if (downloadButtonElements) {
-        downloadButtonElements.forEach((downloadButtonElement: any) => {
-          downloadButtonElement.style.cursor = 'pointer';
-          downloadButtonElement.addEventListener('click', this.downloadFile.bind(downloadButtonElement, this));
-        })
-        this.elements = downloadButtonElements;
-      }
-    }, 0);
-  }
+    }    
+  } 
 
   getfileDetailsColumnData(): string[] {    
     return ['FileName', 'MimeType', 'FileSize', 'Download'];
@@ -85,24 +72,15 @@ export class FssSearchResultsComponent implements OnChanges {
     return batchFileDetails;
   }
 
-  public ngOnDestroy() {
-    // Cleanup by removing the event listener on destroy    
-    var downloadButtonElements = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
-    if (downloadButtonElements) {
-      downloadButtonElements.forEach((downloadButtonElement: any) => {
-        downloadButtonElement.removeEventListener('click', this.downloadFile.bind(downloadButtonElement));
-      })
-    }
-  }
-
-  downloadFile(obj: any, downloadButtonElement: any) {
+  downloadFile(obj: any, fildData: any) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    var filePath = downloadButtonElement.currentTarget.getAttribute('rel');
+    var filePath = fildData.FileLink;
     if (filePath) {
-      if (!obj.fileShareApiService.isTokenExpired()) {//check if token is expired
+      if (!this.fileShareApiService.isTokenExpired()) {//check if token is expired
         //download file and change the icon to tick when returns true
-        downloadButtonElement.currentTarget.style.pointerEvents = 'none'; //disable download icon after click
-        downloadButtonElement.currentTarget.className = 'fa fa-check';
+        obj.style.pointerEvents = 'none'; //disable download icon after click
+        obj.className = 'fa fa-check';
+
         window.open(this.baseUrl + filePath);
       }
       else {//display "Token expired" message when token is expired        
@@ -111,7 +89,7 @@ export class FssSearchResultsComponent implements OnChanges {
     }
   }
 
-  downloadAll(batchId: string){
+  downloadAll(batchId: string, rowData: any){
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;    
     var filePath = `/batch/${batchId}/files`; 
 
@@ -120,7 +98,9 @@ export class FssSearchResultsComponent implements OnChanges {
       if (!this.fileShareApiService.isTokenExpired()) {              
        window.open(this.baseUrl + filePath);
 
-      for (let element of this.elements){  
+       var elements = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
+
+      for (let element of elements){  
         if (element.getAttribute('rel').includes(batchId))       
            element.className = 'fa fa-check';
        }
