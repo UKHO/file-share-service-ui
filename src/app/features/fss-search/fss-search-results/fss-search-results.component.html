@@ -1,7 +1,7 @@
 <div class="result-margin" *ngFor="let batch of searchResultVM" id="{{batch.BatchID.value}}">
   <ukho-card>
     <table class="attribute-table">
-      <caption class="sr-only">Attributes for Batch ID {{batch.SrNo}} </caption>
+      <caption class="sr-only">Attributes for Batch {{batch.SerialNumber}} </caption>
       <tr>
         <th *ngFor="let attribute of batch.batchAttributes">{{attribute.key}}</th>
       </tr>
@@ -13,7 +13,7 @@
     <ukho-expansion class="expansionLabel" heading="Choose files to download" [alignHeadingRight]=true
       [initialExpanded]=false>
       <table class="system-attribute-table">
-        <caption class="sr-only">Details for Batch ID {{batch.BatchID.value}} </caption>
+        <caption class="sr-only">Details for Batch {{batch.SerialNumber}} </caption>
         <tr>
           <th>{{batch.BatchID.key}}</th>
           <th>{{batch.BatchPublishedDate.key}}</th>
@@ -27,7 +27,7 @@
       </table>
 
       <table ukho-table [dataSource]="batch.batchFileDetails.rowData">
-        <caption class="sr-only">Dowload files for Batch ID {{batch.BatchID.value}}</caption>
+        <caption class="sr-only">Dowload files for Batch {{batch.SerialNumber}}</caption>
         <ng-container ukhoColumnDef="FileName">
           <th ukho-header-cell *ukhoHeaderCellDef>FileName </th>
           <td ukho-cell *ukhoCellDef="let element">{{element.FileName}}</td>
@@ -53,7 +53,7 @@
       <ng-container>
          <div class="downloadAllElement" >
           <div class="downloadAllDialogItem" *ngIf="!batch.allFilesZipSize">
-            <ukho-dialogue>
+            <ukho-dialogue id="downloadAllMessage">
               <h3>'Download all' function will be available when the files have been prepared</h3>
               <div>
                 You can select and download individual files, or try again later
@@ -61,8 +61,8 @@
             </ukho-dialogue>
            </div>
            <div class="downloadAllButtonItem">
-            <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)" attr.aria-label="Download all files in zip format for batch {{batch.SrNo}}"
-             class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll()">Download all</a>
+            <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)" attr.aria-label="Download all files in zip format for batch {{batch.SerialNumber}}"
+             aria-describedby="downloadAllMessage" class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll()">Download all</a>
            </div>
          </div>
       </ng-container>

@@ -10,6 +10,7 @@ import { FileShareApiService } from '../../../core/services/file-share-api.servi
 })
 export class FssSearchResultsComponent implements OnChanges {
   @Input() public searchResult: Array<any> = [];
+  @Input() public currentPage: number;
   searchResultVM: SearchResultViewModel[] = [];
   baseUrl: string;
   public removeEventListener: () => void;
@@ -21,8 +22,9 @@ export class FssSearchResultsComponent implements OnChanges {
   ngOnChanges(): void {
     this.searchResultVM = [];
     if (this.searchResult.length > 0) {
+      let currentPage = this.currentPage; 
       var batches = this.searchResult[0];
-      for (var i = 0; i < batches.length; i++) {
+      for (var i = 0, SrNo = 1; i < batches.length; i++, SrNo++) {
         this.searchResultVM.push({
           batchAttributes: this.getBatchAttributes(batches[i]),
           batchFileDetails: this.getBatchFileDetails(batches[i]),
@@ -30,7 +32,7 @@ export class FssSearchResultsComponent implements OnChanges {
           BatchPublishedDate: { key: 'Batch published date', value: batches[i]['batchPublishedDate'] },
           ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] },
           allFilesZipSize:batches[i]['allFilesZipSize'],
-          SrNo:i+1
+          SerialNumber: ((currentPage - 1) * 10) + SrNo
         });
       }
     }
@@ -112,7 +114,7 @@ export class FssSearchResultsComponent implements OnChanges {
 
   downloadAll(){
     
-  }
+    }
 }
 
 // Convert file size from bytes to respective size units
