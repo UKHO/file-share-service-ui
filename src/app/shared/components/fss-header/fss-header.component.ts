@@ -55,7 +55,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       });
 
     this.title = AppConfigService.settings["fssConfig"].fssTitle;
-    this.logoImgUrl = "https://design.ukho.dev/svg/Admiralty%20stacked%20logo.svg";
+    this.logoImgUrl = "/assets/svg/Admiralty%20stacked%20logo.svg";
     this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
     this.logoLinkUrl = "https://www.admiralty.co.uk/";
 
