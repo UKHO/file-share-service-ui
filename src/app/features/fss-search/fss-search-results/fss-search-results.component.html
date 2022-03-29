@@ -44,7 +44,7 @@
           <th ukho-header-cell *ukhoHeaderCellDef>Download</th>
           <td ukho-cell *ukhoCellDef="let element">
             <button class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
-            attr.data-download-batch-id="{{batch.BatchID.value}}" attr.aria-label="Download File for {{element.FileName}}" 
+            attr.data-file-download-batch-id="{{batch.BatchID.value}}" attr.aria-label="Download File for {{element.FileName}}" 
             (click)="downloadFile($event.target, element)"></button>
           </td>
         </ng-container>

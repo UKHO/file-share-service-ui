@@ -3,6 +3,8 @@ import { Component, Input } from '@angular/core';
 import { BatchAttribute, BatchFileDetails, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
+import { AnalyticsService } from '../../../core/services/analytics.service';
+
 @Component({
   selector: 'app-fss-search-results',
   templateUrl: './fss-search-results.component.html',
@@ -16,7 +18,8 @@ export class FssSearchResultsComponent implements OnChanges {
   @Output() handleTokenExpiry = new EventEmitter<boolean>();
 
   constructor(private elementRef: ElementRef
-    , private fileShareApiService: FileShareApiService) { }
+    , private fileShareApiService: FileShareApiService
+    , private analyticsService: AnalyticsService) { }
 
   ngOnChanges(): void {
     this.searchResultVM = [];
@@ -93,24 +96,25 @@ export class FssSearchResultsComponent implements OnChanges {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = `/batch/${batchId}/files`;
 
-    if (filePath) {
-      //check if token is expired
-      if (!this.fileShareApiService.isTokenExpired()) {
-        window.open(this.baseUrl + filePath);
+    //check if token is expired
+    if (!this.fileShareApiService.isTokenExpired()) {
+      window.open(this.baseUrl + filePath);
 
-        //Filter elements based on batchid attribute 
-        var elements = this.elementRef.nativeElement.querySelectorAll(`[data-download-batch-id="${batchId}"]`);
+      //Filter elements based on batchid attribute 
+      var elements = this.elementRef.nativeElement
+                    .querySelectorAll(`[data-file-download-batch-id="${batchId}"]`);
 
-        // Download all the files and change the icon to tick.
-        for (let element of elements) {
-          element.className = 'fa fa-check';
-        }
-      }
-      else {
-        //display "Token expired" message when token is expired        
-        this.handleTokenExpiry.emit(true);
+      // Download all the files and change the icon to tick.
+      for (let element of elements) {
+        element.className = 'fa fa-check';
       }
     }
+    else {
+      //display "Token expired" message when token is expired        
+      this.handleTokenExpiry.emit(true);
+    }
+
+    this.analyticsService.downloadAll();
   }
 }
 

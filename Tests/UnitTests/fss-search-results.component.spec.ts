@@ -9,6 +9,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { CardComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
+import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
@@ -18,12 +19,13 @@ describe('FssSearchResultsComponent', () => {
   let fileShareApiService: FileShareApiService;
   let msalService: MsalService;
   let elementRef: ElementRef;
+  let analyticsService: AnalyticsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientModule, TableModule, ButtonModule, RouterTestingModule],
       declarations: [FssSearchResultsComponent, CardComponent],
-      providers: [FileShareApiService, MsalService, {
+      providers: [FileShareApiService, MsalService, AnalyticsService, {
         provide: MSAL_INSTANCE,
         useFactory: MockMSALInstanceFactory
       }],
@@ -36,7 +38,8 @@ describe('FssSearchResultsComponent', () => {
       }
     };
     fileShareApiService = TestBed.inject(FileShareApiService);
-    msalService = TestBed.inject(MsalService)
+    msalService = TestBed.inject(MsalService);
+    analyticsService = TestBed.inject(AnalyticsService);
   });
 
   it('should create FssSearchResultsComponent', () => {
@@ -47,7 +50,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for search result count
   test('should return search result count 1 when search result for 1 batch is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
     component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
     var batches = component.searchResult[0];
@@ -58,7 +61,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for batch attributes
   test('should return batch attributes when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
     component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
     var batches = component.searchResult[0];
@@ -75,7 +78,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for system attributes
   test('should return system attributes when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
     component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
 
@@ -94,7 +97,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for file details column headers
   test('should return file details column data', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
     component.ngOnChanges();
 
     var expectedColumnData = ColumnHeader;
@@ -105,7 +108,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for batch file details
   test('should return batch file details when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
     component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
     var batches = component.searchResult[0];
@@ -147,7 +150,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for file size conversion 
   test('should convert file size from bytes to respective size units', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
     component.ngOnChanges();
     var zeroBytes = formatBytes(0);
     var fileSizeBytes = formatBytes(100);
