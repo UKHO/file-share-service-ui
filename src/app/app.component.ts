@@ -18,15 +18,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private titleService: Title
   ) { 
-    router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        if (e.url != '') {
-          this.currentUrl = e.url;
-        } else {
-          this.currentUrl ='';
-        }
-      }
-    });
+
   }
 
   ngOnInit() {
