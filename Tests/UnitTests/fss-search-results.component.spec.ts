@@ -28,7 +28,11 @@ describe('FssSearchResultsComponent', () => {
       providers: [FileShareApiService, MsalService, AnalyticsService, {
         provide: MSAL_INSTANCE,
         useFactory: MockMSALInstanceFactory
-      }],
+      },
+      {
+        provide: "googleTagManagerId",
+        useValue: "YOUR_GTM_ID"
+     }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
