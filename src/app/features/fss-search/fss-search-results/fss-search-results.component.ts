@@ -12,7 +12,7 @@ export class FssSearchResultsComponent implements OnChanges {
   @Input() public searchResult: Array<any> = [];
   searchResultVM: SearchResultViewModel[] = [];
   baseUrl: string;
-  public removeEventListener: () => void;  
+  public removeEventListener: () => void;
   @Output() handleTokenExpiry = new EventEmitter<boolean>();
 
   constructor(private elementRef: ElementRef
@@ -29,13 +29,13 @@ export class FssSearchResultsComponent implements OnChanges {
           BatchID: { key: 'Batch ID', value: batches[i]['batchId'] },
           BatchPublishedDate: { key: 'Batch published date', value: batches[i]['batchPublishedDate'] },
           ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] },
-          allFilesZipSize:batches[i]['allFilesZipSize']
+          allFilesZipSize: batches[i]['allFilesZipSize']
         });
       }
-    }    
-  } 
+    }
+  }
 
-  getfileDetailsColumnData(): string[] {    
+  getfileDetailsColumnData(): string[] {
     return ['FileName', 'MimeType', 'FileSize', 'Download'];
   }
 
@@ -72,9 +72,9 @@ export class FssSearchResultsComponent implements OnChanges {
     return batchFileDetails;
   }
 
-  downloadFile(obj: any, fildData: any) {
+  downloadFile(obj: any, fileData: any) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    var filePath = fildData.FileLink;
+    var filePath = fileData.FileLink;
     if (filePath) {
       if (!this.fileShareApiService.isTokenExpired()) {//check if token is expired
         //download file and change the icon to tick when returns true
@@ -89,27 +89,28 @@ export class FssSearchResultsComponent implements OnChanges {
     }
   }
 
-  downloadAll(batchId: string, rowData: any){
-    this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;    
-    var filePath = `/batch/${batchId}/files`; 
+  downloadAll(batchId: string) {
+    this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
+    var filePath = `/batch/${batchId}/files`;
 
     if (filePath) {
       //check if token is expired
-      if (!this.fileShareApiService.isTokenExpired()) {              
-       window.open(this.baseUrl + filePath);
+      if (!this.fileShareApiService.isTokenExpired()) {
+        window.open(this.baseUrl + filePath);
 
-       var elements = this.elementRef.nativeElement.querySelectorAll('.fileDownload');
+        //Filter elements based on batchid attribute 
+        var elements = this.elementRef.nativeElement.querySelectorAll(`[data-download-batch-id="${batchId}"]`);
 
-      for (let element of elements){  
-        if (element.getAttribute('rel').includes(batchId))       
-           element.className = 'fa fa-check';
-       }
+        // Download all the files and change the icon to tick.
+        for (let element of elements) {
+          element.className = 'fa fa-check';
+        }
       }
       else {
         //display "Token expired" message when token is expired        
         this.handleTokenExpiry.emit(true);
       }
-    }    
+    }
   }
 }
 
