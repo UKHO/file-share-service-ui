@@ -313,8 +313,6 @@ stages:
          clean: all
         steps:
            - checkout: self
-           - script: 
-              echo "$(autoTestConfig.url)"
 
            - task: NodeTool@0
              inputs:
@@ -322,7 +320,6 @@ stages:
              displayName: 'Install Node.js'
 
            - script: |
-              npm install -g @angular/cli
               npm ci
              displayName: 'npm restore'
 
@@ -331,10 +328,6 @@ stages:
               folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
               fileType: 'json'
               targetFiles: 'appSetting.json'
-             
-           - script: |
-              npm install -D jest jest-playwright-preset playwright
-             displayName: 'Install Jest Playwright Dependencies'
 
            - script: |
               npm run test:auto
@@ -363,7 +356,6 @@ stages:
              displayName: 'Install Node.js'
 
            - script: |
-              npm install -g @angular/cli
               npm ci
              displayName: 'npm restore'
 
@@ -373,10 +365,6 @@ stages:
               folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
               fileType: 'json'
               targetFiles: 'appSetting.json'
-
-           - script: |
-              npm install -D jest jest-playwright-preset playwright
-             displayName: 'Install Jest Playwright Dependencies'
      
            - script: |
               npm run test:e2e
@@ -407,7 +395,6 @@ stages:
              displayName: 'Install Node.js'
 
            - script: |
-              npm install -g @angular/cli
               npm ci
              displayName: 'npm restore'
 
@@ -417,10 +404,6 @@ stages:
               folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
               fileType: 'json'
               targetFiles: 'appSetting.json'
-
-           - script: |
-              npm install -D jest jest-playwright-preset playwright
-             displayName: 'Install Jest Playwright Dependencies'
       
            - script: |
               npm run test:a11y
