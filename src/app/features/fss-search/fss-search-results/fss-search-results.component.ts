@@ -106,6 +106,7 @@ export class FssSearchResultsComponent implements OnChanges {
 
       // Download all the files and change the icon to tick.
       for (let element of elements) {
+        element.style.pointerEvents = 'none';
         element.className = 'fa fa-check';
       }
     }
