@@ -12,6 +12,7 @@ import { AnalyticsService } from '../../../core/services/analytics.service';
 })
 export class FssSearchResultsComponent implements OnChanges {
   @Input() public searchResult: Array<any> = [];
+  @Input() public currentPage: number;
   searchResultVM: SearchResultViewModel[] = [];
   baseUrl: string;
   public removeEventListener: () => void;
@@ -24,15 +25,17 @@ export class FssSearchResultsComponent implements OnChanges {
   ngOnChanges(): void {
     this.searchResultVM = [];
     if (this.searchResult.length > 0) {
+      let currentPage = this.currentPage; 
       var batches = this.searchResult[0];
-      for (var i = 0; i < batches.length; i++) {
+      for (var i = 0, srNo = 1; i < batches.length; i++, srNo++) {
         this.searchResultVM.push({
           batchAttributes: this.getBatchAttributes(batches[i]),
           batchFileDetails: this.getBatchFileDetails(batches[i]),
           BatchID: { key: 'Batch ID', value: batches[i]['batchId'] },
           BatchPublishedDate: { key: 'Batch published date', value: batches[i]['batchPublishedDate'] },
           ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] },
-          allFilesZipSize: batches[i]['allFilesZipSize']
+          allFilesZipSize:batches[i]['allFilesZipSize'],
+          SerialNumber: ((currentPage - 1) * 10) + srNo
         });
       }
     }
