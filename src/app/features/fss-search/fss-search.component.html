@@ -28,7 +28,7 @@
     [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
   <div *ngIf="displaySearchResult">
-    <a class="skip-to-content-link skipResults section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" [routerLink]="[currentUrl]" [fragment]="'skipResultsLink'" >Skip to Search Results </a>
+    <a href="#skipResultsLink" class="skip-to-content-link skipResults section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" >Skip to Search Results </a>
     <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
       
       <app-fss-simplified-filter id="gotoFilterMenu" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" tabindex="-1"
@@ -49,7 +49,7 @@
         (pageChange)="pageChange($event)">
       </ukho-paginator>
 
-      <a class="skip-to-content-link SkipToFilter section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" [routerLink]="[currentUrl]" [fragment]="'gotoFilterMenu'" >Go to Filter </a>
+      <a href="#gotoFilterMenu" class="skip-to-content-link SkipToFilter section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"  >Go to Filter </a>
     </div>  
 
   <br *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch" />

@@ -58,15 +58,7 @@ export class FssSearchComponent implements OnInit {
     };
     
     
-     router.events.subscribe((e) => {
-        if (e instanceof NavigationEnd) {
-          if (e.url != '') {
-            this.currentUrl = e.url;
-          } else {
-            this.currentUrl ='';
-          }
-        }
-      });
+   
     
    
   }
@@ -226,7 +218,7 @@ export class FssSearchComponent implements OnInit {
     this.messageDesc = messageDesc;
     this.displayMessage = true;
     if (this.ukhoDialog !== undefined) {
-      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '-1');
       this.ukhoDialog.nativeElement.focus();
     }
     if (this.displayLoader === false) {
@@ -286,7 +278,7 @@ export class FssSearchComponent implements OnInit {
       }
       if (this.searchResult.length > 0) {
         if (this.showSearchResult !== undefined) {
-          this.showSearchResult.nativeElement.setAttribute('tabindex', '0');
+          this.showSearchResult.nativeElement.setAttribute('tabindex', '-1');
           this.showSearchResult.nativeElement.focus();
         }
       }
