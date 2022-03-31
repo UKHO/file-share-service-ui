@@ -58,15 +58,7 @@ export class FssSearchComponent implements OnInit {
     };
     
     
-     router.events.subscribe((e) => {
-        if (e instanceof NavigationEnd) {
-          if (e.url != '') {
-            this.currentUrl = e.url;
-          } else {
-            this.currentUrl ='';
-          }
-        }
-      });
+   
     
    
   }
@@ -181,7 +173,7 @@ export class FssSearchComponent implements OnInit {
   onApplyFilterButtonClicked(filterItem: FilterGroup[]){
     if (!this.fileShareApiService.isTokenExpired()) {
       var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
-      var applyFilter_FilterExpression = this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")");
+      var applyFilter_FilterExpression = filterExpression ? this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")") : this.MainQueryFilterExpression;
       this.getSearchResult(applyFilter_FilterExpression);
     }
     else {
@@ -226,7 +218,7 @@ export class FssSearchComponent implements OnInit {
     this.messageDesc = messageDesc;
     this.displayMessage = true;
     if (this.ukhoDialog !== undefined) {
-      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '-1');
       this.ukhoDialog.nativeElement.focus();
     }
     if (this.displayLoader === false) {
@@ -286,7 +278,7 @@ export class FssSearchComponent implements OnInit {
       }
       if (this.searchResult.length > 0) {
         if (this.showSearchResult !== undefined) {
-          this.showSearchResult.nativeElement.setAttribute('tabindex', '0');
+          this.showSearchResult.nativeElement.setAttribute('tabindex', '-1');
           this.showSearchResult.nativeElement.focus();
         }
       }
@@ -316,7 +308,7 @@ export class FssSearchComponent implements OnInit {
         if (attribute) {
           this.filterGroups.push({
             title: element.attribute,
-            items: this.getAttributesValues(attribute["values"], element.attributeSortType),
+            items: this.getAttributesValues(attribute["values"], element.attributeSortType, element.sortOrder),
             expanded: true
           });
         }
@@ -324,11 +316,20 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-  getAttributesValues(attributeValues: Array<any> = [],attributeSortType: any) {
-    if(attributeSortType==="numeric"){
+  getAttributesValues(attributeValues: Array<any> = [], attributeSortType: any, sortOrder: any) {
+    if(attributeSortType==="alphabetical" && sortOrder==="ascending"){
+      attributeValues.sort();
+    } 
+    else if(attributeSortType==="alphabetical" && sortOrder==="descending"){
+      attributeValues.sort((a, b) => (a > b ? -1 : 1));
+    } 
+    else if(attributeSortType==="numeric" && sortOrder==="ascending"){
       attributeValues.sort((a,b) => a.localeCompare(b, 'en', {numeric: true}));
-    }
-
+    } 
+    else if(attributeSortType==="numeric" && sortOrder==="descending"){
+       attributeValues.sort((a,b) => b.localeCompare(a, 'en', {numeric: true}));
+   } 
+    
     const batchAttributeValues: FilterItem[] = [];
     for (let i = 0; i < attributeValues.length; i++) {
       batchAttributeValues.push({
