@@ -9,7 +9,8 @@ enum Categories {
   Login = 'User Login',
   Search = 'Search',
   ErrorHandling = 'ErrorHandling',
-  Validation = 'Validation'
+  Validation = 'Validation',
+  DownloadAll = 'Downlodad All'
 }
 
 interface GTMEvent {
@@ -130,6 +131,15 @@ export class AnalyticsService {
       event: this.environmentPrefix+'.logout',
       event_action: 'Logout',
       event_category: Categories.Login
+    };
+    this.gtmService.pushTag(tag);
+  }
+
+  async downloadAll(): Promise<void> {
+    const tag: GTMEvent = {
+      event: this.environmentPrefix+'.downloadAll',
+      event_action: 'Download All',
+      event_category: Categories.DownloadAll
     };
     this.gtmService.pushTag(tag);
   }
