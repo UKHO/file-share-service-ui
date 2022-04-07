@@ -309,6 +309,17 @@ ukho-textinput.text-input-wrap .error-text{
 }
 
 
+ukho-header{
+	#main-menu{
+	.branding{
+		.logoImageLink{
+			display: grid !important;
+		}
+	}
+	}
+}
+
+
 @media screen and (min-width:1700px){
 	ukho-footer {position: fixed;bottom: 0;width: 100%;}
 	#contentArea{
