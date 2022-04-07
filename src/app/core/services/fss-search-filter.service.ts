@@ -106,18 +106,20 @@ export class FssSearchFilterService {
         const formattedTitle = item.title.replace(/'/g, "''");
         if (item.selected === true) {
           if (filterExpressionPerFilterGroup === "") {
-            filterExpressionPerFilterGroup = "(" + "$batch(" + attributeTitle + ") eq '" + formattedTitle + "'" + ")";
+            filterExpressionPerFilterGroup = "(" + "$batch(" + attributeTitle + ") eq '" + formattedTitle + "'";
           }
           else {
-            filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(" OR ").concat("(" + "$batch(" + attributeTitle + ") eq '" + formattedTitle + "'" + ")");
+            filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(" OR ").concat("$batch(" + attributeTitle + ") eq '" + formattedTitle + "'");
           }
         }
       });
+
       if (filterExpressionPerFilterGroup !== "") {
+        filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(")");
         if (filterExpressionForApplyFilter === "") {
           filterExpressionForApplyFilter = filterExpressionPerFilterGroup;
         } else {
-          filterExpressionForApplyFilter = filterExpressionForApplyFilter.concat(" AND ").concat("(" + filterExpressionPerFilterGroup + ")");
+          filterExpressionForApplyFilter = filterExpressionForApplyFilter.concat(" AND ").concat(filterExpressionPerFilterGroup);
         }
       }
     });
