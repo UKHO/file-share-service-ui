@@ -43,17 +43,17 @@ describe('FssSearchComponent', () => {
             "batchAttributes": [
                {
                    "attributeSortType":"alphabetical",
-                   "attribute":"product",
+                   "attribute":"Media Type",
                    "sortOrder":"ascending"
                },
                {
                    "attributeSortType":"alphabetical",
-                   "attribute":"cellname",
-                   "sortOrder":"ascending"
+                   "attribute":"Year / Week",
+                   "sortOrder":"descending"
                },
                {
                  "attributeSortType":"numeric",
-                 "attribute":"Year / Week",
+                 "attribute":"Year",
                  "sortOrder":"descending"
                }
              ]
@@ -80,7 +80,7 @@ describe('FssSearchComponent', () => {
 
    it('should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called', () => {
       const batchAttributesFromConfig = AppConfigService.settings["fssConfig"].batchAttributes;
-      //as we defined 3 attributes in test configuration, i.e. "batchAttributes": ["product","cellname","Year / Week"]
+      //as we defined 3 attributes in test configuration, i.e. "batchAttributes": ["Media Type","Year","Year / Week"]
       const expectedFilterGroupLengthFromConfig = 3;
       component.transformSearchAttributesToFilter(inputSearchResultMockData);
       expect(component.filterGroups.length).toEqual(expectedFilterGroupLengthFromConfig);
@@ -93,27 +93,27 @@ describe('FssSearchComponent', () => {
 export const inputSearchResultMockData: any =
    [
       {
-         "key": "product",
+         "key": "Media Type",
          "values": [
-            "avcs"
+            "CD",
+            "DVD",
+            "ZIP"
          ]
       },
       {
-         "key": "product-name",
+         "key": "Year",
          "values": [
-            "AVCS"
+            "2022",
+            "2021",
+            "2020"
          ]
       },
       {
          "key": "YEAR / week",
          "values": [
-            "2022 / 10"
-         ]
-      },
-      {
-         "key": "cellname",
-         "values": [
-            "AVCS"
+            "2022 / 10",
+            "2022 / 11",
+            "2021 / 10"
          ]
       }
    ]
