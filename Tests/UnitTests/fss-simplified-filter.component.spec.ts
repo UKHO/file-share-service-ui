@@ -36,7 +36,7 @@ describe('FssSimplifiedFilterComponent', () => {
   });
 
   test('should return applyFilterExpression when the simplified apply filter button is clicked', () => {
-    var expectedApplyfilterExpression = "($batch(Product) eq 'AVCS') AND (($batch(Media Type) eq 'DVD') OR ($batch(Media Type) eq 'CD'))";
+    var expectedApplyfilterExpression = "($batch(Product) eq 'AVCS') AND ($batch(Media Type) eq 'DVD' OR $batch(Media Type) eq 'CD')";
     var applyFilterExpression = applyFilterservice.getFilterExpressionForApplyFilter(ApplyFilterMockData);
     expect(applyFilterExpression).toEqual(expectedApplyfilterExpression);
   });
