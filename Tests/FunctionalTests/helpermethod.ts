@@ -232,3 +232,46 @@ export async function filterCheckBox(batchAtributeType: string, batchAttributeVa
   return checkBoxMatch;
  
 }
+
+export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumnName: string, tablecloumnValue: string): Promise<void> {
+  //  count the result rows
+  const resultCount = await page.$$eval(`//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
+
+  // fail if there are no matching selections
+  expect(resultCount).toBeTruthy();
+
+  let attributeFieldCount=0;
+  for (let rc=0; rc<resultCount; rc++)
+  {
+     const tablepath=`(//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc+1}]//tr//th`
+     let colnum= await GetColumnNumber(page,tablepath,tablecloumnName);     
+     expect(await page.locator(`(//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//td[${colnum}]`).textContent()).toEqual(tablecloumnValue);
+     attributeFieldCount=attributeFieldCount+1;
+    
+  }
+  
+  // assert all the resulting batches have the attribute value
+  expect(attributeFieldCount).toEqual(resultCount);
+}
+
+async function GetColumnNumber(page: Page,tablePath : string , columnHeaderText:string)
+{
+  let colIndex=0;
+  const resultCount =await page.$$eval(tablePath, matches => matches.length);  
+  for(let col=1; col<=resultCount;col++)
+  {
+    // console.log(`${tablePath}`);
+    // console.log(`${tablePath}[${col}]`);
+    // console.log(await page.locator(`${tablePath}[${col}]`).textContent());
+    // console.log(columnHeaderText);
+    if (await page.locator(`${tablePath}[${col}]`).textContent()==columnHeaderText)
+    {
+      colIndex=col;
+      break;
+
+    }
+  }
+   return colIndex;
+} 
+
+
