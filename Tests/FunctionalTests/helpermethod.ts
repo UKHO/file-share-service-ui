@@ -139,6 +139,29 @@ export async function ClickWaitRetry(page: Page, buttonToClick: string, selector
   }
 }
 
+export async function ClickWaitRetryWarings(page: Page, buttonToClick: string, selectorToWaitFor: string, warningVal: string,
+  timeout: number = 30000, step: number = 1000){
+const maxtime = Date.now() + timeout;
+let success = false;
+
+while (Date.now() < maxtime && !success)
+{
+await page.click(buttonToClick);
+if (await page.locator(selectorToWaitFor).textContent()==warningVal)
+{
+  success = true;
+}
+else{
+  await page.waitForSelector(selectorToWaitFor, {timeout: step});
+}
+}
+if (!success)
+{
+throw Error("Couldn't load (" + selectorToWaitFor +") after pressing (" + buttonToClick + ")");
+}
+
+}
+
 export async function AcceptCookies(page: Page) {
   const maxtime = Date.now() + pageTimeOut.delay;
   const step = 500;
