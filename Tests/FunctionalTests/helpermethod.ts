@@ -234,6 +234,9 @@ export async function filterCheckBox(batchAtributeType: string, batchAttributeVa
 }
 
 export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumnName: string, tablecloumnValue: string): Promise<void> {
+  
+  while(true)
+  {
   //  count the result rows
   const resultCount = await page.$$eval(`//table[@class='${pageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
 
@@ -252,6 +255,19 @@ export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumn
   
   // assert all the resulting batches have the attribute value
   expect(attributeFieldCount).toEqual(resultCount);
+
+  //if next page paginator link is disable break the infinite loop
+   if(await page.locator(pageObjectsConfig.paginatorLinkNextDisabled).isVisible())
+   {
+     break;
+   }
+   else
+   {
+      await page.click(pageObjectsConfig.paginatorLinkNext);
+   }
+
+ }
+
 }
 
 async function GetColumnNumber(page: Page,tablePath : string , columnHeaderText:string)
@@ -259,11 +275,7 @@ async function GetColumnNumber(page: Page,tablePath : string , columnHeaderText:
   let colIndex=0;
   const resultCount =await page.$$eval(tablePath, matches => matches.length);  
   for(let col=1; col<=resultCount;col++)
-  {
-    // console.log(`${tablePath}`);
-    // console.log(`${tablePath}[${col}]`);
-    // console.log(await page.locator(`${tablePath}[${col}]`).textContent());
-    // console.log(columnHeaderText);
+  {    
     if (await page.locator(`${tablePath}[${col}]`).textContent()==columnHeaderText)
     {
       colIndex=col;

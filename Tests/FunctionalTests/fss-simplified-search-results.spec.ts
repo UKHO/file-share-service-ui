@@ -202,6 +202,4 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
      
   })
 
-
-
 })
