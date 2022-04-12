@@ -1,6 +1,6 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
-import {AcceptCookies, SearchAttribute,ClickWaitRetryWarings} from './helpermethod'
+import {AcceptCookies, SearchAttribute,ClickWaitRetryWarnings} from './helpermethod'
 import {stringOperatorList,symbolOperatorListForFileSize, symbolOperatorListForDate} from './helperconstant'
 
 describe('Test Search Attribute Scenario On Search Page', () => {
@@ -23,7 +23,7 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   })
   
   it('Verify if click search button without selecting a field value', async () => { 
-    await ClickWaitRetryWarings(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector,pageObjectsConfig.warningMessageValue);
+    await ClickWaitRetryWarnings(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector,pageObjectsConfig.warningMessageValue);
     var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
     expect(errorMessage).toContain(pageObjectsConfig.warningMessageValue);
   })
