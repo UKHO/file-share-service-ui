@@ -276,7 +276,7 @@ async function GetColumnNumber(page: Page,tablePath : string , columnHeaderText:
   const resultCount =await page.$$eval(tablePath, matches => matches.length);  
   for(let col=1; col<=resultCount;col++)
   {    
-    if (await page.locator(`${tablePath}[${col}]`).textContent()==columnHeaderText)
+    if (await page.locator(`${tablePath}[${col}]`).textContent()===columnHeaderText)
     {
       colIndex=col;
       break;
