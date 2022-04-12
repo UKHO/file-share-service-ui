@@ -1,6 +1,6 @@
 const { autoTestConfig } = require('./appSetting');
 const { pageObjectsConfig,pageTimeOut } = require('./pageObjects');
-import {AcceptCookies, SearchAttribute,ClickWaitRetryWarnings} from './helpermethod'
+import {AcceptCookies, SearchAttribute,ClickWaitRetry} from './helpermethod'
 import {stringOperatorList,symbolOperatorListForFileSize, symbolOperatorListForDate} from './helperconstant'
 
 describe('Test Search Attribute Scenario On Search Page', () => {
@@ -23,9 +23,24 @@ describe('Test Search Attribute Scenario On Search Page', () => {
   })
   
   it('Verify if click search button without selecting a field value', async () => { 
-    await ClickWaitRetryWarnings(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector,pageObjectsConfig.warningMessageValue);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector);
+    
+    const maxtime = Date.now() + 20000;
+    while (Date.now() < maxtime)
+      {
+          if(await page.locator(pageObjectsConfig.dialogWarningSelector).textContent()==pageObjectsConfig.warningMessageValue)
+          {
+            break;
+          }
+          else
+          {
+            await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector);
+          }
+      }
+
     var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
     expect(errorMessage).toContain(pageObjectsConfig.warningMessageValue);
+
   })
  
   it('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async () => { 
