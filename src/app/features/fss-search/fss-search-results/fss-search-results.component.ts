@@ -17,6 +17,8 @@ export class FssSearchResultsComponent implements OnChanges {
   baseUrl: string;
   public removeEventListener: () => void;
   @Output() handleTokenExpiry = new EventEmitter<boolean>();
+  downloadFileWindow:any;
+  downloadAllFileWindow:any;
 
   constructor(private elementRef: ElementRef
     , private fileShareApiService: FileShareApiService
@@ -77,21 +79,30 @@ export class FssSearchResultsComponent implements OnChanges {
 
     return batchFileDetails;
   }
-
+  
   downloadFile(obj: any, fileData: any) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    var filePath = fileData.FileLink;
+    var filePath = fileData.FileLink;    
     if (filePath) {
       if (!this.fileShareApiService.isTokenExpired()) {//check if token is expired
         //download file and change the icon to tick when returns true
         obj.style.pointerEvents = 'none'; //disable download icon after click
         obj.className = 'fa fa-check';
 
-        window.open(this.baseUrl + filePath);
-      }
+        this.downloadFileWindow = window.open(this.baseUrl + filePath);
+        setTimeout(() => {
+          this.closeDownloadFileWindow();
+        }, 5000);
+      }    
       else {//display "Token expired" message when token is expired        
         obj.handleTokenExpiry.emit(true);
       }
+    }
+  }
+
+ closeDownloadFileWindow(){
+    if(!this.downloadFileWindow.closed){
+      this.downloadFileWindow.close();
     }
   }
 
@@ -101,7 +112,10 @@ export class FssSearchResultsComponent implements OnChanges {
 
     //check if token is expired
     if (!this.fileShareApiService.isTokenExpired()) {
-      window.open(this.baseUrl + filePath);
+      this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
+      setTimeout(() => {
+        this.closeDownloadAllFileWindow();
+      }, 5000);
 
       //Filter elements based on batchid attribute 
       var elements = this.elementRef.nativeElement
@@ -119,6 +133,12 @@ export class FssSearchResultsComponent implements OnChanges {
     }
 
     this.analyticsService.downloadAll();
+  }
+
+  closeDownloadAllFileWindow(){
+    if(!this.downloadAllFileWindow.closed){
+      this.downloadAllFileWindow.close();
+    }
   }
 }
 
