@@ -40,6 +40,7 @@ export const attributeProductType: BatchAttribute = { key: 'Product Type', value
 export const attributeFileSize: BatchAttribute = {key: 'FileSize', value: '1000'};
 export const attributeMimeType: BatchAttribute = {key: 'MimeType', value: 'text/plain'};
 export const attributeMediaType: BatchAttribute = {key: 'Media Type', value: 'DVD'};
+export const attributeMultipleMediaTypes: BatchAttribute = {key: 'Media Type', value: 'CD DVD'};
 
 export const searchNonExistBatchAttribute = 'pqtestresult';
 
