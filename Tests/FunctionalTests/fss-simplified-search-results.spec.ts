@@ -3,8 +3,8 @@ const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
 import {AcceptCookies, InsertSearchText,
   ExpectAllResultsHaveBatchUserAttValue,
   ExpectAllResultsContainAnyBatchUserAttValue,
-  GetTotalResultCount,GetSpecificAttributeCount,filterCheckBox,ExpectAllResultsContainBatchUserAttValue} from './helpermethod';
-import {attributeProductType, searchNonExistBatchAttribute,batchAttributeKeys,attributeMediaType} from './helperconstant';
+  GetTotalResultCount,GetSpecificAttributeCount,filterCheckBox,ExpectAllResultsContainBatchUserAttValue,ExpectSpecificColumnValueDisplayed} from './helpermethod';
+import {attributeProductType, searchNonExistBatchAttribute,batchAttributeKeys,attributeMediaType,attributeMultipleMediaType} from './helperconstant';
 
 describe('Test Search Result Scenario On Simplified Search Page', () => {
   jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
@@ -164,6 +164,42 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
     await ExpectAllResultsContainBatchUserAttValue(page,attributeMediaType.value);  
   })
 
+  it('Search multiple batch attributes and select filter and Apply filters button returned refined search', async () => {
+    await InsertSearchText(page, attributeMultipleMediaType.value);  
 
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+
+    await ExpectAllResultsContainAnyBatchUserAttValue(page, attributeMultipleMediaType.value.split(' '));
+
+    const [attributeValueCD, attributeValueDVD]=attributeMultipleMediaType.value.split(' ');    
+    
+
+    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
+    //select batch attributes CD checkbox
+    await page.check(await filterCheckBox(attributeMultipleMediaType.key, attributeValueCD));
+   
+    //clicks on apply filter buttton
+    await page.click(pageObjectsConfig.applyFilterButton); 
+     
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+
+    // Verify all rescords belongs to media type value CD
+    await ExpectSpecificColumnValueDisplayed(page,attributeMultipleMediaType.key,attributeValueCD);
+
+    //uncheck batch attributes CD checkbox
+    await page.uncheck(await filterCheckBox(attributeMultipleMediaType.key, attributeValueCD));
+
+    //select batch attributes DVD checkbox
+    await page.check(await filterCheckBox(attributeMultipleMediaType.key, attributeValueDVD));
+
+    //clicks on apply filter buttton
+    await page.click(pageObjectsConfig.applyFilterButton); 
+     
+    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+
+     // Verify all rescords belongs to media type value DVD
+     await ExpectSpecificColumnValueDisplayed(page,attributeMultipleMediaType.key,attributeValueDVD);
+     
+  })
 
 })
