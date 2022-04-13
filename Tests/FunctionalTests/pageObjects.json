@@ -84,7 +84,8 @@
        "paginatorLinkNext":"a[aria-label='Next Page']",
        "filterBatchAttributes" : ".filters h3",
        "clearFilterButton": "button.text-link[type='reset']",
-       "applyFilterButton": "//button[text()='Apply filters']"
+       "applyFilterButton": "//button[text()='Apply filters']",
+       "paginatorLinkNextDisabled":"a[aria-label='Next Page'].pagination-anchor.disabled"
     },
     "pageTimeOut":
     {
