@@ -164,9 +164,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
 
     await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainBatchUserAttValue(page, attributeMultipleMediaTypes.value.split(' ')[0]);
-
-    await ExpectAllResultsContainBatchUserAttValue(page,attributeProductType.value);
-    await ExpectAllResultsContainBatchUserAttValue(page,attributeMediaType.value);  
+   
   })
 
   it('Search multiple batch attributes and select filter and Apply filters button returned refined search', async () => {
