@@ -91,7 +91,7 @@ export class FssSearchFilterService {
         if (filterExpression === "")
           filterExpression = "$batchContains('" + searchKeyword + "')";
         else
-          filterExpression = (filterExpression.concat(" OR ")).concat("$batchContains('" + searchKeyword + "')");
+          filterExpression = "(" + (filterExpression.concat(" OR ")).concat("$batchContains('" + searchKeyword + "')") + ")";
       }
     }
     return filterExpression;
@@ -101,26 +101,29 @@ export class FssSearchFilterService {
     var filterExpressionForApplyFilter = "";
     fssFilterGroup.forEach(fg => {
       var filterExpressionPerFilterGroup = "";
+      const attributeTitle = fg.title.replace(/'/g,'');
       fg.items.forEach(item => {
         const formattedTitle = item.title.replace(/'/g, "''");
         if (item.selected === true) {
           if (filterExpressionPerFilterGroup === "") {
-            filterExpressionPerFilterGroup = "$batchContains('" + formattedTitle + "')";
+            filterExpressionPerFilterGroup = "(" + "$batch(" + attributeTitle + ") eq '" + formattedTitle + "'";
           }
           else {
-            filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(" OR ").concat("$batchContains('" + formattedTitle + "')");
+            filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(" OR ").concat("$batch(" + attributeTitle + ") eq '" + formattedTitle + "'");
           }
         }
       });
+
       if (filterExpressionPerFilterGroup !== "") {
+        filterExpressionPerFilterGroup = filterExpressionPerFilterGroup.concat(")");
         if (filterExpressionForApplyFilter === "") {
-          filterExpressionForApplyFilter = "(" + filterExpressionPerFilterGroup + ")";
+          filterExpressionForApplyFilter = filterExpressionPerFilterGroup;
         } else {
-          filterExpressionForApplyFilter = filterExpressionForApplyFilter.concat(" AND ").concat("(" + filterExpressionPerFilterGroup + ")");
+          filterExpressionForApplyFilter = filterExpressionForApplyFilter.concat(" AND ").concat(filterExpressionPerFilterGroup);
         }
       }
     });
-
+    
     return filterExpressionForApplyFilter;
   }
 }
