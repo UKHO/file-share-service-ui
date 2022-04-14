@@ -303,14 +303,16 @@ export class FssSearchComponent implements OnInit {
     configAttributes = AppConfigService.settings["fssConfig"].batchAttributes;
 
     if (configAttributes.length > 0 && attributeSearchResults.length > 0) {
-      for(let element of configAttributes){
+      for(let element of configAttributes) {
         const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
         if (attribute) {
-          this.filterGroups.push({
-            title: element.attribute,
-            items: this.getAttributesValues(attribute["values"], element.attributeSortType, element.sortOrder),
-            expanded: true
-          });
+          if(attribute["values"].length > 1) {
+            this.filterGroups.push({
+              title: element.attribute,
+              items: this.getAttributesValues(attribute["values"], element.attributeSortType, element.sortOrder),
+              expanded: true
+            });
+          }
         }
       }
     }
