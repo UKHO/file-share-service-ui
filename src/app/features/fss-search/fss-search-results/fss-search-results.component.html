@@ -55,7 +55,7 @@
       <ng-container>
         <div class="downloadAllElement">
           <div class="downloadAllDialogItem" *ngIf="!batch.allFilesZipSize">
-            <ukho-dialogue id="downloadAllMessage">
+            <ukho-dialogue id="downloadAllMessage{{batch.SerialNumber}}">
               <h3>'Download all' function will be available when the files have been prepared</h3>
               <div>
                 You can select and download individual files, or try again later
@@ -66,7 +66,7 @@
             <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)"
               class="downloadAllTextRight" (click)="batch.allFilesZipSize && downloadAll(batch.BatchID.value)"
               [class.disabled]="!batch.allFilesZipSize" [attr.aria-disabled]="!batch.allFilesZipSize"
-              [attr.aria-describedby]="!batch.allFilesZipSize ? 'downloadAllMessage' : ''">Download all</a>
+              [attr.aria-describedby]="!batch.allFilesZipSize ? 'downloadAllMessage' + batch.SerialNumber + '': ''">Download all</a>
           </div>
         </div>
       </ng-container>
