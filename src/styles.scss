@@ -308,6 +308,11 @@ ukho-textinput.text-input-wrap .error-text{
 	display: none;
 }
 
+[tabindex="-1"]:focus-visible{
+	border:none;
+	outline: none;
+}
+
 
 ukho-header{
 	#main-menu{

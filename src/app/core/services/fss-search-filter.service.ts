@@ -24,7 +24,7 @@ export class FssSearchFilterService {
       var currentSearchRowJoinOperator = fssSearchRow.selectedJoinOperator;
       var currentSearchRowField = fssSearchRow.selectedField.replace(/'/g, "''");
       var currentSearchRowOperator = fssSearchRow.selectedOperator;
-      var currentSearchRowValue = fssSearchRow.value.replace(/'/g, "''");
+      var currentSearchRowValue = (fssSearchRow.value + "").replace(/'/g, "''");
 
       // getFieldDataType
       const fieldDataType = this.getFieldDataType(fssSearchRow);
