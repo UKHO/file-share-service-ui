@@ -48,13 +48,11 @@
       <ukho-paginator [label]="paginatorLabel" [pages]="pages" [currentPage]="currentPage"
         (pageChange)="pageChange($event)">
       </ukho-paginator>
-
       <a href="#gotoFilterMenu" class="skip-to-content-link SkipToFilter section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"  >Go to Filter </a>
-    </div>  
-
-  <br *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch" />
-  <ukho-hr aria-hidden="true" *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch">
-  </ukho-hr>
-  <app-fss-popular-search-batches *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch"
-    (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
+    </div> 
+</div>
+<div *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch">
+  <br />
+  <ukho-hr aria-hidden="true"></ukho-hr>
+  <app-fss-popular-search-batches (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
 </div>
