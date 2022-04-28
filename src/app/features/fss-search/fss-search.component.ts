@@ -35,6 +35,7 @@ export class FssSearchComponent implements OnInit {
   errorMessageDescription: string = "";
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;  
   @ViewChild("showSearchResult") showSearchResult: ElementRef;
+  @ViewChild('UkhoAdvanceSearch', { read: ElementRef }) UkhoAdvanceSearch:ElementRef;
   activeSearchType: SearchType;
   displayPopularSearch: boolean;
   eventPopularSearch: Subject<void> = new Subject<void>();
@@ -295,7 +296,10 @@ export class FssSearchComponent implements OnInit {
 
   popularSearchClicked(popularSearch: any) {
     this.eventPopularSearch.next(popularSearch);
-    this.searchResultsFocus();
+    if (this.UkhoAdvanceSearch !== undefined) {
+      this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');
+      this.UkhoAdvanceSearch.nativeElement.focus();
+    }
   }
 
   handleAdvancedSearchTokenRefresh() {
