@@ -35,6 +35,7 @@ export class FssSearchComponent implements OnInit {
   errorMessageDescription: string = "";
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;  
   @ViewChild("showSearchResult") showSearchResult: ElementRef;
+  @ViewChild('UkhoAdvanceSearch', { read: ElementRef }) UkhoAdvanceSearch:ElementRef;
   activeSearchType: SearchType;
   displayPopularSearch: boolean;
   eventPopularSearch: Subject<void> = new Subject<void>();
@@ -244,6 +245,13 @@ export class FssSearchComponent implements OnInit {
     this.analyticsService.tokenExpired();
   }
 
+  searchResultsFocus(){
+    if (this.showSearchResult !== undefined) {
+      this.showSearchResult.nativeElement.setAttribute('tabindex', '-1');
+      this.showSearchResult.nativeElement.focus();
+    }
+  }
+
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
@@ -277,10 +285,7 @@ export class FssSearchComponent implements OnInit {
         );
       }
       if (this.searchResult.length > 0) {
-        if (this.showSearchResult !== undefined) {
-          this.showSearchResult.nativeElement.setAttribute('tabindex', '-1');
-          this.showSearchResult.nativeElement.focus();
-        }
+        this.searchResultsFocus();
       }
     }
     else {
@@ -291,6 +296,10 @@ export class FssSearchComponent implements OnInit {
 
   popularSearchClicked(popularSearch: any) {
     this.eventPopularSearch.next(popularSearch);
+    if (this.UkhoAdvanceSearch !== undefined) {
+      this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');
+      this.UkhoAdvanceSearch.nativeElement.focus();
+    }
   }
 
   handleAdvancedSearchTokenRefresh() {

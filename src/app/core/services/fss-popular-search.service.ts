@@ -29,7 +29,7 @@ export class FssPopularSearchService {
           fssSearchRow.time = dateTime[1];
         }
         else {
-          fssSearchRow.value = value;
+          fssSearchRow.value = String(value);
         }
       }
       else {

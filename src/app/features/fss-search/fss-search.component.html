@@ -21,8 +21,8 @@
     (ShowAdvancedSearchClicked)="ShowAdvancedSearchClicked()"
     (onSimplifiedSearchClicked)="onSimplifiedSearchClicked($event)"></app-fss-simplified-search>
 
-  <app-fss-advanced-search *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch"
-    (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()"
+  <app-fss-advanced-search *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch" #UkhoAdvanceSearch
+    (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()" 
     (onAdvancedSearchClicked)="onAdvancedSearchClicked($event)"
     [observablePopularSearch]="eventPopularSearch.asObservable()"
     [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
@@ -34,10 +34,10 @@
       <app-fss-simplified-filter id="gotoFilterMenu" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" tabindex="-1"
       (onApplyFilterButtonClicked)="onApplyFilterButtonClicked($event)" [filterGroups]="filterGroups"></app-fss-simplified-filter>
       <div>
-        <h2 id="skipResultsLink" tabindex="-1">
+        <h2 id="skipResultsLink" tabindex="-1" #showSearchResult >
           <span class="totalResultLabel" *ngIf="searchResultTotal == 1" role="alert">{{this.searchResultTotal}} result found</span>
           <span class="totalResultLabel" *ngIf="searchResultTotal > 1" role="alert">{{this.searchResultTotal}} results found</span>
-          <span #showSearchResult *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel" role="alert"> {{this.paginatorLabel}}</span>
+          <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel" role="alert"> {{this.paginatorLabel}}</span>
         </h2>
         <app-fss-search-results class="SimplifiedSearchResult" [searchResult]="searchResult" [currentPage]="currentPage"
           (handleTokenExpiry)="handleTokenExpiry()"></app-fss-search-results>
@@ -48,13 +48,11 @@
       <ukho-paginator [label]="paginatorLabel" [pages]="pages" [currentPage]="currentPage"
         (pageChange)="pageChange($event)">
       </ukho-paginator>
-
       <a href="#gotoFilterMenu" class="skip-to-content-link SkipToFilter section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"  >Go to Filter </a>
-    </div>  
-
-  <br *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch" />
-  <ukho-hr aria-hidden="true" *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch">
-  </ukho-hr>
-  <app-fss-popular-search-batches *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch"
-    (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
+    </div> 
+</div>
+<div *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch">
+  <br />
+  <ukho-hr aria-hidden="true"></ukho-hr>
+  <app-fss-popular-search-batches (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
 </div>
