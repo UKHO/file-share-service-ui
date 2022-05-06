@@ -175,9 +175,7 @@ describe('Test Search Result Scenario On Simplified Search Page', () => {
     await ExpectAllResultsContainAnyBatchUserAttValue(page, attributeMultipleMediaType.value.split(' '));
 
     const [attributeValueCD, attributeValueDVD]=attributeMultipleMediaType.value.split(' ');    
-    
-
-    await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
+        
     //select batch attributes CD checkbox
     await page.check(await filterCheckBox(attributeMultipleMediaType.key, attributeValueCD));
    

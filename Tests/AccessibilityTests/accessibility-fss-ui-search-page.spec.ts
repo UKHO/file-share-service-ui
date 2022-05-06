@@ -25,7 +25,7 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");
     await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
 
-    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable);
+    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable, undefined, 10000);
 
     // Verification of attribute table records
     page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
