@@ -25,7 +25,7 @@
        "loginPopupSignInButtonSelector" : "#next",
        "loginSignInLinkSelector" : "#signInButton",
        "loginAccountSelector" : ".sectionDropdown",
-       "loginAccountLinkSelector" : "button[aria-describedby='signedInButtonTextDescription']",
+       "loginAccountLinkSelector" : "#profile button",
        "searchPageContainerHeaderSelector" : "h1#main",
        "searchPageContainerHeaderText" : "Search files",
        "searchButtonSelector": "#Search",
