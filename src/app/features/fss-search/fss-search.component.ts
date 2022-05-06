@@ -43,7 +43,7 @@ export class FssSearchComponent implements OnInit {
   SearchTypeEnum = SearchType;
   MainQueryFilterExpression: string = "";
   filterGroups: FilterGroup[] = [];
-
+  TooManyRequest: number = 429;
   currentUrl: any = '';
 
 
@@ -204,9 +204,12 @@ export class FssSearchComponent implements OnInit {
       errmsg = err.error.message;
     }
     if(this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch)
-      {
-        this.showMessage("error", "There has been an error", "please contact customer services");
-      }
+      if(err.error.statusCode == this.TooManyRequest){
+        this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
+      } 
+      else{
+          this.showMessage("error", "There has been an error", "please contact customer services");
+        }
       else{
         this.showMessage("warning", "An exception occurred when processing this search", errmsg);
     }
