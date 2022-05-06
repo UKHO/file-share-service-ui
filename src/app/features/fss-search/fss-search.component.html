@@ -12,7 +12,7 @@
       <div>{{messageDesc}}</div>
       <div *ngIf="loginErrorDisplay">
         Please
-        <button class="loginAction" (click)="refreshToken()">click here</button> to sign-in
+        <button class="loginAction" (click)="refreshToken()" aria-label="Click here to Sign in">click here</button> to sign-in
       </div>
     </ukho-dialogue>
   </div>
