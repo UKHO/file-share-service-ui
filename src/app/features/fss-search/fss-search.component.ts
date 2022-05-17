@@ -33,9 +33,9 @@ export class FssSearchComponent implements OnInit {
   pageRecordCount: number = 10;
   errorMessageTitle: string = "";
   errorMessageDescription: string = "";
-  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;  
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   @ViewChild("showSearchResult") showSearchResult: ElementRef;
-  @ViewChild('UkhoAdvanceSearch', { read: ElementRef }) UkhoAdvanceSearch:ElementRef;
+  @ViewChild('UkhoAdvanceSearch', { read: ElementRef }) UkhoAdvanceSearch: ElementRef;
   activeSearchType: SearchType;
   displayPopularSearch: boolean;
   eventPopularSearch: Subject<void> = new Subject<void>();
@@ -51,17 +51,12 @@ export class FssSearchComponent implements OnInit {
     private fileShareApiService: FileShareApiService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
-    private analyticsService: AnalyticsService, private activatedRoute: ActivatedRoute,  private titleService: Title, private router: Router) {
+    private analyticsService: AnalyticsService, private activatedRoute: ActivatedRoute, private titleService: Title, private router: Router) {
     this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
 
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return true;
     };
-    
-    
-   
-    
-   
   }
 
   ngOnInit(): void {
@@ -171,14 +166,14 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
-  onApplyFilterButtonClicked(filterItem: FilterGroup[]){
+  onApplyFilterButtonClicked(filterItem: FilterGroup[]) {
     if (!this.fileShareApiService.isTokenExpired()) {
       var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
       var applyFilter_FilterExpression = filterExpression ? this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")") : this.MainQueryFilterExpression;
       this.getSearchResult(applyFilter_FilterExpression);
     }
     else {
-      this.handleTokenExpiry();        
+      this.handleTokenExpiry();
     }
   }
 
@@ -194,24 +189,24 @@ export class FssSearchComponent implements OnInit {
   handleGetSearchResultFailure(err: any) {
     this.displayLoader = false;
     this.displaySearchResult = false;
-    var errmsg = "";
+    let errmsg = "";
     if (err.error != undefined && err.error.errors != undefined && err.error.errors.length > 0) {
       for (let i = 0; i < err.error.errors.length; i++) {
         errmsg += err.error.errors[i]['description'] + '\n';
       }
     }
-    else if(err.error != undefined && err.error.message != undefined){
+    else if (err.error != undefined && err.error.message != undefined) {
       errmsg = err.error.message;
     }
-    if(this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch)
-      if(err.error.statusCode == this.TooManyRequest){
-        this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
-      } 
-      else{
-          this.showMessage("error", "There has been an error", "please contact customer services");
-        }
-      else{
-        this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    if (err.error.statusCode == this.TooManyRequest) {
+      this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
+    }
+    else if (this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch) {
+
+      this.showMessage("error", "There has been an error", "please contact customer services");
+    }
+    else {
+      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
     }
     this.analyticsService.errorHandling();
   }
@@ -248,7 +243,7 @@ export class FssSearchComponent implements OnInit {
     this.analyticsService.tokenExpired();
   }
 
-  searchResultsFocus(){
+  searchResultsFocus() {
     if (this.showSearchResult !== undefined) {
       this.showSearchResult.nativeElement.setAttribute('tabindex', '-1');
       this.showSearchResult.nativeElement.focus();
@@ -294,7 +289,7 @@ export class FssSearchComponent implements OnInit {
     else {
       this.handleTokenExpiry();
     }
-   
+
   }
 
   popularSearchClicked(popularSearch: any) {
@@ -315,10 +310,10 @@ export class FssSearchComponent implements OnInit {
     configAttributes = AppConfigService.settings["fssConfig"].batchAttributes;
 
     if (configAttributes.length > 0 && attributeSearchResults.length > 0) {
-      for(let element of configAttributes) {
+      for (let element of configAttributes) {
         const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
         if (attribute) {
-          if(attribute["values"].length > 1) {
+          if (attribute["values"].length > 1) {
             this.filterGroups.push({
               title: element.attribute,
               items: this.getAttributesValues(attribute["values"], element.attributeSortType, element.sortOrder),
@@ -331,19 +326,19 @@ export class FssSearchComponent implements OnInit {
   }
 
   getAttributesValues(attributeValues: Array<any> = [], attributeSortType: any, sortOrder: any) {
-    if(attributeSortType==="alphabetical" && sortOrder==="ascending"){
+    if (attributeSortType === "alphabetical" && sortOrder === "ascending") {
       attributeValues.sort();
-    } 
-    else if(attributeSortType==="alphabetical" && sortOrder==="descending"){
+    }
+    else if (attributeSortType === "alphabetical" && sortOrder === "descending") {
       attributeValues.sort((a, b) => (a > b ? -1 : 1));
-    } 
-    else if(attributeSortType==="numeric" && sortOrder==="ascending"){
-      attributeValues.sort((a,b) => a.localeCompare(b, 'en', {numeric: true}));
-    } 
-    else if(attributeSortType==="numeric" && sortOrder==="descending"){
-       attributeValues.sort((a,b) => b.localeCompare(a, 'en', {numeric: true}));
-   } 
-    
+    }
+    else if (attributeSortType === "numeric" && sortOrder === "ascending") {
+      attributeValues.sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+    }
+    else if (attributeSortType === "numeric" && sortOrder === "descending") {
+      attributeValues.sort((a, b) => b.localeCompare(a, 'en', { numeric: true }));
+    }
+
     const batchAttributeValues: FilterItem[] = [];
     for (let i = 0; i < attributeValues.length; i++) {
       batchAttributeValues.push({
