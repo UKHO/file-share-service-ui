@@ -12,7 +12,7 @@
       <div>{{messageDesc}}</div>
       <div *ngIf="loginErrorDisplay">
         Please
-        <button class="loginAction" (click)="refreshToken()">click here</button> to sign-in
+        <button class="loginAction" (click)="refreshToken()" aria-label="Click here to Sign in">click here</button> to sign-in
       </div>
     </ukho-dialogue>
   </div>
@@ -35,8 +35,8 @@
       (onApplyFilterButtonClicked)="onApplyFilterButtonClicked($event)" [filterGroups]="filterGroups"></app-fss-simplified-filter>
       <div>
         <h2 id="skipResultsLink" tabindex="-1" #showSearchResult >
-          <span class="totalResultLabel" *ngIf="searchResultTotal == 1" role="alert">{{this.searchResultTotal}} result found</span>
-          <span class="totalResultLabel" *ngIf="searchResultTotal > 1" role="alert">{{this.searchResultTotal}} results found</span>
+          <span class="totalResultLabel" *ngIf="searchResultTotal == 1" role="alert" aria-polite="live">{{this.searchResultTotal}} result found</span>
+          <span class="totalResultLabel" *ngIf="searchResultTotal > 1" role="alert" aria-polite="live">{{this.searchResultTotal}} results found</span>
           <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel" role="alert"> {{this.paginatorLabel}}</span>
         </h2>
         <app-fss-search-results class="SimplifiedSearchResult" [searchResult]="searchResult" [currentPage]="currentPage"
