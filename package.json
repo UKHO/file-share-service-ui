@@ -25,7 +25,7 @@
     "@azure/msal-angular": "^2.0.0",
     "@azure/msal-browser": "^2.14.2",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@ukho/design-system": "^4.5.0",
+    "@ukho/design-system": "^4.5.2",
     "angular-google-tag-manager": "1.4.2",
     "jest-junit": "^12.1.0",
     "postcss": "^8.3.0",
