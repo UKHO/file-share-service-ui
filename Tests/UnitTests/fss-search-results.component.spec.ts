@@ -185,13 +185,13 @@ describe('FssSearchResultsComponent', () => {
         let SrNumber = item.SerialNumber;
         const pnlBatchDetails = fixture.debugElement.query(By.css(pnlBatchDetailsId)).nativeElement;
         if (item.allFilesZipSize) {
-          expect(pnlBatchDetails.querySelector("a").textContent).toEqual("Download all\xa0for batch " + SrNumber);
+          expect(pnlBatchDetails.querySelector("a").innerHTML).toEqual("Download all<span class=\"sr-only\">&nbsp;for batch "+ SrNumber+ "</span>");
           expect(pnlBatchDetails.querySelector("a").classList.contains('isDownloadAllDisabled')).toBe(false);
           expect(pnlBatchDetails.querySelector("ukho-dialogue")).toBeNull();
         }
         else
         {
-          expect(pnlBatchDetails.querySelector("a").textContent).toEqual("Download all\xa0for batch " + SrNumber);
+          expect(pnlBatchDetails.querySelector("a").innerHTML).toEqual("Download all<span class=\"sr-only\">&nbsp;for batch "+ SrNumber+ "</span>");
           expect(pnlBatchDetails.querySelector("a").classList.contains('isDownloadAllDisabled')).toBe(true);
           expect(pnlBatchDetails.querySelector("ukho-dialogue").textContent).toEqual("'Download all' function will be available when the files have been prepared You can select and download individual files, or try again later ");
         }
