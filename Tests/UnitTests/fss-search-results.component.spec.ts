@@ -172,6 +172,7 @@ describe('FssSearchResultsComponent', () => {
   test('should show Download All button when allFilesZipSize is not null', fakeAsync(() => {
     const fixture = TestBed.createComponent(FssSearchResultsComponent);
     component = fixture.componentInstance;
+    component.currentPage = 1;
     component.searchResult = Array.of(SearchResultMockDataforShowDownloadAllButton['entries']);
     var batches = component.searchResult[0];
     component.ngOnChanges();
@@ -181,15 +182,16 @@ describe('FssSearchResultsComponent', () => {
     fixture.whenStable().then(() => {
       batches.forEach((item: SearchResultViewModel) => {
         let pnlBatchDetailsId = "[id='" + item.BatchID.value + "']";
+        let SrNumber = item.SerialNumber;
         const pnlBatchDetails = fixture.debugElement.query(By.css(pnlBatchDetailsId)).nativeElement;
         if (item.allFilesZipSize) {
-          expect(pnlBatchDetails.querySelector("a").textContent).toEqual("Download all");
+          expect(pnlBatchDetails.querySelector("a").textContent).toContain("batch " + SrNumber);
           expect(pnlBatchDetails.querySelector("a").classList.contains('isDownloadAllDisabled')).toBe(false);
           expect(pnlBatchDetails.querySelector("ukho-dialogue")).toBeNull();
         }
         else
         {
-          expect(pnlBatchDetails.querySelector("a").textContent).toEqual("Download all");
+          expect(pnlBatchDetails.querySelector("a").textContent).toContain("batch " + SrNumber);
           expect(pnlBatchDetails.querySelector("a").classList.contains('isDownloadAllDisabled')).toBe(true);
           expect(pnlBatchDetails.querySelector("ukho-dialogue").textContent).toEqual("'Download all' function will be available when the files have been prepared You can select and download individual files, or try again later ");
         }
@@ -278,6 +280,7 @@ export const SearchResultMockDataforShowDownloadAllButton: any = {
       "status": "Committed",
       "allFilesZipSize": "1024",
       "BatchID": { "key": 'Batch ID', "value": '9439e409-e545-435c-afd7-f3a5cce527e3' },
+      "SerialNumber": "1",
       "attributes": [
         {
           "key": "product",
@@ -316,6 +319,7 @@ export const SearchResultMockDataforShowDownloadAllButton: any = {
       "status": "Committed",
       "allFilesZipSize": "2048",
       "BatchID": { "key": 'Batch ID', "value": '9439e409-e545-435c-afd7-f3a5cce527e2' },
+      "SerialNumber": "2",
       "attributes": [
         {
           "key": "product",
@@ -353,6 +357,7 @@ export const SearchResultMockDataforShowDownloadAllButton: any = {
       "batchId": "9439e409-e545-435c-afd7-f3a5cce527e1",
       "status": "Committed",
       "BatchID": { "key": 'Batch ID', "value": '9439e409-e545-435c-afd7-f3a5cce527e1' },
+      "SerialNumber": "3",
       "attributes": [
         {
           "key": "product",
