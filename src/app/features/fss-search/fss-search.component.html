@@ -27,6 +27,8 @@
     [observablePopularSearch]="eventPopularSearch.asObservable()"
     [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
+    <!-- <app-exchange-set></app-exchange-set> -->
+
   <div *ngIf="displaySearchResult">
     <a href="#skipResultsLink" class="skip-to-content-link skipResults section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" >Skip to Search Results </a>
     <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">

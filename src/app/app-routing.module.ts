@@ -35,6 +35,9 @@ const routes: Routes = [
    path: 'logout',
    loadChildren: () => import('./features/fss-sso-logout/fss-sso-logout.module').then(m => m.FssSsoLogoutModule)
   },
+  { path: 'exchangeset', 
+    loadChildren: () => import('./features/exchange-set/exchange-set.module').then(m => m.ExchangeSetModule) 
+  },
   {
     path: '**',
     redirectTo: '',
