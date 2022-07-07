@@ -53,10 +53,6 @@ export class FssSearchComponent implements OnInit {
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService, private activatedRoute: ActivatedRoute, private titleService: Title, private router: Router) {
     this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
-
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return true;
-    };
   }
 
   ngOnInit(): void {
