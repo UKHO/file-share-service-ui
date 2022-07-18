@@ -32,7 +32,34 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.handleSignIn();
     this.setSkipToContent();
-    
+    this.menuItems = [
+      {
+        title: 'Exchange sets',
+        clickAction: (() => {
+          if (this.authOptions?.isSignedIn()) {
+          this.route.navigate(["exchangesets"]);
+          }
+          if (!this.authOptions?.isSignedIn()) {
+            this.logInPopup();
+          }
+          // localStorage.setItem('currentMenu', 'Exchange set');    
+          this.handleActiveTab('Exchange sets'); //Value should be same as title
+        }),
+        navActive:this.isActive
+      },
+      {
+        title: 'Search',
+        clickAction: (() => {
+          if (this.authOptions?.isSignedIn()) {
+            this.route.navigate(["search"])
+          }
+          if (!this.authOptions?.isSignedIn()) {
+            this.logInPopup();
+          }
+        }),
+        navActive: this.isActive
+      }
+    ];
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -115,34 +142,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           this.handleActiveTab(this.menuItems[1].title)
         }
         else {
-          this.menuItems = [
-            {
-              title: 'Exchange sets',
-              clickAction: (() => {
-                if (this.authOptions?.isSignedIn()) {
-                this.route.navigate(["exchangesets"]);
-                }
-                if (!this.authOptions?.isSignedIn()) {
-                  this.logInPopup();
-                }
-                // localStorage.setItem('currentMenu', 'Exchange set');    
-                this.handleActiveTab('Exchange sets'); //Value should be same as title
-              }),
-              navActive:this.isActive
-            },
-            {
-              title: 'Search',
-              clickAction: (() => {
-                if (this.authOptions?.isSignedIn()) {
-                  this.route.navigate(["search"])
-                }
-                if (!this.authOptions?.isSignedIn()) {
-                  this.logInPopup();
-                }
-              }),
-              navActive: this.isActive
-            }
-          ];
           this.isActive = true;
           this.handleActiveTab(this.menuItems[1].title)
         }
@@ -200,6 +199,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           }
         }
       }
+    }
+    this.getMenuItems();
+  }
+  getMenuItems(){
+    if(!this.authOptions?.isSignedIn()){
+      return this.menuItems.filter((item , index) => item.title !== 'Exchange sets');
+    }else{
+      return this.menuItems;
     }
   }
 }
