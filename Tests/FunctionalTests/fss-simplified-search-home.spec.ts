@@ -1,49 +1,51 @@
-import { AcceptCookies } from "./helpermethod";
+import { test, expect } from '@playwright/test';
+import { autoTestConfig } from '../../appSetting.json';
+import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
+import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
+//import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
+import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 
-const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
+test.describe('Test Search Attribute Scenario On Simplified Search Page', () => {
+  //jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
 
-describe('Test Search Attribute Scenario On Simplified Search Page', () => {
-  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-
-  beforeEach(async () => {
+  test.beforeEach(async ({ page }) => {
       await page.goto(autoTestConfig.url)
       await AcceptCookies(page);
-      
-      await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
-      expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
+      await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+      await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
+      expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
   })
 
-  it('Verify user landed on "Simplified Search" page', async () => {
+  test('Verify user landed on "Simplified Search" page', async ({ page }) => {
        
-    var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
+    var simplifiedSearchBox= (await page.$$(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(1);
 
     var advanceSearchElements =(await page.$$("#fss-querytable-field-1 input,fss-querytable-operator-1 select,#fss-querytable-value-1 input")).length
     expect(advanceSearchElements).toEqual(0);
   })
 
-  it('Does it display "Advanced Search" link on Simplified Search page', async () => {
-    var advancedSearchLink = await page.innerText(pageObjectsConfig.advancedSearchLinkSelector);
-    expect(advancedSearchLink).toEqual(pageObjectsConfig.advancedSearchLink);
+  test('Does it display "Advanced Search" link on Simplified Search page', async ({ page }) => {
+    var advancedSearchLink = await page.innerText(fssSearchPageObjectsConfig.advancedSearchLinkSelector);
+    expect(advancedSearchLink).toEqual(fssSearchPageObjectsConfig.advancedSearchLink);
 
   })
 
-  it('Does it display "Error message" if user clicks on search button and simplified search box is empty', async () => {
-    await page.waitForSelector(pageObjectsConfig.inputSimplifiedSearchBoxSelector);
-    await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
-    var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
-    expect(errorMessage).toContain(pageObjectsConfig.warningMessageValue);
+  test('Does it display "Error message" if user clicks on search button and simplified search box is empty', async ({ page }) => {
+    await page.waitForSelector(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector);
+    await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
+    var errorMessage = await page.innerText(fssSearchPageObjectsConfig.dialogWarningSelector);
+    expect(errorMessage).toContain(fssSearchPageObjectsConfig.warningMessageValue);
   }) 
 
-  it('Verify user clicks on "Advanced Search" link navigates to Advanced Search page', async () => {
-    await page.waitForSelector(pageObjectsConfig.advancedSearchLinkSelector);
-    await page.click(pageObjectsConfig.advancedSearchLinkSelector, {force: true});
-    await page.waitForSelector(pageObjectsConfig.advancedSearchAddLineSelector);
-    await page.click(pageObjectsConfig.advancedSearchAddLineSelector);
-    await page.waitForSelector(pageObjectsConfig.advancedSearchTableSelector);   
+  test('Verify user clicks on "Advanced Search" link navigates to Advanced Search page', async ({ page }) => {
+    await page.waitForSelector(fssSearchPageObjectsConfig.advancedSearchLinkSelector);
+    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
+    await page.waitForSelector(fssSearchPageObjectsConfig.advancedSearchAddLineSelector);
+    await page.click(fssSearchPageObjectsConfig.advancedSearchAddLineSelector);
+    await page.waitForSelector(fssSearchPageObjectsConfig.advancedSearchTableSelector);   
     //search box for simplified search is not present on advanced search page.
-    var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
+    var simplifiedSearchBox= (await page.$$(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(0);
     
   })

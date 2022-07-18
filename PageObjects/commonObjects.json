@@ -1,0 +1,12 @@
+{
+    "commonObjectsConfig": {
+        "acceptCookieSelector" : "#onetrust-accept-btn-handler",
+        "loginPopupSignInEmailSelector" : "#signInEmail",
+        "loginPopupNextButtonSelector" : "#continue",
+        "loginPopupSignInPasswordSelector" : "#password",
+        "loginPopupSignInButtonSelector" : "#next",
+        "loginSignInLinkSelector" : "#signInButton",
+        "loginAccountSelector" : ".sectionDropdown",
+        "loginAccountLinkSelector" : "#profile button"
+    }
+}

@@ -6,9 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "test:unit": "jest --config=jest.config.js",
-    "test:auto": "jest --config=Tests/FunctionalTests/jest.config.js",
-    "test:a11y": "jest --config=Tests/AccessibilityTests/jest.config.js",
-    "test:e2e": "jest --config=Tests/E2ETests/jest.config.js",
+    "test:auto": "npx playwright test /Tests/FunctionalTests",
+    "test:a11y": "npx playwright test /Tests/AccessibilityTests",
+    "test:e2e": "npx playwright test /Tests/E2ETests",
     "lint": "ng lint"
   },
   "private": true,
@@ -49,19 +49,16 @@
     "@types/request": "^2.48.7",
     "@typescript-eslint/eslint-plugin": "4.16.1",
     "@typescript-eslint/parser": "4.16.1",
-    "axe-playwright": "^1.1.8",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "latest",
     "eslint-plugin-prefer-arrow": "latest",
-    "expect-playwright": "^0.4.0",
-    "jest": "^27.0.4",
+    "expect-playwright": "^0.4.0",    
     "jest-playwright-preset": "^1.7.2",
     "jest-preset-angular": "^9.0.3",
-    "playwright": "^1.22.2",
-    "playwright-firefox": "^1.22.2",
-    "playwright-webkit": "^1.22.2",
     "ts-node": "~8.3.0",
-    "typescript": "~4.1.5"
+    "typescript": "~4.1.5",
+    "@playwright/test": "^1.23.2",
+    "axe-playwright": "^1.1.11"
   }
 }
