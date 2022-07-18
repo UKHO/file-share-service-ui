@@ -40,6 +40,13 @@ export class AppComponent implements OnInit {
         })).subscribe((title: any) => {
           this.titleService.setTitle(title);
         });
+
+        // if(this.router.url ==='/'){
+        //   // alert("h")
+        //   this.router.navigate([""]);
+        // }
+        
+
   }
 
   changeOverlay(pageOverlay:any){

@@ -78,12 +78,20 @@ describe('FssHeaderComponent', () => {
     expect(component.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
+  test('should exist Exchange set menu item in header', () => {
+    component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService,analyticsService);
+    component.ngOnInit();
+    expect(component.menuItems.length).toEqual(2);
+    expect(component.menuItems[0].title).toEqual("Exchange set");
+  });
+
   test('should exist Search menu item in header', () => {
     component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService,analyticsService);
     component.ngOnInit();
-    expect(component.menuItems.length).toEqual(1);
-    expect(component.menuItems[0].title).toEqual("Search");
+    expect(component.menuItems.length).toEqual(2);
+    expect(component.menuItems[1].title).toEqual("Search");
   });
+
 });
 
 

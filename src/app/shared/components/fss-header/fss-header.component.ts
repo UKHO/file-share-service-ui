@@ -32,6 +32,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.handleSignIn();
     this.setSkipToContent();
+    
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -58,35 +59,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.logoImgUrl = "/assets/svg/Admiralty%20stacked%20logo.svg";
     this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
     this.logoLinkUrl = "https://www.admiralty.co.uk/";
-
-    this.menuItems = [
-      {
-        title: 'Exchange sets',
-        clickAction: (() => {
-          if (this.authOptions?.isSignedIn()) {
-          this.route.navigate(["exchangeset"]);
-          }
-          if (!this.authOptions?.isSignedIn()) {
-            this.logInPopup();
-          }
-          localStorage.setItem('currentMenu', 'Exchange sets');    
-          this.handleActiveTab('Exchange sets'); //Value should be same as title
-        }),
-        navActive:this.isActive
-      },
-      {
-        title: 'Search',
-        clickAction: (() => {
-          if (this.authOptions?.isSignedIn()) {
-            this.route.navigate(["search"])
-          }
-          if (!this.authOptions?.isSignedIn()) {
-            this.logInPopup();
-          }
-        }),
-        navActive: this.isActive
-      }
-    ];
 
     this.authOptions = {
       signedInButtonText: 'Sign in',
@@ -115,9 +87,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     }
   }
 
-  // handleActiveTab() {
-  //   this.menuItems.find(mt => mt.title === 'Search')!.navActive = this.isActive;
-  // }
 
   logInPopup() {
     this.msalService.loginPopup().subscribe(response => {
@@ -133,7 +102,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       }
     });
   }
-
+  
   handleSignIn() {
     this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -146,10 +115,41 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           this.handleActiveTab(this.menuItems[1].title)
         }
         else {
+          this.menuItems = [
+            {
+              title: 'Exchange sets',
+              clickAction: (() => {
+                if (this.authOptions?.isSignedIn()) {
+                this.route.navigate(["exchangesets"]);
+                }
+                if (!this.authOptions?.isSignedIn()) {
+                  this.logInPopup();
+                }
+                // localStorage.setItem('currentMenu', 'Exchange set');    
+                this.handleActiveTab('Exchange sets'); //Value should be same as title
+              }),
+              navActive:this.isActive
+            },
+            {
+              title: 'Search',
+              clickAction: (() => {
+                if (this.authOptions?.isSignedIn()) {
+                  this.route.navigate(["search"])
+                }
+                if (!this.authOptions?.isSignedIn()) {
+                  this.logInPopup();
+                }
+              }),
+              navActive: this.isActive
+            }
+          ];
           this.isActive = true;
           this.handleActiveTab(this.menuItems[1].title)
         }
       }
+        else if(url.includes('exchangesets')){
+          this.handleActiveTab(this.menuItems[0].title)
+        }
     });
   }
 

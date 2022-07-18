@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { SharedModule } from   './shared/app.shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppConfigService } from './core/services/app-config.service';
-// import { ExchangeSetComponent } from './features/exchange-set/exchange-set.component';
 
 export function GTMFactory(config: AppConfigService): any {
   const googleTagManagerId = AppConfigService.settings.GoogleTagManagerId;
@@ -25,7 +24,7 @@ export function GTMFactory(config: AppConfigService): any {
   providers: [AppConfigService,
     { provide: 'googleTagManagerId',  useFactory: GTMFactory,
     deps: [AppConfigService]
-    },
+    }
   ],
   bootstrap: [AppComponent]
 })
