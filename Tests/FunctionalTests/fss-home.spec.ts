@@ -17,7 +17,6 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
     });
 
     test('Does Search and Sign in link appear on header', async ( { page}) => {
-      //  await page.waitForSelector(fssHomePageObjectsConfig.searchLinkSelector);
         expect(await page.innerText(fssHomePageObjectsConfig.searchLinkSelector)).toEqual(fssHomePageObjectsConfig.searchLinkText);
         expect(await page.innerText(fssHomePageObjectsConfig.signinLinkSelector)).toEqual(fssHomePageObjectsConfig.signinLinkText);
 
@@ -49,7 +48,6 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async ({page}) => {
         await page.click(fssHomePageObjectsConfig.ukhydrographicLinkSelector);
-      //  page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
         expect(await page.innerText(fssHomePageObjectsConfig.ukhoFooterPageSelector)).toEqual(fssHomePageObjectsConfig.ukhoFooterTitle);
         expect(page.url()).toEqual(fssHomePageObjectsConfig.ukhoFooterUrl);
     })
@@ -63,5 +61,4 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
         expect(await page.innerText(fssHomePageObjectsConfig.homePageBodySelector)).toEqual(fssHomePageObjectsConfig.homePageBodyText);
 
     })
-
 })

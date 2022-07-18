@@ -46,7 +46,6 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
   test('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "BusinessUnit");
     const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
-
     var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function (element, index) {
       return element === operatorsOption[index];
     });
@@ -57,7 +56,6 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
 
   test('Verify Operator dropdown contains correct values when "FileSize" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "FileSize");
-
     const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (symbolOperatorListForFileSize.length == operatorsOption.length) && symbolOperatorListForFileSize.every(function (element, index) {
       return element === operatorsOption[index];
@@ -69,7 +67,6 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
 
   test('Verify Operator dropdown contains correct values when "FileName" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "FileName");
-
     const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function (element, index) {
       return element === operatorsOption[index];
@@ -81,32 +78,25 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
 
   test('Verify Operator dropdown contains correct values when "MimeType" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "MimeType");
-
     const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function (element, index) {
       return element === operatorsOption[index];
     });
-
     expect(match).toBeTruthy();
-
   })
 
   test('Verify Operator dropdown contains correct values when "BatchExpiryDate" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "BatchExpiryDate");
-
     const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (symbolOperatorListForDate.length == operatorsOption.length) && symbolOperatorListForDate.every(function (element, index) {
       return element === operatorsOption[index];
     });
-
     expect(match).toBeTruthy();
-
   })
 
   test('Verify Operator dropdown contains correct values when "BatchPublishedDate" attribute field selected', async ( {page}) => {
 
     await SearchAttribute(page, "BatchPublishedDate");
-
     const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (symbolOperatorListForDate.length == operatorsOption.length) && symbolOperatorListForDate.every(function (element, index) {
       return element === operatorsOption[index];
@@ -117,14 +107,12 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
 
   test('Verify when "BusinessUnit" attribute field selected, input value field change to "text" type', async ( {page}) => {
     await SearchAttribute(page, "BusinessUnit");
-
     const inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
     expect(inputValueFieldAttribute).toEqual("text");
   })
 
   test('Verify when "FileSize" attribute field selected, input value field change to "tel" type', async ( {page}) => {
     await SearchAttribute(page, "FileSize");
-
     const inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
     expect(inputValueFieldAttribute).toEqual("tel");
   })
@@ -132,7 +120,6 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
   test('Verify when "BatchPublishedDate" attribute field selected, input value field change to "date" type', async ( {page}) => {
 
     await SearchAttribute(page, "BatchPublishedDate");
-
     const inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
     expect(inputValueFieldAttribute).toEqual("date");
   })
@@ -159,5 +146,4 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
     tableRows = (await page.$$(fssSearchPageObjectsConfig.searchQueryTableRowSelector)).length;
     expect(tableRows).toEqual(1);
   })
-
 });

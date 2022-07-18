@@ -2,18 +2,14 @@ import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
-//import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
-import { SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, TryGetFileSizeInBytes
-    , ExpectAllResultsHaveBatchUserAttValue,ExpectAllResultsContainAnyBatchUserAttValue,
+import { ExpectAllResultsHaveBatchUserAttValue,ExpectAllResultsContainAnyBatchUserAttValue,
     ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed,
-    ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount,filterCheckBox, GetSpecificAttributeCount,
-    GetCountOfBatchRows } from '../../Helper/SearchPageHelper';
-import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMediaType, attributeMultipleMediaTypes, attributeMultipleMediaType } from '../../Helper/ConstantHelper';
+    GetTotalResultCount,filterCheckBox, GetSpecificAttributeCount  } from '../../Helper/SearchPageHelper';
+import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType } from '../../Helper/ConstantHelper';
 
 test.describe('Test Search Result Scenario On Simplified Search Page', () => {
-  //jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-
+  
   test.beforeEach(async ({ page }) => {
     await page.goto(autoTestConfig.url)
     await AcceptCookies(page);
@@ -35,17 +31,14 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     }
 
     const infoText = await page.innerText(fssSearchPageObjectsConfig.dialogInfoSelector);
-
     expect(infoText).toEqual(fssSearchPageObjectsConfig.dialogInfoText);
 
   })
 
   test('Verify search results for single batch attribute search', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
-
     // verify paginator links are available on the page
     expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkPrevious)).toBeTruthy();
     expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkNext)).toBeTruthy();
@@ -54,11 +47,9 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   test('Verify paginator text showing correct values for search results on first page', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     const recordCount = await GetTotalResultCount(page);
     const paginatorText = await page.innerText(fssSearchPageObjectsConfig.paginatorTextSelector);
-
     if (recordCount <= 10) {
       expect(paginatorText).toEqual(`Showing 1-${recordCount} of ${recordCount}`);
     }
@@ -71,7 +62,6 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   test('Verify search results for multiple batch attributes search', async ({ page }) => {
     const searchText = `L1K2 ${attributeProductType.value}`;
     await InsertSearchText(page, searchText);
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     const batchAttributesValue = searchText.split(' ');
     await ExpectAllResultsContainAnyBatchUserAttValue(page, batchAttributesValue);
@@ -79,18 +69,14 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   test('Verify file downloaded status changed after click on download button', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
 
     //verify Choose files to download and  Download buttons are available on the page
     expect(await page.isVisible(fssSearchPageObjectsConfig.chooseFileDownloadSelector)).toBeTruthy();
-
     //Click on expand button
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
-
     //Click on download button
     await page.click(fssSearchPageObjectsConfig.fileDownloadButton, { force: true });
-
     //Get the file downloaded status
     const fileDownloadStatus = await page.getAttribute(fssSearchPageObjectsConfig.fileDownloadButtonStatus, "class");
     expect(fileDownloadStatus).toContain("check");
@@ -101,16 +87,13 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
-
     const filterSpeficAttributeCount = await GetSpecificAttributeCount(page, attributeProductType.key, attributeProductType.value);
-
     expect(filterSpeficAttributeCount).toEqual(0);
 
   })
 
   test('Verify batch attributes with multiple values are displayed on filter panel', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaTypes.value);
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAttValue(page, attributeMultipleMediaTypes.value.split(' '));
 
@@ -171,13 +154,10 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   test('Search multiple batch attributes and select filter and Apply filters button returned refined search', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaType.value);  
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-
     await ExpectAllResultsContainAnyBatchUserAttValue(page, attributeMultipleMediaType.value.split(' '));
 
-    const [attributeValueCD, attributeValueDVD]=attributeMultipleMediaType.value.split(' ');    
-        
+    const [attributeValueCD, attributeValueDVD]=attributeMultipleMediaType.value.split(' ');         
     //select batch attributes CD checkbox
     await page.check(await filterCheckBox(attributeMultipleMediaType.key, attributeValueCD));
    
@@ -204,5 +184,4 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
      await ExpectSpecificColumnValueDisplayed(page,attributeMultipleMediaType.key,attributeValueDVD);
      
   })
-
 })

@@ -2,12 +2,10 @@ import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
-//import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 
 test.describe('Test Search Attribute Scenario On Simplified Search Page', () => {
-  //jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-
+  
   test.beforeEach(async ({ page }) => {
       await page.goto(autoTestConfig.url)
       await AcceptCookies(page);
@@ -20,7 +18,6 @@ test.describe('Test Search Attribute Scenario On Simplified Search Page', () => 
        
     var simplifiedSearchBox= (await page.$$(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(1);
-
     var advanceSearchElements =(await page.$$("#fss-querytable-field-1 input,fss-querytable-operator-1 select,#fss-querytable-value-1 input")).length
     expect(advanceSearchElements).toEqual(0);
   })
@@ -28,7 +25,6 @@ test.describe('Test Search Attribute Scenario On Simplified Search Page', () => 
   test('Does it display "Advanced Search" link on Simplified Search page', async ({ page }) => {
     var advancedSearchLink = await page.innerText(fssSearchPageObjectsConfig.advancedSearchLinkSelector);
     expect(advancedSearchLink).toEqual(fssSearchPageObjectsConfig.advancedSearchLink);
-
   })
 
   test('Does it display "Error message" if user clicks on search button and simplified search box is empty', async ({ page }) => {
@@ -49,5 +45,4 @@ test.describe('Test Search Attribute Scenario On Simplified Search Page', () => 
     expect(simplifiedSearchBox).toEqual(0);
     
   })
-
 })
