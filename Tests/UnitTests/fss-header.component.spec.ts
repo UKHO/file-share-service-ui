@@ -92,7 +92,7 @@ describe('FssHeaderComponent', () => {
     expect(component.getMenuItems().length).toEqual(2);
     expect(component.menuItems[0].title).toEqual("Exchange sets");
   });
-  test('should not  exist Exchange set menu item in header if not logged in', () => {
+  test('should not exist Exchange set search, menu item in header if not logged in', () => {
     component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService,analyticsService);
     component.ngOnInit();
     component.authOptions =
@@ -103,7 +103,7 @@ describe('FssHeaderComponent', () => {
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => {})
     }
-    expect(component.getMenuItems().length).toEqual(1);
+    expect(component.getMenuItems().length).toEqual(0);
   });
   test('should exist Search menu item in header', () => {
     component = new FssHeaderComponent(msalService, route, msalBroadcastServie, fileShareApiService,analyticsService);

@@ -203,10 +203,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.getMenuItems();
   }
   getMenuItems(){
-    if(!this.authOptions?.isSignedIn()){
-      return this.menuItems.filter((item , index) => item.title !== 'Exchange sets');
-    }else{
+    if(this.authOptions?.isSignedIn()){
       return this.menuItems;
+    }else{
+      return [];
     }
   }
 }
