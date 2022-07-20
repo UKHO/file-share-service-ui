@@ -67,10 +67,6 @@ stages:
        workspace:
         clean: all
        steps:
-          - script: |
-              npm install
-            displayName: 'npm install'
-
           - task: CmdLine@1
             displayName: "Run OWASP Dependency Checker"
             inputs:
