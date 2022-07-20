@@ -69,6 +69,7 @@ stages:
        steps:
           - script: |
               npm install
+              npm audit fix
             displayName: 'npm install'
 
           - task: CmdLine@1
