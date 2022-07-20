@@ -68,6 +68,7 @@ stages:
         clean: all
        steps:
           - script: |
+              npm install
               npm audit fix
             displayName: 'npm audit fix'
 
