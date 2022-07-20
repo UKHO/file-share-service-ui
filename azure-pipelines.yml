@@ -68,7 +68,6 @@ stages:
         clean: all
        steps:
           - script: |
-              rm .\package-lock.json
               npm install
             displayName: 'npm install'
 
