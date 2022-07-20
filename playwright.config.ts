@@ -13,7 +13,7 @@ import { autoTestConfig } from './appSetting.json';
  */
 const config: PlaywrightTestConfig = {
   
-    
+  retries: 3,
   testDir: './Tests',
   /* Maximum time one test can run for. */
   timeout: 100 * 1000,
@@ -58,26 +58,26 @@ const config: PlaywrightTestConfig = {
       },
     },
 
-    // {
-    //   name: 'firefox',
-    //   use: {
-    //     ...devices['Desktop Firefox'],
-    //   },
-    // },
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+      },
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: {
-    //     ...devices['Desktop Safari'],
-    //   },
-    // },
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+    },
 
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: {
-    //     channel: 'msedge'
-    //   }
-    // }
+    {
+      name: 'Microsoft Edge',
+      use: {
+        channel: 'msedge'
+      }
+    }
 
     /* Test against mobile viewports. */
     // {
