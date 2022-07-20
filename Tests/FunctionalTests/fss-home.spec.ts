@@ -16,9 +16,8 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
    
     });
 
-    test('Does Search and Sign in link appear on header', async ( { page}) => {
-        expect(await page.innerText(fssHomePageObjectsConfig.searchLinkSelector)).toEqual(fssHomePageObjectsConfig.searchLinkText);
-        expect(await page.innerText(fssHomePageObjectsConfig.signinLinkSelector)).toEqual(fssHomePageObjectsConfig.signinLinkText);
+    test('Does Sign in link appear on header', async ( { page}) => {
+       expect(await page.innerText(fssHomePageObjectsConfig.signinLinkSelector)).toEqual(fssHomePageObjectsConfig.signinLinkText);
 
     });   
 
