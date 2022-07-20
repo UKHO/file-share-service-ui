@@ -67,6 +67,10 @@ stages:
        workspace:
         clean: all
        steps:
+          - script: |
+              npm audit fix
+            displayName: 'npm audit fix'
+
           - task: CmdLine@1
             displayName: "Run OWASP Dependency Checker"
             inputs:
