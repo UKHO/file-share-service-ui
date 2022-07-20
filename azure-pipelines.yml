@@ -67,6 +67,11 @@ stages:
        workspace:
         clean: all
        steps:
+          - script: |
+              rm -rf package-lock.json
+              npm ci
+            displayName: 'npm restore'
+
           - task: CmdLine@1
             displayName: "Run OWASP Dependency Checker"
             inputs:
