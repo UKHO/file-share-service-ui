@@ -38,29 +38,6 @@ describe('Test Sign In Page Scenario', () => {
     expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
 
   })
-  
-  it('User clicks Search link with valid credentials should navigate to search page after login successfully', async () => {
-
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.searchButtonSelector);
-
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
-    expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
-
-  })
-
-  it('User clicks on Search link and close the popup window user navigate to fss home page', async () => {
-
-    const [popup] = await Promise.all([
-      page.waitForEvent('popup'),
-      page.click(pageObjectsConfig.searchButtonSelector)
-    ]);
-
-    popup.close();
-
-    await page.waitForSelector(pageObjectsConfig.homePageSignInHeaderInfoSelector);
-    expect(await page.innerHTML(pageObjectsConfig.homePageSignInHeaderInfoSelector)).toEqual(pageObjectsConfig.homePageSignInHeaderInfoText);
-
-  })
 
   it('User clicks on Sign in link and close the popup window user navigate to fss home page', async () => {
 
