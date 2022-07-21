@@ -10,12 +10,10 @@ let idToken: string | null;
 test.describe('FSS UI E2E Scenarios', () => {
 
   test.beforeEach(async ({ page }) => {
-
     await page.goto(autoTestConfig.url);
     await AcceptCookies(page);
     page.waitForNavigation();
     await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
       .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
@@ -26,8 +24,6 @@ test.describe('FSS UI E2E Scenarios', () => {
   })
 
   test('Valid search system attributes query to verify data returns on UI and API response status 200', async ({ request, page }) => {
-
-    page.setDefaultTimeout(4500000);
     await SearchAttribute(page, attributeBusinessUnit.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeBusinessUnit.value);
@@ -39,17 +35,13 @@ test.describe('FSS UI E2E Scenarios', () => {
     const queryString = `${attributeBusinessUnit.key} eq '${attributeBusinessUnit.value}'`;
     const testUrl = `${autoTestConfig.apiurl}/batch?$filter=${queryString}`;
     //Get operation   
-    const apiResponse = await request.get(testUrl, {
-      headers: {
-        'Authorization': `Bearer ${idToken}`
+    const apiResponse = await request.get(testUrl, { headers: { 'Authorization': `Bearer ${idToken}`
       }
     });
-    //to check the status code
     expect(apiResponse.status()).toBe(200);
   });
 
   test('Valid search user attributes query to verify data returns on UI and API response status 200', async ({ request, page }) => {
-    page.setDefaultTimeout(350000);
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
@@ -57,41 +49,30 @@ test.describe('FSS UI E2E Scenarios', () => {
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
     // Search Query String
     const queryString = `$batch("${attributeProductType.key}") eq '${attributeProductType.value}'`;
-    const testUrl = `${autoTestConfig.apiurl}/batch?$filter=${queryString}`;
-    
+    const testUrl = `${autoTestConfig.apiurl}/batch?$filter=${queryString}`;    
     //Get operation   
-    const apiResponse = await request.get(testUrl, {
-      headers: {
-        'Authorization': `Bearer ${idToken}`
+    const apiResponse = await request.get(testUrl, {  headers: { 'Authorization': `Bearer ${idToken}`
       }
     });
-    //to check the status code
     expect(apiResponse.status()).toBe(200);
-
   })
 
   test('Invalid search query to verify data returns on UI and API response status 400', async ({ page, request }) => {
-    page.setDefaultTimeout(200000);
     await SearchAttribute(page, attributeFileSize.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, `'${attributeFileSize.value}'`);
     await page.waitForTimeout(2000);
     await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.warningMessageSelector);
-
     //Verification of warning message
     const warningMessage = await page.innerText(fssSearchPageObjectsConfig.warningMessageSelector);
     expect(warningMessage).toContain(fssSearchPageObjectsConfig.warningMessageText);
     //Search Query String
     const queryString = `${attributeFileSize.key} eq '${attributeFileSize.value}'`;
-    const testUrl = `${autoTestConfig.apiurl}/batch?$filter=${queryString}`;
-    
+    const testUrl = `${autoTestConfig.apiurl}/batch?$filter=${queryString}`;    
     //Get operation   
-    const apiResponse = await request.get(testUrl, {
-      headers: {
-        'Authorization': `Bearer ${idToken}`
+    const apiResponse = await request.get(testUrl, { headers: { 'Authorization': `Bearer ${idToken}`
       }
     });
-    //to check the status code
     expect(apiResponse.status()).toBe(400);
   })
 })
