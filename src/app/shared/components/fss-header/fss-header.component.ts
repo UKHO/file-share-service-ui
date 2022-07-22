@@ -39,8 +39,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           if (this.authOptions?.isSignedIn()) {
           this.route.navigate(["exchangesets"]);
           }
-          // localStorage.setItem('currentMenu', 'Exchange set');    
-          this.handleActiveTab('Exchange sets'); //Value should be same as title
+          this.handleActiveTab('Exchange sets');
         }),
         navActive:this.isActive
       },
@@ -89,7 +88,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
       userProfileHandler: (() => { })
     }
     this.handleSigninAwareness();
-    this.handleActiveTab(localStorage.getItem('currentMenu'));
   }
 
   setSkipToContent() {
