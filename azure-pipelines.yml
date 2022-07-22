@@ -67,16 +67,11 @@ stages:
        workspace:
         clean: all
        steps:
-          - script: |
-              npm install
-              npm audit fix
-            displayName: 'npm audit fix'
-
           - task: CmdLine@1
             displayName: "Run OWASP Dependency Checker"
             inputs:
               filename: 'dependency-check.bat'
-              arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate --disableYarnAudit'
+              arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate'
 
           - task: PublishBuildArtifacts@1
             displayName: "Publish Artifact: OWASP Dependency Checker Report"
