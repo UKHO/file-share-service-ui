@@ -2,7 +2,7 @@
 
 The File Share Service UI will be the single place for external people to download files from the UKHO. This repository provides an Angular GUI to the underlying File Share Service.
 
-## UkhoFileshareserviceUi
+## UKHO File Share Service Web UI
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.12.
 

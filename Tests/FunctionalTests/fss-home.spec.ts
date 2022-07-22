@@ -16,9 +16,8 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
    
     });
 
-    test('Does Search and Sign in link appear on header', async ( { page}) => {
-        expect(await page.innerText(fssHomePageObjectsConfig.searchLinkSelector)).toEqual(fssHomePageObjectsConfig.searchLinkText);
-        expect(await page.innerText(fssHomePageObjectsConfig.signinLinkSelector)).toEqual(fssHomePageObjectsConfig.signinLinkText);
+    test('Does Sign in link appear on header', async ( { page}) => {
+       expect(await page.innerText(fssHomePageObjectsConfig.signinLinkSelector)).toEqual(fssHomePageObjectsConfig.signinLinkText);
 
     });   
 
@@ -42,7 +41,6 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
         await page.waitForSelector(fssHomePageObjectsConfig.marinedataportalLinkSelector);
         await page.click(fssHomePageObjectsConfig.marinedataportalLinkSelector);
          await page.waitForLoadState();     
-        expect(await page.title()).toEqual(fssHomePageObjectsConfig.ukhydrographicPageTitle);
         expect(await page.url()).toEqual(fssHomePageObjectsConfig.ukhydrographicPageUrl);
     })
 

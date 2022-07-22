@@ -29,28 +29,7 @@ test.describe('Test Sign In Page Scenario', () => {
 
   })
   
-  test('User clicks Search link with valid credentials should navigate to search page after login successfully', async ({ page }) => {
-
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, fssSearchPageObjectsConfig.searchButtonSelector);
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
-    expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
-
-  })
-
-  test('User clicks on Search link and close the popup window user navigate to fss home page', async ({ page }) => {
-
-    const [popup] = await Promise.all([
-      page.waitForEvent('popup'),
-      page.click(fssSearchPageObjectsConfig.searchButtonSelector)
-    ]);
-
-    popup.close();
-    await page.waitForSelector(fssHomePageObjectsConfig.homePageSignInHeaderInfoSelector);
-    expect(await page.innerHTML(fssHomePageObjectsConfig.homePageSignInHeaderInfoSelector)).toEqual(fssHomePageObjectsConfig.homePageSignInHeaderInfoText);
-
-  })
-
-  test('User clicks on Sign in link and close the popup window user navigate to fss home page', async ({ page }) => {
+    test('User clicks on Sign in link and close the popup window user navigate to fss home page', async ({ page }) => {
     const [popup] = await Promise.all([
       page.waitForEvent('popup'),
       page.click(commonObjectsConfig.loginSignInLinkSelector)
