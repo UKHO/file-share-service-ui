@@ -41,7 +41,6 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
         await page.waitForSelector(fssHomePageObjectsConfig.marinedataportalLinkSelector);
         await page.click(fssHomePageObjectsConfig.marinedataportalLinkSelector);
          await page.waitForLoadState();     
-        expect(await page.title()).toEqual(fssHomePageObjectsConfig.ukhydrographicPageTitle);
         expect(await page.url()).toEqual(fssHomePageObjectsConfig.ukhydrographicPageUrl);
     })
 
