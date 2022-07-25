@@ -57,6 +57,7 @@
     "eslint-plugin-jsdoc": "latest",
     "eslint-plugin-prefer-arrow": "latest",
     "expect-playwright": "^0.4.0",
+    "jest": "^27.0.4",
     "jest-playwright-preset": "^1.7.2",
     "jest-preset-angular": "^9.0.3",
     "terser": "^5.14.2",
