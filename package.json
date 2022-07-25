@@ -36,7 +36,7 @@
     "zone.js": "~0.11.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1102.19",
+    "@angular-devkit/build-angular": "^14.1.0",
     "@angular-eslint/builder": "4.3.1",
     "@angular-eslint/eslint-plugin": "4.3.1",
     "@angular-eslint/eslint-plugin-template": "4.3.1",
@@ -44,23 +44,23 @@
     "@angular-eslint/template-parser": "4.3.1",
     "@angular/cli": "~11.2.12",
     "@angular/compiler-cli": "~11.2.13",
+    "@playwright/test": "^1.23.2",
     "@types/jest": "^26.0.23",
     "@types/node": "^12.11.1",
     "@types/request": "^2.48.7",
     "@typescript-eslint/eslint-plugin": "4.16.1",
     "@typescript-eslint/parser": "4.16.1",
+    "axe-playwright": "^1.1.11",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "latest",
     "eslint-plugin-prefer-arrow": "latest",
-    "expect-playwright": "^0.4.0",    
+    "expect-playwright": "^0.4.0",
     "jest-playwright-preset": "^1.7.2",
     "jest-preset-angular": "^9.0.3",
     "terser": "^5.14.2",
     "terser-webpack-plugin": "^5.3.3",
     "ts-node": "~8.3.0",
-    "typescript": "~4.1.5",
-    "@playwright/test": "^1.23.2",
-    "axe-playwright": "^1.1.11"
+    "typescript": "~4.1.5"
   }
 }
