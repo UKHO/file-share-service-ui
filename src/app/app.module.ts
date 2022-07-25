@@ -24,7 +24,7 @@ export function GTMFactory(config: AppConfigService): any {
   providers: [AppConfigService,
     { provide: 'googleTagManagerId',  useFactory: GTMFactory,
     deps: [AppConfigService]
-    },
+    }
   ],
   bootstrap: [AppComponent]
 })

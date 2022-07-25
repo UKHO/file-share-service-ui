@@ -25,10 +25,8 @@ describe('Test Home Page Scenario', () => {
 
     })
 
-    test('Does Search and Sign in link appear on header', async () => {
-        expect(await page.innerText(pageObjectsConfig.searchLinkSelector)).toEqual(pageObjectsConfig.searchLinkText);
+    test('Does Sign in link appear on header', async () => {
         expect(await page.innerText(pageObjectsConfig.signinLinkSelector)).toEqual(pageObjectsConfig.signinLinkText);
-
     })
 
     test('Does it navigate to accessibility page once click on Accessibility link', async () => {

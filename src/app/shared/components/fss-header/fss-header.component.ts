@@ -32,6 +32,27 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.handleSignIn();
     this.setSkipToContent();
+    this.menuItems = [
+      {
+        title: 'Exchange sets',
+        clickAction: (() => {
+          if (this.authOptions?.isSignedIn()) {
+          this.route.navigate(["exchangesets"]);
+          }
+          this.handleActiveTab('Exchange sets');
+        }),
+        navActive:this.isActive
+      },
+      {
+        title: 'Search',
+        clickAction: (() => {
+          if (this.authOptions?.isSignedIn()) {
+            this.route.navigate(["search"])
+          }
+        }),
+        navActive: this.isActive
+      }
+    ];
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -59,21 +80,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
     this.logoLinkUrl = "https://www.admiralty.co.uk/";
 
-    this.menuItems = [
-      {
-        title: 'Search',
-        clickAction: (() => {
-          if (this.authOptions?.isSignedIn()) {
-            this.route.navigate(["search"])
-          }
-          if (!this.authOptions?.isSignedIn()) {
-            this.logInPopup();
-          }
-        }),
-        navActive: this.isActive
-      }
-    ];
-
     this.authOptions = {
       signedInButtonText: 'Sign in',
       signInHandler: (() => { this.logInPopup(); }),
@@ -90,9 +96,16 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     ).subscribe((event: any) => { this.skipToContent = `#mainContainer`; });
   }
 
-  handleActiveTab() {
-    this.menuItems.find(mt => mt.title === 'Search')!.navActive = this.isActive;
+  handleActiveTab(title:any) {
+    for (var item of this.menuItems) {
+      item.navActive = false;
+      if(item.title == title)
+      {
+         item.navActive = true;
+      }
+    }
   }
+
 
   logInPopup() {
     this.msalService.loginPopup().subscribe(response => {
@@ -103,12 +116,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
         this.isActive = true;
-        this.handleActiveTab()
+        this.handleActiveTab(this.menuItems[1].title)
         this.analyticsService.login();
       }
     });
   }
-
+  
   handleSignIn() {
     this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -118,13 +131,16 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
         if (!this.authOptions?.isSignedIn()) {
           this.route.navigate(['']);
           this.isActive = false;
-          this.handleActiveTab()
+          this.handleActiveTab(this.menuItems[1].title)
         }
         else {
           this.isActive = true;
-          this.handleActiveTab()
+          this.handleActiveTab(this.menuItems[1].title)
         }
       }
+        else if(url.includes('exchangesets')){
+          this.handleActiveTab(this.menuItems[0].title)
+        }
     });
   }
 
@@ -175,6 +191,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
           }
         }
       }
+    }
+    this.getMenuItems();
+  }
+  getMenuItems(){
+    if(this.authOptions?.isSignedIn()){
+      return this.menuItems;
+    }else{
+      return [];
     }
   }
 }
