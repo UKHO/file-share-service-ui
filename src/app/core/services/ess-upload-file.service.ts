@@ -6,4 +6,13 @@ import { Injectable } from '@angular/core';
 export class EssUploadFileService {
 
   constructor() { }
+
+  validate_CSVFile()
+  {}
+
+  validate_PermitFile()
+  {}
+
+  validate_ENCFormat()
+  {}
 }
