@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  routes = ['/search' , '/exchangesets'];
   constructor(private msalService: MsalService,
     private router: Router){}
   canActivate(
@@ -19,6 +20,10 @@ export class AuthGuard implements CanActivate {
       }
       if(account){
         return true;
+      }
+      if(!account && this.routes.includes(state.url)){
+        this.router.navigate(['']);
+        return false;
       }
       if(!account && state.url === '/'){
         return true;
