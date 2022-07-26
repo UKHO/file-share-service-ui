@@ -4,7 +4,7 @@ import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.
 import { AcceptCookies } from '../../Helper/CommonHelper';
 
 test.describe('FSS UI Home Page Functional Test Scenarios', () => {
- 
+     
     test.beforeEach(async ({ page }) => {
         await page.goto(autoTestConfig.url);
         await page.waitForLoadState(); 
@@ -34,9 +34,8 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
             const [popup] = await Promise.all([page.waitForEvent('popup'), await page.click(fssHomePageObjectsConfig.privacypolicyLinkSelector)]);
             await popup.waitForLoadState();      
             expect(popup.url()).toContain("cookie-policy");
-        
     })
-    
+          
     test('Does it navigate to marine data portal page once click on marine data portal link', async ( { page }) => {
         await page.waitForSelector(fssHomePageObjectsConfig.marinedataportalLinkSelector);
         await page.click(fssHomePageObjectsConfig.marinedataportalLinkSelector);

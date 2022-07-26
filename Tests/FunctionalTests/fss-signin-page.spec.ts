@@ -39,4 +39,4 @@ test.describe('Test Sign In Page Scenario', () => {
     expect(await page.innerHTML(fssHomePageObjectsConfig.homePageSignInHeaderInfoSelector)).toEqual(fssHomePageObjectsConfig.homePageSignInHeaderInfoText);
 
   })
-}) 
+})
