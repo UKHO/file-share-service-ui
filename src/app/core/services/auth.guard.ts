@@ -13,15 +13,16 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       const account = this.msalService.instance.getActiveAccount();
-      if(!account){
-         if(state.url === '/'){
-          return true;
-         }
-        return false;
-      }else if(account && state.url === '/'){
+      if(account){
+        return true;
+      }
+      if(account && state.url === '/'){
         this.router.navigate(['search']);
         return false;
       }
-      return true;
+      if(!account && state.url === '/'){
+        return true;
+      }
+      return false;
   }
 }
