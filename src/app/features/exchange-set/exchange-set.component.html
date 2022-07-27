@@ -8,11 +8,9 @@
                      list of holdings, or you can upload a specific list of ENCs as a .csv file or, <br/>
                      search for a single ENC</p>
 
-<ukho-radio-group name="encUploadAdd">
  <ukho-radio [id]="rdoUploadFileId" value="rdoUploadFileName" (change)="onChange($event)" style="display:block">{{rdoUploadFileName}}</ukho-radio>
  <br/>
  <ukho-radio [id]="rdoAddSingleFileId" value="rdoAddSingleFileName" (change)="onChange($event)" style="display:block">{{rdoAddSingleFileName}}</ukho-radio>
-</ukho-radio-group>
 </div>
 <br/>
 <div id="divESSUpload" *ngIf="chkESSUpload" >
