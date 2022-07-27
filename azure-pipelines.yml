@@ -187,7 +187,7 @@ stages:
 
            - task: FileTransform@1
              inputs:
-              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
 
