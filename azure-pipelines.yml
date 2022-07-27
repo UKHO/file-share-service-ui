@@ -187,7 +187,7 @@ stages:
 
            - task: FileTransform@1
              inputs:
-              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
 
@@ -224,7 +224,7 @@ stages:
            - task: FileTransform@1
              displayName: 'AppSettings Json tranform for E2E Tests Run'
              inputs:
-              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
   
@@ -261,7 +261,7 @@ stages:
            - task: FileTransform@1
              displayName: AppSettings Json tranform for Accessibility Test Run
              inputs:
-              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
       
@@ -325,7 +325,7 @@ stages:
 
            - task: FileTransform@1
              inputs:
-              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
 
@@ -362,7 +362,7 @@ stages:
            - task: FileTransform@1
              displayName: AppSettings Json tranform for E2E Tests Run
              inputs:
-              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
      
@@ -401,7 +401,7 @@ stages:
            - task: FileTransform@1
              displayName: AppSettings Json tranform for Accessibility Test Run
              inputs:
-              folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
+              folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
       
