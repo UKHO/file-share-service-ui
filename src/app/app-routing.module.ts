@@ -41,7 +41,8 @@ const routes: Routes = [
   { 
     path: 'exchangesets', 
     loadChildren: () => import('./features/exchange-set/exchange-set.module').then(m => m.ExchangeSetModule) ,
-    canActivate : [AuthGuard]
+    canActivate : [AuthGuard],
+    data: {title: 'Admiralty - File Share Service - Exchange Sets'}
   },
   {
     path: '**',
