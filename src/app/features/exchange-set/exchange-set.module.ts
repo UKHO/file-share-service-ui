@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ExchangeSetRoutingModule } from './exchange-set-routing.module';
 import { ExchangeSetComponent } from './exchange-set.component';
 import { EssUploadFileComponent } from './ess-upload-file/ess-upload-file/ess-upload-file.component';
+import  { FileInputModule } from '@ukho/design-system';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { EssUploadFileComponent } from './ess-upload-file/ess-upload-file/ess-up
   ],
   imports: [
     CommonModule,
-    ExchangeSetRoutingModule
+    ExchangeSetRoutingModule,
+    FileInputModule
   ]
 })
 export class ExchangeSetModule { }
