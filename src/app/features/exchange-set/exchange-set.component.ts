@@ -11,27 +11,14 @@ export class ExchangeSetComponent implements OnInit {
   constructor() {
    }
 
-   rdoUploadFileName="Upload your whole permit file or a .csv file";
-   rdoUploadFileId:any;
-   rdoAddSingleFileName="Add ENCs";
-   rdoAddSingleFileId:any=false;
-   chkESSUpload:boolean=false;
-   chkAddSingleENCs:boolean=false;
+  rgAddUploadENC: string;  
+  radioUploadEncValue:string;
+  radioAddEncValue:string;
    
   ngOnInit(): void {
-  }
+    this.radioUploadEncValue="UploadEncFile";
 
-  onChange(UploadENCs:any) {
-    if(UploadENCs.target.value==='rdoUploadFileName')
-    {
-       this.chkESSUpload=true;
-       this.chkAddSingleENCs=false;
-    }
-    if(UploadENCs.target.value==='rdoAddSingleFileName')
-    {
-      this.chkAddSingleENCs=true;
-      this.chkESSUpload=false;  
-    }
-  };
+    this.radioAddEncValue="AddSingleEnc";
+  }
 
 }

@@ -5,7 +5,8 @@ import { ExchangeSetRoutingModule } from './exchange-set-routing.module';
 import { ExchangeSetComponent } from './exchange-set.component';
 import { EssUploadFileComponent } from './ess-upload-file/ess-upload-file/ess-upload-file.component';
 import { EssAddSingleEncsComponent } from './ess-add-single-encs/ess-add-single-encs.component';
-import { RadioModule,TextinputModule,ButtonModule,FileInputModule,DialogueModule } from '@ukho/design-system';
+import { RadioModule,TextinputModule,ButtonModule,FileInputModule,RadioGroupModule,DialogueModule } from '@ukho/design-system';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,8 @@ import { RadioModule,TextinputModule,ButtonModule,FileInputModule,DialogueModule
     TextinputModule,
     ButtonModule,
     FileInputModule,
+    RadioGroupModule,
+    FormsModule,
     DialogueModule
   ]
 })
