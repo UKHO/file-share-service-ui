@@ -31,6 +31,7 @@ export async function ClickWaitRetry(page: Page, buttonToClick: string, selector
 //<param> attributeName </param>
 
 export async function SearchAttribute(page: Page, attributeName: string) {
+    await page.waitForSelector(fssSearchPageObjectsConfig.inputSearchFieldSelector);
     await page.fill(fssSearchPageObjectsConfig.inputSearchFieldSelector, "");
     await page.fill(fssSearchPageObjectsConfig.inputSearchFieldSelector, attributeName);
     await page.keyboard.press('Backspace');
