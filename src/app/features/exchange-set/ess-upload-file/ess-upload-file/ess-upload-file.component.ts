@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CSVRecord } from './../../../../core/models/ess-csv-model';
+import { EssUploadFileService } from './../../../../core/services/ess-upload-file.service';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -7,8 +8,14 @@ import { CSVRecord } from './../../../../core/models/ess-csv-model';
   styleUrls: ['./ess-upload-file.component.scss']
 })
 export class EssUploadFileComponent implements OnInit {
+  messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
+  messageTitle: string = "";
+  messageDesc: string = "";
+  displayMessage: boolean = false;
+  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
 
-  constructor() { }
+  constructor(private essUploadFileService: EssUploadFileService) {     
+  }
 
   ngOnInit(): void {
   }
@@ -34,6 +41,7 @@ export class EssUploadFileComponent implements OnInit {
         let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
 
         this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray);
+        this.validateENCFormat();
       };
 
       reader.onerror = function () {
@@ -41,7 +49,8 @@ export class EssUploadFileComponent implements OnInit {
       };
 
     } else {
-      alert("Please import valid .csv file.");
+      this.showMessage("error", "File upload error", "Please import valid .csv file.");
+      //alert("Please import valid .csv file.");
       this.fileReset();
     }
   }
@@ -67,5 +76,20 @@ export class EssUploadFileComponent implements OnInit {
     this.records = [];
   }
 
-}
+  validateENCFormat()
+  {
+    this.essUploadFileService.validate_ENCFormat(this.records);
+  }
 
+  showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
+    this.messageType = messageType;
+    this.messageTitle = messageTitle;
+    this.messageDesc = messageDesc;
+    this.displayMessage = true;
+    if (this.ukhoDialog !== undefined) {
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '-1');
+      this.ukhoDialog.nativeElement.focus();
+    }
+  }
+
+}

@@ -1,16 +1,23 @@
 <div class="container">
+    <div #ukhoTarget>
+        <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite" tabindex="-1">
+            <h3>{{messageTitle}}</h3>
+            <div>{{messageDesc}}</div>
+        </ukho-dialogue>
+    </div>
     <div>
-        <ukho-file-input id="file-upload" #csvReader (change)="uploadListener($event)" accept=".csv" class="UploadFileIput">
+        <ukho-file-input id="file-upload" #csvReader (change)="uploadListener($event)" accept=".csv"
+            class="UploadFileIput">
         </ukho-file-input>
         <ukho-button class="UploadButton">
-          Proceed
+            Proceed
         </ukho-button>
-   </div>  
+    </div>
 </div>
 
 
-<tbody>    
-    <tr *ngFor="let record of records;let i = index;">    
-      <td> <span>{{record.encnumber}}</span> </td>    
-    </tr>    
-  </tbody>  
+<tbody>
+    <tr *ngFor="let record of records;let i = index;">
+        <td> <span>{{record.encnumber}}</span> </td>
+    </tr>
+</tbody>
