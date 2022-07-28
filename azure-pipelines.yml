@@ -198,9 +198,9 @@ stages:
 
            - task: CmdLine@2
              inputs:
-              script: 'npm list @playwright/test'
-             displayName: List NPM Package for Playwright Test
-
+              script: 'npx playwright install'
+             displayName: install browsers for playwright test
+             
            - script: |
               npm run test:auto
              displayName: 'Run Functional Tests'
