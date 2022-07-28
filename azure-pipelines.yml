@@ -110,6 +110,11 @@ stages:
           - script: |
               npm run build
             displayName: 'npm build'
+
+          - task: CmdLine@2
+            inputs:
+              script: 'npm list playwright/test'
+            displayName: List NPM Package for Playwright Test
           
           - script: |
              npm run test:unit
