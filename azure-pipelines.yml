@@ -191,6 +191,11 @@ stages:
               fileType: 'json'
               targetFiles: 'appSetting.json'
 
+           - task: CmdLine@2
+             inputs:
+                script: 'npm list | find playwright/test'
+             displayName: List NPM Package for Playwright Test
+
            - script: |
               npm run test:auto
              displayName: 'Run Functional Tests'
