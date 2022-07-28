@@ -113,7 +113,7 @@ stages:
 
           - task: CmdLine@2
             inputs:
-              script: 'npm list playwright/test'
+              script: 'npm list playwright'
             displayName: List NPM Package for Playwright Test
           
           - script: |
