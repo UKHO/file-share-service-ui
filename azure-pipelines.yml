@@ -195,11 +195,6 @@ stages:
               folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
-
-           - task: CmdLine@2
-             inputs:
-              script: 'npx playwright install'
-             displayName: install browsers for playwright test
              
            - script: |
               npm run test:auto
