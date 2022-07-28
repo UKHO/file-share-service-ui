@@ -1,8 +1,8 @@
-<p>ess-upload-file works!</p>
-<ukho-file-input id="file-upload" #csvReader (change)="uploadListener($event)" accept=".csv">
-</ukho-file-input>
-<tbody>    
-    <tr *ngFor="let record of records;let i = index;">    
-      <td> <span>{{record.encnumber}}</span> </td>    
-    </tr>    
-  </tbody>  
+<div class="container">
+    <div>
+        <ukho-file-input class="UploadFileIput"></ukho-file-input>
+        <ukho-button class="UploadButton">
+          Proceed
+        </ukho-button>
+   </div>  
+</div>
