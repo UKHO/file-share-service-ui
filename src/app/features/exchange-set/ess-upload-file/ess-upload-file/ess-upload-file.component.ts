@@ -5,65 +5,50 @@ import { FileInputComponent } from '@ukho/design-system';
 @Component({
   selector: 'app-ess-upload-file',
   templateUrl: './ess-upload-file.component.html',
-  styleUrls: ['./ess-upload-file.component.scss']
+  styleUrls: ['./ess-upload-file.component.scss'],
 })
 export class EssUploadFileComponent implements OnInit {
-
-  isDataShow: boolean = false;
+  @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
+  @ViewChild('textfileUpload') textfileUpload: FileInputComponent;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
-  messageDesc: string = "";
-  displayMessage: boolean = false;
-  @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
-  @ViewChild("textfileUpload") textfileUpload: FileInputComponent;
+  messageDesc = '';
+  displayErrorMessage = false;
   essId: any;
-  encData = [
-    { Id: 1, name: 'Upload your whole permit' }
-  ]
-  encFileList: any[] = [];
-  encList: any;
-  fileOutput: any;
-  errorMessageDescription = "";
-  getValidEncNumbers: any[] = [];
-  constructor(private essUploadFileService: EssUploadFileService) { }
+  encData = [{ id: 1, name: 'Upload your whole permit' }];
+  encList: string[];
+  constructor(private essUploadFileService: EssUploadFileService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   uploadTextPermitFile() {
-    var file = this.textfileUpload.files[0];
-    console.log(file);
-    var reader = new FileReader();
-    reader.onload = (e: any) => {
-      if (file.name.endsWith('.TXT')) {
-        this.fileOutput = e.target.result;
-        this.encList = this.fileOutput.split('\n');
-  
-        for (var i = 0; i < this.encList.length; i++) {
-          var encName = this.encList[i].substring(0, 8);
-
-          if (this.essUploadFileService.validate_ENCFormat(encName)) {
-            this.encFileList.push(encName);
-            this.getValidEncNumbers = this.encFileList.filter((el, i, a) => i === a.indexOf(el))
-            this.isDataShow = true;
-            this.errorMessageDescription = "Some values have not been added to list"
-            this.showMessage("info", this.errorMessageDescription);
+    if (this.textfileUpload.files && this.textfileUpload.files.length > 0) {
+        const encFile = this.textfileUpload.files[0];
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          /*
+            trims leading & trailing whitespaces , splits texts in new lines
+            trims leading & trailing individual ENC's whitespaces
+          */
+          const encList = e.target.result.trim().split('\n').map((enc: string) => enc.trim()); 
+          if(this.essUploadFileService.validatePermitFile(encFile.type,encList)){
+            this.essUploadFileService.setValidEncs(encList);
+            this.encList = this.essUploadFileService.getValidEncs();
+            this.showMessage('info','Some values have not been added to list');
+          }else{
+            this.showMessage('error','Allowded .txt only');
           }
-        }
+        };
+        reader.readAsText(encFile);
       }
-       else {
-        this.errorMessageDescription = "Allowed only .txt file"
-        this.showMessage("error", this.errorMessageDescription);
-        this.isDataShow = false;
-      }
-
-    };
-    reader.readAsText(file);
   }
 
-  showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageDesc: string = "") {
+  showMessage(
+    messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
+    messageDesc: string = ''
+  ) {
     this.messageType = messageType;
     this.messageDesc = messageDesc;
-    this.displayMessage = true;
+    this.displayErrorMessage = true;
     if (this.ukhoDialog !== undefined) {
       this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
       this.ukhoDialog.nativeElement.focus();
@@ -71,7 +56,6 @@ export class EssUploadFileComponent implements OnInit {
   }
 
   onChangeExchangeSetItem(event: any) {
-    this.essId = "essId" + event.target.value;
+    this.essId = 'essId' + event.target.value;
   }
-
 }
