@@ -26,10 +26,7 @@ export class EssUploadFileService {
   }
 
   setValidEncs(encList: string[]){
-    this.validEncs = encList.map((encItem: string, index) => {
-      const enc = encItem.substring(0, 8); // fetch first 8 characters
-      return enc;
-    })
+    this.validEncs = encList.map((encItem: string) => encItem.substring(0, 8)) // fetch first 8 characters
     .filter((enc) => this.validateENCFormat(enc) ) // returns valid enc's
     .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
     .filter((enc , index) => index <= this.maxUploadRows); // limit records by maxUploadRows

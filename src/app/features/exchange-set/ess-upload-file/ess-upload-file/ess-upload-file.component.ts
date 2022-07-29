@@ -21,6 +21,7 @@ export class EssUploadFileComponent implements OnInit {
   ngOnInit(): void {}
 
   uploadTextPermitFile() {
+    this.encList = [];
     if (this.textfileUpload.files && this.textfileUpload.files.length > 0) {
         const encFile = this.textfileUpload.files[0];
         const reader = new FileReader();
@@ -29,7 +30,7 @@ export class EssUploadFileComponent implements OnInit {
             trims leading & trailing whitespaces , splits texts in new lines
             trims leading & trailing individual ENC's whitespaces
           */
-          const encList = e.target.result.trim().split('\n').map((enc: string) => enc.trim()); 
+          const encList = e.target.result.trim().split('\n').map((enc: string) => enc.trim());
           if(this.essUploadFileService.validatePermitFile(encFile.type,encList)){
             this.essUploadFileService.setValidEncs(encList);
             this.encList = this.essUploadFileService.getValidEncs();
