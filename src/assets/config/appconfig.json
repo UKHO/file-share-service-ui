@@ -44,5 +44,8 @@
         "sortOrder":"descending"
       }
     ]
+  },
+  "essConfig": {
+    "maxENClimit": "10"
   }
 }

@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AppConfigService } from 'src/app/core/services/app-config.service';
 import { EssUploadFileService } from './../../../../core/services/ess-upload-file.service';
 
 @Component({
@@ -11,9 +12,11 @@ export class EssUploadFileComponent implements OnInit {
   messageTitle: string = "";
   messageDesc: string = "";
   displayMessage: boolean = false;
+  maxENClimit: number;
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
 
   constructor(private essUploadFileService: EssUploadFileService) {
+    this.maxENClimit = AppConfigService.settings["essConfig"].maxENClimit;
   }
 
   ngOnInit(): void {
@@ -37,8 +40,9 @@ export class EssUploadFileComponent implements OnInit {
       let regEx: string = "/\r\n,|\r\n\r\n|,,|\r\n,\r\n/";
 
       reader.onload = () => {
-        let csvData = reader.result;//?.slice(0, reader.result.toString().split(/\r\n,|\r\n\r\n|,,|\r\n,\r\n/)[0].length);
-        let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);
+        let csvData = reader.result;  //fetch csv file data
+        let csvRecordsArray = (<string>csvData).split(/\r\n|\n/);   //fetch csv file data row by row
+        csvRecordsArray = csvRecordsArray.filter(x => x !== "");  //remove blank values from file
 
         this.records = this.getDataRecordsArrayFromCSVFile(csvRecordsArray);
       };
@@ -56,10 +60,11 @@ export class EssUploadFileComponent implements OnInit {
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any) {
     for (let i = 0; i < csvRecordsArray.length; i++) {
+      //fetch only 1st column
       let curruntRecord = (<string>csvRecordsArray[i]).split(',');
       let encRecord = curruntRecord[0].trim();
-      if (this.essUploadFileService.isValidENCnumber(curruntRecord)) {
-        if (!(this.ENCnumber.indexOf(encRecord) != -1)) {
+      if (this.essUploadFileService.isValidENCnumber(curruntRecord)) {        
+        if (!(this.ENCnumber.indexOf(encRecord) != -1) && this.ENCnumber.length != this.maxENClimit) { //find duplicate ENC number in the list and set max limit of 250
           this.ENCnumber.push(encRecord);
         }
       }
