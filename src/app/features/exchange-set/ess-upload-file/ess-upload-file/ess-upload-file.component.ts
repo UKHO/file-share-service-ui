@@ -21,8 +21,8 @@ export class EssUploadFileComponent implements OnInit {
   ngOnInit(): void {}
 
   uploadTextPermitFile() {
-    this.encList = [];
     if (this.textfileUpload.files && this.textfileUpload.files.length > 0) {
+        this.encList = [];
         const encFile = this.textfileUpload.files[0];
         const reader = new FileReader();
         reader.onload = (e: any) => {
