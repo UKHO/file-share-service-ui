@@ -1,3 +1,4 @@
+import { DialogueModule, CardModule, ButtonModule, TextinputModule, CheckboxModule, FileInputModule, RadioModule } from '@ukho/design-system';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -13,7 +14,14 @@ import { EssUploadFileComponent } from './ess-upload-file/ess-upload-file/ess-up
   ],
   imports: [
     CommonModule,
-    ExchangeSetRoutingModule
+    ExchangeSetRoutingModule,
+    DialogueModule,
+    CardModule,
+    ButtonModule,
+    CheckboxModule,
+    TextinputModule,
+    RadioModule,
+    FileInputModule
   ]
 })
 export class ExchangeSetModule { }
