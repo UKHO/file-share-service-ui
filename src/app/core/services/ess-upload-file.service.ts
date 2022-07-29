@@ -13,7 +13,7 @@ export class EssUploadFileService {
 
   validateCSVFile() {}
 
-  validatePermitFile(fileType: string, encList: string[]): boolean | Error{
+  validatePermitFile(fileType: string, encList: string[]): boolean{
     if(fileType === 'text/plain' && encList[2] === ':ENC' && encList[encList.length-1] === ':ECS'){
       return true;
     }
@@ -25,8 +25,9 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  setValidEncs(encList: string[]){
-    this.validEncs = encList.map((encItem: string) => encItem.substring(0, 8)) // fetch first 8 characters
+  setValidEncs(encList: string[]): void{
+    this.validEncs = encList
+    .map((encItem: string) => encItem.substring(0, 8)) // fetch first 8 characters
     .filter((enc) => this.validateENCFormat(enc) ) // returns valid enc's
     .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
     .filter((enc , index) => index <= this.maxUploadRows); // limit records by maxUploadRows
