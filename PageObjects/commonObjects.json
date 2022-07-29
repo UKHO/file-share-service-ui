@@ -6,7 +6,7 @@
         "loginPopupSignInPasswordSelector" : "#password",
         "loginPopupSignInButtonSelector" : "#next",
         "loginSignInLinkSelector" : "#signInButton",
-        "loginAccountSelector" : ".sectionDropdown",
+        "loginAccountSelector" : "//button[@class='ng-tns-c89-1']",
         "loginAccountLinkSelector" : "#profile button"
     }
 }
