@@ -39,7 +39,7 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
     test('Does it navigate to marine data portal page once click on marine data portal link', async ( { page }) => {
         await page.waitForSelector(fssHomePageObjectsConfig.marinedataportalLinkSelector);
         await page.click(fssHomePageObjectsConfig.marinedataportalLinkSelector);
-         await page.waitForLoadState();     
+         await page.waitForLoadState('domcontentloaded');     
         expect(await page.url()).toEqual(fssHomePageObjectsConfig.ukhydrographicPageUrl);
     })
 
