@@ -34,4 +34,7 @@ export class EssUploadFileService {
   getValidEncs(): string[]{
     return this.validEncs;
   }
+  formatUploadedFile(rawData: string): string[]{
+    return rawData.trim().split('\n').map((enc: string) => enc.trim());
+  }
 }
