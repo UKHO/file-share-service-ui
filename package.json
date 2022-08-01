@@ -6,9 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "test:unit": "jest --config=jest.config.js",
-    "test:auto": "npx playwright test /Tests/FunctionalTests --reporter=junit",
-    "test:a11y": "npx playwright test /Tests/AccessibilityTests --reporter=junit",
-    "test:e2e": "npx playwright test /Tests/E2ETests --reporter=junit",
+    "test:auto": "npx playwright test /Tests/FunctionalTests",
+    "test:a11y": "npx playwright test /Tests/AccessibilityTests",
+    "test:e2e": "npx playwright test /Tests/E2ETests",
     "lint": "ng lint",
     "force-resolutions": "npx npm-force-resolutions"
   },
