@@ -2,8 +2,8 @@
   "Environment": "",
   "GoogleTagManagerId":"Not-Needed-For-Running-Locally",
   "b2cConfig": {
-    "tenantName": "",
-    "clientId": "",
+    "tenantName": "mgiaidtestb2c",
+    "clientId": "d4ab354e-a3b2-480e-ad50-4e60f2ca0021",
     "redirectUri": "/",
     "postLogoutRedirectUri": "/logout.html",
     "navigateToLoginRequestUrl": true,
@@ -18,11 +18,10 @@
     "fssTitle": "File Share Service",
     "displayPopularSearch": true,
     "displaySimplifiedSearchLink": true,
-    "MaxUploadRows": 10,
     "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl": "",
-    "stateManagementApiUrl": "",
+    "apiUrl": "https://uatadmiralty.azure-api.net/fss-qa",
+    "stateManagementApiUrl": "https://uatadmiralty.azure-api.net/fss-ui-auth-qa",
     "batchAttributes": [
       {
           "attributeSortType":"alphabetical",

@@ -17,7 +17,7 @@
             <ukho-file-input id="file-upload" #essFileUpload (change)="uploadListener($event)" accept=".txt,.csv"
             class="UploadFileIput">
         </ukho-file-input>
-                     <div style="text-align: right;"><ukho-button (click)="uploadTextPermitFile()">Proceed</ukho-button></div>  <br>
+                     <div style="text-align: right;"><ukho-button (click)="processEncFile()">Proceed</ukho-button></div>  <br>
 
                   <div *ngIf="encList && encList.length > 0">
                       <ukho-card>
