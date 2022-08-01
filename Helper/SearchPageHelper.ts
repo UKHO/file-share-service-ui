@@ -23,7 +23,6 @@ export async function ClickWaitRetry(page: Page, buttonToClick: string, selector
     }
   }
 
-
   //<summary>
 // Search attribute on FSS UI
 //</summary>
@@ -146,12 +145,13 @@ export async function SearchAttribute(page: Page, attributeName: string) {
   }
   
   async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {
-    //  count the result rows
+   await page.waitForTimeout(3000);
+   //  count the result rows
     const resultCount = await page.$$eval(tablePath, matches => matches.length);
-  
+     
     // fail if there are no matching selections
     expect(resultCount).toBeTruthy();
-  
+     
     // count the result rows with the attribute value
     const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
   
