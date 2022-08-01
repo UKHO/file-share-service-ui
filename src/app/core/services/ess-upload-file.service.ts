@@ -8,13 +8,13 @@ export class EssUploadFileService {
   private validEncs: string[];
   private maxUploadRows: number;
   constructor() {
-    this.maxUploadRows = AppConfigService.settings['fssConfig'].MaxUploadRows;
+    this.maxUploadRows = AppConfigService.settings['MaxEncLimit'].MaxUploadRows;
   }
 
   validateCSVFile() {}
 
-  validatePermitFile(fileType: string, encList: string[]): boolean{
-    if(fileType === 'text/plain' && encList[2] === ':ENC' && encList[encList.length-1] === ':ECS'){
+  validatePermitFile(encList: string[]): boolean{
+    if(encList[2] === ':ENC' && encList[encList.length-1] === ':ECS'){
       return true;
     }
     return false;
@@ -30,7 +30,7 @@ export class EssUploadFileService {
     .map((encItem: string) => encItem.substring(0, 8)) // fetch first 8 characters
     .filter((enc) => this.validateENCFormat(enc) ) // returns valid enc's
     .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
-    .filter((enc , index) => index <= this.maxUploadRows); // limit records by maxUploadRows
+    .filter((enc , index) => index < this.maxUploadRows); // limit records by maxUploadRows
   }
   getValidEncs(): string[]{
     return this.validEncs;

@@ -11,10 +11,12 @@
               <ukho-radio [id]="enc.name" value="{{enc.id}}" (change)="onChangeExchangeSetItem($event)">{{enc.name}}
               </ukho-radio>
           </div>
-          <div class="innerWrapperForEnc" *ngIf='"essId"+enc.id === essId'>
+          <div style="width: 58%;" class="innerWrapperForEnc" *ngIf='"essId"+enc.id === essId'>
               <div *ngIf="enc.name === 'Upload your whole permit'">
-                  <ukho-file-input #textfileUpload name="Upload txt" id="txtFileUpload"
-                      accept=".txt"></ukho-file-input>
+        
+            <ukho-file-input id="file-upload" #essFileUpload (change)="uploadListener($event)" accept=".txt,.csv"
+            class="UploadFileIput">
+        </ukho-file-input>
                      <div style="text-align: right;"><ukho-button (click)="uploadTextPermitFile()">Proceed</ukho-button></div>  <br>
 
                   <div *ngIf="encList && encList.length > 0">

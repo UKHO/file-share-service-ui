@@ -9,21 +9,30 @@ import { FileInputComponent } from '@ukho/design-system';
 })
 export class EssUploadFileComponent implements OnInit {
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
-  @ViewChild('textfileUpload') textfileUpload: FileInputComponent;
+  @ViewChild('essFileUpload') essFileUpload: FileInputComponent;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
   essId: any;
   encData = [{ id: 1, name: 'Upload your whole permit' }];
   encList: string[];
+  encFile: File;
   constructor(private essUploadFileService: EssUploadFileService) {}
 
   ngOnInit(): void {}
 
+  uploadListener($event: any): void {
+
+        this.encFile = $event.srcElement.files[0];
+        this.displayErrorMessage = false;
+        if (this.encFile && this.encFile.type !== 'text/plain') {
+          this.showMessage('error','Please select a .csv or .txt file');
+        }
+    
+  }
+
   uploadTextPermitFile() {
-    if (this.textfileUpload.files && this.textfileUpload.files.length > 0) {
-        this.encList = [];
-        const encFile = this.textfileUpload.files[0];
+   
         const reader = new FileReader();
         reader.onload = (e: any) => {
           /*
@@ -31,7 +40,7 @@ export class EssUploadFileComponent implements OnInit {
             trims leading & trailing individual ENC's whitespaces
           */
           const encList =  this.essUploadFileService.formatUploadedFile(e.target.result);
-          if(this.essUploadFileService.validatePermitFile(encFile.type,encList)){
+          if(this.essUploadFileService.validatePermitFile(encList)){
             this.essUploadFileService.setValidEncs(encList);
             this.encList = this.essUploadFileService.getValidEncs();
             this.showMessage('info','Some values have not been added to list');
@@ -39,8 +48,8 @@ export class EssUploadFileComponent implements OnInit {
             this.showMessage('error','Allowded .txt only');
           }
         };
-        reader.readAsText(encFile);
-      }
+        reader.readAsText(this.encFile);
+      
   }
 
   showMessage(
