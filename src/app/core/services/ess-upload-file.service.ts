@@ -27,17 +27,20 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  extractEncsFromPermit(encList: string[]){
-    return encList.slice(3, encList.length - 1);
+  extractEncsFromFile(encList: string[]){
+    if(encList[2] === ':ENC' || encList[encList.length - 1] === ':ECS'){ // valid for txt files only
+      return encList.slice(3, encList.length - 1);
+    } // add condition for csv here if any
+    return encList;
   }
 
   setValidEncs(encList: string[]): void {
-    this.validEncs = this.extractEncsFromPermit(encList)
+    this.validEncs = encList
       .map((encItem: string) => encItem.substring(0, 8)) // fetch first 8 characters
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
       .filter((enc, index) => index < this.maxEncLimit); // limit records by maxUploadRows
-      this.setEncFilterState(this.extractEncsFromPermit(encList).length,this.validEncs.length)
+      this.setEncFilterState(encList.length,this.validEncs.length);
   }
 
   getValidEncs(): string[] {
@@ -45,20 +48,20 @@ export class EssUploadFileService {
   }
 
   getEncFileData(rawData: string): string[] {
-    return rawData.trim().split('\n').map((enc: string) => enc.trim());
+    const processedData = rawData.trim().split('\n').map((enc: string) => enc.trim());
+    return this.extractEncsFromFile(processedData);
   }
 
   getEncFilterState(): BehaviorSubject<boolean> {
     return this._encFilterState;
   }
 
-  setEncFilterState(InitialEncCount: number, FinalEncCount: number) {
-    console.log(InitialEncCount , FinalEncCount);
-    if (InitialEncCount !== FinalEncCount) {
-      this._encFilterState.next(true)
+  setEncFilterState(initialEncCount: number, finalEncCount: number) {
+    if (initialEncCount !== finalEncCount) {
+      this._encFilterState.next(true);
     }
     else {
-      this._encFilterState.next(false)
+      this._encFilterState.next(false);
     }
   }
 }
