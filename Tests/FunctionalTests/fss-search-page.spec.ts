@@ -1,49 +1,51 @@
-const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import { AcceptCookies, SearchAttribute, ClickWaitRetry } from './helpermethod'
-import { stringOperatorList, symbolOperatorListForFileSize, symbolOperatorListForDate } from './helperconstant'
+import { test, expect } from '@playwright/test';
+import { autoTestConfig } from '../../appSetting.json';
+import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
+import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
+import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
+import { ClickWaitRetry, SearchAttribute} from '../../Helper/SearchPageHelper';
+import { stringOperatorList, symbolOperatorListForFileSize, symbolOperatorListForDate } from '../../Helper/ConstantHelper'
 
-describe('Test Search Attribute Scenario On Search Page', () => {
-  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
+test.describe('FSS UI Search Page Functional Test Scenarios', () => {
+ 
+    test.beforeEach(async ({ page }) => {
+        await page.goto(autoTestConfig.url);
+        await page.waitForLoadState(); 
+        await AcceptCookies(page);
+        await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+        await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
+    expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
+    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
+    });
 
-  beforeEach(async () => {
-    await page.goto(autoTestConfig.url)
-    await AcceptCookies(page);
+  test('Does it display "Simplified Search" link on advanced Search page', async ( {page}) => {
+    await page.waitForSelector(fssSearchPageObjectsConfig.simplifiedSearchLinkSelector);
 
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
-    expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
-    await page.click(pageObjectsConfig.advancedSearchLinkSelector, { force: true });
-  })
+    var simplifiedSearchLink = await page.innerText(fssSearchPageObjectsConfig.simplifiedSearchLinkSelector);
+    expect(simplifiedSearchLink).toEqual(fssSearchPageObjectsConfig.simplifiedSearchLinkText);
+  });
 
-  it('Does it display "Simplified Search" link on advanced Search page', async () => {
-    await page.waitForSelector(pageObjectsConfig.simplifiedSearchLinkSelector);
-
-    var simplifiedSearchLink = await page.innerText(pageObjectsConfig.simplifiedSearchLinkSelector);
-    expect(simplifiedSearchLink).toEqual(pageObjectsConfig.simplifiedSearchLinkText);
-  })
-
-  it('Verify if click search button without selecting a field value', async () => {
-    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector);
+  test('Verify if click search button without selecting a field value', async ( {page}) => {
+    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogWarningSelector);
 
     const maxtime = Date.now() + 20000;
     while (Date.now() < maxtime) {
-      if (await page.locator(pageObjectsConfig.dialogWarningSelector).textContent() === pageObjectsConfig.warningMessageValue) {
+      if (await page.locator(fssSearchPageObjectsConfig.dialogWarningSelector).textContent() === fssSearchPageObjectsConfig.warningMessageValue) {
         break;
       }
       else {
-        await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.dialogWarningSelector);
+        await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogWarningSelector);
       }
     }
 
-    var errorMessage = await page.innerText(pageObjectsConfig.dialogWarningSelector);
-    expect(errorMessage).toContain(pageObjectsConfig.warningMessageValue);
+    var errorMessage = await page.innerText(fssSearchPageObjectsConfig.dialogWarningSelector);
+    expect(errorMessage).toContain(fssSearchPageObjectsConfig.warningMessageValue);
 
   })
 
-  it('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async () => {
+  test('Verify Operator dropdown contains correct values when "BusinessUnit" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "BusinessUnit");
-    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
-
+    const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function (element, index) {
       return element === operatorsOption[index];
     });
@@ -52,10 +54,9 @@ describe('Test Search Attribute Scenario On Search Page', () => {
 
   })
 
-  it('Verify Operator dropdown contains correct values when "FileSize" attribute field selected', async () => {
+  test('Verify Operator dropdown contains correct values when "FileSize" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "FileSize");
-
-    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
+    const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (symbolOperatorListForFileSize.length == operatorsOption.length) && symbolOperatorListForFileSize.every(function (element, index) {
       return element === operatorsOption[index];
     });
@@ -64,10 +65,9 @@ describe('Test Search Attribute Scenario On Search Page', () => {
 
   })
 
-  it('Verify Operator dropdown contains correct values when "FileName" attribute field selected', async () => {
+  test('Verify Operator dropdown contains correct values when "FileName" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "FileName");
-
-    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
+    const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function (element, index) {
       return element === operatorsOption[index];
     });
@@ -76,35 +76,28 @@ describe('Test Search Attribute Scenario On Search Page', () => {
 
   })
 
-  it('Verify Operator dropdown contains correct values when "MimeType" attribute field selected', async () => {
+  test('Verify Operator dropdown contains correct values when "MimeType" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "MimeType");
-
-    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
+    const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (stringOperatorList.length == operatorsOption.length) && stringOperatorList.every(function (element, index) {
       return element === operatorsOption[index];
     });
-
     expect(match).toBeTruthy();
-
   })
 
-  it('Verify Operator dropdown contains correct values when "BatchExpiryDate" attribute field selected', async () => {
+  test('Verify Operator dropdown contains correct values when "BatchExpiryDate" attribute field selected', async ( {page}) => {
     await SearchAttribute(page, "BatchExpiryDate");
-
-    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
+    const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (symbolOperatorListForDate.length == operatorsOption.length) && symbolOperatorListForDate.every(function (element, index) {
       return element === operatorsOption[index];
     });
-
     expect(match).toBeTruthy();
-
   })
 
-  it('Verify Operator dropdown contains correct values when "BatchPublishedDate" attribute field selected', async () => {
+  test('Verify Operator dropdown contains correct values when "BatchPublishedDate" attribute field selected', async ( {page}) => {
 
     await SearchAttribute(page, "BatchPublishedDate");
-
-    const operatorsOption = await page.$$eval(pageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
+    const operatorsOption = await page.$$eval(fssSearchPageObjectsConfig.operatorDropDownItemsSelector, options => { return options.map(option => option.textContent) });
     var match = (symbolOperatorListForDate.length == operatorsOption.length) && symbolOperatorListForDate.every(function (element, index) {
       return element === operatorsOption[index];
     });
@@ -112,49 +105,45 @@ describe('Test Search Attribute Scenario On Search Page', () => {
 
   })
 
-  it('Verify when "BusinessUnit" attribute field selected, input value field change to "text" type', async () => {
+  test('Verify when "BusinessUnit" attribute field selected, input value field change to "text" type', async ( {page}) => {
     await SearchAttribute(page, "BusinessUnit");
-
-    const inputValueFieldAttribute = await page.getAttribute(pageObjectsConfig.inputSearchValueSelector, "type");
+    const inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
     expect(inputValueFieldAttribute).toEqual("text");
   })
 
-  it('Verify when "FileSize" attribute field selected, input value field change to "tel" type', async () => {
+  test('Verify when "FileSize" attribute field selected, input value field change to "tel" type', async ( {page}) => {
     await SearchAttribute(page, "FileSize");
-
-    const inputValueFieldAttribute = await page.getAttribute(pageObjectsConfig.inputSearchValueSelector, "type");
+    const inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
     expect(inputValueFieldAttribute).toEqual("tel");
   })
 
-  it('Verify when "BatchPublishedDate" attribute field selected, input value field change to "date" type', async () => {
+  test('Verify when "BatchPublishedDate" attribute field selected, input value field change to "date" type', async ( {page}) => {
 
     await SearchAttribute(page, "BatchPublishedDate");
-
-    const inputValueFieldAttribute = await page.getAttribute(pageObjectsConfig.inputSearchValueSelector, "type");
+    const inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
     expect(inputValueFieldAttribute).toEqual("date");
   })
 
-  it('When click on "Add new line" button a new row added to the query table', async () => {
-    await page.waitForSelector(pageObjectsConfig.inputSearchFieldSelector);
-    let tableRows = (await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;
+  test('When click on "Add new line" button a new row added to the query table', async ( {page}) => {
+    await page.waitForSelector(fssSearchPageObjectsConfig.inputSearchFieldSelector);
+    let tableRows = (await page.$$(fssSearchPageObjectsConfig.searchQueryTableRowSelector)).length;
     expect(tableRows).toEqual(1);
 
     //add new row
     await page.click(".addNewLine");
-    tableRows = (await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;
+    tableRows = (await page.$$(fssSearchPageObjectsConfig.searchQueryTableRowSelector)).length;
     expect(tableRows).toEqual(2);
   })
 
-  it('When click on "Delete" button a row deleted from the query table', async () => {
-    await page.waitForSelector(pageObjectsConfig.inputSearchFieldSelector);
+  test('When click on "Delete" button a row deleted from the query table', async ( {page}) => {
+    await page.waitForSelector(fssSearchPageObjectsConfig.inputSearchFieldSelector);
     await page.click(".addNewLine");
-    let tableRows = (await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;
+    let tableRows = (await page.$$(fssSearchPageObjectsConfig.searchQueryTableRowSelector)).length;
     expect(tableRows).toEqual(2);
 
     //delete a row
     await page.click(".deleteRow");
-    tableRows = (await page.$$(pageObjectsConfig.searchQueryTableRowSelector)).length;
+    tableRows = (await page.$$(fssSearchPageObjectsConfig.searchQueryTableRowSelector)).length;
     expect(tableRows).toEqual(1);
   })
-
-}) 
+});

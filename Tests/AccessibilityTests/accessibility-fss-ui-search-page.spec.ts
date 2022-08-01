@@ -1,38 +1,28 @@
-import { chromium,Browser, Page } from 'playwright'
-import { injectAxe,checkA11y } from 'axe-playwright'
-const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
-const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { LoginPortal, SearchAttribute, ClickWaitRetry, AcceptCookies } from '../FunctionalTests/helpermethod';
-import {attributeProductType} from '../FunctionalTests/helperconstant';
+import { test } from '@playwright/test';
+import { injectAxe, checkA11y} from 'axe-playwright'
+import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
+import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
+import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
+import { attributeProductType} from '../../Helper/ConstantHelper';
+import { SearchAttribute, ClickWaitRetry } from '../../Helper/SearchPageHelper';
+import { autoTestConfig } from '../../appSetting.json';
 
-let browser: Browser
-let page: Page
-
-describe('FSS UI Search Page Accessibility Test Scenarios', () => {
-  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-  beforeAll(async () => {
-    browser = await chromium.launch({ slowMo: 100})    
-    page = await browser.newPage();
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
+test.describe('FSS UI Search Page Accessibility Test Scenarios', () => {
+ 
+  test.beforeEach(async ({page}) => {    
     await page.goto(autoTestConfig.url)
     await AcceptCookies(page);
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
-    await page.click(pageObjectsConfig.advancedSearchLinkSelector, {force: true});
-
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);   
+    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
     await SearchAttribute(page, attributeProductType.key);
-    await page.selectOption(pageObjectsConfig.operatorDropDownSelector,"contains");
-    await page.fill(pageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
-
-    await ClickWaitRetry(page, pageObjectsConfig.searchAttributeButton, pageObjectsConfig.searchAttributeTable, undefined, 10000);
-
-    // Verification of attribute table records
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
+    await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector,"contains");
+    await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
+    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable, undefined, 10000);
     await injectAxe(page);
   })  
 
-  test('check a11y for the whole page and axe run options', async () => {
+  test('check a11y for the whole page and axe run options', async ({page}) => {
     await checkA11y(page, undefined, {
       axeOptions: {               
         runOnly: {         
@@ -43,11 +33,5 @@ describe('FSS UI Search Page Accessibility Test Scenarios', () => {
       detailedReport: true,
       detailedReportOptions: { html: true }
     });
-  })
- 
-  afterAll(async () => {
-    await page.close();  
-    await browser.close();
-  })
-
-}) 
+  }) 
+})
