@@ -27,11 +27,11 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  extractEncsFromFile(encList: string[]){
-    if(encList[2] === ':ENC' || encList[encList.length - 1] === ':ECS'){ // valid for txt files only
-      return encList.slice(3, encList.length - 1);
+  extractEncsFromFile(processedData: string[]){
+    if(processedData[2] === ':ENC' || processedData[processedData.length - 1] === ':ECS'){ // valid for txt files only
+      return processedData.slice(3, processedData.length - 1);
     } // add condition for csv here if any
-    return encList;
+    return processedData;
   }
 
   setValidEncs(encList: string[]): void {
@@ -48,8 +48,7 @@ export class EssUploadFileService {
   }
 
   getEncFileData(rawData: string): string[] {
-    const processedData = rawData.trim().split('\n').map((enc: string) => enc.trim());
-    return this.extractEncsFromFile(processedData);
+    return rawData.trim().split('\n').map((enc: string) => enc.trim());
   }
 
   getEncFilterState(): BehaviorSubject<boolean> {
