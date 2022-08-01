@@ -38,26 +38,25 @@ export class EssUploadFileComponent implements OnInit {
   }
 
   processEncFile() {
-   
         const reader = new FileReader();
         reader.onload = (e: any) => {
           /*
             trims leading & trailing whitespaces , splits texts in new lines
             trims leading & trailing individual ENC's whitespaces
           */
-          let encList =  this.essUploadFileService.getEncFileData(e.target.result);
+            let encList =  this.essUploadFileService.getEncFileData(e.target.result);
             if(this.essUploadFileService.isValidEncFile(this.encFile.type, encList)){
               encList = this.essUploadFileService.extractEncsFromFile(encList);
               this.essUploadFileService.setValidEncs(encList);
               this.encList = this.essUploadFileService.getValidEncs();
+              this.essUploadFileService.setEncFilterState(encList.length,this.encList.length);
             }
             else{
               this.showMessage('error','Please upload valid ENC file.');
-            }  
+            }
         };
         reader.readAsText(this.encFile);
-      
-  }
+}
 
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',

@@ -40,7 +40,6 @@ export class EssUploadFileService {
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
       .filter((enc, index) => index < this.maxEncLimit); // limit records by maxUploadRows
-      this.setEncFilterState(encList.length,this.validEncs.length);
   }
 
   getValidEncs(): string[] {
