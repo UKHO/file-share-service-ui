@@ -18,6 +18,7 @@
     "fssTitle": "File Share Service",
     "displayPopularSearch": true,
     "displaySimplifiedSearchLink": true,
+    "MaxUploadRows": 10,
     "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
     "apiUrl": "",
