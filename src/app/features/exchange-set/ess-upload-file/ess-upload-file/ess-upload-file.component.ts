@@ -19,16 +19,22 @@ export class EssUploadFileComponent implements OnInit {
   encFile: File;
   constructor(private essUploadFileService: EssUploadFileService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.essUploadFileService.getEncFilterState().subscribe((encFilterState: boolean) => {
+        if(encFilterState){
+           this.displayErrorMessage = true;
+           this.showMessage('info','Some values have not been added to list');
+        }
+    });
+  }
 
   uploadListener($event: any): void {
-
+        this.encList = [];
         this.encFile = $event.srcElement.files[0];
         this.displayErrorMessage = false;
         if (this.encFile && this.encFile.type !== 'text/plain') {
           this.showMessage('error','Please select a .csv or .txt file');
         }
-    
   }
 
   processEncFile() {
@@ -43,7 +49,6 @@ export class EssUploadFileComponent implements OnInit {
             if(this.essUploadFileService.isValidEncFile(this.encFile.type, encList)){
               this.essUploadFileService.setValidEncs(encList);
               this.encList = this.essUploadFileService.getValidEncs();
-              this.showMessage('info','Some values have not been added to list');
             }
             else{
               this.showMessage('error','Please upload valid ENC file.');

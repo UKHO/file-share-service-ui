@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
@@ -6,15 +7,16 @@ import { AppConfigService } from './app-config.service';
 })
 export class EssUploadFileService {
   private validEncs: string[];
-  private MaxEncLimit: number;
+  private maxEncLimit: number;
+  private _encFilterState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor() {
-    this.MaxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
+    this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
   }
 
-  validateCSVFile() {}
+  validateCSVFile() { }
 
-  isValidEncFile(encFileTYpe: string, encList: string[]): boolean{
-    if(encFileTYpe === 'text/plain' && encList[2] === ':ENC' && encList[encList.length-1] === ':ECS'){
+  isValidEncFile(encFileTYpe: string, encList: string[]): boolean {
+    if (encFileTYpe === 'text/plain' && encList[2] === ':ENC' && encList[encList.length - 1] === ':ECS') {
       return true;
     }
     return false;
@@ -25,19 +27,38 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  setValidEncs(encList: string[]): void{
-    this.validEncs = encList
-    .map((encItem: string) => encItem.substring(0, 8)) // fetch first 8 characters
-    .filter((enc) => this.validateENCFormat(enc) ) // returns valid enc's
-    .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
-    .filter((enc , index) => index < this.MaxEncLimit); // limit records by maxUploadRows
+  extractEncsFromPermit(encList: string[]){
+    return encList.slice(3, encList.length - 1);
   }
 
-  getValidEncs(): string[]{
+  setValidEncs(encList: string[]): void {
+    this.validEncs = this.extractEncsFromPermit(encList)
+      .map((encItem: string) => encItem.substring(0, 8)) // fetch first 8 characters
+      .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
+      .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
+      .filter((enc, index) => index < this.maxEncLimit); // limit records by maxUploadRows
+      this.setEncFilterState(this.extractEncsFromPermit(encList).length,this.validEncs.length)
+  }
+
+  getValidEncs(): string[] {
     return this.validEncs;
   }
 
-  getEncFileData(rawData: string): string[]{
+  getEncFileData(rawData: string): string[] {
     return rawData.trim().split('\n').map((enc: string) => enc.trim());
+  }
+
+  getEncFilterState(): BehaviorSubject<boolean> {
+    return this._encFilterState;
+  }
+
+  setEncFilterState(InitialEncCount: number, FinalEncCount: number) {
+    console.log(InitialEncCount , FinalEncCount);
+    if (InitialEncCount !== FinalEncCount) {
+      this._encFilterState.next(true)
+    }
+    else {
+      this._encFilterState.next(false)
+    }
   }
 }
