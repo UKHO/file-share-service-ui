@@ -226,7 +226,6 @@ stages:
              displayName: 'Publish End-To-End Test Results'
 
       - job: AccessibilityTests
-        dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Accessibility Tests"
         steps:
@@ -246,6 +245,11 @@ stages:
               folderPath: '$(Build.SourcesDirectory)\Tests\FunctionalTests'
               fileType: 'json'
               targetFiles: 'appSetting.json'
+
+           - task: PowerShell@2
+             inputs:
+              targetType: 'inline'
+              script: 'Get-ChildItem -Path . -Filter junit.xml -Recurse | Select-Object -ExpandProperty FullName'
       
            - script: |
               npm run test:a11y
