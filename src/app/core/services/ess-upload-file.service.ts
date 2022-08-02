@@ -7,19 +7,18 @@ import { AppConfigService } from './app-config.service';
 })
 export class EssUploadFileService {
   private maxEnclimit: number;
-  private validENCNumbers: string[] = new Array<string>();
+  private validEncs: string[] = new Array<string>();
   private _encFilterState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  encList: string[] = new Array<string>();
 
   constructor() {
     this.maxEnclimit = AppConfigService.settings['essConfig'].MaxEncLimit;
   }
 
-  isValidEncFile(encFileTYpe: string, encList: string[]): boolean {
-    if (encFileTYpe === 'text/plain' && encList[2] === ':ENC' && encList[encList.length - 1] === ':ECS') {
+  isValidEncFile(encFileType: string, encList: string[]): boolean {
+    if (encFileType === 'text/plain' && encList[2] === ':ENC' && encList[encList.length - 1] === ':ECS') {
       return true;
     }
-    else if (encFileTYpe === 'text/csv') {
+    else if (encFileType === 'text/csv') {
       return true;
     }
     return false;
@@ -30,28 +29,21 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  extractEncsFromFile(encFileTYpe: string, processedData: string[]) {
-    if (encFileTYpe === 'text/plain') {
+  extractEncsFromFile(encFileType: string, processedData: string[]) {
+    if (encFileType === 'text/plain') {
       if (processedData[2] === ':ENC' || processedData[processedData.length - 1] === ':ECS') { // valid for txt files only
         return processedData.slice(3, processedData.length - 1);
       }
     }
-    else if (encFileTYpe === 'text/csv') {
-
-      for (let i = 0; i < processedData.length; i++) {
-        let curruntRecord = (<string>processedData[i]).split(',');
-        let encRecord = curruntRecord[0].trim();
-        this.encList.push(encRecord);
-      }
-      return this.encList;
+    else if (encFileType === 'text/csv') {
+      return processedData.map(e => e.split(',')[0].trim());
     }
     return processedData;
   }
 
-  setValidENCs(encFileTYpe: string, encList: string[]): void {
-    if (encFileTYpe === 'text/csv') {
-      this.validENCNumbers = encList
-        //.map((encItem: string) => encItem.substring(0, encItem.indexOf(',') > 0 ? encItem.indexOf(',') : encItem.indexOf('\t') > 0 ? encItem.indexOf('\t') : encItem.length).trim()) // split(/\t|,/))[0] fetch first 8 characters
+  setValidENCs(encFileType: string, encList: string[]): void {
+    if (encFileType === 'text/csv') {
+      this.validEncs = encList
         .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
         .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
         .filter((enc, index) => index <= this.maxEnclimit); // limit records by maxUploadRows
@@ -59,7 +51,7 @@ export class EssUploadFileService {
   }
 
   getValidEncs(): string[] {
-    return this.validENCNumbers;
+    return this.validEncs;
   }
 
   getEncFileData(rawData: string): string[] {
