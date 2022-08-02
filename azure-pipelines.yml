@@ -209,16 +209,16 @@ stages:
               folderPath: '$(Build.SourcesDirectory)\'
               fileType: 'json'
               targetFiles: 'appSetting.json'
-
-           - task: PowerShell@2
-             inputs:
-              targetType: 'inline'
-              script: 'Get-ChildItem -Path . -Filter junit.xml -Recurse | Select-Object -ExpandProperty FullName'
-      
+  
            - script: |
               npm run test:a11y
              displayName: 'Run Accessibility Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+            
+           - task: PowerShell@2
+             inputs:
+              targetType: 'inline'
+              script: 'Get-ChildItem -Path . -Filter junit.xml -Recurse | Select-Object -ExpandProperty FullName'
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
