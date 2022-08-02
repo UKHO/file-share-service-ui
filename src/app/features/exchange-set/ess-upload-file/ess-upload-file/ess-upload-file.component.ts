@@ -1,6 +1,5 @@
 import { EssUploadFileService } from './../../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FileInputComponent } from '@ukho/design-system';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -9,12 +8,9 @@ import { FileInputComponent } from '@ukho/design-system';
 })
 export class EssUploadFileComponent implements OnInit {
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
-  @ViewChild('essFileUpload') essFileUpload: FileInputComponent;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
-  essId: any;
-  encData = [{ id: 1, name: 'Upload your whole permit' }];
   encList: string[];
   encFile: File;
   constructor(private essUploadFileService: EssUploadFileService) {}
@@ -71,7 +67,4 @@ export class EssUploadFileComponent implements OnInit {
     }
   }
 
-  onChangeExchangeSetItem(event: any) {
-    this.essId = 'essId' + event.target.value;
-  }
 }

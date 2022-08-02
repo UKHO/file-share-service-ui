@@ -2,23 +2,26 @@ table tbody tr td {
     // border-spacing: 0;
     border: 1px solid #000;
     margin-bottom: 30px;
-  }
+}
 
-  .EncFIleUploadForEss{
+.EncFIleUploadForEss {
     margin-bottom: 20px;
     color: #09315b;
 }
-.innerWrapperForEnc{
-    margin-left:10px;
+
+.innerWrapperForEnc {
+    margin-left: 10px;
     color: #09315b;
-    .UploadEncFileWrapper{
+
+    .UploadEncFileWrapper {
         // .text-input-wrap{
         // 	height: initial;
         // }
         display: flex;
         align-items: end;
         margin-bottom: 15px;
-        .singleEncTextbox{
+
+        .singleEncTextbox {
             width: 40%;
             float: left;
             margin-right: 20px;
@@ -26,13 +29,25 @@ table tbody tr td {
     }
 }
 
-.switchToExchangeSet{
-	color: #000;
-	font-weight: 400;
-	cursor: pointer;
-	text-decoration: underline;
-	margin-bottom: 20px;
+.switchToExchangeSet {
+    color: #000;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-bottom: 20px;
     width: 40%;
     display: block;
     text-align: right;
-} 
+}
+
+.UploadFileIput {
+
+    width: 45%;
+
+}
+
+.UploadButton {
+
+    margin-left: 350px;
+
+}

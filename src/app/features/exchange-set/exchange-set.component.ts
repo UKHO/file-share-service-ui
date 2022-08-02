@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./exchange-set.component.scss']
 })
 export class ExchangeSetComponent implements OnInit {
-
+  rgAddUploadENC: string;  
+  radioUploadEncValue:string;
+  radioAddEncValue:string;
   constructor() { }
 
   ngOnInit(): void {
+    this.radioUploadEncValue="UploadEncFile";
+    this.radioAddEncValue="AddSingleEnc";
   }
 
 }
