@@ -1,22 +1,22 @@
 <div class="container">
     <div #ukhoTarget>
-        <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite" tabindex="-1">
+        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite" tabindex="-1">
             <h3>{{messageTitle}}</h3>
             <div>{{messageDesc}}</div>
         </ukho-dialogue>
     </div>
     <div>
-        <ukho-file-input id="file-upload" #csvReader (change)="uploadListener($event)" accept=".csv"
+        <ukho-file-input id="file-upload" #essFileUpload (change)="uploadListener($event)" accept=".csv"
             class="UploadFileIput">
         </ukho-file-input>
-        <ukho-button class="UploadButton">
+        <ukho-button class="UploadButton" (click)="processEncFile()">
             Proceed
         </ukho-button>
     </div>
 </div>
 
 <tbody>
-     <tr *ngFor="let record of ENCnumber;let i = index;">
+     <tr *ngFor="let record of encList;let i = index;">
         <td> <span>{{record}}</span> </td>
     </tr>
 </tbody>
