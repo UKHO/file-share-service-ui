@@ -3,7 +3,7 @@ const { compilerOptions } = require('./tsconfig');
 
 module.exports = {
   preset: 'jest-preset-angular',
-  roots: ['<rootDir>/Tests/UnitTests/'],
+  roots: ['<rootDir>/Tests/UnitTests/', '<rootDir>/Tests/AccessibilityTests/'],
   testMatch: ['**/+(*.)+(spec).+(ts)'],
   setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
   collectCoverage: true,
