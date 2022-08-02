@@ -141,60 +141,6 @@ stages:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-Dev-P4052"
 
-      - job: FunctionalTests
-        dependsOn: DevDeploy
-        pool: $(WindowPool)
-        displayName: "Functional Tests"
-        variables: 
-         autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
-        workspace:
-         clean: all
-        steps:
-           - checkout: self
-           - script: 
-              echo "$(autoTestConfig.url)"
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@1
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              fileType: 'json'
-              targetFiles: 'appSetting.json'
-             
-           - script: |
-              npm run test:auto
-             displayName: 'Run Functional Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-          
-           - task: PowerShell@2
-             inputs:
-               targetType: 'inline'
-               script: |
-                 Get-ChildItem -Path . -Filter junit.xml -Recurse | Select-Object -ExpandProperty FullName
-                 
-                 pwd
-                 
-                 Get-ChildItem -Path . -Filter package.json -Recurse | Select-Object -ExpandProperty FullName
-               workingDirectory: '$(Build.SourcesDirectory)'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Functional Test Results
-             displayName: 'Publish Functional Test Results'
-
-
       - job: AccessibilityTests
         pool: $(WindowPool)
         displayName: "Accessibility Tests"
@@ -223,8 +169,14 @@ stages:
             
            - task: PowerShell@2
              inputs:
-              targetType: 'inline'
-              script: 'Get-ChildItem -Path . -Filter junit.xml -Recurse | Select-Object -ExpandProperty FullName'
+               targetType: 'inline'
+               script: |
+                 Get-ChildItem -Path . -Filter junit.xml -Recurse | Select-Object -ExpandProperty FullName
+                 
+                 pwd
+                 
+                 Get-ChildItem -Path . -Filter package.json -Recurse | Select-Object -ExpandProperty FullName
+               workingDirectory: '$(Build.SourcesDirectory)'
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
