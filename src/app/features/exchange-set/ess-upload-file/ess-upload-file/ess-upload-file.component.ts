@@ -57,13 +57,15 @@ export class EssUploadFileComponent implements OnInit {
     reader.readAsText(this.encFile);
   }
 
-  showMessage(messageType: 'info' | 'warning' | 'success' | 'error' = "info", messageTitle: string = "", messageDesc: string = "") {
+  showMessage(
+    messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
+    messageDesc: string = ''
+  ) {
     this.messageType = messageType;
-    this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;
     this.displayErrorMessage = true;
     if (this.ukhoDialog !== undefined) {
-      this.ukhoDialog.nativeElement.setAttribute('tabindex', '-1');
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
       this.ukhoDialog.nativeElement.focus();
     }
   }
