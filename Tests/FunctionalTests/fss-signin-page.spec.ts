@@ -1,57 +1,42 @@
-import { BrowserContext, Page } from 'playwright'
-const { autoTestConfig } = require('./appSetting');
-const { pageObjectsConfig, pageTimeOut } = require('./pageObjects');
-import {AcceptCookies, LoginPortal} from './helpermethod'
+import { test, expect } from '@playwright/test';
+import { autoTestConfig } from '../../appSetting.json';
+import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
+import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
+import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
+import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 
-describe('Test Sign In Page Scenario', () => {
-  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-  let context: BrowserContext;
-  let page: Page;
-
-  beforeEach(async () => {    
-    context = await browser.newContext();
-    page = await context.newPage();
+test.describe('Test Sign In Page Scenario', () => {
+  
+  test.beforeEach(async ( {page}) => {    
     await page.goto(autoTestConfig.url)
     await AcceptCookies(page);
   })
 
-  afterEach(async () => {
-    await page.close()
-    await context.close()   
-  }) 
- 
-  it('User clicks Sign in link with valid credentials should display FullName after login successfully', async () => {
+   test('User clicks Sign in link with valid credentials should display FullName after login successfully', async ({ page }) => {
 
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
-
-    await page.waitForSelector(pageObjectsConfig.loginAccountSelector);
-    expect(await page.innerHTML(pageObjectsConfig.loginAccountLinkSelector)).toContain(autoTestConfig.userFullName);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await page.waitForSelector(commonObjectsConfig.loginAccountSelector);
+    expect(await page.innerHTML(commonObjectsConfig.loginAccountLinkSelector)).toContain(autoTestConfig.userFullName);
 
   })
 
   
-  it('User clicks Sign in link with valid credentials should navigate to search page after login successfully', async () => {
+  test('User clicks Sign in link with valid credentials should navigate to search page after login successfully', async ({ page }) => {
 
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
-
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);
-    expect(await page.innerHTML(pageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(pageObjectsConfig.searchPageContainerHeaderText);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
+    expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
 
   })
-
-  it('User clicks on Sign in link and close the popup window user navigate to fss home page', async () => {
-
-
+  
+    test('User clicks on Sign in link and close the popup window user navigate to fss home page', async ({ page }) => {
     const [popup] = await Promise.all([
       page.waitForEvent('popup'),
-      page.click(pageObjectsConfig.loginSignInLinkSelector)
+      page.click(commonObjectsConfig.loginSignInLinkSelector)
     ]);
-
     popup.close();
-
-    await page.waitForSelector(pageObjectsConfig.homePageSignInHeaderInfoSelector);
-    expect(await page.innerHTML(pageObjectsConfig.homePageSignInHeaderInfoSelector)).toEqual(pageObjectsConfig.homePageSignInHeaderInfoText);
+    await page.waitForSelector(fssHomePageObjectsConfig.homePageSignInHeaderInfoSelector);
+    expect(await page.innerHTML(fssHomePageObjectsConfig.homePageSignInHeaderInfoSelector)).toEqual(fssHomePageObjectsConfig.homePageSignInHeaderInfoText);
 
   })
-
-}) 
+})
