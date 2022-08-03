@@ -45,10 +45,10 @@ export class EssUploadFileComponent implements OnInit {
       encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type,encList);
       this.essUploadFileService. setValidENCs(encList);
       this.validEncList = this.essUploadFileService.getValidEncs();
-      if(encList.length != this.validEncList.length){
+      if(encList.length > this.validEncList.length){
         this.showMessage('info','Some values have not been added to list.');
       }
-      if(this.validEncList.length == 0)
+      if(this.validEncList.length === 0)
         {
           this.showMessage('info', 'No ENCs found.');
         }

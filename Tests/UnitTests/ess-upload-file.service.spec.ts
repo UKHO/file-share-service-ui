@@ -50,22 +50,22 @@ describe('FssPopularSearchService', () => {
   it('extractEncsFromFile should return enc"s if :ENC and :ECS exist in file', () => {
     let rawData = permitJson;
     expect(rawData.length).toEqual(5);
-    rawData = service.extractEncsFromFile(rawData);
+    rawData = service.extractEncsFromFile('text/plain',rawData);
     expect(rawData.length).toEqual(1);
   });
 
   it('extractEncsFromFile should return enc"s if :ENC and :ECS do not exist in file', () => {
     let rawData = getTempEncs();
     expect(rawData.length).toEqual(2);
-    rawData = service.extractEncsFromFile(rawData);
+    rawData = service.extractEncsFromFile('text/plain',rawData);
     expect(rawData.length).toEqual(2);
   });
 
   it('getValidEncs should return encs', () => {
     expect(service.getValidEncs()).toBeUndefined();
     let encList = service.getEncFileData(getTempData());
-    encList = service.extractEncsFromFile(encList);
-    service.setValidEncs(encList);
+    encList = service.extractEncsFromFile('text/plain',encList);
+    service.setValidENCs(encList);
     encList = service.getValidEncs();
     expect(encList.length).toEqual(1);
   });
@@ -75,21 +75,5 @@ describe('FssPopularSearchService', () => {
     const invalidData = 'A1210130';
     expect(service.validateENCFormat(validData)?.length).toBeGreaterThan(0);
     expect(service.validateENCFormat(invalidData)).toBeNull();
-  });
-
-  it('setEncFilterState should set correct true/false state', async () => {
-    expect(await service.getEncFilterState().pipe(first()).toPromise()).toEqual(
-      false
-    );
-
-    service.setEncFilterState(10, 2);
-    expect(await service.getEncFilterState().pipe(first()).toPromise()).toEqual(
-      true
-    );
-
-    service.setEncFilterState(1, 2);
-    expect(await service.getEncFilterState().pipe(first()).toPromise()).toEqual(
-      false
-    );
   });
 });

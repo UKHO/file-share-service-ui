@@ -9,7 +9,7 @@ describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
   let fixture: ComponentFixture<EssUploadFileComponent>;
   let essUploadFileService: EssUploadFileService;
-  const getTempData = () => {
+  const getEncData = () => {
     let data = '';
     data += ':DATE 20220630 03:11 \n';
     data += ':VERSION 2 \n';
@@ -18,8 +18,28 @@ describe('EssUploadFileComponent', () => {
     data +=':ECS \n';
     return data;
 };
+const getInvalidEncData = () => {
+  let data = '';
+  data += ':DATE 20220630 03:11 \n';
+  data += ':VERSION 2 \n';
+  data += ':ENC \n';
+  data +='AU210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+  data +='AU210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+  data +=':ECS \n';
+  return data;
+};
+const getNoEncData = () => {
+  let data = '';
+  data += ':DATE 20220630 03:11 \n';
+  data += ':VERSION 2 \n';
+  data += ':ENC \n';
+  data +=':ECS \n';
+  return data;
+};
 
-const  getTempFile = () => new File([getTempData()],'text.txt');
+
+
+const  getTempFile = () => new File([getEncData()],'text.txt');
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,DialogueModule,FileInputModule,RadioModule,ButtonModule,CardModule],
@@ -68,28 +88,49 @@ const  getTempFile = () => new File([getTempData()],'text.txt');
     );
 
     it('processFile should set encList',() => {
-      const file = new File([getTempData()], 'darthvader.png');
+      const file = new File([getEncData()], 'darthvader.png');
       Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
       Object.defineProperty(file, 'type', { value: 'text/plain' });
      component.encFile = file;
      expect(component.validEncList).toBeUndefined();
-     component.processFile(getTempData());
+     component.processFile(getEncData());
      expect(component.validEncList.length).toBe(1);
     });
 
     it('processFile should set raise "Please upload valid ENC file." error',() => {
-      const file = new File([getTempData()], 'darthvader.png');
+      const file = new File([getEncData()], 'darthvader.png');
       Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
       component.encFile = file;
-      component.processFile(getTempData());
+      component.processFile(getEncData());
       expect(component.validEncList).toBeUndefined();
       expect(component.messageType).toEqual('error');
       expect(component.messageDesc).toEqual('Please upload valid ENC file.');
     });
 
+    it('processFile should set raise "Some values have not been added to list." info',() => {
+      const file = new File([getEncData()], 'darthvader.png');
+      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      component.processFile(getInvalidEncData());
+      expect(component.validEncList.length).toEqual(1);
+      expect(component.messageType).toEqual('info');
+      expect(component.messageDesc).toEqual('Some values have not been added to list.');
+    });
+    it('processFile should set raise "No ENCs found." info',() => {
+      const file = new File([getEncData()], 'darthvader.png');
+      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      component.processFile(getNoEncData());
+      expect(component.validEncList.length).toEqual(0);
+      expect(component.messageType).toEqual('info');
+      expect(component.messageDesc).toEqual('No ENCs found.');
+    });
+
     it('uploadListener should raise error if file is not provided' , () =>{
-      const file = new File([getTempData()], 'darthvader.png');
+      const file = new File([getEncData()], 'darthvader.png');
       Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
       const event = {
