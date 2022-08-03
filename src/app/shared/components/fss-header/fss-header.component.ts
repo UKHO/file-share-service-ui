@@ -33,7 +33,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
     // NOTE :
     // `ukho-header` does not allow to change `id` it uses `title` as a `id` changed Exchange sets -> Exchange-sets
     const exchnageSetElem = document.querySelector('.links')?.children[0].childNodes[0] as HTMLElement;
-    if(exchnageSetElem.getAttribute('id') === 'Exchange sets'){
+    if(!(exchnageSetElem instanceof Comment)  &&  exchnageSetElem.getAttribute('id') === 'Exchange sets'){
         exchnageSetElem.setAttribute('id' , 'Exchange-sets');
     }
   }
