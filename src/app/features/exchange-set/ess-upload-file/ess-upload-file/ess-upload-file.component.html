@@ -13,7 +13,7 @@
 
    </div> 
    <br>
-   <div *ngIf="encList && encList.length > 0">
+   <div *ngIf="validEncList && validEncList.length > 0">
     <ukho-card>
         <table class="Enctable">
             <thead class="thead-dark">
@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let enc of encList; let i = index">
+                <tr *ngFor="let enc of validEncList; let i = index">
                     <td>{{ enc }}</td>
                 </tr>
             </tbody>

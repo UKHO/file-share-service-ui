@@ -11,21 +11,15 @@ export class EssUploadFileComponent implements OnInit {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
-  encList: string[];
+  validEncList: string[];
   encFile: File;
   constructor(private essUploadFileService: EssUploadFileService) {}
 
   ngOnInit(): void {
-    this.essUploadFileService.getEncFilterState().subscribe((encFilterState: boolean) => {
-        if(encFilterState){
-           this.displayErrorMessage = true;
-           this.showMessage('info','Some values have not been added to list');
-        }
-    });
   }
 
   uploadListener($event: any): void {
-        this.encList = [];
+        this.validEncList = [];
         this.encFile = $event.srcElement.files[0];
         this.displayErrorMessage = false;
         if (this.encFile && this.encFile.type !== 'text/plain') {
@@ -40,6 +34,7 @@ export class EssUploadFileComponent implements OnInit {
         };
         reader.readAsText(this.encFile);
   }
+
   processFile(rawData: string): void{
     /*
       trims leading & trailing whitespaces , splits texts in new lines
@@ -47,10 +42,16 @@ export class EssUploadFileComponent implements OnInit {
     */
     let encList =  this.essUploadFileService.getEncFileData(rawData);
     if(this.essUploadFileService.isValidEncFile(this.encFile.type, encList)){
-      encList = this.essUploadFileService.extractEncsFromFile(encList);
-      this.essUploadFileService.setValidEncs(encList);
-      this.encList = this.essUploadFileService.getValidEncs();
-      this.essUploadFileService.setEncFilterState(encList.length,this.encList.length);
+      encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type,encList);
+      this.essUploadFileService. setValidENCs(encList);
+      this.validEncList = this.essUploadFileService.getValidEncs();
+      if(encList.length != this.validEncList.length){
+        this.showMessage('info','Some values have not been added to list.');
+      }
+      if(this.validEncList.length == 0)
+        {
+          this.showMessage('info', 'No ENCs found.');
+        }
     }
     else{
       this.showMessage('error','Please upload valid ENC file.');
