@@ -43,7 +43,7 @@ export class EssUploadFileComponent implements OnInit {
          trims leading & trailing whitespaces , splits texts in new lines
          trims leading & trailing individual ENC's whitespaces
        */
-      let encList = this.essUploadFileService.getEncFileData(e.target.result);
+      let encList = this.essUploadFileService.getEncFileData(this.encFile.type, e.target.result);
       if (this.essUploadFileService.isValidEncFile(this.encFile.type, encList)) {
         encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type, encList);
         this.essUploadFileService.setValidENCs(this.encFile.type, encList);

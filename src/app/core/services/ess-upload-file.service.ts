@@ -7,9 +7,9 @@ import { AppConfigService } from './app-config.service';
 })
 export class EssUploadFileService {
   private maxEnclimit: number;
-  private validEncs: string[] = new Array<string>();
+  private validEncs: string[];
   private _encFilterState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
+  encData: string[] = new Array<string>();
   constructor() {
     this.maxEnclimit = AppConfigService.settings['essConfig'].MaxEncLimit;
   }
@@ -54,9 +54,12 @@ export class EssUploadFileService {
     return this.validEncs;
   }
 
-  getEncFileData(rawData: string): string[] {
-    //fetch csv file data row by row and remove blank values from file
-    return rawData.trim().split(/\r\n|\n/).filter(x => x !== "");//.map((enc: string) => enc.trim());
+  getEncFileData(encFileType: string, rawData: string): string[] {
+    if (encFileType === 'text/csv') {
+      //fetch csv file data row by row and remove blank values from file
+      return rawData.trim().split(/\r\n|\n/).filter(x => x !== "");
+    }
+    return this.encData;
   }
 
   getEncFilterState(): BehaviorSubject<boolean> {
