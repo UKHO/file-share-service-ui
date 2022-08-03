@@ -88,8 +88,7 @@ const  getTempFile = () => new File([getEncData()],'text.txt');
     );
 
     it('processFile should set encList',() => {
-      const file = new File([getEncData()], 'darthvader.png');
-      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+      const file = new File([getEncData()], 'test.txt');
       Object.defineProperty(file, 'type', { value: 'text/plain' });
      component.encFile = file;
      expect(component.validEncList).toBeUndefined();
@@ -98,8 +97,7 @@ const  getTempFile = () => new File([getEncData()],'text.txt');
     });
 
     it('processFile should set raise "Please upload valid ENC file." error',() => {
-      const file = new File([getEncData()], 'darthvader.png');
-      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+      const file = new File([getEncData()], 'test.jpeg');
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
       component.encFile = file;
       component.processFile(getEncData());
@@ -109,8 +107,7 @@ const  getTempFile = () => new File([getEncData()],'text.txt');
     });
 
     it('processFile should set raise "Some values have not been added to list." info',() => {
-      const file = new File([getEncData()], 'darthvader.png');
-      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+      const file = new File([getEncData()], 'test.txt');
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
       component.processFile(getInvalidEncData());
@@ -119,8 +116,7 @@ const  getTempFile = () => new File([getEncData()],'text.txt');
       expect(component.messageDesc).toEqual('Some values have not been added to list.');
     });
     it('processFile should set raise "No ENCs found." info',() => {
-      const file = new File([getEncData()], 'darthvader.png');
-      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+      const file = new File([getEncData()], 'test.txt');
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
       component.processFile(getNoEncData());
@@ -130,7 +126,7 @@ const  getTempFile = () => new File([getEncData()],'text.txt');
     });
 
     it('uploadListener should raise error if file is not provided' , () =>{
-      const file = new File([getEncData()], 'darthvader.png');
+      const file = new File([getEncData()], 'test.jpeg');
       Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
       const event = {
