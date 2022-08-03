@@ -29,6 +29,7 @@ export class EssUploadFileComponent implements OnInit {
   }
 
   uploadListener($event: any): void {
+    this.encList = [];
     this.encFile = $event.srcElement.files[0];
     this.displayErrorMessage = false;
     if (this.encFile && this.encFile.type != 'text/csv') {
