@@ -8,17 +8,13 @@ import { AppConfigService } from './app-config.service';
 export class EssUploadFileService {
   private maxEnclimit: number;
   private validEncs: string[];
-  private _encFilterState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   encData: string[] = new Array<string>();
   constructor() {
     this.maxEnclimit = AppConfigService.settings['essConfig'].MaxEncLimit;
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
-    if (encFileType === 'text/plain' && encList[2] === ':ENC' && encList[encList.length - 1] === ':ECS') {
-      return true;
-    }
-    else if (encFileType === 'text/csv') {
+    if ((encFileType === 'text/csv') || (encFileType === 'text/plain' && encList[2] === ':ENC' && encList[encList.length - 1] === ':ECS')) {
       return true;
     }
     return false;
@@ -41,13 +37,11 @@ export class EssUploadFileService {
     return processedData;
   }
 
-  setValidENCs(encFileType: string, encList: string[]): void {
-    if (encFileType === 'text/csv') {
-      this.validEncs = encList
-        .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
-        .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
-        .filter((enc, index) => index < this.maxEnclimit); // limit records by MaxEncLimit
-    }
+  setValidENCs(encList: string[]): void {
+    this.validEncs = encList
+      .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
+      .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
+      .filter((enc, index) => index < this.maxEnclimit); // limit records by MaxEncLimit    
   }
 
   getValidEncs(): string[] {
@@ -60,18 +54,5 @@ export class EssUploadFileService {
       return rawData.trim().split(/\r\n|\n/).filter(x => x !== "");
     }
     return this.encData;
-  }
-
-  getEncFilterState(): BehaviorSubject<boolean> {
-    return this._encFilterState;
-  }
-
-  setEncFilterState(initialEncCount: number, finalEncCount: number) {
-    if (initialEncCount !== finalEncCount) {
-      this._encFilterState.next(true);
-    }
-    else {
-      this._encFilterState.next(false);
-    }
   }
 }
