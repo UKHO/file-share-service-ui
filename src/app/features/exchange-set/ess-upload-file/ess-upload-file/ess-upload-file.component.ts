@@ -31,30 +31,34 @@ export class EssUploadFileComponent implements OnInit {
     }
   }
 
-  processEncFile() {
+  loadFileReader() {
     const reader = new FileReader();
     reader.onload = (e: any) => {
-      /*
-         trims leading & trailing whitespaces , splits texts in new lines
-         trims leading & trailing individual ENC's whitespaces
-       */
-      let encList = this.essUploadFileService.getEncFileData(this.encFile.type, e.target.result);
-      if (this.essUploadFileService.isValidEncFile(this.encFile.type, encList)) {
-        encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type, encList);
-        this.essUploadFileService.setValidENCs(encList);
-        this.validEncList = this.essUploadFileService.getValidEncs();
-        if (this.validEncList.length == 0) {
-          this.showMessage('info', 'No ENCs found.');
-        }
-        if (encList.length != this.validEncList.length) {
-          this.showMessage('info', 'Some values have not been added to list.');
-        }
+      this.processEncFile(e.target.result);
+    };
+    reader.readAsText(this.encFile);
+  }
+
+  processEncFile(encFileData: string) {
+    /*
+       trims leading & trailing whitespaces , splits texts in new lines
+       trims leading & trailing individual ENC's whitespaces
+     */
+    let encList = this.essUploadFileService.getEncFileData(encFileData);
+    if (this.essUploadFileService.isValidEncFile(this.encFile.type, encList)) {
+      encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type, encList);
+      this.essUploadFileService.setValidENCs(encList);
+      this.validEncList = this.essUploadFileService.getValidEncs();
+      if (this.validEncList.length == 0) {
+        this.showMessage('info', 'No ENCs found.');
       }
-      else {
-        this.showMessage('error', 'Please upload valid ENC file.');
+      if (encList.length != this.validEncList.length) {
+        this.showMessage('info', 'Some values have not been added to list.');
       }
     }
-    reader.readAsText(this.encFile);
+    else {
+      this.showMessage('error', 'Please upload valid ENC file.');
+    }
   }
 
   showMessage(

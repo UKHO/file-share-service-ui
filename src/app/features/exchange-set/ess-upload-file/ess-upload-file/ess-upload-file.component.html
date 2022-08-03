@@ -1,34 +1,33 @@
 <div class="container">
-    <div #ukhoTarget>
-        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite" tabindex="-1">
-            <h3>{{messageTitle}}</h3>
-            <div>{{messageDesc}}</div>
+    <div>
+        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
+            <h3>{{messageDesc}}</h3>
         </ukho-dialogue>
     </div>
-    <div>
-        <ukho-file-input id="file-upload" #essFileUpload (change)="uploadListener($event)" accept=".csv"
-            class="UploadFileIput">
-        </ukho-file-input>
-        <ukho-button class="UploadButton" (click)="processEncFile()">
-            Proceed
-        </ukho-button>
-    </div>
 
-    <div *ngIf="validEncList && validEncList.length > 0" >
-        <ukho-card>
-            <table class="Enctable">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Enc Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let record of validEncList; let i = index">
-                        <td>{{ record }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </ukho-card>
-    </div>
+    <div class="uploadENCFileSection">
+
+        <ukho-file-input class="UploadFileIput" id="file-upload" (change)="uploadListener($event)" accept=".txt,.csv"></ukho-file-input>
+
+        <ukho-button class="UploadButton" (click)="loadFileReader()">Proceed</ukho-button>
+
+   </div> 
+   <br>
+   <div *ngIf="validEncList && validEncList.length > 0">
+    <ukho-card>
+        <table class="Enctable">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Enc Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let enc of validEncList; let i = index">
+                    <td>{{ enc }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </ukho-card>
 </div>
 
+</div>
