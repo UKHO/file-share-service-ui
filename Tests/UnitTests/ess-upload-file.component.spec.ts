@@ -87,39 +87,39 @@ const  getTempFile = () => new File([getEncData()],'text.txt');
     }
     );
 
-    it('processFile should set encList',() => {
+    it('processEncFile should set encList',() => {
       const file = new File([getEncData()], 'test.txt');
       Object.defineProperty(file, 'type', { value: 'text/plain' });
      component.encFile = file;
      expect(component.validEncList).toBeUndefined();
-     component.processFile(getEncData());
+     component.processEncFile(getEncData());
      expect(component.validEncList.length).toBe(1);
     });
 
-    it('processFile should set raise "Please upload valid ENC file." error',() => {
+    it('processEncFile should set raise "Please upload valid ENC file." error',() => {
       const file = new File([getEncData()], 'test.jpeg');
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
       component.encFile = file;
-      component.processFile(getEncData());
+      component.processEncFile(getEncData());
       expect(component.validEncList).toBeUndefined();
       expect(component.messageType).toEqual('error');
       expect(component.messageDesc).toEqual('Please upload valid ENC file.');
     });
 
-    it('processFile should set raise "Some values have not been added to list." info',() => {
+    it('processEncFile should set raise "Some values have not been added to list." info',() => {
       const file = new File([getEncData()], 'test.txt');
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
-      component.processFile(getInvalidEncData());
+      component.processEncFile(getInvalidEncData());
       expect(component.validEncList.length).toEqual(1);
       expect(component.messageType).toEqual('info');
       expect(component.messageDesc).toEqual('Some values have not been added to list.');
     });
-    it('processFile should set raise "No ENCs found." info',() => {
+    it('processEncFile should set raise "No ENCs found." info',() => {
       const file = new File([getEncData()], 'test.txt');
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
-      component.processFile(getNoEncData());
+      component.processEncFile(getNoEncData());
       expect(component.validEncList.length).toEqual(0);
       expect(component.messageType).toEqual('info');
       expect(component.messageDesc).toEqual('No ENCs found.');

@@ -1,5 +1,5 @@
 import { EssUploadFileService } from './../../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -13,50 +13,51 @@ export class EssUploadFileComponent implements OnInit {
   displayErrorMessage = false;
   validEncList: string[];
   encFile: File;
-  constructor(private essUploadFileService: EssUploadFileService) {}
+  constructor(private essUploadFileService: EssUploadFileService) { }
 
   ngOnInit(): void {
   }
 
   uploadListener($event: any): void {
-        this.validEncList = [];
-        this.encFile = $event.srcElement.files[0];
-        this.displayErrorMessage = false;
-        if (this.encFile && this.encFile.type !== 'text/plain') {
-          this.showMessage('error','Please select a .csv or .txt file');
-        }
+    this.validEncList = [];
+    this.encFile = $event.srcElement.files[0];
+    this.displayErrorMessage = false;
+    if (this.encFile && this.encFile.type !== 'text/plain') {
+      this.showMessage('error', 'Please select a .csv or .txt file');
+    }
   }
 
   loadFileReader() {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.processFile(e.target.result);
-        };
-        reader.readAsText(this.encFile);
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.processEncFile(e.target.result);
+    };
+    reader.readAsText(this.encFile);
   }
 
-  processFile(rawData: string): void{
+  processEncFile(encFileData: string): void {
     /*
       trims leading & trailing whitespaces , splits texts in new lines
       trims leading & trailing individual ENC's whitespaces
     */
-    let encList =  this.essUploadFileService.getEncFileData(rawData);
-    if(this.essUploadFileService.isValidEncFile(this.encFile.type, encList)){
-      encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type,encList);
-      this.essUploadFileService. setValidENCs(encList);
+    let encList = this.essUploadFileService.getEncFileData(encFileData);
+    console.log(encList);
+    if (this.essUploadFileService.isValidEncFile(this.encFile.type, encList)) {
+      encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type, encList);
+      this.essUploadFileService.setValidENCs(encList);
       this.validEncList = this.essUploadFileService.getValidEncs();
-      if(encList.length > this.validEncList.length){
-        this.showMessage('info','Some values have not been added to list.');
+      if (encList.length > this.validEncList.length) {
+        this.showMessage('info', 'Some values have not been added to list.');
       }
-      if(this.validEncList.length === 0)
-        {
-          this.showMessage('info', 'No ENCs found.');
-        }
+      if (this.validEncList.length === 0) {
+        this.showMessage('info', 'No ENCs found.');
+      }
     }
-    else{
-      this.showMessage('error','Please upload valid ENC file.');
+    else {
+      this.showMessage('error', 'Please upload valid ENC file.');
     }
   }
+
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
     messageDesc: string = ''

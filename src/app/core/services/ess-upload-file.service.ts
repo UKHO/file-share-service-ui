@@ -36,7 +36,7 @@ export class EssUploadFileService {
     ) {
       // valid for txt files only
       return processedData
-        .slice(3, processedData.length - 1)
+        .slice(3, processedData.length - 1).filter(x => x !== "")
         .map((encItem: string) => encItem.substring(0, 8));
     }
     return processedData;
