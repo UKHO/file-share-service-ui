@@ -55,7 +55,7 @@ export class EssUploadFileService {
   }
 
   setEncFilterState(initialEncCount: number, finalEncCount: number) {
-    if (initialEncCount !== finalEncCount) {
+    if (initialEncCount > finalEncCount) {
       this._encFilterState.next(true);
     }
     else {

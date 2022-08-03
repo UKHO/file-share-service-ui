@@ -1,5 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { DialogueModule, FileInputModule, RadioModule,ButtonModule ,CardModule, FileInputComponent, TextinputModule} from '@ukho/design-system';
 import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component';
 
 describe('EssAddSingleEncsComponent', () => {
@@ -8,6 +9,7 @@ describe('EssAddSingleEncsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [CommonModule,DialogueModule,FileInputModule,RadioModule,ButtonModule,CardModule,TextinputModule],
       declarations: [ EssAddSingleEncsComponent ]
     })
     .compileComponents();
