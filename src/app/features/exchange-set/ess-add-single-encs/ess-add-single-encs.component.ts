@@ -11,5 +11,4 @@ export class EssAddSingleEncsComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  placeholder:string="Type ENC cell name here";
 }
