@@ -22,6 +22,7 @@
        "homePageBodySelector" : ".card p:nth-of-type(1)",
        "homePageBodyText" : "The ADMIRALTY File Share Service allows you to search for and download files.",
        "homePageSignInHeaderInfoSelector" : ".card h1",
-       "homePageSignInHeaderInfoText":"Sign in to access your files"
+       "homePageSignInHeaderInfoText":"Sign in to access your files",
+       "essLinkSelector":"//li[@id='Exchange sets']"
     }
 }
