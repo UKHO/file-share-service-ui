@@ -27,9 +27,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
 
     test('Veriy clicking Search link from home page after login, navigates to Search page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.waitForTimeout(1000);
-      
-       await page.locator(fssHomePageObjectsConfig.searchLinkSelector).click();
+        await page.locator(fssHomePageObjectsConfig.searchLinkSelector).click();
         await page.waitForLoadState('load');
         expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);      
     });
@@ -39,12 +37,13 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
         await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
         await page.waitForLoadState('load');
        // await expect(page).toHaveURL("https://fss-dev.admiralty.co.uk/#/exchangesets");
+       await expect(page).toHaveTitle("Admiralty - File Share Service - Exchange Sets"); 
         expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButtonName);
     });
 
     test('Veriy appending "/search" in  url after login, navigates to Search page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.goto(autoTestConfig.url+"/search");
+        await page.goto(autoTestConfig.url+"#"+"/search");
         await page.waitForLoadState('load');
         expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText); 
       
@@ -52,9 +51,9 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
 
     test('Veriy appending "/exchangesets" in  url after login, navigates to ESS laanding page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.goto(autoTestConfig.url+"/exchangesets");
+        await page.goto(autoTestConfig.url+"/#"+"/exchangesets");
         await page.waitForLoadState('load');
-        //await expect(page).toHaveTitle("Admiralty - File Share Service - Exchange sets");  
+        await page.waitForTimeout(3000);
         expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButtonName);
     });    
 });

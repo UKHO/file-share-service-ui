@@ -2,7 +2,7 @@
     "fssHomePageObjectsConfig": {
         "homePageHeaderSelector":"#main-menu h1",
        "homePageHeaderText":"File Share Service",
-       "searchLinkSelector":"ukho-header #Search >a",
+       "searchLinkSelector":"#Search",
        "searchLinkText":"Search",
        "signinLinkSelector":"ukho-header [id='signInButton']",
        "signinLinkText":"Sign in",
