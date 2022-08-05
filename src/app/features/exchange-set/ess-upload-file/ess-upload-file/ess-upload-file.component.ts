@@ -41,17 +41,16 @@ export class EssUploadFileComponent implements OnInit {
       trims leading & trailing individual ENC's whitespaces
     */
     let encList = this.essUploadFileService.getEncFileData(encFileData);
-    console.log(encList);
     if (this.essUploadFileService.isValidEncFile(this.encFile.type, encList)) {
       encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type, encList);
       this.essUploadFileService.setValidENCs(encList);
       this.validEncList = this.essUploadFileService.getValidEncs();
-      if (encList.length > this.validEncList.length) {
-        this.showMessage('info', 'Some values have not been added to list.');
-      }
       if (this.validEncList.length === 0) {
         this.showMessage('info', 'No ENCs found.');
       }
+      else if (encList.length > this.validEncList.length) {
+        this.showMessage('info', 'Some values have not been added to list.');
+      }    
     }
     else {
       this.showMessage('error', 'Please upload valid ENC file.');

@@ -30,10 +30,7 @@ export class EssUploadFileService {
   }
 
   extractEncsFromFile(fileType: string, processedData: string[]) {
-    if (
-      (fileType === 'text/plain' && processedData[2] === ':ENC') ||
-      processedData[processedData.length - 1] === ':ECS'
-    ) {
+    if (fileType === 'text/plain') {
       // valid for txt files only
       return processedData
         .slice(3, processedData.length - 1).filter(x => x !== "")

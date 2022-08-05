@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ess-add-single-encs.component.scss']
 })
 export class EssAddSingleEncsComponent implements OnInit {
-  placeholder:string="Type ENC cell name here";
   
   constructor() { }
 

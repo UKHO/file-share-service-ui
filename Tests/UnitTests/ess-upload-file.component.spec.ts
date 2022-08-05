@@ -37,9 +37,6 @@ const getNoEncData = () => {
   return data;
 };
 
-
-
-const  getTempFile = () => new File([getEncData()],'text.txt');
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,DialogueModule,FileInputModule,RadioModule,ButtonModule,CardModule],

@@ -40,14 +40,11 @@ table tbody tr td {
     text-align: right;
 }
 
-.UploadFileIput {
-
-    width: 45%;
-
-}
-
-.UploadButton {
-
-    margin-left: 350px;
-
-}
+.uploadENCFileSection{
+    .UploadFileIput{
+          width: 45%;
+     }
+    .UploadButton{
+      margin-left: 350px;
+    }
+  }
