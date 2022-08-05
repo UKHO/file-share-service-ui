@@ -43,7 +43,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
 
     test('Verify appending "/search" in  url after login, navigates to Search page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.goto(autoTestConfig.url+"/#"+"/search");
+        await page.goto(autoTestConfig.url+"/#/search");
         await page.waitForLoadState('load');
         expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText); 
       
