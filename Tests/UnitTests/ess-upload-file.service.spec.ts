@@ -58,7 +58,7 @@ describe('FssPopularSearchService', () => {
     let rawData = getTempEncs();
     expect(rawData.length).toEqual(2);
     rawData = service.extractEncsFromFile('text/plain',rawData);
-    expect(rawData.length).toEqual(2);
+    expect(rawData.length).toEqual(0);
   });
 
   it('getValidEncs should return encs', () => {
