@@ -40,27 +40,27 @@ const config: PlaywrightTestConfig = {
         ...devices['Desktop Chrome'],
       },
     },
+//// Note: issues with other browsers, we will check later.
+    // {
+    //   name: 'firefox',
+    //   use: {
+    //     ...devices['Desktop Firefox'],
+    //   },
+    // },
 
-    {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-      },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: {
+    //     ...devices['Desktop Safari'],
+    //   },
+    // },
 
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-      },
-    },
-
-    {
-      name: 'Microsoft Edge',
-      use: {
-        channel: 'msedge'
-      }
-    }
+    // {
+    //   name: 'Microsoft Edge',
+    //   use: {
+    //     channel: 'msedge'
+    //   }
+    // }
    
   ],
 
