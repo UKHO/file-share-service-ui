@@ -49,7 +49,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
       
     });
 
-    test('Verify appending "/exchangesets" in  url after login, navigates to ESS laanding page', async ({ page }) => {
+    test('Verify appending "/exchangesets" in  url after login, navigates to ESS landing page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.goto(autoTestConfig.url+"/#/exchangesets");
         await page.waitForLoadState('load');
