@@ -1,31 +1,25 @@
-import { chromium, Browser, Page } from 'playwright'
-import { injectAxe,checkA11y } from 'axe-playwright'
-const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
-const { pageObjectsConfig, pageTimeOut } = require('../FunctionalTests/pageObjects.json');
-import { AcceptCookies, LoginPortal} from '../FunctionalTests/helpermethod';
-import { attributeProductType } from '../FunctionalTests/helperconstant';
+import { test, expect } from '@playwright/test';
+import { injectAxe, checkA11y} from 'axe-playwright'
+import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
+import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
+import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
+import { attributeProductType} from '../../Helper/ConstantHelper';
+import { autoTestConfig } from '../../appSetting.json';
 
-let browser: Browser;
-let page: Page;
-
-describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
-  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-  beforeAll(async () => {
-    browser = await chromium.launch({ slowMo: 100})    
-    page = await browser.newPage();
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
+test.describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
+  
+  test.beforeEach(async ({page}) => {
+    
     await page.goto(autoTestConfig.url)
     await AcceptCookies(page);
-
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, pageObjectsConfig.loginSignInLinkSelector);
-    await page.waitForSelector(pageObjectsConfig.searchPageContainerHeaderSelector);   
-        
-    var simplifiedSearchBox= (await page.$$(pageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);         
+    var simplifiedSearchBox= (await page.$$(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
     expect(simplifiedSearchBox).toEqual(1);  
     
   })    
 
-  test('check a11y for the initial page load and axe run options', async () => {
+  test('check a11y for the initial page load and axe run options', async ({page}) => {
     await injectAxe(page);
     await checkA11y(page, undefined, {
       axeOptions: {               
@@ -39,9 +33,9 @@ describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
     });
   })
 
-  test('check a11y for no search result html and axe run options', async () => {
-    await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
-    await page.waitForSelector(pageObjectsConfig.dialogWarningSelector);
+  test('check a11y for no search result html and axe run options', async ({page}) => {
+    await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
+    await page.waitForSelector(fssSearchPageObjectsConfig.dialogWarningSelector);
     await injectAxe(page);
     await checkA11y(page, undefined, {
       axeOptions: {               
@@ -55,10 +49,10 @@ describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
     });
   })
 
-  test('check a11y for simplified search result html and axe run options', async () => {
-    await page.fill(pageObjectsConfig.inputSimplifiedSearchBoxSelector, attributeProductType.value);
-    await page.click(pageObjectsConfig.simplifiedSearchButtonSelector);
-    await page.waitForSelector(pageObjectsConfig.searchResultTableSelector);
+  test('check a11y for simplified search result html and axe run options', async ({page}) => {
+    await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, attributeProductType.value);
+    await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
+    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await injectAxe(page);
     await checkA11y(page, undefined, {
       axeOptions: {               
@@ -70,11 +64,5 @@ describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () => {
       detailedReport: true,
       detailedReportOptions: { html: true }
     });
-  })  
- 
-  afterAll(async () => {
-    await page.close();  
-    await browser.close();
-  })
-
+  })   
 }) 
