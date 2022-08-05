@@ -33,7 +33,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
         expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);      
     });
 
-    test('Verify clicking Exchange sets link after login navigates to ESS laanding page', async ({ page }) => {
+    test('Verify clicking Exchange sets link after login navigates to ESS landing page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
         await page.waitForTimeout(500);
