@@ -1,24 +1,17 @@
-import { chromium, Browser, Page } from 'playwright'
+import { test, expect } from '@playwright/test';
 import { injectAxe, checkA11y} from 'axe-playwright'
-import { AcceptCookies } from '../FunctionalTests/helpermethod';
-const { autoTestConfig } = require('../FunctionalTests/appSetting.json');
-const{ pageTimeOut } = require('../FunctionalTests/pageObjects.json');
+import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
+import { autoTestConfig } from '../../appSetting.json';
 
-let browser: Browser
-let page: Page
-
-describe('FSS UI Home Page Accessibility Test Scenarios', () => {
-  jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-  beforeAll(async () => {
-    browser = await chromium.launch({slowMo:100})
-    page = await browser.newPage()
-    page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds)
+test.describe('FSS UI Home Page Accessibility Test Scenarios', () => {
+  
+  test.beforeEach(async ({page}) => {
     await page.goto(autoTestConfig.url)
     await AcceptCookies(page);
     await injectAxe(page)
   })
 
-  test('check a11y for the whole page and axe run options', async () => {
+  test('check a11y for the whole page and axe run options', async ({page}) => {
     await checkA11y(page, undefined, {
       axeOptions: {
         rules: {
@@ -33,10 +26,4 @@ describe('FSS UI Home Page Accessibility Test Scenarios', () => {
       detailedReportOptions: { html: true }
     });
   })
-
-  afterAll(async () => {
-    await page.close();
-    await browser.close();
-  })
-
-})
+ })

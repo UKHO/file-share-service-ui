@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
@@ -13,7 +13,7 @@ import { AnalyticsService } from '../../../core/services/analytics.service';
   templateUrl: './fss-header.component.html',
   styleUrls: ['./fss-header.component.scss']
 })
-export class FssHeaderComponent extends HeaderComponent implements OnInit {
+export class FssHeaderComponent extends HeaderComponent implements OnInit , AfterViewInit {
   userName: string = "";
   @Output() isPageOverlay = new EventEmitter<boolean>();
 
@@ -27,6 +27,15 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit {
     private fileShareApiService: FileShareApiService,
     private analyticsService: AnalyticsService) {
     super();
+  }
+  ngAfterViewInit(): void {
+    //added unique id for testing & accessibility
+    // NOTE :
+    // `ukho-header` does not allow to change `id` it uses `title` as a `id` changed Exchange sets -> Exchange-sets
+    const exchnageSetElem = document.querySelector('.links')?.children[0].childNodes[0] as HTMLElement;
+    if(!(exchnageSetElem instanceof Comment)  &&  exchnageSetElem.getAttribute('id') === 'Exchange sets'){
+        exchnageSetElem.setAttribute('id' , 'Exchange-sets');
+    }
   }
 
   ngOnInit(): void {
