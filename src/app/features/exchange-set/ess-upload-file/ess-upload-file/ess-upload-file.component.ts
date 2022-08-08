@@ -22,7 +22,7 @@ export class EssUploadFileComponent implements OnInit {
     this.validEncList = [];
     this.encFile = $event.srcElement.files[0];
     this.displayErrorMessage = false;
-    if (this.encFile && this.encFile.type !== 'text/plain') {
+    if (this.encFile && this.encFile.type !== 'text/plain' && this.encFile.type !== 'text/csv') {
       this.showMessage('error', 'Please select a .csv or .txt file');
     }
   }

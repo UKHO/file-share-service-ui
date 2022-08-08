@@ -11,14 +11,12 @@ export class EssUploadFileService {
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
   }
 
-  validateCSVFile() {}
-
-  isValidEncFile(encFileTYpe: string, encList: string[]): boolean {
-    if (
-      encFileTYpe === 'text/plain' &&
+  isValidEncFile(encFileType: string, encList: string[]): boolean {
+    if ((encFileType === 'text/csv') ||
+      (encFileType === 'text/plain' &&
       encList[2] === ':ENC' &&
       encList[encList.length - 1] === ':ECS'
-    ) {
+    )) {
       return true;
     }
     return false;
@@ -29,12 +27,15 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  extractEncsFromFile(fileType: string, processedData: string[]) {
-    if (fileType === 'text/plain') {
+  extractEncsFromFile(encFileType: string, processedData: string[]) {
+    if (encFileType === 'text/plain') {
       // valid for txt files only
       return processedData
         .slice(3, processedData.length - 1).filter(x => x !== "")
         .map((encItem: string) => encItem.substring(0, 8));
+    }
+    else if (encFileType === 'text/csv') {
+      return processedData.map(e => e.split(',')[0].trim()).filter(x => x !== "");
     }
     return processedData;
   }
@@ -43,7 +44,7 @@ export class EssUploadFileService {
     this.validEncs = encList
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
-      .filter((enc, index) => index < this.maxEncLimit); // limit records by maxUploadRows
+      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit
   }
 
   getValidEncs(): string[] {

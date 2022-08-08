@@ -1,5 +1,4 @@
 table tbody tr td {
-    // border-spacing: 0;
     border: 1px solid #000;
     margin-bottom: 30px;
 }
@@ -14,9 +13,6 @@ table tbody tr td {
     color: #09315b;
 
     .UploadEncFileWrapper {
-        // .text-input-wrap{
-        // 	height: initial;
-        // }
         display: flex;
         align-items: end;
         margin-bottom: 15px;
