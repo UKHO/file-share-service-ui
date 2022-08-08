@@ -12,18 +12,10 @@ export class FssHomeComponent implements OnInit {
   constructor(private msalService: MsalService,
     private route: Router) { }
 
-  ngOnInit(): void {
-    this.handleSignIn();
-  }
+  ngOnInit(): void {}
   
   Signin() {
     document.getElementById('signInButton')?.click();
   }
 
-  handleSignIn() {
-    const account = this.msalService.instance.getAllAccounts()[0];
-    if (account != null) {
-      this.route.navigate(['search']);
-    }
-  }
 }
