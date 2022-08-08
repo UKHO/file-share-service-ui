@@ -40,13 +40,13 @@ const config: PlaywrightTestConfig = {
         ...devices['Desktop Chrome'],
       },
     },
-
-    {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-      },
-    },
+//// Note: issues with firefox browsers, commenting it for now.
+    // {
+    //   name: 'firefox',
+    //   use: {
+    //     ...devices['Desktop Firefox'],
+    //   },
+    // },
 
     {
       name: 'webkit',

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExchangeSetComponent } from './exchange-set.component';
+import { EssAddSingleEncsComponent } from './ess-add-single-encs.component';
 
-describe('ExchangeSetComponent', () => {
-  let component: ExchangeSetComponent;
-  let fixture: ComponentFixture<ExchangeSetComponent>;
+describe('EssAddSingleEncsComponent', () => {
+  let component: EssAddSingleEncsComponent;
+  let fixture: ComponentFixture<EssAddSingleEncsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ExchangeSetComponent ]
+      declarations: [ EssAddSingleEncsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExchangeSetComponent);
+    fixture = TestBed.createComponent(EssAddSingleEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
