@@ -136,7 +136,7 @@ describe('EssUploadFileComponent', () => {
       const file = new File([encDataFunc], 'test.jpeg');
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
       component.encFile = file;
-      component.processEncFile(getEncData_csv());
+      component.processEncFile(encDataFunc);
       expect(component.validEncList).toBeUndefined();
       expect(component.messageType).toEqual('error');
       expect(component.messageDesc).toEqual('Please upload valid ENC file.');
@@ -172,7 +172,7 @@ describe('EssUploadFileComponent', () => {
       expect(component.messageDesc).toEqual('No ENCs found.');
     });
 
-  it('uploadListener should raise error if file is not provided', () => {
+  it('uploadListener should raise error for unsupported file type', () => {
     const file = new File([getEncData_csv()], 'test.jpeg');
     Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
     Object.defineProperty(file, 'type', { value: 'image/jpeg' });
