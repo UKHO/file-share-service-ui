@@ -14,8 +14,8 @@ const searchQuerySqlInjection = "adds''; drop table BatchAttribute";
 const batchAttributeSpecialChar = '$£';
 
 test.describe('Test Search Query Scenario On Search Page', () => {
-  //jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
-
+  page.waitForTimeout(5000);
+  
   test.beforeEach(async ( {page}) => {
     await page.goto(autoTestConfig.url);
     await AcceptCookies(page);
