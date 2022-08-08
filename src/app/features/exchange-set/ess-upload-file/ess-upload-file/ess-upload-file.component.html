@@ -1,8 +1,33 @@
 <div class="container">
+    <div>
+        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
+            <h3>{{messageDesc}}</h3>
+        </ukho-dialogue>
+    </div>
+
     <div class="uploadENCFileSection">
-        <ukho-file-input class="UploadFileIput"></ukho-file-input>
-        <ukho-button class="UploadButton">
-          Proceed
-        </ukho-button>
-   </div>  
+
+        <ukho-file-input class="UploadFileIput" id="file-upload" (change)="uploadListener($event)" accept=".txt,.csv"></ukho-file-input>
+
+        <ukho-button class="UploadButton" (click)="loadFileReader()">Proceed</ukho-button>
+
+   </div> 
+   <br>
+   <div *ngIf="validEncList && validEncList.length > 0">
+    <ukho-card>
+        <table class="Enctable">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Enc Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let enc of validEncList; let i = index">
+                    <td>{{ enc }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </ukho-card>
+</div>
+
 </div>
