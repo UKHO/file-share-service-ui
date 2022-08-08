@@ -1,0 +1,25 @@
+<div class="container">
+<div class="exchangesetcontainer">
+    <h1 id="main" tabindex="-1">Exchange sets</h1>
+    <p class="light">Update your ENCs for a vessel and make an exchange set</p>
+    <p class="light">Your AVCS Exchange Set will contain the latest editions and all the 
+                     updates available for your requested ENCs. Some may be more up to 
+                     date than those available in the AVCS Weekly service.  </p>
+    <p class="light">You can upload a permit file and select up to 100 ENCs from your full 
+                     list of holdings, or you can upload a specific list of ENCs as a .csv file or,
+                     search for a single ENC</p>
+
+    <ukho-radio-group id="radioGroup" name="AddUploadENC" [(ngModel)]="rgAddUploadENC">
+        <ukho-radio id="radioUploadEnc" [value]="radioUploadEncValue" style="display: block;">Upload your whole permit file or a .csv file</ukho-radio>   
+        <ukho-radio id="radioAddEnc" [value]="radioAddEncValue" style="display: block;">Add ENCs</ukho-radio>               
+    </ukho-radio-group>
+</div>
+</div>
+<div class="addUploadEncComponents">
+    <app-ess-upload-file *ngIf="rgAddUploadENC==radioUploadEncValue"></app-ess-upload-file>
+ 
+    <app-ess-add-single-encs *ngIf="rgAddUploadENC==radioAddEncValue"></app-ess-add-single-encs>
+</div>
+
+ 
+
