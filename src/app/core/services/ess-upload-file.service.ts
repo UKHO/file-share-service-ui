@@ -7,7 +7,6 @@ import { AppConfigService } from './app-config.service';
 export class EssUploadFileService {
   private validEncs: string[];
   private maxEncLimit: number;
-  encData: string[] = new Array<string>();
   constructor() {
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
   }
@@ -29,10 +28,7 @@ export class EssUploadFileService {
   }
 
   extractEncsFromFile(encFileType: string, processedData: string[]) {
-    if (
-      (encFileType === 'text/plain' && processedData[2] === ':ENC') ||
-      processedData[processedData.length - 1] === ':ECS'
-    ) {
+    if (encFileType === 'text/plain') {
       // valid for txt files only
       return processedData
         .slice(3, processedData.length - 1).filter(x => x !== "")

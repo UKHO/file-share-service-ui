@@ -1,54 +1,46 @@
 table tbody tr td {
-  // border-spacing: 0;
-  border: 1px solid #000;
-  margin-bottom: 30px;
+    border: 1px solid #000;
+    margin-bottom: 30px;
 }
 
 .EncFIleUploadForEss {
-  margin-bottom: 20px;
-  color: #09315b;
+    margin-bottom: 20px;
+    color: #09315b;
 }
 
 .innerWrapperForEnc {
-  margin-left: 10px;
-  color: #09315b;
+    margin-left: 10px;
+    color: #09315b;
 
-  .UploadEncFileWrapper {
-    display: flex;
-    align-items: end;
-    margin-bottom: 15px;
+    .UploadEncFileWrapper {
+        display: flex;
+        align-items: end;
+        margin-bottom: 15px;
 
-    .singleEncTextbox {
-      width: 40%;
-      float: left;
-      margin-right: 20px;
+        .singleEncTextbox {
+            width: 40%;
+            float: left;
+            margin-right: 20px;
+        }
     }
-  }
 }
 
 .switchToExchangeSet {
-  color: #000;
-  font-weight: 400;
-  cursor: pointer;
-  text-decoration: underline;
-  margin-bottom: 20px;
-  width: 40%;
-  display: block;
-  text-align: right;
+    color: #000;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-bottom: 20px;
+    width: 40%;
+    display: block;
+    text-align: right;
 }
 
-.UploadFileIput {
-  width: 45%;
-}
-
-.UploadButton {
-  margin-left: 350px;
-}
-
-table tr:nth-child(odd) {
-  background-color: #f1f1f1;
-}
-
-table tr:nth-child(even) {
-  background-color: #ffffff;
-}
+.uploadENCFileSection{
+    .UploadFileIput{
+          width: 47%;
+     }
+    .UploadButton{
+      margin-left: 374px;
+    }
+  }
