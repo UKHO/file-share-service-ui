@@ -1,0 +1,7 @@
+{
+    "esslandingpageObjectsConfig": {
+        "radioButtonNameSelector":"//label[text()='Upload your whole permit file or a .csv file']",
+        "radioButtonName" : "Upload your whole permit file or a .csv file"
+        
+    }
+}
