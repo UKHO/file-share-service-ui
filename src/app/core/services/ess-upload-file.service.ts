@@ -12,8 +12,6 @@ export class EssUploadFileService {
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
-    this.validEncs =  ['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128'];
-  
   }
 
   validateCSVFile() {}
@@ -75,7 +73,7 @@ export class EssUploadFileService {
   }
 
   addSelectedEnc(enc: string): void{
-    this.selectedEncs = [...this.selectedEncs , enc];
+    this.selectedEncs = [...this.selectedEncs, enc];
   }
 
   removeSelectedEnc(enc: string): void{
