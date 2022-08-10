@@ -1,5 +1,6 @@
+import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -13,9 +14,13 @@ export class EssUploadFileComponent implements OnInit {
   displayErrorMessage = false;
   validEncList: string[];
   encFile: File;
-  constructor(private essUploadFileService: EssUploadFileService) { }
+  // public displayedColumns = ['Cell name', 'Choose'];
+  @Output() ShowEssUploadClicked = new EventEmitter<boolean>(false);
+  constructor(private essUploadFileService: EssUploadFileService,
+    private route: Router) { }
 
   ngOnInit(): void {
+    this.essUploadFileService.infoMessage = false;
   }
 
   uploadListener($event: any): void {
@@ -47,10 +52,12 @@ export class EssUploadFileComponent implements OnInit {
       this.validEncList = this.essUploadFileService.getValidEncs();
       if (this.validEncList.length === 0) {
         this.showMessage('info', 'No ENCs found.');
+        return;
       }
-      else if (encList.length > this.validEncList.length) {
-        this.showMessage('info', 'Some values have not been added to list.');
-      }    
+      if (encList.length > this.validEncList.length) {
+        this.essUploadFileService.infoMessage = true;
+      }
+      this.route.navigate(['exchangesets' , 'list-encs']);
     }
     else {
       this.showMessage('error', 'Please upload valid ENC file.');

@@ -6,8 +6,11 @@ import { AppConfigService } from './app-config.service';
 })
 export class EssUploadFileService {
   private validEncs: string[];
+  private selectedEncs: string[];
   private maxEncLimit: number;
+  private showInfoMessage = false;
   constructor() {
+    this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
   }
 
@@ -56,6 +59,14 @@ export class EssUploadFileService {
       .trim()
       .split('\n')
       .map((enc: string) => enc.trim());
+  }
+
+  get infoMessage() {
+    return this.showInfoMessage;
+  }
+
+  set infoMessage(visibility: boolean){
+    this.showInfoMessage = visibility;
   }
 
   setValidSingleEnc(signleValidEnc: string) {

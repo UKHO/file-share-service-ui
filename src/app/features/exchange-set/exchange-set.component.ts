@@ -7,13 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class ExchangeSetComponent implements OnInit {
-
-  constructor() {
-   }
-
   rgAddUploadENC: string;  
   radioUploadEncValue:string;
   radioAddEncValue:string;
+  constructor() {
+   }
    
   ngOnInit(): void {
     this.radioUploadEncValue="UploadEncFile";
