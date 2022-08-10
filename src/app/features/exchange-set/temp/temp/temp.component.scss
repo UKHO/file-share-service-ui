@@ -1,5 +1,17 @@
-.encContainer,
-.encSelectionContainer {
-    width: 50%;
-    border: 1px solid red;
+.container{
+    display: flex;
+    .encContainer{
+        margin-right: 2%;
+        flex: 1;
+    }
+    
+    .encSelectionContainer {
+        margin-left: 5%;
+        flex: 1;
+        h3{
+            span{
+                float: right;
+            }
+        }
+    }
 }
