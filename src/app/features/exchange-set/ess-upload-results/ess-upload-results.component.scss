@@ -1,0 +1,19 @@
+.showEncListWrapper{
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+.selectEnc{
+    float: right
+    ;position: relative;
+    top: -7px;
+}
+.showListEncTOtal{
+    float: right;
+    line-height: 58px;
+}
+.sortData{
+    position: relative;
+    vertical-align: middle;
+    background-color: #fff;
+}

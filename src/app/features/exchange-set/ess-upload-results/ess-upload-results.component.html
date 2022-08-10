@@ -1,0 +1,37 @@
+<div class="container">
+    <div>
+        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
+            <h3>{{messageDesc}}</h3>
+        </ukho-dialogue>
+    </div>
+    
+    <div class="showEncListWrapper">
+    <div style="flex: 5">
+        <div *ngIf="encList && encList.length > 0">
+            <h1 id="main" tabindex="-1">Exchange sets</h1>
+            <p>Select up to 100 ENCs and Make an exchange set</p>
+                <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit file</span></h2>
+                <table ukho-table [dataSource]="encList">
+                    <ng-container ukhoColumnDef="EncName">
+                      <th ukho-header-cell *ukhoHeaderCellDef>EncName
+                        <button class="sortData"> <i class="fa fa-angle-down fa-1x"></i> </button>
+                       </th>
+                      <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
+                    </ng-container>
+                    <ng-container ukhoColumnDef="Choose">
+                        <th ukho-header-cell *ukhoHeaderCellDef>Choose</th>
+                        <td ukho-cell *ukhoCellDef="let element">
+                            <ukho-checkbox class="selectEnc" attr.aria-label="{{element}}"></ukho-checkbox>
+                        </td>
+                      </ng-container>
+                    <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
+                    <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
+                  </table>
+        </div>
+    </div>
+    <div style="flex: 4">
+    
+    </div>    
+  </div>
+    
+</div>
