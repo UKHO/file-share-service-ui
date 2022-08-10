@@ -39,7 +39,7 @@ export async function LoginPortal(page: Page, userName: string, password: string
 
   ]);
   await popup.setViewportSize({ width: 800, height: 1024 });
-  await page.waitForSelector("#signInEmail");
+  await popup.waitForSelector("#signInEmail");
  // await popup.waitForLoadState();
 
   await popup.fill(commonObjectsConfig.loginPopupSignInEmailSelector, userName);
