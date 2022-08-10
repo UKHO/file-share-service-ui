@@ -32,13 +32,15 @@ export async function AcceptCookies(page: Page) {
 //<param> userName </param>
 //<param> password </param>
 export async function LoginPortal(page: Page, userName: string, password: string, loginLink: string) {
-
+ 
   const [popup] = await Promise.all([
-    page.waitForEvent('popup'),
+    page.waitForEvent('popup'),    
     page.click(loginLink)
+
   ]);
   await popup.setViewportSize({ width: 800, height: 1024 });
-  await popup.waitForLoadState();
+  await page.waitForSelector("#signInEmail");
+ // await popup.waitForLoadState();
 
   await popup.fill(commonObjectsConfig.loginPopupSignInEmailSelector, userName);
   await popup.click(commonObjectsConfig.loginPopupNextButtonSelector);
