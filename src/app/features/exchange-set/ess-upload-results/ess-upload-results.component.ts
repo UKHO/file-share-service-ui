@@ -1,12 +1,14 @@
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+
 @Component({
   selector: 'app-ess-upload-results',
   templateUrl: './ess-upload-results.component.html',
   styleUrls: ['./ess-upload-results.component.scss']
 })
 export class EssUploadResultsComponent implements OnInit {
+
   encList: string[];
   public displayedColumns = ['EncName', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
@@ -21,7 +23,6 @@ export class EssUploadResultsComponent implements OnInit {
     if(this.displayErrorMessage){
       this.showMessage('info', 'Some values have not been added to list.');
     }
-
     this.encList = this.essUploadFileService.getValidEncs();
   }
 
@@ -37,5 +38,12 @@ export class EssUploadResultsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-
+  handleChange(enc : string){
+    let seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
+    if(seletedEncs && seletedEncs.length > 0 && seletedEncs.includes(enc)){
+      this.essUploadFileService.removeSelectedEnc(enc);
+      return;
+    }
+    this.essUploadFileService.addSelectedEnc(enc);
+  }
 }
