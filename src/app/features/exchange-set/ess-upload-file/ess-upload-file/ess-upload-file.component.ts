@@ -20,6 +20,7 @@ export class EssUploadFileComponent implements OnInit {
     private route: Router) { }
 
   ngOnInit(): void {
+    this.essUploadFileService.infoMessage = false;
   }
 
   uploadListener($event: any): void {
@@ -51,11 +52,12 @@ export class EssUploadFileComponent implements OnInit {
       this.validEncList = this.essUploadFileService.getValidEncs();
       if (this.validEncList.length === 0) {
         this.showMessage('info', 'No ENCs found.');
+        return;
       }
-      else if (encList.length > this.validEncList.length) {
+      if (encList.length > this.validEncList.length) {
         this.essUploadFileService.infoMessage = true;
-        this.route.navigate(['exchangesets' , 'list-encs']);
-      }    
+      }
+      this.route.navigate(['exchangesets' , 'list-encs']);
     }
     else {
       this.showMessage('error', 'Please upload valid ENC file.');
