@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EssUploadResultsComponent } from './ess-upload-results.component';
+import { EssUploadResultsComponent } from '../../src/app/features/exchange-set/ess-upload-results/ess-upload-results.component';
 
 describe('EssUploadResultsComponent', () => {
   let component: EssUploadResultsComponent;

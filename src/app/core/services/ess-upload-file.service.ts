@@ -67,16 +67,4 @@ export class EssUploadFileService {
   set infoMessage(visibility: boolean){
     this.showInfoMessage = visibility;
   }
-
-  getSelectedENCs(): string[]{
-    return this.selectedEncs;
-  }
-
-  addSelectedEnc(enc: string): void{
-    this.selectedEncs = [...this.selectedEncs, enc];
-  }
-
-  removeSelectedEnc(enc: string): void{
-    this.selectedEncs = this.selectedEncs.filter((item) => item !== enc);
-  }
 }

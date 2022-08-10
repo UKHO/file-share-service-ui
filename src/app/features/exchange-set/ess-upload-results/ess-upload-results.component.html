@@ -4,12 +4,11 @@
             <h3>{{messageDesc}}</h3>
         </ukho-dialogue>
     </div>
-    
+    <h1 id="main" tabindex="-1">Exchange sets</h1>
+    <p>Select up to 100 ENCs and Make an exchange set</p>
     <div class="showEncListWrapper">
     <div style="flex: 5">
         <div *ngIf="encList && encList.length > 0">
-            <h1 id="main" tabindex="-1">Exchange sets</h1>
-            <p>Select up to 100 ENCs and Make an exchange set</p>
                 <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit file</span></h2>
                 <table ukho-table [dataSource]="encList">
                     <ng-container ukhoColumnDef="EncName">
@@ -29,8 +28,25 @@
                   </table>
         </div>
     </div>
-    <div style="flex: 4">
-    
+    <div class="divider"></div>
+    <div style="flex: 3">
+        <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit file</span></h2>
+        <div *ngIf="selectedEncList && selectedEncList.length > 0">
+          <table ukho-table [dataSource]="selectedEncList">
+                  <ng-container ukhoColumnDef="EncName">
+                    <th ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
+                    <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
+                  </ng-container>
+                  <ng-container ukhoColumnDef="X">
+                      <th ukho-header-cell *ukhoHeaderCellDef></th>
+                      <td ukho-cell *ukhoCellDef="let element">
+                        <button (click)="handleChange(element)"> <i class="fa fa-times fa-1x"></i> </button>
+                      </td>
+                    </ng-container>
+                  <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
+                  <tr ukho-row *ukhoRowDef="let row; columns: displaySelectedTableColumns"></tr>
+            </table>
+        </div>
     </div>    
   </div>
     
