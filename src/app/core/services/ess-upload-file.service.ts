@@ -14,9 +14,9 @@ export class EssUploadFileService {
   isValidEncFile(encFileType: string, encList: string[]): boolean {
     if ((encFileType === 'text/csv') ||
       (encFileType === 'text/plain' &&
-      encList[2] === ':ENC' &&
-      encList[encList.length - 1] === ':ECS'
-    )) {
+        encList[2] === ':ENC' &&
+        encList[encList.length - 1] === ':ECS'
+      )) {
       return true;
     }
     return false;
@@ -56,5 +56,10 @@ export class EssUploadFileService {
       .trim()
       .split('\n')
       .map((enc: string) => enc.trim());
+  }
+
+  setValidSingleEnc(signleValidEnc: string) {
+    this.validEncs = [];
+    this.validEncs.push(signleValidEnc);
   }
 }

@@ -1,10 +1,16 @@
 <div class="container">
-<div class="addSingleFileSection">
-    <ukho-textinput class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"></ukho-textinput>
-    <br/>
-    <ukho-button>
-    Proceed
-    </ukho-button>
-</div>    
+    <div>
+        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
+            <h3>{{messageDesc}}</h3>
+        </ukho-dialogue>
+    </div>
+    <div class="addSingleFileSection">
+        <ukho-textinput class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"
+            [(ngModel)]="txtSingleEnc"></ukho-textinput>
+        <br />
+        <ukho-button (click)="validateAndProcessENC()">
+            Proceed
+        </ukho-button>
+    </div>
 </div>
-
+<app-temp *ngIf="displayEncTable"></app-temp>
