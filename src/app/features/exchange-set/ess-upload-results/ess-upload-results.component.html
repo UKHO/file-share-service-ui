@@ -16,12 +16,12 @@
                       <th ukho-header-cell *ukhoHeaderCellDef>EncName
                         <button class="sortData"> <i class="fa fa-angle-down fa-1x"></i> </button>
                        </th>
-                      <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
+                      <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
                     </ng-container>
                     <ng-container ukhoColumnDef="Choose">
                         <th ukho-header-cell *ukhoHeaderCellDef>Choose</th>
                         <td ukho-cell *ukhoCellDef="let element">
-                            <ukho-checkbox (change) ="handleChange(element)" class="selectEnc" attr.aria-label="{{element}}"></ukho-checkbox>
+                            <ukho-checkbox [checked]="element.selected" (change) ="handleChange(element.enc)" class="selectEnc" attr.aria-label="{{element.enc}}"></ukho-checkbox>
                         </td>
                       </ng-container>
                     <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>

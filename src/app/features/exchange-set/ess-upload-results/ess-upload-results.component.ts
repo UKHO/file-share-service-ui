@@ -1,6 +1,10 @@
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+interface mappedEnc {
+  enc: string,
+  selected: boolean
+}
 
 @Component({
   selector: 'app-ess-upload-results',
@@ -9,7 +13,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 })
 export class EssUploadResultsComponent implements OnInit {
 
-  encList: string[];
+  encList: mappedEnc[];
   public displayedColumns = ['EncName', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
@@ -23,7 +27,12 @@ export class EssUploadResultsComponent implements OnInit {
     if(this.displayErrorMessage){
       this.showMessage('info', 'Some values have not been added to list.');
     }
-    this.encList = this.essUploadFileService.getValidEncs();
+    this.encList = this.essUploadFileService.getValidEncs().map((enc) => {
+      return {
+        enc,
+        selected : false
+      }
+    });
   }
 
   showMessage(
