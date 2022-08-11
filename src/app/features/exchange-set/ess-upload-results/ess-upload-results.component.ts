@@ -1,40 +1,39 @@
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
-interface mappedEnc {
-  enc: string,
-  selected: boolean
+interface MappedEnc {
+  enc: string;
+  selected: boolean;
 }
 
 @Component({
   selector: 'app-ess-upload-results',
   templateUrl: './ess-upload-results.component.html',
-  styleUrls: ['./ess-upload-results.component.scss']
+  styleUrls: ['./ess-upload-results.component.scss'],
 })
 export class EssUploadResultsComponent implements OnInit {
-
-  encList: mappedEnc[];
+  encList: MappedEnc[];
   public displayedColumns = ['EncName', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
-  public displaySelectedTableColumns = ['EncName' , 'X'];
-  constructor(private essUploadFileService: EssUploadFileService) { }
+  public displaySelectedTableColumns = ['EncName', 'X'];
+  constructor(private essUploadFileService: EssUploadFileService) {
+  }
 
   ngOnInit(): void {
-    this.selectedEncList = this.essUploadFileService.getValidEncs();
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
-    if(this.displayErrorMessage){
+    this.essUploadFileService.clearSelectedEncs();
+    if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
     }
-    this.encList = this.essUploadFileService.getValidEncs().map((enc) => {
-      return {
-        enc,
-        selected : false
-      }
-    });
+    console.log(this.essUploadFileService.getValidEncs());
+    this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
+      enc,
+      selected: false,
+    }));
   }
 
   showMessage(
@@ -49,9 +48,26 @@ export class EssUploadResultsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-  
-  handleChange(enc : string){
-
+  sortChange(event: any){
+    console.log(event);
   }
-  
+  handleChange(enc: string) {
+    const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
+    if (!seletedEncs.includes(enc)) {
+      this.essUploadFileService.addSelectedEnc(enc);
+    } else if (seletedEncs.includes(enc)) {
+      this.essUploadFileService.removeSelectedEncs(enc);
+    }
+    this.syncEncsBetweenTables();
+  }
+
+  syncEncsBetweenTables() {
+    this.selectedEncList = this.essUploadFileService.getSelectedENCs();
+    this.encList = this.encList.map((item, index) => ({
+        enc: item.enc,
+        selected: this.selectedEncList.includes(item.enc) ? true : false,
+      })
+    );
+  }
+
 }

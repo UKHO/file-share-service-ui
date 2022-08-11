@@ -57,7 +57,7 @@ export class EssUploadFileComponent implements OnInit {
       if (encList.length > this.validEncList.length) {
         this.essUploadFileService.infoMessage = true;
       }
-      this.route.navigate(['exchangesets' , 'list-encs']);
+      this.route.navigate(['exchangesets' , 'enc-list']);
     }
     else {
       this.showMessage('error', 'Please upload valid ENC file.');

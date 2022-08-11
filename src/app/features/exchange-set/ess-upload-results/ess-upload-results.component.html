@@ -9,8 +9,8 @@
     <div class="showEncListWrapper">
     <div style="flex: 5">
         <div *ngIf="encList && encList.length > 0">
-                <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit file</span></h2>
-                <table ukho-table [dataSource]="encList">
+                <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList && encList.length > 0 ? encList.length : 0}} Enc's in permit file</span></h2>
+                <table ukho-table [dataSource]="encList" class="enc-list-table">
                     <ng-container ukhoColumnDef="EncName">
                       <th ukho-header-cell *ukhoHeaderCellDef>EncName
                         <button class="sortData"> <i class="fa fa-angle-down fa-1x"></i> </button>
@@ -29,10 +29,10 @@
         </div>
     </div>
     <div class="divider"></div>
-    <div style="flex: 3">
-        <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit file</span></h2>
+    <div style="flex: 3" class="selectionContainer">
+        <h2> <span>Your Selection</span> <span class="showListEncTOtal">{{selectedEncList && selectedEncList.length  ? selectedEncList.length : 0}} ENC's selected</span></h2>
         <div *ngIf="selectedEncList && selectedEncList.length > 0">
-          <table ukho-table [dataSource]="selectedEncList">
+          <table ukho-table [dataSource]="selectedEncList" class="enc-list-table selectionTable">
                   <ng-container ukhoColumnDef="EncName">
                     <th ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
                     <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
@@ -46,6 +46,13 @@
                   <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
                   <tr ukho-row *ukhoRowDef="let row; columns: displaySelectedTableColumns"></tr>
             </table>
+        </div>
+        <div class="estimatedBtnHolder">
+          <p>Estimated Exchange Set Size <span class="encsize">192 kb</span></p>
+          <div class="requestEncBtn">
+            <ukho-button>request enc</ukho-button>
+          </div>
+
         </div>
     </div>    
   </div>

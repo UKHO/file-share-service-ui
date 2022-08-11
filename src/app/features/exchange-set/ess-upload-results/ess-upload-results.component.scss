@@ -31,3 +31,25 @@ table th:last-child {
     height: 480px;
     margin: 0px 39px;
 }
+.requestEncBtn{
+    display: flex;
+    justify-content: flex-end;
+}
+.selectionContainer{
+    position: relative;
+    min-height: 50vh;
+    .estimatedBtnHolder{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        p{
+            font-weight: 400;
+            color: #09315b;
+        }
+        .encsize{
+            font-weight: 400;
+            margin-left: 0px;
+        }        
+    }
+}
