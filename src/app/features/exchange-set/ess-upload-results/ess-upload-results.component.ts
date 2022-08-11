@@ -48,9 +48,6 @@ export class EssUploadResultsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-  sortChange(event: any){
-    console.log(event);
-  }
   handleChange(enc: string) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
     if (!seletedEncs.includes(enc)) {
