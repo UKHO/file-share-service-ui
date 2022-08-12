@@ -26,7 +26,7 @@ const config: PlaywrightTestConfig = {
   reporter: [['junit', { outputFile: 'junit.xml' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    actionTimeout: 350 * 1000,
+    actionTimeout: 450 * 1000,
     navigationTimeout: 450 * 1000,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
