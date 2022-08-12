@@ -55,4 +55,17 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
         await page.waitForLoadState('load');
         expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButtonName);
     });
+
+    test('Verify appending "/exchangesets" in url before login, navigates to home page', async ({ page }) => {
+        await page.goto(autoTestConfig.url+"/#/exchangesets");
+        await expect(page).toHaveTitle("Admiralty - File Share Service");    
+        expect (await page.isHidden (fssHomePageObjectsConfig.essLinkSelector)).toBeTruthy();   
+    });
+       
+    test('Verify appending "/search" in url before login, navigates to home page', async ({ page }) => {
+        await page.goto(autoTestConfig.url+"/#/search");
+        await expect(page).toHaveTitle("Admiralty - File Share Service");    
+        expect (await page.isHidden (fssHomePageObjectsConfig.searchLinkSelector)).toBeTruthy();   
+    });
+
 });
