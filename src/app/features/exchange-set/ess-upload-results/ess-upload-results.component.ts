@@ -1,5 +1,6 @@
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { AppConfigService } from 'src/app/core/services/app-config.service';
 
 interface MappedEnc {
   enc: string;
@@ -17,6 +18,7 @@ export class EssUploadResultsComponent implements OnInit {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
+  maxEncSelectionLimit: number;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
   public displaySelectedTableColumns = ['EncName', 'X'];
@@ -25,6 +27,7 @@ export class EssUploadResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
+    this.maxEncSelectionLimit = Number.parseInt(AppConfigService.settings['essConfig'].MaxEncSelectionLimit, 10);
     this.essUploadFileService.clearSelectedEncs();
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
@@ -50,10 +53,10 @@ export class EssUploadResultsComponent implements OnInit {
   }
   handleChange(enc: string) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
-    if (!seletedEncs.includes(enc)) {
-      this.essUploadFileService.addSelectedEnc(enc);
-    } else if (seletedEncs.includes(enc)) {
+    if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
+    }else if(!seletedEncs.includes(enc) && (this.maxEncSelectionLimit > seletedEncs.length)){
+      this.essUploadFileService.addSelectedEnc(enc);
     }
     this.syncEncsBetweenTables();
   }
