@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { EssUploadFileService } from 'src/app/core/services/ess-upload-file.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class EssAddSingleEncsComponent implements OnInit {
   displayErrorMessage = false;
   displayEncTable = false;
 
-  constructor(private essUploadFileService: EssUploadFileService) { }
+  constructor(private essUploadFileService: EssUploadFileService,
+    private route: Router) { }
 
   ngOnInit(): void {
   }
@@ -24,12 +26,11 @@ export class EssAddSingleEncsComponent implements OnInit {
     if (this.essUploadFileService.validateENCFormat(this.txtSingleEnc)) {
       this.displayErrorMessage = false;
       this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
-      this.displayEncTable = true;
       this.essUploadFileService.getValidEncs();
+      this.route.navigate(['exchangesets', 'list-encs']);
     }
     else {
       this.showMessage('error', 'Invalid ENC number');
-      this.displayEncTable = true;
     }
   }
 
