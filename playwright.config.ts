@@ -7,7 +7,7 @@ const config: PlaywrightTestConfig = {
   retries: 2,
   testDir: './Tests',
   /* Maximum time one test can run for. */
-  timeout: 200 * 1000,
+  timeout: 450 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -26,8 +26,8 @@ const config: PlaywrightTestConfig = {
   reporter: [['junit', { outputFile: 'junit.xml' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    actionTimeout: 150 * 1000,
-    navigationTimeout: 150 * 1000,
+    actionTimeout: 350 * 1000,
+    navigationTimeout: 450 * 1000,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
