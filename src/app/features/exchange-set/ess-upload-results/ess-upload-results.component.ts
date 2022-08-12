@@ -1,6 +1,6 @@
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AppConfigService } from 'src/app/core/services/app-config.service';
+import { AppConfigService } from './../../../core/services/app-config.service';
 
 interface MappedEnc {
   enc: string;
@@ -53,10 +53,13 @@ export class EssUploadResultsComponent implements OnInit {
   }
   handleChange(enc: string) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
+    this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
     }else if(!seletedEncs.includes(enc) && (this.maxEncSelectionLimit > seletedEncs.length)){
       this.essUploadFileService.addSelectedEnc(enc);
+    }else {
+      this.showMessage('error', "No more than " + this.maxEncSelectionLimit + " ENCs can be selected.");
     }
     this.syncEncsBetweenTables();
   }
