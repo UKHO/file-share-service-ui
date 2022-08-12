@@ -31,7 +31,7 @@ test.describe('FSS-UI-LandingPage', ()=>{
      })
 
      // Test case 13799
-     test.only('Verify clicking on Second Radio Button, "Select single ENCs" control & "Proceed" button available', async({page})=>{
+     test('Verify clicking on Second Radio Button, "Select single ENCs" control & "Proceed" button available', async({page})=>{
           await addENCnumbers(page);
           await expect (page.locator(esslandingpageObjectsConfig.addsingleencselector)).toBeVisible();
           await expect (page.locator(esslandingpageObjectsConfig.addsingleencproceedselector)).toBeVisible();    
