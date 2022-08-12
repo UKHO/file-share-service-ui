@@ -23,15 +23,18 @@ export class EssAddSingleEncsComponent implements OnInit {
   }
 
   validateAndProcessENC() {
-    if (this.essUploadFileService.validateENCFormat(this.txtSingleEnc)) {
-      this.displayErrorMessage = false;
-      this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
-      this.essUploadFileService.getValidEncs();
-      this.route.navigate(['exchangesets', 'list-encs']);
+    if (this.txtSingleEnc != '') {
+      if (this.essUploadFileService.validateENCFormat(this.txtSingleEnc)) {
+        this.displayErrorMessage = false;
+        this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
+        this.essUploadFileService.getValidEncs();
+        this.route.navigate(['exchangesets', 'list-encs']);
+      }
+      else {
+        this.showMessage('error', 'Invalid ENC number');
+      }
     }
-    else {
-      this.showMessage('error', 'Invalid ENC number');
-    }
+    else { this.showMessage('error', 'Please enter ENC number'); }
   }
 
   showMessage(

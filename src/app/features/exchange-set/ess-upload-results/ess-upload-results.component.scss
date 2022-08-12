@@ -12,7 +12,9 @@
 
 .showListEncTOtal {
     float: right;
-     line-height: 58px;
+    top: 314px;
+    left: 850px;
+    font-weight: 500;
 }
 
 .sortData {
@@ -32,7 +34,7 @@ table th:last-child {
 }
 
 .bottomText {
-    margin-right: 60px;
+    margin-left: 38px;
 }
 
 .linkStartAgain
@@ -40,5 +42,6 @@ table th:last-child {
     cursor: pointer;
     text-decoration: none;
     font-weight: bold;
-    margin-left: 10px;
+    margin: 20px 0 20px 10px;
+    display: block;
 }

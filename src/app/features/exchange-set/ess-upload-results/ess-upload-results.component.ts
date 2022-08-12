@@ -26,7 +26,7 @@ export class EssUploadResultsComponent implements OnInit {
     private route: Router) { }
 
   ngOnInit(): void {
-    this.selectedEncList = this.essUploadFileService.getValidEncs();
+    //this.selectedEncList = this.essUploadFileService.getValidEncs();
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
