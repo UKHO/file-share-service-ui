@@ -54,5 +54,5 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
         await page.goto(autoTestConfig.url+"/#/exchangesets");
         await page.waitForLoadState('load');
         expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButtonName);
-    });    
+    });
 });
