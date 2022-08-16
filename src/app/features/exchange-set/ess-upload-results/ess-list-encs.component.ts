@@ -1,5 +1,6 @@
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { SortDirective, SortHeaderDirective, SortState } from '@ukho/design-system';
 
 interface mappedEnc {
   enc: string,
@@ -7,24 +8,24 @@ interface mappedEnc {
 }
 
 @Component({
-  selector: 'app-ess-upload-results',
-  templateUrl: './ess-upload-results.component.html',
-  styleUrls: ['./ess-upload-results.component.scss']
+  selector: 'app-ess-list-encs',
+  templateUrl: './ess-list-encs.component.html',
+  styleUrls: ['./ess-list-encs.component.scss']
 })
-export class EssUploadResultsComponent implements OnInit {
-
+export class EssListEncsComponent implements OnInit {
+  childVal: any
   encList: mappedEnc[];
-  public displayedColumns = ['EncName', 'Choose'];
+  public displayedColumns = ['enc', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
-  public displaySelectedTableColumns = ['EncName' , 'X'];
-  constructor(private essUploadFileService: EssUploadFileService) { }
+  public displaySelectedTableColumns = ['enc' , 'X'];
+  constructor(private essUploadFileService: EssUploadFileService) {
+   }
 
   ngOnInit(): void {
-    this.selectedEncList = this.essUploadFileService.getValidEncs();
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
     if(this.displayErrorMessage){
       this.showMessage('info', 'Some values have not been added to list.');
@@ -36,6 +37,7 @@ export class EssUploadResultsComponent implements OnInit {
       }
     });
   }
+
 
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
@@ -52,6 +54,14 @@ export class EssUploadResultsComponent implements OnInit {
   
   handleChange(enc : string){
 
+  }
+
+  onSortChange(sortState: SortState) {
+    this.encList = [...this.encList.sort((a: any, b: any) =>
+      (sortState.direction === 'asc')? 
+        a[sortState.column].localeCompare(b[sortState.column]):
+        b[sortState.column].localeCompare(a[sortState.column])
+    )];
   }
   
 }

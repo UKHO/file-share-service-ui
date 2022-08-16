@@ -1,0 +1,35 @@
+<div class="container">
+  <div>
+    <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
+      <h3>{{messageDesc}}</h3>
+    </ukho-dialogue>
+  </div>
+  <h1 id="main" tabindex="-1">Exchange sets</h1>
+  <p>Select up to 100 ENCs and Make an exchange set</p>
+  <div class="showEncListWrapper">
+    <div style="flex: 5">
+      <div *ngIf="encList && encList.length > 0">
+        <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit
+            file</span></h2>
+          <table ukho-table ukhoSort [dataSource]="encList" (sortChange)="onSortChange($event)">
+            <ng-container ukhoColumnDef="enc">
+              <th ukho-header-cell *ukhoHeaderCellDef ukhoSortHeader>EncName</th>
+              <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
+            </ng-container>
+            <ng-container ukhoColumnDef="Choose">
+              <th ukho-header-cell *ukhoHeaderCellDef>Choose</th>
+              <td ukho-cell *ukhoCellDef="let element">
+                <ukho-checkbox [checked]="element.selected" (change)="handleChange(element.enc)" class="selectEnc"
+                  attr.aria-label="{{element.enc}}"></ukho-checkbox>
+              </td>
+            </ng-container>
+            <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
+            <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="showSelectedEncWrapper"></div>
+  </div>
+
+</div>

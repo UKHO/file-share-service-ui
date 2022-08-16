@@ -14,7 +14,7 @@ export class EssUploadFileComponent implements OnInit {
   displayErrorMessage = false;
   validEncList: string[];
   encFile: File;
-  // public displayedColumns = ['Cell name', 'Choose'];
+  private sendErrorMessage: any;
   @Output() ShowEssUploadClicked = new EventEmitter<boolean>(false);
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
@@ -56,8 +56,9 @@ export class EssUploadFileComponent implements OnInit {
       }
       if (encList.length > this.validEncList.length) {
         this.essUploadFileService.infoMessage = true;
+        this.sendErrorMessage = this.showMessage('info', 'Some values have not been added to list.');
       }
-      this.route.navigate(['exchangesets' , 'list-encs']);
+      this.route.navigate(['exchangesets' , 'enc-list']);
     }
     else {
       this.showMessage('error', 'Please upload valid ENC file.');

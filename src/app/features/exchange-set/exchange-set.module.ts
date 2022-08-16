@@ -6,14 +6,14 @@ import { ExchangeSetRoutingModule } from './exchange-set-routing.module';
 import { ExchangeSetComponent } from './exchange-set.component';
 import { EssUploadFileComponent } from './ess-upload-file/ess-upload-file/ess-upload-file.component';
 import { EssAddSingleEncsComponent } from './ess-add-single-encs/ess-add-single-encs.component';
-import { EssUploadResultsComponent } from './ess-upload-results/ess-upload-results.component';
+import { EssListEncsComponent } from './ess-upload-results/ess-list-encs.component';
 
 @NgModule({
   declarations: [
     ExchangeSetComponent,
     EssUploadFileComponent,
     EssAddSingleEncsComponent,
-    EssUploadResultsComponent
+    EssListEncsComponent
   ],
   imports: [
     CommonModule,
