@@ -4,12 +4,12 @@ import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule,
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
+import { Router } from '@angular/router';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
   let fixture: ComponentFixture<EssUploadFileComponent>;
   let essUploadFileService: EssUploadFileService;
-
   const getEncData_csv = () => {
     let data = 'AU220150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
@@ -52,13 +52,19 @@ describe('EssUploadFileComponent', () => {
     data += ':ECS \n';
     return data;
   };
-
+  const router = {
+    navigate : jest.fn()
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule],
       declarations: [EssUploadFileComponent],
       providers: [
-        EssUploadFileService
+        EssUploadFileService,
+        {
+          provide : Router,
+          useValue : router
+        }
       ]
     })
       .compileComponents();
@@ -67,7 +73,8 @@ describe('EssUploadFileComponent', () => {
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
-        MaxEncLimit: 10
+        MaxEncLimit: 10,
+        MaxEncSelectionLimit : 5
       }
     };
 
@@ -142,22 +149,7 @@ describe('EssUploadFileComponent', () => {
       expect(component.messageDesc).toEqual('Please upload valid ENC file.');
     });
 
-  it.each`
-    fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
-    ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
-    ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getInvalidEncData()}      |  ${1}
-    `('processEncFile should set raise "Some values have not been added to list." info',
-    ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
-      const file = new File([getEncData], fileName);
-      Object.defineProperty(file, 'type', { value: fileType });
-      component.encFile = file;
-      component.processEncFile(encDataFunc);
-      expect(component.validEncList.length).toEqual(expectedResult);
-      expect(component.messageType).toEqual('info');
-      expect(component.messageDesc).toEqual('Some values have not been added to list.');
-    });
-
-  it.each`
+    it.each`
     fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getNoEncData_csv()}  |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getNoEncData()}      |  ${1}
