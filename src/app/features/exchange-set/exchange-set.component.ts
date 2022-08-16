@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppConfigService } from 'src/app/core/services/app-config.service';
+import { AppConfigService } from '../../../app/core/services/app-config.service'
 
 @Component({
   selector: 'app-exchange-set',

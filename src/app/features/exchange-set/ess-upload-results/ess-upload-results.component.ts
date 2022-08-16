@@ -1,6 +1,6 @@
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AppConfigService } from './../../../core/services/app-config.service';
+import { AppConfigService } from '../../../core/services/app-config.service';
 
 interface MappedEnc {
   enc: string;
@@ -32,7 +32,6 @@ export class EssUploadResultsComponent implements OnInit {
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
     }
-    console.log(this.essUploadFileService.getValidEncs());
     this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
       enc,
       selected: false,
