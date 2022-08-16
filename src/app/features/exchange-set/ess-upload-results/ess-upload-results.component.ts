@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
@@ -12,7 +13,6 @@ interface mappedEnc {
   styleUrls: ['./ess-upload-results.component.scss']
 })
 export class EssUploadResultsComponent implements OnInit {
-
   encList: mappedEnc[];
   public displayedColumns = ['EncName', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
@@ -20,15 +20,30 @@ export class EssUploadResultsComponent implements OnInit {
   displayErrorMessage = false;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
+  displaySingleEncVal: boolean = false;
+  
   public displaySelectedTableColumns = ['EncName' , 'X'];
-  constructor(private essUploadFileService: EssUploadFileService) { }
+  constructor(private essUploadFileService: EssUploadFileService,
+  private route: Router) { }
 
   ngOnInit(): void {
+   
     this.selectedEncList = this.essUploadFileService.getValidEncs();
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
     if(this.displayErrorMessage){
       this.showMessage('info', 'Some values have not been added to list.');
     }
+   this.setEncList();
+    this.essUploadFileService.getNotifySingleEnc().subscribe((notify:boolean) => {
+  if(notify)
+  {
+    this.setEncList()
+  }
+  });
+  }
+
+  setEncList()
+  {
     this.encList = this.essUploadFileService.getValidEncs().map((enc) => {
       return {
         enc,
@@ -54,4 +69,11 @@ export class EssUploadResultsComponent implements OnInit {
 
   }
   
+  displaySingleEnc()
+  {
+    this.displaySingleEncVal = true;
+  }
+
+  
+ 
 }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
@@ -9,6 +10,9 @@ export class EssUploadFileService {
   private selectedEncs: string[];
   private maxEncLimit: number;
   private showInfoMessage = false;
+  private exceedMaxEncLimit: boolean;
+  private notifySingleEnc: Subject<boolean>=new Subject<boolean>();
+  
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
@@ -67,6 +71,36 @@ export class EssUploadFileService {
 
   set infoMessage(visibility: boolean){
     this.showInfoMessage = visibility;
+  }
+
+  addSingleEnc(signleValidEnc: string) {
+   // this.validEncs = [];
+    this.validEncs.push(signleValidEnc);
+   this.notifySingleEnc.next(true);
+  }
+
+  getSelectedENCs(): string[]{
+
+    return this.selectedEncs;
+
+  }
+
+  getNotifySingleEnc()
+  {
+     return this.notifySingleEnc;
+  }
+ 
+
+   checkMaxEncLimit(encList: string[]): boolean {
+    if(encList.length < this.maxEncLimit) 
+    {
+     return this.exceedMaxEncLimit = false;  
+    }
+    else
+    {
+      return this.exceedMaxEncLimit = true; 
+    }
+    
   }
 
 }
