@@ -147,8 +147,6 @@ describe('EssUploadFileService', () => {
     service.addSelectedEnc('AU210230');
     service.addSelectedEnc('AU210330');
     expect(service.getSelectedENCs().length).toEqual(3);
-    service.removeSelectedEncs('AU210230');
-    expect(service.getSelectedENCs().length).toEqual(2);
   });
   it('removeSelectedEncs removes enc from selectedEncs' , () => {
     expect(service.getSelectedENCs().length).toEqual(0);
