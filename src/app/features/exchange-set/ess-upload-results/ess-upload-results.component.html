@@ -33,7 +33,7 @@
     </div>
     <div class="divider"></div>
     <div style="flex: 3">
-      <h3>Your selection  <span class="showListEncTOtal">{{encList.length}} ENCs selected</span>
+      <h3>Your selection  <span class="showListEncTOtal">0 ENCs selected</span>
       </h3>
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
       <table ukho-table [dataSource]="selectedEncList">
@@ -51,7 +51,7 @@
         <tr ukho-row *ukhoRowDef="let row; columns: displaySelectedTableColumns"></tr>
       </table>
     </div>
-    <h4>Estimated Exchange set size <span class="bottomText">38kb</span></h4>
+    <h4>Estimated Exchange set size <span class="bottomText">0kb</span></h4>
   </div>
 </div>
 </div>
