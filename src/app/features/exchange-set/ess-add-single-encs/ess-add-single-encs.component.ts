@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { EssUploadFileService } from 'src/app/core/services/ess-upload-file.service';
+import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 
 @Component({
   selector: 'app-ess-add-single-encs',
@@ -14,7 +14,6 @@ export class EssAddSingleEncsComponent implements OnInit {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
-  displayEncTable = false;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
@@ -27,7 +26,6 @@ export class EssAddSingleEncsComponent implements OnInit {
       if (this.essUploadFileService.validateENCFormat(this.txtSingleEnc)) {
         this.displayErrorMessage = false;
         this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
-        this.essUploadFileService.getValidEncs();
         this.route.navigate(['exchangesets', 'list-encs']);
       }
       else {

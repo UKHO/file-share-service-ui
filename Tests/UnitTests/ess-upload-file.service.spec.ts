@@ -125,12 +125,17 @@ describe('EssUploadFileService', () => {
     expect(validEncList.length).toEqual(4);
   });
 
-
   it('setValidENCs and getValidEncs should return valid encs as per configuration settings', () => {
     let encLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M', 'HR50017C', 'ID202908', 'JP24S8H0', 'JP34R1ES', 'JP44KU49', 'US4FL18M'];
     let validEncList = service.extractEncsFromFile('text/csv', encLists);
     service.setValidENCs(validEncList);
     validEncList = service.getValidEncs();
     expect(validEncList.length).toEqual(10);
+  });
+
+  it('setValidSingleEnc should set single ENC in validEnc list', () => {
+    expect(service.setValidSingleEnc('AS121212'));
+    let encList = service.getValidEncs();
+    expect(encList.length).toEqual(1);
   });
 });
