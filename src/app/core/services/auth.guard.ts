@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
         return false;
       }else if(account){
         return true;
-      }else if(!account && this.routes.includes(state.url)){
+      }else if(!account && (this.routes.includes(state.url) || this.childRoutes.includes(state.url))){
         this.router.navigate(['']);
         return false;
       }else if(!account && state.url === '/'){
