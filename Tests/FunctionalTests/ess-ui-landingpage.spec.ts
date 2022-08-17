@@ -1,8 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {esslandingpageObjectsConfig} from '../../PageObjects/essui-landingpageObjects.json';
-import {navigateToESSLandingPage}from '../../Helper/ESSLandingPageHelper';
-import {uploadfile} from '../../Helper/ESSLandingPageHelper';
-import {addENCnumbers} from '../../Helper/ESSLandingPageHelper';
+import {navigateToESSLandingPage, uploadfile, uploadValidCSVFile, uploadValidTXTFile, uploadValidAndInvalidCSVFile, uploadvalidandInvalidTXTFile, uploadFileOtherThanCSVorTXT, uploadValidAndDuplicateCSVFile, uploadValidAndDuplicateTXTFile, addENCnumbers}from '../../Helper/ESSLandingPageHelper';
 import {autoTestConfig} from '../../appSetting.json';
 import {LoginPortal} from '../../Helper/CommonHelper';
 import {commonObjectsConfig} from '../../PageObjects/commonObjects.json';
@@ -37,4 +35,48 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await expect (page.locator(esslandingpageObjectsConfig.addsingleencproceedSelector)).toBeVisible();    
      })
 
+     //Test Case 13809
+     test('Verify that the user is able to upload a .csv file only', async({page})=>{
+          await uploadValidCSVFile(page);
+          await page.pause();
+          await expect(page.locator(esslandingpageObjectsConfig.chooseuploadfileoptionSelector)).toContainText('.csv')
+     })
+
+     //Test Case 13815
+     test('Verify clicking on Upload button, Upload permit.txt file successfully', async({page})=>{
+          await uploadValidTXTFile(page);
+          await expect (page.locator(esslandingpageObjectsConfig.chooseuploadfileoptionSelector)).toContainText('.txt');
+
+     })
+
+     //Test Case 13810
+     test('Verify a error message if user tries to upload other than allowed files (.csv & permit file (.txt) )', async({page})=>{
+          await  uploadFileOtherThanCSVorTXT(page);
+          await expect(page.locator(esslandingpageObjectsConfig.errorMessageSelector)).toContainText('Please select a .csv or .txt')
+     })
+    
+     //Test Case 13811
+     test('Upload CSV file and verify ENC uploaded', async({page})=>{
+          await uploadValidAndInvalidCSVFile(page);
+          await expect(page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
+     })
+
+     //Test Case 13817
+     test('Upload TXT file and verify ENC uploaded', async({page})=>{
+          await uploadvalidandInvalidTXTFile(page);
+          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
+     })
+
+     //Test Case 13823
+     test('Verify uploading valid duplicate ENC Number to Upload list for CSV File.', async({page})=>{
+          await uploadValidAndDuplicateCSVFile(page);
+          await expect(page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
+     })
+
+     //Test Case 13826
+     test.only ('Verify uploading valid duplicate ENC Number to Upload list for TXT File.', async({page})=>{
+          await uploadValidAndDuplicateTXTFile(page);
+          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
+     })
 });
+
