@@ -5,7 +5,14 @@
         "user":"",
         "password":"",
         "userFullName" : "",
-        "apiurl": ""
+        "apiurl": "",
+        "validENCsCSVFile":"D:/Automation Sprint 1/file-share-service-ui/TestData/ValidENCs.csv",
+        "validENCsTXTFile":"D:/Automation Sprint 1/file-share-service-ui/TestData/ValidENCs.txt",
+        "validAndInvalidCSVFile":"D:/Automation Sprint 1/file-share-service-ui/TestData/validAndInvalidENCs.csv",
+        "validAndInvalidTXTFile":"D:/Automation Sprint 1/file-share-service-ui/TestData/ValidAndInvalidENCs.txt",
+        "validAndDuplicateCSVFile":"D:/Automation Sprint 1/file-share-service-ui/TestData/validAndDuplicateENCs.csv",
+        "validAndDuplicateTXTFile":"D:/Automation Sprint 1/file-share-service-ui/TestData/validAndDuplicateENCs.txt",
+        "FileOtherThanCSVorTXT":"D:/Automation Sprint 1/file-share-service-ui/TestData/FileOtherThanCSVorTXT.xlsx"
 
     }
 
