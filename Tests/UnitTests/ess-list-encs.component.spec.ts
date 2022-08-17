@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EssUploadResultsComponent } from '../../src/app/features/exchange-set/ess-upload-results/ess-upload-results.component';
+import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
 import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule  , CheckboxModule} from '@ukho/design-system';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
 describe('EssUploadResultsComponent', () => {
-  let component: EssUploadResultsComponent;
-  let fixture: ComponentFixture<EssUploadResultsComponent>;
+  let component: EssListEncsComponent;
+  let fixture: ComponentFixture<EssListEncsComponent>;
   const service = {
     getValidEncs : jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
     clearSelectedEncs : jest.fn(),
@@ -19,7 +19,7 @@ describe('EssUploadResultsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule],
-      declarations: [ EssUploadResultsComponent ],
+      declarations: [ EssListEncsComponent ],
       providers: [
         {
           provide : EssUploadFileService,
@@ -39,7 +39,7 @@ describe('EssUploadResultsComponent', () => {
       MaxEncSelectionLimit : 5
       }
     };
-    fixture = TestBed.createComponent(EssUploadResultsComponent);
+    fixture = TestBed.createComponent(EssListEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -82,12 +82,12 @@ describe('EssUploadResultsComponent', () => {
     expect(component.encList.length).toBe(5);
   });
   test('should show the content of paragraph in exchange set', () => {
-    const fixture = TestBed.createComponent(EssUploadResultsComponent);
+    const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('p').textContent).toBe('Select up to 5 ENCs and Make an exchange set');
   });
   test('should show the error message when user select encs more than selection limit', () => {
-    const fixture = TestBed.createComponent(EssUploadResultsComponent);
+    const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130' , 'AU220830']);
     component.handleChange('AU210470');
