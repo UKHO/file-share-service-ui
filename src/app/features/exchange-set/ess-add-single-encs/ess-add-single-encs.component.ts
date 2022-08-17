@@ -13,11 +13,11 @@ export class EssAddSingleEncsComponent implements OnInit {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
- 
+
   validEncList: string[];
   validEnc: Array<string> = [];
   singleEncVal: string = "";
-  
+
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
 
@@ -25,40 +25,26 @@ export class EssAddSingleEncsComponent implements OnInit {
     this.validEnc = this.essUploadFileService.getValidEncs();
   }
 
-
-  
- 
-  onFindEnc(){
+  onFindEnc() {
     this.displayErrorMessage = false;
-    this.singleEncVal=this.singleEncVal.trim();
-     const isValidEnc = this.essUploadFileService.validateENCFormat(this.singleEncVal);
- 
-    if ( !isValidEnc) {
+    this.singleEncVal = this.singleEncVal.trim();
+    const isValidEnc = this.essUploadFileService.validateENCFormat(this.singleEncVal);
+
+    if (!isValidEnc) {
       this.showMessage('error', 'Please enter valid ENCs.');
     }
-    
-    if(!this.validEnc.includes(this.singleEncVal))
-    {
-      if(this.essUploadFileService.checkMaxEncLimit(this.validEnc))
-      {
-       this.showMessage('info', 'Max ENC limit reached.');
+    else if (!this.validEnc.includes(this.singleEncVal)) {
+      if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
+        this.showMessage('info', 'Max ENC limit reached.');
       }
-      else
-      {
+      else {
         this.essUploadFileService.addSingleEnc(this.singleEncVal);
-      }  
+      }
     }
-    else
-    {
+    else {
       this.showMessage('info', 'ENC already in list.');
     }
-    
-    
-    
-    
-}                                                     
-
- 
+  }
 
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',

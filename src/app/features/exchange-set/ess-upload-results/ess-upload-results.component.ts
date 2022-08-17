@@ -21,33 +21,30 @@ export class EssUploadResultsComponent implements OnInit {
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
-  
-  public displaySelectedTableColumns = ['EncName' , 'X'];
+
+  public displaySelectedTableColumns = ['EncName', 'X'];
   constructor(private essUploadFileService: EssUploadFileService,
-  private route: Router) { }
+    private route: Router) { }
 
   ngOnInit(): void {
-   
     this.selectedEncList = this.essUploadFileService.getValidEncs();
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
-    if(this.displayErrorMessage){
+    if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
     }
-   this.setEncList();
-    this.essUploadFileService.getNotifySingleEnc().subscribe((notify:boolean) => {
-  if(notify)
-  {
-    this.setEncList()
-  }
-  });
+    this.setEncList();
+    this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
+      if (notify) {
+        this.setEncList()
+      }
+    });
   }
 
-  setEncList()
-  {
+  setEncList() {
     this.encList = this.essUploadFileService.getValidEncs().map((enc) => {
       return {
         enc,
-        selected : false
+        selected: false
       }
     });
   }
@@ -64,16 +61,12 @@ export class EssUploadResultsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-  
-  handleChange(enc : string){
+
+  handleChange(enc: string) {
 
   }
-  
-  displaySingleEnc()
-  {
+
+  displaySingleEnc() {
     this.displaySingleEncVal = true;
   }
-
-  
- 
 }
