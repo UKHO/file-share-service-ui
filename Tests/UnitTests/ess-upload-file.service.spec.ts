@@ -28,6 +28,7 @@ describe('EssUploadFileService', () => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
+        MaxEncSelectionLimit:5
       },
     };
     TestBed.configureTestingModule({});
