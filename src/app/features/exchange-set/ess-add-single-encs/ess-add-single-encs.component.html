@@ -4,19 +4,11 @@
             <h3>{{messageDesc}}</h3>
         </ukho-dialogue>
     </div>
-   
-    
-<div class="addSingleFileSection">
-    <ukho-textinput class="addSingleFileTextbox"  [(ngModel)]="singleEncVal"
-     label="Add a single ENC" placeholder="Type ENC cell name here"></ukho-textinput>
-    <br/>
-  
-    <ukho-button class="findEnc"  (click)="onFindEnc()">Find Enc</ukho-button>
 
-</div>  
-
-
- 
-
+    <div class="addSingleFileSection">
+        <ukho-textinput class="addSingleFileTextbox" [(ngModel)]="singleEncVal" label="Add a single ENC"
+            placeholder="Type ENC cell name here"></ukho-textinput>
+        <br />
+        <ukho-button class="findEnc" (click)="onFindEnc()">Find Enc</ukho-button>
+    </div>
 </div>
-

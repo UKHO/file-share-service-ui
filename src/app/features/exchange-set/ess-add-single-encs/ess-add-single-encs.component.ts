@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { EssUploadFileService } from 'src/app/core/services/ess-upload-file.service';
+import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
+
 
 @Component({
   selector: 'app-ess-add-single-encs',
@@ -33,7 +34,7 @@ export class EssAddSingleEncsComponent implements OnInit {
      const isValidEnc = this.essUploadFileService.validateENCFormat(this.singleEncVal);
  
     if ( !isValidEnc) {
-      this.showMessage('info', 'Please enter valid ENCs.');
+      this.showMessage('error', 'Please enter valid ENCs.');
     }
     
     if(!this.validEnc.includes(this.singleEncVal))

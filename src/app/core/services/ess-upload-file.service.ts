@@ -10,7 +10,6 @@ export class EssUploadFileService {
   private selectedEncs: string[];
   private maxEncLimit: number;
   private showInfoMessage = false;
-  private exceedMaxEncLimit: boolean;
   private notifySingleEnc: Subject<boolean>=new Subject<boolean>();
   
   constructor() {
@@ -94,11 +93,11 @@ export class EssUploadFileService {
    checkMaxEncLimit(encList: string[]): boolean {
     if(encList.length < this.maxEncLimit) 
     {
-     return this.exceedMaxEncLimit = false;  
+     return false;  
     }
     else
     {
-      return this.exceedMaxEncLimit = true; 
+      return true; 
     }
     
   }
