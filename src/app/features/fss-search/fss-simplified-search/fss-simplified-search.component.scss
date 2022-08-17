@@ -3,10 +3,10 @@
 		height: initial;
 	}
 	.simplifiedTextbox{
-	    width: 40%;
-		float: left;
+	    width: 60%;
+		float: left;		
 		margin-right: 20px;
-	}
+	} 
 }
 .switchToAdvanced{
 	color: #000;
@@ -14,7 +14,7 @@
 	cursor: pointer;
 	text-decoration: underline;
 	margin-bottom: 20px;
-    width: 40%;
+    width: 60%;
     display: block;
     text-align: right;
 }
@@ -28,4 +28,27 @@
         flex-grow: 1;
 		margin-left: 70px;
     }
-  }
+}
+.switchToESS{
+	width: 100%; 
+	float: right;
+    text-align: right;
+	padding: 0px;
+}
+	.Exchangesetpara{
+		font-size: 17px;
+	}
+
+  .Searchmainaindiv{
+	display: flex;
+	flex-flow: row;
+	flex-wrap: wrap
+}
+
+.SimplifiedSearchdiv{
+	flex: 6
+}
+.Exchangesetdiv{
+	flex: 3;
+}
+  
