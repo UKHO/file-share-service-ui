@@ -9,8 +9,8 @@
   <div class="showEncListWrapper">
     <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0">
-        <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit
-            file</span></h2>
+        <h3> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit
+            file</span></h3>
           <table ukho-table ukhoSort [dataSource]="encList" (sortChange)="onSortChange($event)">
             <ng-container ukhoColumnDef="enc">
               <th ukho-header-cell *ukhoHeaderCellDef ukhoSortHeader>EncName</th>
@@ -20,7 +20,7 @@
               <th ukho-header-cell *ukhoHeaderCellDef>Choose</th>
               <td ukho-cell *ukhoCellDef="let element">
                 <ukho-checkbox [checked]="element.selected" (change)="handleChange(element.enc)" class="selectEnc"
-                  attr.aria-label="{{element.enc}}"></ukho-checkbox>
+                  attr.aria-label="Select ENC for {{element.enc}}"></ukho-checkbox>
               </td>
             </ng-container>
             <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>

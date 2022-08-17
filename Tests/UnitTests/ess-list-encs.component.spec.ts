@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { By } from '@angular/platform-browser';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA} from '@angular/core';
-import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-upload-results/ess-list-encs.component';
+import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
 import { ButtonModule,TextinputModule, DialogueModule, CheckboxModule, TableModule } from '@ukho/design-system';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 

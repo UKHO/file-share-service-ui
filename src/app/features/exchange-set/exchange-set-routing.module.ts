@@ -1,4 +1,4 @@
-import { EssListEncsComponent } from './ess-upload-results/ess-list-encs.component';
+import { EssListEncsComponent } from './ess-list-encs/ess-list-encs.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ExchangeSetComponent } from './exchange-set.component';

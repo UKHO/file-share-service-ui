@@ -1,6 +1,6 @@
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
-import { SortDirective, SortHeaderDirective, SortState } from '@ukho/design-system';
+import { SortState } from '@ukho/design-system';
 
 interface mappedEnc {
   enc: string,
@@ -37,7 +37,6 @@ export class EssListEncsComponent implements OnInit {
       }
     });
   }
-
 
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
