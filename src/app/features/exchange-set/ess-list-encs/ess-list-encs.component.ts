@@ -54,7 +54,7 @@ export class EssListEncsComponent implements OnInit {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
-    }else if(!seletedEncs.includes(enc) && (this.maxEncSelectionLimit > seletedEncs.length)){
+    }else if(this.maxEncSelectionLimit > seletedEncs.length){
       this.essUploadFileService.addSelectedEnc(enc);
     }
     this.syncEncsBetweenTables();
