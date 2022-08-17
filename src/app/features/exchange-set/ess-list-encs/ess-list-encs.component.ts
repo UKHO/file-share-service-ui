@@ -50,10 +50,6 @@ export class EssListEncsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-  
-  handleChange(enc : string){
-
-  }
 
   onSortChange(sortState: SortState) {
     this.encList = [...this.encList.sort((a: any, b: any) =>

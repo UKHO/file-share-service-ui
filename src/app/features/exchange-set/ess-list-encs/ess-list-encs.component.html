@@ -19,7 +19,7 @@
             <ng-container ukhoColumnDef="Choose">
               <th ukho-header-cell *ukhoHeaderCellDef>Choose</th>
               <td ukho-cell *ukhoCellDef="let element">
-                <ukho-checkbox [checked]="element.selected" (change)="handleChange(element.enc)" class="selectEnc"
+                <ukho-checkbox [checked]="element.selected" class="selectEnc"
                   attr.aria-label="Select ENC for {{element.enc}}"></ukho-checkbox>
               </td>
             </ng-container>
