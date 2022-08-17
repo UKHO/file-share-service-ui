@@ -11,11 +11,11 @@ export async function navigateToESSLandingPage(page: Page): Promise<void>
 
 export async function uploadfile(page: Page): Promise<void>
 {
-    await page.locator(esslandingpageObjectsConfig.uploadradiobtnselector).click();   
+    await page.locator(esslandingpageObjectsConfig.uploadradiobtnSelector).click();   
 }
 
 
 export async function addENCnumbers(page: Page): Promise<void>
 {
-    await page.locator(esslandingpageObjectsConfig.addencradiobtnselector).click();
+    await page.locator(esslandingpageObjectsConfig.addencradiobtnSelector).click();
 }

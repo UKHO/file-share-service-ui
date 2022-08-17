@@ -53,7 +53,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.goto(autoTestConfig.url+"/#/exchangesets");
         await page.waitForLoadState('load');
-        expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButtonName);
+        expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButton1Name);
     });
 
     test('Verify appending "/exchangesets" in url before login, navigates to home page', async ({ page }) => {

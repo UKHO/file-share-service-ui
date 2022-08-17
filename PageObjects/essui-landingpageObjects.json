@@ -2,16 +2,16 @@
     "esslandingpageObjectsConfig": 
     {
         "radioButtonNameSelector":"//label[text()='Upload your whole permit file or a .csv file']",
-        "radioButtonName" : "Upload your whole permit file or a .csv file",
-        "RadioBtn2text":"Add ENCs",
-        "exchangesettextselector":"h1#main",
-        "uploadbtntextselector":"#radioUploadEnc",
-        "addenctextselector":"#radioAddEnc",
-        "uploadradiobtnselector":"#ukho-radio-1",
-        "addencradiobtnselector":"#ukho-radio-2",
-        "chooseuploadfileoptionselector":"#file-upload",
-        "chooseuploadfileproceedselector":"ukho-button.UploadButton",
-        "addsingleencselector":"button[type='submit']",
-        "addsingleencproceedselector":"div.text-input-container"    
+        "radioButton1Name" : "Upload your whole permit file or a .csv file",
+        "radioButton2Name":"Add ENCs",
+        "exchangesettextSelector":"h1#main",
+        "uploadbtntextSelector":"#radioUploadEnc",
+        "addenctextSelector":"#radioAddEnc",
+        "uploadradiobtnSelector":"#ukho-radio-1",
+        "addencradiobtnSelector":"#ukho-radio-2",
+        "chooseuploadfileoptionSelector":"#file-upload",
+        "chooseuploadfileproceedSelector":"ukho-button.UploadButton",
+        "addsingleencSelector":"button[type='submit']",
+        "addsingleencproceedSelector":"//button[@type='submit']"  
     }
 }
