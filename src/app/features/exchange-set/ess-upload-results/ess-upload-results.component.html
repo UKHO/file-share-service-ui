@@ -1,7 +1,7 @@
 <div class="container">
     <div>
-        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
-            <h3>{{messageDesc}}</h3>
+        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage">
+            <h3 role="alert" aria-live="polite">{{messageDesc}}</h3>
         </ukho-dialogue>
     </div>
     <h1 id="main" tabindex="-1">Exchange sets</h1>
