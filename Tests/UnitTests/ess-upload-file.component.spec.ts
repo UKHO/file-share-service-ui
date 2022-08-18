@@ -4,10 +4,12 @@ import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule,
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
+import { Router } from '@angular/router';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
   let fixture: ComponentFixture<EssUploadFileComponent>;
+  const router = { navigate: jest.fn() };
   let essUploadFileService: EssUploadFileService;
 
   const getEncData_csv = () => {
@@ -58,7 +60,8 @@ describe('EssUploadFileComponent', () => {
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule],
       declarations: [EssUploadFileComponent],
       providers: [
-        EssUploadFileService
+        EssUploadFileService,
+        { provide: Router, useValue: router }
       ]
     })
       .compileComponents();

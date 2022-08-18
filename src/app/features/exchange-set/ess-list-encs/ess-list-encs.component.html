@@ -55,7 +55,7 @@
   </div>
   <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()">+ Add another ENC</a>
 </div>
-<app-ess-add-single-encs  *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
+<app-ess-add-single-encs  [renderedFrom]="encListPage"  *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
 
 
 

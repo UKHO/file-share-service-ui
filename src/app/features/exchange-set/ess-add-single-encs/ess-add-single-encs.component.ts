@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 
 
@@ -9,6 +9,7 @@ import { EssUploadFileService } from '../../../core/services/ess-upload-file.ser
   styleUrls: ['./ess-add-single-encs.component.scss']
 })
 export class EssAddSingleEncsComponent implements OnInit {
+  @Input() renderedFrom = '';
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
@@ -26,6 +27,13 @@ export class EssAddSingleEncsComponent implements OnInit {
   }
 
   onFindEnc() {
+    if (this.renderedFrom == 'encList') {
+      this.addEncInList();
+    }
+
+  }
+
+  addEncInList() {
     this.displayErrorMessage = false;
     this.singleEncVal = this.singleEncVal.trim();
     const isValidEnc = this.essUploadFileService.validateENCFormat(this.singleEncVal);
@@ -53,6 +61,7 @@ export class EssAddSingleEncsComponent implements OnInit {
     }
   }
 
+  
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
     messageDesc: string = ''
