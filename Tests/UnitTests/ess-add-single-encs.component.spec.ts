@@ -40,16 +40,18 @@ describe('EssAddSingleEncsComponent', () => {
   });
 
   it('onFindEnc should   raise "Please enter ENC number."error',() => {
-    component.singleEncVal = '';
-     component.onFindEnc();   
+    component.txtSingleEnc = '';
+    component.renderedFrom='encList';
+     component.validateAndAddENC();   
      expect(component.messageType).toEqual('error');
      expect(component.messageDesc).toEqual('Please enter ENC number.');
      expect(component.displayErrorMessage).toBe(true);
    });
    
   it('onFindEnc should   raise "Invalid ENC number."error',() => {
-   component.singleEncVal = 'AU22015';
-    component.onFindEnc();   
+    component.txtSingleEnc = 'AU22015';
+    component.renderedFrom='encList';
+    component.validateAndAddENC();   
     expect(component.messageType).toEqual('error');
     expect(component.messageDesc).toEqual('Invalid ENC number.');
     expect(component.displayErrorMessage).toBe(true);
@@ -57,8 +59,9 @@ describe('EssAddSingleEncsComponent', () => {
 
   it('onFindEnc should   raise "ENC already in list."info',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];    
-    component.singleEncVal = 'AU220150';    
-    component.onFindEnc();   
+    component.txtSingleEnc = 'AU220150';    
+    component.renderedFrom='encList';
+    component.validateAndAddENC();   
     expect(component.messageType).toEqual('info');
     expect(component.messageDesc).toEqual('ENC already in list.');
     expect(component.displayErrorMessage).toBe(true);
@@ -66,8 +69,9 @@ describe('EssAddSingleEncsComponent', () => {
 
    it('onFindEnc should   raise "Max ENC limit reached."info',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M', 'HR50017C', 'ID202908', 'JP24S8H0'];    
-    component.singleEncVal = 'US4FL18M';    
-    component.onFindEnc();   
+    component.renderedFrom='encList';
+    component.txtSingleEnc = 'US4FL18M';    
+    component.validateAndAddENC();   
     expect(component.messageType).toEqual('info');
     expect(component.messageDesc).toEqual('Max ENC limit reached.');
     expect(component.displayErrorMessage).toBe(true);
@@ -75,9 +79,10 @@ describe('EssAddSingleEncsComponent', () => {
 
    it('onFindEnc should set sigle valid ENC',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];    
-    component.singleEncVal = 'US4FL18M';    
+    component.txtSingleEnc = 'US4FL18M';   
+    component.renderedFrom='encList'; 
     service.setValidENCs(component.validEnc);
-    component.onFindEnc();      
+    component.validateAndAddENC();      
     expect(component.displayErrorMessage).toBe(false);
    });
 });

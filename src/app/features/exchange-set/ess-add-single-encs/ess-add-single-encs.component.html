@@ -5,10 +5,12 @@
         </ukho-dialogue>
     </div>
 
-    <div class="addSingleFileSection">
-        <ukho-textinput class="addSingleFileTextbox" [(ngModel)]="singleEncVal" label="Add a single ENC"
-            placeholder="Type ENC cell name here"></ukho-textinput>
+    <div class="addSingleFileSection">      
+       <ukho-textinput class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"
+            [(ngModel)]="txtSingleEnc"></ukho-textinput>
         <br />
-        <ukho-button class="findEnc" (click)="onFindEnc()">Find Enc</ukho-button>
+        <ukho-button (click)="validateAndAddENC()">
+         Proceed
+        </ukho-button>
     </div>
 </div>
