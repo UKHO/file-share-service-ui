@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { EssUploadResultsComponent } from '../../src/app/features/exchange-set/ess-upload-results/ess-upload-results.component';
+import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
 import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule  , CheckboxModule} from '@ukho/design-system';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
-describe('EssUploadResultsComponent', () => {
-  let component: EssUploadResultsComponent;
-  let fixture: ComponentFixture<EssUploadResultsComponent>;
+describe('EssListEncsComponent', () => {
+  let component: EssListEncsComponent;
+  let fixture: ComponentFixture<EssListEncsComponent>;
   const router = {
     navigate: jest.fn()
   };
@@ -22,7 +21,7 @@ describe('EssUploadResultsComponent', () => {
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EssUploadResultsComponent ],
+      declarations: [ EssListEncsComponent ],
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule],
       providers: [
         {
@@ -46,7 +45,7 @@ describe('EssUploadResultsComponent', () => {
       MaxEncSelectionLimit : 5
       }
     };
-    fixture = TestBed.createComponent(EssUploadResultsComponent);
+    fixture = TestBed.createComponent(EssListEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
