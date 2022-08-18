@@ -29,7 +29,8 @@
           <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </div>
-    </div>
+        </div>
+    
     <div class="divider"></div>
     <div style="flex: 3">
       <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit file</span>
@@ -54,5 +55,7 @@
   </div>
   <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()">+ Add another ENC</a>
 </div>
+<app-ess-add-single-encs  *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
 
-<app-ess-add-single-encs *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
+
+

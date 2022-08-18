@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
+import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 interface mappedEnc {
@@ -8,11 +8,11 @@ interface mappedEnc {
 }
 
 @Component({
-  selector: 'app-ess-upload-results',
-  templateUrl: './ess-upload-results.component.html',
-  styleUrls: ['./ess-upload-results.component.scss']
+  selector: 'app-ess-list-encs',
+  templateUrl: './ess-list-encs.component.html',
+  styleUrls: ['./ess-list-encs.component.scss']
 })
-export class EssUploadResultsComponent implements OnInit {
+export class EssListEncsComponent implements OnInit {
   encList: mappedEnc[];
   public displayedColumns = ['EncName', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';

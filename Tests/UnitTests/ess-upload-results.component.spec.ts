@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EssUploadResultsComponent } from '../../src/app/features/exchange-set/ess-upload-results/ess-upload-results.component';
+import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
 
-describe('EssUploadResultsComponent', () => {
-  let component: EssUploadResultsComponent;
-  let fixture: ComponentFixture<EssUploadResultsComponent>;
+describe('EssListEncsComponent', () => {
+  let component: EssListEncsComponent;
+  let fixture: ComponentFixture<EssListEncsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EssUploadResultsComponent ]
+      declarations: [ EssListEncsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EssUploadResultsComponent);
+    fixture = TestBed.createComponent(EssListEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
