@@ -55,7 +55,7 @@ export class EssListEncsComponent implements OnInit {
     this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
-    }else if(!seletedEncs.includes(enc) && (this.maxEncSelectionLimit > seletedEncs.length)){
+    }else if(this.maxEncSelectionLimit > seletedEncs.length){
       this.essUploadFileService.addSelectedEnc(enc);
     }else {
       this.showMessage('error', "No more than " + this.maxEncSelectionLimit + " ENCs can be selected.");

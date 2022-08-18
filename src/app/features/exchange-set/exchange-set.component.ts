@@ -11,7 +11,7 @@ export class ExchangeSetComponent implements OnInit {
   rgAddUploadENC: string;  
   radioUploadEncValue:string;
   radioAddEncValue:string;
-  maxEncSelectionLimit:any;
+  maxEncSelectionLimit:number;
   constructor() {
     this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
    }
