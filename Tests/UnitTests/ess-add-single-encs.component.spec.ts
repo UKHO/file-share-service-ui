@@ -4,17 +4,24 @@ import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 
 describe('EssAddSingleEncsComponent', () => {
   let component: EssAddSingleEncsComponent;
   let fixture: ComponentFixture<EssAddSingleEncsComponent>;
-
+  const router = {
+    navigate: jest.fn()
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [EssAddSingleEncsComponent],
       providers: [
-        EssUploadFileService
+        EssUploadFileService,
+        {
+          provide : Router,
+          useValue : router
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -27,6 +34,7 @@ describe('EssAddSingleEncsComponent', () => {
         MaxEncLimit: 10
       }
     };
+    console.error = jest.fn();
     fixture = TestBed.createComponent(EssAddSingleEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
