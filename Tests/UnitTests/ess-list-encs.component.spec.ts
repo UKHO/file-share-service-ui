@@ -81,4 +81,17 @@ describe('EssListEncsComponent', () => {
     expect(component.selectedEncList.length).toBe(1);
     expect(component.encList.length).toBe(5);
   });
+  test('should show the content of paragraph in exchange set', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('p').textContent).toBe('Select up to 5 ENCs and Make an exchange set');
+  });
+  test('should show the error message when user select encs more than selection limit', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130' , 'AU220830']);
+    component.handleChange('AU210470');
+    const dialog = fixture.debugElement.nativeElement.querySelector('ukho-dialogue');
+    expect(dialog).not.toBeNull();
+  });
 });

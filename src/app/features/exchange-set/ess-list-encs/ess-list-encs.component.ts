@@ -52,10 +52,13 @@ export class EssListEncsComponent implements OnInit {
   }
   handleChange(enc: string) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
+    this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
     }else if(this.maxEncSelectionLimit > seletedEncs.length){
       this.essUploadFileService.addSelectedEnc(enc);
+    }else {
+      this.showMessage('error', "No more than " + this.maxEncSelectionLimit + " ENCs can be selected.");
     }
     this.syncEncsBetweenTables();
   }

@@ -46,7 +46,7 @@
     ]
   },
   "essConfig": {
-    "MaxEncLimit": "100",
-    "MaxEncSelectionLimit":"5"
+    "MaxEncLimit": "250",
+    "MaxEncSelectionLimit":"100"
   }
 }
