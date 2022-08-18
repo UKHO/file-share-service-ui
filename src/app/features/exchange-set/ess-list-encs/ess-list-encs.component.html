@@ -32,30 +32,16 @@
         </div>
     
     <div class="divider"></div>
-    <div style="flex: 3">
-      <h2> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit file</span>
-      </h2>
+   <div style="flex: 3">
+     
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
-        <table ukho-table [dataSource]="selectedEncList">
-          <ng-container ukhoColumnDef="EncName">
-            <th ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
-            <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
-          </ng-container>
-          <ng-container ukhoColumnDef="X">
-            <th ukho-header-cell *ukhoHeaderCellDef></th>
-            <td ukho-cell *ukhoCellDef="let element">
-              <button (click)="handleChange(element)"> <i class="fa fa-times fa-1x"></i> </button>
-            </td>
-          </ng-container>
-          <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
-          <tr ukho-row *ukhoRowDef="let row; columns: displaySelectedTableColumns"></tr>
-        </table>
+       
       </div>
     </div>
   </div>
   <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()">+ Add another ENC</a>
 </div>
-<app-ess-add-single-encs  [renderedFrom]="encListPage"  *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
+<app-ess-add-single-encs  renderedFrom="encListPage"  *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
 
 
 

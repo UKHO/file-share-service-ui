@@ -1,23 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component';
-import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
-import { RouterTestingModule } from '@angular/router/testing';
+import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule  , CheckboxModule,TextinputModule} from '@ukho/design-system';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 describe('EssAddSingleEncsComponent', () => {
   let component: EssAddSingleEncsComponent;
   let fixture: ComponentFixture<EssAddSingleEncsComponent>;
   let service: EssUploadFileService;
+  const router = {
+    navigate: jest.fn()
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule],
       declarations: [EssAddSingleEncsComponent],
       providers: [
-        EssUploadFileService
+        EssUploadFileService,
+        {
+          provide : Router,
+          useValue : router
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   });
@@ -39,7 +48,7 @@ describe('EssAddSingleEncsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('onFindEnc should   raise "Please enter ENC number."error',() => {
+  it('validateAndAddENC should   raise "Please enter ENC number."error',() => {
     component.txtSingleEnc = '';
     component.renderedFrom='encList';
      component.validateAndAddENC();   
@@ -48,7 +57,7 @@ describe('EssAddSingleEncsComponent', () => {
      expect(component.displayErrorMessage).toBe(true);
    });
    
-  it('onFindEnc should   raise "Invalid ENC number."error',() => {
+  it('validateAndAddENC should   raise "Invalid ENC number."error',() => {
     component.txtSingleEnc = 'AU22015';
     component.renderedFrom='encList';
     component.validateAndAddENC();   
@@ -57,7 +66,7 @@ describe('EssAddSingleEncsComponent', () => {
     expect(component.displayErrorMessage).toBe(true);
   });
 
-  it('onFindEnc should   raise "ENC already in list."info',() => {
+  it('validateAndAddENC should   raise "ENC already in list."info',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];    
     component.txtSingleEnc = 'AU220150';    
     component.renderedFrom='encList';
@@ -67,7 +76,7 @@ describe('EssAddSingleEncsComponent', () => {
     expect(component.displayErrorMessage).toBe(true);
    });
 
-   it('onFindEnc should   raise "Max ENC limit reached."info',() => {
+   it('validateAndAddENC should   raise "Max ENC limit reached."info',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M', 'HR50017C', 'ID202908', 'JP24S8H0'];    
     component.renderedFrom='encList';
     component.txtSingleEnc = 'US4FL18M';    
@@ -77,7 +86,7 @@ describe('EssAddSingleEncsComponent', () => {
     expect(component.displayErrorMessage).toBe(true);
    });
 
-   it('onFindEnc should set sigle valid ENC',() => {
+   it('validateAndAddENC should set sigle valid ENC',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];    
     component.txtSingleEnc = 'US4FL18M';   
     component.renderedFrom='encList'; 
