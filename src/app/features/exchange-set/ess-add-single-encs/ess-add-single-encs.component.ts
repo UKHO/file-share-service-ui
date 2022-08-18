@@ -30,19 +30,26 @@ export class EssAddSingleEncsComponent implements OnInit {
     this.singleEncVal = this.singleEncVal.trim();
     const isValidEnc = this.essUploadFileService.validateENCFormat(this.singleEncVal);
 
-    if (!isValidEnc) {
-      this.showMessage('error', 'Please enter valid ENCs.');
-    }
-    else if (!this.validEnc.includes(this.singleEncVal)) {
-      if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
-        this.showMessage('info', 'Max ENC limit reached.');
+    if (this.singleEncVal != '') {
+      if (isValidEnc) {
+        if (!this.validEnc.includes(this.singleEncVal)) {
+          if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
+            this.showMessage('info', 'Max ENC limit reached.');
+          }
+          else {
+            this.essUploadFileService.addSingleEnc(this.singleEncVal);
+          }
+        }
+        else {
+          this.showMessage('info', 'ENC already in list.');
+        }
       }
       else {
-        this.essUploadFileService.addSingleEnc(this.singleEncVal);
+        this.showMessage('error', 'Invalid ENC number.');
       }
     }
     else {
-      this.showMessage('info', 'ENC already in list.');
+      this.showMessage('error', 'Please enter ENC number.');
     }
   }
 

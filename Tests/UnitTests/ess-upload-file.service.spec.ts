@@ -133,4 +133,22 @@ describe('EssUploadFileService', () => {
     validEncList = service.getValidEncs();
     expect(validEncList.length).toEqual(10);
   });
+
+
+  it('checkMaxEncLimit should return true as per configuration settings', () => {
+    let validLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M', 'HR50017C', 'ID202908', 'JP24S8H0', 'JP34R1ES', 'JP44KU49', 'US4FL18M'];    
+    expect(service.checkMaxEncLimit(validLists)).toEqual(true);
+  });
+
+  it('checkMaxEncLimit should return false as per configuration settings', () => {
+    let validLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];    
+    expect(service.checkMaxEncLimit(validLists)).toEqual(false);
+  });
+
+  it('addSingleEnc should set single ENC in validEnc list', () => {
+    let validEncs = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];   
+    service.setValidENCs(validEncs);
+    service.addSingleEnc('AS121212');   
+    expect(service.getValidEncs().length).toEqual(5);
+  });
 });

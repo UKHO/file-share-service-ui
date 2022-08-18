@@ -73,8 +73,7 @@ export class EssUploadFileService {
   }
 
   addSingleEnc(signleValidEnc: string) {
-   // this.validEncs = [];
-    this.validEncs.push(signleValidEnc);
+   this.validEncs.push(signleValidEnc);
    this.notifySingleEnc.next(true);
   }
 
