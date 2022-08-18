@@ -9,7 +9,7 @@
   <div class="showEncListWrapper">
     <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0">
-        <h3> <span>Your ENCs</span> <span class="showListEncTOtal">Showing {{encList.length}} ENCs in permit
+        <h3> <span>Your ENCs</span> <span class="showListEncTOtal">Showing {{encList && encList.length > 0 ? encList.length : 0}} ENCs in permit
             file</span></h3>
           <table ukho-table ukhoSort [dataSource]="encList" (sortChange)="onSortChange($event)">
             <ng-container ukhoColumnDef="enc">
