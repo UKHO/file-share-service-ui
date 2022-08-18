@@ -46,7 +46,7 @@ describe('EssAddSingleEncsComponent', () => {
 
   it('validateAndProcessENC should display error when ENC field is blank', () => {
     component.txtSingleEnc = '';
-    component.validateAndProcessENC();
+    component.validateAndAddENC();
     expect(component.messageType).toEqual('error');
     expect(component.messageDesc).toEqual('Please enter ENC number');
     expect(component.displayErrorMessage).toBe(true);
@@ -54,7 +54,7 @@ describe('EssAddSingleEncsComponent', () => {
 
   it('validateAndProcessENC should display error when ENC number is invalid', () => {
     component.txtSingleEnc = 'AS1212121';
-    component.validateAndProcessENC();
+    component.validateAndAddENC();
     expect(component.messageType).toEqual('error');
     expect(component.messageDesc).toEqual('Invalid ENC number');
     expect(component.displayErrorMessage).toBe(true);
@@ -62,7 +62,7 @@ describe('EssAddSingleEncsComponent', () => {
 
   it('validateAndProcessENC should set validENC number', () => {
     component.txtSingleEnc = 'AS121212';
-    component.validateAndProcessENC();    
+    component.validateAndAddENC();    
     expect(component.displayErrorMessage).toBe(false);
   });
 });

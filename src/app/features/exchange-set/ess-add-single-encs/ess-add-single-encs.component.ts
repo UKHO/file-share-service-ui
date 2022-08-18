@@ -21,7 +21,11 @@ export class EssAddSingleEncsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  validateAndProcessENC() {
+  validateAndAddENC() {
+    this.addSingleEncToList();
+  }
+
+  addSingleEncToList() {
     if (this.txtSingleEnc != '') {
       if (this.essUploadFileService.validateENCFormat(this.txtSingleEnc)) {
         this.displayErrorMessage = false;
