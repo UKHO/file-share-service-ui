@@ -5,15 +5,15 @@
     </ukho-dialogue>
   </div>
   <h1 id="main" tabindex="-1">Exchange sets</h1>
-  <p>Select up to 100 ENCs and Make an exchange set</p>
+  <p>Select up to 100 ENCs and make an exchange set</p>
   <div class="showEncListWrapper">
     <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0">
-        <h3> <span>Your ENC's</span> <span class="showListEncTOtal">Showing {{encList.length}} Enc's in permit
+        <h3> <span>Your ENCs</span> <span class="showListEncTOtal">Showing {{encList.length}} Encs in permit
             file</span></h3>
           <table ukho-table ukhoSort [dataSource]="encList" (sortChange)="onSortChange($event)">
             <ng-container ukhoColumnDef="enc">
-              <th ukho-header-cell *ukhoHeaderCellDef ukhoSortHeader>EncName</th>
+              <th ukho-header-cell *ukhoHeaderCellDef ukhoSortHeader>ENC name</th>
               <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
             </ng-container>
             <ng-container ukhoColumnDef="Choose">
