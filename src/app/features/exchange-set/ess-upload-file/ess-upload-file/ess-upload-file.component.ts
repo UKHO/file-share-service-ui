@@ -56,6 +56,7 @@ export class EssUploadFileComponent implements OnInit {
       }
       if (encList.length > this.validEncList.length) {
         this.essUploadFileService.infoMessage = true;
+        this.showMessage('info', 'Some values have not been added to list.');
       }
       this.route.navigate(['exchangesets' , 'enc-list']);
     }
