@@ -1,7 +1,6 @@
 import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
-import { AppConfigService } from './../../../../core/services/app-config.service';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -15,8 +14,6 @@ export class EssUploadFileComponent implements OnInit {
   displayErrorMessage = false;
   validEncList: string[];
   encFile: File;
-  // public displayedColumns = ['Cell name', 'Choose'];
-  @Output() ShowEssUploadClicked = new EventEmitter<boolean>(false);
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
 
