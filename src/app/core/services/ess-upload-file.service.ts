@@ -84,7 +84,7 @@ export class EssUploadFileService {
   clearSelectedEncs(){
     this.selectedEncs = [];
   }
-  
+
   getMaxEncLimit(){
     return this.maxEncLimit;
   }

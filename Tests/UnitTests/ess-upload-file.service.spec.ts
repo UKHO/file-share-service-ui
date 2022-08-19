@@ -14,7 +14,7 @@ describe('EssUploadFileService', () => {
     return data;
   };
   const getCsvTempData = () => {
-    let data = 'AU220150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
+    const data = 'AU220150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
   };
   const getTempEncs = () => [
@@ -47,7 +47,7 @@ describe('EssUploadFileService', () => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
-        MaxEncSelectionLimit:5
+        MaxEncSelectionLimit : 5
       },
     };
     TestBed.configureTestingModule({});
@@ -105,8 +105,8 @@ describe('EssUploadFileService', () => {
 
   //csv file tests
   test('getEncFileData should return enc file data for csv file', () => {
-    let encLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];
-    var result = service.getEncFileData(getCsvTempData());
+    const encLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];
+    const result = service.getEncFileData(getCsvTempData());
     expect(result).toEqual(encLists);
   });
 
@@ -118,19 +118,19 @@ describe('EssUploadFileService', () => {
   });
 
   test('extractEncsFromFile should extract encs from file', () => {
-    let encLists = ['AU220150,AU220150', 'AU5PTL01,AU5PTL01', 'CA271105,CA271105', 'CN484220,CN484220']
-    var result = service.extractEncsFromFile("text/csv", encLists);
+    const encLists = ['AU220150,AU220150', 'AU5PTL01,AU5PTL01', 'CA271105,CA271105', 'CN484220,CN484220'];
+    const result = service.extractEncsFromFile('text/csv', encLists);
     expect(result).toEqual(csvEncLists);
   });
 
   test('extractEncsFromFile should extract encs from file and also removes blank data', () => {
-    let encLists = ['AU220150,AU220150', '', 'AU5PTL01,AU5PTL01', 'CA271105,CA271105', 'CN484220,CN484220']
-    var result = service.extractEncsFromFile("text/csv", encLists);
+    const encLists = ['AU220150,AU220150', '', 'AU5PTL01,AU5PTL01', 'CA271105,CA271105', 'CN484220,CN484220'];
+    const result = service.extractEncsFromFile('text/csv', encLists);
     expect(result).toEqual(csvEncLists);
   });
 
   it('setValidENCs and getValidEncs should return valid encs', () => {
-    let encLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220']
+    const encLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];
     let validEncList = service.extractEncsFromFile('text/csv', encLists);
     service.setValidENCs(validEncList);
     validEncList = service.getValidEncs();
@@ -138,7 +138,7 @@ describe('EssUploadFileService', () => {
   });
 
   it('setValidENCs and getValidEncs should return valid encs when duplicate record found', () => {
-    let encLists = ['AU220150,AU220150', 'AU220150,AU220150', 'AU5PTL01,AU5PTL01', 'CA271105,CA271105', 'CN484220,CN484220']
+    const encLists = ['AU220150,AU220150', 'AU220150,AU220150', 'AU5PTL01,AU5PTL01', 'CA271105,CA271105', 'CN484220,CN484220'];
     let validEncList = service.extractEncsFromFile('text/csv', encLists);
     service.setValidENCs(validEncList);
     validEncList = service.getValidEncs();
@@ -147,13 +147,45 @@ describe('EssUploadFileService', () => {
 
 
   it('setValidENCs and getValidEncs should return valid encs as per configuration settings', () => {
-    let encLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M', 'HR50017C', 'ID202908', 'JP24S8H0', 'JP34R1ES', 'JP44KU49', 'US4FL18M'];
+    // eslint-disable-next-line max-len
+    const encLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M', 'HR50017C', 'ID202908', 'JP24S8H0', 'JP34R1ES', 'JP44KU49', 'US4FL18M'];
     let validEncList = service.extractEncsFromFile('text/csv', encLists);
     service.setValidENCs(validEncList);
     validEncList = service.getValidEncs();
     expect(validEncList.length).toEqual(10);
   });
-
+  it('service.infoMessage should set true/false' , () => {
+    expect(service.infoMessage).toBeFalsy();
+    service.infoMessage = true;
+    expect(service.infoMessage).toBeTruthy();
+    service.infoMessage = false;
+    expect(service.infoMessage).toBeFalsy();
+  });
+  it('addSelectedEnc adds enc into selectedEncs' , () => {
+    expect(service.getSelectedENCs().length).toEqual(0);
+    service.addSelectedEnc('AU210130');
+    service.addSelectedEnc('AU210230');
+    service.addSelectedEnc('AU210330');
+    expect(service.getSelectedENCs().length).toEqual(3);
+  });
+  it('removeSelectedEncs removes enc from selectedEncs' , () => {
+    expect(service.getSelectedENCs().length).toEqual(0);
+    service.addSelectedEnc('AU210130');
+    service.addSelectedEnc('AU210230');
+    service.addSelectedEnc('AU210330');
+    expect(service.getSelectedENCs().length).toEqual(3);
+    service.removeSelectedEncs('AU210230');
+    expect(service.getSelectedENCs().length).toEqual(2);
+  });
+  it('clearSelectedEncs clears enc from selectedEncs' , () => {
+    expect(service.getSelectedENCs().length).toEqual(0);
+    service.addSelectedEnc('AU210130');
+    service.addSelectedEnc('AU210230');
+    service.addSelectedEnc('AU210330');
+    expect(service.getSelectedENCs().length).toEqual(3);
+    service.clearSelectedEncs();
+    expect(service.getSelectedENCs().length).toEqual(0);
+  });
   it('valid encs should always be less than MaxEncLimit' , () => {
     expect(service.getMaxEncLimit()).toEqual(10);
     let encList = service.getEncFileData(getNEncData());
