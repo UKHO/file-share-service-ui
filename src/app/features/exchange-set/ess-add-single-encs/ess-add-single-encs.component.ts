@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 
@@ -8,12 +8,14 @@ import { EssUploadFileService } from '../../../core/services/ess-upload-file.ser
   styleUrls: ['./ess-add-single-encs.component.scss']
 })
 export class EssAddSingleEncsComponent implements OnInit {
-  txtSingleEnc: string = "";
-
+  @Input() renderedFrom = 'Proceed';
+  
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
+  
+  txtSingleEnc: string = "";
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
@@ -22,7 +24,12 @@ export class EssAddSingleEncsComponent implements OnInit {
   }
 
   validateAndAddENC() {
-    this.addSingleEncToList();
+    if (this.renderedFrom == 'Add ENC') {
+      
+    }
+    else {
+      this.addSingleEncToList();
+    }
   }
 
   addSingleEncToList() {
