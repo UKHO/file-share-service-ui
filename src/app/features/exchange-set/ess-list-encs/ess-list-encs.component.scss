@@ -12,15 +12,6 @@
 
 .showListEncTOtal {
     float: right;
-    top: 314px;
-    left: 850px;
-    font-weight: 500;
-}
-
-.sortData {
-    position: relative;
-    vertical-align: middle;
-    background-color: #fff;
 }
 
 table th:last-child {
@@ -31,6 +22,29 @@ table th:last-child {
     border: 1px solid #d8d8d8;
     height: 480px;
     margin: 0px 39px;
+}
+
+.requestEncBtn{
+    display: flex;
+    justify-content: flex-end;
+}
+.selectionContainer{
+    position: relative;
+    min-height: 50vh;
+    .estimatedBtnHolder{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        p{
+            font-weight: 400;
+            color: #09315b;
+        }
+        .encsize{
+            font-weight: 400;
+            margin-left: 0px;
+        }        
+    }
 }
 
 .bottomText {
