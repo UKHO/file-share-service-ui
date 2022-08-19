@@ -21,6 +21,25 @@ describe('EssUploadFileService', () => {
     'AU210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB',
     'AU210240202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB',
   ];
+  const getNEncData = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data += 'AU210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU20130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU310130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU410130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU510130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU610130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU710130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU810130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU90130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU2110130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB61C,0,5,GB \n';
+    data += 'AU230130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB671C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
+  };
   let permitJson: string[];
   let csvEncLists: string[];
   let service: EssUploadFileService;
@@ -133,5 +152,14 @@ describe('EssUploadFileService', () => {
     service.setValidENCs(validEncList);
     validEncList = service.getValidEncs();
     expect(validEncList.length).toEqual(10);
+  });
+
+  it('valid encs should always be less than MaxEncLimit' , () => {
+    expect(service.getMaxEncLimit()).toEqual(10);
+    let encList = service.getEncFileData(getNEncData());
+    encList = service.extractEncsFromFile('text/plain',encList);
+    service.setValidENCs(encList);
+    expect(encList.length).toBeGreaterThan(service.getMaxEncLimit());
+    expect(service.getValidEncs().length).toBeLessThan(service.getMaxEncLimit());
   });
 });
