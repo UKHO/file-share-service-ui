@@ -55,6 +55,25 @@ describe('EssUploadFileComponent', () => {
   const router = {
     navigate : jest.fn()
   };
+  const getNEncData = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data += 'AU210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU20130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU310130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU410130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU510130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU610130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU710130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU810130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU90130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU2110130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB61C,0,5,GB \n';
+    data += 'AU230130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB671C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule],
@@ -192,6 +211,17 @@ describe('EssUploadFileComponent', () => {
     expect(component.messageType).toEqual('error');
     expect(component.messageDesc).toEqual('Please select a .csv or .txt file');
     expect(component.displayErrorMessage).toBe(true);
+  });
+
+  it('should set infomessage to true if enc list is greater than MaxEncLimit' , () => {
+    const file = new File([getNEncData()], 'test.txt');
+    Object.defineProperty(file, 'type', { value: 'text/plain' });
+    component.encFile = file;
+    expect(component.validEncList).toBeUndefined();
+    expect(essUploadFileService.infoMessage).toBeFalsy();
+    component.processEncFile(getNEncData());
+    expect(essUploadFileService.infoMessage).toBeTruthy();
+    expect(component.validEncList.length).toBeLessThan(component.maxEncLimit);
   });
 });
 
