@@ -18,8 +18,8 @@
         "messageForOverlimitAndInvalidENCs":"Some values have not been added to list.",
         "txtFileNameWithExtension":"ValidAndInvalidENCs",
         "chooseuploadfileSelector":"span.instructions.ng-star-inserted",
-        "uploadedDataSelector":"//div/table/tbody/tr[1]/td",
-        "tableData1":"AU220150",
-        "tableData2":"AU210130"
+        "uploadedDataSelector":"//div/table/tbody/tr[1]/td[1]",
+        "ENCValue1":"AU220150",
+        "ENCValue2":"AU210130"
     }
 }

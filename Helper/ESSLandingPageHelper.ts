@@ -17,4 +17,3 @@ const [fileChooserDataFile] = await Promise.all([
 await fileChooserDataFile.setFiles(filePath);
 
 }
-

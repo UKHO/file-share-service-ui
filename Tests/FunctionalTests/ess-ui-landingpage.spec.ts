@@ -43,7 +43,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
           await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/ValidENCs.csv');
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.tableData1);
+          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue1);
      })
 
      //Test Case 13815
@@ -52,10 +52,10 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
           await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/ValidENCs.txt');
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.tableData2);
+          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue2);
      })
 
-     //Test Case 13810 --done
+     //Test Case 13810
      test('Verify a error message if user tries to upload other than allowed files', async({page})=>{
          
          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
@@ -70,17 +70,17 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/validAndInvalidENCs.csv');
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs) 
-          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.tableData2);
+          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue2);
      })
 
-     //Test Case 13817 --pending
+     //Test Case 13817
      test('Upload TXT file with valid & invalid ENCs and verify ENC uploaded', async({page})=>{
        
           await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
           await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/ValidAndInvalidENCs.txt');
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
-          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.tableData2);
+          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue2);
      })
 
      //Test Case 13823
@@ -98,5 +98,19 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData//ValidAndDuplicateENCs.txt');
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
+     })
+
+     // To verify all data from file , uploaded successdully.
+     test('Verify all the ENCs from file, displayed on the screen', async({page})=>{
+          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData//ValidENCs-5.csv');
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+          await page.waitForLoadState();
+          let enclist = ['AU220150', 'AU5PTL01', 'CA271105','CN484220','GB50184C']         
+          for (var i=1;i<6;i++) 
+          {            
+               expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
+          }        
+     
      })
 });
