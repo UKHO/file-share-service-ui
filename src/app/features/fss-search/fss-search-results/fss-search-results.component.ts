@@ -95,6 +95,7 @@ export class FssSearchResultsComponent implements OnChanges {
   }
 
   downloadFile(obj: any, fileData: any) {
+    this.displayLoader = true;
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = fileData.FileLink;
     if (filePath) {
@@ -153,33 +154,32 @@ export class FssSearchResultsComponent implements OnChanges {
   }
 
   handleRefreshTokenforDownload(baseUrl: string, filePath: string) {
-    // this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-    //   console.log('Testing:', response);
-      // this.fileShareApiService.refreshToken().subscribe(res => {
-      //   console.log(res);
-      //   this.displayLoader = false;
-        //this.analyticsService.login();
+    this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+      console.log('Testing:', response);
+      this.fileShareApiService.refreshToken().subscribe(res => {
+        console.log(res);
+        this.displayLoader = false;
         this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
         setTimeout(() => {
           this.closeDownloadAllFileWindow();
         }, 5000);
-      //});
-    // }, error => {
-    //   console.log('inside catch');
-    //   this.msalService.instance
-    //     .loginPopup(this.fssSilentTokenRequest)
-    //     .then(response => {
-    //       console.log('Testing:', response);
-    //       this.fileShareApiService.refreshToken().subscribe(res => {
-    //         this.displayLoader = false;
-    //         //this.analyticsService.login();
-    //         this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
-    //         setTimeout(() => {
-    //           this.closeDownloadAllFileWindow();
-    //         }, 5000);
-    //       });
-    //     })
-    // })
+      });
+    }, error => {
+      console.log('inside catch');
+      this.msalService.instance
+        .loginPopup(this.fssSilentTokenRequest)
+        .then(response => {
+          console.log('Testing:', response);
+          this.fileShareApiService.refreshToken().subscribe(res => {
+            this.displayLoader = false;
+            //this.analyticsService.login();
+            this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
+            setTimeout(() => {
+              this.closeDownloadAllFileWindow();
+            }, 5000);
+          });
+        })
+    })
   }
 
   closeDownloadAllFileWindow() {

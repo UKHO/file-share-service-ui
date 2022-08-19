@@ -6,7 +6,7 @@ import { AppConfigService } from './app-config.service';
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    essBaseUrl = AppConfigService.settings['fssConfig'].essApiUrl;
+    essBaseUrl = AppConfigService.settings['essConfig'].essApiUrl;
     stateManagementUrl = AppConfigService.settings['fssConfig'].stateManagementApiUrl;
 
     constructor(private http: HttpClient) { }
