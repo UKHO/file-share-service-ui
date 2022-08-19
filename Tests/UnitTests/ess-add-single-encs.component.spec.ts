@@ -50,7 +50,7 @@ describe('EssAddSingleEncsComponent', () => {
 
   it('validateAndAddENC should   raise "Please enter ENC number."error',() => {
     component.txtSingleEnc = '';
-    component.renderedFrom='Find ENC';
+    component.renderedFrom='Add ENC';
      component.validateAndAddENC();   
      expect(component.messageType).toEqual('error');
      expect(component.messageDesc).toEqual('Please enter ENC number.');
@@ -59,7 +59,7 @@ describe('EssAddSingleEncsComponent', () => {
    
   it('validateAndAddENC should   raise "Invalid ENC number."error',() => {
     component.txtSingleEnc = 'AU22015';
-    component.renderedFrom='Find ENC';
+    component.renderedFrom='Add ENC';
     component.validateAndAddENC();   
     expect(component.messageType).toEqual('error');
     expect(component.messageDesc).toEqual('Invalid ENC number.');
@@ -69,7 +69,7 @@ describe('EssAddSingleEncsComponent', () => {
   it('validateAndAddENC should   raise "ENC already in list."info',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];    
     component.txtSingleEnc = 'AU220150';    
-    component.renderedFrom='Find ENC';
+    component.renderedFrom='Add ENC';
     component.validateAndAddENC();   
     expect(component.messageType).toEqual('info');
     expect(component.messageDesc).toEqual('ENC already in list.');
@@ -78,7 +78,7 @@ describe('EssAddSingleEncsComponent', () => {
 
    it('validateAndAddENC should   raise "Max ENC limit reached."info',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M', 'HR50017C', 'ID202908', 'JP24S8H0'];    
-    component.renderedFrom='Find ENC';
+    component.renderedFrom='Add ENC';
     component.txtSingleEnc = 'US4FL18M';    
     component.validateAndAddENC();   
     expect(component.messageType).toEqual('info');
@@ -89,7 +89,7 @@ describe('EssAddSingleEncsComponent', () => {
    it('validateAndAddENC should set sigle valid ENC',() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];    
     component.txtSingleEnc = 'US4FL18M';   
-    component.renderedFrom='Find ENC'; 
+    component.renderedFrom='Add ENC'; 
     service.setValidENCs(component.validEnc);
     component.validateAndAddENC();      
     expect(component.displayErrorMessage).toBe(false);

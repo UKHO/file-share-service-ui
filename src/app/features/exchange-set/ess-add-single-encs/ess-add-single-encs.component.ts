@@ -27,7 +27,7 @@ export class EssAddSingleEncsComponent implements OnInit {
   }
 
   validateAndAddENC() {
-     if (this.renderedFrom == 'Find ENC') {
+     if (this.renderedFrom == 'Add ENC') {
       this.addEncInList();
      }
 

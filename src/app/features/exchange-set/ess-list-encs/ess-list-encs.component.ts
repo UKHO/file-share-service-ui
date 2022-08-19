@@ -13,7 +13,7 @@ interface mappedEnc {
   styleUrls: ['./ess-list-encs.component.scss']
 })
 export class EssListEncsComponent implements OnInit {
-  encListPage = 'Find ENC';
+  encListPage = 'Add ENC';
   encList: mappedEnc[];
   public displayedColumns = ['EncName', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
