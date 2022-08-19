@@ -50,7 +50,7 @@ describe('EssListEncsComponent', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('p').textContent).toContain('Select up to 100 ENCs and Make an exchange set');
+    expect(compiled.querySelector('p').textContent).toContain('Select up to 100 ENCs and make an exchange set');
   });
 
   test('getValidEncs should return enc', () => {
