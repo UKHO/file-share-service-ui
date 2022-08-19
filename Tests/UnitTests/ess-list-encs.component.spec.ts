@@ -5,9 +5,13 @@ import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule,
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
   let fixture: ComponentFixture<EssListEncsComponent>;
+  const router = {
+    navigate: jest.fn()
+  };
   const service = {
     getValidEncs : jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
     clearSelectedEncs : jest.fn(),
@@ -24,8 +28,11 @@ describe('EssListEncsComponent', () => {
         {
           provide : EssUploadFileService,
           useValue : service
+        },
+        {
+          provide: Router,
+          useValue: router
         }
-
       ]
     })
     .compileComponents();
@@ -81,11 +88,7 @@ describe('EssListEncsComponent', () => {
     expect(component.selectedEncList.length).toBe(1);
     expect(component.encList.length).toBe(5);
   });
-  test('should show the content of paragraph in exchange set', () => {
-    const fixture = TestBed.createComponent(EssListEncsComponent);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p').textContent).toContain('Select up to 100 ENCs and make an exchange set');
-  });
+  
   test('should show the error message when user select encs more than selection limit', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
@@ -113,7 +116,7 @@ describe('EssListEncsComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('p').textContent).toContain(
-      `Select up to 100 ENCs and make an exchange set`
+      `Select up to 5 ENCs and make an exchange set`
     );
   });
 
