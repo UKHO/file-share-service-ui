@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
-
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { AuthGuard } from '../../src/app/core/services/auth.guard';
-
+import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 describe('AuthGuard', () => {
   let guard: AuthGuard;
   const mockMsalService = {
@@ -13,6 +13,14 @@ describe('AuthGuard', () => {
   };
   const router = {
     navigate : jest.fn()
+  };
+  const service = {
+    getValidEncs : jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
+    clearSelectedEncs : jest.fn(),
+    getSelectedENCs: jest.fn(),
+    infoMessage : true,
+    addSelectedEnc : jest.fn(),
+    removeSelectedEncs : jest.fn(),
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -24,6 +32,10 @@ describe('AuthGuard', () => {
         {
           provide: Router,
           useValue: router
+        },
+        {
+          provide : EssUploadFileService,
+          useValue : service
         }
       ]
     });

@@ -15,12 +15,6 @@
     float: right;
 }
 
-.sortData {
-    position: relative;
-    vertical-align: middle;
-    background-color: #fff;
-}
-
 table th:last-child {
     text-align: right !important;
 }
@@ -35,4 +29,30 @@ table th:last-child {
     table td:last-child{
         text-align: right;
     }
+}
+
+.requestEncBtn{
+    display: flex;
+    justify-content: flex-end;
+}
+.selectionContainer{
+    position: relative;
+    min-height: 50vh;
+    .estimatedBtnHolder{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        p{
+            font-weight: 400;
+            color: #09315b;
+        }
+        .encsize{
+            font-weight: 400;
+            margin-left: 0px;
+        }        
+    }
+}
+.boldEnc{
+    font-weight: 400;
 }
