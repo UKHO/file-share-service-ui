@@ -4,6 +4,9 @@ import { BatchAttribute, BatchFileDetails, BatchFileDetailsRowData, SearchResult
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 import { AnalyticsService } from '../../../core/services/analytics.service';
+import { MsalService } from '@azure/msal-angular';
+import { SilentRequest } from '@azure/msal-browser';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-fss-search-results',
@@ -17,17 +20,28 @@ export class FssSearchResultsComponent implements OnChanges {
   baseUrl: string;
   public removeEventListener: () => void;
   @Output() handleTokenExpiry = new EventEmitter<boolean>();
-  downloadFileWindow:any;
-  downloadAllFileWindow:any;
+  downloadFileWindow: any;
+  downloadAllFileWindow: any;
+  fssSilentTokenRequest: SilentRequest;
+  fssTokenScope: any = [];
+  displayLoader: boolean = false;
+
 
   constructor(private elementRef: ElementRef
     , private fileShareApiService: FileShareApiService
-    , private analyticsService: AnalyticsService) { }
+    , private analyticsService: AnalyticsService
+    , private msalService: MsalService,
+  ) {
+    this.fssTokenScope = AppConfigService.settings["fssConfig"].fssApiScope;
+    this.fssSilentTokenRequest = {
+      scopes: [this.fssTokenScope],
+    };
+  }
 
   ngOnChanges(): void {
     this.searchResultVM = [];
     if (this.searchResult.length > 0) {
-      let currentPage = this.currentPage; 
+      let currentPage = this.currentPage;
       var batches = this.searchResult[0];
       for (var i = 0, srNo = 1; i < batches.length; i++, srNo++) {
         this.searchResultVM.push({
@@ -36,7 +50,7 @@ export class FssSearchResultsComponent implements OnChanges {
           BatchID: { key: 'Batch ID', value: batches[i]['batchId'] },
           BatchPublishedDate: { key: 'Batch published date', value: batches[i]['batchPublishedDate'] },
           ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] },
-          allFilesZipSize:batches[i]['allFilesZipSize'],
+          allFilesZipSize: batches[i]['allFilesZipSize'],
           SerialNumber: ((currentPage - 1) * 10) + srNo
         });
       }
@@ -79,29 +93,30 @@ export class FssSearchResultsComponent implements OnChanges {
 
     return batchFileDetails;
   }
-  
+
   downloadFile(obj: any, fileData: any) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    var filePath = fileData.FileLink;    
+    var filePath = fileData.FileLink;
     if (filePath) {
-      if (!this.fileShareApiService.isTokenExpired()) {//check if token is expired
-        //download file and change the icon to tick when returns true
-        obj.style.pointerEvents = 'none'; //disable download icon after click
-        obj.className = 'fa fa-check';
+      //if (!this.fileShareApiService.isTokenExpired()) {//check if token is expired
+      //download file and change the icon to tick when returns true
+      obj.style.pointerEvents = 'none'; //disable download icon after click
+      obj.className = 'fa fa-check';
 
-        this.downloadFileWindow = window.open(this.baseUrl + filePath);
-        setTimeout(() => {
-          this.closeDownloadFileWindow();
-        }, 5000);
-      }    
-      else {//display "Token expired" message when token is expired        
-        obj.handleTokenExpiry.emit(true);
-      }
+      // this.downloadFileWindow = window.open(this.baseUrl + filePath);
+      // setTimeout(() => {
+      //   this.closeDownloadFileWindow();
+      // }, 5000);
+      this.handleRefreshTokenforDownload(this.baseUrl, filePath);
+      //}    
+      // else {//display "Token expired" message when token is expired        
+      //   obj.handleTokenExpiry.emit(true);
+      // }
     }
   }
 
- closeDownloadFileWindow(){
-    if(!this.downloadFileWindow.closed){
+  closeDownloadFileWindow() {
+    if (!this.downloadFileWindow.closed) {
       this.downloadFileWindow.close();
     }
   }
@@ -110,33 +125,65 @@ export class FssSearchResultsComponent implements OnChanges {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = `/batch/${batchId}/files`;
 
-    //check if token is expired
-    if (!this.fileShareApiService.isTokenExpired()) {
-      this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
-      setTimeout(() => {
-        this.closeDownloadAllFileWindow();
-      }, 5000);
+    // //check if token is expired
+    // //if (!this.fileShareApiService.isTokenExpired()) {
+    //   this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
+    //   setTimeout(() => {
+    //     this.closeDownloadAllFileWindow();
+    //   }, 5000);
 
-      //Filter elements based on batchid attribute 
-      var elements = this.elementRef.nativeElement
-                    .querySelectorAll(`[data-file-download-batch-id="${batchId}"]`);
+    this.handleRefreshTokenforDownload(this.baseUrl, filePath);
 
-      // Download all the files and change the icon to tick.
-      for (let element of elements) {
-        element.style.pointerEvents = 'none';
-        element.className = 'fa fa-check';
-      }
+    //Filter elements based on batchid attribute 
+    var elements = this.elementRef.nativeElement
+      .querySelectorAll(`[data-file-download-batch-id="${batchId}"]`);
+
+    // Download all the files and change the icon to tick.
+    for (let element of elements) {
+      element.style.pointerEvents = 'none';
+      element.className = 'fa fa-check';
     }
-    else {
-      //display "Token expired" message when token is expired        
-      this.handleTokenExpiry.emit(true);
-    }
+    //}
+    // else {
+    //   //display "Token expired" message when token is expired        
+    //   this.handleTokenExpiry.emit(true);
+    // }
 
     this.analyticsService.downloadAll();
   }
 
-  closeDownloadAllFileWindow(){
-    if(!this.downloadAllFileWindow.closed){
+  handleRefreshTokenforDownload(baseUrl: string, filePath: string) {
+    // this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+    //   console.log('Testing:', response);
+      // this.fileShareApiService.refreshToken().subscribe(res => {
+      //   console.log(res);
+      //   this.displayLoader = false;
+        //this.analyticsService.login();
+        this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
+        setTimeout(() => {
+          this.closeDownloadAllFileWindow();
+        }, 5000);
+      //});
+    // }, error => {
+    //   console.log('inside catch');
+    //   this.msalService.instance
+    //     .loginPopup(this.fssSilentTokenRequest)
+    //     .then(response => {
+    //       console.log('Testing:', response);
+    //       this.fileShareApiService.refreshToken().subscribe(res => {
+    //         this.displayLoader = false;
+    //         //this.analyticsService.login();
+    //         this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
+    //         setTimeout(() => {
+    //           this.closeDownloadAllFileWindow();
+    //         }, 5000);
+    //       });
+    //     })
+    // })
+  }
+
+  closeDownloadAllFileWindow() {
+    if (!this.downloadAllFileWindow.closed) {
       this.downloadAllFileWindow.close();
     }
   }

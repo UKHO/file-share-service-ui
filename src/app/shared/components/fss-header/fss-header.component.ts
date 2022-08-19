@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
-import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
+import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { AuthenticationResult, InteractionStatus } from '@azure/msal-browser';
+import { AuthenticationResult, InteractionStatus, PopupRequest, PublicClientApplication } from '@azure/msal-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
@@ -21,7 +21,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
   firstName: string = '';
   lastName: string = '';
   isActive: boolean = false;
-  constructor(private msalService: MsalService,
+  constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
+    private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
     private fileShareApiService: FileShareApiService,
@@ -62,6 +63,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
         navActive: this.isActive
       }
     ];
+    
+    let msalInstance: PublicClientApplication = this.msalService.instance as PublicClientApplication;
+    msalInstance["browserStorage"].clear();
+
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -70,18 +75,18 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
         this.isPageOverlay.emit(true);
       });
 
-    this.msalBroadcastService.inProgress$.pipe(
-      filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
-      .subscribe(() => {
-        this.isPageOverlay.emit(true);
-      })
+    // this.msalBroadcastService.inProgress$.pipe(
+    //   filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
+    //   .subscribe(() => {
+    //     this.isPageOverlay.emit(true);
+    //   })
 
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None))
       .subscribe(() => {
         this.isPageOverlay.emit(false);
-        this.handleSigninAwareness();
+        //this.handleSigninAwareness();
       });
 
     this.title = AppConfigService.settings["fssConfig"].fssTitle;
@@ -96,7 +101,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
-    this.handleSigninAwareness();
+    //this.handleSigninAwareness();
   }
 
   setSkipToContent() {
@@ -117,11 +122,14 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
 
 
   logInPopup() {
-    this.msalService.loginPopup().subscribe(response => {
+    this.msalService.loginPopup({...this.msalGuardConfig.authRequest} as PopupRequest).subscribe((response: AuthenticationResult) =>
+     {
+      console.log(response);
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
-        localStorage.setItem('idToken', response.idToken);
+        console.log('accessToken', response.accessToken);
+        //localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
         this.isActive = true;
@@ -179,30 +187,30 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
   }
 
   /**Once signed in handles user redirects and also handle expiry if token expires.*/
-  handleSigninAwareness() {
-    const date = new Date()
-    const account = this.msalService.instance.getAllAccounts()[0];
-    if (account != null) {
-      this.getClaims(account.idTokenClaims);
-      if (localStorage['claims'] !== undefined) {
-        const claims = JSON.parse(localStorage['claims']);
-        if (this.userName == claims['given_name']) {
-          this.msalService.instance.setActiveAccount(account);
-          if (this.authOptions?.isSignedIn()) {
-            // Handling token expiry
-            if (new Date(1000 * claims['exp']).toISOString() < date.toISOString()) {
-              this.msalService.loginPopup().subscribe(response => {
-                localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-                localStorage.setItem('idToken', response.idToken);
-              });
-            }
-            this.route.navigateByUrl('/search');
-          }
-        }
-      }
-    }
-    this.getMenuItems();
-  }
+  // handleSigninAwareness() {
+  //   const date = new Date()
+  //   const account = this.msalService.instance.getAllAccounts()[0];
+  //   if (account != null) {
+  //     this.getClaims(account.idTokenClaims);
+  //     if (localStorage['claims'] !== undefined) {
+  //       const claims = JSON.parse(localStorage['claims']);
+  //       if (this.userName == claims['given_name']) {
+  //         this.msalService.instance.setActiveAccount(account);
+  //         if (this.authOptions?.isSignedIn()) {
+  //           // Handling token expiry
+  //           if (new Date(1000 * claims['exp']).toISOString() < date.toISOString()) {
+  //             this.msalService.loginPopup().subscribe(response => {
+  //               localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
+  //               localStorage.setItem('idToken', response.idToken);
+  //             });
+  //           }
+  //           this.route.navigateByUrl('/search');
+  //         }
+  //       }
+  //     }
+  //   }
+  //   this.getMenuItems();
+  // }
   getMenuItems(){
     if(this.authOptions?.isSignedIn()){
       return this.menuItems;

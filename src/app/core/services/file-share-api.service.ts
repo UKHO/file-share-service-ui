@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
     baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
+    essBaseUrl = AppConfigService.settings['fssConfig'].essApiUrl;
     stateManagementUrl = AppConfigService.settings['fssConfig'].stateManagementApiUrl;
 
     constructor(private http: HttpClient) { }
@@ -32,8 +33,8 @@ export class FileShareApiService {
         return this.http.post(this.stateManagementUrl + '/logout', null);
     }
 
-    refreshToken(): Observable<any> {
-        return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
+    refreshToken(): Observable<any> {    
+           return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
     }
 
     isTokenExpired() {
@@ -56,5 +57,9 @@ export class FileShareApiService {
 
     getAttributeSearchResult(payload: string): Observable<any> {
         return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload));
+    }
+
+    uploadEnc(): Observable<any> {
+        return this.http.post<any>(this.essBaseUrl + "/productData/productIdentifiers", ["DE5NOBRK"]);
     }
 }

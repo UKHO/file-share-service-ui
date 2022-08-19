@@ -94,7 +94,6 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.operators = this.fssSearchTypeService.getOperators();
     if (!localStorage['batchAttributes']) {
       this.displayLoader = true;
-      if (!this.fileShareApiService.isTokenExpired()) {
         this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
           this.refreshFields(batchAttributeResult);
@@ -102,10 +101,6 @@ export class FssAdvancedSearchComponent implements OnInit {
           this.displayLoader = false;
           this.analyticsService.searchInIt();
         });
-      }
-      else {
-        this.handleTokenExpiry();
-      }
     }
     else {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);

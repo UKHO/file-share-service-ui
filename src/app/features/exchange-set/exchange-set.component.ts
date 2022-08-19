@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FileShareApiService } from 'src/app/core/services/file-share-api.service';
 
 @Component({
   selector: 'app-exchange-set',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class ExchangeSetComponent implements OnInit {
 
-  constructor() {
+  constructor(private fileShareApiService: FileShareApiService) {
    }
 
   rgAddUploadENC: string;  
@@ -18,6 +19,9 @@ export class ExchangeSetComponent implements OnInit {
   ngOnInit(): void {
     this.radioUploadEncValue="UploadEncFile";
     this.radioAddEncValue="AddSingleEnc";
+    this.fileShareApiService.uploadEnc().subscribe((result) => {
+      console.log(result);
+    });
   }
 
 }
