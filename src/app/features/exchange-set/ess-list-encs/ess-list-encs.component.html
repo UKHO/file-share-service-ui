@@ -5,11 +5,11 @@
       </ukho-dialogue>
   </div>
   <h1 id="main" tabindex="-1">Exchange sets</h1>
-  <p>Select up to {{maxEncSelectionLimit}} ENCs and make an exchange set</p>
+  <p>Select up to 100 ENCs and make an exchange set</p>
   <div class="showEncListWrapper">
   <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0">
-              <h2><span  class="boldEnc">Your ENCs</span> <span class="showListEncTOtal boldEnc">Showing {{encList && encList.length > 0 ? encList.length : 0}} ENCs in permit file</span></h2>
+              <h3>Your ENCs<span class="showListEncTOtal boldEnc">Showing 0 Enc's in permitfile</span></h3>
               <table ukhoSort ukho-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
                   <ng-container ukhoColumnDef="enc">
                     <th  ukhoSortHeader ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
@@ -18,7 +18,7 @@
                   <ng-container ukhoColumnDef="Choose">
                       <th ukho-header-cell *ukhoHeaderCellDef>Choose</th>
                       <td ukho-cell *ukhoCellDef="let element">
-                          <ukho-checkbox [checked]="element.selected" (change) ="handleChange(element.enc)" class="selectEnc" attr.aria-label="{{element.enc}}"></ukho-checkbox>
+                          <ukho-checkbox [checked]="element.selected" class="selectEnc" attr.aria-label="{{element.enc}}"></ukho-checkbox>
                       </td>
                     </ng-container>
                   <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
