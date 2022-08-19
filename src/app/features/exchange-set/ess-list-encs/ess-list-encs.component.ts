@@ -11,7 +11,7 @@ interface MappedEnc {
 @Component({
   selector: 'app-ess-list-encs',
   templateUrl: './ess-list-encs.component.html',
-  styleUrls: ['./ess-list-encs.component.scss'],
+  styleUrls: ['./ess-list-encs.component.scss']
 })
 export class EssListEncsComponent implements OnInit {
   encList: MappedEnc[];

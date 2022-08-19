@@ -5,7 +5,7 @@ import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule,
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
-describe('EssUploadResultsComponent', () => {
+describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
   let fixture: ComponentFixture<EssListEncsComponent>;
   const service = {

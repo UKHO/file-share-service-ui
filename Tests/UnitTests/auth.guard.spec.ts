@@ -23,6 +23,12 @@ describe('AuthGuard', () => {
     removeSelectedEncs : jest.fn(),
   };
   beforeEach(() => {
+    AppConfigService.settings = {
+      essConfig: {
+      MaxEncLimit: 100,
+      MaxEncSelectionLimit : 5
+      }
+    };
     TestBed.configureTestingModule({
       providers : [
         {
@@ -63,6 +69,22 @@ describe('AuthGuard', () => {
     } as RouterStateSnapshot)).toEqual(true);
   });
 
+  it('canActivate should return true if account exists and url is /enc-list' , () => {
+    mockMsalService.instance.getActiveAccount.mockReturnValue({name: 'test123'});
+    const routerNavigation = jest.spyOn(router,'navigate');
+    expect(guard.canActivate(new ActivatedRouteSnapshot(), {
+      url : '/exchangesets/enc-list'
+    } as RouterStateSnapshot)).toEqual(true);
+  });
+  it('canActivate should return false if account exists and enc list is null and url is /enc-list' , () => {
+    mockMsalService.instance.getActiveAccount.mockReturnValue({name: 'test123'});
+    const routerNavigation = jest.spyOn(router,'navigate');
+    service.getValidEncs.mockReturnValue([]);
+    expect(guard.canActivate(new ActivatedRouteSnapshot(), {
+      url : '/exchangesets/enc-list'
+    } as RouterStateSnapshot)).toEqual(false);
+    expect(router.navigate).toHaveBeenCalledWith(['exchangesets']);
+  });
   it('canActivate should return false and call router.navigation with [""] if account is null and url is /search' , () => {
     mockMsalService.instance.getActiveAccount.mockReturnValue(null);
     const routerNavigation = jest.spyOn(router,'navigate');

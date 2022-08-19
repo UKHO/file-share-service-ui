@@ -10,7 +10,6 @@ describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
   let fixture: ComponentFixture<EssUploadFileComponent>;
   let essUploadFileService: EssUploadFileService;
-
   const getEncData_csv = () => {
     let data = 'AU220150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
@@ -61,7 +60,7 @@ describe('EssUploadFileComponent', () => {
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule],
       declarations: [EssUploadFileComponent],
       providers: [
-        EssUploadFileService ,
+        EssUploadFileService,
         {
           provide : Router,
           useValue : router
@@ -75,7 +74,7 @@ describe('EssUploadFileComponent', () => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
-        MaxEncSelectionLimit:5
+        MaxEncSelectionLimit : 5
       }
     };
 
@@ -134,7 +133,20 @@ describe('EssUploadFileComponent', () => {
       component.processEncFile(encDataFunc);
       expect(component.validEncList.length).toBe(expectedResult);
     });
-
+    it.each`
+    fileType           |fileName         | getEncData                     | encDataFunc                 | expectedResult
+    ${'text/csv'}      |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
+    ${'text/plain'}    |${'test.txt'}    | ${getInvalidEncData()}         | ${getInvalidEncData()}      |  ${1}
+    `('processEncFile should set raise "Some values have not been added to list." info',
+    ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
+      const file = new File([getEncData], fileName);
+      Object.defineProperty(file, 'type', { value: fileType });
+      component.encFile = file;
+      component.processEncFile(encDataFunc);
+      expect(component.validEncList.length).toEqual(expectedResult);
+      expect(component.messageType).toEqual('info');
+      expect(component.messageDesc).toEqual('Some values have not been added to list.');
+    });
   it.each`
      encDataFunc
 	 ${getEncData_csv()}  
@@ -150,7 +162,7 @@ describe('EssUploadFileComponent', () => {
       expect(component.messageDesc).toEqual('Please upload valid ENC file.');
     });
 
-  it.each`
+    it.each`
     fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getNoEncData_csv()}  |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getNoEncData()}      |  ${1}
@@ -181,6 +193,5 @@ describe('EssUploadFileComponent', () => {
     expect(component.messageDesc).toEqual('Please select a .csv or .txt file');
     expect(component.displayErrorMessage).toBe(true);
   });
-
 });
 
