@@ -8,13 +8,14 @@ import { EssUploadFileService } from '../../../core/services/ess-upload-file.ser
   styleUrls: ['./ess-add-single-encs.component.scss']
 })
 export class EssAddSingleEncsComponent implements OnInit {
-  @Input() renderedFrom = 'Proceed';
-  
+  @Input() renderedFrom: string;
+  @Input() btnText: string;
+
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
-  
+
   txtSingleEnc: string = "";
 
   constructor(private essUploadFileService: EssUploadFileService,
@@ -24,10 +25,10 @@ export class EssAddSingleEncsComponent implements OnInit {
   }
 
   validateAndAddENC() {
-    if (this.renderedFrom == 'Add ENC') {
-      
+    if (this.renderedFrom == 'encList') {
+
     }
-    else {
+    else if ((this.renderedFrom == 'essHome')) {
       this.addSingleEncToList();
     }
   }

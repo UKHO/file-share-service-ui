@@ -19,8 +19,8 @@ describe('EssAddSingleEncsComponent', () => {
       providers: [
         EssUploadFileService,
         {
-          provide : Router,
-          useValue : router
+          provide: Router,
+          useValue: router
         }
       ],
       schemas: [NO_ERRORS_SCHEMA]
@@ -44,25 +44,27 @@ describe('EssAddSingleEncsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('validateAndProcessENC should display error when ENC field is blank', () => {
+  it('validateAndAddENC should display error when ENC field is blank', () => {
     component.txtSingleEnc = '';
+    component.renderedFrom = 'essHome';
     component.validateAndAddENC();
     expect(component.messageType).toEqual('error');
     expect(component.messageDesc).toEqual('Please enter ENC number');
     expect(component.displayErrorMessage).toBe(true);
   });
 
-  it('validateAndProcessENC should display error when ENC number is invalid', () => {
+  it('validateAndAddENC should display error when ENC number is invalid', () => {
     component.txtSingleEnc = 'AS1212121';
+    component.renderedFrom = 'essHome';
     component.validateAndAddENC();
     expect(component.messageType).toEqual('error');
     expect(component.messageDesc).toEqual('Invalid ENC number');
     expect(component.displayErrorMessage).toBe(true);
   });
 
-  it('validateAndProcessENC should set validENC number', () => {
+  it('validateAndAddENC should set validENC number', () => {
     component.txtSingleEnc = 'AS121212';
-    component.validateAndAddENC();    
+    component.validateAndAddENC();
     expect(component.displayErrorMessage).toBe(false);
   });
 });

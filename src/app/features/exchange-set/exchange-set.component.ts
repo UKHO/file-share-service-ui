@@ -10,6 +10,9 @@ export class ExchangeSetComponent implements OnInit {
   rgAddUploadENC: string;  
   radioUploadEncValue:string;
   radioAddEncValue:string;
+
+  addSingleEncRenderFrom: string ='essHome';
+  addSingleEncBtnText :string = 'Proceed';
   constructor() {
    }
    
