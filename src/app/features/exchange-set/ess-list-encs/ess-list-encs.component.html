@@ -30,7 +30,7 @@
         </table>
       </div>
       <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()">+ Add another ENC</a>
-      <app-ess-add-single-encs [renderedFrom]="encListPage" *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
+      <app-ess-add-single-encs [renderedFrom]="addSingleEncRenderFrom" [btnText]="addSingleEncBtnText" *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
 
     </div>
 

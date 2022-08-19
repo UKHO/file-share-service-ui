@@ -13,7 +13,8 @@ interface mappedEnc {
   styleUrls: ['./ess-list-encs.component.scss']
 })
 export class EssListEncsComponent implements OnInit {
-  encListPage = 'Add ENC';
+  addSingleEncRenderFrom :string = 'encList';
+  addSingleEncBtnText :string = 'Add ENC';
   encList: mappedEnc[];
   public displayedColumns = ['EncName', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
