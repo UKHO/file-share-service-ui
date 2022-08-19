@@ -168,6 +168,7 @@ stages:
         dependsOn: DevDeploy
         pool: $(WindowPool)
         displayName: "Functional Tests"
+        timeoutInMinutes: 30
         variables: 
          autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
         workspace:
@@ -215,6 +216,7 @@ stages:
         dependsOn: FunctionalTests
         pool: $(WindowPool)
         displayName: "End-To-End Tests"
+        timeoutInMinutes: 30
         steps:
            - checkout: self
            - task: NodeTool@0
@@ -252,6 +254,7 @@ stages:
         dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Accessibility Tests"
+        timeoutInMinutes: 30
         steps:
            - checkout: self
            - task: NodeTool@0
@@ -312,6 +315,7 @@ stages:
         dependsOn: QAdeploy
         pool: $(WindowPool)
         displayName: "Functional Tests"
+        timeoutInMinutes: 30
         variables: 
          autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
         workspace:
@@ -353,6 +357,7 @@ stages:
         dependsOn: FunctionalTests
         pool: $(WindowPool)
         displayName: "End-To-End Tests"
+        timeoutInMinutes: 30
         steps:
            - checkout: self
            - task: NodeTool@0
@@ -390,6 +395,7 @@ stages:
         dependsOn: E2ETests
         pool: $(WindowPool)
         displayName: "Acccessibility Tests"
+        timeoutInMinutes: 30
         workspace:
          clean: all
         steps:
