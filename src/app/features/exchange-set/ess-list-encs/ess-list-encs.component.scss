@@ -13,13 +13,6 @@
 
 .showListEncTOtal {
     float: right;
-    line-height: 58px;
-}
-
-.sortData {
-    position: relative;
-    vertical-align: middle;
-    background-color: #fff;
 }
 
 table th:last-child {
@@ -31,6 +24,7 @@ table th:last-child {
     height: 480px;
     margin: 0px 39px;
 }
+
 .requestEncBtn{
     display: flex;
     justify-content: flex-end;
