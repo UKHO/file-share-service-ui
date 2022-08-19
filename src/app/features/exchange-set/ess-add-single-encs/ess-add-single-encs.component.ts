@@ -9,7 +9,7 @@ import { EssUploadFileService } from '../../../core/services/ess-upload-file.ser
   styleUrls: ['./ess-add-single-encs.component.scss']
 })
 export class EssAddSingleEncsComponent implements OnInit {
-  @Input() renderedFrom = '';
+  @Input() renderedFrom = 'Proceed';
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
@@ -27,7 +27,7 @@ export class EssAddSingleEncsComponent implements OnInit {
   }
 
   validateAndAddENC() {
-     if (this.renderedFrom == 'encList') {
+     if (this.renderedFrom == 'Find ENC') {
       this.addEncInList();
      }
 
