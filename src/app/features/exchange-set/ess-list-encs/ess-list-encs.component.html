@@ -9,7 +9,7 @@
   <div class="showEncListWrapper">
   <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0">
-              <h3>Your ENCs<span class="showListEncTOtal boldEnc">Showing 0 ENCs in permit file</span></h3>
+              <h3>Your ENCs<span class="showListEncTOtal boldEnc">Showing 5 ENCs in permit file</span></h3>
               <table ukhoSort ukho-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
                   <ng-container ukhoColumnDef="enc">
                     <th  ukhoSortHeader ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
@@ -28,7 +28,7 @@
   </div>
   <div class="divider"></div>
   <div style="flex: 3" class="selectionContainer">
-      <h2> <span class="boldEnc">Your Selection</span> <span class="showListEncTOtal boldEnc">{{selectedEncList && selectedEncList.length  ? selectedEncList.length : 0}} ENCs selected</span></h2>
+    <h3>Your ENCs<span class="showListEncTOtal boldEnc">Showing 5 ENCs in permit file</span></h3>
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
         <table ukho-table [dataSource]="selectedEncList" class="enc-list-table selectionTable">
                 <ng-container ukhoColumnDef="enc">

@@ -84,7 +84,7 @@ describe('EssListEncsComponent', () => {
   test('should show the content of paragraph in exchange set', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p').textContent).toBe('Select up to 5 ENCs and make an exchange set');
+    expect(fixture.nativeElement.querySelector('p').textContent).toContain('Select up to 100 ENCs and make an exchange set');
   });
   test('should show the error message when user select encs more than selection limit', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
@@ -113,7 +113,7 @@ describe('EssListEncsComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('p').textContent).toContain(
-      `Select up to ${service.getValidEncs().length} ENCs and make an exchange set`
+      `Select up to 100 ENCs and make an exchange set`
     );
   });
 
