@@ -5,21 +5,24 @@ import { ButtonModule,TextinputModule, DialogueModule } from '@ukho/design-syste
 import {jest} from '@jest/globals';
 import { FssSimplifiedSearchComponent } from '../../src/app/features/fss-search/fss-simplified-search/fss-simplified-search.component';
 import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
-
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { By } from '@angular/platform-browser';
 describe('FssSimplifiedSearchComponent', () => {
   let component: FssSimplifiedSearchComponent;
   let fixture: ComponentFixture<FssSimplifiedSearchComponent>;
   let searchFilterservice: FssSearchFilterService;
-
+  let route:Router;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule,
+      imports: [RouterTestingModule,CommonModule,
         ButtonModule, TextinputModule, DialogueModule],
       declarations: [ FssSimplifiedSearchComponent ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
     searchFilterservice = TestBed.inject(FssSearchFilterService);
+    route = TestBed.inject(Router);   
   });
 
   beforeEach(() => {
@@ -64,4 +67,21 @@ describe('FssSimplifiedSearchComponent', () => {
     expect(filterExpression).toEqual(expectedfilterExpression);
   });
 
-});
+  test('should show the content of exchange sets on search page', () => {
+    const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('p').textContent).toBe('You can make a small (100 ENC), custom exchange set here and download it');
+  });
+
+  test('should show the subtitle of exchange sets on search page', () => {
+    const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('h4').textContent).toBe('Exchange sets');
+  });
+
+  test('should show Make an exchange set Link', () => {
+    const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('switchToAdvanced switchToESS'))).toBeTruthy();
+  });
+ });

@@ -1,7 +1,20 @@
-<div>
+<div class="searchMainDiv">
+    <div class="simplifiedSearchDiv">
+      
     <div class="simplifiedSection">
         <ukho-textinput label="Search" class="simplifiedTextbox" [(ngModel)]="fieldValue"  (keyup.enter)="getSimplifiedSearchResult()"></ukho-textinput>
         <ukho-button class="siplifideSearchBtn" (click)="getSimplifiedSearchResult()">Search</ukho-button>
     </div>
     <a href="javascript:void(0)" class="switchToAdvanced" (click)="searchToSimplifiedSearch()">Advanced Search</a>
+        </div>
+
+    <div class="exchangeSetDiv">
+  
+    <h4>Exchange sets</h4>
+    <p class="light exchangeSetPara">You can make a small (100 ENC), custom exchange set
+      here and download it</p>
+    <a href="javascript:void(0)" class="switchToAdvanced switchToESS"  (click)="navigatetoexchangesets()">Make an exchange set</a>
+
+    </div>
+
 </div>
