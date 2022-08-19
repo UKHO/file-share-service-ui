@@ -45,9 +45,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
       interactionType: AppConfigService.settings["b2cConfig"].interactionType,
       protectedResourceMap: new Map([
         [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].fssApiScope]],
-        [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].essApiScope]],
-        [AppConfigService.settings["fssConfig"].stateManagementApiUrl, [AppConfigService.settings["fssConfig"].fssApiScope]]
-      ]),
+        [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].essApiScope]],          
+    ]),
     };
   }
 @NgModule({
