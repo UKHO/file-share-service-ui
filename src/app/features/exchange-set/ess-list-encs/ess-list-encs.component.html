@@ -29,19 +29,18 @@
           <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </div>
-        </div>
-    
+      <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()">+ Add another ENC</a>
+      <app-ess-add-single-encs [renderedFrom]="encListPage" *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
+
+    </div>
+
     <div class="divider"></div>
-   <div style="flex: 3">
-     
+    <div style="flex: 3">
+
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
-       
+
       </div>
     </div>
   </div>
-  <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()">+ Add another ENC</a>
+
 </div>
-<app-ess-add-single-encs  [renderedFrom]="encListPage"  *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
-
-
-

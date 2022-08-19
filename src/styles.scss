@@ -90,6 +90,22 @@ button.fileDownload{
 	}
 }
 
+
+.showEncListWrapper{
+	app-ess-add-single-encs{
+		.container{
+			width:100% !important;
+			margin: 20px 0 !important;
+			.addSingleFileSection{
+				.addSingleFileTextbox{
+					width: 65%;
+				}
+			} 
+		}
+
+	}
+}
+
 ukho-expansion{
 	section.expansion.bordered{
 		border-bottom: none !important;
