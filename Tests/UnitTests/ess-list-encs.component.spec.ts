@@ -84,7 +84,7 @@ describe('EssListEncsComponent', () => {
   test('should show the content of paragraph in exchange set', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p').textContent).toBe('Select up to 5 ENCs and Make an exchange set');
+    expect(fixture.nativeElement.querySelector('p').textContent).toContain('Select up to 100 ENCs and make an exchange set');
   });
   test('should show the error message when user select encs more than selection limit', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
@@ -94,4 +94,33 @@ describe('EssListEncsComponent', () => {
     const dialog = fixture.debugElement.nativeElement.querySelector('ukho-dialogue');
     expect(dialog).not.toBeNull();
   });
+
+  it('should create EssListEncsComponent', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  test('should render text inside an h1 tag', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('Exchange sets');
+  });
+
+  test('should render text inside an p tag', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('p').textContent).toContain(
+      `Select up to 100 ENCs and make an exchange set`
+    );
+  });
+
+  test('getValidEncs should return enc', () => {
+    let encList = service.getValidEncs();
+    expect(encList.length).toEqual(5);
+  });
+
+
 });
