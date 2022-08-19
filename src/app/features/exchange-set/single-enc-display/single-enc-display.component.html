@@ -1,0 +1,39 @@
+<a href="javascript:void(0)"  class="linkStartAgain" routerLink="StartAgain">&lt; Start again</a>
+<div class="container">
+  <h1 id="main" tabindex="-1">Exchange sets</h1>
+  <p>Select up to 100 ENCs and Make an exchange set</p>
+  <div class="showEncListWrapper">
+    <div style="flex: 5">
+      <div *ngIf="validEnc && validEnc.length > 0">
+        <h3>Your ENCs<span class="showListEncTOtal">Showing {{validEnc.length}} Enc's</span></h3>
+        <ul><li *ngFor="let Enc of validEnc">{{Enc.enc}}</li></ul>
+     <table ukho-table [dataSource]="validEnc">
+
+          <ng-container ukhoColumnDef="EncName">
+
+            <th ukho-header-cell *ukhoHeaderCellDef >ENC name</th>
+
+            <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
+
+          </ng-container>
+
+          <ng-container ukhoColumnDef="Choose">
+
+            <th ukho-header-cell *ukhoHeaderCellDef style="text-align:center;">Choose</th>
+
+            <td ukho-cell *ukhoCellDef="let element">
+
+               <!-- <ukho-checkbox  class="selectEnc"></ukho-checkbox> -->
+            </td>
+
+          </ng-container>
+
+          <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
+
+          <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
+
+       </table>  
+      </div>
+    </div>
+    
+</div>

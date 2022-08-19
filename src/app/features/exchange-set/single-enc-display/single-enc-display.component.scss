@@ -1,0 +1,34 @@
+.StartAgain{
+    font-size: 80%;
+    font-weight: bold;
+    color:#09315b; ;
+
+}
+.showEncListWrapper {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+.showListEncTOtal {
+    float: right;
+    line-height: 58px;
+}
+table th:last-child {
+    text-align: right !important;
+}
+.selectEnc {
+    float: right;
+    position: relative;
+    top: -7px;
+}
+.divider {
+    border: 1px solid #d8d8d8;
+    height: 480px;
+    margin: 0px 39px;
+}
+.showSelectedEncWrapper{
+    flex:3;
+    table td:last-child{
+        text-align: right;
+    }
+}

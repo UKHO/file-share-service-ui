@@ -1,10 +1,66 @@
-<div class="container">
-<div class="addSingleFileSection">
-    <ukho-textinput class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"></ukho-textinput>
-    <br/>
-    <ukho-button>
-    Proceed
-    </ukho-button>
-</div>    
-</div>
+<!-- <div class="container">
+  <app-single-enc-display [NewEncNumber]="NewEnc"></app-single-enc-display> -->
+    
+       <!-- <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
+            <h3>{{messageDesc}}</h3>
+        </ukho-dialogue>
+    </div> 
+ <form class="form" [formGroup]="AddSEnc" (ngSubmit)="onSubmit()">
+  <div class="form-group">
 
+    <ukho-textinput class="addSingleFileTextbox"  label="Add a single ENC" placeholder="Type ENC cell name here"
+        formControlName="EncADD" ></ukho-textinput>
+        <span class="text-danger"
+                                  *ngIf="(registerFormControl.EncADD.touched || submitted) && registerFormControl.EncADD.errors?.rquired">
+        ENC Numbers Not Added</span>
+        <span class="text-danger" *ngIf="registerFormControl.EncADD.touched && registerFormControl.EncADD.errors?.invalidEnc">
+            ENC Number is Invalid
+        </span>
+          
+            <br/>
+             <ukho-button   class="uploadEnc" [disabled]="!AddSEnc.valid"  routerLink="AddEnc" >Proceed</ukho-button> 
+        </div>
+        </form>
+        <br>
+
+        <div *ngIf="submitted" >
+            <ukho-card>
+                <table class="Enctable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Enc Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td>{{NewEnc}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ukho-card>
+        </div>
+
+</div>
+ -->
+ <div class="container">
+    <form class="form" [formGroup]="Form" (ngSubmit)="Submit()">
+        <div class="form-group">
+    <div class="addSingleFileSection">
+        <ukho-textinput class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"
+        formControlName="EncADD"></ukho-textinput>
+        <br />
+        <ukho-button class="uploadEnc"  [disabled]="!Form.valid">
+            Proceed
+        </ukho-button>
+<br>
+        <span class="text-danger"
+                                  *ngIf="(registerFormControl.EncADD.touched || submitted) && registerFormControl.EncADD.errors?.rquired">
+        ENC Numbers Not Added</span>
+        <span class="text-danger" *ngIf="registerFormControl.EncADD.touched && registerFormControl.EncADD.errors?.invalidEnc">
+            ENC Number is Invalid
+        </span>
+    </div>
+        </div>
+    </form>
+
+</div>

@@ -1,5 +1,5 @@
-import { FormsModule } from '@angular/forms';
-import { DialogueModule, CardModule, ButtonModule, TextinputModule, FileInputModule, RadioModule, RadioGroupModule } from '@ukho/design-system';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogueModule, CardModule, ButtonModule, TextinputModule, FileInputModule, RadioModule, RadioGroupModule,TableModule,CheckboxModule } from '@ukho/design-system';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExchangeSetRoutingModule } from './exchange-set-routing.module';
@@ -23,7 +23,10 @@ import { EssAddSingleEncsComponent } from './ess-add-single-encs/ess-add-single-
     RadioModule,
     FileInputModule,
     RadioGroupModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    TableModule,
+    CheckboxModule
   ]
 })
 export class ExchangeSetModule { }

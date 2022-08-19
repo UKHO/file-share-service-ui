@@ -57,4 +57,8 @@ export class EssUploadFileService {
       .split('\n')
       .map((enc: string) => enc.trim());
   }
+  setValidSingleEnc(signleValidEnc: string) {
+    this.validEncs = [];
+    this.validEncs.push(signleValidEnc);
+  }
 }
