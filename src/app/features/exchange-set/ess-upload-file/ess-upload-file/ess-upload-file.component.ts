@@ -15,7 +15,6 @@ export class EssUploadFileComponent implements OnInit {
   displayErrorMessage = false;
   validEncList: string[];
   encFile: File;
-  maxEncLimit: number;
   // public displayedColumns = ['Cell name', 'Choose'];
   @Output() ShowEssUploadClicked = new EventEmitter<boolean>(false);
   constructor(private essUploadFileService: EssUploadFileService,
@@ -23,7 +22,6 @@ export class EssUploadFileComponent implements OnInit {
 
   ngOnInit(): void {
     this.essUploadFileService.infoMessage = false;
-    this.maxEncLimit = Number.parseInt(AppConfigService.settings['essConfig'].MaxEncLimit , 10);
   }
 
   uploadListener($event: any): void {

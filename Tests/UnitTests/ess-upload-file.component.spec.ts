@@ -213,15 +213,17 @@ describe('EssUploadFileComponent', () => {
     expect(component.displayErrorMessage).toBe(true);
   });
 
-  it('should set infomessage to true if enc list is greater than MaxEncLimit' , () => {
-    const file = new File([getNEncData()], 'test.txt');
-    Object.defineProperty(file, 'type', { value: 'text/plain' });
-    component.encFile = file;
-    expect(component.validEncList).toBeUndefined();
-    expect(essUploadFileService.infoMessage).toBeFalsy();
-    component.processEncFile(getNEncData());
-    expect(essUploadFileService.infoMessage).toBeTruthy();
-    expect(component.validEncList.length).toBeLessThan(component.maxEncLimit);
-  });
+  it.each`
+  encDataFunc       | expectedResult
+  ${getNEncData}    | ${true}
+  ${getEncData}     | ${false}
+    `('infomessage is true when enc list count exceeds MaxEncLimit',
+    ({ encDataFunc, expectedResult }: { encDataFunc: () => string,  expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      component.processEncFile(fileContent);
+      expect(essUploadFileService.infoMessage).toBe(expectedResult);
+    });
 });
-
