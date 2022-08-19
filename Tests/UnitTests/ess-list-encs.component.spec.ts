@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component'; 
+import { FormsModule } from '@angular/forms';
+import { of } from 'rxjs';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -20,12 +22,14 @@ describe('EssListEncsComponent', () => {
     infoMessage : true,
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
+    getNotifySingleEnc : jest.fn().mockReturnValue(of(true))
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ EssListEncsComponent,
         EssAddSingleEncsComponent ],
-      imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule],
+      // eslint-disable-next-line max-len
+      imports: [FormsModule,CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule],
       providers: [
         {
         provide : Router,
