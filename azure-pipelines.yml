@@ -111,24 +111,24 @@ stages:
               npm run build
             displayName: 'npm build'
           
-          # - script: |
-          #    npm run test:unit
-          #   continueOnError: false
-          #   displayName: 'Unit test with Jest'
+          - script: |
+             npm run test:unit
+            continueOnError: false
+            displayName: 'Unit test with Jest'
 
-          # - task: PublishTestResults@2
-          #   condition: succeededOrFailed()
-          #   inputs:
-          #     testRunner: 'JUnit'
-          #     testResultsFiles: 'junit.xml'
-          #     testRunTitle: Unit Test Results
-          #   displayName: 'Publish Unit Test Results'
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testRunner: 'JUnit'
+              testResultsFiles: 'junit.xml'
+              testRunTitle: Unit Test Results
+            displayName: 'Publish Unit Test Results'
 
-          # - task: PublishCodeCoverageResults@1
-          #   inputs:
-          #     codeCoverageTool: 'Cobertura'
-          #     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-          #     reportDirectory: 'coverage/'
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: 'Cobertura'
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+              reportDirectory: 'coverage/'
 
           - task: PublishBuildArtifacts@1
             displayName: "Publish angularapp artifacts"

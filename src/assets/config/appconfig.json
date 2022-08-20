@@ -2,51 +2,51 @@
   "Environment": "",
   "GoogleTagManagerId":"Not-Needed-For-Running-Locally",
   "b2cConfig": {
-  "tenantName": "",
-  "clientId": "",
-  "redirectUri": "/",
-  "postLogoutRedirectUri": "/logout.html",
-  "navigateToLoginRequestUrl": true,
-  "signUpSignIn": "B2C_1A_SignIn_SPA",
-  "editProfile": "B2C_1A_UserProfile",
-  "cacheLocation": "localStorage",
-  "storeAuthStateInCookie": true,
-  "interactionType": "popup"
+    "tenantName": "",
+    "clientId": "",
+    "redirectUri": "/",
+    "postLogoutRedirectUri": "/logout.html",
+    "navigateToLoginRequestUrl": true,
+    "signUpSignIn": "B2C_1A_SignIn_SPA",
+    "editProfile": "B2C_1A_UserProfile",
+    "cacheLocation": "localStorage",
+    "storeAuthStateInCookie": true,
+    "interactionType": "popup"
   },
   "fssConfig": {
-  "copyright": "@ Crown copyright 2021 UK Hydrographic office",
-  "fssTitle": "File Share Service",
-  "displayPopularSearch": true,
-
-  "displaySimplifiedSearchLink": true,
-  "phase": "beta",
-  "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-  "apiUrl": "https://uatadmiralty.azure-api.net/fss-dev",
-  "fssApiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/FileShareServiceAPI/Public",
-  "stateManagementApiUrl": "https://uatadmiralty.azure-api.net/fss-ui-auth-dev",
-  "batchAttributes": [
-    {
-        "attributeSortType":"alphabetical",
-        "attribute":"Media Type"
-    },
-    {
-        "attributeSortType":"alphabetical",
-        "attribute":"Product Type"
-    },
-    {
-      "attributeSortType":"numeric",
-      "attribute":"Week Number"
-    },
-    {
-      "attributeSortType":"numeric",
-      "attribute":"Year"
-    }
-  ]
+    "copyright": "@ Crown copyright 2021 UK Hydrographic office",
+    "fssTitle": "File Share Service",
+    "displayPopularSearch": true,
+    "displaySimplifiedSearchLink": true,
+    "phase": "beta",
+    "feedbackEmailId": "products.feedback@UKHO.gov.uk",
+    "apiUrl": "",
+    "fssApiScope":"",
+    "stateManagementApiUrl": "",
+    "batchAttributes": [
+      {
+          "attributeSortType":"alphabetical",
+          "attribute":"Media Type",
+          "sortOrder":"ascending"
+      },
+      {
+          "attributeSortType":"alphabetical",
+          "attribute":"Product Type",
+          "sortOrder":"ascending"
+      },
+      {
+        "attributeSortType":"numeric",
+        "attribute":"Year / Week",
+        "sortOrder":"descending"
+      },
+      {
+        "attributeSortType":"numeric",
+        "attribute":"Year",
+        "sortOrder":"descending"
+      }
+    ]
   },
-  "essConfig":{
-    "apiUrl": "https://uatadmiralty.azure-api.net/ess-qa",
-    "essApiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/ExchangeSetService/Request"
+  "essConfig": {
+    "MaxEncLimit": "250"
   }
-  }
-  
-  
+}
