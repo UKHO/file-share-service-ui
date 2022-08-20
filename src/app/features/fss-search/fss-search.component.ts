@@ -8,9 +8,9 @@ import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
 import { FilterGroup, FilterItem } from '@ukho/design-system';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { InteractionRequiredAuthError, SilentRequest } from '@azure/msal-browser';
+import { SilentRequest } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-fss-search',
@@ -55,16 +55,16 @@ export class FssSearchComponent implements OnInit {
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService, private titleService: Title, private router: Router) {
     this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
-    this.fssTokenScope = AppConfigService.settings["fssConfig"].fssApiScope; 
+    this.fssTokenScope = AppConfigService.settings["fssConfig"].fssApiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
   };
- 
+
   ngOnInit(): void {
     this.activeSearchType = SearchType.SimplifiedSearch;
   }
-  
+
   ShowAdvancedSearchClicked() {
     this.activeSearchType = SearchType.AdvancedSearch;
     this.displaySearchResult = false;
@@ -77,39 +77,23 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = false;
   }
 
-  // refreshToken() {
-  //   this.displayLoader = true;
-  //   this.msalService.loginPopup().subscribe(response => {
-  //     //localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-  //     const idToken = response.idToken;
-  //     //localStorage.setItem('idToken', idToken);
-  //     this.msalService.instance.setActiveAccount(response.account);
-  //     //refreshToken endpoint call to set the cookie after user login
-  //     this.fileShareApiService.refreshToken().subscribe(res => {
-  //       this.displayLoader = false;
-  //       this.analyticsService.login();
-  //       this.handleAdvancedSearchTokenRefresh();
-  //     });
-  //   });
-  //   this.hideMessage();
-  // }
-
   onAdvancedSearchClicked(fssAdvancedSearch: any) {
+    this.displayLoader = true;
     if (this.fssSearchValidatorService.validateSearchInput(
       fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       var filter = this.fssSearchFilterService.getFilterExpression(
         fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
-        this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-          console.log('Testing:', response);
-          this.getSearchResult(filter);
-        },error => {
-          console.log('inside catch');
-          this.msalService.instance
-            .loginPopup(this.fssSilentTokenRequest)
-            .then(response => {
-              this.getSearchResult(filter);
-            })
-        })
+      this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+        console.log('Testing:', response);
+        this.getSearchResult(filter);
+      }, error => {
+        console.log('inside catch');
+        this.msalService.instance
+          .loginPopup(this.fssSilentTokenRequest)
+          .then(response => {
+            this.getSearchResult(filter);
+          })
+      })
     }
     else {
       this.errorMessageDescription = this.fssSearchValidatorService.errorMessageDescription;
@@ -129,7 +113,7 @@ export class FssSearchComponent implements OnInit {
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
         console.log('Testing:', response);
         this.getSimplifiedSearchApiResult(searchFilterText);
-      },error => {
+      }, error => {
         console.log('inside catch');
         this.msalService.instance
           .loginPopup(this.fssSilentTokenRequest)
@@ -145,8 +129,7 @@ export class FssSearchComponent implements OnInit {
     this.analyticsService.getSimplifiedSearchResult();
   }
 
-  getSimplifiedSearchApiResult(searchFilterText: string)
-  {
+  getSimplifiedSearchApiResult(searchFilterText: string) {
     this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
     this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
       this.transformSearchAttributesToFilter(result.batchAttributes);
@@ -189,14 +172,14 @@ export class FssSearchComponent implements OnInit {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       console.log('Testing:', response);
       this.getSearchResult(applyFilter_FilterExpression);
-    },error => {
+    }, error => {
       console.log('inside catch');
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
-         this.getSearchResult(applyFilter_FilterExpression);
+          this.getSearchResult(applyFilter_FilterExpression);
         })
-    })   
+    });
   }
 
   handleGetSearchResultSuccess() {
@@ -258,13 +241,6 @@ export class FssSearchComponent implements OnInit {
     this.loginErrorDisplay = false;
   }
 
-  // handleTokenExpiry() {
-  //   this.showMessage("info", "Your Sign-in Token has Expired", "");
-  //   this.loginErrorDisplay = true;
-  //   this.displayLoader = false;
-  //   this.analyticsService.tokenExpired();
-  // }
-
   searchResultsFocus() {
     if (this.showSearchResult !== undefined) {
       this.showSearchResult.nativeElement.setAttribute('tabindex', '-1');
@@ -283,30 +259,43 @@ export class FssSearchComponent implements OnInit {
     this.currentPage = currentPage;
     if (paginatorAction === "next") {
       var nextPageLink = this.pagingLinks!.next!.href;
-      this.fileShareApiService.getSearchResult(nextPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleGetSearchResultSuccess();
-      },
-        (error) => {
-          this.handleGetSearchResultFailure(error);
-        }
-      );
+      this.getPaginatorApiResponse(nextPageLink);
     }
     else if (paginatorAction === "prev") {
       var previousPageLink = this.pagingLinks!.previous!.href;
-      this.fileShareApiService.getSearchResult(previousPageLink, true).subscribe((res) => {
-        this.searchResult = res;
-        this.handleGetSearchResultSuccess();
-      },
-        (error) => {
-          this.handleGetSearchResultFailure(error);
-        }
-      );
+      this.getPaginatorApiResponse(previousPageLink);
     }
     if (this.searchResult.length > 0) {
       this.searchResultsFocus();
     }
-  
+  }
+
+  getPaginatorApiResponse(pageLink: string) {
+    this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+      console.log('Testing:', response);
+      this.fileShareApiService.getSearchResult(pageLink, true).subscribe((res) => {
+        this.searchResult = res;
+        this.handleGetSearchResultSuccess();
+      },
+        (error) => {
+          this.handleGetSearchResultFailure(error);
+        }
+      );
+    }, error => {
+      console.log('inside catch');
+      this.msalService.instance
+        .loginPopup(this.fssSilentTokenRequest)
+        .then(response => {
+          this.fileShareApiService.getSearchResult(pageLink, true).subscribe((res) => {
+            this.searchResult = res;
+            this.handleGetSearchResultSuccess();
+          },
+            (error) => {
+              this.handleGetSearchResultFailure(error);
+            }
+          );
+        })
+    });
 
   }
 

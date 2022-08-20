@@ -2,7 +2,6 @@ import { InjectionToken, NgModule, APP_INITIALIZER } from '@angular/core';
 import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
 import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
 import { AppConfigService } from '../../../app/core/services/app-config.service';
 import { HttpErrorInterceptorService } from '../../core/services/httperror-interceptor.service';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
@@ -44,9 +43,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     return {
       interactionType: AppConfigService.settings["b2cConfig"].interactionType,
       protectedResourceMap: new Map([
-        [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].fssApiScope]],
-        [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].essApiScope]],          
-    ]),
+        [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].fssApiScope]]    ]),
     };
   }
 @NgModule({

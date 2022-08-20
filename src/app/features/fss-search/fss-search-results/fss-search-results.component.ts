@@ -6,7 +6,6 @@ import { FileShareApiService } from '../../../core/services/file-share-api.servi
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
-import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-fss-search-results',
@@ -99,20 +98,10 @@ export class FssSearchResultsComponent implements OnChanges {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = fileData.FileLink;
     if (filePath) {
-      //if (!this.fileShareApiService.isTokenExpired()) {//check if token is expired
       //download file and change the icon to tick when returns true
       obj.style.pointerEvents = 'none'; //disable download icon after click
       obj.className = 'fa fa-check';
-
-      // this.downloadFileWindow = window.open(this.baseUrl + filePath);
-      // setTimeout(() => {
-      //   this.closeDownloadFileWindow();
-      // }, 5000);
-      this.handleRefreshTokenforDownload(this.baseUrl, filePath);
-      //}    
-      // else {//display "Token expired" message when token is expired        
-      //   obj.handleTokenExpiry.emit(true);
-      // }
+      this.handleRefreshTokenforDownload(filePath);
     }
   }
 
@@ -125,15 +114,7 @@ export class FssSearchResultsComponent implements OnChanges {
   downloadAll(batchId: string) {
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
     var filePath = `/batch/${batchId}/files`;
-
-    // //check if token is expired
-    // //if (!this.fileShareApiService.isTokenExpired()) {
-    //   this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
-    //   setTimeout(() => {
-    //     this.closeDownloadAllFileWindow();
-    //   }, 5000);
-
-    this.handleRefreshTokenforDownload(this.baseUrl, filePath);
+    this.handleRefreshTokenforDownload(filePath);
 
     //Filter elements based on batchid attribute 
     var elements = this.elementRef.nativeElement
@@ -144,21 +125,16 @@ export class FssSearchResultsComponent implements OnChanges {
       element.style.pointerEvents = 'none';
       element.className = 'fa fa-check';
     }
-    //}
-    // else {
-    //   //display "Token expired" message when token is expired        
-    //   this.handleTokenExpiry.emit(true);
-    // }
-
     this.analyticsService.downloadAll();
   }
 
-  handleRefreshTokenforDownload(baseUrl: string, filePath: string) {
+  handleRefreshTokenforDownload(filePath: string) {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       console.log('Testing:', response);
       this.fileShareApiService.refreshToken().subscribe(res => {
         console.log(res);
         this.displayLoader = false;
+        this.analyticsService.login();
         this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
         setTimeout(() => {
           this.closeDownloadAllFileWindow();
@@ -172,7 +148,7 @@ export class FssSearchResultsComponent implements OnChanges {
           console.log('Testing:', response);
           this.fileShareApiService.refreshToken().subscribe(res => {
             this.displayLoader = false;
-            //this.analyticsService.login();
+            this.analyticsService.login();
             this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
             setTimeout(() => {
               this.closeDownloadAllFileWindow();
