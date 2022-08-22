@@ -37,73 +37,10 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await expect (page.locator(esslandingpageObjectsConfig.proceedButtonSelector)).toBeVisible();    
      })
 
-     //Test Case 13809
-     test('Verify selecting a valid .csv file, uploads successfully', async({page})=>{
-
+     // Test Case 13809
+      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async({page})=>{
           await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/ValidENCs.csv');
-          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue1);
-     })
-
-     //Test Case 13815
-     test('Verify selecting a valid permit.txt file, uploads successfully', async({page})=>{
-
-          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/ValidENCs.txt');
-          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue2);
-     })
-
-     //Test Case 13810
-     test('Verify a error message if user tries to upload other than allowed files', async({page})=>{
-         
-         await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-         await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/FileOtherThanCSVorTXT.xlsx');
-         await expect(page.locator(esslandingpageObjectsConfig.errorMessageSelector)).toContainText('Please select a .csv or .txt');
-     })
-    
-     //Test Case 13811
-     test('Upload CSV file with valid & invalid ENCs and verify ENC uploaded', async({page})=>{
-        
-          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/validAndInvalidENCs.csv');
-          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs) 
-          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue2);
-     })
-
-     //Test Case 13817
-     test('Upload TXT file with valid & invalid ENCs and verify ENC uploaded', async({page})=>{
-       
-          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/ValidAndInvalidENCs.txt');
-          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
-          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue2);
-     })
-
-     //Test Case 13823
-     test('Verify uploading valid duplicate ENC Number in CSV File.', async({page})=>{
-          
-          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData/validAndDuplicateENCs.csv');
-          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
-     })
-
-     //Test Case 13826
-     test('Verify uploading valid duplicate ENC Number in TXT File.', async({page})=>{
-          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData//ValidAndDuplicateENCs.txt');
-          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
-     })
-
-     // To verify all data from file , uploaded successdully.
-     test('Verify all the ENCs from file, displayed on the screen', async({page})=>{
-          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './TestData//ValidENCs-5.csv');
+          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/ValidENCs.csv');
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await page.waitForLoadState();
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105','CN484220','GB50184C']         
@@ -113,4 +50,75 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           }        
      
      })
+
+      // Test Case 13815
+      test('Verify all the uploaded ENCs from .txt file, displayed on the screen', async({page})=>{
+          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/ValidENCs.txt');
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+          await page.waitForLoadState();
+          let enclist = ['AU220140', 'AU314128', 'AU411129','CN484220','GB50184C']         
+          for (var i=1;i<6;i++) 
+          {            
+               expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
+          }        
+     
+     })
+
+     //Test Case 13810
+     test('Verify a error message if user tries to upload other than allowed files', async({page})=>{
+         
+         await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+         await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/FileOtherThanCSVorTXT.xlsx');
+         await expect(page.locator(esslandingpageObjectsConfig.errorMessageSelector)).toContainText('Please select a .csv or .txt');
+     })
+    
+     //Test Case 13811
+     test('Upload CSV file with valid & invalid ENCs and verify ENC uploaded', async({page})=>{
+        
+          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/validAndInvalidENCs.csv');
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs) 
+          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue2);
+     })
+
+     //Test Case 13817
+     test('Upload TXT file with valid & invalid ENCs and verify ENC uploaded', async({page})=>{
+       
+          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/ValidAndInvalidENCs.txt');
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
+          expect (await page.innerText(esslandingpageObjectsConfig.uploadedDataSelector)).toEqual(esslandingpageObjectsConfig.ENCValue2);
+     })
+
+     //Test Case 13823
+     test('Verify uploading valid duplicate ENC Number in CSV File, upload only once.', async({page})=>{
+          
+          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/validAndDuplicateENCs.csv');
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
+          let enclist = ['AU220150', 'AU5PTL01', 'CA271105','CN484220']         
+          for (var i=1;i<5;i++) 
+          {            
+               expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
+          } 
+     })
+
+     //Test Case 13826
+     test('Verify uploading valid duplicate ENC Number in TXT File, upload only once.', async({page})=>{
+          await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+          await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData//ValidAndDuplicateENCs.txt');
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+          await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
+          let enclist = ['AU220150', 'AU5PTL01', 'CA271105','CN484220']         
+          for (var i=1;i<5;i++) 
+          {            
+               expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
+          } 
+     })
+
+    
 });
