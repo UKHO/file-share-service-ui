@@ -84,10 +84,8 @@ export class FssSearchComponent implements OnInit {
       var filter = this.fssSearchFilterService.getFilterExpression(
         fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-        console.log('Testing:', response);
         this.getSearchResult(filter);
       }, error => {
-        console.log('inside catch');
         this.msalService.instance
           .loginPopup(this.fssSilentTokenRequest)
           .then(response => {
@@ -114,7 +112,6 @@ export class FssSearchComponent implements OnInit {
         console.log('Testing:', response);
         this.getSimplifiedSearchApiResult(searchFilterText);
       }, error => {
-        console.log('inside catch');
         this.msalService.instance
           .loginPopup(this.fssSilentTokenRequest)
           .then(response => {
@@ -170,10 +167,9 @@ export class FssSearchComponent implements OnInit {
     var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
     var applyFilter_FilterExpression = filterExpression ? this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")") : this.MainQueryFilterExpression;
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-      console.log('Testing:', response);
       this.getSearchResult(applyFilter_FilterExpression);
     }, error => {
-      console.log('inside catch');
+      
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
@@ -272,7 +268,6 @@ export class FssSearchComponent implements OnInit {
 
   getPaginatorApiResponse(pageLink: string) {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-      console.log('Testing:', response);
       this.fileShareApiService.getSearchResult(pageLink, true).subscribe((res) => {
         this.searchResult = res;
         this.handleGetSearchResultSuccess();
@@ -282,7 +277,7 @@ export class FssSearchComponent implements OnInit {
         }
       );
     }, error => {
-      console.log('inside catch');
+      
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {

@@ -111,7 +111,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
 
   logInPopup() {
     this.msalService.loginPopup({ ...this.msalGuardConfig.authRequest } as PopupRequest).subscribe((response: AuthenticationResult) => {
-      console.log(response);
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);

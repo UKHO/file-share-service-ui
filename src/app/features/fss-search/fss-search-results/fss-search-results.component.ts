@@ -130,9 +130,7 @@ export class FssSearchResultsComponent implements OnChanges {
 
   handleRefreshTokenforDownload(filePath: string) {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-      console.log('Testing:', response);
       this.fileShareApiService.refreshToken().subscribe(res => {
-        console.log(res);
         this.displayLoader = false;
         this.analyticsService.login();
         this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
@@ -141,11 +139,10 @@ export class FssSearchResultsComponent implements OnChanges {
         }, 5000);
       });
     }, error => {
-      console.log('inside catch');
+      
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
-          console.log('Testing:', response);
           this.fileShareApiService.refreshToken().subscribe(res => {
             this.displayLoader = false;
             this.analyticsService.login();

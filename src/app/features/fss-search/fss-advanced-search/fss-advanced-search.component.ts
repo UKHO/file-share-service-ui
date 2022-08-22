@@ -105,7 +105,6 @@ export class FssAdvancedSearchComponent implements OnInit {
     if (!localStorage['batchAttributes']) {
       this.displayLoader = true;
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-        console.log('Testing:', response);
         this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
           this.refreshFields(batchAttributeResult);
@@ -114,7 +113,7 @@ export class FssAdvancedSearchComponent implements OnInit {
           this.analyticsService.searchInIt();
         });
       },error => {
-        console.log('inside catch');
+        
         this.msalService.instance
           .loginPopup(this.fssSilentTokenRequest)
           .then(response => {
@@ -164,14 +163,13 @@ export class FssAdvancedSearchComponent implements OnInit {
 
   getBatchAttributes() {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-      console.log('Testing:', response);
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
         this.refreshFields(batchAttributeResult);
         this.refreshExistingFssRowsFields();
       });    
     },error => {
-      console.log('inside catch');
+      
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {

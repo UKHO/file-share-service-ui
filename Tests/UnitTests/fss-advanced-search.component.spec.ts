@@ -73,7 +73,7 @@ describe('FssAdvancedSearchComponent', () => {
     analyticsService = TestBed.inject(AnalyticsService);
     popularSearchService = TestBed.inject(FssPopularSearchService);
       
-    component = new FssAdvancedSearchComponent(searchService, fileShareApiService, elementRef, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService);
+    component = new FssAdvancedSearchComponent(searchService, fileShareApiService, elementRef, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService, msalService);
     component.observablePopularSearch = of(null);
     component.observableAdvancedSearchTokenRefresh = of();
   });
