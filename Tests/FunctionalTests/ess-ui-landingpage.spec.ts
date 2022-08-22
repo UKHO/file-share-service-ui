@@ -44,13 +44,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await page.waitForLoadState();
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105','CN484220','GB50184C']
-          if (enclist.length==await page.locator('//tbody/tr').count())
-          {        
+          expect(await page.locator('//tbody/tr').count()).toBe(enclist.length);
+
           for (var i=1;i<6;i++) 
           {            
                expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
           }        
-          }
      })
 
       // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13815 
@@ -60,13 +59,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await page.waitForLoadState();
           let enclist = ['AU220140', 'AU314128', 'AU411129','CN484220','GB50184C']
-          if (enclist.length==await page.locator('//tbody/tr').count())
-          {      
+          expect(await page.locator('//tbody/tr').count()).toBe(enclist.length);
+               
           for (var i=1;i<6;i++) 
           {            
                expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
-          }        
-     }
+          }
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13810 
@@ -105,13 +103,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105','CN484220']
-          if (enclist.length==await page.locator('//tbody/tr').count())
-          {        
+          expect(await page.locator('//tbody/tr').count()).toBe(enclist.length);
+
           for (var i=1;i<5;i++) 
           {            
                expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
           }
-     }
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13826
@@ -121,13 +118,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await expect (page.locator(esslandingpageObjectsConfig.errorMessageExcludeENCsSelector)).toContainText(esslandingpageObjectsConfig.messageForOverlimitAndInvalidENCs)
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105','CN484220'] 
-          if (enclist.length==await page.locator('//tbody/tr').count())
-       {     
+          expect(await page.locator('//tbody/tr').count()).toBe(enclist.length);
+
           for(var i=1;i<5;i++) 
           {            
                expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
           } 
-     }
      })
-
 });
