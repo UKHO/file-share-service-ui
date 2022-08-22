@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppConfigService } from '../../../app/core/services/app-config.service'
 
 @Component({
   selector: 'app-exchange-set',
@@ -7,14 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class ExchangeSetComponent implements OnInit {
-
+  rgAddUploadENC: string;  
+  radioUploadEncValue:string;
+  radioAddEncValue:string;
+  maxEncSelectionLimit:number;
+  addSingleEncRenderFrom: string ='essHome';
+  addSingleEncBtnText :string = 'Proceed';
+  
   constructor() {
-  }
-
-  rgAddUploadENC: string;
-  radioUploadEncValue: string;
-  radioAddEncValue: string;
-
+    this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
+   }
+   
   ngOnInit(): void {
     this.radioUploadEncValue = "UploadEncFile";
     this.radioAddEncValue = "AddSingleEnc";

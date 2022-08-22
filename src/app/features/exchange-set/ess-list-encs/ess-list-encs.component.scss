@@ -1,0 +1,67 @@
+.showEncListWrapper {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+
+.selectEnc {
+    float: right;
+    position: relative;
+    top: -7px;
+}
+
+.showListEncTOtal {
+    float: right;
+}
+
+table th:last-child {
+    text-align: right !important;
+}
+
+.divider {
+    border: 1px solid #d8d8d8;
+    height: 480px;
+    margin: 0px 39px;
+}
+
+.requestEncBtn{
+    display: flex;
+    justify-content: flex-end;
+}
+.selectionContainer{
+    position: relative;
+    min-height: 50vh;
+    .estimatedBtnHolder{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        p{
+            font-weight: 400;
+            color: #09315b;
+        }
+        .encsize{
+            font-weight: 400;
+            margin-left: 0px;
+        }        
+    }
+}
+
+.bottomText {
+    margin-left: 38px;
+}
+
+.linkStartAgain
+{
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 20px 0 20px 10px;
+    display: block;
+}
+.lnkAddAnotherEnc
+{
+    display: block;
+    text-decoration: none;
+    font-weight: 500
+}
