@@ -38,6 +38,7 @@ export class EssAddSingleEncsComponent implements OnInit {
       if (this.essUploadFileService.validateENCFormat(this.txtSingleEnc)) {
         this.displayErrorMessage = false;
         this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
+        this.essUploadFileService.infoMessage = false;
         this.route.navigate(['exchangesets', 'enc-list']);
       }
       else {
