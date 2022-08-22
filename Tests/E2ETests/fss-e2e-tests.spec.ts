@@ -20,7 +20,7 @@ test.describe('FSS UI E2E Scenarios', () => {
     await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
     // Get the token from local storage once user logged in
     idToken = await page.evaluate(() => { return localStorage.getItem('idToken') });
-
+    idToken?.replace(/["]+/g, '');
   })
 
   test('Valid search system attributes query to verify data returns on UI and API response status 200', async ({ request, page }) => {
