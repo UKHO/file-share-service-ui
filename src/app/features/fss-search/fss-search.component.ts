@@ -78,7 +78,6 @@ export class FssSearchComponent implements OnInit {
   }
 
   onAdvancedSearchClicked(fssAdvancedSearch: any) {
-    this.displayLoader = true;
     if (this.fssSearchValidatorService.validateSearchInput(
       fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       var filter = this.fssSearchFilterService.getFilterExpression(
@@ -168,7 +167,7 @@ export class FssSearchComponent implements OnInit {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       this.getSearchResult(applyFilter_FilterExpression);
     }, error => {
-      
+
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
@@ -276,7 +275,7 @@ export class FssSearchComponent implements OnInit {
         }
       );
     }, error => {
-      
+
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
