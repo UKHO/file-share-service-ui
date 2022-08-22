@@ -50,7 +50,8 @@ export class EssListEncsComponent implements OnInit {
     this.setEncList();
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
-        this.setEncList()
+        this.setEncList();
+       this.syncEncsBetweenTables();
       }
     });
   }
