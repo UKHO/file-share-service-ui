@@ -104,9 +104,9 @@ export class FssSearchComponent implements OnInit {
   }
 
   onSimplifiedSearchClicked(searchFilterText: string) {
-    this.displayLoader = true;
     this.displaySearchResult = false;
     if (searchFilterText.trim() !== "") {
+      this.displayLoader = true;
       this.displayMessage = false;
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
         this.getSimplifiedSearchApiResult(searchFilterText);
