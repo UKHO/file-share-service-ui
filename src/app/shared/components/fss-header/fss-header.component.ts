@@ -73,11 +73,19 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         this.isPageOverlay.emit(true);
       });
 
+      this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
+      .subscribe(() => {
+        this.isPageOverlay.emit(true);
+      });
+
     this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.None))
       .subscribe(() => {
         this.isPageOverlay.emit(false);
+        this.handleSigninAwareness();
       });
 
     this.title = AppConfigService.settings["fssConfig"].fssTitle;
@@ -92,6 +100,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       isSignedIn: (() => { return false }),
       userProfileHandler: (() => { })
     }
+    this.handleSigninAwareness();
   }
 
   setSkipToContent() {
@@ -169,6 +178,22 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         });;
       })
     }
+  }
+
+  /**Once signed in handles user redirects and also handle expiry if token expires.*/
+  handleSigninAwareness() {
+    const date = new Date()
+    const account = this.msalService.instance.getAllAccounts()[0];
+    if (account != null) {
+      this.getClaims(account.idTokenClaims);
+      if (localStorage['claims'] !== undefined) {
+        const claims = JSON.parse(localStorage['claims']);
+        if (this.userName == claims['given_name']) {
+          this.msalService.instance.setActiveAccount(account);
+        }
+      }
+    }
+    this.getMenuItems();
   }
 
   getMenuItems() {

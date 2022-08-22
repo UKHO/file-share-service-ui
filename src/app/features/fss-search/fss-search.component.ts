@@ -109,7 +109,6 @@ export class FssSearchComponent implements OnInit {
     if (searchFilterText.trim() !== "") {
       this.displayMessage = false;
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-        console.log('Testing:', response);
         this.getSimplifiedSearchApiResult(searchFilterText);
       }, error => {
         this.msalService.instance
