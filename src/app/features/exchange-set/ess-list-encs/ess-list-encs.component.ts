@@ -1,10 +1,12 @@
-import { Router } from '@angular/router';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { AppConfigService } from '../../../core/services/app-config.service';
+import { SortState } from '@ukho/design-system';
+import { Router } from '@angular/router';
 
-interface mappedEnc {
-  enc: string,
-  selected: boolean
+interface MappedEnc {
+  enc: string;
+  selected: boolean;
 }
 
 @Component({
@@ -13,26 +15,38 @@ interface mappedEnc {
   styleUrls: ['./ess-list-encs.component.scss']
 })
 export class EssListEncsComponent implements OnInit {
-  addSingleEncRenderFrom :string = 'encList';
-  addSingleEncBtnText :string = 'Add ENC';
-  encList: mappedEnc[];
-  public displayedColumns = ['EncName', 'Choose'];
+  addSingleEncRenderFrom: string = 'encList';
+  addSingleEncBtnText: string = 'Add ENC';
+  encList: MappedEnc[];
+  public displayedColumns = ['enc', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
+  maxEncSelectionLimit: number;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
+  public displaySelectedTableColumns = ['enc', 'X'];
 
-  public displaySelectedTableColumns = ['EncName', 'X'];
+
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
 
   ngOnInit(): void {
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
+    this.maxEncSelectionLimit = Number.parseInt(
+      AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
+      10
+    );
+    this.essUploadFileService.clearSelectedEncs();
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
     }
+    this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
+      enc,
+      selected: false
+    }));
+
     this.setEncList();
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
@@ -62,11 +76,43 @@ export class EssListEncsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-
   handleChange(enc: string) {
-
+    const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
+    this.displayErrorMessage = false;
+    if (seletedEncs.includes(enc)) {
+      this.essUploadFileService.removeSelectedEncs(enc);
+    } else if (this.maxEncSelectionLimit > seletedEncs.length) {
+      this.essUploadFileService.addSelectedEnc(enc);
+    } else {
+      this.showMessage(
+        'error',
+        'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.'
+      );
+    }
+    this.syncEncsBetweenTables();
   }
 
+  syncEncsBetweenTables() {
+    this.selectedEncList = this.essUploadFileService.getSelectedENCs();
+    this.encList = this.encList.map((item, index) => ({
+      enc: item.enc,
+      selected: this.selectedEncList.includes(item.enc) ? true : false,
+    }));
+  }
+
+  onSortChange(sortState: SortState) {
+    this.encList = [
+      ...this.encList.sort((a: any, b: any) =>
+        sortState.direction === 'asc'
+          ? a[sortState.column].localeCompare(b[sortState.column])
+          : b[sortState.column].localeCompare(a[sortState.column])
+      ),
+    ];
+  }
+
+  switchToESSLandingPage() {
+    this.route.navigate(["exchangesets"]);
+  }
   displaySingleEnc() {
     this.displaySingleEncVal = true;
   }

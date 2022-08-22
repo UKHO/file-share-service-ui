@@ -48,19 +48,19 @@ const config: PlaywrightTestConfig = {
     //   },
     // },
 
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-      },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: {
+    //     ...devices['Desktop Safari'],
+    //   },
+    // },
 
-    {
-      name: 'Microsoft Edge',
-      use: {
-        channel: 'msedge'
-      }
-    }
+    // {
+    //   name: 'Microsoft Edge',
+    //   use: {
+    //     channel: 'msedge'
+    //   }
+    // }
    
   ],
 

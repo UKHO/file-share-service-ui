@@ -10,8 +10,8 @@ export class EssUploadFileService {
   private selectedEncs: string[];
   private maxEncLimit: number;
   private showInfoMessage = false;
-  private notifySingleEnc: Subject<boolean>=new Subject<boolean>();
-  
+  private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
+
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
@@ -20,9 +20,9 @@ export class EssUploadFileService {
   isValidEncFile(encFileType: string, encList: string[]): boolean {
     if ((encFileType === 'text/csv') ||
       (encFileType === 'text/plain' &&
-      encList[2] === ':ENC' &&
-      encList[encList.length - 1] === ':ECS'
-    )) {
+        encList[2] === ':ENC' &&
+        encList[encList.length - 1] === ':ECS'
+      )) {
       return true;
     }
     return false;
@@ -68,37 +68,50 @@ export class EssUploadFileService {
     return this.showInfoMessage;
   }
 
-  set infoMessage(visibility: boolean){
+  set infoMessage(visibility: boolean) {
     this.showInfoMessage = visibility;
   }
 
-  addSingleEnc(signleValidEnc: string) {
-   this.validEncs.push(signleValidEnc);
-   this.notifySingleEnc.next(true);
-  }
-
-  getSelectedENCs(): string[]{
-
+  getSelectedENCs(): string[] {
     return this.selectedEncs;
-
   }
 
-  getNotifySingleEnc()
-  {
-     return this.notifySingleEnc;
+  addSelectedEnc(enc: string): void {
+    this.selectedEncs = [...this.selectedEncs, enc];
   }
- 
 
-   checkMaxEncLimit(encList: string[]): boolean {
-    if(encList.length < this.maxEncLimit) 
-    {
-     return false;  
+  removeSelectedEncs(enc: string): void {
+    this.selectedEncs = this.selectedEncs.filter((item) => item !== enc);
+  }
+
+  clearSelectedEncs() {
+    this.selectedEncs = [];
+  }
+
+  getMaxEncLimit() {
+    return this.maxEncLimit;
+  }
+
+  setValidSingleEnc(signleValidEnc: string) {
+    this.validEncs = [];
+    this.validEncs.push(signleValidEnc);
+  }
+  addSingleEnc(signleValidEnc: string) {
+    this.validEncs.push(signleValidEnc);
+    this.notifySingleEnc.next(true);
+  }
+
+  getNotifySingleEnc() {
+    return this.notifySingleEnc;
+  }
+
+  checkMaxEncLimit(encList: string[]): boolean {
+    if (encList.length < this.maxEncLimit) {
+      return false;
     }
-    else
-    {
-      return true; 
+    else {
+      return true;
     }
-    
-  }
 
+  }
 }

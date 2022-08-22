@@ -4,6 +4,7 @@ import {RadioComponent} from '@ukho/design-system'
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA,DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 
 describe('ExchangeSetComponent', () => {
   let component: ExchangeSetComponent;
@@ -19,6 +20,13 @@ describe('ExchangeSetComponent', () => {
   });
 
   beforeEach(() => {
+    AppConfigService.settings = {
+      essConfig: {
+      MaxEncLimit: 100,
+      MaxEncSelectionLimit : 5
+      }
+    };
+
     fixture = TestBed.createComponent(ExchangeSetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -61,4 +69,13 @@ describe('ExchangeSetComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('addSingleFileSection'))).toBeTruthy();
   });
   
+  test('should show the content of paragraph in exchange set with selection limit from config', () => {
+    const fixture = TestBed.createComponent(ExchangeSetComponent);
+    fixture.detectChanges();
+    const essLandingPageText = fixture.debugElement.queryAll(By.css('p'));
+    for (var i = 0; i < essLandingPageText.length; i++) {
+      if(i == essLandingPageText.length-1)
+      expect(essLandingPageText[i].nativeElement.innerHTML).toBe('You can upload a permit file and select up to 5 ENCs from your full list of holdings, or you can upload a specific list of ENCs as a .csv file or, search for a single ENC');
+    }
+  });
 });

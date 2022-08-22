@@ -1,7 +1,6 @@
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-
 
 @Component({
   selector: 'app-ess-add-single-encs',
@@ -9,13 +8,13 @@ import { EssUploadFileService } from '../../../core/services/ess-upload-file.ser
   styleUrls: ['./ess-add-single-encs.component.scss']
 })
 export class EssAddSingleEncsComponent implements OnInit {
-   @Input() renderedFrom: string;
+  @Input() renderedFrom: string;
   @Input() btnText: string;
+
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
-
   validEncList: string[];
   validEnc: Array<string> = [];
   txtSingleEnc: string = "";
@@ -28,10 +27,27 @@ export class EssAddSingleEncsComponent implements OnInit {
   }
 
   validateAndAddENC() {
-     if (this.renderedFrom == 'encList') {
+    if (this.renderedFrom == 'encList') {
       this.addEncInList();
-     }
+    }
+    else if ((this.renderedFrom == 'essHome')) {
+      this.addSingleEncToList();
+    }
+  }
 
+  addSingleEncToList() {
+    if (this.txtSingleEnc != '') {
+      if (this.essUploadFileService.validateENCFormat(this.txtSingleEnc)) {
+        this.displayErrorMessage = false;
+        this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
+        this.essUploadFileService.infoMessage = false;
+        this.route.navigate(['exchangesets', 'enc-list']);
+      }
+      else {
+        this.showMessage('error', 'Invalid ENC number');
+      }
+    }
+    else { this.showMessage('error', 'Please enter ENC number'); }
   }
 
   addEncInList() {
@@ -62,7 +78,6 @@ export class EssAddSingleEncsComponent implements OnInit {
     }
   }
 
-
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
     messageDesc: string = ''
@@ -75,5 +90,4 @@ export class EssAddSingleEncsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-
 }
