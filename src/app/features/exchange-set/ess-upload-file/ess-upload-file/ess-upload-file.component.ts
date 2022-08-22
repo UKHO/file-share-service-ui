@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
@@ -13,9 +14,11 @@ export class EssUploadFileComponent implements OnInit {
   displayErrorMessage = false;
   validEncList: string[];
   encFile: File;
-  constructor(private essUploadFileService: EssUploadFileService) { }
+  constructor(private essUploadFileService: EssUploadFileService,
+    private route: Router) { }
 
   ngOnInit(): void {
+    this.essUploadFileService.infoMessage = false;
   }
 
   uploadListener($event: any): void {
@@ -47,10 +50,13 @@ export class EssUploadFileComponent implements OnInit {
       this.validEncList = this.essUploadFileService.getValidEncs();
       if (this.validEncList.length === 0) {
         this.showMessage('info', 'No ENCs found.');
+        return;
       }
-      else if (encList.length > this.validEncList.length) {
+      if (encList.length > this.validEncList.length) {
+        this.essUploadFileService.infoMessage = true;
         this.showMessage('info', 'Some values have not been added to list.');
-      }    
+      }
+      this.route.navigate(['exchangesets' , 'enc-list']);
     }
     else {
       this.showMessage('error', 'Please upload valid ENC file.');
