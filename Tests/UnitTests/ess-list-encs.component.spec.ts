@@ -1,11 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
-import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule  , CheckboxModule} from '@ukho/design-system';
+import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule  , CheckboxModule,TextinputModule} from '@ukho/design-system';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
+import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component'; 
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { of } from 'rxjs';
+
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
   let fixture: ComponentFixture<EssListEncsComponent>;
@@ -19,11 +23,13 @@ describe('EssListEncsComponent', () => {
     infoMessage : true,
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
+    getNotifySingleEnc : jest.fn().mockReturnValue(of(true))
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule],
-      declarations: [ EssListEncsComponent ],
+      imports: [FormsModule,CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule],
+      declarations: [ EssListEncsComponent,
+        EssAddSingleEncsComponent ],
       providers: [
         {
           provide : EssUploadFileService,

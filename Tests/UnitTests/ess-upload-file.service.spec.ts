@@ -47,7 +47,7 @@ describe('EssUploadFileService', () => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
-        MaxEncSelectionLimit : 5
+        MaxEncSelectionLimit: 5
       },
     };
     TestBed.configureTestingModule({});
@@ -153,21 +153,21 @@ describe('EssUploadFileService', () => {
     validEncList = service.getValidEncs();
     expect(validEncList.length).toEqual(10);
   });
-  it('service.infoMessage should set true/false' , () => {
+  it('service.infoMessage should set true/false', () => {
     expect(service.infoMessage).toBeFalsy();
     service.infoMessage = true;
     expect(service.infoMessage).toBeTruthy();
     service.infoMessage = false;
     expect(service.infoMessage).toBeFalsy();
   });
-  it('addSelectedEnc adds enc into selectedEncs' , () => {
+  it('addSelectedEnc adds enc into selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
     service.addSelectedEnc('AU210130');
     service.addSelectedEnc('AU210230');
     service.addSelectedEnc('AU210330');
     expect(service.getSelectedENCs().length).toEqual(3);
   });
-  it('removeSelectedEncs removes enc from selectedEncs' , () => {
+  it('removeSelectedEncs removes enc from selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
     service.addSelectedEnc('AU210130');
     service.addSelectedEnc('AU210230');
@@ -176,7 +176,7 @@ describe('EssUploadFileService', () => {
     service.removeSelectedEncs('AU210230');
     expect(service.getSelectedENCs().length).toEqual(2);
   });
-  it('clearSelectedEncs clears enc from selectedEncs' , () => {
+  it('clearSelectedEncs clears enc from selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
     service.addSelectedEnc('AU210130');
     service.addSelectedEnc('AU210230');
@@ -185,10 +185,10 @@ describe('EssUploadFileService', () => {
     service.clearSelectedEncs();
     expect(service.getSelectedENCs().length).toEqual(0);
   });
-  it('valid encs should always be less than MaxEncLimit' , () => {
+  it('valid encs should always be less than MaxEncLimit', () => {
     expect(service.getMaxEncLimit()).toEqual(10);
     let encList = service.getEncFileData(getNEncData());
-    encList = service.extractEncsFromFile('text/plain',encList);
+    encList = service.extractEncsFromFile('text/plain', encList);
     service.setValidENCs(encList);
     expect(encList.length).toBeGreaterThan(service.getMaxEncLimit());
     expect(service.getValidEncs().length).toBeLessThan(service.getMaxEncLimit());
@@ -198,5 +198,22 @@ describe('EssUploadFileService', () => {
     expect(service.setValidSingleEnc('AS121212'));
     let encList = service.getValidEncs();
     expect(encList.length).toEqual(1);
+  });
+
+  it('checkMaxEncLimit should return true as per configuration settings', () => {
+    let validLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M', 'HR50017C', 'ID202908', 'JP24S8H0', 'JP34R1ES', 'JP44KU49', 'US4FL18M'];
+    expect(service.checkMaxEncLimit(validLists)).toEqual(true);
+  });
+
+  it('checkMaxEncLimit should return false as per configuration settings', () => {
+    let validLists = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];
+    expect(service.checkMaxEncLimit(validLists)).toEqual(false);
+  });
+
+  it('addSingleEnc should set single ENC in validEnc list', () => {
+    let validEncs = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];
+    service.setValidENCs(validEncs);
+    service.addSingleEnc('AS121212');
+    expect(service.getValidEncs().length).toEqual(5);
   });
 });

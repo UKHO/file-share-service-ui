@@ -29,6 +29,9 @@
           <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </div>
+      <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()">+ Add another ENC</a>
+      <app-ess-add-single-encs [renderedFrom]="addSingleEncRenderFrom" [btnText]="addSingleEncBtnText"
+        *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
     </div>
     <div class="divider"></div>
     <div style="flex: 3">

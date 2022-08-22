@@ -15,6 +15,8 @@ interface MappedEnc {
   styleUrls: ['./ess-list-encs.component.scss']
 })
 export class EssListEncsComponent implements OnInit {
+  addSingleEncRenderFrom: string = 'encList';
+  addSingleEncBtnText: string = 'Add ENC';
   encList: MappedEnc[];
   public displayedColumns = ['enc', 'Choose'];
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
@@ -23,7 +25,10 @@ export class EssListEncsComponent implements OnInit {
   maxEncSelectionLimit: number;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
+  displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
+
+
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
 
@@ -41,6 +46,23 @@ export class EssListEncsComponent implements OnInit {
       enc,
       selected: false
     }));
+
+    this.setEncList();
+    this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
+      if (notify) {
+        this.setEncList();
+       this.syncEncsBetweenTables();
+      }
+    });
+  }
+
+  setEncList() {
+    this.encList = this.essUploadFileService.getValidEncs().map((enc) => {
+      return {
+        enc,
+        selected: false
+      }
+    });
   }
 
   showMessage(
@@ -91,5 +113,8 @@ export class EssListEncsComponent implements OnInit {
 
   switchToESSLandingPage() {
     this.route.navigate(["exchangesets"]);
+  }
+  displaySingleEnc() {
+    this.displaySingleEncVal = true;
   }
 }

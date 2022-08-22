@@ -15,18 +15,20 @@ export class EssAddSingleEncsComponent implements OnInit {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
   displayErrorMessage = false;
-
+  validEncList: string[];
+  validEnc: Array<string> = [];
   txtSingleEnc: string = "";
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
 
   ngOnInit(): void {
+    this.validEnc = this.essUploadFileService.getValidEncs();
   }
 
   validateAndAddENC() {
     if (this.renderedFrom == 'encList') {
-
+      this.addEncInList();
     }
     else if ((this.renderedFrom == 'essHome')) {
       this.addSingleEncToList();
@@ -46,6 +48,34 @@ export class EssAddSingleEncsComponent implements OnInit {
       }
     }
     else { this.showMessage('error', 'Please enter ENC number'); }
+  }
+
+  addEncInList() {
+    this.displayErrorMessage = false;
+    this.txtSingleEnc = this.txtSingleEnc.trim();
+    const isValidEnc = this.essUploadFileService.validateENCFormat(this.txtSingleEnc);
+
+    if (this.txtSingleEnc != '') {
+      if (isValidEnc) {
+        if (!this.validEnc.includes(this.txtSingleEnc)) {
+          if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
+            this.showMessage('info', 'Max ENC limit reached.');
+          }
+          else {
+            this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
+          }
+        }
+        else {
+          this.showMessage('info', 'ENC already in list.');
+        }
+      }
+      else {
+        this.showMessage('error', 'Invalid ENC number.');
+      }
+    }
+    else {
+      this.showMessage('error', 'Please enter ENC number.');
+    }
   }
 
   showMessage(
