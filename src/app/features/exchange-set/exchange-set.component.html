@@ -18,7 +18,7 @@
 <div class="addUploadEncComponents">
     <app-ess-upload-file *ngIf="rgAddUploadENC==radioUploadEncValue"></app-ess-upload-file>
  
-    <app-ess-add-single-encs *ngIf="rgAddUploadENC==radioAddEncValue"></app-ess-add-single-encs>
+    <app-ess-add-single-encs [renderedFrom]="addSingleEncRenderFrom" [btnText]="addSingleEncBtnText" *ngIf="rgAddUploadENC==radioAddEncValue"></app-ess-add-single-encs>
 </div>
 
  

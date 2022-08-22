@@ -17,7 +17,15 @@
 }
 p{
 	color: #333;
+	line-height: 1.5;
+	font-size: 1em;
 }
+
+.footer-content .footer-text p{
+	font-size: 0.9em !important;
+    line-height: 1.5em!important;
+}
+
 .sr-only {
 	position: absolute;
 	width: 1px;

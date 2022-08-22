@@ -53,7 +53,7 @@ describe('EssUploadFileComponent', () => {
     return data;
   };
   const router = {
-    navigate : jest.fn()
+    navigate: jest.fn()
   };
   const getNEncData = () => {
     let data = '';
@@ -79,11 +79,11 @@ describe('EssUploadFileComponent', () => {
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule],
       declarations: [EssUploadFileComponent],
       providers: [
-        EssUploadFileService,
         {
           provide : Router,
           useValue : router
-        }
+          },
+        EssUploadFileService
       ]
     })
       .compileComponents();
@@ -181,7 +181,7 @@ describe('EssUploadFileComponent', () => {
       expect(component.messageDesc).toEqual('Please upload valid ENC file.');
     });
 
-    it.each`
+  it.each`
     fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getNoEncData_csv()}  |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getNoEncData()}      |  ${1}

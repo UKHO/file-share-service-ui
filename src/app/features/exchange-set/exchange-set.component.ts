@@ -12,6 +12,9 @@ export class ExchangeSetComponent implements OnInit {
   radioUploadEncValue:string;
   radioAddEncValue:string;
   maxEncSelectionLimit:number;
+  addSingleEncRenderFrom: string ='essHome';
+  addSingleEncBtnText :string = 'Proceed';
+  
   constructor() {
     this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
    }

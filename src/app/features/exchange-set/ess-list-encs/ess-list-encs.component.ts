@@ -2,6 +2,7 @@ import { EssUploadFileService } from '../../../core/services/ess-upload-file.ser
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '@ukho/design-system';
+import { Router } from '@angular/router';
 
 interface MappedEnc {
   enc: string;
@@ -23,7 +24,8 @@ export class EssListEncsComponent implements OnInit {
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
   public displaySelectedTableColumns = ['enc', 'X'];
-  constructor(private essUploadFileService: EssUploadFileService) {}
+  constructor(private essUploadFileService: EssUploadFileService,
+    private route: Router) { }
 
   ngOnInit(): void {
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
@@ -37,7 +39,7 @@ export class EssListEncsComponent implements OnInit {
     }
     this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
       enc,
-      selected: false,
+      selected: false
     }));
   }
 
@@ -86,5 +88,8 @@ export class EssListEncsComponent implements OnInit {
       ),
     ];
   }
-}
 
+  switchToESSLandingPage() {
+    this.route.navigate(["exchangesets"]);
+  }
+}
