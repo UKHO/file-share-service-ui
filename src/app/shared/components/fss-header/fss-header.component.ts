@@ -114,6 +114,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
+        localStorage.setItem('idToken', JSON.stringify(response.idToken));
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
         this.isActive = true;
