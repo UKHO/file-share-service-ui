@@ -4,7 +4,7 @@ import { autoTestConfig } from './appSetting.json';
 
 const config: PlaywrightTestConfig = {
   
-  retries: 3,
+  retries: 2,
   testDir: './Tests',
   /* Maximum time one test can run for. */
   timeout: 100 * 1000,
@@ -40,7 +40,7 @@ const config: PlaywrightTestConfig = {
         ...devices['Desktop Chrome'],
       },
     },
-//// Note: issues with firefox browsers, commenting it for now.
+//// Note: Flaky Tests in pipeline, so commenting below browsers for now. Discussed & agreed with Ravi.
     // {
     //   name: 'firefox',
     //   use: {
