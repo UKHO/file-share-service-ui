@@ -1,11 +1,10 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { HeaderComponent } from '@ukho/design-system';
-import { MsalBroadcastService, MsalService } from "@azure/msal-angular";
+import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { AuthenticationResult, InteractionStatus } from '@azure/msal-browser';
+import { AuthenticationResult, InteractionStatus, PopupRequest, PublicClientApplication } from '@azure/msal-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { FileShareApiService } from '../../../core/services/file-share-api.service';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 
 @Component({
@@ -13,7 +12,7 @@ import { AnalyticsService } from '../../../core/services/analytics.service';
   templateUrl: './fss-header.component.html',
   styleUrls: ['./fss-header.component.scss']
 })
-export class FssHeaderComponent extends HeaderComponent implements OnInit , AfterViewInit {
+export class FssHeaderComponent extends HeaderComponent implements OnInit, AfterViewInit {
   userName: string = "";
   @Output() isPageOverlay = new EventEmitter<boolean>();
 
@@ -21,10 +20,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
   firstName: string = '';
   lastName: string = '';
   isActive: boolean = false;
-  constructor(private msalService: MsalService,
+  constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
+    private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
-    private fileShareApiService: FileShareApiService,
     private analyticsService: AnalyticsService) {
     super();
   }
@@ -33,8 +32,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
     // NOTE :
     // `ukho-header` does not allow to change `id` it uses `title` as a `id` changed Exchange sets -> Exchange-sets
     const exchnageSetElem = document.querySelector('.links')?.children[0].childNodes[0] as HTMLElement;
-    if(!(exchnageSetElem instanceof Comment)  &&  exchnageSetElem.getAttribute('id') === 'Exchange sets'){
-        exchnageSetElem.setAttribute('id' , 'Exchange-sets');
+    if (!(exchnageSetElem instanceof Comment) && exchnageSetElem.getAttribute('id') === 'Exchange sets') {
+      exchnageSetElem.setAttribute('id', 'Exchange-sets');
     }
   }
 
@@ -46,11 +45,11 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
         title: 'Exchange sets',
         clickAction: (() => {
           if (this.authOptions?.isSignedIn()) {
-          this.route.navigate(["exchangesets"]);
+            this.route.navigate(["exchangesets"]);
           }
           this.handleActiveTab('Exchange sets');
         }),
-        navActive:this.isActive
+        navActive: this.isActive
       },
       {
         title: 'Search',
@@ -62,6 +61,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
         navActive: this.isActive
       }
     ];
+
+    // let msalInstance: PublicClientApplication = this.msalService.instance as PublicClientApplication;
+    // msalInstance["browserStorage"].clear();
+
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -70,11 +73,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
         this.isPageOverlay.emit(true);
       });
 
-    this.msalBroadcastService.inProgress$.pipe(
-      filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
+      this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
       .subscribe(() => {
         this.isPageOverlay.emit(true);
-      })
+      });
 
     this.msalBroadcastService.inProgress$
       .pipe(
@@ -105,19 +109,17 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
     ).subscribe((event: any) => { this.skipToContent = `#mainContainer`; });
   }
 
-  handleActiveTab(title:any) {
+  handleActiveTab(title: any) {
     for (var item of this.menuItems) {
       item.navActive = false;
-      if(item.title == title)
-      {
-         item.navActive = true;
+      if (item.title == title) {
+        item.navActive = true;
       }
     }
   }
 
-
   logInPopup() {
-    this.msalService.loginPopup().subscribe(response => {
+    this.msalService.loginPopup({ ...this.msalGuardConfig.authRequest } as PopupRequest).subscribe((response: AuthenticationResult) => {
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
@@ -130,7 +132,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
       }
     });
   }
-  
+
   handleSignIn() {
     this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -147,9 +149,9 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
           this.handleActiveTab(this.menuItems[1].title)
         }
       }
-        else if(url.includes('exchangesets')){
-          this.handleActiveTab(this.menuItems[0].title)
-        }
+      else if (url.includes('exchangesets')) {
+        this.handleActiveTab(this.menuItems[0].title)
+      }
     });
   }
 
@@ -188,25 +190,16 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit , Afte
         const claims = JSON.parse(localStorage['claims']);
         if (this.userName == claims['given_name']) {
           this.msalService.instance.setActiveAccount(account);
-          if (this.authOptions?.isSignedIn()) {
-            // Handling token expiry
-            if (new Date(1000 * claims['exp']).toISOString() < date.toISOString()) {
-              this.msalService.loginPopup().subscribe(response => {
-                localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
-                localStorage.setItem('idToken', response.idToken);
-              });
-            }
-            this.route.navigateByUrl('/search');
-          }
         }
       }
     }
     this.getMenuItems();
   }
-  getMenuItems(){
-    if(this.authOptions?.isSignedIn()){
+
+  getMenuItems() {
+    if (this.authOptions?.isSignedIn()) {
       return this.menuItems;
-    }else{
+    } else {
       return [];
     }
   }

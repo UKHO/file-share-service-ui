@@ -10,6 +10,8 @@ import { FssSearchGroupingService } from '../../../core/services/fss-search-grou
 import { FssPopularSearchService } from '../../../core/services/fss-popular-search.service';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { AppConfigService } from '../../../core/services/app-config.service';
+import { SilentRequest } from '@azure/msal-browser';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-fss-advanced-search',
@@ -58,7 +60,10 @@ export class FssAdvancedSearchComponent implements OnInit {
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   @Output() ShowSimplifiedSearchClicked = new EventEmitter<boolean>();
   @Output() onAdvancedSearchClicked = new EventEmitter<{ fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[], rowGroupings: RowGrouping[] }>();
-  
+  fssSilentTokenRequest: SilentRequest;
+  fssTokenScope: any = [];
+
+
   private subscriptionPopularSearch: Subscription;
   @Input() observablePopularSearch: Observable<any>;
 
@@ -72,8 +77,13 @@ export class FssAdvancedSearchComponent implements OnInit {
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
     private fssPopularSearchService: FssPopularSearchService,
-    private analyticsService: AnalyticsService) { 
+    private analyticsService: AnalyticsService,
+    private msalService: MsalService) { 
     this.displaySimplifiedSearchLink = AppConfigService.settings["fssConfig"].displaySimplifiedSearchLink;
+    this.fssTokenScope = AppConfigService.settings["fssConfig"].fssApiScope;
+    this.fssSilentTokenRequest = {
+      scopes: [this.fssTokenScope],
+    };
   }
 
   getPopularSearch(popularSearch: any) {
@@ -94,7 +104,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.operators = this.fssSearchTypeService.getOperators();
     if (!localStorage['batchAttributes']) {
       this.displayLoader = true;
-      if (!this.fileShareApiService.isTokenExpired()) {
+      this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
         this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
           this.refreshFields(batchAttributeResult);
@@ -102,10 +112,21 @@ export class FssAdvancedSearchComponent implements OnInit {
           this.displayLoader = false;
           this.analyticsService.searchInIt();
         });
-      }
-      else {
-        this.handleTokenExpiry();
-      }
+      },error => {
+        
+        this.msalService.instance
+          .loginPopup(this.fssSilentTokenRequest)
+          .then(response => {
+            this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+              localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
+              this.refreshFields(batchAttributeResult);
+              this.addSearchRow();         
+              this.displayLoader = false;
+              this.analyticsService.searchInIt();
+            });
+          })
+      }); 
+        
     }
     else {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
@@ -141,11 +162,24 @@ export class FssAdvancedSearchComponent implements OnInit {
   }
 
   getBatchAttributes() {
-    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+    this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+      this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
         this.refreshFields(batchAttributeResult);
         this.refreshExistingFssRowsFields();
       });    
+    },error => {
+      
+      this.msalService.instance
+        .loginPopup(this.fssSilentTokenRequest)
+        .then(response => {
+          this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+            localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
+            this.refreshFields(batchAttributeResult);
+            this.refreshExistingFssRowsFields();
+          });    
+        })
+    }); 
   }
 
   refreshFields(batchAttributeResult: any) {
