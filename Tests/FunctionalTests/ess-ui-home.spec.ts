@@ -25,6 +25,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
         expect (await page.isHidden (fssHomePageObjectsConfig.essLinkSelector)).toBeTruthy();          
     });
 
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13803
     test('Verify clicking Search link from home page after login, navigates to Search page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.searchLinkSelector).click();
@@ -33,6 +34,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
         expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);      
     });
 
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13796
     test('Verify clicking Exchange sets link after login navigates to ESS landing page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
@@ -41,6 +43,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
         await expect(page).toHaveTitle("Admiralty - File Share Service - Exchange Sets");        
     });
 
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13803
     test('Verify appending "/search" in  url after login, navigates to Search page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.goto(autoTestConfig.url+"/#/search");
@@ -49,10 +52,26 @@ test.describe('ESS UI Home Page Functional Test Scenarios', ()=>{
       
     });
 
-    test('Verify appending "/exchangesets" in  url after login, navigates to ESS landing page', async ({ page }) => {
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13796
+    test.only('Verify appending "/exchangesets" in  url after login, navigates to ESS landing page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.goto(autoTestConfig.url+"/#/exchangesets");
         await page.waitForLoadState('load');
-        expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButtonName);
-    });    
+        expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButton1Name);
+    });
+
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13795
+    test('Verify appending "/exchangesets" in url before login, navigates to home page', async ({ page }) => {
+        await page.goto(autoTestConfig.url+"/#/exchangesets");
+        await expect(page).toHaveTitle("Admiralty - File Share Service");    
+        expect (await page.isHidden (fssHomePageObjectsConfig.essLinkSelector)).toBeTruthy();   
+    });
+
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13797   
+    test('Verify appending "/search" in url before login, navigates to home page', async ({ page }) => {
+        await page.goto(autoTestConfig.url+"/#/search");
+        await expect(page).toHaveTitle("Admiralty - File Share Service");    
+        expect (await page.isHidden (fssHomePageObjectsConfig.searchLinkSelector)).toBeTruthy();   
+    });
+
 });
