@@ -35,7 +35,7 @@ export function MSALGuardConfigFactory(config: AppConfigService): MsalGuardConfi
     return {
         interactionType: AppConfigService.settings["b2cConfig"].interactionType,
         authRequest: {
-            scopes: [AppConfigService.settings["fssConfig"].fssApiScope],
+            scopes: [AppConfigService.settings["fssConfig"].apiScope],
           },
     };
 }
@@ -43,7 +43,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     return {
       interactionType: AppConfigService.settings["b2cConfig"].interactionType,
       protectedResourceMap: new Map([
-        [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].fssApiScope]]    ]),
+        [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].apiScope]]    ]),
     };
   }
 @NgModule({
