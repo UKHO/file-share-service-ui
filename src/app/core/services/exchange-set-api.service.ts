@@ -9,4 +9,9 @@ export class ExchangeSetApiService {
     baseUrl = AppConfigService.settings['essConfig'].apiUrl;
 
     constructor(private http: HttpClient) { }
+
+    exchangeSetCreationResponse() {
+
+    }
+
 }
