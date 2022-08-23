@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { EssUploadFileService } from './../../../../core/services/ess-upload-file.service';
+import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
