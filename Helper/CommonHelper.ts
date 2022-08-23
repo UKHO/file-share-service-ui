@@ -35,7 +35,7 @@ export async function LoginPortal(page: Page, userName: string, password: string
 
   const [popup] = await Promise.all([
     page.waitForEvent('popup'),
-    page.click(loginLink)
+    page.locator(loginLink).click(),
   ]);
   await popup.setViewportSize({ width: 800, height: 1024 });
   await popup.waitForLoadState();
@@ -44,7 +44,6 @@ export async function LoginPortal(page: Page, userName: string, password: string
   await popup.click(commonObjectsConfig.loginPopupNextButtonSelector);
   await popup.fill(commonObjectsConfig.loginPopupSignInPasswordSelector, password);
   await popup.click(commonObjectsConfig.loginPopupSignInButtonSelector);
-
   await page.waitForNavigation();
 }
 
