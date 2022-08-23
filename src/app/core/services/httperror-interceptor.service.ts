@@ -10,7 +10,6 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
         .pipe(
             catchError((error: HttpErrorResponse) => {
                 const errorMessage = this.setError(error);
-                console.log(error);
                 return throwError(error.error);
             })
         );

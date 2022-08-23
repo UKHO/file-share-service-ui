@@ -54,7 +54,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for search result count
   test('should return search result count 1 when search result for 1 batch is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
     component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
     var batches = component.searchResult[0];
@@ -65,7 +65,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for batch attributes
   test('should return batch attributes when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
     component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
     var batches = component.searchResult[0];
@@ -82,7 +82,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for system attributes
   test('should return system attributes when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
     component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
 
@@ -101,7 +101,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for file details column headers
   test('should return file details column data', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
     component.ngOnChanges();
 
     var expectedColumnData = ColumnHeader;
@@ -112,7 +112,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for batch file details
   test('should return batch file details when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
     component.searchResult = Array.of(SearchResultMockData['entries']);
     component.ngOnChanges();
     var batches = component.searchResult[0];
@@ -154,7 +154,7 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for file size conversion 
   test('should convert file size from bytes to respective size units', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService);
+    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
     component.ngOnChanges();
     var zeroBytes = formatBytes(0);
     var fileSizeBytes = formatBytes(100);

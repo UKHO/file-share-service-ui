@@ -20,8 +20,8 @@ export class ExchangeSetComponent implements OnInit {
    }
    
   ngOnInit(): void {
-    this.radioUploadEncValue="UploadEncFile";
-    this.radioAddEncValue="AddSingleEnc";
+    this.radioUploadEncValue = "UploadEncFile";
+    this.radioAddEncValue = "AddSingleEnc";
   }
 
 }

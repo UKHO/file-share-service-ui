@@ -1,10 +1,8 @@
 import { InjectionToken, NgModule, APP_INITIALIZER } from '@angular/core';
 import { IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
-import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalService, MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG } from '@azure/msal-angular';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-
 import { AppConfigService } from '../../../app/core/services/app-config.service';
-import { FssInterceptor } from './fss-interceptor';
 import { HttpErrorInterceptorService } from '../../core/services/httperror-interceptor.service';
 import { AnalyticsService } from 'src/app/core/services/analytics.service';
 
@@ -35,9 +33,19 @@ export function MSALInstanceFactory(config: AppConfigService): IPublicClientAppl
 
 export function MSALGuardConfigFactory(config: AppConfigService): MsalGuardConfiguration {
     return {
-        interactionType: AppConfigService.settings["b2cConfig"].interactionType
+        interactionType: AppConfigService.settings["b2cConfig"].interactionType,
+        authRequest: {
+            scopes: [AppConfigService.settings["fssConfig"].fssApiScope],
+          },
     };
 }
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+    return {
+      interactionType: AppConfigService.settings["b2cConfig"].interactionType,
+      protectedResourceMap: new Map([
+        [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].fssApiScope]]    ]),
+    };
+  }
 @NgModule({
     providers: [],
     imports: [MsalModule]
@@ -64,14 +72,19 @@ export class MsalConfigDynamicModule {
                     useFactory: MSALGuardConfigFactory,
                     deps: [AppConfigService]
                 },
+                {
+                    provide: MSAL_INTERCEPTOR_CONFIG,
+                    useFactory: MSALInterceptorConfigFactory,
+                    deps: [AppConfigService]
+                },
                 MsalGuard,
                 MsalService,
                 MsalBroadcastService,
                 {
                     provide: HTTP_INTERCEPTORS,
-                    useClass: FssInterceptor, HttpErrorInterceptorService,
+                    useClass: MsalInterceptor, HttpErrorInterceptorService,
                     multi: true
-                }
+                },
             ]
         };
     }
