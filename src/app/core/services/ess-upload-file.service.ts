@@ -117,7 +117,8 @@ export class EssUploadFileService {
   }
 
   addAllSelectedEncs(){
-    this.selectedEncs = [...this.validEncs.slice(0,this.maxEncSelectionLimit)];
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
   }
 
 }

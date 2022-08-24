@@ -41,16 +41,9 @@ export class EssListEncsComponent implements OnInit {
       10
     );
     this.essUploadFileService.clearSelectedEncs();
-    this.selectedEncList = this.essUploadFileService.getSelectedENCs();
-    this.selectDeselectText = this.getSelectDeselectText();
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
     }
-    this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
-      enc,
-      selected: false
-    }));
-
     this.setEncList();
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
@@ -58,15 +51,15 @@ export class EssListEncsComponent implements OnInit {
        this.syncEncsBetweenTables();
       }
     });
+    this.selectedEncList = this.essUploadFileService.getSelectedENCs();
+    this.selectDeselectText = this.getSelectDeselectText();
   }
 
   setEncList() {
-    this.encList = this.essUploadFileService.getValidEncs().map((enc) => {
-      return {
-        enc,
-        selected: false
-      }
-    });
+    this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
+      enc,
+      selected: false
+ }));
   }
 
   showMessage(
@@ -135,7 +128,8 @@ export class EssListEncsComponent implements OnInit {
     return selectDeselectText;
   }
   checkMaxEncSelectionAndSelectedEncLength(){
-    return this.maxEncSelectionLimit === this.selectedEncList.length;
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.encList.length ? this.encList.length  : this.maxEncSelectionLimit;
+    return maxEncSelectionLimit === this.selectedEncList.length;
   }
   selectDeselectAll(){
     if(!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select){
