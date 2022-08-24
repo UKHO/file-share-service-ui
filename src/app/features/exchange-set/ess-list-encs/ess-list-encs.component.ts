@@ -138,7 +138,7 @@ export class EssListEncsComponent implements OnInit {
     return this.maxEncSelectionLimit === this.selectedEncList.length;
   }
   selectDeselectAll(){
-    if(!this.checkMaxEncSelectionAndSelectedEncLength()){
+    if(!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select){
       this.essUploadFileService.addAllSelectedEncs();
     }else{
       this.essUploadFileService.clearSelectedEncs();
