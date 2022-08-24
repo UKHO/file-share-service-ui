@@ -147,6 +147,7 @@ export class EssListEncsComponent implements OnInit {
         .then(response => {
           this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
             console.log(result);
+            this.displayLoader = false;
          });
         })
     })
