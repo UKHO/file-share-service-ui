@@ -30,7 +30,8 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
-  selectDeselectText: String;
+  selectDeselectText: string;
+  showSelectDeselect: boolean;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
 
@@ -53,13 +54,14 @@ export class EssListEncsComponent implements OnInit {
     });
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
+    this.showSelectDeselect = true;
   }
 
   setEncList() {
     this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
       enc,
       selected: false
- }));
+    }));
   }
 
   showMessage(
@@ -96,6 +98,7 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
+    this.showSelectDeselect = !this.checkMaxEncSelectionAndSelectedEncLength();
     if(this.selectedEncList.length === 0){
       this.selectDeselectText = SelectDeselect.select;
       return;

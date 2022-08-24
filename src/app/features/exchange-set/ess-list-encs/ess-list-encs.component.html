@@ -19,7 +19,7 @@
             <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
           </ng-container>
           <ng-container ukhoColumnDef="Choose">
-            <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a (click)="selectDeselectAll()" href="javascript:void(0);" class="selectDeselctBtn">{{selectDeselectText}}</a> Choose</th>
+            <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);" class="selectDeselctBtn">{{selectDeselectText}}</a> Choose</th>
             <td ukho-cell *ukhoCellDef="let element">
               <ukho-checkbox [checked]="element.selected" (change)="handleChange(element.enc)" class="selectEnc"
                 attr.aria-label="{{element.enc}}"></ukho-checkbox>
