@@ -19,7 +19,7 @@
             <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
           </ng-container>
           <ng-container ukhoColumnDef="Choose">
-            <th ukho-header-cell *ukhoHeaderCellDef>Choose</th>
+            <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a (click)="selectDeselectAll()" href="javascript:void(0);" class="selectDeselctBtn">{{selectDeselectText}}</a> Choose</th>
             <td ukho-cell *ukhoCellDef="let element">
               <ukho-checkbox [checked]="element.selected" (change)="handleChange(element.enc)" class="selectEnc"
                 attr.aria-label="{{element.enc}}"></ukho-checkbox>
@@ -38,14 +38,14 @@
       <h3>Your selection <span class="showListEncTOtal">0 ENCs selected</span>
       </h3>
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
-        <table ukho-table [dataSource]="selectedEncList">
+        <table ukho-table [dataSource]="selectedEncList" class="enc-list-table selectionTable">
           <ng-container ukhoColumnDef="enc">
             <th ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
             <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
           </ng-container>
           <ng-container ukhoColumnDef="X">
             <th ukho-header-cell *ukhoHeaderCellDef></th>
-            <td ukho-cell *ukhoCellDef="let element">
+            <td  class="selectionClose" ukho-cell *ukhoCellDef="let element">
               <button (click)="handleChange(element)"> <i class="fa fa-times fa-1x"></i> </button>
             </td>
           </ng-container>

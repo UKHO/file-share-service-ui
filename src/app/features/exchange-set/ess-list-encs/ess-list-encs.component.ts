@@ -8,7 +8,10 @@ interface MappedEnc {
   enc: string;
   selected: boolean;
 }
-
+enum SelectDeselect {
+  select = 'Select all',
+  deselect = 'Deselect all'
+};
 @Component({
   selector: 'app-ess-list-encs',
   templateUrl: './ess-list-encs.component.html',
@@ -27,8 +30,7 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
-
-
+  selectDeselectText: String;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
 
@@ -39,6 +41,8 @@ export class EssListEncsComponent implements OnInit {
       10
     );
     this.essUploadFileService.clearSelectedEncs();
+    this.selectedEncList = this.essUploadFileService.getSelectedENCs();
+    this.selectDeselectText = this.getSelectDeselectText();
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
     }
@@ -99,6 +103,14 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
+    if(this.selectedEncList.length === 0){
+      this.selectDeselectText = SelectDeselect.select;
+      return;
+    }
+    if(this.selectDeselectText === SelectDeselect.select && this.checkMaxEncSelectionAndSelectedEncLength()){
+      this.selectDeselectText = SelectDeselect.deselect;
+      return;
+    }
   }
 
   onSortChange(sortState: SortState) {
@@ -114,7 +126,24 @@ export class EssListEncsComponent implements OnInit {
   switchToESSLandingPage() {
     this.route.navigate(["exchangesets"]);
   }
+
   displaySingleEnc() {
     this.displaySingleEncVal = true;
+  }
+  getSelectDeselectText(){
+    const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
+    return selectDeselectText;
+  }
+  checkMaxEncSelectionAndSelectedEncLength(){
+    return this.maxEncSelectionLimit === this.selectedEncList.length;
+  }
+  selectDeselectAll(){
+    if(!this.checkMaxEncSelectionAndSelectedEncLength()){
+      this.essUploadFileService.addAllSelectedEncs();
+    }else{
+      this.essUploadFileService.clearSelectedEncs();
+    }
+    this.syncEncsBetweenTables();
+    this.selectDeselectText = this.getSelectDeselectText();
   }
 }

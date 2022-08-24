@@ -9,12 +9,14 @@ export class EssUploadFileService {
   private validEncs: string[];
   private selectedEncs: string[];
   private maxEncLimit: number;
+  private maxEncSelectionLimit: number;
   private showInfoMessage = false;
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
 
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
+    this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -112,6 +114,10 @@ export class EssUploadFileService {
     else {
       return true;
     }
-
   }
+
+  addAllSelectedEncs(){
+    this.selectedEncs = this.validEncs.filter((enc , index) => index < this.maxEncSelectionLimit);
+  }
+
 }
