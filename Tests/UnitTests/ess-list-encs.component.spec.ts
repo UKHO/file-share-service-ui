@@ -19,7 +19,7 @@ describe('EssListEncsComponent', () => {
   const service = {
     getValidEncs : jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
     clearSelectedEncs : jest.fn(),
-    getSelectedENCs: jest.fn(),
+    getSelectedENCs: jest.fn().mockReturnValue([]),
     infoMessage : true,
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
