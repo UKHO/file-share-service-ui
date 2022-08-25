@@ -23,7 +23,8 @@ describe('EssListEncsComponent', () => {
     infoMessage : true,
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
-    getNotifySingleEnc : jest.fn().mockReturnValue(of(true))
+    getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
+    addAllSelectedEncs : jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -131,5 +132,23 @@ describe('EssListEncsComponent', () => {
     expect(encList.length).toEqual(5);
   });
 
+  it('should display Select All text when enc list is less than or equal to configurable enc limit' ,() => {
+    component.ngOnInit();
+    expect(component.encList.length).toBeLessThanOrEqual(5);
+    expect(component.selectDeselectText).toEqual('Select all');
+  });
 
+  it('should display Deselect All button when select all button is clicked' ,() => {
+    jest.clearAllMocks();
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
+    component.selectDeselectAll();
+    expect(component.selectDeselectText).toEqual('Deselect all');
+  });
+
+  it('should display Select All button when Deselect all button is clicked' ,() => {
+    jest.clearAllMocks();
+    service.getSelectedENCs.mockReturnValue([]);
+    component.selectDeselectAll();
+    expect(component.selectDeselectText).toEqual('Select all');
+  });
 });
