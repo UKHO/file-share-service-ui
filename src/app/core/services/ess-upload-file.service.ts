@@ -29,7 +29,7 @@ export class EssUploadFileService {
   }
 
   validateENCFormat(encName: string) {
-    const pattern = /[A-Z]{2}[1-68][A-Z0-9]{5}$/;
+    const pattern = /^[A-Z0-9]{2}[1-68][A-Z0-9]{5}$/;
     return encName.match(pattern);
   }
 
