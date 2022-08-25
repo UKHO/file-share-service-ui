@@ -126,12 +126,13 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
           } 
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944 & 13945
-     test.only('Verify that user able to add valid single ENCs, Show "Your selection" on Exchange set request page and get link "Start Again" which redirect to ESS landing page', async({page})=>{
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944 (For valid ENC no.)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13945 (For "Your selection" table)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13946 (For "Start again" link)
+     test('Verify that user able to add valid single ENCs, Show "Your selection" on Exchange set request page and get link "Start Again" which redirect to ESS landing page', async({page})=>{
           // For valid no.
           await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
-          //await page.locator("#ukho-form-field-1").fill("AU220150");
-          await page.fill(esslandingpageObjectsConfig.addsingleencSelector, "AU220150" );
+          await page.fill(esslandingpageObjectsConfig.addSingleENCManuallySelector, esslandingpageObjectsConfig.ENCValue1);
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector); 
           await expect (page.locator(esslandingpageObjectsConfig.uploadedDataSelector)).toBeVisible();
 
@@ -146,19 +147,9 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944
      test('Verify that user able to add invalid single ENCs', async({page})=>{
           await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
-          await page.locator("#ukho-form-field-1").fill("A1220150");
+          await page.fill(esslandingpageObjectsConfig.addSingleENCManuallySelector, esslandingpageObjectsConfig.invalidENCNoSelector);
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await expect (page.locator(esslandingpageObjectsConfig.errorMessageForInvalidENCSelector)).toContainText(esslandingpageObjectsConfig.messageForInvalidENCs)
      })
-
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13945
-     test('Verifing right hand table displayed as "Your Selection"', async({page})=>{
-          await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
-          await page.locator("#ukho-form-field-1").fill("AU220150");
-          await page.click(esslandingpageObjectsConfig.proceedButtonSelector); 
-          
-     })
-
-
 
 });
