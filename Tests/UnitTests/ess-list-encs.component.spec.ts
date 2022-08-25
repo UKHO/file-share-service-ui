@@ -53,6 +53,7 @@ describe('EssListEncsComponent', () => {
       MaxEncSelectionLimit : 5
       }
     };
+    window.scrollTo = jest.fn();
     fixture = TestBed.createComponent(EssListEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
