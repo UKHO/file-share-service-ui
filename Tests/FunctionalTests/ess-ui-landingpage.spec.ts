@@ -125,4 +125,40 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
                expect (await page.innerText("//div/table/tbody/tr["+i+"]/td[1]")).toEqual(enclist[i-1]);
           } 
      })
+
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944 & 13945
+     test.only('Verify that user able to add valid single ENCs, Show "Your selection" on Exchange set request page and get link "Start Again" which redirect to ESS landing page', async({page})=>{
+          // For valid no.
+          await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
+          //await page.locator("#ukho-form-field-1").fill("AU220150");
+          await page.fill(esslandingpageObjectsConfig.addsingleencSelector, "AU220150" );
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector); 
+          await expect (page.locator(esslandingpageObjectsConfig.uploadedDataSelector)).toBeVisible();
+
+          // Right hand table 
+          await expect (page.locator(esslandingpageObjectsConfig.yourSelectionTableSelector)).toBeVisible();
+
+          // Start Again
+          await page.click(esslandingpageObjectsConfig.startAgainSelector);
+          await expect (page.locator(esslandingpageObjectsConfig.exchangesettextSelector)).toBeVisible();
+     })
+
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944
+     test('Verify that user able to add invalid single ENCs', async({page})=>{
+          await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
+          await page.locator("#ukho-form-field-1").fill("A1220150");
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+          await expect (page.locator(esslandingpageObjectsConfig.errorMessageForInvalidENCSelector)).toContainText(esslandingpageObjectsConfig.messageForInvalidENCs)
+     })
+
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13945
+     test('Verifing right hand table displayed as "Your Selection"', async({page})=>{
+          await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
+          await page.locator("#ukho-form-field-1").fill("AU220150");
+          await page.click(esslandingpageObjectsConfig.proceedButtonSelector); 
+          
+     })
+
+
+
 });

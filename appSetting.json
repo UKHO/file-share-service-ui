@@ -1,11 +1,11 @@
 {
     "autoTestConfig":
     {
-        "url":"",
-        "user":"",
-        "password":"",
-        "userFullName" : "",
-        "apiurl": ""
+        "url":"https://fss-dev.admiralty.co.uk",
+        "user":"UKHODevTestUser1@outlook.com",
+        "password":"Fh84e3W!kl",
+        "userFullName" : "Test User",
+        "apiurl": "https://uatadmiralty.azure-api.net/fss-dev"
 
     }
 
