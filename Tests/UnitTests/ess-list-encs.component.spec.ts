@@ -152,4 +152,18 @@ describe('EssListEncsComponent', () => {
     component.selectDeselectAll();
     expect(component.selectDeselectText).toEqual('Select all');
   });
+  
+  it('should hide select all button if enc list greater than max enc limit' ,() => {
+    service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'AU314140']);
+    jest.clearAllMocks();
+    component.ngOnInit();
+    expect(component.showSelectDeselect).toBeFalsy();
+  });
+
+  it('should show select all button if enc list less than or equal to max enc limit' ,() => {
+    service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
+    jest.clearAllMocks();
+    component.ngOnInit();
+    expect(component.showSelectDeselect).toBeTruthy();
+  });
 });
