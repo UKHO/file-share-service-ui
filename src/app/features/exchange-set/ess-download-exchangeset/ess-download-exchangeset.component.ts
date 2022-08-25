@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { AppConfigService } from './../../../core/services/app-config.service';
+import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +9,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ess-download-exchangeset.component.scss']
 })
 export class EssDownloadExchangesetComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+  displayLoader: boolean = true;
+  showSeletedEncs: any;
+  
+  constructor(private essUploadFileService: EssUploadFileService,
+    private route: Router) { 
   }
 
+  ngOnInit(): void {
+    this.showSeletedEncs = this.essUploadFileService.getSelectedENCs();
+  }
+
+  switchToESSLandingPage() {
+    this.route.navigate(["exchangesets"]);
+  }
+  
 }

@@ -80,7 +80,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     private analyticsService: AnalyticsService,
     private msalService: MsalService) { 
     this.displaySimplifiedSearchLink = AppConfigService.settings["fssConfig"].displaySimplifiedSearchLink;
-    this.fssTokenScope = AppConfigService.settings["fssConfig"].fssApiScope;
+    this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
