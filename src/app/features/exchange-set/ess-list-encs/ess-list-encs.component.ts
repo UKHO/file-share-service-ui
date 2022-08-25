@@ -54,7 +54,7 @@ export class EssListEncsComponent implements OnInit {
     });
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
-    this.showSelectDeselect = true;
+    this.showSelectDeselect = this.getSelectDeselectVisibility();
   }
 
   setEncList() {
@@ -88,6 +88,7 @@ export class EssListEncsComponent implements OnInit {
         'error',
         'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.'
       );
+      window.scrollTo(0,0);
     }
     this.syncEncsBetweenTables();
   }
@@ -98,7 +99,7 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
-    this.showSelectDeselect = !this.checkMaxEncSelectionAndSelectedEncLength();
+    this.showSelectDeselect = this.getSelectDeselectVisibility();
     if(this.selectedEncList.length === 0){
       this.selectDeselectText = SelectDeselect.select;
       return;
@@ -142,5 +143,9 @@ export class EssListEncsComponent implements OnInit {
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
+  }
+
+  getSelectDeselectVisibility(){
+    return this.encList.length <= this.maxEncSelectionLimit;
   }
 }
