@@ -130,24 +130,19 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13945 (For "Your selection" table)
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13946 (For "Start again" link)
      test('Verify that user able to add valid single ENCs, Show "Your selection" on Exchange set request page and get link "Start Again" which redirect to ESS landing page', async({page})=>{
-          // For valid no.
           await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
-          await page.fill(esslandingpageObjectsConfig.addSingleENCManuallySelector, esslandingpageObjectsConfig.ENCValue1);
+          await page.fill(esslandingpageObjectsConfig.addSingleENCTextboxSelector, esslandingpageObjectsConfig.ENCValue1);
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector); 
-          await expect (page.locator(esslandingpageObjectsConfig.uploadedDataSelector)).toBeVisible();
-
-          // Right hand table 
-          await expect (page.locator(esslandingpageObjectsConfig.yourSelectionTableSelector)).toBeVisible();
-
-          // Start Again
-          await page.click(esslandingpageObjectsConfig.startAgainSelector);
+          expect (await page.innerText("//div/table/tbody/tr[1]/td[1]")).toEqual(esslandingpageObjectsConfig.ENCValue1);
+          await expect (page.locator(esslandingpageObjectsConfig.selectionTextSelector)).toBeVisible();
+          await page.click(esslandingpageObjectsConfig.startAgainLinkSelector);
           await expect (page.locator(esslandingpageObjectsConfig.exchangesettextSelector)).toBeVisible();
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944
-     test('Verify that user able to add invalid single ENCs', async({page})=>{
+     test.only('Verify that error displays when user enters invalid single ENC', async({page})=>{
           await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
-          await page.fill(esslandingpageObjectsConfig.addSingleENCManuallySelector, esslandingpageObjectsConfig.invalidENCNoSelector);
+          await page.fill(esslandingpageObjectsConfig.addSingleENCTextboxSelector, esslandingpageObjectsConfig.invalidENCValue);
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await expect (page.locator(esslandingpageObjectsConfig.errorMessageForInvalidENCSelector)).toContainText(esslandingpageObjectsConfig.messageForInvalidENCs)
      })
