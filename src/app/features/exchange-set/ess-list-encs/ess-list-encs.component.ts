@@ -3,6 +3,11 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
+import { SilentRequest } from '@azure/msal-browser';
+import { MsalService } from '@azure/msal-angular';
+import { ExchangeSetApiService } from 'src/app/core/services/exchange-set-api.service';
+import { ExchangeSetDetails, ExchangeSetLinks, ProductsNotInExchangeSet } from 'src/app/core/models/ess-response-types';
+import { stringOperatorList } from 'Helper/ConstantHelper';
 
 interface MappedEnc {
   enc: string;
@@ -15,6 +20,7 @@ interface MappedEnc {
   styleUrls: ['./ess-list-encs.component.scss']
 })
 export class EssListEncsComponent implements OnInit {
+  displayLoader: boolean = false;
   addSingleEncRenderFrom: string = 'encList';
   addSingleEncBtnText: string = 'Add ENC';
   encList: MappedEnc[];
@@ -27,10 +33,20 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
-
+  essTokenScope: any = [];
+  essSilentTokenRequest: SilentRequest; 
+  exchangeSetDetails: ExchangeSetDetails;
 
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router) { }
+    private route: Router,
+    private msalService: MsalService,
+    private exchangeSetApiService: ExchangeSetApiService,
+  ) {
+    this.essTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+    this.essSilentTokenRequest = {
+      scopes: [this.essTokenScope],
+    };
+  }
 
   ngOnInit(): void {
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
@@ -51,7 +67,7 @@ export class EssListEncsComponent implements OnInit {
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
         this.setEncList();
-       this.syncEncsBetweenTables();
+        this.syncEncsBetweenTables();
       }
     });
   }
@@ -117,4 +133,53 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEnc() {
     this.displaySingleEncVal = true;
   }
+
+  requestEncClicked() {
+    this.displayLoader = true; 
+    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+
+      this.exchangeSetCreationResponse(this.selectedEncList);
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.essSilentTokenRequest)
+        .then(response => {
+
+          this.exchangeSetCreationResponse(this.selectedEncList);
+        })
+    })
+  }
+
+  exchangeSetCreationResponse(selectedEncList: any[]) {
+    this.displayLoader = true;
+    if (selectedEncList != null) {
+      this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+        this.displayLoader = false;
+        this.exchangeSetDetails = {
+          links: this.getLinks(result['_links']),
+          urlExpiryDateTime: result['exchangeSetUrlExpiryDateTime'],
+          requestedProductCount: result['requestedProductCount'],
+          exchangeSetCellCount: result['exchangeSetCellCount'],
+          requestedProductsAlreadyUpToDateCount: result['requestedProductsAlreadyUpToDateCount'],
+          requestedProductsNotInExchangeSet: result['requestedProductsNotInExchangeSet']
+        };
+        this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
+        this.route.navigate(['exchangesets', 'enc-download']);
+      },
+        (error) => {
+          this.showMessage('error', 'There has been an error');
+        }
+      );
+    }
+  }
+
+  getLinks(links: any) {
+    var exchangeSetLinks: ExchangeSetLinks = {
+      batchStatusUri: links['exchangeSetBatchStatusUri'],
+      batchDetailsUri: links['exchangeSetBatchDetailsUri'],
+      fileUri: links['exchangeSetFileUri']
+    };
+    return exchangeSetLinks;
+
+  }
+
 }
