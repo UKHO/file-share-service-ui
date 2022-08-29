@@ -39,7 +39,7 @@ export class EssListEncsComponent implements OnInit {
     private msalService: MsalService,
     private exchangeSetApiService: ExchangeSetApiService,
      ) { 
-    this.essTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+    this.essTokenScope = AppConfigService.settings["essConfig"].apiScope;
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope],
     };
@@ -134,10 +134,8 @@ export class EssListEncsComponent implements OnInit {
   requestEncClicked()
   {
     this.displayLoader = true;
-    let selectedEncList : any[];
-    selectedEncList = this.encList.map(x => x.enc);
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+      this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
          console.log(result);
          this.displayLoader = false;
       });
@@ -145,7 +143,7 @@ export class EssListEncsComponent implements OnInit {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-          this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+          this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
             console.log(result);
             this.displayLoader = false;
          });
