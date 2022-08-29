@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { SilentRequest } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 import { ExchangeSetApiService } from 'src/app/core/services/exchange-set-api.service';
-import { ExchangeSetDetails, ExchangeSetLinks, ProductsNotInExchangeSet } from 'src/app/core/models/ess-response-types';
+import { ExchangeSetDetails, ExchangeSetLinks } from 'src/app/core/models/ess-response-types';
 import { stringOperatorList } from 'Helper/ConstantHelper';
 
 interface MappedEnc {
@@ -149,28 +149,33 @@ export class EssListEncsComponent implements OnInit {
     })
   }
 
-  exchangeSetCreationResponse(selectedEncList: any[]) {
-    this.displayLoader = true;
+  exchangeSetCreationResponse(selectedEncList: any[]) {    
     if (selectedEncList != null) {
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
         this.displayLoader = false;
-        this.exchangeSetDetails = {
-          links: this.getLinks(result['_links']),
-          urlExpiryDateTime: result['exchangeSetUrlExpiryDateTime'],
-          requestedProductCount: result['requestedProductCount'],
-          exchangeSetCellCount: result['exchangeSetCellCount'],
-          requestedProductsAlreadyUpToDateCount: result['requestedProductsAlreadyUpToDateCount'],
-          requestedProductsNotInExchangeSet: result['requestedProductsNotInExchangeSet']
-        };
+        this.getExchangeSetDetails(result);
         this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
         this.route.navigate(['exchangesets', 'enc-download']);
       },
         (error) => {
           this.showMessage('error', 'There has been an error');
+          this.displayLoader = false;
         }
       );
     }
   }
+
+  getExchangeSetDetails(result:any)
+  {
+    return this.exchangeSetDetails={
+       links: this.getLinks(result['_links']),
+          urlExpiryDateTime : result['exchangeSetUrlExpiryDateTime'],
+          requestedProductCount: result['requestedProductCount'],
+          exchangeSetCellCount: result['exchangeSetCellCount'],
+          requestedProductsAlreadyUpToDateCount: result['requestedProductsAlreadyUpToDateCount'],
+          requestedProductsNotInExchangeSet: result['requestedProductsNotInExchangeSet']
+    }
+  }    
 
   getLinks(links: any) {
     var exchangeSetLinks: ExchangeSetLinks = {
