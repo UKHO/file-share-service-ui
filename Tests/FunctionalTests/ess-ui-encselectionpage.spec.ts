@@ -4,8 +4,9 @@ import {fssHomePageObjectsConfig} from '../../PageObjects/fss-homepageObjects.js
 import {encselectionpageObjectsConfig} from '../../PageObjects/essui-encselectionpageObjects.json';
 import {autoTestConfig} from '../../appSetting.json';
 import {LoginPortal} from '../../Helper/CommonHelper';
-import {addSingleENC} from '../../Helper/ESSLandingPageHelper';
+import {addAnotherENC, addSingleENC} from '../../Helper/ESSLandingPageHelper';
 import {commonObjectsConfig} from '../../PageObjects/commonObjects.json';
+
 
 test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
 
@@ -29,41 +30,34 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
       await expect(page.locator(esslandingpageObjectsConfig.exchangesettextSelector)).toBeVisible();
  })
 
- // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
- test('Verify that user is not able to add more than Maxlimit ENCs using manually adding ENcs', async({page})=>{
-   await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
-   await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click();
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
+     test('Verify that user is not able to add more than Maxlimit ENCs using manually adding ENcs', async({page})=>{
+      await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
+      await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click();
 })
 
-// https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13954 - Add Anther ENC
-// https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13956 - Duplicate ENC
-   test.only ('Verify that after clicking on "Add another ENC" link user able to add another ENC number', async({page})=>{
-      await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
-      await page.fill(esslandingpageObjectsConfig.addSingleENCTextboxSelector, esslandingpageObjectsConfig.ENCValue1);
-      await page.click(esslandingpageObjectsConfig.proceedButtonSelector); 
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13954 - Add Anther ENC
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13956 - Duplicate ENC
+     test('Verify that after clicking on "Add another ENC" link user able to add another ENC number', async({page})=>{
+       await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
+       await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click(); 
+       await expect (page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
 
-      //Add another ENC1
-      await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click(); 
-      await expect (page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
-      await page.locator(encselectionpageObjectsConfig.typeENCCellNameHereSelector).fill(encselectionpageObjectsConfig.ENCValue1);
-      await page.locator(encselectionpageObjectsConfig.addENCSubmitbtnSelector).click(); 
-      await expect (page.locator(encselectionpageObjectsConfig.addAnotherENC2Selector)).toBeVisible();
+       await page.locator(encselectionpageObjectsConfig.typeENCCellNameHereSelector).fill(encselectionpageObjectsConfig.ENCValue1);
+       await page.locator(esslandingpageObjectsConfig.addsingleencSelector).click(); 
+       await expect (page.locator(encselectionpageObjectsConfig.addAnotherENC2Selector)).toBeVisible();
       
-      //Add another ENC2
-      await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click(); 
-      await expect (page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
-      await page.locator(encselectionpageObjectsConfig.typeENCCellNameHereSelector).fill(encselectionpageObjectsConfig.ENCValue2);
-      await page.locator(encselectionpageObjectsConfig.addENCSubmitbtnSelector).click();
-      await expect (page.locator(encselectionpageObjectsConfig.addAnotherENC3Selector)).toBeVisible();
-      //await expect (page.locator("input[id = 'ukho-form-field-9']")).toBeEmpty();
+       //Add another ENC2
+       await addAnotherENC(page, encselectionpageObjectsConfig.addAnotherENCSelector);
+       await expect (page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
+       await expect (page.locator(encselectionpageObjectsConfig.addAnotherENC3Selector)).toBeVisible();
+       expect (await page.isChecked(encselectionpageObjectsConfig.chooseBoxSelecetor)).toBeFalsy();
 
-      //Add another ENC2 - Duplicate No.
-      await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click(); 
-      await expect (page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
-      await page.locator(encselectionpageObjectsConfig.typeENCCellNameHereSelector).fill(encselectionpageObjectsConfig.ENCValue2);
-      await page.locator(encselectionpageObjectsConfig.addENCSubmitbtnSelector).click();
-      await expect (page.locator(encselectionpageObjectsConfig.addAnotherENC3Selector)).toBeVisible();
-      await expect (page.locator(encselectionpageObjectsConfig.errorMessageForDplicateNumberSelector)).toContainText(encselectionpageObjectsConfig.errorMessage)
+       //13956 - Add another ENC2 - Duplicate No.
+       await addAnotherENC(page, encselectionpageObjectsConfig.addAnotherENCSelector);
+       await expect (page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
+       await expect (page.locator(encselectionpageObjectsConfig.addAnotherENC3Selector)).toBeVisible();
+       await expect (page.locator(encselectionpageObjectsConfig.errorMessageForDplicateNumberSelector)).toContainText(encselectionpageObjectsConfig.errorMessage)
   })
 
 

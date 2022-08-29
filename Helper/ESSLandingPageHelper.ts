@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import { esslandingpageObjectsConfig } from '../PageObjects/essui-landingpageObjects.json';
+import {encselectionpageObjectsConfig} from '..//PageObjects//essui-encselectionpageObjects.json'
 
 //<summary>
 // Uploading .csv & .txt files
@@ -25,5 +26,17 @@ export async function addSingleENC(page: Page, elementSelector: string) {
   await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
   await page.fill(elementSelector, esslandingpageObjectsConfig.ENCValue2);
   await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+
+}
+
+//<summary>
+// Adding Another ENcs
+//</summary>
+//<param> page Object </param>
+//<param> Element Locator </param>
+export async function addAnotherENC(page: Page, elementSelector: string) {
+  await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click(); 
+  await page.locator(encselectionpageObjectsConfig.typeENCCellNameHereSelector).fill(encselectionpageObjectsConfig.ENCValue2);
+  await page.locator(esslandingpageObjectsConfig.addsingleencSelector).click();
 
 }
