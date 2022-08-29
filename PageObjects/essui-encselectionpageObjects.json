@@ -3,9 +3,12 @@
     {
         "firstEncSelector":"//div/table/tbody/tr[1]/td[1]",
         "addAnotherENCSelector":"a.lnkAddAnotherEnc",
-        "typeENCTextBoxSelector":"input[id = 'ukho-form-field-3']",
+        "typeENCTextBoxSelector":"//input[@placeholder='Type ENC cell name here']",
+        "addENCButtonSelector":"//button[text()=' Add ENC ']",
         "errorMessageForDuplicateNumberSelector":"section:has-text('ENC already in list.')",
-        "errorMessage":"ENC already in list.",
-        "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']"
+        "errorMsgDuplicateENC":"ENC already in list.",
+        "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']",
+        "errorMsgMaxLimitSelector":"//ukho-dialogue/section/h3/text()",
+        "errorMsgMaxLimit":"Max ENC limit reached."
     }
 }
