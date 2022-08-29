@@ -2,7 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Inject, OnInit, Output } from '
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { AuthenticationResult, InteractionStatus, PopupRequest, PublicClientApplication } from '@azure/msal-browser';
+import { AuthenticationResult, InteractionStatus, PopupRequest, PublicClientApplication, SilentRequest } from '@azure/msal-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
@@ -20,12 +20,18 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
   firstName: string = '';
   lastName: string = '';
   isActive: boolean = false;
+  fssSilentTokenRequest: SilentRequest;
+  fssTokenScope: any = [];
   constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
     private analyticsService: AnalyticsService) {
     super();
+    this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+    this.fssSilentTokenRequest = {
+      scopes: [this.fssTokenScope],
+    };
   }
   ngAfterViewInit(): void {
     //added unique id for testing & accessibility
@@ -61,9 +67,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         navActive: this.isActive
       }
     ];
-
-    // let msalInstance: PublicClientApplication = this.msalService.instance as PublicClientApplication;
-    // msalInstance["browserStorage"].clear();
 
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
@@ -164,7 +167,12 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     {
       signedInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { this.msalService.logout(); }),
+      signOutHandler: (() => { 
+        this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+        localStorage.setItem('idToken', response.idToken);
+        this.msalService.logout(); 
+        });
+      }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;

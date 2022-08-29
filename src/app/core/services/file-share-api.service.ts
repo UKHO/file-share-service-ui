@@ -29,7 +29,14 @@ export class FileShareApiService {
     }
 
     clearCookies(): Observable<any> {
-        return this.http.post(this.stateManagementUrl + '/logout', null);
+        let headers = {
+             'Content-Type': 'application/json',
+             'Authorization': `Bearer ${localStorage.getItem('idToken')}`
+           }
+        console.log('ClearcookieExpiryTme',localStorage.getItem('idToken'));
+        return this.http.post(this.stateManagementUrl + '/logout', null
+        , { headers : headers}
+        );
     }
 
     refreshToken(): Observable<any> {
