@@ -7,7 +7,6 @@ import { SilentRequest } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 import { ExchangeSetApiService } from 'src/app/core/services/exchange-set-api.service';
 import { ExchangeSetDetails, ExchangeSetLinks, ProductsNotInExchangeSet } from 'src/app/core/models/ess-response-types';
-import { stringOperatorList } from 'Helper/ConstantHelper';
 
 interface MappedEnc {
   enc: string;
@@ -174,9 +173,9 @@ export class EssListEncsComponent implements OnInit {
 
   getLinks(links: any) {
     var exchangeSetLinks: ExchangeSetLinks = {
-      batchStatusUri: links['exchangeSetBatchStatusUri'],
-      batchDetailsUri: links['exchangeSetBatchDetailsUri'],
-      fileUri: links['exchangeSetFileUri']
+      batchStatusUri: links['exchangeSetBatchStatusUri'].href,
+      batchDetailsUri: links['exchangeSetBatchDetailsUri'].href,
+      fileUri: links['exchangeSetFileUri'].href
     };
     return exchangeSetLinks;
 

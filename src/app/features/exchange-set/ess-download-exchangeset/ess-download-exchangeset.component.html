@@ -1,1 +1,5 @@
-<p>ess-download-exchangeset works!</p>
+<div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert"
+    aria-label="Results Loading"><i class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
+<div *ngIf="displayDownloadBtn">
+    <ukho-button class="btnDownload" (click)="download()">Download</ukho-button>
+</div>
