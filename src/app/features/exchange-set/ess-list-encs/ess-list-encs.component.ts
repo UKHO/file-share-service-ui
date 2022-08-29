@@ -34,7 +34,7 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
   essTokenScope: any = [];
-  essSilentTokenRequest: SilentRequest; 
+  essSilentTokenRequest: SilentRequest;
   exchangeSetDetails: ExchangeSetDetails;
 
   constructor(private essUploadFileService: EssUploadFileService,
@@ -135,25 +135,23 @@ export class EssListEncsComponent implements OnInit {
   }
 
   requestEncClicked() {
-    this.displayLoader = true; 
+    this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-
       this.exchangeSetCreationResponse(this.selectedEncList);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-
           this.exchangeSetCreationResponse(this.selectedEncList);
         })
     })
   }
 
-  exchangeSetCreationResponse(selectedEncList: any[]) {    
+  exchangeSetCreationResponse(selectedEncList: any[]) {
     if (selectedEncList != null) {
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
         this.displayLoader = false;
-        this.getExchangeSetDetails(result);
+        this.exchangeSetDetails = result;
         this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
         this.route.navigate(['exchangesets', 'enc-download']);
       },
@@ -163,28 +161,6 @@ export class EssListEncsComponent implements OnInit {
         }
       );
     }
-  }
-
-  getExchangeSetDetails(result:any)
-  {
-    return this.exchangeSetDetails={
-       links: this.getLinks(result['_links']),
-          urlExpiryDateTime : result['exchangeSetUrlExpiryDateTime'],
-          requestedProductCount: result['requestedProductCount'],
-          exchangeSetCellCount: result['exchangeSetCellCount'],
-          requestedProductsAlreadyUpToDateCount: result['requestedProductsAlreadyUpToDateCount'],
-          requestedProductsNotInExchangeSet: result['requestedProductsNotInExchangeSet']
-    }
-  }    
-
-  getLinks(links: any) {
-    var exchangeSetLinks: ExchangeSetLinks = {
-      batchStatusUri: links['exchangeSetBatchStatusUri'],
-      batchDetailsUri: links['exchangeSetBatchDetailsUri'],
-      fileUri: links['exchangeSetFileUri']
-    };
-    return exchangeSetLinks;
-
   }
 
 }

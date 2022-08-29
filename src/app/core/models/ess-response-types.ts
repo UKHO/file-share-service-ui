@@ -1,6 +1,6 @@
 export interface ExchangeSetDetails {
-    links: ExchangeSetLinks;
-    urlExpiryDateTime: Date;
+    _links: ExchangeSetLinks;
+    exchangeSetUrlExpiryDateTime: Date;
     requestedProductCount: number;
     exchangeSetCellCount: number;
     requestedProductsAlreadyUpToDateCount: number;
@@ -8,9 +8,10 @@ export interface ExchangeSetDetails {
 }
 
 export interface ExchangeSetLinks {
-    batchStatusUri: string;
-    batchDetailsUri: string;
-    fileUri: string;
+    batchStatusUri: URL;
+    batchDetailsUri: URL;
+    fileUri: URL;
+
 }
 
 export interface ProductsNotInExchangeSet {
