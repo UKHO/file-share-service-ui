@@ -1,0 +1,7 @@
+{
+    "encselectionpageObjectsConfig": 
+    {
+        "firstEncSelector":"//div/table/tbody/tr[1]/td[1]"
+
+    }
+}
