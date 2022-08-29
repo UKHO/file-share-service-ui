@@ -4,12 +4,8 @@
         "firstEncSelector":"//div/table/tbody/tr[1]/td[1]",
         "addAnotherENCSelector":"a.lnkAddAnotherEnc",
         "typeENCCellNameHereSelector":"input[id = 'ukho-form-field-3']",
-        "addAnotherENC2Selector":"tbody tr:nth-child(2) td:nth-child(1)",
-        "addAnotherENC3Selector":"tbody tr:nth-child(3) td:nth-child(1)",
-        "ENCValue1":"AS121212",
-        "ENCValue2":"AS121312",
-        "errorMessageForDplicateNumberSelector":"section:has-text('ENC already in list.')",
+        "errorMessageForDuplicateNumberSelector":"section:has-text('ENC already in list.')",
         "errorMessage":"ENC already in list.",
-        "chooseBoxSelecetor":"input[id = 'ukho-form-field-8']"
+        "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']"
     }
 }
