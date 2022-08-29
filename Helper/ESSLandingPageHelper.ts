@@ -36,7 +36,7 @@ export async function addSingleENC(page: Page, elementSelector: string) {
 //<param> Element Locator </param>
 export async function addAnotherENC(page: Page, elementSelector: string) {
   await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click(); 
-  await page.locator(encselectionpageObjectsConfig.typeENCCellNameHereSelector).fill(esslandingpageObjectsConfig.ENCValue1);
+  await page.locator(encselectionpageObjectsConfig.typeENCTextBoxSelector).fill(esslandingpageObjectsConfig.ENCValue1);
   await page.locator(esslandingpageObjectsConfig.addsingleencSelector).click();
 
 }

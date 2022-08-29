@@ -29,22 +29,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
       await expect(page.locator(esslandingpageObjectsConfig.exchangesettextSelector)).toBeVisible();
  })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
-     test('Verify that user is not able to add more than Maxlimit ENCs using manually adding ENcs', async({page})=>{
-      await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
-      await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click();
-})
-
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13954 - Add Anther ENC
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13956 - Duplicate ENC
-     test('Verify that after clicking on "Add another ENC" link user able to add another ENC number', async({page})=>{
-       
-       // Add Another ENC link should visible
+     test.only ('Verify that after clicking on "Add another ENC" link user able to add another ENC number', async({page})=>{
        await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
        await expect (page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
        await addAnotherENC(page, encselectionpageObjectsConfig.addAnotherENCSelector);
-
-       //Add another ENC2 & Choose box should empty
        expect (await page.isChecked(encselectionpageObjectsConfig.chooseBoxSelecetor)).toBeFalsy();
 
        //13956 - Add another ENC2 - Duplicate No.

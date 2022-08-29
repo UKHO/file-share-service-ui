@@ -3,7 +3,7 @@
     {
         "firstEncSelector":"//div/table/tbody/tr[1]/td[1]",
         "addAnotherENCSelector":"a.lnkAddAnotherEnc",
-        "typeENCCellNameHereSelector":"input[id = 'ukho-form-field-3']",
+        "typeENCTextBoxSelector":"input[id = 'ukho-form-field-3']",
         "errorMessageForDuplicateNumberSelector":"section:has-text('ENC already in list.')",
         "errorMessage":"ENC already in list.",
         "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']"
