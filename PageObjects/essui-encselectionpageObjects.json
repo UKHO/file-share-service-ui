@@ -8,7 +8,7 @@
         "errorMessageForDuplicateNumberSelector":"section:has-text('ENC already in list.')",
         "errorMsgDuplicateENC":"ENC already in list.",
         "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']",
-        "errorMsgMaxLimitSelector":"//ukho-dialogue/section/h3/text()",
+        "errorMsgMaxLimitSelector":"//ukho-dialogue",
         "errorMsgMaxLimit":"Max ENC limit reached."
     }
 }

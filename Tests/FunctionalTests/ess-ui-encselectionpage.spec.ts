@@ -30,7 +30,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13954 - Add Anther ENC
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13956 - Duplicate ENC
-   test('Verify that after clicking on "Add another ENC" link user able to add another ENC number', async ({ page }) => {
+   test('Verify that after clicking on "Add another ENC" link, user able to add another ENC number', async ({ page }) => {
       await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
       await expect(page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
       await addAnotherENC(page, encselectionpageObjectsConfig.addAnotherENCSelector);
@@ -41,29 +41,26 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
-   test.only('Verify that user is not able to add more than Maxlimit ENCs using manually adding ENcs', async ({ page }) => {
+   test('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENCs', async ({ page }) => {
       await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
       await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click();
-      for (var i = 0; i < 10; i++) //10
+      for (var i = 0; i < 10; i++)
       {
          await page.fill(encselectionpageObjectsConfig.typeENCTextBoxSelector, "AU21010" + i);
          await page.locator(encselectionpageObjectsConfig.addENCButtonSelector).click();
-         await page.waitForLoadState();         
       }
-      for (var i = 10; i < 100; i++) //90
+      for (var i = 10; i < 100; i++)
       {
          await page.fill(encselectionpageObjectsConfig.typeENCTextBoxSelector, "CA2101" + i);
          await page.waitForSelector(encselectionpageObjectsConfig.addENCButtonSelector);
          await page.locator(encselectionpageObjectsConfig.addENCButtonSelector).click();
-         await page.waitForLoadState();
       }
-      for (var i = 200; i < 350; i++) //28
+      for (var i = 100; i < 250; i++)
       {
          await page.fill(encselectionpageObjectsConfig.typeENCTextBoxSelector, "CN210" + i);
          await page.waitForSelector(encselectionpageObjectsConfig.addENCButtonSelector);
          await page.locator(encselectionpageObjectsConfig.addENCButtonSelector).click();
-         await page.waitForLoadState();
-         await expect(page.locator(encselectionpageObjectsConfig.errorMsgMaxLimitSelector)).toContainText(encselectionpageObjectsConfig.errorMsgMaxLimit);
       }
+      await expect(page.locator(encselectionpageObjectsConfig.errorMsgMaxLimitSelector)).toContainText(encselectionpageObjectsConfig.errorMsgMaxLimit);
    })
 })
