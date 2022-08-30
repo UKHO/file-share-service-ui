@@ -27,6 +27,7 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
+  estimatedSizeofENC: string;
 
 
   constructor(private essUploadFileService: EssUploadFileService,
@@ -38,6 +39,9 @@ export class EssListEncsComponent implements OnInit {
       AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
       10
     );
+    this.estimatedSizeofENC = "0KB";
+    this.encList = [];
+    this.selectedEncList = [];
     this.essUploadFileService.clearSelectedEncs();
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
@@ -51,7 +55,7 @@ export class EssListEncsComponent implements OnInit {
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
         this.setEncList();
-       this.syncEncsBetweenTables();
+        this.syncEncsBetweenTables();
       }
     });
   }
@@ -99,6 +103,7 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
+    this.estimatedSizeofENC = this.getAverageSizeofENC();
   }
 
   onSortChange(sortState: SortState) {
@@ -116,5 +121,9 @@ export class EssListEncsComponent implements OnInit {
   }
   displaySingleEnc() {
     this.displaySingleEncVal = true;
+  }
+  getAverageSizeofENC() {
+    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
+    return this.essUploadFileService.getAvgSizeofENC(selectedENCNumber);
   }
 }
