@@ -75,15 +75,10 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
     });
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13964
-    test('Verfiying Exchange Set Text and Link', async ({ page }) => {
+    test('Verfiying Exchange Set Text and "Make an exchange set" Link redirect to ESS Landing page', async ({ page }) => {
         await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await expect(page.locator(fssHomePageObjectsConfig.exchngSetTextSelector)).toHaveText('Exchange sets');
         await expect(page.locator(fssHomePageObjectsConfig.exchngSetLinkSelector)).toHaveText('Make an exchange set');
-    });
-
-    //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13964
-    test('Verifying "Make an exchange set" link should redirect to exchangeset landing page', async ({ page }) => {
-        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.exchngSetLinkSelector).click();
         await page.waitForLoadState();
         await expect(page.innerHTML(fssHomePageObjectsConfig.exchngSetHdngSelector)).toEqual('Exchange sets');;
