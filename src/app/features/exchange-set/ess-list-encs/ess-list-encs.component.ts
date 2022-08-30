@@ -148,13 +148,14 @@ export class EssListEncsComponent implements OnInit {
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
-    getAverageSizeofENC() {
-    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
-    return this.essUploadFileService.getAvgSizeofENC(selectedENCNumber);
-  }
 }
 
   getSelectDeselectVisibility(){
     return this.encList.length <= this.maxEncSelectionLimit;
+  }
+
+  getAverageSizeofENC() {
+    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
+    return this.essUploadFileService.getAvgSizeofENC(selectedENCNumber);
   }
 }
