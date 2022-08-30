@@ -9,6 +9,7 @@ export class EssUploadFileService {
   private validEncs: string[];
   private selectedEncs: string[];
   private maxEncLimit: number;
+  private maxEncSelectionLimit: number;
   private showInfoMessage = false;
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
   private avgSizeofENC: number;
@@ -17,6 +18,7 @@ export class EssUploadFileService {
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
+    this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
     this.avgSizeofENC = Number.parseFloat(AppConfigService.settings['essConfig'].avgSizeofENC);
   }
 
@@ -115,7 +117,11 @@ export class EssUploadFileService {
     else {
       return true;
     }
+  }
 
+  addAllSelectedEncs(){
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
   }
   getAvgSizeofENC(encCount:number):string {
     
@@ -127,4 +133,5 @@ export class EssUploadFileService {
         return  Math.round(this.estimatedENCSize * 1024).toString()+"KB";
       }
     }
+
 }
