@@ -1,7 +1,9 @@
 import {test, expect, Page, chromium} from '@playwright/test';
 import {esslandingpageObjectsConfig} from '../../PageObjects/essui-landingpageObjects.json';
+import { essencselectionpageObjectsConfig } from '../../PageObjects/essui-encselectionpageObjects.json'
 import {fssHomePageObjectsConfig} from '../../PageObjects/fss-homepageObjects.json';
 import {autoTestConfig} from '../../appSetting.json';
+import {uploadFile}from '../../Helper/ESSLandingPageHelper';
 import {LoginPortal} from '../../Helper/CommonHelper';
 import {commonObjectsConfig} from '../../PageObjects/commonObjects.json';
 
@@ -13,5 +15,29 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
         await page.waitForLoadState('load');
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
+        await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+        await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/Valid105ENCs.csv');
+        await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
      })
-    });
+
+// https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
+test('Scenario1 - Select valid ENCs (100 ENC Numbers)', async({page})=>{
+   
+   for (var i=1;i<=100;i++) 
+   {            
+      await page.click("//div/table/tbody/tr["+i+"]/td[2]");
+      await expect(page.locator("//div/table/tbody/tr["+i+"]/td[1]").last()).toBeVisible();
+   }   
+   })
+
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13950
+test( 'Scenario2 - Select valid ENCs more than 100', async({page})=>{
+   let count = await page.locator('//tbody/tr').count();
+   for (var i=1;i<=count;i++) 
+   {            
+      await page.click("//div/table/tbody/tr["+i+"]/td[2]");
+      await expect(page.locator("//div/table/tbody/tr["+i+"]/td[1]").last()).toBeVisible();
+   }   
+    await expect(page.locator(essencselectionpageObjectsConfig.messageSelector)).toBeVisible();
+   })
+});
