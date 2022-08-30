@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { FileShareApiService } from 'src/app/core/services/file-share-api.service';
-import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
+import { FileShareApiService } from '../../../core/services/file-share-api.service';
+import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
 
 @Component({
   selector: 'app-ess-download-exchangeset',
@@ -13,32 +13,43 @@ export class EssDownloadExchangesetComponent implements OnInit {
   exchangeSetDetails: ExchangeSetDetails;
   displayLoader: boolean = true;
   displayDownloadBtn: boolean = false;
-  batchStatusUrl: string;
+  batchDetailsUrl: string;
   fileUrl: string;
-  batchId: string
-
+  batchId: string;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private fileShareApiService: FileShareApiService) {
-
   }
 
   ngOnInit(): void {
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
-    this.batchStatusUrl = this.exchangeSetDetails.links.batchStatusUri;
-    //this.batchId = this.batchStatusUrl.substring(this.batchStatusUrl.lastIndexOf('batch/', -1), this.batchStatusUrl.indexOf('/status'));
-    //this.batchStatusUrl.endsWith('/batch');
-    this.batchId = this.batchStatusUrl.substring(this.batchStatusUrl.indexOf('batch/'), this.batchStatusUrl.indexOf('/status')).split('/')[1];
+    console.log(this.exchangeSetDetails);
+    this.batchDetailsUrl = this.exchangeSetDetails.links.batchDetailsUri.href;
+    this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus(this.batchId)
   }
 
-  checkBatchStatus(_batchId: string) {
-    this.fileShareApiService.getBatchStatus(_batchId).subscribe((response) => {
-      this.displayLoader = false;
+  checkBatchStatus(batchId: string) {
+
+    this.fileShareApiService.getBatchStatus(batchId).subscribe((response) => {
+
       console.log(response);
+      if (response.status == "Committed") {
+        this.displayLoader = false;
+        this.displayDownloadBtn = true;
+      }
+      else {
+        setTimeout(() => {
+          this.checkBatchStatus(this.batchId)
+        }, 5000);
+      }
     });
   }
 
-  download() { }
+  download() {
+    this.fileUrl = this.exchangeSetDetails.links.fileUri.href;
+    window.open(this.fileUrl, "_blank");
+    //aquiretokensilen, refreshtoken, find prop at the time of download
+  }
 
 }

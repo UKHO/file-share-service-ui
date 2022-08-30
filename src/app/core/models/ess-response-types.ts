@@ -8,9 +8,9 @@ export interface ExchangeSetDetails {
 }
 
 export interface ExchangeSetLinks {
-    batchStatusUri: string;
-    batchDetailsUri: string;
-    fileUri: string;
+    batchStatusUri: URL;
+    batchDetailsUri: URL;
+    fileUri: URL;
 }
 
 export interface ProductsNotInExchangeSet {
