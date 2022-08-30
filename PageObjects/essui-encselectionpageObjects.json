@@ -1,12 +1,12 @@
 {
     "essencselectionpageObjectsConfig": 
     {
-        "firstCheckboxSelector":"[aria-label='AU220140'] input[type='checkbox']",
-        "secondCheckboxSelector":"[aria-label='AU314128'] input[type='checkbox']",
-        "thirdCheckboxSelector":"[aria-label='AU411129'] input[type='checkbox']",
-        "firstencSelectedSelector" : "text=AU220140 >> nth=1",
-        "secondencSelectedSelector":"text=AU314128 >> nth=1",
-        "thirdencSelectedSelector":"text=AU411129 >> nth=1",
+        "firstCheckboxSelector":"[aria-label='AU220150'] input[type='checkbox']",
+        "secondCheckboxSelector":"[aria-label='CA271105'] input[type='checkbox']",
+        "thirdCheckboxSelector":"[aria-label='AU5PTL01'] input[type='checkbox']",
+        "firstencSelectedSelector" : "text=AU220150 >> nth=1",
+        "secondencSelectedSelector":"text=CA271105 >> nth=1",
+        "thirdencSelectedSelector":"text=AU5PTL01 >> nth=1",
         "encNameSelector":"text=ENC name",
         "firstElementSortSelector":"//div/table/tbody/tr[1]/td[1]",
         "lastElementSortSelector":"//div/table/tbody/tr[5]/td[1]",
