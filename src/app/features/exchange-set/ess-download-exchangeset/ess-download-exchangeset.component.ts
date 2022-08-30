@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
+import { MsalService } from '@azure/msal-angular';
+import { SilentRequest } from '@azure/msal-browser';
+import { AppConfigService } from '../../../core/services/app-config.service';
 
 @Component({
   selector: 'app-ess-download-exchangeset',
@@ -16,15 +19,22 @@ export class EssDownloadExchangesetComponent implements OnInit {
   batchDetailsUrl: string;
   fileUrl: string;
   batchId: string;
+  fssTokenScope: any = [];
+  fssSilentTokenRequest: SilentRequest;
 
   constructor(private essUploadFileService: EssUploadFileService,
-    private fileShareApiService: FileShareApiService) {
+    private fileShareApiService: FileShareApiService,
+    private msalService: MsalService) {
+    this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+    this.fssSilentTokenRequest = {
+      scopes: [this.fssTokenScope],
+    };
   }
 
   ngOnInit(): void {
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
     console.log(this.exchangeSetDetails);
-    this.batchDetailsUrl = this.exchangeSetDetails.links.batchDetailsUri.href;
+    this.batchDetailsUrl = this.exchangeSetDetails.links.batchDetailsUri.toString();
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus(this.batchId)
   }
@@ -47,9 +57,22 @@ export class EssDownloadExchangesetComponent implements OnInit {
   }
 
   download() {
-    this.fileUrl = this.exchangeSetDetails.links.fileUri.href;
-    window.open(this.fileUrl, "_blank");
-    //aquiretokensilen, refreshtoken, find prop at the time of download
-  }
+    this.fileUrl = this.exchangeSetDetails.links.fileUri.toString();
 
+    this.displayLoader = true;
+    this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+
+      this.fileShareApiService.refreshToken().subscribe((res) => {
+        window.open(this.fileUrl, "_blank");
+      });
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.fssSilentTokenRequest)
+        .then(response => {
+          this.fileShareApiService.refreshToken().subscribe((res) => {
+            window.open(this.fileUrl, "_blank");
+          });
+        })
+    })
+  }
 }
