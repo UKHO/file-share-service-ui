@@ -1,1 +1,14 @@
-<p>ess-download-exchangeset works!</p>
+<h1 id="main" tabindex="-1">Exchange sets</h1>
+
+<h3  *ngIf="requestedProductsNotInExchangeSet.length > 0">
+  The following ENCs are not included in the Exchange Set:
+</h3>
+
+<ul>
+  <li *ngFor="let msg of requestedProductsNotInExchangeSet ">
+    {{msg.productName}} - {{msg.reason}}
+  </li>
+</ul>
+
+
+
