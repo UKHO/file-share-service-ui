@@ -35,7 +35,7 @@
     </div>
     <div class="divider"></div>
     <div style="flex: 3">
-      <h3>Your selection <span class="showListEncTOtal"><h6>{{selectedEncList.length}} ENCs selected </h6></span>
+      <h3>Your selection <span class="showListEncTOtal"><h6>{{(selectedEncList && selectedEncList.length>0)?selectedEncList.length:0}} ENCs selected </h6></span>
       </h3>
       <div>
         <table ukho-table [dataSource]="selectedEncList">
