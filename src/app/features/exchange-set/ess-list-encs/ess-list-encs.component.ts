@@ -33,7 +33,7 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
   essTokenScope: any = [];
-  essSilentTokenRequest: SilentRequest; 
+  essSilentTokenRequest: SilentRequest;
   exchangeSetDetails: ExchangeSetDetails;
 
   constructor(private essUploadFileService: EssUploadFileService,
@@ -134,7 +134,7 @@ export class EssListEncsComponent implements OnInit {
   }
 
   requestEncClicked() {
-    this.displayLoader = true; 
+    this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
 
       this.exchangeSetCreationResponse(this.selectedEncList);
@@ -149,18 +149,10 @@ export class EssListEncsComponent implements OnInit {
   }
 
   exchangeSetCreationResponse(selectedEncList: any[]) {
-    this.displayLoader = true;
     if (selectedEncList != null) {
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
         this.displayLoader = false;
-        this.exchangeSetDetails = {
-          links: this.getLinks(result['_links']),
-          urlExpiryDateTime: result['exchangeSetUrlExpiryDateTime'],
-          requestedProductCount: result['requestedProductCount'],
-          exchangeSetCellCount: result['exchangeSetCellCount'],
-          requestedProductsAlreadyUpToDateCount: result['requestedProductsAlreadyUpToDateCount'],
-          requestedProductsNotInExchangeSet: result['requestedProductsNotInExchangeSet']
-        };
+        this.exchangeSetDetails = result;
         this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
         this.route.navigate(['exchangesets', 'enc-download']);
       },
@@ -169,16 +161,6 @@ export class EssListEncsComponent implements OnInit {
         }
       );
     }
-  }
-
-  getLinks(links: any) {
-    var exchangeSetLinks: ExchangeSetLinks = {
-      batchStatusUri: links['exchangeSetBatchStatusUri'].href,
-      batchDetailsUri: links['exchangeSetBatchDetailsUri'].href,
-      fileUri: links['exchangeSetFileUri'].href
-    };
-    return exchangeSetLinks;
-
   }
 
 }
