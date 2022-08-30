@@ -7,10 +7,9 @@ export interface ExchangeSetDetails {
     requestedProductsNotInExchangeSet: ProductsNotInExchangeSet[]
 }
 export interface ExchangeSetLinks {
-    batchStatusUri: URL;
-    batchDetailsUri: URL;
-    fileUri: URL;
-
+    exchangeSetBatchStatusUri: URL;
+    exchangeSetBatchDetailsUri: URL;
+    exchangeSetFileUri: URL;
 }
 export interface ProductsNotInExchangeSet {
     productName: string;

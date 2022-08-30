@@ -34,7 +34,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
   ngOnInit(): void {
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
     console.log(this.exchangeSetDetails);
-    this.batchDetailsUrl = this.exchangeSetDetails.links.batchDetailsUri.toString();
+    this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus(this.batchId)
   }
@@ -57,7 +57,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
   }
 
   download() {
-    this.fileUrl = this.exchangeSetDetails.links.fileUri.toString();
+    this.fileUrl = this.exchangeSetDetails._links.exchangeSetFileUri.href;
 
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
