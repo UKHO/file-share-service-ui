@@ -19,11 +19,12 @@ describe('EssListEncsComponent', () => {
   const service = {
     getValidEncs : jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
     clearSelectedEncs : jest.fn(),
-    getSelectedENCs: jest.fn(),
+    getSelectedENCs: jest.fn().mockReturnValue([]),
     infoMessage : true,
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
-    getNotifySingleEnc : jest.fn().mockReturnValue(of(true))
+    getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
+    addAllSelectedEncs : jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -45,16 +46,17 @@ describe('EssListEncsComponent', () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
     AppConfigService.settings = {
       essConfig: {
       MaxEncLimit: 100,
       MaxEncSelectionLimit : 5
       }
     };
+    window.scrollTo = jest.fn();
     fixture = TestBed.createComponent(EssListEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    jest.clearAllMocks();
   });
 
   it('should create', () => {
@@ -84,7 +86,6 @@ describe('EssListEncsComponent', () => {
     expect(service.addSelectedEnc).not.toHaveBeenCalled();
   });
   it('syncEncsBetweenTables should set encList and selectedEncList' ,() => {
-    jest.clearAllMocks();
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
     component.syncEncsBetweenTables();
     expect(component.selectedEncList.length).toBe(3);
@@ -127,9 +128,66 @@ describe('EssListEncsComponent', () => {
   });
 
   test('getValidEncs should return enc', () => {
-    let encList = service.getValidEncs();
+    const encList = service.getValidEncs();
     expect(encList.length).toEqual(5);
   });
 
+  it('should display Select All text when enc list is less than or equal to configurable enc limit' ,() => {
+    component.ngOnInit();
+    expect(component.encList.length).toBeLessThanOrEqual(5);
+    expect(component.selectDeselectText).toEqual('Select all');
+  });
 
+  it('should display Deselect All button when select all button is clicked' ,() => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
+    component.selectDeselectAll();
+    expect(component.selectDeselectText).toEqual('Deselect all');
+  });
+
+  it('should display Select All button when Deselect all button is clicked' ,() => {
+    service.getSelectedENCs.mockReturnValue([]);
+    component.selectDeselectAll();
+    expect(component.selectDeselectText).toEqual('Select all');
+  });
+
+  it('should hide select all button if enc list greater than max enc limit' ,() => {
+    service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'AU314140']);
+    component.ngOnInit();
+    expect(component.showSelectDeselect).toBeFalsy();
+  });
+
+  it('should show select all button if enc list less than or equal to max enc limit' ,() => {
+    service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
+    component.ngOnInit();
+    expect(component.showSelectDeselect).toBeTruthy();
+  });
+
+  it('handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded' , () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128','CU314128']);
+    component.handleChange('DU314128');
+    expect(component.messageType).toEqual('error');
+    expect(component.messageDesc).toEqual('No more than 5 ENCs can be selected.');
+    expect(window.scrollTo).toHaveBeenCalled();
+  });
+
+  it('selectDeselectAll should call "service.addAllSelectedEncs" if selectDeselectText=Select all enc length is greater than maxEncSelectionLimit' , () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128','CU314128']);
+    component.selectDeselectText = 'Select all';
+    component.selectDeselectAll();
+    expect(service.addAllSelectedEncs).toHaveBeenCalled();
+  });
+
+  it('selectDeselectAll should call "service.clearSelectedEncs" if selectDeselectText=Deselect all' , () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
+    component.selectDeselectText = 'deselect all';
+    component.selectDeselectAll();
+    expect(service.clearSelectedEncs).toHaveBeenCalled();
+  });
+
+  it('getSelectDeselectText should return correct texts(Select all / Deselect all)' , () => {
+    component.checkMaxEncSelectionAndSelectedEncLength = jest.fn().mockReturnValue(true);
+    expect(component.getSelectDeselectText()).toEqual('Deselect all');
+    component.checkMaxEncSelectionAndSelectedEncLength = jest.fn().mockReturnValue(false);
+    expect(component.getSelectDeselectText()).toEqual('Select all');
+  });
 });
