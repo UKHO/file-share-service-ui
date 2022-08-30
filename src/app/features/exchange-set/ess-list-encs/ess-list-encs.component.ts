@@ -3,6 +3,9 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
+import { SilentRequest } from '@azure/msal-browser';
+import { MsalService } from '@azure/msal-angular';
+import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
 
 interface MappedEnc {
   enc: string;
@@ -18,6 +21,7 @@ enum SelectDeselect {
   styleUrls: ['./ess-list-encs.component.scss']
 })
 export class EssListEncsComponent implements OnInit {
+  displayLoader: boolean = false;
   addSingleEncRenderFrom: string = 'encList';
   addSingleEncBtnText: string = 'Add ENC';
   encList: MappedEnc[];
@@ -30,11 +34,22 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
+  essTokenScope: any = [];
+  essSilentTokenRequest: SilentRequest;
   estimatedSizeofENC: string;
   selectDeselectText: string;
   showSelectDeselect: boolean;
+
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router) { }
+    private route: Router,
+    private msalService: MsalService,
+    private exchangeSetApiService: ExchangeSetApiService,
+     ) { 
+    this.essTokenScope = AppConfigService.settings["essConfig"].apiScope;
+    this.essSilentTokenRequest = {
+      scopes: [this.essTokenScope],
+    };
+    }
 
   ngOnInit(): void {
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
@@ -131,6 +146,26 @@ export class EssListEncsComponent implements OnInit {
 
   displaySingleEnc() {
     this.displaySingleEncVal = true;
+  }
+
+  requestEncClicked()
+  {
+    this.displayLoader = true;
+    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+      this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
+         console.log(result);
+         this.displayLoader = false;
+      });
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.essSilentTokenRequest)
+        .then(response => {
+          this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
+            console.log(result);
+            this.displayLoader = false;
+         });
+        })
+    })
   }
   getSelectDeselectText(){
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;

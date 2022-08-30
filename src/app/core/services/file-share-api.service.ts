@@ -36,24 +36,6 @@ export class FileShareApiService {
         return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
     }
 
-    isTokenExpired() {
-        var flag = false;
-        if (localStorage['claims'] !== undefined) {
-            const claims = JSON.parse(localStorage['claims']);
-            //To retrieve the current date time
-            const currentDateTime = new Date().toISOString();
-            //To retrieve the date time when idtoken was received(at the time of user login)
-            const expiresOn = new Date(1000 * claims['exp']).toISOString();
-            if (expiresOn < currentDateTime) {
-                flag = true;
-            }
-        }
-        else {
-            flag = true;
-        }
-        return flag;
-    }
-
     getAttributeSearchResult(payload: string): Observable<any> {
         return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload));
     }
