@@ -59,7 +59,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
      })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13962 (For verify Text)
-    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13959 (For verify Tble as per ukho design)
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13959 (For verify Table as per ukho design)
    test('Verify Text on the top of ENC list.', async({page})=>{
         await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
         await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/ValidENCsForSorting.csv');
