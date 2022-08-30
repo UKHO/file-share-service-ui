@@ -9,6 +9,7 @@ import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/e
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -23,13 +24,14 @@ describe('EssListEncsComponent', () => {
     infoMessage : true,
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
-    getNotifySingleEnc : jest.fn().mockReturnValue(of(true))
+    getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
+    getAvgSizeofENC:jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule,CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule],
       declarations: [ EssListEncsComponent,
-        EssAddSingleEncsComponent ],
+        EssAddSingleEncsComponent ], 
       providers: [
         {
           provide : EssUploadFileService,
@@ -131,5 +133,32 @@ describe('EssListEncsComponent', () => {
     expect(encList.length).toEqual(5);
   });
 
+  test('showListEncTOtal class applied to a selector', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('showListEncTOtal'))).toBeTruthy();
+  });
+  test('bottomText class applied to a tag', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('bottomText'))).toBeTruthy();
+  });
+
+  it.each`
+  estimatedENCValue              | expectedResult
+  ${'0KB'}                       |  ${'0KB'}
+  ${'1.5MB'}                     |  ${'1.5MB'}
+  `('getAverageSizeofENC called from syncEncsBetweenTables and should return string',
+  ({  estimatedENCValue, expectedResult }: {  estimatedENCValue: string; expectedResult: string }) => {
+    jest.clearAllMocks();
+    service.getAvgSizeofENC.mockReturnValue(estimatedENCValue);
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
+    component.syncEncsBetweenTables();
+    expect(component.selectedEncList.length).toBe(3);
+    expect(component.encList.length).toBe(5);
+    expect(service.getAvgSizeofENC).toHaveBeenCalled();
+     expect(component.estimatedSizeofENC).not.toBeNull();
+     expect(component.estimatedSizeofENC).toBe(expectedResult);
+  });
 
 });
