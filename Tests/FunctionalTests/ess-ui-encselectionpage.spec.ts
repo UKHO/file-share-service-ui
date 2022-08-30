@@ -32,19 +32,13 @@ test.describe('ESS UI ENC Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13960
    test.only('Verify Functionality of Checkbox,when multiple checkbox is selected', async ({ page }) => {
       
-      let count = await page.locator('//tbody/tr').count();
-      console.log(count);
+     // let count = await page.locator('//tbody/tr').count();
+      //console.log(count);
       let encSelected=['AU220150','CA271105','AU5PTL01']
-       for (var i=1;i<=count;i++)   
+       for (var i=1;i<=3;i++)   
       {            
-   
          await page.click("//div/table/tbody/tr["+i+"]/td[2]");
-   
-         await page.pause();
-   
-         await expect(page.innerText("//div/div[2]/div[3]/div[1]/table/tbody/tr["+i+"]/td[1]")).toEqual(encSelected[i-1]);
-         //  //div/div[2]/div[3]/div[1]/table/tbody/tr[1]/td[1]
-   
+         await expect((await page.innerText("//div/div[2]/div[3]/div[1]/table/tbody/tr["+i+"]/td[1]"))).toEqual(encSelected[i-1]);
       } 
       
       // old code
