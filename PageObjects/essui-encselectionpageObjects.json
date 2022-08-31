@@ -1,18 +1,9 @@
 {
     "essencselectionpageObjectsConfig": 
-    {
-        "firstCheckboxSelector":"[aria-label='AU220150'] input[type='checkbox']",
-        "secondCheckboxSelector":"[aria-label='CA271105'] input[type='checkbox']",
-        "thirdCheckboxSelector":"[aria-label='AU5PTL01'] input[type='checkbox']",
-        "firstencSelectedSelector" : "text=AU220150 >> nth=1",
-        "secondencSelectedSelector":"text=CA271105 >> nth=1",
-        "thirdencSelectedSelector":"text=AU5PTL01 >> nth=1",
+    {        
         "encNameSelector":"text=ENC name",
-        "firstElementSortSelector":"//div/table/tbody/tr[1]/td[1]",
-        "lastElementSortSelector":"//div/table/tbody/tr[5]/td[1]",
         "startLinkSelector":".linkStartAgain",
         "textAboveTableSelector":"text=Select up to 100 ENCs and make an exchange set",
-        "textAboveTable":"Select up to 100 ENCs and make an exchange set"
-       
+        "textAboveTable":"Select up to 100 ENCs and make an exchange set"       
     }
 }

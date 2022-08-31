@@ -21,73 +21,28 @@ test.describe('ESS UI ENC Selection Page Functional Test Scenarios', () => {
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13960
-   test('Verify Functionality of Checkbox,when single checkbox is selected', async ({ page }) => {
+   test('Verify when single / multiple checkboxes selected in left hand table, shows under selected section in right hand table', async ({ page }) => {
 
-      await page.click(essencselectionpageObjectsConfig.firstCheckboxSelector);
-      await expect(page.locator(essencselectionpageObjectsConfig.firstCheckboxSelector)).toBeChecked();
-      await expect(page.locator(essencselectionpageObjectsConfig.firstencSelectedSelector)).toBeVisible();
-   })
-
-   
-   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13960
-   test.only('Verify Functionality of Checkbox,when multiple checkbox is selected', async ({ page }) => {
-      
-     // let count = await page.locator('//tbody/tr').count();
-      //console.log(count);
-      let encSelected=['AU220150','CA271105','AU5PTL01']
-       for (var i=1;i<=3;i++)   
-      {            
-         await page.click("//div/table/tbody/tr["+i+"]/td[2]");
-         await expect((await page.innerText("//div/div[2]/div[3]/div[1]/table/tbody/tr["+i+"]/td[1]"))).toEqual(encSelected[i-1]);
-      } 
-      
-      // old code
-      // let checkboxList = [essencselectionpageObjectsConfig.firstCheckboxSelector,essencselectionpageObjectsConfig.secondCheckboxSelector, essencselectionpageObjectsConfig.thirdCheckboxSelector] 
-      // // await page.click(essencselectionpageObjectsConfig.firstCheckboxSelector);
-      // // await page.click(essencselectionpageObjectsConfig.secondCheckboxSelector);
-      // // await page.click(essencselectionpageObjectsConfig.thirdCheckboxSelector);
-
-      // for (var i=0;i<3;i++)
-      // {
-      //    await page.click(checkboxList[i]);
-      // }
-      
-   
-      // for (var i=0;i<3;i++)
-      // {
-      // await expect(page.locator(checkboxList[i])).toBeChecked();
-      // }
-
-      // let checkboxSelected = [essencselectionpageObjectsConfig.firstencSelectedSelector,essencselectionpageObjectsConfig.secondencSelectedSelector, essencselectionpageObjectsConfig.thirdencSelectedSelector] 
-      // let value=['AU220150','CA271105','AU5PTL01']
-      // console.log("K " +value[0]);
-      // for (var i=0;i<3;i++)
-      // {
-      //    for (var k=0;k<3;k++)
-      //    {
-      //    await expect(page.innerText(checkboxSelected[i])).toEqual(value[k]);
-      //    }
-      // }
-      
-      // // await expect(page.locator(essencselectionpageObjectsConfig.secondCheckboxSelector)).toBeChecked();
-      // // await expect(page.locator(essencselectionpageObjectsConfig.thirdCheckboxSelector)).toBeChecked();
-
-      // // await expect(page.locator(essencselectionpageObjectsConfig.firstencSelectedSelector)).toBeVisible();
-      // // await expect(page.locator(essencselectionpageObjectsConfig.secondencSelectedSelector)).toBeVisible();
-      // // await expect(page.locator(essencselectionpageObjectsConfig.thirdencSelectedSelector)).toBeVisible();
+      let encSelected = ['AU220150', 'CA271105', 'AU5PTL01']
+      for (var i = 1; i <= 3; i++) {
+         await page.click("//div/table/tbody/tr[" + i + "]/td[2]");
+         await expect((await page.innerText("//div/div[2]/div[3]/div[1]/table/tbody/tr[" + i + "]/td[1]"))).toEqual(encSelected[i - 1]);
+      }
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13961
    test('Check the functionality for Sorting of ENC numbers in ascending or descending order', async ({ page }) => {
 
+      let ascOrderlist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C']
+      let dscOrderlist = ['GB50184C', 'CN484220', 'CA271105', 'AU5PTL01', 'AU220150']
       await page.click(essencselectionpageObjectsConfig.encNameSelector);
-      var FirstElementAscOrder = await page.innerText(essencselectionpageObjectsConfig.firstElementSortSelector);
-      var LastElementAscOrder = await page.innerText(essencselectionpageObjectsConfig.lastElementSortSelector);
+      for (var i = 1; i < 6; i++) {
+         expect(await page.innerText("//div/table/tbody/tr[" + i + "]/td[1]")).toEqual(ascOrderlist[i - 1]);
+      }
       await page.click(essencselectionpageObjectsConfig.encNameSelector);
-      var FirstElementDescOrder = await page.innerText(essencselectionpageObjectsConfig.firstElementSortSelector);
-      var LastElementDescOrder = await page.innerText(essencselectionpageObjectsConfig.lastElementSortSelector);
-      expect(FirstElementAscOrder).not.toEqual(FirstElementDescOrder);
-      expect(LastElementAscOrder).not.toEqual(LastElementDescOrder);
+      for (var i = 1; i < 6; i++) {
+         expect(await page.innerText("//div/table/tbody/tr[" + i + "]/td[1]")).toEqual(dscOrderlist[i - 1]);
+      }
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13962 (For verify Text)
