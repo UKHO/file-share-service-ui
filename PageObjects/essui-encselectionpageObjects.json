@@ -1,6 +1,10 @@
 {
     "essencselectionpageObjectsConfig": 
     {
-       "messageSelector":"text=No more than 100 ENCs can be selected"
+       "messageSelector":"text=No more than 100 ENCs can be selected",
+       "firstCheckBoxSelector":"[aria-label='AU210130'] input[type='checkbox']",
+       "firstENCSelector":"//*[@id='contentArea']/app-ess-list-encs/div/div[2]/div[1]/div/table/tbody/tr[1]/td[1])",
+       "firstSelectedENCSelector":"//*[@id='contentArea']/app-ess-list-encs/div/div[2]/div[3]/div[1]/table/tbody/tr/td[1]",
+       "firstSelectedENCXBoxSelector":"//*[@id='contentArea']/app-ess-list-encs/div/div[2]/div[3]/div[1]/table/tbody/tr/td[2]/button/i"
     }
 }

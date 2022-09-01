@@ -40,4 +40,21 @@ test( 'Scenario2 - Select valid ENCs more than 100', async({page})=>{
    }   
     await expect(page.locator(essencselectionpageObjectsConfig.messageSelector)).toBeVisible();
    })
+
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13940
+test('Verifying Checkbox Functionality',async({page})=>{
+      await page.click(essencselectionpageObjectsConfig.firstCheckBoxSelector);
+      await expect(page.locator(essencselectionpageObjectsConfig.firstENCSelector).innerHTML).toEqual(page.locator(essencselectionpageObjectsConfig.firstSelectedENC).innerHTML);
+      await page.click(essencselectionpageObjectsConfig.firstCheckBoxSelector);
+      await expect(page.locator(essencselectionpageObjectsConfig.firstSelectedENCSelector)).toBeHidden();
+      
+   })
+
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13941
+test('Verifying functionality of "x" box',async({page})=>{
+      await page.click(essencselectionpageObjectsConfig.firstCheckBoxSelector);
+      await page.click(essencselectionpageObjectsConfig.firstSelectedENCXBoxSelector);
+      await expect(page.locator(essencselectionpageObjectsConfig.firstCheckBoxSelector)).not.toBeChecked();
+      await expect(page.locator(essencselectionpageObjectsConfig.firstSelectedENCSelector)).toBeHidden();
+      })
 });
