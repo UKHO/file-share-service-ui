@@ -4,6 +4,9 @@
         "encNameSelector":"text=ENC name",
         "startLinkSelector":".linkStartAgain",
         "textAboveTableSelector":"text=Select up to 100 ENCs and make an exchange set",
-        "textAboveTable":"Select up to 100 ENCs and make an exchange set"       
+        "textAboveTable":"Select up to 100 ENCs and make an exchange set",  
+        "rightHandTableRowsSelector":"//div/div[2]/div[3]/div[1]/table/tbody/tr",
+        "firstCheckBoxSelector":"[aria-label='AU220150'] input[type='checkbox']",
+        "XButtonSelector":"//table/tbody/tr/td[2]/button/i"
     }
 }

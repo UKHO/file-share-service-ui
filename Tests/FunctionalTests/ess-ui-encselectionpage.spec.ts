@@ -21,13 +21,28 @@ test.describe('ESS UI ENC Selection Page Functional Test Scenarios', () => {
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13960
-   test('Verify when single / multiple checkboxes selected in left hand table, shows under selected section in right hand table', async ({ page }) => {
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13940
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13941
+   test('Verify selecting and deselecting multiple checkboxes in left hand table, shows expected result in right hand table', async ({ page }) => {
 
       let encSelected = ['AU220150', 'CA271105', 'AU5PTL01']
+      // To select ENCs
       for (var i = 1; i <= 3; i++) {
          await page.click("//div/table/tbody/tr[" + i + "]/td[2]");
          await expect((await page.innerText("//div/div[2]/div[3]/div[1]/table/tbody/tr[" + i + "]/td[1]"))).toEqual(encSelected[i - 1]);
       }
+      // To deselect ENCs
+      for (var i = 1; i <= 3; i++) {
+         await page.click("//div/table/tbody/tr[" + i + "]/td[2]");
+      }
+      let count = await page.locator(essencselectionpageObjectsConfig.rightHandTableRowsSelector).count();
+      await expect(count).toEqual(0);
+
+      // Deselect ENCs using "X" button.
+      await page.click(essencselectionpageObjectsConfig.firstCheckBoxSelector);
+      await page.click(essencselectionpageObjectsConfig.XButtonSelector);
+      await expect(page.locator(essencselectionpageObjectsConfig.firstCheckBoxSelector)).not.toBeChecked();
+      await expect(page.locator(essencselectionpageObjectsConfig.XButtonSelector)).toBeHidden();
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13961
