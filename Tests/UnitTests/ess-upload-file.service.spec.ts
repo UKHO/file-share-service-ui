@@ -97,10 +97,12 @@ describe('EssUploadFileService', () => {
   });
 
   it('validateENCFormat should return enc if passed parameter is valid else returns null', () => {
-    const validData = 'AU210130';
-    const invalidData = 'A1210130';
+    const validData = 'A7210130';
+    const invalidData = 'A1010130';
+    const invalidcaseofData = 'a121c130';
     expect(service.validateENCFormat(validData)?.length).toBeGreaterThan(0);
     expect(service.validateENCFormat(invalidData)).toBeNull();
+    expect(service.validateENCFormat(invalidcaseofData)).toBeNull();
   });
 
   //csv file tests

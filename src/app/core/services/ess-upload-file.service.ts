@@ -10,6 +10,7 @@ export class EssUploadFileService {
   private validEncs: string[];
   private selectedEncs: string[];
   private maxEncLimit: number;
+  private maxEncSelectionLimit: number;
   private showInfoMessage = false;
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
   private exchangeSetDetails: ExchangeSetDetails;
@@ -17,6 +18,7 @@ export class EssUploadFileService {
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
+    this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -31,7 +33,7 @@ export class EssUploadFileService {
   }
 
   validateENCFormat(encName: string) {
-    const pattern = /[A-Z]{2}[1-68][A-Z0-9]{5}$/;
+    const pattern = /^[A-Z0-9]{2}[1-68][A-Z0-9]{5}$/;
     return encName.match(pattern);
   }
 
@@ -124,6 +126,11 @@ export class EssUploadFileService {
     else {
       return true;
     }
-
   }
+
+  addAllSelectedEncs(){
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
+  }
+
 }
