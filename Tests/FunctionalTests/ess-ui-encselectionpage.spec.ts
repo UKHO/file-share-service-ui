@@ -16,12 +16,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', ()=>{
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
         await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-        await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/Valid105ENCs.csv');
+        await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/Valid101ENCs.csv');
         await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
      })
 
-// https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
-test('Scenario1 - Select valid ENCs (100 ENC Numbers)', async({page})=>{
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
+test('Scenario1 - Verify when 100 checkboxes selected in left hand table, shows under selected section in right hand table', async({page})=>{
    
    for (var i=1;i<=100;i++) 
    {            
@@ -31,14 +31,14 @@ test('Scenario1 - Select valid ENCs (100 ENC Numbers)', async({page})=>{
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13950
-test( 'Scenario2 - Select valid ENCs more than 100', async({page})=>{
+test('Scenario2 - Verify when more than 100 checkboxes selected in left hand table, User should get message "No more than 100 ENCs can be selected."', async({page})=>{
    let count = await page.locator('//tbody/tr').count();
    for (var i=1;i<=count;i++) 
    {            
       await page.click("//div/table/tbody/tr["+i+"]/td[2]");
       await expect(page.locator("//div/table/tbody/tr["+i+"]/td[1]").last()).toBeVisible();
    }   
-    await expect(page.locator(essencselectionpageObjectsConfig.messageSelector)).toBeVisible();
+      await expect(page.locator(essencselectionpageObjectsConfig.messageSelector)).toBeVisible();
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13940
