@@ -105,8 +105,7 @@ export class EssUploadFileService {
   }
 
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
-    this.exchangeSetDetails = exchangeSetDetails;
-    
+    this.exchangeSetDetails = exchangeSetDetails;  
   }
 
   getExchangeSetDetails(): ExchangeSetDetails {
@@ -131,13 +130,13 @@ export class EssUploadFileService {
     }
 
   }
+
   addAllSelectedEncs(){
     const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
     this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
   }
   
   getAvgSizeofENC(encCount:number):string {
-    
     this.estimatedENCSize= (this.avgSizeofENC * encCount);
       if(this.estimatedENCSize>=1){
        return (this.estimatedENCSize.toFixed(1)).toString()+"MB";
@@ -146,5 +145,4 @@ export class EssUploadFileService {
         return  Math.round(this.estimatedENCSize * 1024).toString()+"KB";
       }
     }
-
 }

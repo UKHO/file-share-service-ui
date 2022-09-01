@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 import { SilentRequest } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
-import { ExchangeSetDetails, ExchangeSetLinks } from 'src/app/core/models/ess-response-types';
-import { stringOperatorList } from 'Helper/ConstantHelper';
+import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
+
 
 interface MappedEnc {
   enc: string;
@@ -178,9 +178,11 @@ export class EssListEncsComponent implements OnInit {
   getSelectDeselectVisibility(){
     return this.encList.length <= this.maxEncSelectionLimit;
   }
+
   requestEncClicked() {
-    this.displayLoader = true;
+    this.displayLoader = true; 
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+
       this.exchangeSetCreationResponse(this.selectedEncList);
     }, error => {
       this.msalService.instance
@@ -194,6 +196,7 @@ export class EssListEncsComponent implements OnInit {
   exchangeSetCreationResponse(selectedEncList: any[]) {
     if (selectedEncList != null) {
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+        console.log(result);
         this.displayLoader = false;
         this.exchangeSetDetails = result;
         this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
