@@ -47,7 +47,7 @@ export class EssListEncsComponent implements OnInit {
     private msalService: MsalService,
     private exchangeSetApiService: ExchangeSetApiService,
   ) {
-    this.essTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+    this.essTokenScope = AppConfigService.settings["essConfig"].apiScope;
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope],
     };
