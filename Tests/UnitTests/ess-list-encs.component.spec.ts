@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
-import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule  , CheckboxModule,TextinputModule} from '@ukho/design-system';
+import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule } from '@ukho/design-system';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
-import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component'; 
+import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
@@ -18,31 +18,31 @@ import { HttpClientModule } from '@angular/common/http';
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
   let msalService: MsalService;
-  let exchangeSetApiService: ExchangeSetApiService; 
+  let exchangeSetApiService: ExchangeSetApiService;
   let fixture: ComponentFixture<EssListEncsComponent>;
 
   const router = {
     navigate: jest.fn()
   };
   const service = {
-    getValidEncs : jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
-    clearSelectedEncs : jest.fn(),
+    getValidEncs: jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
+    clearSelectedEncs: jest.fn(),
     getSelectedENCs: jest.fn().mockReturnValue([]),
-    infoMessage : true,
-    addSelectedEnc : jest.fn(),
-    removeSelectedEncs : jest.fn(),
-    getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
-    addAllSelectedEncs : jest.fn()
+    infoMessage: true,
+    addSelectedEnc: jest.fn(),
+    removeSelectedEncs: jest.fn(),
+    getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
+    addAllSelectedEncs: jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule,CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule,HttpClientModule],
-      declarations: [ EssListEncsComponent,
-        EssAddSingleEncsComponent ],
+      imports: [FormsModule, CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule, HttpClientModule],
+      declarations: [EssListEncsComponent,
+        EssAddSingleEncsComponent],
       providers: [
         {
-          provide : EssUploadFileService,
-          useValue : service
+          provide: EssUploadFileService,
+          useValue: service
         },
         {
           provide: Router,
@@ -51,21 +51,21 @@ describe('EssListEncsComponent', () => {
         {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory
-       },
-       MsalService, ExchangeSetApiService
+        },
+        MsalService, ExchangeSetApiService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
-      MaxEncLimit: 100,
-      MaxEncSelectionLimit : 5
+        MaxEncLimit: 100,
+        MaxEncSelectionLimit: 5
       },
       fssConfig: {
-        apiScope:'test'
+        apiScope: 'test'
       }
     };
     window.scrollTo = jest.fn();
@@ -81,29 +81,29 @@ describe('EssListEncsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set info message if displayErrorMessage is set to true on ngOnInit' ,() => {
+  it('should set info message if displayErrorMessage is set to true on ngOnInit', () => {
     component.ngOnInit();
     expect(component.displayErrorMessage).toBeTruthy();
     expect(component.encList.length).toEqual(5);
     expect(component.messageType).toEqual('info');
     expect(component.messageDesc).toEqual('Some values have not been added to list.');
   });
-  it('handleChange should call service.removeSelectedEncs if enc is already present' , () => {
+  it('handleChange should call service.removeSelectedEncs if enc is already present', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
     component.handleChange('AU210130');
     expect(service.removeSelectedEncs).toHaveBeenCalled();
   });
-  it('handleChange should call service.addSelectedEnc if enc is not present' , () => {
+  it('handleChange should call service.addSelectedEnc if enc is not present', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
     component.handleChange('AU210180');
     expect(service.addSelectedEnc).toHaveBeenCalled();
   });
-  it('handleChange should not call service.addSelectedEnc if selected enc"s are greater than MaxEncSelectionLimit' , () => {
-    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130' , 'AU220830']);
+  it('handleChange should not call service.addSelectedEnc if selected enc"s are greater than MaxEncSelectionLimit', () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130', 'AU220830']);
     component.handleChange('AU210470');
     expect(service.addSelectedEnc).not.toHaveBeenCalled();
   });
-  it('syncEncsBetweenTables should set encList and selectedEncList' ,() => {
+  it('syncEncsBetweenTables should set encList and selectedEncList', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
     component.syncEncsBetweenTables();
     expect(component.selectedEncList.length).toBe(3);
@@ -113,7 +113,7 @@ describe('EssListEncsComponent', () => {
     expect(component.selectedEncList.length).toBe(1);
     expect(component.encList.length).toBe(5);
   });
-  
+
   test('should show the error message when user select encs more than selection limit', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
@@ -150,62 +150,107 @@ describe('EssListEncsComponent', () => {
     expect(encList.length).toEqual(5);
   });
 
-  it('should display Select All text when enc list is less than or equal to configurable enc limit' ,() => {
+  it('should display Select All text when enc list is less than or equal to configurable enc limit', () => {
     component.ngOnInit();
     expect(component.encList.length).toBeLessThanOrEqual(5);
     expect(component.selectDeselectText).toEqual('Select all');
   });
 
-  it('should display Deselect All button when select all button is clicked' ,() => {
+  it('should display Deselect All button when select all button is clicked', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.selectDeselectAll();
     expect(component.selectDeselectText).toEqual('Deselect all');
   });
 
-  it('should display Select All button when Deselect all button is clicked' ,() => {
+  it('should display Select All button when Deselect all button is clicked', () => {
     service.getSelectedENCs.mockReturnValue([]);
     component.selectDeselectAll();
     expect(component.selectDeselectText).toEqual('Select all');
   });
 
-  it('should hide select all button if enc list greater than max enc limit' ,() => {
+  it('should hide select all button if enc list greater than max enc limit', () => {
     service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'AU314140']);
     component.ngOnInit();
     expect(component.showSelectDeselect).toBeFalsy();
   });
 
-  it('should show select all button if enc list less than or equal to max enc limit' ,() => {
+  it('should show select all button if enc list less than or equal to max enc limit', () => {
     service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.ngOnInit();
     expect(component.showSelectDeselect).toBeTruthy();
   });
 
-  it('handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded' , () => {
-    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128','CU314128']);
+  it('handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded', () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'CU314128']);
     component.handleChange('DU314128');
     expect(component.messageType).toEqual('error');
     expect(component.messageDesc).toEqual('No more than 5 ENCs can be selected.');
     expect(window.scrollTo).toHaveBeenCalled();
   });
 
-  it('selectDeselectAll should call "service.addAllSelectedEncs" if selectDeselectText=Select all enc length is greater than maxEncSelectionLimit' , () => {
-    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128','CU314128']);
+  it('selectDeselectAll should call "service.addAllSelectedEncs" if selectDeselectText=Select all enc length is greater than maxEncSelectionLimit', () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'CU314128']);
     component.selectDeselectText = 'Select all';
     component.selectDeselectAll();
     expect(service.addAllSelectedEncs).toHaveBeenCalled();
   });
 
-  it('selectDeselectAll should call "service.clearSelectedEncs" if selectDeselectText=Deselect all' , () => {
+  it('selectDeselectAll should call "service.clearSelectedEncs" if selectDeselectText=Deselect all', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.selectDeselectText = 'deselect all';
     component.selectDeselectAll();
     expect(service.clearSelectedEncs).toHaveBeenCalled();
   });
 
-  it('getSelectDeselectText should return correct texts(Select all / Deselect all)' , () => {
+  it('getSelectDeselectText should return correct texts(Select all / Deselect all)', () => {
     component.checkMaxEncSelectionAndSelectedEncLength = jest.fn().mockReturnValue(true);
     expect(component.getSelectDeselectText()).toEqual('Deselect all');
     component.checkMaxEncSelectionAndSelectedEncLength = jest.fn().mockReturnValue(false);
     expect(component.getSelectDeselectText()).toEqual('Select all');
   });
+
+  it('should return exchangeSetResponse on exchangeSetCreationResponse', () => {
+    let selectedEncList = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+    component.exchangeSetCreationResponse([selectedEncList]);
+    exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((res: any) => {
+      expect(res).toEqual(exchangeSetDetailsMockData);
+    });
+  });
+
+  it('exchangeSetCreationResponse should set ExchangeSetDetails', () => {
+    let selectedEncList = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+    component.exchangeSetCreationResponse([selectedEncList]);
+    exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((res: any) => {
+      expect(component.displayErrorMessage).toBe(false);
+    });
+  });
 });
+
+export const exchangeSetDetailsMockData: any = {
+  "_links": {
+    "exchangeSetBatchStatusUri": {
+      "href": "https://uatadmiralty.azure-api.net/fss-qa/batch/3e947b33-2ce0-4b9b-b0e0-e512cdfab621/status"
+    },
+    "exchangeSetBatchDetailsUri": {
+      "href": "https://uatadmiralty.azure-api.net/fss-qa/batch/3e947b33-2ce0-4b9b-b0e0-e512cdfab621"
+    },
+    "exchangeSetFileUri": {
+      "href": "https://uatadmiralty.azure-api.net/fss-qa/batch/3e947b33-2ce0-4b9b-b0e0-e512cdfab621/files/V01X01.zip"
+    }
+  },
+  "exchangeSetUrlExpiryDateTime": "2022-09-02T06:37:34.732Z",
+  "requestedProductCount": 3,
+  "exchangeSetCellCount": 1,
+  "requestedProductsAlreadyUpToDateCount": 0,
+  "requestedProductsNotInExchangeSet": [
+    {
+      "productName": "AU220150",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU5PTL01",
+      "reason": "invalidProduct"
+    }
+  ]
+}
+

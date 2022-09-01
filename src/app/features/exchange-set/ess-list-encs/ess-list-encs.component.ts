@@ -179,8 +179,7 @@ export class EssListEncsComponent implements OnInit {
     })
   }
 
-  exchangeSetCreationResponse(selectedEncList: any[]) {
-    if (selectedEncList != null) {
+  exchangeSetCreationResponse(selectedEncList: any[]) { 
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
         this.displayLoader = false;
         this.exchangeSetDetails = result;
@@ -192,7 +191,6 @@ export class EssListEncsComponent implements OnInit {
           this.displayLoader = false;
         }
       );
-    }
   }
 
 }
