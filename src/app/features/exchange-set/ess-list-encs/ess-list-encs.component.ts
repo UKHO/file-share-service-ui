@@ -201,9 +201,4 @@ export class EssListEncsComponent implements OnInit {
     }
   }
 
-  getAverageSizeofENC() {
-    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
-    return this.essUploadFileService.getAvgSizeofENC(selectedENCNumber);
-  }
-
 }
