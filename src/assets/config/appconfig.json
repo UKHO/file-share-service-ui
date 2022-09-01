@@ -22,7 +22,7 @@
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
     "apiUrl": "https://uatadmiralty.azure-api.net/fss-qa",
     "apiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/FileShareServiceAPIQA/Public",
-    "stateManagementApiUrl": "https://fss-qa.admiralty.co.uk/api/auth",
+    "stateManagementApiUrl": "https://uatadmiralty.azure-api.net/fss-ui-auth-qa",
     "batchAttributes": [
       {
         "attributeSortType": "alphabetical",
