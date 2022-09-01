@@ -44,7 +44,7 @@ test('Scenario2 - Verify when more than 100 checkboxes selected in left hand tab
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13940
 test('Verifying Checkbox Functionality',async({page})=>{
       await page.click(essencselectionpageObjectsConfig.firstCheckBoxSelector);
-      await expect(page.locator(essencselectionpageObjectsConfig.firstENCSelector).innerHTML).toEqual(page.locator(essencselectionpageObjectsConfig.firstSelectedENC).innerHTML);
+      await expect(page.locator(essencselectionpageObjectsConfig.firstENCSelector).innerHTML).toEqual(page.locator(essencselectionpageObjectsConfig.firstSelectedENCSelector).innerHTML);
       await page.click(essencselectionpageObjectsConfig.firstCheckBoxSelector);
       await expect(page.locator(essencselectionpageObjectsConfig.firstSelectedENCSelector)).toBeHidden();
       
