@@ -84,9 +84,14 @@ export class MsalConfigDynamicModule {
                 MsalBroadcastService,
                 {
                     provide: HTTP_INTERCEPTORS,
-                    useClass: MsalInterceptor, HttpErrorInterceptorService,
+                    useClass: MsalInterceptor,
                     multi: true
                 },
+                {
+                    provide: HTTP_INTERCEPTORS,
+                    useClass: HttpErrorInterceptorService,
+                    multi: true
+                }
             ]
         };
     }
