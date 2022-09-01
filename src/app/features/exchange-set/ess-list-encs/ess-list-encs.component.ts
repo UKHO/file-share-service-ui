@@ -36,7 +36,7 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
-  estimatedSizeofENC: string="0KB";
+  estimatedTotalSize: string="0KB";
   selectDeselectText: string;
   showSelectDeselect: boolean;
   essTokenScope: any = [];
@@ -118,17 +118,7 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
-    
-    this.estimatedSizeofENC = this.getAverageSizeofENC();
-    this.showSelectDeselect = this.getSelectDeselectVisibility();
-    if(this.selectedEncList.length === 0){
-      this.selectDeselectText = SelectDeselect.select;
-      return;
-    }
-    if(this.selectDeselectText === SelectDeselect.select && this.checkMaxEncSelectionAndSelectedEncLength()){
-      this.selectDeselectText = SelectDeselect.deselect;
-      return;
-    }
+    this.estimatedTotalSize = this.getEstimatedTotalSize();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     if(this.selectedEncList.length === 0){
       this.selectDeselectText = SelectDeselect.select;
@@ -156,6 +146,10 @@ export class EssListEncsComponent implements OnInit {
 
   displaySingleEnc() {
     this.displaySingleEncVal = true;
+  }
+  getEstimatedTotalSize() {
+    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
+    return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
   }
   getSelectDeselectText(){
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
@@ -208,11 +202,6 @@ export class EssListEncsComponent implements OnInit {
         }
       );
     }
-  }
-
-  getAverageSizeofENC() {
-    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
-    return this.essUploadFileService.getAvgSizeofENC(selectedENCNumber);
   }
 
 }

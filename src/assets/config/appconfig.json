@@ -2,8 +2,8 @@
   "Environment": "",
   "GoogleTagManagerId":"Not-Needed-For-Running-Locally",
   "b2cConfig": {
-    "tenantName": "mgiaidtestb2c",
-    "clientId": "d4ab354e-a3b2-480e-ad50-4e60f2ca0021",
+    "tenantName": "",
+    "clientId": "",
     "redirectUri": "/",
     "postLogoutRedirectUri": "/logout.html",
     "navigateToLoginRequestUrl": true,
@@ -20,9 +20,9 @@
     "displaySimplifiedSearchLink": true,
     "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl": "https://uatadmiralty.azure-api.net/fss-qa",
-    "apiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/FileShareServiceAPIQA/Public",
-    "stateManagementApiUrl": "https://uatadmiralty.azure-api.net/fss-ui-auth-qa",   
+    "apiUrl": "",
+    "apiScope": "",
+    "stateManagementApiUrl": "",   
      "batchAttributes": [
       {
           "attributeSortType":"alphabetical",
@@ -51,8 +51,8 @@
     "MaxEncSelectionLimit":"100",
     "maxRetries":"3",
     "initialDelayMs":"1000",
-    "apiUrl": "https://uatadmiralty.azure-api.net/ess-qa",
-    "apiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/ExchangeSetService/Request",
-    "avgSizeofENC":"0.3"
+    "apiUrl": "",
+    "apiScope": "",
+    "avgSizeofENCinMB":"0.3"
   }
 }
