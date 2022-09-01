@@ -34,10 +34,13 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
       await expect(page.locator(encselectionpageObjectsConfig.addAnotherENCSelector)).toBeVisible();
       await addAnotherENC(page, encselectionpageObjectsConfig.addAnotherENCSelector);
+      expect(await page.innerText(encselectionpageObjectsConfig.secondEncSelector)).toEqual(esslandingpageObjectsConfig.ENCValue1);
       expect(await page.isChecked(encselectionpageObjectsConfig.chooseBoxSelecetor)).toBeFalsy();
       //13956 - Add another ENC2 - Duplicate No.
       await addAnotherENC(page, encselectionpageObjectsConfig.addAnotherENCSelector);
       await expect(page.locator(encselectionpageObjectsConfig.errorMessageForDuplicateNumberSelector)).toContainText(encselectionpageObjectsConfig.errorMsgDuplicateENC)
+      let count = await page.locator(encselectionpageObjectsConfig.leftTableRowsCountSelector).count();
+      expect(count).toEqual(2);      
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957

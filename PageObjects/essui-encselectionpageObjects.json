@@ -2,6 +2,8 @@
     "encselectionpageObjectsConfig": 
     {
         "firstEncSelector":"//div/table/tbody/tr[1]/td[1]",
+        "secondEncSelector":"//div/table/tbody/tr[2]/td[1]",
+        "leftTableRowsCountSelector":"//tbody/tr",
         "addAnotherENCSelector":"a.lnkAddAnotherEnc",
         "typeENCTextBoxSelector":"//input[@placeholder='Type ENC cell name here']",
         "addENCButtonSelector":"//button[text()=' Add ENC ']",
