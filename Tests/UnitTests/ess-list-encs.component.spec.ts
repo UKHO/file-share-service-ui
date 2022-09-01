@@ -9,15 +9,19 @@ import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/e
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
-import { MsalService } from '@azure/msal-angular';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MockMSALInstanceFactory } from './fss-search.component.spec';
 import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
+import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
+
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
   let msalService: MsalService;
   let exchangeSetApiService: ExchangeSetApiService;
   let fixture: ComponentFixture<EssListEncsComponent>;
+
   const router = {
     navigate: jest.fn()
   };
@@ -34,7 +38,7 @@ describe('EssListEncsComponent', () => {
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule,CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule],
+      imports: [FormsModule,CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule,HttpClientModule],
       declarations: [ EssListEncsComponent,
         EssAddSingleEncsComponent ], 
       providers: [
@@ -53,7 +57,7 @@ describe('EssListEncsComponent', () => {
         {
           provide : ExchangeSetApiService,
           useValue : service
-        }
+        }      
       ]
     })
     .compileComponents();
@@ -64,9 +68,14 @@ describe('EssListEncsComponent', () => {
       essConfig: {
       MaxEncLimit: 100,
       MaxEncSelectionLimit : 5
+      },
+      fssConfig: {
+        apiScope:'test'
       }
     };
     window.scrollTo = jest.fn();
+    msalService = TestBed.inject(MsalService);
+    exchangeSetApiService = TestBed.inject(ExchangeSetApiService);
     fixture = TestBed.createComponent(EssListEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

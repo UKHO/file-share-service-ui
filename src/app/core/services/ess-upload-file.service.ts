@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { ExchangeSetDetails } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
@@ -14,6 +15,7 @@ export class EssUploadFileService {
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
   private avgSizeofENC: number;
   private estimatedENCSize: number;
+  private exchangeSetDetails: ExchangeSetDetails;
 
   constructor() {
     this.selectedEncs = [];
@@ -101,6 +103,16 @@ export class EssUploadFileService {
     this.validEncs = [];
     this.validEncs.push(signleValidEnc);
   }
+
+  setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
+    this.exchangeSetDetails = exchangeSetDetails;
+    
+  }
+
+  getExchangeSetDetails(): ExchangeSetDetails {
+    return this.exchangeSetDetails;
+  }
+
   addSingleEnc(signleValidEnc: string) {
     this.validEncs.push(signleValidEnc);
     this.notifySingleEnc.next(true);

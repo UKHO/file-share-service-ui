@@ -8,14 +8,15 @@ import { EssUploadFileService } from './ess-upload-file.service';
 })
 export class AuthGuard implements CanActivate {
   routes = ['/search' , '/exchangesets' ];
-  childRoutes = ['/exchangesets/enc-list'];
+  childRoutes = ['/exchangesets/enc-list','/exchangesets/enc-download'];
+ 
   constructor(private msalService: MsalService,
     private router: Router,private essUploadFileService: EssUploadFileService){}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       const account = this.msalService.instance.getActiveAccount();
-      const encs = this.essUploadFileService.getValidEncs();
+      const encs = this.essUploadFileService.getValidEncs();   
       if(account && state.url === '/'){
         this.router.navigate(['search']);
         return false;

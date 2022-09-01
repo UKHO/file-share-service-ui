@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { SilentRequest } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
+import { ExchangeSetDetails, ExchangeSetLinks } from 'src/app/core/models/ess-response-types';
+import { stringOperatorList } from 'Helper/ConstantHelper';
 
 interface MappedEnc {
   enc: string;
@@ -39,6 +41,8 @@ export class EssListEncsComponent implements OnInit {
   showSelectDeselect: boolean;
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
+  exchangeSetDetails: ExchangeSetDetails;
+
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router,
     private msalService: MsalService,
@@ -153,26 +157,6 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEnc() {
     this.displaySingleEncVal = true;
   }
-
-  requestEncClicked()
-  {
-    this.displayLoader = true;
-    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
-         console.log(result);
-         this.displayLoader = false;
-      });
-    }, error => {
-      this.msalService.instance
-        .loginPopup(this.essSilentTokenRequest)
-        .then(response => {
-          this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
-            console.log(result);
-            this.displayLoader = false;
-         });
-        })
-    })
-  }
   getSelectDeselectText(){
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
     return selectDeselectText;
@@ -194,9 +178,38 @@ export class EssListEncsComponent implements OnInit {
   getSelectDeselectVisibility(){
     return this.encList.length <= this.maxEncSelectionLimit;
   }
+  requestEncClicked() {
+    this.displayLoader = true;
+    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+      this.exchangeSetCreationResponse(this.selectedEncList);
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.essSilentTokenRequest)
+        .then(response => {
+          this.exchangeSetCreationResponse(this.selectedEncList);
+        })
+    })
+  }
+
+  exchangeSetCreationResponse(selectedEncList: any[]) {
+    if (selectedEncList != null) {
+      this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+        this.displayLoader = false;
+        this.exchangeSetDetails = result;
+        this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
+        this.route.navigate(['exchangesets', 'enc-download']);
+      },
+        (error) => {
+          this.showMessage('error', 'There has been an error');
+          this.displayLoader = false;
+        }
+      );
+    }
+  }
 
   getAverageSizeofENC() {
     var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
     return this.essUploadFileService.getAvgSizeofENC(selectedENCNumber);
   }
+
 }
