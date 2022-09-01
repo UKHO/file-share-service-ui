@@ -9,6 +9,7 @@ import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/e
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -24,13 +25,14 @@ describe('EssListEncsComponent', () => {
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
     getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
-    addAllSelectedEncs : jest.fn()
+    addAllSelectedEncs : jest.fn(),
+    getEstimatedTotalSize:jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule,CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule],
       declarations: [ EssListEncsComponent,
-        EssAddSingleEncsComponent ],
+        EssAddSingleEncsComponent ], 
       providers: [
         {
           provide : EssUploadFileService,
@@ -131,14 +133,39 @@ describe('EssListEncsComponent', () => {
     const encList = service.getValidEncs();
     expect(encList.length).toEqual(5);
   });
-
   it('should display Select All text when enc list is less than or equal to configurable enc limit' ,() => {
     component.ngOnInit();
     expect(component.encList.length).toBeLessThanOrEqual(5);
     expect(component.selectDeselectText).toEqual('Select all');
   });
 
-  it('should display Deselect All button when select all button is clicked' ,() => {
+  test('showListEncTOtal class applied to a selector', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('showListEncTOtal'))).toBeTruthy();
+  });
+  test('bottomText class applied to a tag', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('bottomText'))).toBeTruthy();
+  });
+
+  it.each`
+  estimatedSize              | expectedResult
+  ${'0KB'}                       |  ${'0KB'}
+  ${'1.5MB'}                     |  ${'1.5MB'}
+  `('getEstimatedTotalSize called from syncEncsBetweenTables and should return string',
+  ({  estimatedSize, expectedResult }: {  estimatedSize: string; expectedResult: string }) => {
+    jest.clearAllMocks();
+    service.getEstimatedTotalSize.mockReturnValue(estimatedSize);
+    component.syncEncsBetweenTables();
+    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+    expect(component.getEstimatedTotalSize()).toBe(expectedResult);
+    expect(component.estimatedTotalSize).not.toBeNull();
+    expect(component.estimatedTotalSize).toBe(expectedResult);
+  });
+
+    it('should display Deselect All button when select all button is clicked' ,() => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.selectDeselectAll();
     expect(component.selectDeselectText).toEqual('Deselect all');

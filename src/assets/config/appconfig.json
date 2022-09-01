@@ -50,6 +50,7 @@
     "MaxEncLimit": "250",
     "MaxEncSelectionLimit":"100",
     "apiUrl": "",
-    "apiScope": ""
+    "apiScope": "",
+    "avgSizeofENCinMB":"0.3"
   }
 }

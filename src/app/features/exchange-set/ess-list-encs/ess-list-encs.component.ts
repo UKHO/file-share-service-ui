@@ -30,6 +30,7 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
+  estimatedTotalSize: string="0KB";
   selectDeselectText: string;
   showSelectDeselect: boolean;
   constructor(private essUploadFileService: EssUploadFileService,
@@ -49,7 +50,7 @@ export class EssListEncsComponent implements OnInit {
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
         this.setEncList();
-       this.syncEncsBetweenTables();
+        this.syncEncsBetweenTables();
       }
     });
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
@@ -99,6 +100,7 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
+    this.estimatedTotalSize = this.getEstimatedTotalSize();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     if(this.selectedEncList.length === 0){
       this.selectDeselectText = SelectDeselect.select;
@@ -126,6 +128,10 @@ export class EssListEncsComponent implements OnInit {
 
   displaySingleEnc() {
     this.displaySingleEncVal = true;
+  }
+  getEstimatedTotalSize() {
+    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
+    return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
   }
   getSelectDeselectText(){
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
