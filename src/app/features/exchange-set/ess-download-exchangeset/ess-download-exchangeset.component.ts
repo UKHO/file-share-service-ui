@@ -17,10 +17,12 @@ export class EssDownloadExchangesetComponent implements OnInit {
   displayLoader: boolean = true;
   displayDownloadBtn: boolean = false;
   batchDetailsUrl: string;
-  fileUrl: string;
   batchId: string;
   fssTokenScope: any = [];
   fssSilentTokenRequest: SilentRequest;
+  baseUrl: string;
+  downloadPath: string;
+  downloadUrl: string;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private fileShareApiService: FileShareApiService,
@@ -36,13 +38,24 @@ export class EssDownloadExchangesetComponent implements OnInit {
     console.log(this.exchangeSetDetails);
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
-    this.checkBatchStatus(this.batchId)
+    this.checkBatchStatus();
   }
 
-  checkBatchStatus(batchId: string) {
+  checkBatchStatus() {
 
-    this.fileShareApiService.getBatchStatus(batchId).subscribe((response) => {
+    this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+      this.batchStatusAPI();
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.fssSilentTokenRequest)
+        .then(response => {
+          this.batchStatusAPI();
+        })
+    })
+  }
 
+  batchStatusAPI() {
+    this.fileShareApiService.getBatchStatus(this.batchId).subscribe((response) => {
       console.log(response);
       if (response.status == "Committed") {
         this.displayLoader = false;
@@ -50,27 +63,30 @@ export class EssDownloadExchangesetComponent implements OnInit {
       }
       else {
         setTimeout(() => {
-          this.checkBatchStatus(this.batchId)
+          this.checkBatchStatus()
         }, 5000);
       }
     });
   }
 
   download() {
-    this.fileUrl = this.exchangeSetDetails._links.exchangeSetFileUri.href;
-
+    this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
+    this.downloadPath = this.exchangeSetDetails._links.exchangeSetFileUri.href.substring(this.exchangeSetDetails._links.exchangeSetFileUri.href.indexOf('/batch'));
+    this.downloadUrl=this.baseUrl+this.downloadPath;
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+      this.displayLoader = false;
 
       this.fileShareApiService.refreshToken().subscribe((res) => {
-        window.open(this.fileUrl, "_blank");
+        window.open(this.downloadUrl, "_blank");
       });
     }, error => {
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
+          this.displayLoader = false;
           this.fileShareApiService.refreshToken().subscribe((res) => {
-            window.open(this.fileUrl, "_blank");
+            window.open(this.downloadUrl, "_blank");
           });
         })
     })
