@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { MsalService } from '@azure/msal-angular';
 import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
+import { By } from '@angular/platform-browser';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -28,13 +29,14 @@ describe('EssListEncsComponent', () => {
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
     getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
-    addAllSelectedEncs : jest.fn()
+    addAllSelectedEncs : jest.fn(),
+    getAvgSizeofENC:jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule,CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule,TextinputModule],
       declarations: [ EssListEncsComponent,
-        EssAddSingleEncsComponent ],
+        EssAddSingleEncsComponent ], 
       providers: [
         {
           provide : EssUploadFileService,
@@ -143,6 +145,76 @@ describe('EssListEncsComponent', () => {
     const encList = service.getValidEncs();
     expect(encList.length).toEqual(5);
   });
+  it('should display Select All text when enc list is less than or equal to configurable enc limit' ,() => {
+    component.ngOnInit();
+    expect(component.encList.length).toBeLessThanOrEqual(5);
+    expect(component.selectDeselectText).toEqual('Select all');
+  });
+
+  test('showListEncTOtal class applied to a selector', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('showListEncTOtal'))).toBeTruthy();
+  });
+  test('bottomText class applied to a tag', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('bottomText'))).toBeTruthy();
+  });
+
+  it.each`
+  estimatedENCValue              | expectedResult
+  ${'0KB'}                       |  ${'0KB'}
+  ${'1.5MB'}                     |  ${'1.5MB'}
+  `('getAverageSizeofENC called from syncEncsBetweenTables and should return string',
+  ({  estimatedENCValue, expectedResult }: {  estimatedENCValue: string; expectedResult: string }) => {
+    jest.clearAllMocks();
+    service.getAvgSizeofENC.mockReturnValue(estimatedENCValue);
+    component.syncEncsBetweenTables();
+    expect(service.getAvgSizeofENC).toHaveBeenCalled();
+    expect(component.getAverageSizeofENC()).toBe(expectedResult);
+    expect(component.estimatedSizeofENC).not.toBeNull();
+    expect(component.estimatedSizeofENC).toBe(expectedResult);
+  });
+
+    it('should display Deselect All button when select all button is clicked' ,() => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
+    component.selectDeselectAll();
+    expect(component.selectDeselectText).toEqual('Deselect all');
+  });
+
+  it('should display Select All button when Deselect all button is clicked' ,() => {
+    service.getSelectedENCs.mockReturnValue([]);
+    component.selectDeselectAll();
+    expect(component.selectDeselectText).toEqual('Select all');
+  });
+
+  it('should hide select all button if enc list greater than max enc limit' ,() => {
+    service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'AU314140']);
+    component.ngOnInit();
+    expect(component.showSelectDeselect).toBeFalsy();
+  });
+
+  it('should show select all button if enc list less than or equal to max enc limit' ,() => {
+    service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
+    component.ngOnInit();
+    expect(component.showSelectDeselect).toBeTruthy();
+  });
+
+  it('handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded' , () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128','CU314128']);
+    component.handleChange('DU314128');
+    expect(component.messageType).toEqual('error');
+    expect(component.messageDesc).toEqual('No more than 5 ENCs can be selected.');
+    expect(window.scrollTo).toHaveBeenCalled();
+  });
+
+  it('selectDeselectAll should call "service.addAllSelectedEncs" if selectDeselectText=Select all enc length is greater than maxEncSelectionLimit' , () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128','CU314128']);
+    component.selectDeselectText = 'Select all';
+    component.selectDeselectAll();
+    expect(service.addAllSelectedEncs).toHaveBeenCalled();
+  });
 
   it('should display Select All text when enc list is less than or equal to configurable enc limit' ,() => {
     component.ngOnInit();
@@ -154,6 +226,12 @@ describe('EssListEncsComponent', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.selectDeselectAll();
     expect(component.selectDeselectText).toEqual('Deselect all');
+  });
+  it('selectDeselectAll should call "service.clearSelectedEncs" if selectDeselectText=Deselect all' , () => {
+    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
+    component.selectDeselectText = 'deselect all';
+    component.selectDeselectAll();
+    expect(service.clearSelectedEncs).toHaveBeenCalled();
   });
 
   it('should display Select All button when Deselect all button is clicked' ,() => {

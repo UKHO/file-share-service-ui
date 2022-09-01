@@ -34,12 +34,11 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
-  essTokenScope: any = [];
-  essSilentTokenRequest: SilentRequest;
-  estimatedSizeofENC: string;
+  estimatedSizeofENC: string="0KB";
   selectDeselectText: string;
   showSelectDeselect: boolean;
-
+  essTokenScope: any = [];
+  essSilentTokenRequest: SilentRequest;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router,
     private msalService: MsalService,
@@ -57,9 +56,6 @@ export class EssListEncsComponent implements OnInit {
       AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
       10
     );
-    this.estimatedSizeofENC = "0KB";
-    this.encList = [];
-    this.selectedEncList = [];
     this.essUploadFileService.clearSelectedEncs();
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
@@ -118,6 +114,8 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
+    
+    this.estimatedSizeofENC = this.getAverageSizeofENC();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     if(this.selectedEncList.length === 0){
       this.selectDeselectText = SelectDeselect.select;
@@ -127,7 +125,15 @@ export class EssListEncsComponent implements OnInit {
       this.selectDeselectText = SelectDeselect.deselect;
       return;
     }
-    this.estimatedSizeofENC = this.getAverageSizeofENC();
+    this.showSelectDeselect = this.getSelectDeselectVisibility();
+    if(this.selectedEncList.length === 0){
+      this.selectDeselectText = SelectDeselect.select;
+      return;
+    }
+    if(this.selectDeselectText === SelectDeselect.select && this.checkMaxEncSelectionAndSelectedEncLength()){
+      this.selectDeselectText = SelectDeselect.deselect;
+      return;
+    }
   }
 
   onSortChange(sortState: SortState) {

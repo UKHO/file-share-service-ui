@@ -117,12 +117,13 @@ export class EssUploadFileService {
     else {
       return true;
     }
-  }
 
+  }
   addAllSelectedEncs(){
     const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
     this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
   }
+  
   getAvgSizeofENC(encCount:number):string {
     
     this.estimatedENCSize= (this.avgSizeofENC * encCount);
