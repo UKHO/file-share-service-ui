@@ -1,8 +1,13 @@
+import { ExchangeSetApiService } from './../../../core/services/exchange-set-api.service';
+import { MsalService } from '@azure/msal-angular';
+import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
+import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
+
 
 interface MappedEnc {
   enc: string;
@@ -27,10 +32,20 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
-
+  displayLoader: boolean = false;
+  essTokenScope: any = [];
+  essSilentTokenRequest: SilentRequest;
+  exchangeSetDetails: ExchangeSetDetails;
 
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router) { }
+    private route: Router,
+    private msalService: MsalService,
+    private exchangeSetApiService: ExchangeSetApiService) { 
+      this.essTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+      this.essSilentTokenRequest = {
+        scopes: [this.essTokenScope],
+      };
+    }
 
   ngOnInit(): void {
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
@@ -117,4 +132,37 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEnc() {
     this.displaySingleEncVal = true;
   }
+
+  requestEncClicked() {
+    this.displayLoader = true; 
+    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+
+      this.exchangeSetCreationResponse(this.selectedEncList);
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.essSilentTokenRequest)
+        .then(response => {
+
+          this.exchangeSetCreationResponse(this.selectedEncList);
+        })
+    })
+  }
+
+  exchangeSetCreationResponse(selectedEncList: any[]) {
+    this.displayLoader = true;
+    if (selectedEncList != null) {
+      this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+        console.log(result);
+        this.displayLoader = false;
+        this.exchangeSetDetails = result;
+        this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
+        this.route.navigate(['exchangesets', 'enc-download']);
+      },
+        (error) => {
+          this.showMessage('error', 'There has been an error');
+        }
+      );
+    }
+  }
+  
 }

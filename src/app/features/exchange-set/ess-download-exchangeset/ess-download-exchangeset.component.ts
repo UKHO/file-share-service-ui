@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
-import { AppConfigService } from './../../../core/services/app-config.service';
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit } from '@angular/core';
+import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
 
 @Component({
   selector: 'app-ess-download-exchangeset',
@@ -10,18 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EssDownloadExchangesetComponent implements OnInit {
   displayLoader: boolean = true;
-  showSeletedEncs: any;
+  exchangeSetCellCount: number;
+  avgEstimatedSize: any;
+  exchangeSetDetails: ExchangeSetDetails;
   
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router) { 
+    private route: Router) {
   }
 
-  ngOnInit(): void {
-    this.showSeletedEncs = this.essUploadFileService.getSelectedENCs();
+  ngOnInit() {
+    this.exchangeSetDetails= this.essUploadFileService.getExchangeSetDetails();
+    this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
+    this.avgEstimatedSize = this.essUploadFileService.getAvgSizeofENC(this.exchangeSetCellCount);
   }
 
   switchToESSLandingPage() {
     this.route.navigate(["exchangesets"]);
   }
-  
+
 }
