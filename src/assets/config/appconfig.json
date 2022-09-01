@@ -51,8 +51,8 @@
     "MaxEncSelectionLimit":"100",
     "maxRetries":"3",
     "initialDelayMs":"1000",
-    "apiUrl": "https://uatadmiralty.azure-api.net/ess-qa",
-    "apiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/ExchangeSetService/Request",
-    "avgSizeofENC":"0.3"
+    "apiUrl": "",
+    "apiScope": "",
+    "avgSizeofENCinMB":"0.3"
   }
 }

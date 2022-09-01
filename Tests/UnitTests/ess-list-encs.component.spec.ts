@@ -34,7 +34,7 @@ describe('EssListEncsComponent', () => {
     removeSelectedEncs : jest.fn(),
     getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
     addAllSelectedEncs : jest.fn(),
-    getAvgSizeofENC:jest.fn()
+    getEstimatedTotalSize:jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -172,18 +172,18 @@ describe('EssListEncsComponent', () => {
   });
 
   it.each`
-  estimatedENCValue              | expectedResult
+  estimatedSize              | expectedResult
   ${'0KB'}                       |  ${'0KB'}
   ${'1.5MB'}                     |  ${'1.5MB'}
-  `('getAverageSizeofENC called from syncEncsBetweenTables and should return string',
-  ({  estimatedENCValue, expectedResult }: {  estimatedENCValue: string; expectedResult: string }) => {
+  `('getEstimatedTotalSize called from syncEncsBetweenTables and should return string',
+  ({  estimatedSize, expectedResult }: {  estimatedSize: string; expectedResult: string }) => {
     jest.clearAllMocks();
-    service.getAvgSizeofENC.mockReturnValue(estimatedENCValue);
+    service.getEstimatedTotalSize.mockReturnValue(estimatedSize);
     component.syncEncsBetweenTables();
-    expect(service.getAvgSizeofENC).toHaveBeenCalled();
-    expect(component.getAverageSizeofENC()).toBe(expectedResult);
-    expect(component.estimatedSizeofENC).not.toBeNull();
-    expect(component.estimatedSizeofENC).toBe(expectedResult);
+    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+    expect(component.getEstimatedTotalSize()).toBe(expectedResult);
+    expect(component.estimatedTotalSize).not.toBeNull();
+    expect(component.estimatedTotalSize).toBe(expectedResult);
   });
 
     it('should display Deselect All button when select all button is clicked' ,() => {

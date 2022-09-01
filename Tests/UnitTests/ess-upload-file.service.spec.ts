@@ -48,7 +48,7 @@ describe('EssUploadFileService', () => {
       essConfig: {
         MaxEncLimit: 10,
         MaxEncSelectionLimit: 5,
-        avgSizeofENC:0.3
+        avgSizeofENCinMB:0.3
       },
     };
     TestBed.configureTestingModule({});
@@ -225,10 +225,10 @@ describe('EssUploadFileService', () => {
   ${0}                           |  ${'0KB'}
   ${1}                           |  ${'307KB'}
   ${6}                           |  ${'1.8MB'}
-  `('getAvgSizeofENC should return valid string',
+  `('getEstimatedTotalSize should return valid string',
   ({  encCount, expectedResult }: {  encCount: number; expectedResult: string }) => {
     jest.clearAllMocks();
-    expect(service.getAvgSizeofENC(encCount)).toEqual(expectedResult);
+    expect(service.getEstimatedTotalSize(encCount)).toEqual(expectedResult);
   });
   
 });
