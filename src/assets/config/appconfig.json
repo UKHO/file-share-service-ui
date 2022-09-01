@@ -20,7 +20,7 @@
     "displaySimplifiedSearchLink": true,
     "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl": "https://uatadmiralty.azure-api.net/fss-qa",
+    "apiUrl": "https://fss-qa.admiralty.co.uk/api",
     "apiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/FileShareServiceAPIQA/Public",
     "stateManagementApiUrl": "https://uatadmiralty.azure-api.net/fss-ui-auth-qa",
     "batchAttributes": [

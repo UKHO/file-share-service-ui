@@ -27,7 +27,7 @@ steps:
       TF_VAR_agent_subnet_name: $(agentSubnetName)
       TF_VAR_agent_subscription_id: $(agentSubscriptionId)
 
-  - task: FileTransform@1.206.0
+  - task: FileTransform@1
     displayName: "File Transform: website config"
     inputs:
       folderPath: "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
