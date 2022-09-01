@@ -5,7 +5,7 @@ import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
 import { SilentRequest } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
-import { ExchangeSetApiService } from 'src/app/core/services/exchange-set-api.service';
+import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
 import { ExchangeSetDetails, ExchangeSetLinks, ProductsNotInExchangeSet } from 'src/app/core/models/ess-response-types';
 
 interface MappedEnc {
