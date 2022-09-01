@@ -222,9 +222,9 @@ describe('EssUploadFileService', () => {
 
   it.each`
   encCount                       | expectedResult
-  ${6}                           |  ${'1.8MB'}
-  ${1}                           |  ${'307KB'}
   ${0}                           |  ${'0KB'}
+  ${1}                           |  ${'307KB'}
+  ${6}                           |  ${'1.8MB'}
   `('getAvgSizeofENC should return valid string',
   ({  encCount, expectedResult }: {  encCount: number; expectedResult: string }) => {
     jest.clearAllMocks();

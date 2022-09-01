@@ -158,16 +158,14 @@ describe('EssListEncsComponent', () => {
   ({  estimatedENCValue, expectedResult }: {  estimatedENCValue: string; expectedResult: string }) => {
     jest.clearAllMocks();
     service.getAvgSizeofENC.mockReturnValue(estimatedENCValue);
-    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
     component.syncEncsBetweenTables();
-    expect(component.selectedEncList.length).toBe(3);
-    expect(component.encList.length).toBe(5);
     expect(service.getAvgSizeofENC).toHaveBeenCalled();
-     expect(component.estimatedSizeofENC).not.toBeNull();
-     expect(component.estimatedSizeofENC).toBe(expectedResult);
+    expect(component.getAverageSizeofENC()).toBe(expectedResult);
+    expect(component.estimatedSizeofENC).not.toBeNull();
+    expect(component.estimatedSizeofENC).toBe(expectedResult);
   });
 
-  it('should display Deselect All button when select all button is clicked' ,() => {
+    it('should display Deselect All button when select all button is clicked' ,() => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.selectDeselectAll();
     expect(component.selectDeselectText).toEqual('Deselect all');
