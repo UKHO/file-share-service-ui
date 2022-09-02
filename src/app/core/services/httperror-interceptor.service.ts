@@ -20,8 +20,8 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
           errors.pipe(
             takeWhile((err: HttpErrorResponse, index) => {
               if (request.url.includes(this.essBaseUrl) &&
-                        (this.retryCount < this.maxRetries - 1)  &&
-                        (err.status != 400 && err.status != 415)) {
+                (this.retryCount < this.maxRetries - 1) &&
+                (err.status === 408 || err.status === 429 || (err.status >= 500 && err.status < 600))) {
                 this.retryCount = index;
               }
               else {
