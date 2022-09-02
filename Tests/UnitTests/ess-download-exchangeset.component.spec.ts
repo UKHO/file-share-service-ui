@@ -23,7 +23,7 @@ describe('EssDownloadExchangesetComponent', () => {
     getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
     getExchangeSetDetails: jest.fn().mockReturnValue({exchangeSetCellCount : 4}),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
-    getAvgSizeofENC:jest.fn()
+    getEstimatedTotalSize:jest.fn()
   };
   
   beforeEach(async () => {
@@ -94,14 +94,17 @@ describe('EssDownloadExchangesetComponent', () => {
   });
 
   test('should render estimated size', () => {
-    const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
-    fixture.detectChanges();
-    var expectedResult: any = '1.2MB'
-    var avgSizeOfEnc = AppConfigService.settings["essConfig"].avgSizeofENC;
-    const estimatedEncSize = (avgSizeOfEnc * service.getExchangeSetDetails().exchangeSetCellCount) + 'MB';
-    service.getAvgSizeofENC.mockReturnValue(expectedResult);
-    expect(service.getAvgSizeofENC).toHaveBeenCalled();
-    expect(estimatedEncSize).toBe(expectedResult);
+    var expectedResult: any = '1.2MB';
+    service.getEstimatedTotalSize.mockReturnValue('1.2MB');
+    component.ngOnInit();
+    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+    expect(component.avgEstimatedSize).toBe(expectedResult);
+
+    var expectedResultForKB: any = '0KB';
+    service.getEstimatedTotalSize.mockReturnValue('0KB');
+    component.ngOnInit();
+    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+    expect(component.avgEstimatedSize).toBe(expectedResultForKB);
   });
   
 });

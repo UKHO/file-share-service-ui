@@ -21,7 +21,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
   ngOnInit() {
     this.exchangeSetDetails= this.essUploadFileService.getExchangeSetDetails();
     this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
-    this.avgEstimatedSize = this.essUploadFileService.getAvgSizeofENC(this.exchangeSetCellCount);
+    this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
   }
 
   switchToESSLandingPage() {
