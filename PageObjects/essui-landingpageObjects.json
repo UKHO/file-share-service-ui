@@ -7,7 +7,7 @@
         "exchangesettextSelector":"h1#main",
         "uploadbtntextSelector":"#radioUploadEnc",
         "addenctextSelector":"#radioAddEnc",
-        "uploadradiobtnSelector":"#ukho-radio-1",
+        "uploadradiobtnSelector":"//input[@value='UploadEncFile']",
         "addencradiobtnSelector":"#ukho-radio-2",
         "chooseuploadfileoptionSelector":"#file-upload",
         "chooseuploadfileproceedSelector":"ukho-button.UploadButton",

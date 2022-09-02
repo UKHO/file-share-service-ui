@@ -1,12 +1,20 @@
 {
-    "essencselectionpageObjectsConfig": 
+    "encselectionpageObjectsConfig": 
     {        
         "encNameSelector":"text=ENC name",
         "startLinkSelector":".linkStartAgain",
         "textAboveTableSelector":"text=Select up to 100 ENCs and make an exchange set",
         "textAboveTable":"Select up to 100 ENCs and make an exchange set",  
-        "rightHandTableRowsSelector":"//div/div[2]/div[3]/div[1]/table/tbody/tr",
+        "rightTableRowsCountSelector":"//div/div[2]/div[3]/div[1]/table/tbody/tr",
+        "rightTableEncPositionSeletor":"//div/div[2]/div[3]/div[1]/table/tbody/tr[1]/td[1]",
         "firstCheckBoxSelector":"[aria-label='AU220150'] input[type='checkbox']",
-        "XButtonSelector":"//table/tbody/tr/td[2]/button/i"
+        "XButtonSelector":"//table/tbody/tr/td[2]/button/i",
+        "addAnotherENCSelector":"a.lnkAddAnotherEnc",
+        "typeENCTextBoxSelector":"//input[@placeholder='Type ENC cell name here']",
+        "addENCButtonSelector":"//button[text()=' Add ENC ']",
+        "startAgainLinkSelector":"a.linkStartAgain",
+        "101thEncSelector":"//div/table/tbody/tr[101]/td[2]",
+        "maxLimitEncmessageSelector":"//h3[text()='No more than 100 ENCs can be selected.']",
+        "maxLimitEncmessage":"No more than 100 ENCs can be selected."
     }
 }
