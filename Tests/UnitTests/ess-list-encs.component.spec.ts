@@ -71,9 +71,6 @@ describe('EssListEncsComponent', () => {
       essConfig: {
       MaxEncLimit: 100,
       MaxEncSelectionLimit : 5
-      },
-      fssConfig: {
-        apiScope:'test'
       }
     };
     window.scrollTo = jest.fn();
