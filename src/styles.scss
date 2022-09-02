@@ -459,3 +459,20 @@ ukho-textinput.text-input-wrap .error-text{
 		height: 40vh;
 	}
 }
+.selectDeselectHeader{
+    position: relative;
+    flex-basis: 45% !important;
+}
+.selectDeselctBtn{
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    color: #09315b;
+    font-size: 16px;
+	font-weight: 400;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.selectionClose{
+	text-align: center;
+}

@@ -13,7 +13,10 @@ interface MappedEnc {
   enc: string;
   selected: boolean;
 }
-
+enum SelectDeselect {
+  select = 'Select all',
+  deselect = 'Deselect all'
+};
 @Component({
   selector: 'app-ess-list-encs',
   templateUrl: './ess-list-encs.component.html',
@@ -36,7 +39,9 @@ export class EssListEncsComponent implements OnInit {
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
   exchangeSetDetails: ExchangeSetDetails;
-
+  estimatedTotalSize: string="0KB";
+  selectDeselectText: string;
+  showSelectDeselect: boolean;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router,
     private msalService: MsalService,
@@ -57,27 +62,23 @@ export class EssListEncsComponent implements OnInit {
     if (this.displayErrorMessage) {
       this.showMessage('info', 'Some values have not been added to list.');
     }
-    this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
-      enc,
-      selected: false
-    }));
-
     this.setEncList();
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
         this.setEncList();
-       this.syncEncsBetweenTables();
+        this.syncEncsBetweenTables();
       }
     });
+    this.selectedEncList = this.essUploadFileService.getSelectedENCs();
+    this.selectDeselectText = this.getSelectDeselectText();
+    this.showSelectDeselect = this.getSelectDeselectVisibility();
   }
 
   setEncList() {
-    this.encList = this.essUploadFileService.getValidEncs().map((enc) => {
-      return {
-        enc,
-        selected: false
-      }
-    });
+    this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
+      enc,
+      selected: false
+    }));
   }
 
   showMessage(
@@ -104,6 +105,7 @@ export class EssListEncsComponent implements OnInit {
         'error',
         'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.'
       );
+      window.scrollTo(0,0);
     }
     this.syncEncsBetweenTables();
   }
@@ -114,6 +116,16 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
+    this.estimatedTotalSize = this.getEstimatedTotalSize();
+    this.showSelectDeselect = this.getSelectDeselectVisibility();
+    if(this.selectedEncList.length === 0){
+      this.selectDeselectText = SelectDeselect.select;
+      return;
+    }
+    if(this.selectDeselectText === SelectDeselect.select && this.checkMaxEncSelectionAndSelectedEncLength()){
+      this.selectDeselectText = SelectDeselect.deselect;
+      return;
+    }
   }
 
   onSortChange(sortState: SortState) {
@@ -129,6 +141,7 @@ export class EssListEncsComponent implements OnInit {
   switchToESSLandingPage() {
     this.route.navigate(["exchangesets"]);
   }
+
   displaySingleEnc() {
     this.displaySingleEncVal = true;
   }
@@ -164,4 +177,29 @@ export class EssListEncsComponent implements OnInit {
     }
   }
   
+  getEstimatedTotalSize() {
+    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
+    return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
+  }
+  getSelectDeselectText(){
+    const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
+    return selectDeselectText;
+  }
+  checkMaxEncSelectionAndSelectedEncLength(){
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.encList.length ? this.encList.length  : this.maxEncSelectionLimit;
+    return maxEncSelectionLimit === this.selectedEncList.length;
+  }
+  selectDeselectAll(){
+    if(!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select){
+      this.essUploadFileService.addAllSelectedEncs();
+    }else{
+      this.essUploadFileService.clearSelectedEncs();
+    }
+    this.syncEncsBetweenTables();
+    this.selectDeselectText = this.getSelectDeselectText();
+  }
+
+  getSelectDeselectVisibility(){
+    return this.encList.length <= this.maxEncSelectionLimit;
+  }
 }

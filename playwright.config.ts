@@ -34,12 +34,12 @@ const config: PlaywrightTestConfig = {
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-      },
-    },
+    // {
+    //   name: 'chromium',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //   },
+    // },
 //// Note: Flaky Tests in pipeline, so commenting below browsers for now. Discussed & agreed with Ravi.
     // {
     //   name: 'firefox',
@@ -48,12 +48,12 @@ const config: PlaywrightTestConfig = {
     //   },
     // },
 
-    // {
-    //   name: 'webkit',
-    //   use: {
-    //     ...devices['Desktop Safari'],
-    //   },
-    // },
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+    },
 
     // {
     //   name: 'Microsoft Edge',
