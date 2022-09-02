@@ -152,7 +152,6 @@ export class EssListEncsComponent implements OnInit {
     this.displayLoader = true;
     if (selectedEncList != null) {
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
-        console.log(result);
         this.displayLoader = false;
         this.exchangeSetDetails = result;
         this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
