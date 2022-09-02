@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 import { BatchStatusReponse } from '../models/ess-response-types';
@@ -34,7 +34,10 @@ export class FileShareApiService {
     }
 
     refreshToken(): Observable<any> {
-        return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
+        const httpOptions = {
+            withCredentials: true
+        };
+        return this.http.put(this.stateManagementUrl + '/tokenrefresh', null, httpOptions);
     }
 
     isTokenExpired() {
