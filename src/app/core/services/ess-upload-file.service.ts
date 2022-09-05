@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { ExchangeSetDetails } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
@@ -12,14 +13,15 @@ export class EssUploadFileService {
   private maxEncSelectionLimit: number;
   private showInfoMessage = false;
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
+  private exchangeSetDetails: ExchangeSetDetails;
   private avgSizeofENC: number;
   private estimatedTotalSize: number;
 
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
+    this.avgSizeofENC = Number.parseFloat(AppConfigService.settings["essConfig"].avgSizeofENCinMB);
     this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
-    this.avgSizeofENC = Number.parseFloat(AppConfigService.settings['essConfig'].avgSizeofENCinMB);
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -118,6 +120,15 @@ export class EssUploadFileService {
       return true;
     }
   }
+
+  setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
+    this.exchangeSetDetails = exchangeSetDetails;
+  }
+
+  getExchangeSetDetails(): ExchangeSetDetails {
+    return this.exchangeSetDetails;
+  }
+
   addAllSelectedEncs(){
     const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
     this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
@@ -130,7 +141,7 @@ export class EssUploadFileService {
        return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
       }
       else{
-        return  Math.round(this.estimatedTotalSize * 1024).toString()+"KB";
+        return Math.round(this.estimatedTotalSize * 1024).toString()+"KB";
       }
-    }
+  }
 }

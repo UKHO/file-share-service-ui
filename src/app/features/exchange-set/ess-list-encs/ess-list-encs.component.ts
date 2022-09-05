@@ -1,11 +1,12 @@
+import { ExchangeSetApiService } from './../../../core/services/exchange-set-api.service';
+import { MsalService } from '@azure/msal-angular';
+import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
-import { SilentRequest } from '@azure/msal-browser';
-import { MsalService } from '@azure/msal-angular';
-import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
+import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
 
 interface MappedEnc {
   enc: string;
@@ -34,6 +35,7 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
+  exchangeSetDetails: ExchangeSetDetails;
   estimatedTotalSize: string = "0KB";
   selectDeselectText: string;
   showSelectDeselect: boolean;
@@ -144,6 +146,23 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEnc() {
     this.displaySingleEncVal = true;
   }
+
+  exchangeSetCreationResponse(selectedEncList: any[]) {
+    this.displayLoader = true;
+    if (selectedEncList != null) {
+      this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+        this.displayLoader = false;
+        this.exchangeSetDetails = result;
+        this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
+        this.route.navigate(['exchangesets', 'enc-download']);
+      },
+        (error) => {
+          this.showMessage('error', 'There has been an error');
+        }
+      );
+    }
+  }
+  
   getEstimatedTotalSize() {
     var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
     return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
@@ -178,12 +197,14 @@ export class EssListEncsComponent implements OnInit {
       this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
         this.displayLoader = false;
       });
+      this.exchangeSetCreationResponse(this.selectedEncList);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
           this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
             this.displayLoader = false;
+            this.exchangeSetCreationResponse(this.selectedEncList);
           });
         })
     })
