@@ -8,7 +8,6 @@ import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
 import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
 
-
 interface MappedEnc {
   enc: string;
   selected: boolean;
@@ -23,6 +22,7 @@ enum SelectDeselect {
   styleUrls: ['./ess-list-encs.component.scss']
 })
 export class EssListEncsComponent implements OnInit {
+  displayLoader: boolean = false;
   addSingleEncRenderFrom: string = 'encList';
   addSingleEncBtnText: string = 'Add ENC';
   encList: MappedEnc[];
@@ -35,22 +35,23 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
-  displayLoader: boolean = false;
-  essTokenScope: any = [];
-  essSilentTokenRequest: SilentRequest;
   exchangeSetDetails: ExchangeSetDetails;
-  estimatedTotalSize: string="0KB";
+  estimatedTotalSize: string = "0KB";
   selectDeselectText: string;
   showSelectDeselect: boolean;
+  essSilentTokenRequest: SilentRequest;
+  essTokenScope: any = [];
+
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router,
     private msalService: MsalService,
-    private exchangeSetApiService: ExchangeSetApiService) { 
-      this.essTokenScope = AppConfigService.settings["fssConfig"].apiScope;
-      this.essSilentTokenRequest = {
-        scopes: [this.essTokenScope],
-      };
-    }
+    private exchangeSetApiService: ExchangeSetApiService,
+  ) {
+    this.essTokenScope = AppConfigService.settings["essConfig"].apiScope;
+    this.essSilentTokenRequest = {
+      scopes: [this.essTokenScope],
+    };
+  }
 
   ngOnInit(): void {
     this.displayErrorMessage = this.essUploadFileService.infoMessage;
@@ -105,7 +106,7 @@ export class EssListEncsComponent implements OnInit {
         'error',
         'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.'
       );
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     }
     this.syncEncsBetweenTables();
   }
@@ -118,11 +119,11 @@ export class EssListEncsComponent implements OnInit {
     }));
     this.estimatedTotalSize = this.getEstimatedTotalSize();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
-    if(this.selectedEncList.length === 0){
+    if (this.selectedEncList.length === 0) {
       this.selectDeselectText = SelectDeselect.select;
       return;
     }
-    if(this.selectDeselectText === SelectDeselect.select && this.checkMaxEncSelectionAndSelectedEncLength()){
+    if (this.selectDeselectText === SelectDeselect.select && this.checkMaxEncSelectionAndSelectedEncLength()) {
       this.selectDeselectText = SelectDeselect.deselect;
       return;
     }
@@ -146,21 +147,6 @@ export class EssListEncsComponent implements OnInit {
     this.displaySingleEncVal = true;
   }
 
-  requestEncClicked() {
-    this.displayLoader = true; 
-    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-
-      this.exchangeSetCreationResponse(this.selectedEncList);
-    }, error => {
-      this.msalService.instance
-        .loginPopup(this.essSilentTokenRequest)
-        .then(response => {
-
-          this.exchangeSetCreationResponse(this.selectedEncList);
-        })
-    })
-  }
-
   exchangeSetCreationResponse(selectedEncList: any[]) {
     this.displayLoader = true;
     if (selectedEncList != null) {
@@ -181,25 +167,44 @@ export class EssListEncsComponent implements OnInit {
     var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
     return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
   }
-  getSelectDeselectText(){
+  getSelectDeselectText() {
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
     return selectDeselectText;
   }
-  checkMaxEncSelectionAndSelectedEncLength(){
-    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.encList.length ? this.encList.length  : this.maxEncSelectionLimit;
+  checkMaxEncSelectionAndSelectedEncLength() {
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.encList.length ? this.encList.length : this.maxEncSelectionLimit;
     return maxEncSelectionLimit === this.selectedEncList.length;
+
   }
-  selectDeselectAll(){
-    if(!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select){
+  selectDeselectAll() {
+    if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
       this.essUploadFileService.addAllSelectedEncs();
-    }else{
+    } else {
       this.essUploadFileService.clearSelectedEncs();
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
   }
 
-  getSelectDeselectVisibility(){
+  getSelectDeselectVisibility() {
     return this.encList.length <= this.maxEncSelectionLimit;
+  }
+
+
+  requestEncClicked() {
+    this.displayLoader = true;
+    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+      this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
+        this.displayLoader = false;
+      });
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.essSilentTokenRequest)
+        .then(response => {
+          this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
+            this.displayLoader = false;
+          });
+        })
+    })
   }
 }

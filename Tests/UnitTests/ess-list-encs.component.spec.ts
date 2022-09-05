@@ -14,6 +14,8 @@ import { By } from '@angular/platform-browser';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
+  let msalService: MsalService;
+  let exchangeSetApiService: ExchangeSetApiService;
   let fixture: ComponentFixture<EssListEncsComponent>;
   const router = {
     navigate: jest.fn()
@@ -45,12 +47,12 @@ describe('EssListEncsComponent', () => {
           useValue: router
         },
         {
-          provide: ExchangeSetApiService,
-          useValue: service
+          provide : MsalService,
+          useValue : service
         },
         {
-          provide: MsalService,
-          useValue: service
+          provide : ExchangeSetApiService,
+          useValue : service
         }
       ]
     })
