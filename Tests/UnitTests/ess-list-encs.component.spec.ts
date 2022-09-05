@@ -11,8 +11,6 @@ import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
 import { By } from '@angular/platform-browser';
-import { MsalService } from '@azure/msal-angular';
-import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
