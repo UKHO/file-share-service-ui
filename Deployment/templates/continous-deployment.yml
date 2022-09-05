@@ -27,12 +27,12 @@ steps:
       TF_VAR_agent_subnet_name: $(agentSubnetName)
       TF_VAR_agent_subscription_id: $(agentSubscriptionId)
 
-  - task: FileTransform@1
+  - task: FileTransform@2
     displayName: "File Transform: website config"
     inputs:
       folderPath: "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
-      fileType: json
-      targetFiles: '**/appconfig.json'
+      xmlTransformationRules:
+      jsonTargetFiles: '**/appconfig.json'
 
   - task: AzureCLI@2
     displayName: "Website deployment"
