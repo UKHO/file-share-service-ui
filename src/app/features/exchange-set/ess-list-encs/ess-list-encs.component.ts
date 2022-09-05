@@ -189,8 +189,6 @@ export class EssListEncsComponent implements OnInit {
   getSelectDeselectVisibility() {
     return this.encList.length <= this.maxEncSelectionLimit;
   }
-
-
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {

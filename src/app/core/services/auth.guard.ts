@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       const account = this.msalService.instance.getActiveAccount();
-      const encs = this.essUploadFileService.getValidEncs();
+      const encs = this.essUploadFileService.getValidEncs();   
       if(account && state.url === '/'){
         this.router.navigate(['search']);
         return false;

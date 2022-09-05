@@ -103,6 +103,16 @@ export class EssUploadFileService {
     this.validEncs = [];
     this.validEncs.push(signleValidEnc);
   }
+
+  setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
+    this.exchangeSetDetails = exchangeSetDetails;
+    
+  }
+
+  getExchangeSetDetails(): ExchangeSetDetails {
+    return this.exchangeSetDetails;
+  }
+
   addSingleEnc(signleValidEnc: string) {
     this.validEncs.push(signleValidEnc);
     this.notifySingleEnc.next(true);
@@ -121,13 +131,6 @@ export class EssUploadFileService {
     }
   }
 
-  setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
-    this.exchangeSetDetails = exchangeSetDetails;
-  }
-
-  getExchangeSetDetails(): ExchangeSetDetails {
-    return this.exchangeSetDetails;
-  }
 
   addAllSelectedEncs(){
     const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
