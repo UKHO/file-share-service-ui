@@ -34,8 +34,8 @@ export class EssDownloadExchangesetComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.displayLoader = true;
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
-    console.log(this.exchangeSetDetails);
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus();
@@ -56,7 +56,6 @@ export class EssDownloadExchangesetComponent implements OnInit {
 
   batchStatusAPI() {
     this.fileShareApiService.getBatchStatus(this.batchId).subscribe((response) => {
-      console.log(response);
       if (response.status == "Committed") {
         this.displayLoader = false;
         this.displayDownloadBtn = true;
@@ -70,22 +69,21 @@ export class EssDownloadExchangesetComponent implements OnInit {
   }
 
   download() {
-    this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    this.downloadPath = this.exchangeSetDetails._links.exchangeSetFileUri.href.substring(this.exchangeSetDetails._links.exchangeSetFileUri.href.indexOf('/batch'));
-    this.downloadUrl=this.baseUrl+this.downloadPath;
     this.displayLoader = true;
+    this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
+    this.downloadPath = this.exchangeSetDetails._links.exchangeSetFileUri.href;
+    this.downloadUrl = this.baseUrl + this.downloadPath.substring(this.downloadPath.indexOf('/batch'));
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-      this.displayLoader = false;
-
       this.fileShareApiService.refreshToken().subscribe((res) => {
+        this.displayLoader = false;
         window.open(this.downloadUrl, "_blank");
       });
     }, error => {
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
-          this.displayLoader = false;
           this.fileShareApiService.refreshToken().subscribe((res) => {
+            this.displayLoader = false;
             window.open(this.downloadUrl, "_blank");
           });
         })
