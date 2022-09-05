@@ -8,8 +8,7 @@ import { EssUploadFileService } from './ess-upload-file.service';
 })
 export class AuthGuard implements CanActivate {
   routes = ['/search' , '/exchangesets' ];
-  childRoutes = ['/exchangesets/enc-list','/exchangesets/enc-download'];
- 
+  childRoutes = ['/exchangesets/enc-list', '/exchangesets/enc-download'];
   constructor(private msalService: MsalService,
     private router: Router,private essUploadFileService: EssUploadFileService){}
   canActivate(

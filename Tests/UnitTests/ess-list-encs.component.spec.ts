@@ -1,5 +1,5 @@
+import { MsalService,MSAL_INSTANCE } from '@azure/msal-angular';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
 import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule } from '@ukho/design-system';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
@@ -9,11 +9,10 @@ import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/e
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-search.component.spec';
 import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
-import { HttpClientModule } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 
 describe('EssListEncsComponent', () => {
@@ -33,6 +32,7 @@ describe('EssListEncsComponent', () => {
     addSelectedEnc: jest.fn(),
     removeSelectedEncs: jest.fn(),
     getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
+    exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
     addAllSelectedEncs: jest.fn(),
     getEstimatedTotalSize:jest.fn()
   };
@@ -70,13 +70,13 @@ describe('EssListEncsComponent', () => {
 
   beforeEach(() => {
     AppConfigService.settings = {
+      fssConfig: {
+        apiScope: "test"
+      },
       essConfig: {
         MaxEncLimit: 100,
         MaxEncSelectionLimit: 5
       },
-      fssConfig: {
-        apiScope: 'test'
-      }
     };
     window.scrollTo = jest.fn();
     msalService = TestBed.inject(MsalService);
@@ -192,6 +192,14 @@ describe('EssListEncsComponent', () => {
     expect(component.estimatedTotalSize).toBe(expectedResult);
   });
 
+  test('should return exchangeSet details data', () => {
+    component.ngOnInit();
+    let selectedEncList = ["AU210130","AU220130","AU314128","AU412129","AU415128","AU424150","AU426113","AU432115","AU439146","AU5BTB01","AU5DAM02","AU5MEL01","AU5PTL01","AU5SYD01","AU6BTB01","BR221070","BR321200","BR401507","BR441012"];
+    service.exchangeSetCreationResponse(selectedEncList).subscribe((res: any) => {
+      expect(res).toEqual(exchangeSetDetailsMockData);
+    });
+  });
+
     it('should display Deselect All button when select all button is clicked', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.selectDeselectAll();
@@ -275,18 +283,69 @@ export const exchangeSetDetailsMockData: any = {
     }
   },
   "exchangeSetUrlExpiryDateTime": "2022-09-02T06:37:34.732Z",
-  "requestedProductCount": 3,
-  "exchangeSetCellCount": 1,
+  "requestedProductCount": 19,
+  "exchangeSetCellCount": 4,
   "requestedProductsAlreadyUpToDateCount": 0,
   "requestedProductsNotInExchangeSet": [
     {
-      "productName": "AU220150",
+      "productName": "AU210130",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU220130",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU314128",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU412129",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU415128",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU424150",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU426113",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU432115",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU439146",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU5BTB01",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU5DAM02",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU5MEL01",
       "reason": "invalidProduct"
     },
     {
       "productName": "AU5PTL01",
       "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU5SYD01",
+      "reason": "invalidProduct"
+    },
+    {
+      "productName": "AU6BTB01",
+      "reason": "invalidProduct"
     }
   ]
 }
-

@@ -21,7 +21,7 @@
     "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
     "apiUrl": "",
-    "apiScope":"",
+    "apiScope": "",
     "stateManagementApiUrl": "",
     "batchAttributes": [
       {
