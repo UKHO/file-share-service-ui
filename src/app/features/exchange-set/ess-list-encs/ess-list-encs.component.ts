@@ -192,12 +192,18 @@ export class EssListEncsComponent implements OnInit {
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+      this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
+        this.displayLoader = false;
+      });
       this.exchangeSetCreationResponse(this.selectedEncList);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-          this.exchangeSetCreationResponse(this.selectedEncList);
+          this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
+            this.displayLoader = false;
+            this.exchangeSetCreationResponse(this.selectedEncList);
+          });
         })
     })
   }

@@ -1,19 +1,18 @@
-import { MsalService,MSAL_INSTANCE } from '@azure/msal-angular';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
-import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule } from '@ukho/design-system';
+import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule  , CheckboxModule,TextinputModule} from '@ukho/design-system';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
-import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component';
+import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component'; 
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
-import { MockMSALInstanceFactory } from './fss-search.component.spec';
 import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
 import { By } from '@angular/platform-browser';
+import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { HttpClientModule } from '@angular/common/http';
-
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -28,12 +27,12 @@ describe('EssListEncsComponent', () => {
     getValidEncs: jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
     clearSelectedEncs: jest.fn(),
     getSelectedENCs: jest.fn().mockReturnValue([]),
-    infoMessage: true,
-    addSelectedEnc: jest.fn(),
-    removeSelectedEncs: jest.fn(),
-    getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
+    infoMessage : true,
+    addSelectedEnc : jest.fn(),
+    removeSelectedEncs : jest.fn(),
+    getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
-    addAllSelectedEncs: jest.fn(),
+    addAllSelectedEncs : jest.fn(),
     getEstimatedTotalSize:jest.fn()
   };
   beforeEach(async () => {
@@ -200,7 +199,7 @@ describe('EssListEncsComponent', () => {
     });
   });
 
-    it('should display Deselect All button when select all button is clicked', () => {
+    it('should display Deselect All button when select all button is clicked' ,() => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.selectDeselectAll();
     expect(component.selectDeselectText).toEqual('Deselect all');
