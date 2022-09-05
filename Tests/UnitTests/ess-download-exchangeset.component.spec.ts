@@ -49,7 +49,7 @@ describe('EssDownloadExchangesetComponent', () => {
       essConfig: {
       MaxEncLimit: 100,
       MaxEncSelectionLimit : 5,
-      avgSizeofENC: 0.3
+      avgSizeofENCinMB: 0.3
       }
     };
     fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
