@@ -13,10 +13,8 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-search.component.spec';
 import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
 import { HttpClientModule } from '@angular/common/http';
-
 import { By } from '@angular/platform-browser';
-import { MsalService } from '@azure/msal-angular';
-import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
+
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;

@@ -6,9 +6,6 @@ import { Router } from '@angular/router';
 import { SilentRequest } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
-import { SilentRequest } from '@azure/msal-browser';
-import { MsalService } from '@azure/msal-angular';
-import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
 import { ExchangeSetDetails, ExchangeSetLinks } from 'src/app/core/models/ess-response-types';
 import { stringOperatorList } from 'Helper/ConstantHelper';
 
@@ -44,6 +41,7 @@ export class EssListEncsComponent implements OnInit {
   showSelectDeselect: boolean;
   essSilentTokenRequest: SilentRequest;
   essTokenScope: any = [];
+  exchangeSetDetails: ExchangeSetDetails;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router,
@@ -189,17 +187,17 @@ export class EssListEncsComponent implements OnInit {
   }
 
   exchangeSetCreationResponse(selectedEncList: any[]) { 
-      this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+    this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
+      this.displayLoader = false;
+      this.exchangeSetDetails = result;
+      this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
+      this.route.navigate(['exchangesets', 'enc-download']);
+    },
+      (error) => {
+        this.showMessage('error', 'There has been an error');
         this.displayLoader = false;
-        this.exchangeSetDetails = result;
-        this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
-        this.route.navigate(['exchangesets', 'enc-download']);
-      },
-        (error) => {
-          this.showMessage('error', 'There has been an error');
-          this.displayLoader = false;
-        }
-      );
-  }
+      }
+    );
+}
 
 }
