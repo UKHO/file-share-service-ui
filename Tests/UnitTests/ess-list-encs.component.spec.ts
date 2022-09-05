@@ -14,6 +14,9 @@ import { MockMSALInstanceFactory } from './fss-search.component.spec';
 import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
 import { HttpClientModule } from '@angular/common/http';
 
+import { By } from '@angular/platform-browser';
+import { MsalService } from '@azure/msal-angular';
+import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -32,7 +35,8 @@ describe('EssListEncsComponent', () => {
     addSelectedEnc: jest.fn(),
     removeSelectedEncs: jest.fn(),
     getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
-    addAllSelectedEncs: jest.fn()
+    addAllSelectedEncs: jest.fn(),
+    getEstimatedTotalSize:jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -47,6 +51,14 @@ describe('EssListEncsComponent', () => {
         {
           provide: Router,
           useValue: router
+        },
+        {
+          provide : MsalService,
+          useValue : service
+        },
+        {
+          provide : ExchangeSetApiService,
+          useValue : service
         },
         {
           provide: MSAL_INSTANCE,
@@ -156,7 +168,33 @@ describe('EssListEncsComponent', () => {
     expect(component.selectDeselectText).toEqual('Select all');
   });
 
-  it('should display Deselect All button when select all button is clicked', () => {
+  test('showListEncTOtal class applied to a selector', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('showListEncTOtal'))).toBeTruthy();
+  });
+  test('bottomText class applied to a tag', () => {
+    const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('bottomText'))).toBeTruthy();
+  });
+
+  it.each`
+  estimatedSize              | expectedResult
+  ${'0KB'}                       |  ${'0KB'}
+  ${'1.5MB'}                     |  ${'1.5MB'}
+  `('getEstimatedTotalSize called from syncEncsBetweenTables and should return string',
+  ({  estimatedSize, expectedResult }: {  estimatedSize: string; expectedResult: string }) => {
+    jest.clearAllMocks();
+    service.getEstimatedTotalSize.mockReturnValue(estimatedSize);
+    component.syncEncsBetweenTables();
+    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+    expect(component.getEstimatedTotalSize()).toBe(expectedResult);
+    expect(component.estimatedTotalSize).not.toBeNull();
+    expect(component.estimatedTotalSize).toBe(expectedResult);
+  });
+
+    it('should display Deselect All button when select all button is clicked', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']);
     component.selectDeselectAll();
     expect(component.selectDeselectText).toEqual('Deselect all');

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Inject, OnInit, Output } from '
 import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { AuthenticationResult, InteractionStatus, PopupRequest, PublicClientApplication } from '@azure/msal-browser';
+import { AuthenticationResult, InteractionStatus, PopupRequest } from '@azure/msal-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
@@ -61,9 +61,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         navActive: this.isActive
       }
     ];
-
-    // let msalInstance: PublicClientApplication = this.msalService.instance as PublicClientApplication;
-    // msalInstance["browserStorage"].clear();
 
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
@@ -164,7 +161,9 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     {
       signedInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { this.msalService.logout(); }),
+      signOutHandler: (() => { 
+        this.msalService.logout();    
+      }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
         const tenantName = AppConfigService.settings["b2cConfig"].tenantName;

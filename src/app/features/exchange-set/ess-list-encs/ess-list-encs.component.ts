@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { SilentRequest } from '@azure/msal-browser';
 import { MsalService } from '@azure/msal-angular';
 import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
+import { SilentRequest } from '@azure/msal-browser';
+import { MsalService } from '@azure/msal-angular';
+import { ExchangeSetApiService } from '../../../core/services/exchange-set-api.service';
 import { ExchangeSetDetails, ExchangeSetLinks } from 'src/app/core/models/ess-response-types';
 import { stringOperatorList } from 'Helper/ConstantHelper';
 
@@ -36,11 +39,11 @@ export class EssListEncsComponent implements OnInit {
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
+  estimatedTotalSize: string = "0KB";
   selectDeselectText: string;
   showSelectDeselect: boolean;
-  essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
-  exchangeSetDetails: ExchangeSetDetails;
+  essTokenScope: any = [];
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router,
@@ -106,7 +109,7 @@ export class EssListEncsComponent implements OnInit {
         'error',
         'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.'
       );
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     }
     this.syncEncsBetweenTables();
   }
@@ -117,12 +120,13 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
+    this.estimatedTotalSize = this.getEstimatedTotalSize();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
-    if(this.selectedEncList.length === 0){
+    if (this.selectedEncList.length === 0) {
       this.selectDeselectText = SelectDeselect.select;
       return;
     }
-    if(this.selectDeselectText === SelectDeselect.select && this.checkMaxEncSelectionAndSelectedEncLength()){
+    if (this.selectDeselectText === SelectDeselect.select && this.checkMaxEncSelectionAndSelectedEncLength()) {
       this.selectDeselectText = SelectDeselect.deselect;
       return;
     }
@@ -145,25 +149,30 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEnc() {
     this.displaySingleEncVal = true;
   }
-  getSelectDeselectText(){
+  getEstimatedTotalSize() {
+    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
+    return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
+  }
+  getSelectDeselectText() {
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
     return selectDeselectText;
   }
-  checkMaxEncSelectionAndSelectedEncLength(){
-    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.encList.length ? this.encList.length  : this.maxEncSelectionLimit;
+  checkMaxEncSelectionAndSelectedEncLength() {
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.encList.length ? this.encList.length : this.maxEncSelectionLimit;
     return maxEncSelectionLimit === this.selectedEncList.length;
+
   }
-  selectDeselectAll(){
-    if(!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select){
+  selectDeselectAll() {
+    if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
       this.essUploadFileService.addAllSelectedEncs();
-    }else{
+    } else {
       this.essUploadFileService.clearSelectedEncs();
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
   }
 
-  getSelectDeselectVisibility(){
+  getSelectDeselectVisibility() {
     return this.encList.length <= this.maxEncSelectionLimit;
   }
   requestEncClicked() {

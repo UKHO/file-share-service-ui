@@ -49,7 +49,10 @@
   "essConfig": {
     "MaxEncLimit": "250",
     "MaxEncSelectionLimit":"100",
+    "maxRetries":"3",
+    "initialDelayMs":"1000",
     "apiUrl": "",
-    "apiScope": ""
+    "apiScope": "",
+    "avgSizeofENCinMB":"0.3"
   }
 }
