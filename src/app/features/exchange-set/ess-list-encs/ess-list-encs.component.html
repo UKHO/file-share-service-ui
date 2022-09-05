@@ -1,3 +1,6 @@
+<div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
+  class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
+  
 <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain">&lt; Start again</a>
 <div class="container">
   <div>
@@ -54,6 +57,9 @@
         </table>
       </div>
       <h6>Estimated Exchange set size <span class="bottomText">{{estimatedTotalSize}} </span></h6>
+      <div *ngIf="selectedEncList && selectedEncList.length > 0">
+      <ukho-button class="requestEncBtn" (click)="requestEncClicked()">Request ENCs</ukho-button>
+      </div>
     </div>
   </div>
 </div>

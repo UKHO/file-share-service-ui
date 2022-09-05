@@ -9,4 +9,9 @@ export class ExchangeSetApiService {
     baseUrl = AppConfigService.settings['essConfig'].apiUrl;
 
     constructor(private http: HttpClient) { }
+
+    exchangeSetCreationResponse(requestedEncList: any[]): Observable<any>{
+        return this.http.post(this.baseUrl + '/productData/productIdentifiers', requestedEncList);
+    }
+
 }

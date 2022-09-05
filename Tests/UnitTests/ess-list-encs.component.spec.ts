@@ -10,9 +10,13 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { MsalService } from '@azure/msal-angular';
+import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-api.service';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
+  let msalService: MsalService;
+  let exchangeSetApiService: ExchangeSetApiService;
   let fixture: ComponentFixture<EssListEncsComponent>;
   const router = {
     navigate: jest.fn()
@@ -41,6 +45,14 @@ describe('EssListEncsComponent', () => {
         {
           provide: Router,
           useValue: router
+        },
+        {
+          provide : MsalService,
+          useValue : service
+        },
+        {
+          provide : ExchangeSetApiService,
+          useValue : service
         }
       ]
     })
