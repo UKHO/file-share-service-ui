@@ -7,7 +7,7 @@
         "textAboveTable":"Select up to 100 ENCs and make an exchange set",  
         "rightTableRowsCountSelector":"//div/div[2]/div[3]/div[1]/table/tbody/tr",
         "rightTableEncPositionSeletor":"//div/div[2]/div[3]/div[1]/table/tbody/tr[1]/td[1]",
-        "firstCheckBoxSelector":"[aria-label='AU220150'] input[type='checkbox']",
+        "firstCheckBoxSelector":"//div/table/tbody/tr[1]/td[2]/ukho-checkbox/input",
         "XButtonSelector":"//table/tbody/tr/td[2]/button/i",
         "addAnotherENCSelector":"a.lnkAddAnotherEnc",
         "typeENCTextBoxSelector":"//input[@placeholder='Type ENC cell name here']",
