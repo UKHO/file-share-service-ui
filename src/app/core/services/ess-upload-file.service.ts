@@ -16,7 +16,6 @@ export class EssUploadFileService {
   private exchangeSetDetails: ExchangeSetDetails;
   private avgSizeofENC: number;
   private estimatedTotalSize: number;
-  private exchangeSetDetails: ExchangeSetDetails;
 
   constructor() {
     this.selectedEncs = [];
@@ -132,13 +131,6 @@ export class EssUploadFileService {
     }
   }
 
-  setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
-    this.exchangeSetDetails = exchangeSetDetails;
-  }
-
-  getExchangeSetDetails(): ExchangeSetDetails {
-    return this.exchangeSetDetails;
-  }
 
   addAllSelectedEncs(){
     const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
