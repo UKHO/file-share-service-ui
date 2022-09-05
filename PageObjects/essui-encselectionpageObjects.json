@@ -1,0 +1,16 @@
+{
+    "encselectionpageObjectsConfig": 
+    {
+        "firstEncSelector":"//div/table/tbody/tr[1]/td[1]",
+        "secondEncSelector":"//div/table/tbody/tr[2]/td[1]",
+        "leftTableRowsCountSelector":"//tbody/tr",
+        "addAnotherENCSelector":"a.lnkAddAnotherEnc",
+        "typeENCTextBoxSelector":"//input[@placeholder='Type ENC cell name here']",
+        "addENCButtonSelector":"//button[text()=' Add ENC ']",
+        "errorMessageForDuplicateNumberSelector":"section:has-text('ENC already in list.')",
+        "errorMsgDuplicateENC":"ENC already in list.",
+        "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']",
+        "errorMsgMaxLimitSelector":"//ukho-dialogue",
+        "errorMsgMaxLimit":"Max ENC limit reached."
+    }
+}
