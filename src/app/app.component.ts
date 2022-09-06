@@ -12,12 +12,25 @@ export class AppComponent implements OnInit {
   currentUrl: any = '';
 
   isOverlay:boolean = false;
-
+  
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title
   ) { 
+  
+    router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        if (e.url != '') {
+          this.currentUrl = e.url;
+        } else {
+          this.currentUrl ='';
+        }
+
+      }
+      
+    });
+    //[routerLink]="[currentUrl]" [fragment]="'main'" 
 
   }
 
