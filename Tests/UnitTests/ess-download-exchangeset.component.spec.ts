@@ -5,62 +5,87 @@ import { EssUploadFileService } from '../../src/app/core/services/ess-upload-fil
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
+import { ButtonModule } from '@ukho/design-system';
+import { HttpClientModule } from '@angular/common/http';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MockMSALInstanceFactory } from './fss-search.component.spec';
+import { ExchangeSetDetails } from '../../src/app/core/models/ess-response-types';
+import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 
 describe('EssDownloadExchangesetComponent', () => {
   let component: EssDownloadExchangesetComponent;
+  let msalService: MsalService;
+  let exchangeSetDetails: ExchangeSetDetails;
+  let fileShareApiService: FileShareApiService;
   let fixture: ComponentFixture<EssDownloadExchangesetComponent>;
   const router = {
     navigate: jest.fn()
   };
 
   const service = {
-    getValidEncs : jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
-    clearSelectedEncs : jest.fn(),
+    getValidEncs: jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
+    clearSelectedEncs: jest.fn(),
     getSelectedENCs: jest.fn(),
-    infoMessage : true,
-    addSelectedEnc : jest.fn(),
-    removeSelectedEncs : jest.fn(),
-    getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
-    getExchangeSetDetails: jest.fn().mockReturnValue({exchangeSetCellCount : 4}),
+    infoMessage: true,
+    addSelectedEnc: jest.fn(),
+    removeSelectedEncs: jest.fn(),
+    getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
+    getExchangeSetDetails: jest.fn().mockReturnValue(exchangeSetDetailsMockData),
+    // getExchangeSetDetails: jest.fn().mockReturnValue({exchangeSetCellCount : 4}),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
-    getEstimatedTotalSize:jest.fn()
+    getEstimatedTotalSize: jest.fn()
   };
-  
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule],
-      declarations: [ EssDownloadExchangesetComponent ],
+      imports: [CommonModule, ButtonModule, HttpClientModule],
+      declarations: [EssDownloadExchangesetComponent],
       providers: [
         {
-          provide : EssUploadFileService,
-          useValue : service
+          provide: EssUploadFileService,
+          useValue: service
         },
         {
           provide: Router,
           useValue: router
-        }
+        },
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        MsalService, FileShareApiService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
-      MaxEncLimit: 100,
-      MaxEncSelectionLimit : 5,
-      avgSizeofENCinMB: 0.3
+        MaxEncLimit: 100,
+        MaxEncSelectionLimit: 5,
+        avgSizeofENC: 0.3
+      },
+      fssConfig: {
+        apiScope: 'test',
+        apiUrl: 'test.com'
       }
     };
+    fileShareApiService = TestBed.inject(FileShareApiService);
+    msalService = TestBed.inject(MsalService);
     fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    //jest.clearAllMocks();
   });
 
   it('should create EssDownloadExchangesetComponent', () => {
-    const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    component.exchangeSetDetails = exchangeSetDetailsMockData;
+    // service.getExchangeSetDetails.mockReturnValue({ exchangeSetDetails: exchangeSetDetailsForDownloadMockData });
+    // component.ngOnInit();
+    // const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
+    // const app = fixture.debugElement.componentInstance;
+    expect(component).toBeTruthy();
   });
 
   test('should render text inside an h1 tag', () => {
@@ -87,7 +112,7 @@ describe('EssDownloadExchangesetComponent', () => {
   });
 
   test('should return Exchangeset cell count', () => {
-    let selectedEncList = ["AU6BTB01","BR221070","BR321200","BR401507"];
+    let selectedEncList = ["AU6BTB01", "BR221070", "BR321200", "BR401507"];
     service.exchangeSetCreationResponse(selectedEncList).subscribe((res: any) => {
       expect(res).toEqual(service.getExchangeSetDetails);
     });
@@ -106,7 +131,7 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(service.getEstimatedTotalSize).toHaveBeenCalled();
     expect(component.avgEstimatedSize).toBe(expectedResultForKB);
   });
-  
+
 });
 
 export const exchangeSetDetailsMockData: any = {
