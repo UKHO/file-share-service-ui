@@ -15,6 +15,14 @@
         "startAgainLinkSelector":"a.linkStartAgain",
         "101thEncSelector":"//div/table/tbody/tr[101]/td[2]",
         "maxLimitEncmessageSelector":"//h3[text()='No more than 100 ENCs can be selected.']",
-        "maxLimitEncmessage":"No more than 100 ENCs can be selected."
+        "maxLimitEncmessage":"No more than 100 ENCs can be selected.",    
+        "firstEncSelector":"//div/table/tbody/tr[1]/td[1]",
+        "secondEncSelector":"//div/table/tbody/tr[2]/td[1]",
+        "leftTableRowsCountSelector":"//tbody/tr",     
+        "errorMessageForDuplicateNumberSelector":"section:has-text('ENC already in list.')",
+        "errorMsgDuplicateENC":"ENC already in list.",
+        "anotherCheckBoxSelector":"//div/table/tbody/tr[2]/td[2]/ukho-checkbox/input",
+        "errorMsgMaxLimitSelector":"//ukho-dialogue",
+        "errorMsgMaxLimit":"Max ENC limit reached."
     }
 }

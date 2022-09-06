@@ -54,8 +54,8 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13796
     test('Verify appending "/exchangesets" in  url after login, navigates to ESS landing page', async ({ page }) => {
-        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.goto(autoTestConfig.url + "/#/exchangesets");
+        await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+        await page.goto(autoTestConfig.url+"/#/exchangesets");
         await page.waitForLoadState('load');
         expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButton1Name);
     });
