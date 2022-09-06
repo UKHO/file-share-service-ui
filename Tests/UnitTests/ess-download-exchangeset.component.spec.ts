@@ -5,16 +5,9 @@ import { EssUploadFileService } from '../../src/app/core/services/ess-upload-fil
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { ButtonModule } from '@ukho/design-system';
-import { HttpClientModule } from '@angular/common/http';
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-import { MockMSALInstanceFactory } from './fss-search.component.spec';
-import { ExchangeSetDetails } from '../../src/app/core/models/ess-response-types';
 
 describe('EssDownloadExchangesetComponent', () => {
   let component: EssDownloadExchangesetComponent;
-  let msalService: MsalService;
-  let exchangeSetDetails: ExchangeSetDetails;
   let fixture: ComponentFixture<EssDownloadExchangesetComponent>;
   const router = {
     navigate: jest.fn()
@@ -28,14 +21,14 @@ describe('EssDownloadExchangesetComponent', () => {
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
     getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
-    getExchangeSetDetails: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
+    getExchangeSetDetails: jest.fn().mockReturnValue({exchangeSetCellCount : 4}),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
     getEstimatedTotalSize:jest.fn()
   };
   
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, ButtonModule, HttpClientModule],
+      imports: [CommonModule],
       declarations: [ EssDownloadExchangesetComponent ],
       providers: [
         {
@@ -45,12 +38,7 @@ describe('EssDownloadExchangesetComponent', () => {
         {
           provide: Router,
           useValue: router
-        },
-        {
-          provide: MSAL_INSTANCE,
-          useFactory: MockMSALInstanceFactory
-        },
-        MsalService
+        }
       ]
     })
     .compileComponents();
@@ -61,11 +49,7 @@ describe('EssDownloadExchangesetComponent', () => {
       essConfig: {
       MaxEncLimit: 100,
       MaxEncSelectionLimit : 5,
-      avgSizeofENC: 0.3
-      },
-      fssConfig: {
-        apiScope: 'test',
-        apiUrl: 'test.com'
+      avgSizeofENCinMB: 0.3
       }
     };
     fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
@@ -73,9 +57,8 @@ describe('EssDownloadExchangesetComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create EssDownloadExchangesetComponent', () => {   
+  it('should create EssDownloadExchangesetComponent', () => {
     const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
-    component.exchangeSetDetails=service.getExchangeSetDetails();
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
@@ -110,19 +93,19 @@ describe('EssDownloadExchangesetComponent', () => {
     });
   });
 
-  // test('should render estimated size', () => {
-  //   var expectedResult: any = '1.2MB';
-  //   service.getEstimatedTotalSize.mockReturnValue('1.2MB');
-  //   component.ngOnInit();
-  //   expect(service.getEstimatedTotalSize).toHaveBeenCalled();
-  //   expect(component.avgEstimatedSize).toBe(expectedResult);
+  test('should render estimated size', () => {
+    var expectedResult: any = '1.2MB';
+    service.getEstimatedTotalSize.mockReturnValue('1.2MB');
+    component.ngOnInit();
+    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+    expect(component.avgEstimatedSize).toBe(expectedResult);
 
-  //   var expectedResultForKB: any = '0KB';
-  //   service.getEstimatedTotalSize.mockReturnValue('0KB');
-  //   component.ngOnInit();
-  //   expect(service.getEstimatedTotalSize).toHaveBeenCalled();
-  //   expect(component.avgEstimatedSize).toBe(expectedResultForKB);
-  // });
+    var expectedResultForKB: any = '0KB';
+    service.getEstimatedTotalSize.mockReturnValue('0KB');
+    component.ngOnInit();
+    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+    expect(component.avgEstimatedSize).toBe(expectedResultForKB);
+  });
   
 });
 

@@ -47,7 +47,8 @@ describe('EssUploadFileService', () => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
-        MaxEncSelectionLimit: 5
+        MaxEncSelectionLimit: 5,
+        avgSizeofENCinMB:0.3
       },
     };
     TestBed.configureTestingModule({});
@@ -97,10 +98,12 @@ describe('EssUploadFileService', () => {
   });
 
   it('validateENCFormat should return enc if passed parameter is valid else returns null', () => {
-    const validData = 'AU210130';
-    const invalidData = 'A1210130';
+    const validData = 'A7210130';
+    const invalidData = 'A1010130';
+    const invalidcaseofData = 'a121c130';
     expect(service.validateENCFormat(validData)?.length).toBeGreaterThan(0);
     expect(service.validateENCFormat(invalidData)).toBeNull();
+    expect(service.validateENCFormat(invalidcaseofData)).toBeNull();
   });
 
   //csv file tests
@@ -216,4 +219,16 @@ describe('EssUploadFileService', () => {
     service.addSingleEnc('AS121212');
     expect(service.getValidEncs().length).toEqual(5);
   });
+
+  it.each`
+  encCount                       | expectedResult
+  ${0}                           |  ${'0KB'}
+  ${1}                           |  ${'307KB'}
+  ${6}                           |  ${'1.8MB'}
+  `('getEstimatedTotalSize should return valid string',
+  ({  encCount, expectedResult }: {  encCount: number; expectedResult: string }) => {
+    jest.clearAllMocks();
+    expect(service.getEstimatedTotalSize(encCount)).toEqual(expectedResult);
+  });
+  
 });

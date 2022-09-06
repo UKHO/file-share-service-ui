@@ -5,6 +5,7 @@ import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { AppConfigService } from '../../../core/services/app-config.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ess-download-exchangeset',
@@ -23,10 +24,15 @@ export class EssDownloadExchangesetComponent implements OnInit {
   baseUrl: string;
   downloadPath: string;
   downloadUrl: string;
+  exchangeSetCellCount: number;
+  avgEstimatedSize: any;
+  result:ExchangeSetDetails;
+  requestedProductsNotInExchangeSet : any[];
 
   constructor(private essUploadFileService: EssUploadFileService,
     private fileShareApiService: FileShareApiService,
-    private msalService: MsalService) {
+    private msalService: MsalService,
+    private route: Router) {
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
@@ -89,4 +95,9 @@ export class EssDownloadExchangesetComponent implements OnInit {
         })
     })
   }
+
+  switchToESSLandingPage() {
+    this.route.navigate(["exchangesets"]);
+  }
+  
 }
