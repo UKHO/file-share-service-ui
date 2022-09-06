@@ -41,7 +41,7 @@ export class EssAddSingleEncsComponent implements OnInit {
         this.displayErrorMessage = false;
         this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
         this.essUploadFileService.infoMessage = false;
-        this.route.navigate(['exchangesets', 'enc-list']);
+        this.route.navigate(['exchangesets', 'enc-list']);      
       }
       else {
         this.showMessage('error', 'Invalid ENC number');
@@ -63,6 +63,7 @@ export class EssAddSingleEncsComponent implements OnInit {
           }
           else {
             this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
+            this.txtSingleEnc = '';
           }
         }
         else {

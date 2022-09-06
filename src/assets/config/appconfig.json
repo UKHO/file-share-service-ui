@@ -21,7 +21,7 @@
     "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
     "apiUrl": "",
-    "fssApiScope":"",
+    "apiScope": "",
     "stateManagementApiUrl": "",
     "batchAttributes": [
       {
@@ -48,6 +48,11 @@
   },
   "essConfig": {
     "MaxEncLimit": "250",
-    "MaxEncSelectionLimit":"100"
+    "MaxEncSelectionLimit":"100",
+    "maxRetries":"3",
+    "initialDelayMs":"1000",
+    "apiUrl": "",
+    "apiScope": "",
+    "avgSizeofENCinMB":"0.3"
   }
 }

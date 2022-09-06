@@ -21,7 +21,8 @@
         "leftTableRowsCountSelector":"//tbody/tr",     
         "errorMessageForDuplicateNumberSelector":"section:has-text('ENC already in list.')",
         "errorMsgDuplicateENC":"ENC already in list.",
-        "anotherCheckBoxSelector":"//div/table/tbody/tr[2]/td[2]/ukho-checkbox/input",
+        "anotherCheckBoxSelector":"//div/table/tbody/tr[2]/td[2]/ukho-checkbox/input", 
+        "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']",
         "errorMsgMaxLimitSelector":"//ukho-dialogue",
         "errorMsgMaxLimit":"Max ENC limit reached."
     }

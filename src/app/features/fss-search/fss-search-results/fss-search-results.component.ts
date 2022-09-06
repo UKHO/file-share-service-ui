@@ -31,7 +31,7 @@ export class FssSearchResultsComponent implements OnChanges {
     , private analyticsService: AnalyticsService
     , private msalService: MsalService,
   ) {
-    this.fssTokenScope = AppConfigService.settings["fssConfig"].fssApiScope;
+    this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
