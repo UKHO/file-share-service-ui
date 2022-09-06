@@ -185,11 +185,11 @@ stages:
               npm ci
              displayName: 'npm restore'
 
-           - task: FileTransform@1
+           - task: FileTransform@2
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
-              fileType: 'json'
-              targetFiles: 'appSetting.json'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
               
            - task: CmdLine@2
              inputs:
@@ -226,12 +226,12 @@ stages:
               npm ci
              displayName: 'npm restore'
 
-           - task: FileTransform@1
+           - task: FileTransform@2
              displayName: 'AppSettings Json tranform for E2E Tests Run'
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
-              fileType: 'json'
-              targetFiles: 'appSetting.json'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
   
            - script: |
               npm run test:e2e
@@ -263,12 +263,12 @@ stages:
               npm ci
              displayName: 'npm restore'
 
-           - task: FileTransform@1
+           - task: FileTransform@2
              displayName: AppSettings Json tranform for Accessibility Test Run
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
-              fileType: 'json'
-              targetFiles: 'appSetting.json'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
       
            - script: |
               npm run test:a11y
@@ -328,11 +328,11 @@ stages:
               npm ci
              displayName: 'npm restore'
 
-           - task: FileTransform@1
+           - task: FileTransform@2
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
-              fileType: 'json'
-              targetFiles: 'appSetting.json'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
 
            - script: |
               npm run test:auto
@@ -364,12 +364,12 @@ stages:
               npm ci
              displayName: 'npm restore'
 
-           - task: FileTransform@1
+           - task: FileTransform@2
              displayName: AppSettings Json tranform for E2E Tests Run
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
-              fileType: 'json'
-              targetFiles: 'appSetting.json'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
      
            - script: |
               npm run test:e2e
@@ -403,12 +403,12 @@ stages:
               npm ci
              displayName: 'npm restore'
 
-           - task: FileTransform@1
+           - task: FileTransform@2
              displayName: AppSettings Json tranform for Accessibility Test Run
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
-              fileType: 'json'
-              targetFiles: 'appSetting.json'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
       
            - script: |
               npm run test:a11y
