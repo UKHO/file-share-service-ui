@@ -55,7 +55,7 @@ export class FssSearchComponent implements OnInit {
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService, private titleService: Title, private router: Router) {
     this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
-    this.fssTokenScope = AppConfigService.settings["fssConfig"].fssApiScope;
+    this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };

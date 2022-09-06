@@ -35,17 +35,19 @@ export function MSALGuardConfigFactory(config: AppConfigService): MsalGuardConfi
     return {
         interactionType: AppConfigService.settings["b2cConfig"].interactionType,
         authRequest: {
-            scopes: [AppConfigService.settings["fssConfig"].fssApiScope],
-          },
+            scopes: [AppConfigService.settings["fssConfig"].apiScope],
+        },
     };
 }
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     return {
-      interactionType: AppConfigService.settings["b2cConfig"].interactionType,
-      protectedResourceMap: new Map([
-        [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].fssApiScope]]    ]),
+        interactionType: AppConfigService.settings["b2cConfig"].interactionType,
+        protectedResourceMap: new Map([
+            [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].apiScope]],
+            [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].apiScope]]
+        ]),
     };
-  }
+}
 @NgModule({
     providers: [],
     imports: [MsalModule]
@@ -56,7 +58,7 @@ export class MsalConfigDynamicModule {
         return {
             ngModule: MsalConfigDynamicModule,
             providers: [
-                AppConfigService,AnalyticsService,
+                AppConfigService, AnalyticsService,
                 { provide: AUTH_CONFIG_URL_TOKEN, useValue: configFile },
                 {
                     provide: APP_INITIALIZER, useFactory: initializerFactory,
@@ -82,9 +84,14 @@ export class MsalConfigDynamicModule {
                 MsalBroadcastService,
                 {
                     provide: HTTP_INTERCEPTORS,
-                    useClass: MsalInterceptor, HttpErrorInterceptorService,
+                    useClass: MsalInterceptor,
                     multi: true
                 },
+                {
+                    provide: HTTP_INTERCEPTORS,
+                    useClass: HttpErrorInterceptorService,
+                    multi: true
+                }
             ]
         };
     }
