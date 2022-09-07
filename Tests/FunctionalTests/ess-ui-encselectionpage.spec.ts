@@ -136,4 +136,10 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       }
       await expect(page.locator(encselectionpageObjectsConfig.errorMsgMaxLimitSelector)).toContainText(encselectionpageObjectsConfig.errorMsgMaxLimit);
    })
+
+   test('Demo Test please removed.', async ({ page }) => {
+
+      expect(await page.isVisible(encselectionpageObjectsConfig.startLinkSelector)).toBeTruthy();
+      expect(await page.innerText(encselectionpageObjectsConfig.textAboveTableSelector)).toEqual(encselectionpageObjectsConfig.textAboveTable);
+   })
 })
