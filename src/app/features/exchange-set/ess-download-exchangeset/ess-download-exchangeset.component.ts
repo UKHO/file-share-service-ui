@@ -26,8 +26,8 @@ export class EssDownloadExchangesetComponent implements OnInit {
   downloadUrl: string;
   exchangeSetCellCount: number;
   avgEstimatedSize: any;
-  result:ExchangeSetDetails;
-  requestedProductsNotInExchangeSet : any[];
+  result: ExchangeSetDetails;
+  requestedProductsNotInExchangeSet: any[];
 
   constructor(private essUploadFileService: EssUploadFileService,
     private fileShareApiService: FileShareApiService,
@@ -42,6 +42,8 @@ export class EssDownloadExchangesetComponent implements OnInit {
   ngOnInit(): void {
     this.displayLoader = true;
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
+    this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
+    this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus();
@@ -99,5 +101,4 @@ export class EssDownloadExchangesetComponent implements OnInit {
   switchToESSLandingPage() {
     this.route.navigate(["exchangesets"]);
   }
-  
 }

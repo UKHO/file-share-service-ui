@@ -30,10 +30,10 @@ describe('EssDownloadExchangesetComponent', () => {
     addSelectedEnc: jest.fn(),
     removeSelectedEncs: jest.fn(),
     getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
-    getExchangeSetDetails: jest.fn().mockReturnValue(exchangeSetDetailsMockData),
-    // getExchangeSetDetails: jest.fn().mockReturnValue({exchangeSetCellCount : 4}),
+    getExchangeSetDetails: jest.fn().mockReturnValue(exchangeSetDetailsForDownloadMockData()),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
-    getEstimatedTotalSize: jest.fn()
+    getEstimatedTotalSize: jest.fn(),
+    getBatchStatus: jest.fn()
   };
 
   beforeEach(async () => {
@@ -80,11 +80,6 @@ describe('EssDownloadExchangesetComponent', () => {
   });
 
   it('should create EssDownloadExchangesetComponent', () => {
-    component.exchangeSetDetails = exchangeSetDetailsMockData;
-    // service.getExchangeSetDetails.mockReturnValue({ exchangeSetDetails: exchangeSetDetailsForDownloadMockData });
-    // component.ngOnInit();
-    // const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
-    // const app = fixture.debugElement.componentInstance;
     expect(component).toBeTruthy();
   });
 
@@ -132,6 +127,27 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(component.avgEstimatedSize).toBe(expectedResultForKB);
   });
 
+  it('should display download button when batch status is Committed', () => {
+    service.getBatchStatus.mockReturnValue(of(batchStatusCommittedMockData));
+    service.getBatchStatus(component.batchId).subscribe((res: any) => {
+      expect(component.displayDownloadBtn).toBe(true);
+      expect(component.displayLoader).toBe(false);
+    });
+  });
+
+  it('should hide download button when batch status is CommitInProgress', () => {
+    service.getBatchStatus.mockReturnValue(of(batchStatusNonCommittedMockData));
+    service.getBatchStatus(component.batchId).subscribe((res: any) => {
+      expect(component.displayDownloadBtn).toBe(false);
+      expect(component.displayLoader).toBe(true);
+    });
+  });
+
+  it('should display loader when download button is clicked', () => {
+    component.download();
+    expect(component.baseUrl).toBeDefined();
+    expect(component.downloadPath).toBeDefined();
+  });
 });
 
 export const exchangeSetDetailsMockData: any = {
@@ -212,4 +228,32 @@ export const exchangeSetDetailsMockData: any = {
       "reason": "invalidProduct"
     }
   ]
+}
+
+export function exchangeSetDetailsForDownloadMockData() {
+  return {
+
+    "_links": {
+      "exchangeSetBatchDetailsUri": {
+        href: "https://uatadmiralty.azure-api.net/fss-qa/batch/91138910-9764-43d7-b6e2-44b90ea64271"
+      },
+      "exchangeSetBatchStatusUri": {
+        href: "https://uatadmiralty.azure-api.net/fss-qa/batch/91138910-9764-43d7-b6e2-44b90ea64271/status"
+      },
+      "exchangeSetFileUri": {
+        href: "https://uatadmiralty.azure-api.net/fss-qa/batch/91138910-9764-43d7-b6e2-44b90ea64271/files/V01X01.zip"
+      }
+    },
+    "exchangeSetCellCount": 4
+  }
+}
+
+export const batchStatusCommittedMockData: any = {
+  "batchId": "57bcd783-37af-4b04-8c6a-3ac5ed0f1844",
+  "status": "Committed"
+}
+
+export const batchStatusNonCommittedMockData: any = {
+  "batchId": "57bcd783-37af-4b04-8c6a-3ac5ed0f1844",
+  "status": "CommitInProgress"
 }
