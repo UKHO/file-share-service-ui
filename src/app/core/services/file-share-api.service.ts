@@ -41,7 +41,10 @@ export class FileShareApiService {
     }
 
     refreshToken(): Observable<any> {
-        return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
+        const httpOptions = {
+            withCredentials: true
+        };
+        return this.http.put(this.stateManagementUrl + '/tokenrefresh', httpOptions);
     }
 
     getAttributeSearchResult(payload: string): Observable<any> {
