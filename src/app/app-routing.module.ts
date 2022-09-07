@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BrowserUtils } from '@azure/msal-browser';
 import { AuthGuard } from './core/services/auth.guard';
 import { FssHomeComponent } from './features/fss-home/fss-home.component';
 const routes: Routes = [
@@ -50,12 +51,14 @@ const routes: Routes = [
     pathMatch: 'full'
   }
 ];
-const isIframe = window.opener && window !== window.opener
+//const isIframe = window.opener && window !== window.opener
+const initialNavigation = (!BrowserUtils.isInIframe() && !BrowserUtils.isInPopup()) || window.location.href.indexOf("logout") > 0;
 
 @NgModule({
   imports: [RouterModule.forRoot(routes,{
     useHash: true,
-    initialNavigation: isIframe ? 'disabled' : 'enabled',
+    //initialNavigation: isIframe ? 'disabled' : 'enabled',
+    initialNavigation: initialNavigation ? 'enabled' : 'disabled',
     anchorScrolling: 'enabled',
   })],
   providers: [AuthGuard],
