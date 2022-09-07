@@ -475,4 +475,7 @@ ukho-textinput.text-input-wrap .error-text{
 }
 .selectionClose{
 	text-align: center;
+	button {
+		background-color: transparent;
+	}
 }

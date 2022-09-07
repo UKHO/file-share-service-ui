@@ -75,7 +75,7 @@ describe('ExchangeSetComponent', () => {
     const essLandingPageText = fixture.debugElement.queryAll(By.css('p'));
     for (var i = 0; i < essLandingPageText.length; i++) {
       if(i == essLandingPageText.length-1)
-      expect(essLandingPageText[i].nativeElement.innerHTML).toBe('You can upload a permit file and select up to 5 ENCs from your full list of holdings, or you can upload a specific list of ENCs as a .csv file or, search for a single ENC');
+      expect(essLandingPageText[i].nativeElement.innerHTML).toBe('You can upload a permit file and select up to 5 ENCs from your full list of holdings, or you can upload a specific list of ENCs as a .csv file or, add a single ENC');
     }
   });
 });
