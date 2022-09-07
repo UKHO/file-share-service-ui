@@ -4,7 +4,7 @@ import { AppConfigService } from '../../src/app/core/services/app-config.service
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ButtonModule } from '@ukho/design-system';
 import { HttpClientModule } from '@angular/common/http';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
@@ -33,8 +33,16 @@ describe('EssDownloadExchangesetComponent', () => {
     getExchangeSetDetails: jest.fn().mockReturnValue(exchangeSetDetailsForDownloadMockData()),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
     getEstimatedTotalSize: jest.fn(),
-    getBatchStatus: jest.fn()
+    getBatchStatus: jest.fn(),
+    refreshToken: jest.fn()
   };
+
+  const msal_service = {
+    instance: {
+      acquireTokenSilent: jest.fn(),
+      loginPopup: jest.fn()
+    }
+  }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -52,6 +60,10 @@ describe('EssDownloadExchangesetComponent', () => {
         {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory
+        },
+        {
+          provide: MsalService,
+          useValue: msal_service
         },
         MsalService, FileShareApiService
       ]
@@ -143,10 +155,37 @@ describe('EssDownloadExchangesetComponent', () => {
     });
   });
 
-  it('should display loader when download button is clicked', () => {
+  it('should display loader when download button is clicked and hide loader after refreshToken API response', () => {
+    service.refreshToken.mockReturnValue(of());
+    msal_service.instance.acquireTokenSilent.mockReturnValue(of());
     component.download();
+    expect(component.displayLoader).toBe(true);
     expect(component.baseUrl).toBeDefined();
     expect(component.downloadPath).toBeDefined();
+    msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((response: any) => {
+      service.refreshToken().subscribe((res: any) => {
+        console.log(res);
+        expect(component.displayLoader).toBe(false);
+      });
+    });
+  });
+
+  it('should call loginPopup() when error in acquireTokenSilent in checkBatchStatus', () => {
+    msal_service.instance.acquireTokenSilent.mockReturnValue(throwError(Error('Error')));
+    component.checkBatchStatus();
+    msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((res: any) => {
+      console.log(res);
+      expect(msal_service.instance.loginPopup).toHaveBeenCalled();
+    });
+  });
+
+  it('should call batchStatusAPI() when no error in acquireTokenSilent in checkBatchStatus', () => {
+    msal_service.instance.acquireTokenSilent.mockReturnValue(of());
+    component.checkBatchStatus();
+    msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((res: any) => {
+      console.log(res);
+      expect(component.batchStatusAPI).toHaveBeenCalled();
+    });
   });
 });
 
