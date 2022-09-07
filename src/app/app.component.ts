@@ -30,8 +30,6 @@ export class AppComponent implements OnInit {
       }
       
     });
-    //[routerLink]="[currentUrl]" [fragment]="'main'" 
-
   }
 
   ngOnInit() {
