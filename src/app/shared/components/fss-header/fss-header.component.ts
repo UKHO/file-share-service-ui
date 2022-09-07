@@ -171,8 +171,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
           localStorage.setItem('idToken', response.idToken);
           this.msalService.logout(); 
-          });
-        this.msalService.logout();    
+          });   
       }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
