@@ -75,7 +75,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/ValidAndInvalidENCs.csv');
       await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
       await page.waitForLoadState();
-
       for (var i = 1; i < 101; i++) {
          await page.click("//div/table/tbody/tr[" + i + "]/td[2]");
 
