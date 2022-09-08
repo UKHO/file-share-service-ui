@@ -14,6 +14,10 @@
     border: 1px solid #d0d0d0;
     padding:20px;
     background-color: #f9f9f9;
+    p span{
+        font-weight: 500;
+        font-size: 1.1em;
+    }
 }
 
 .ess-spinner-wrapper{
@@ -33,7 +37,18 @@
     font-weight: bold;
     margin: 20px 0 20px 69px;
     display: block;
+    i{
+        padding-right: 6px;
+        font-size: 14px;
+    }
 }
 .f22{
-    font-size: 22px;
+    font-size: 1.2em;
+}
+.f36{
+    font-size: 1.9em;
+    margin-bottom: 12px;
+    font-family: "JohnstonITC", Helvetica, sans-serif;
+    color: #09315b;
+    font-weight: normal;
 }

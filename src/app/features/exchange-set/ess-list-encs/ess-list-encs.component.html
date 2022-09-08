@@ -1,7 +1,7 @@
 <div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
   class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
   
-<a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain">&lt; Start again</a>
+  <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i style="padding-right: 6px;font-size: 14px;" class="fas fa-less-than"></i>  Start again</a>
 <div class="container">
   <div>
     <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
