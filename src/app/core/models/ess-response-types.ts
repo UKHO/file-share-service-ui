@@ -15,8 +15,7 @@ export interface ProductsNotInExchangeSet {
     productName: string;
     reason: string;
 }
-export interface BatchStatusReponse
-{
+export interface BatchStatusReponse {
     batchId: string;
     status: string;
 }

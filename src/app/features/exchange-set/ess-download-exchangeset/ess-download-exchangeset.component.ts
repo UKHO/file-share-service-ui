@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
@@ -26,7 +26,6 @@ export class EssDownloadExchangesetComponent implements OnInit {
   downloadUrl: string;
   exchangeSetCellCount: number;
   avgEstimatedSize: any;
-  result: ExchangeSetDetails;
   requestedProductsNotInExchangeSet: any[];
 
   constructor(private essUploadFileService: EssUploadFileService,
@@ -44,6 +43,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
     this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
     this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
+    this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus();

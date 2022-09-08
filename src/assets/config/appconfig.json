@@ -2,8 +2,8 @@
   "Environment": "",
   "GoogleTagManagerId": "Not-Needed-For-Running-Locally",
   "b2cConfig": {
-    "tenantName": "mgiaidtestb2c",
-    "clientId": "d4ab354e-a3b2-480e-ad50-4e60f2ca0021",
+    "tenantName": "",
+    "clientId": "",
     "redirectUri": "/",
     "postLogoutRedirectUri": "/logout.html",
     "navigateToLoginRequestUrl": true,
@@ -48,11 +48,11 @@
   },
   "essConfig": {
     "MaxEncLimit": "250",
-    "MaxEncSelectionLimit":"100",
-    "maxRetries":"3",
-    "initialDelayMs":"1000",
+    "MaxEncSelectionLimit": "100",
+    "maxRetries": "3",
+    "initialDelayMs": "1000",
     "apiUrl": "",
     "apiScope": "",
-    "avgSizeofENCinMB":"0.3"
+    "avgSizeofENCinMB": "0.3"
   }
 }

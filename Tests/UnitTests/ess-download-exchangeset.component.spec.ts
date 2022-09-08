@@ -164,7 +164,6 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(component.downloadPath).toBeDefined();
     msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((response: any) => {
       service.refreshToken().subscribe((res: any) => {
-        console.log(res);
         expect(component.displayLoader).toBe(false);
       });
     });
@@ -174,7 +173,6 @@ describe('EssDownloadExchangesetComponent', () => {
     msal_service.instance.acquireTokenSilent.mockReturnValue(throwError(Error('Error')));
     component.checkBatchStatus();
     msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((res: any) => {
-      console.log(res);
       expect(msal_service.instance.loginPopup).toHaveBeenCalled();
     });
   });
@@ -183,7 +181,6 @@ describe('EssDownloadExchangesetComponent', () => {
     msal_service.instance.acquireTokenSilent.mockReturnValue(of());
     component.checkBatchStatus();
     msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((res: any) => {
-      console.log(res);
       expect(component.batchStatusAPI).toHaveBeenCalled();
     });
   });
