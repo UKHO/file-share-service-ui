@@ -1,5 +1,6 @@
 <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain">&lt; Start again</a>
-
+<div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
+  class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
 <div class="container">
   <div class="exchangesetcontainer">
     <h1 id="main" tabindex="-1">Exchange sets</h1>
@@ -19,7 +20,7 @@
   <div class="ess-container">
     <div class="ess-download-wrapper">
       <h3 style="padding-left: 15px;" id="main">Exchange set download</h3>
-      <div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert"
+      <div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayEssLoader" aria-live='polite' role="alert"
         aria-label="Results Loading"><i class="fas fa-circle-notch fa-spin" style="font-size:220px;color:green"></i>
       </div>
       <div *ngIf="displayDownloadBtn">

@@ -15,7 +15,8 @@ import { Router } from '@angular/router';
 export class EssDownloadExchangesetComponent implements OnInit {
 
   exchangeSetDetails: ExchangeSetDetails;
-  displayLoader: boolean = true;
+  displayLoader: boolean = false;
+  displayEssLoader: boolean = true;
   displayDownloadBtn: boolean = false;
   batchDetailsUrl: string;
   batchId: string;
@@ -39,7 +40,6 @@ export class EssDownloadExchangesetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.displayLoader = true;
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
     this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
     this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
@@ -65,7 +65,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
   batchStatusAPI() {
     this.fileShareApiService.getBatchStatus(this.batchId).subscribe((response) => {
       if (response.status == "Committed") {
-        this.displayLoader = false;
+        this.displayEssLoader = false;
         this.displayDownloadBtn = true;
       }
       else {
