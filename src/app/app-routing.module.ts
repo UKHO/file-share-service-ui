@@ -51,14 +51,12 @@ const routes: Routes = [
     pathMatch: 'full'
   }
 ];
-//const isIframe = window.opener && window !== window.opener
-const initialNavigation = (!BrowserUtils.isInIframe() && !BrowserUtils.isInPopup()) || window.location.href.indexOf("logout") > 0;
+const isIframe = window.opener && window !== window.opener
 
 @NgModule({
   imports: [RouterModule.forRoot(routes,{
     useHash: true,
-    //initialNavigation: isIframe ? 'disabled' : 'enabled',
-    initialNavigation: initialNavigation ? 'enabled' : 'disabled',
+    initialNavigation: isIframe ? 'disabled' : 'enabled',
     anchorScrolling: 'enabled',
   })],
   providers: [AuthGuard],
