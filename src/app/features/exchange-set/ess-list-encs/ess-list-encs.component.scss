@@ -12,6 +12,29 @@
 
 .showListEncTOtal {
     float: right;
+    font-family: JohnstonITC, Helvetica, sans-serif;
+    color: #09315b;
+    font-weight: 400;
+    font-size: 0.9em;
+    line-height: 24px;
+    margin-bottom: 12px;
+}
+
+.ShowEncList {
+font-family: JohnstonITC,Helvetica,sans-serif;
+    color: #09315b;
+    font-weight: 400;
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+
+.estimatedExchangeSetSize{
+    font-family: JohnstonITC,Helvetica,sans-serif;
+    color: #09315b;
+    font-weight: 400;
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 12px;
 }
 
 table th:last-child {

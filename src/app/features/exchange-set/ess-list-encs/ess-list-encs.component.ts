@@ -38,6 +38,7 @@ export class EssListEncsComponent implements OnInit {
   exchangeSetDetails: ExchangeSetDetails;
   estimatedTotalSize: string = "0KB";
   selectDeselectText: string;
+  selectDeselectAlert: string;
   showSelectDeselect: boolean;
   essSilentTokenRequest: SilentRequest;
   essTokenScope: any = [];
@@ -179,8 +180,10 @@ export class EssListEncsComponent implements OnInit {
   selectDeselectAll() {
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
       this.essUploadFileService.addAllSelectedEncs();
+      this.selectDeselectAlert = "Select All" ;
     } else {
       this.essUploadFileService.clearSelectedEncs();
+      this.selectDeselectAlert = "DeSelect All" ;
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
