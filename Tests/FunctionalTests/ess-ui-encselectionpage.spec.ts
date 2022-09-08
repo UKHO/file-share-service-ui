@@ -78,8 +78,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
       for (var i = 1; i < 101; i++) {
          await page.click("//div/table/tbody/tr[" + i + "]/td[2]");
-
-      }
+}
       let selection = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
       await expect(selection).toEqual(100);
       await page.click(encselectionpageObjectsConfig['101thEncSelector']);
