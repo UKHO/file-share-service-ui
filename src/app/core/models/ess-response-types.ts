@@ -6,15 +6,16 @@ export interface ExchangeSetDetails {
     requestedProductsAlreadyUpToDateCount: number;
     requestedProductsNotInExchangeSet: ProductsNotInExchangeSet[]
 }
-
 export interface ExchangeSetLinks {
-    batchStatusUri: URL;
-    batchDetailsUri: URL;
-    fileUri: URL;
-
+    exchangeSetBatchStatusUri: URL;
+    exchangeSetBatchDetailsUri: URL;
+    exchangeSetFileUri: URL;
 }
-
 export interface ProductsNotInExchangeSet {
     productName: string;
     reason: string;
+}
+export interface BatchStatusReponse {
+    batchId: string;
+    status: string;
 }

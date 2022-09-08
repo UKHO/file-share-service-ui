@@ -4,63 +4,95 @@ import { AppConfigService } from '../../src/app/core/services/app-config.service
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { ButtonModule } from '@ukho/design-system';
+import { HttpClientModule } from '@angular/common/http';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MockMSALInstanceFactory } from './fss-search.component.spec';
+import { ExchangeSetDetails } from '../../src/app/core/models/ess-response-types';
+import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 
 describe('EssDownloadExchangesetComponent', () => {
   let component: EssDownloadExchangesetComponent;
+  let msalService: MsalService;
+  let exchangeSetDetails: ExchangeSetDetails;
+  let fileShareApiService: FileShareApiService;
   let fixture: ComponentFixture<EssDownloadExchangesetComponent>;
   const router = {
     navigate: jest.fn()
   };
 
   const service = {
-    getValidEncs : jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
-    clearSelectedEncs : jest.fn(),
+    getValidEncs: jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
+    clearSelectedEncs: jest.fn(),
     getSelectedENCs: jest.fn(),
-    infoMessage : true,
-    addSelectedEnc : jest.fn(),
-    removeSelectedEncs : jest.fn(),
-    getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
-    getExchangeSetDetails: jest.fn().mockReturnValue({exchangeSetCellCount : 4}),
+    infoMessage: true,
+    addSelectedEnc: jest.fn(),
+    removeSelectedEncs: jest.fn(),
+    getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
+    getExchangeSetDetails: jest.fn().mockReturnValue(exchangeSetDetailsForDownloadMockData()),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
-    getEstimatedTotalSize:jest.fn()
+    getEstimatedTotalSize: jest.fn(),
+    getBatchStatus: jest.fn(),
+    refreshToken: jest.fn()
   };
-  
+
+  const msal_service = {
+    instance: {
+      acquireTokenSilent: jest.fn(),
+      loginPopup: jest.fn()
+    }
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule],
-      declarations: [ EssDownloadExchangesetComponent ],
+      imports: [CommonModule, ButtonModule, HttpClientModule],
+      declarations: [EssDownloadExchangesetComponent],
       providers: [
         {
-          provide : EssUploadFileService,
-          useValue : service
+          provide: EssUploadFileService,
+          useValue: service
         },
         {
           provide: Router,
           useValue: router
-        }
+        },
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        {
+          provide: MsalService,
+          useValue: msal_service
+        },
+        MsalService, FileShareApiService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
-      MaxEncLimit: 100,
-      MaxEncSelectionLimit : 5,
-      avgSizeofENCinMB: 0.3
+        MaxEncLimit: 100,
+        MaxEncSelectionLimit: 5,
+        avgSizeofENC: 0.3
+      },
+      fssConfig: {
+        apiScope: 'test',
+        apiUrl: 'test.com'
       }
     };
+    fileShareApiService = TestBed.inject(FileShareApiService);
+    msalService = TestBed.inject(MsalService);
     fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    //jest.clearAllMocks();
   });
 
   it('should create EssDownloadExchangesetComponent', () => {
-    const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
   test('should render text inside an h1 tag', () => {
@@ -87,7 +119,7 @@ describe('EssDownloadExchangesetComponent', () => {
   });
 
   test('should return Exchangeset cell count', () => {
-    let selectedEncList = ["AU6BTB01","BR221070","BR321200","BR401507"];
+    let selectedEncList = ["AU6BTB01", "BR221070", "BR321200", "BR401507"];
     service.exchangeSetCreationResponse(selectedEncList).subscribe((res: any) => {
       expect(res).toEqual(service.getExchangeSetDetails);
     });
@@ -106,7 +138,52 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(service.getEstimatedTotalSize).toHaveBeenCalled();
     expect(component.avgEstimatedSize).toBe(expectedResultForKB);
   });
-  
+
+  it('should display download button when batch status is Committed', () => {
+    service.getBatchStatus.mockReturnValue(of(batchStatusCommittedMockData));
+    service.getBatchStatus(component.batchId).subscribe((res: any) => {
+      expect(component.displayDownloadBtn).toBe(true);
+      expect(component.displayLoader).toBe(false);
+    });
+  });
+
+  it('should hide download button when batch status is CommitInProgress', () => {
+    service.getBatchStatus.mockReturnValue(of(batchStatusNonCommittedMockData));
+    service.getBatchStatus(component.batchId).subscribe((res: any) => {
+      expect(component.displayDownloadBtn).toBe(false);
+      expect(component.displayLoader).toBe(true);
+    });
+  });
+
+  it('should display loader when download button is clicked and hide loader after refreshToken API response', () => {
+    service.refreshToken.mockReturnValue(of());
+    msal_service.instance.acquireTokenSilent.mockReturnValue(of());
+    component.download();
+    expect(component.displayLoader).toBe(true);
+    expect(component.baseUrl).toBeDefined();
+    expect(component.downloadPath).toBeDefined();
+    msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((response: any) => {
+      service.refreshToken().subscribe((res: any) => {
+        expect(component.displayLoader).toBe(false);
+      });
+    });
+  });
+
+  it('should call loginPopup() when error in acquireTokenSilent in checkBatchStatus', () => {
+    msal_service.instance.acquireTokenSilent.mockReturnValue(throwError(Error('Error')));
+    component.checkBatchStatus();
+    msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((res: any) => {
+      expect(msal_service.instance.loginPopup).toHaveBeenCalled();
+    });
+  });
+
+  it('should call batchStatusAPI() when no error in acquireTokenSilent in checkBatchStatus', () => {
+    msal_service.instance.acquireTokenSilent.mockReturnValue(of());
+    component.checkBatchStatus();
+    msal_service.instance.acquireTokenSilent(component.fssSilentTokenRequest).subscribe((res: any) => {
+      expect(component.batchStatusAPI).toHaveBeenCalled();
+    });
+  });
 });
 
 export const exchangeSetDetailsMockData: any = {
@@ -187,4 +264,32 @@ export const exchangeSetDetailsMockData: any = {
       "reason": "invalidProduct"
     }
   ]
+}
+
+export function exchangeSetDetailsForDownloadMockData() {
+  return {
+
+    "_links": {
+      "exchangeSetBatchDetailsUri": {
+        href: "https://uatadmiralty.azure-api.net/fss-qa/batch/91138910-9764-43d7-b6e2-44b90ea64271"
+      },
+      "exchangeSetBatchStatusUri": {
+        href: "https://uatadmiralty.azure-api.net/fss-qa/batch/91138910-9764-43d7-b6e2-44b90ea64271/status"
+      },
+      "exchangeSetFileUri": {
+        href: "https://uatadmiralty.azure-api.net/fss-qa/batch/91138910-9764-43d7-b6e2-44b90ea64271/files/V01X01.zip"
+      }
+    },
+    "exchangeSetCellCount": 4
+  }
+}
+
+export const batchStatusCommittedMockData: any = {
+  "batchId": "57bcd783-37af-4b04-8c6a-3ac5ed0f1844",
+  "status": "Committed"
+}
+
+export const batchStatusNonCommittedMockData: any = {
+  "batchId": "57bcd783-37af-4b04-8c6a-3ac5ed0f1844",
+  "status": "CommitInProgress"
 }
