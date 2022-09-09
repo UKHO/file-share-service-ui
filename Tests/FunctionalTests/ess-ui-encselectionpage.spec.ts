@@ -7,6 +7,7 @@ import { LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { encselectionpageObjectsConfig } from '../../PageObjects/essui-encselectionpageObjects.json'
 
+
 test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
    test.beforeEach(async ({ page }) => {
@@ -137,9 +138,14 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await expect(page.locator(encselectionpageObjectsConfig.errorMsgMaxLimitSelector)).toContainText(encselectionpageObjectsConfig.errorMsgMaxLimit);
    })
 
-   test('Demo Test please removed.', async ({ page }) => {
-
-      expect(await page.isVisible(encselectionpageObjectsConfig.startLinkSelector)).toBeTruthy();
-      expect(await page.innerText(encselectionpageObjectsConfig.textAboveTableSelector)).toEqual(encselectionpageObjectsConfig.textAboveTable);
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
+   test.only('Verify Count of ENCs in Left hand side table and Right hand side table also verify Estimated size of Exchange set.', async ({ page }) => {
+      let leftTableRowsCount = await page.locator(encselectionpageObjectsConfig.leftTableRowsCountSelector).count();
+      await page.click(encselectionpageObjectsConfig.selectAllSelector);
+      let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
+      let result = rightTableRowsCount * (0.3);
+      expect(await page.innerText(encselectionpageObjectsConfig.countForLeftTableSelector)).toEqual("Showing " + leftTableRowsCount + " ENCs");
+      expect(await page.innerText(encselectionpageObjectsConfig.countForRightTableSelector)).toEqual("" + rightTableRowsCount + " ENCs selected");
+      expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + result + "MB");
    })
-})
+});

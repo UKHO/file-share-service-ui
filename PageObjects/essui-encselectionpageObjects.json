@@ -24,6 +24,10 @@
         "anotherCheckBoxSelector":"//div/table/tbody/tr[2]/td[2]/ukho-checkbox/input",     
         "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']",
         "errorMsgMaxLimitSelector":"//ukho-dialogue",
-        "errorMsgMaxLimit":"Max ENC limit reached."
+        "errorMsgMaxLimit":"Max ENC limit reached.",
+        "countForLeftTableSelector":"//app-ess-list-encs/div/div[2]/div[1]/div/h3/span/h6",
+        "countForRightTableSelector":"//app-ess-list-encs/div/div[2]/div[3]/h3/span/h6",
+        "estimatedExchangeSizeSelector":"//app-ess-list-encs/div/div[2]/div[3]/h6/span",
+        "selectAllSelector":"//a[text()='Select all']"
     }
 }
