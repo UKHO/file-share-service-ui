@@ -8,6 +8,7 @@
         "rightTableRowsCountSelector":"//div/div[2]/div[3]/div[1]/table/tbody/tr",
         "rightTableEncPositionSeletor":"//div/div[2]/div[3]/div[1]/table/tbody/tr[1]/td[1]",
         "firstCheckBoxSelector":"//div/table/tbody/tr[1]/td[2]/ukho-checkbox/input",
+        "anotherCheckBoxSelector":"//div/table/tbody/tr[2]/td[2]/ukho-checkbox/input",
         "XButtonSelector":"//table/tbody/tr/td[2]/button/i",
         "addAnotherENCSelector":"a.lnkAddAnotherEnc",
         "typeENCTextBoxSelector":"//input[@placeholder='Type ENC cell name here']",
@@ -20,14 +21,16 @@
         "secondEncSelector":"//div/table/tbody/tr[2]/td[1]",
         "leftTableRowsCountSelector":"//tbody/tr",     
         "errorMessageForDuplicateNumberSelector":"section:has-text('ENC already in list.')",
-        "errorMsgDuplicateENC":"ENC already in list.",
-        "anotherCheckBoxSelector":"//div/table/tbody/tr[2]/td[2]/ukho-checkbox/input",     
+        "errorMsgDuplicateENC":"ENC already in list.",  
         "chooseBoxSelecetor":"input[id = 'ukho-form-field-5']",
         "errorMsgMaxLimitSelector":"//ukho-dialogue",
         "errorMsgMaxLimit":"Max ENC limit reached.",
         "countForLeftTableSelector":"//app-ess-list-encs/div/div[2]/div[1]/div/h3/span/h6",
         "countForRightTableSelector":"//app-ess-list-encs/div/div[2]/div[3]/h3/span/h6",
         "estimatedExchangeSizeSelector":"//app-ess-list-encs/div/div[2]/div[3]/h6/span",
-        "selectAllSelector":"//a[text()='Select all']"
+        "selectAllSelector":"//a[text()='Select all']",
+        "deSelectAllSelector":"//a[text()='Deselect all']",
+        "zeroENCsSelectedSelector":"body > app-root:nth-child(1) > div:nth-child(4) > app-ess-list-encs:nth-child(2) > div:nth-child(2) > div:nth-child(4) > div:nth-child(3) > h3:nth-child(1) > span:nth-child(1) > h6:nth-child(1)"
+
     }
 }

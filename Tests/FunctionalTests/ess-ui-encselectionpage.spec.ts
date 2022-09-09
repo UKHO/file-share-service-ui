@@ -139,7 +139,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
-   test.only('Verify Count of ENCs in Left hand side table and Right hand side table also verify Estimated size of Exchange set.', async ({ page }) => {
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14113
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114
+   test('Verify Count of ENCs in Left hand side table and Right hand side table also verify Estimated size of Exchange set.', async ({ page }) => {
       let leftTableRowsCount = await page.locator(encselectionpageObjectsConfig.leftTableRowsCountSelector).count();
       await page.click(encselectionpageObjectsConfig.selectAllSelector);
       let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
@@ -148,4 +150,58 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       expect(await page.innerText(encselectionpageObjectsConfig.countForRightTableSelector)).toEqual("" + rightTableRowsCount + " ENCs selected");
       expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + result + "MB");
    })
+
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14108
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14109
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14110
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14111
+   test('Verify that select all And deselect all with its maximum limit', async ({ page }) => {
+      await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
+      await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+      await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/SelectAll_DeselectAll.txt');
+      await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+      // Select All Visible
+      expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeTruthy();
+         
+      // Deselect All Visible
+      await page.click(encselectionpageObjectsConfig.selectAllSelector);
+         
+      // left hand table = Right hand table
+      let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
+      for (var i = 1; i < rightTableRowsCount; i++) {
+        expect(await page.innerText("//div/table/tbody/tr[" + i + "]/td[1]")).toEqual(await page.innerText("//tbody/tr["+ i +"]"));
+      }
+      expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeTruthy();
+         
+      // All removed from left hand table
+      await page.click(encselectionpageObjectsConfig.deSelectAllSelector);
+      expect(await page.innerText(encselectionpageObjectsConfig.zeroENCsSelectedSelector)).toBeTruthy();
+      expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeTruthy();
+   
+      // More than 100
+      await addAnotherENC(page, encselectionpageObjectsConfig.addAnotherENCSelector);
+      expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeFalsy();
+      expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeFalsy();
+   
+      })
+   
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14115
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14116
+   test('Verify that selecting/deselecting individual ENCs does not affect select all/deselect all link', async ({ page }) => {
+      await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
+      await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
+      await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/SelectAll_DeselectAll.txt');
+      await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+   
+      // Select All visible & selecting individual ENCs
+      await page.click(encselectionpageObjectsConfig.firstCheckBoxSelector);
+      expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeTruthy();
+   
+      // Deselect All visible & deselecting individual ENCs
+      await page.click(encselectionpageObjectsConfig.selectAllSelector);
+      await page.click(encselectionpageObjectsConfig.anotherCheckBoxSelector);
+      expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeTruthy();
+   })
+
+
 });
