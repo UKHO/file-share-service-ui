@@ -5,7 +5,7 @@
     "tenantName": "",
     "clientId": "",
     "redirectUri": "/",
-    "postLogoutRedirectUri": "/logout.html",
+    "postLogoutRedirectUri": "/",
     "navigateToLoginRequestUrl": true,
     "signUpSignIn": "B2C_1A_SignIn_SPA",
     "editProfile": "B2C_1A_UserProfile",
