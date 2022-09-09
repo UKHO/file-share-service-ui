@@ -1,21 +1,7 @@
 import { Page } from '@playwright/test';
-import { esslandingpageObjectsConfig } from '../PageObjects/essui-landingpageObjects.json';
+import { esslandingpageObjects } from '../PageObjects/essui-landingpageObjects';
 import {encselectionpageObjectsConfig} from '..//PageObjects//essui-encselectionpageObjects.json'
 
-//<summary>
-// Uploading .csv & .txt files
-//</summary>
-//<param> page Object </param>
-//<param> Element Locator </param>
-//<param> File path </param>
-export async function uploadFile(page: Page, elementSelector: string, filePath: string) {
-
-  const [fileChooserDataFile] = await Promise.all([
-    page.waitForEvent('filechooser'),
-    page.locator(elementSelector).click(),
-  ]);
-  await fileChooserDataFile.setFiles(filePath);
-}
 
 //<summary>
 // Adding single ENcs
@@ -23,9 +9,9 @@ export async function uploadFile(page: Page, elementSelector: string, filePath: 
 //<param> page Object </param>
 //<param> Element Locator </param>
 export async function addSingleENC(page: Page, elementSelector: string) {
-  await page.click(esslandingpageObjectsConfig.addencradiobtnSelector);
-  await page.fill(elementSelector, esslandingpageObjectsConfig.ENCValue2);
-  await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
+  await page.click(esslandingpageObjects.addencradiobtnSelector);
+  await page.fill(elementSelector, esslandingpageObjects.ENCValue2);
+  await page.click(esslandingpageObjects.proceedButtonSelector);
 
 }
 
@@ -36,7 +22,7 @@ export async function addSingleENC(page: Page, elementSelector: string) {
 //<param> Element Locator </param>
 export async function addAnotherENC(page: Page, elementSelector: string) {
   await page.locator(elementSelector).click(); 
-  await page.locator(encselectionpageObjectsConfig.typeENCTextBoxSelector).fill(esslandingpageObjectsConfig.ENCValue1);
-  await page.locator(esslandingpageObjectsConfig.addsingleencSelector).click();
+  await page.locator(encselectionpageObjectsConfig.typeENCTextBoxSelector).fill(esslandingpageObjects.ENCValue1);
+  await page.locator(esslandingpageObjects.addsingleencSelector).click();
 
 }
