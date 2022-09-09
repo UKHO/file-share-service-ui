@@ -140,7 +140,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14113
-   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 (SPRINT 4)
    test('Verify Count of ENCs in Left hand side table and Right hand side table also verify Estimated size of Exchange set.', async ({ page }) => {
       let leftTableRowsCount = await page.locator(encselectionpageObjectsConfig.leftTableRowsCountSelector).count();
       await page.click(encselectionpageObjectsConfig.selectAllSelector);
@@ -154,7 +154,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14108
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14109
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14110
-   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14111
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14111 (SPRINT 4)
    test('Verify that select all And deselect all with its maximum limit', async ({ page }) => {
       await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
       await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
@@ -186,7 +186,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       })
    
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14115
-   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14116
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14116 (SPRINT 4)
    test('Verify that selecting/deselecting individual ENCs does not affect select all/deselect all link', async ({ page }) => {
       await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
       await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
