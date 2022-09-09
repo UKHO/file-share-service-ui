@@ -21,7 +21,7 @@ describe('EssDownloadExchangesetComponent', () => {
     addSelectedEnc : jest.fn(),
     removeSelectedEncs : jest.fn(),
     getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
-    getExchangeSetDetails: jest.fn().mockReturnValue({exchangeSetCellCount : 4}),
+    getExchangeSetDetails: jest.fn().mockReturnValue({exchangeSetCellCount : 4, requestedProductCount:19}),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
     getEstimatedTotalSize:jest.fn()
   };
@@ -106,7 +106,11 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(service.getEstimatedTotalSize).toHaveBeenCalled();
     expect(component.avgEstimatedSize).toBe(expectedResultForKB);
   });
-  
+  test('should return exchangeSetTotalCount', () => {
+    component.ngOnInit();
+    expect(service.getExchangeSetDetails).toHaveBeenCalled();
+    expect(component.requestedProductCount).toBe(19);
+  });  
 });
 
 export const exchangeSetDetailsMockData: any = {

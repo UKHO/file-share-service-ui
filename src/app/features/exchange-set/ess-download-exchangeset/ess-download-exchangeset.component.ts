@@ -12,9 +12,9 @@ import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
 export class EssDownloadExchangesetComponent implements OnInit {
   displayLoader: boolean = true;
   exchangeSetCellCount: number;
+  requestedProductCount : number;
   avgEstimatedSize: any;
   exchangeSetDetails: ExchangeSetDetails;
-  result:ExchangeSetDetails;
   requestedProductsNotInExchangeSet : any[];
   
   constructor(private essUploadFileService: EssUploadFileService,
@@ -24,9 +24,9 @@ export class EssDownloadExchangesetComponent implements OnInit {
   ngOnInit() {
     this.exchangeSetDetails= this.essUploadFileService.getExchangeSetDetails();
     this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
+    this.requestedProductCount = this.exchangeSetDetails.requestedProductCount;
     this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
-    this.result=this.essUploadFileService.getExchangeSetDetails();
-    this.requestedProductsNotInExchangeSet = this.result.requestedProductsNotInExchangeSet;
+    this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
   }
 
   switchToESSLandingPage() {
