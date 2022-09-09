@@ -2,6 +2,11 @@
 <div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
   class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
 <div class="container">
+  <div>
+    <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" >
+        <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
+    </ukho-dialogue>
+</div>
   <div class="exchangesetcontainer">
     <h1 id="main" tabindex="-1">Exchange sets</h1>
 
