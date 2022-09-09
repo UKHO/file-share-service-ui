@@ -168,11 +168,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       signedInButtonText: this.userName,
       signInHandler: (() => { }),
       signOutHandler: (() => { 
-        this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-          localStorage.setItem('idToken', response.idToken);
           this.msalService.logout({account: null}); 
           localStorage.clear();
-        });    
       }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
