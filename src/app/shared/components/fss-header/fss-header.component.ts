@@ -170,8 +170,9 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       signOutHandler: (() => { 
         this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
           localStorage.setItem('idToken', response.idToken);
-          this.msalService.logout(); 
-          });   
+          this.msalService.logout({account: null}); 
+          localStorage.clear();
+        });    
       }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
@@ -184,7 +185,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
           this.msalService.instance.setActiveAccount(response.account);
           this.getClaims(response.idTokenClaims);
         });;
-      })
+      })     
     }
   }
 
