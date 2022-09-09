@@ -38,29 +38,31 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13809
+     //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14102
      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
           await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
           await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/ValidENCs.csv');
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await page.waitForLoadState();
-          let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C']
+          let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', '3A6LTP10', 'B28LTP10', '221A1B2C']
           expect(await page.locator('//tbody/tr').count()).toBe(enclist.length);
 
-          for (var i = 1; i < 6; i++) {
+          for (var i = 1; i < 9; i++) {
                expect(await page.innerText("//div/table/tbody/tr[" + i + "]/td[1]")).toEqual(enclist[i - 1]);
           }
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13815 
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13815
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14103 
      test('Verify all the uploaded ENCs from .txt file, displayed on the screen', async ({ page }) => {
           await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
           await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/ValidENCs.txt');
           await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
           await page.waitForLoadState();
-          let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C']
+          let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C', '908ABCDE', 'B28LTP10']
           expect(await page.locator('//tbody/tr').count()).toBe(enclist.length);
 
-          for (var i = 1; i < 6; i++) {
+          for (var i = 1; i < 8; i++) {
                expect(await page.innerText("//div/table/tbody/tr[" + i + "]/td[1]")).toEqual(enclist[i - 1]);
           }
      })
