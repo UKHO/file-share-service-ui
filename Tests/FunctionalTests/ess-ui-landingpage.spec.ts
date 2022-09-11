@@ -18,11 +18,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
      })
 
-      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806 
+      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806 //
       test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
-          //await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload your whole permit file or a .csv file");
-          //await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
+          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload your whole permit file or a .csv file");
+          await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
@@ -32,7 +32,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible();
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799 
      test('Verify clicking on Second Radio Button, "Select single ENCs" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
@@ -43,12 +43,10 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
 
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C']
-
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await page.waitForLoadState();
-
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -56,21 +54,19 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify all the uploaded ENCs from .txt file, displayed on the screen', async ({ page }) => {
 
           let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C']
-
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await page.waitForLoadState();
-
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13810 
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13810 //
      test('Verify an error message if user tries to upload other than allowed files', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/FileOtherThanCSVorTXT.xlsx');
-         // await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt');
+          await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt file');
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13811
@@ -97,12 +93,10 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in CSV File, upload only once.', async ({ page }) => {
 
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];
-
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          //await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
-          
+          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");          
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -110,21 +104,23 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in TXT File, upload only valid and once.', async ({ page }) => {
           
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220']
-
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData//ValidAndDuplicateENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
-          
+          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");          
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
-     //   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944
+       // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944
      //   test('Verify that error displays when user enters invalid single ENC', async ({ page }) => {
-     //      await page.click(esslandingpageObjects.addencradiobtnSelector);
+     //      // await page.click(esslandingpageObjects.addencradiobtnSelector);
+     //      // await page.fill(esslandingpageObjects.addSingleENCTextboxSelector, esslandingpageObjects.invalidENCValue);
+     //      // await page.click(esslandingpageObjects.proceedButtonSelector);
+     //      // await expect(page.locator(esslandingpageObjects.errorMessageForInvalidENCSelector)).toContainText(esslandingpageObjects.messageForInvalidENCs)
+     //      //await esslandingPageObjects.addencradiobtnSelectorClick();
+     //      await esslandingPageObjects.addSingleENC(page, esslandingPageObjects.addSingleENCTextboxSelector,"ABC23456");
      //      await page.fill(esslandingpageObjects.addSingleENCTextboxSelector, esslandingpageObjects.invalidENCValue);
-     //      await page.click(esslandingpageObjects.proceedButtonSelector);
-     //      await expect(page.locator(esslandingpageObjects.errorMessageForInvalidENCSelector)).toContainText(esslandingpageObjects.messageForInvalidENCs)
+     //      await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
      // })
 
 });
