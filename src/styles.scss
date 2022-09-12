@@ -338,17 +338,16 @@ ukho-textinput.text-input-wrap .error-text{
 }
 
 #contentArea{
-	min-height:385px
+	min-height:385px;
+	display:flex;
+	flex-grow: 1;
+	flex-direction: column;
+
 }
-
-
-
-
-@media screen and (min-width:1700px){
-	ukho-footer {position: fixed;bottom: 0;width: 100%;}
-	#contentArea{
-		margin-bottom:150px ;
-	}
+app-root {
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
 }
 
 @media screen and (max-width:1024px){
@@ -475,4 +474,15 @@ ukho-textinput.text-input-wrap .error-text{
 }
 .selectionClose{
 	text-align: center;
+	button {
+		background-color: transparent;
+	}
+}
+.linkStartAgain
+{
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 20px 0;
+    display: inline-block;
 }
