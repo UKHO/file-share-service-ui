@@ -32,10 +32,10 @@ export class FileShareApiService {
     clearCookies(): Observable<any> {
         //return this.http.post(this.stateManagementUrl + '/logout', null);
         let token = localStorage.getItem('idToken');
-        let headers = new HttpHeaders ({
+        let headers =  {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ token 
-          })
+          }
        console.log('ClearcookieExpiryTme',headers);
        return this.http.post(this.stateManagementUrl + '/logout', null
        , {headers}
