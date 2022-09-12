@@ -117,7 +117,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
-   test('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENCs', async ({ page }) => {
+   test.only('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENCs', async ({ page }) => {
       await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
       await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
       await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click();
@@ -141,21 +141,21 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14113
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 (SPRINT 4)
-   test('Verify Count of ENCs in Left hand side table and Right hand side table also verify Estimated size of Exchange set.', async ({ page }) => {
+   test('Verify Count of uploaded & selected ENCs along with estimated size of Exchange set.', async ({ page }) => {
       let leftTableRowsCount = await page.locator(encselectionpageObjectsConfig.leftTableRowsCountSelector).count();
       await page.click(encselectionpageObjectsConfig.selectAllSelector);
       let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
-      let result = rightTableRowsCount * (0.3);
+      let totalSize = rightTableRowsCount * (0.3);
       expect(await page.innerText(encselectionpageObjectsConfig.countForLeftTableSelector)).toEqual("Showing " + leftTableRowsCount + " ENCs");
       expect(await page.innerText(encselectionpageObjectsConfig.countForRightTableSelector)).toEqual("" + rightTableRowsCount + " ENCs selected");
-      expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + result + "MB");
+      expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + totalSize + "MB");
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14108
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14109
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14110
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14111 (SPRINT 4)
-   test('Verify that select all And deselect all with its maximum limit', async ({ page }) => {
+   test('Verify Select all and Deselect all functionality', async ({ page }) => {
       await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
       await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
       await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/SelectAll_DeselectAll.txt');
@@ -165,14 +165,14 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
          
       // Deselect All Visible
       await page.click(encselectionpageObjectsConfig.selectAllSelector);
+      expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeTruthy();
          
       // left hand table = Right hand table
       let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
       for (var i = 1; i < rightTableRowsCount; i++) {
         expect(await page.innerText("//div/table/tbody/tr[" + i + "]/td[1]")).toEqual(await page.innerText("//tbody/tr["+ i +"]"));
       }
-      expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeTruthy();
-         
+
       // All removed from left hand table
       await page.click(encselectionpageObjectsConfig.deSelectAllSelector);
       expect(await page.innerText(encselectionpageObjectsConfig.zeroENCsSelectedSelector)).toBeTruthy();
@@ -199,7 +199,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    
       // Deselect All visible & deselecting individual ENCs
       await page.click(encselectionpageObjectsConfig.selectAllSelector);
-      await page.click(encselectionpageObjectsConfig.anotherCheckBoxSelector);
+      await page.click(encselectionpageObjectsConfig.firstCheckBoxSelector);
       expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeTruthy();
    })
 
