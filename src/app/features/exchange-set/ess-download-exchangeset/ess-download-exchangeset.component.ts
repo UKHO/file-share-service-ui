@@ -73,10 +73,14 @@ export class EssDownloadExchangesetComponent implements OnInit {
         this.displayEssLoader = false;
         this.displayDownloadBtn = true;
       }
-      else {
+      else if (response.status == "CommitInProgress" || response.status == "Incomplete") {
         setTimeout(() => {
           this.checkBatchStatus()
         }, 5000);
+      }
+      else {
+        this.showMessage("warning", "Something went wrong");
+        this.displayEssLoader = false;
       }
     });
   }

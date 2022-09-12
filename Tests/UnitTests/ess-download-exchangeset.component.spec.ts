@@ -92,7 +92,6 @@ describe('EssDownloadExchangesetComponent', () => {
     fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    //jest.clearAllMocks();
   });
 
   it('should create EssDownloadExchangesetComponent', () => {

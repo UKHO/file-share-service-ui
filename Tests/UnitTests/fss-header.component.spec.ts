@@ -10,6 +10,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { Router } from '@angular/router';
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
+import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 
 describe('FssHeaderComponent', () => {
   let component: FssHeaderComponent;
@@ -18,6 +19,7 @@ describe('FssHeaderComponent', () => {
   let route:Router;
   let msalBroadcastServie:MsalBroadcastService;
   let analyticsService: AnalyticsService;
+  let fileShareApiService: FileShareApiService
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -37,7 +39,8 @@ describe('FssHeaderComponent', () => {
           useValue: "YOUR_GTM_ID"       
         },
          MsalService,
-         AnalyticsService],
+         AnalyticsService,
+        FileShareApiService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
     AppConfigService.settings = { 
@@ -69,19 +72,19 @@ describe('FssHeaderComponent', () => {
   });
 
   test('should exist', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, fileShareApiService);
     component.ngOnInit();
     expect(component).toBeDefined();
   });
 
   test('should exist the title in header', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, fileShareApiService);
     component.ngOnInit();
     expect(component.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist Exchange set menu item in header', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie,analyticsService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie,analyticsService, fileShareApiService);
     component.ngOnInit();
     component.authOptions =
     {
@@ -95,7 +98,7 @@ describe('FssHeaderComponent', () => {
     expect(component.menuItems[0].title).toEqual("Exchange sets");
   });
   test('should not exist Exchange set search, menu item in header if not logged in', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie,analyticsService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie,analyticsService, fileShareApiService);
     component.ngOnInit();
     component.authOptions =
     {
@@ -108,7 +111,7 @@ describe('FssHeaderComponent', () => {
     expect(component.getMenuItems().length).toEqual(0);
   });
   test('should exist Search menu item in header', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie,analyticsService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie,analyticsService,fileShareApiService);
     component.ngOnInit();
     expect(component.menuItems.length).toEqual(2);
     expect(component.menuItems[1].title).toEqual("Search");

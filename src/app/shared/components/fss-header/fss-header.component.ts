@@ -6,7 +6,7 @@ import { AuthenticationResult, InteractionStatus, PopupRequest, SilentRequest } 
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
-import { FileShareApiService } from 'src/app/core/services/file-share-api.service';
+import { FileShareApiService } from '../../../core/services/file-share-api.service';
 
 @Component({
   selector: 'app-fss-header',
