@@ -128,7 +128,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
-        localStorage.setItem('idToken', response.idToken);
+        localStorage.setItem('idToken', response.accessToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
         this.isActive = true;
@@ -170,11 +170,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       signedInButtonText: this.userName,
       signInHandler: (() => { }),
       signOutHandler: (() => { 
-        this.fileShareApiService.clearCookies().subscribe(res => {
-          console.log(res);
-          localStorage.clear();
           this.msalService.logout(); 
-         });
       }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {
