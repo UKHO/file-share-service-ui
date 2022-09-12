@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 import { BatchStatusReponse } from '../models/ess-response-types';
@@ -31,14 +31,15 @@ export class FileShareApiService {
 
     clearCookies(): Observable<any> {
         //return this.http.post(this.stateManagementUrl + '/logout', null);
-        let headers = {
+        let token = localStorage.getItem('idToken');
+        let headers = new HttpHeaders ({
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('idToken')}`
-          }
-       console.log('ClearcookieExpiryTme',localStorage.getItem('idToken'));
+            'Authorization': 'Bearer '+ token 
+          })
+       console.log('ClearcookieExpiryTme',headers);
        return this.http.post(this.stateManagementUrl + '/logout', null
-       , { headers : headers}
-       );
+       , {headers}
+       );   
     }
 
     refreshToken(): Observable<any> {
