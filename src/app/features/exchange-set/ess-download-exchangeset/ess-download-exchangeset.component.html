@@ -1,26 +1,36 @@
 <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain">&lt; Start again</a>
-
+<div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
+  class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
 <div class="container">
+  <div>
+    <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" >
+        <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
+    </ukho-dialogue>
+</div>
   <div class="exchangesetcontainer">
     <h1 id="main" tabindex="-1">Exchange sets</h1>
 
-<h3  *ngIf="requestedProductsNotInExchangeSet && requestedProductsNotInExchangeSet.length > 0">
-  The following ENCs are not included in the Exchange Set:
-</h3>
+    <h3 *ngIf="requestedProductsNotInExchangeSet && requestedProductsNotInExchangeSet.length > 0">
+      The following ENCs are not included in the Exchange Set:
+    </h3>
 
-<ul>
-  <li *ngFor="let msg of requestedProductsNotInExchangeSet ">
-    {{msg.productName}} - {{msg.reason}}
-  </li>
-</ul>
+    <ul>
+      <li *ngFor="let msg of requestedProductsNotInExchangeSet ">
+        {{msg.productName}} - {{msg.reason}}
+      </li>
+    </ul>
     <p class="light">Your exchange set is available as a download via your browser</p>
     <p class="light">The zip file will be ready soon, please do not refresh or leave this browser window. </p>
   </div>
   <div class="ess-container">
     <div class="ess-download-wrapper">
       <h3 style="padding-left: 15px;" id="main">Exchange set download</h3>
-      <div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert"
-        aria-label="Results Loading"><i class="fas fa-circle-notch fa-spin" style="font-size:220px;color:green"></i></div>
+      <div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayEssLoader" aria-live='polite' role="alert"
+        aria-label="Results Loading"><i class="fas fa-circle-notch fa-spin" style="font-size:220px;color:green"></i>
+      </div>
+      <div *ngIf="displayDownloadBtn">
+        <ukho-button class="btnDownload" (click)="download()">Download</ukho-button>
+      </div>
     </div>
     <div class="divider"></div>
     <div style="flex: 3">
