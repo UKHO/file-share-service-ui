@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
@@ -28,6 +28,11 @@ export class EssDownloadExchangesetComponent implements OnInit {
   exchangeSetCellCount: number;
   avgEstimatedSize: any;
   requestedProductsNotInExchangeSet: any[];
+
+  @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
+  messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
+  messageDesc = '';
+  displayErrorMessage = false;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private fileShareApiService: FileShareApiService,
@@ -100,5 +105,18 @@ export class EssDownloadExchangesetComponent implements OnInit {
 
   switchToESSLandingPage() {
     this.route.navigate(["exchangesets"]);
+  }
+
+  showMessage(
+    messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
+    messageDesc: string = ''
+  ) {
+    this.messageType = messageType;
+    this.messageDesc = messageDesc;
+    this.displayErrorMessage = true;
+    if (this.ukhoDialog !== undefined) {
+      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
+      this.ukhoDialog.nativeElement.focus();
+    }
   }
 }

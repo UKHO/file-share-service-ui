@@ -6,6 +6,7 @@ import { AuthenticationResult, InteractionStatus, PopupRequest, SilentRequest } 
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
+import { FileShareApiService } from 'src/app/core/services/file-share-api.service';
 
 @Component({
   selector: 'app-fss-header',
@@ -26,7 +27,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
-    private analyticsService: AnalyticsService) {
+    private analyticsService: AnalyticsService,
+    private fileShareApiService: FileShareApiService,) {
     super();
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
@@ -168,8 +170,13 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       signedInButtonText: this.userName,
       signInHandler: (() => { }),
       signOutHandler: (() => { 
-          this.msalService.logout({account: null}); 
+        this.fileShareApiService.clearCookies().subscribe(res => {
+          console.log(res);
           localStorage.clear();
+          this.route.navigate(['']);
+          this.analyticsService.logOut();
+          this.msalService.logout({account: null}); 
+         });
       }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {

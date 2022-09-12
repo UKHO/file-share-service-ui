@@ -5,7 +5,7 @@ import { EssUploadFileService } from '../../src/app/core/services/ess-upload-fil
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { ButtonModule } from '@ukho/design-system';
+import { ButtonModule, DialogueModule } from '@ukho/design-system';
 import { HttpClientModule } from '@angular/common/http';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-search.component.spec';
@@ -46,7 +46,7 @@ describe('EssDownloadExchangesetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, ButtonModule, HttpClientModule],
+      imports: [CommonModule, ButtonModule, HttpClientModule, DialogueModule],
       declarations: [EssDownloadExchangesetComponent],
       providers: [
         {
@@ -65,7 +65,11 @@ describe('EssDownloadExchangesetComponent', () => {
           provide: MsalService,
           useValue: msal_service
         },
-        MsalService, FileShareApiService
+        {
+          provide: FileShareApiService,
+          useValue: service
+        },
+        MsalService
       ]
     })
       .compileComponents();
@@ -141,18 +145,23 @@ describe('EssDownloadExchangesetComponent', () => {
 
   it('should display download button when batch status is Committed', () => {
     service.getBatchStatus.mockReturnValue(of(batchStatusCommittedMockData));
-    service.getBatchStatus(component.batchId).subscribe((res: any) => {
-      expect(component.displayDownloadBtn).toBe(true);
-      expect(component.displayLoader).toBe(false);
-    });
+    component.batchStatusAPI();
+    expect(component.displayDownloadBtn).toBe(true);
+    expect(component.displayEssLoader).toBe(false);
   });
 
   it('should hide download button when batch status is CommitInProgress', () => {
-    service.getBatchStatus.mockReturnValue(of(batchStatusNonCommittedMockData));
-    service.getBatchStatus(component.batchId).subscribe((res: any) => {
-      expect(component.displayDownloadBtn).toBe(false);
-      expect(component.displayLoader).toBe(true);
-    });
+    service.getBatchStatus.mockReturnValue(of(batchStatusCommitInProgressMockData));
+    component.batchStatusAPI();
+    expect(component.displayDownloadBtn).toBe(false);
+    expect(component.displayEssLoader).toBe(true);
+  });
+
+  it('should show error message when batch status is Failed', () => {
+    service.getBatchStatus.mockReturnValue(of(batchStatusFailedMockData));
+    component.batchStatusAPI();
+    expect(component.displayDownloadBtn).toBe(false);
+    expect(component.displayEssLoader).toBe(false);
   });
 
   it('should display loader when download button is clicked and hide loader after refreshToken API response', () => {
@@ -289,7 +298,12 @@ export const batchStatusCommittedMockData: any = {
   "status": "Committed"
 }
 
-export const batchStatusNonCommittedMockData: any = {
+export const batchStatusCommitInProgressMockData: any = {
   "batchId": "57bcd783-37af-4b04-8c6a-3ac5ed0f1844",
   "status": "CommitInProgress"
+}
+
+export const batchStatusFailedMockData: any = {
+  "batchId": "57bcd783-37af-4b04-8c6a-3ac5ed0f1844",
+  "status": "Failed"
 }
