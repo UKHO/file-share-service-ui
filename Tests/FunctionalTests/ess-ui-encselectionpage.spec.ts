@@ -117,7 +117,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
-   test.only('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENCs', async ({ page }) => {
+   test('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENCs', async ({ page }) => {
       await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
       await addSingleENC(page, esslandingpageObjectsConfig.addSingleENCTextboxSelector);
       await page.locator(encselectionpageObjectsConfig.addAnotherENCSelector).click();
@@ -158,7 +158,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    test('Verify Select all and Deselect all functionality', async ({ page }) => {
       await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
       await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-      await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/SelectAll_DeselectAll.txt');
+      await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/100ENCs.txt');
       await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
       // Select All Visible
       expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeTruthy();
@@ -190,7 +190,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    test('Verify that selecting/deselecting individual ENCs does not affect select all/deselect all link', async ({ page }) => {
       await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
       await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-      await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/SelectAll_DeselectAll.txt');
+      await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/100ENCs.txt');
       await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
    
       // Select All visible & selecting individual ENCs
