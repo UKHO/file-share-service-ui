@@ -141,7 +141,11 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(service.getEstimatedTotalSize).toHaveBeenCalled();
     expect(component.avgEstimatedSize).toBe(expectedResultForKB);
   });
-
+  test('should return exchangeSetTotalCount', () => {
+   component.ngOnInit();
+    expect(service.getExchangeSetDetails).toHaveBeenCalled();
+    expect(component.requestedProductCount).toBe(19);
+  });
   it('should display download button when batch status is Committed', () => {
     service.getBatchStatus.mockReturnValue(of(batchStatusCommittedMockData));
     component.batchStatusAPI();
@@ -288,7 +292,8 @@ export function exchangeSetDetailsForDownloadMockData() {
         href: "https://uatadmiralty.azure-api.net/fss-qa/batch/91138910-9764-43d7-b6e2-44b90ea64271/files/V01X01.zip"
       }
     },
-    "exchangeSetCellCount": 4
+    "exchangeSetCellCount": 4,
+    "requestedProductCount": 19
   }
 }
 

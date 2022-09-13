@@ -3,7 +3,7 @@ import { esslandingpageObjectsConfig } from '../../PageObjects/essui-landingpage
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { addAnotherENC, addSingleENC, uploadFile, } from '../../Helper/ESSLandingPageHelper';
 import { autoTestConfig } from '../../appSetting.json';
-import { LoginPortal } from '../../Helper/CommonHelper';
+import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { encselectionpageObjectsConfig } from '../../PageObjects/essui-encselectionpageObjects.json'
 
@@ -12,6 +12,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    test.beforeEach(async ({ page }) => {
       await page.goto(autoTestConfig.url);
       await page.waitForLoadState('load');
+      await AcceptCookies(page);
       await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
       await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
       await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
@@ -28,7 +29,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       // To select ENCs
       for (var i = 1; i <= 3; i++) {
          await page.click("//div/table/tbody/tr[" + i + "]/td[2]");
-         await expect((await page.innerText("//div/div[2]/div[3]/div[1]/table/tbody/tr[" + i + "]/td[1]"))).toEqual(encSelected[i - 1]);
+         await expect((await page.innerText("//div/div[2]/div[1]/div/table/tbody/tr[" + i + "]/td[1]"))).toEqual(encSelected[i - 1]);
       }
       // To deselect ENCs using checkbox
       for (var i = 1; i <= 3; i++) {
