@@ -6,7 +6,6 @@ import { AuthenticationResult, InteractionStatus, PopupRequest, SilentRequest } 
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
-import { FileShareApiService } from '../../../core/services/file-share-api.service';
 
 @Component({
   selector: 'app-fss-header',
@@ -27,8 +26,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
-    private analyticsService: AnalyticsService,
-    private fileShareApiService: FileShareApiService,) {
+    private analyticsService: AnalyticsService) {
     super();
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
@@ -128,7 +126,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
         this.getClaims(this.msalService.instance.getActiveAccount()?.idTokenClaims);
-        localStorage.setItem('idToken', response.accessToken);
+        localStorage.setItem('idToken', response.idToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
         this.isActive = true;
@@ -170,7 +168,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       signedInButtonText: this.userName,
       signInHandler: (() => { }),
       signOutHandler: (() => { 
-          this.msalService.logout(); 
+        this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+          localStorage.setItem('idToken', response.idToken);
+          this.msalService.logout();  
+        });
       }),
       isSignedIn: (() => { return true }),
       userProfileHandler: (() => {

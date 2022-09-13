@@ -25,5 +25,4 @@ export class FssSsoLogoutComponent implements OnInit {
       this.analyticsService.logOut();
      });
   }
-
 }
