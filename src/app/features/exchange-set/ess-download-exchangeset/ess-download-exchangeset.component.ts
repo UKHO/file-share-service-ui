@@ -7,7 +7,6 @@ import { SilentRequest } from '@azure/msal-browser';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-ess-download-exchangeset',
   templateUrl: './ess-download-exchangeset.component.html',
