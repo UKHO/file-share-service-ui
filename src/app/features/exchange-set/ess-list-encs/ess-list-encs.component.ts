@@ -44,6 +44,7 @@ export class EssListEncsComponent implements OnInit {
   essTokenScope: any = [];
 
   constructor(private essUploadFileService: EssUploadFileService,
+    private elementRef: ElementRef,  
     private route: Router,
     private msalService: MsalService,
     private exchangeSetApiService: ExchangeSetApiService,
@@ -146,6 +147,10 @@ export class EssListEncsComponent implements OnInit {
 
   displaySingleEnc() {
     this.displaySingleEncVal = true;
+    setTimeout(()=>{
+      var encInput = this.elementRef.nativeElement.querySelectorAll('app-ess-add-single-encs .container .addSingleFileSection ukho-textinput input');
+      encInput[0].focus();
+    },);  
   }
 
   exchangeSetCreationResponse(selectedEncList: any[]) {
@@ -180,10 +185,10 @@ export class EssListEncsComponent implements OnInit {
   selectDeselectAll() {
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
       this.essUploadFileService.addAllSelectedEncs();
-      this.selectDeselectAlert = "Select All" ;
+      this.selectDeselectAlert = "Selected All ENC's" ;
     } else {
       this.essUploadFileService.clearSelectedEncs();
-      this.selectDeselectAlert = "DeSelect All" ;
+      this.selectDeselectAlert = "DeSelected All ENC's" ;
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();

@@ -1,7 +1,7 @@
 <div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
   class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
   
-<a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain">&lt; Start again</a>
+  <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i class="fas fa-less-than"></i>  Start again</a>
 <div class="container">
   <div>
     <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
@@ -22,7 +22,7 @@
             <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
           </ng-container>
           <ng-container ukhoColumnDef="Choose">
-            <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);"  class="selectDeselctBtn"   attr.aria-label="{{selectDeselectAlert}}  ENCs">{{selectDeselectText}}</a> Choose</th>
+            <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);"  class="selectDeselctBtn"   > {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
             <td ukho-cell *ukhoCellDef="let element">
               <ukho-checkbox  [checked]="element.selected" (change)="handleChange(element.enc)" class="selectEnc"
                 attr.aria-label="{{element.enc}}" ><span class="sr-only">{{element.enc}} </span></ukho-checkbox>
@@ -32,7 +32,7 @@
           <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </div>
-      <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()">+ Add another ENC</a>
+       <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()"><i class="fa fa-plus fa-1x"></i> Add another ENC</a>     
       <app-ess-add-single-encs [renderedFrom]="addSingleEncRenderFrom" [btnText]="addSingleEncBtnText"
         *ngIf="displaySingleEncVal"></app-ess-add-single-encs>
     </div>
@@ -49,14 +49,14 @@
           <ng-container ukhoColumnDef="X">
             <th ukho-header-cell *ukhoHeaderCellDef></th>
             <td  class="selectionClose" ukho-cell *ukhoCellDef="let element">
-              <button (click)="handleChange(element)" aria-label="Remove rows from selected ENC's"><i class="fa fa-times fa-1x"></i> </button>
+              <button (click)="handleChange(element)" attr.aria-label="Remove {{element}} from selected ENC "><i class="fa fa-times fa-1x"></i> </button>
             </td>
           </ng-container>
           <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
           <tr ukho-row *ukhoRowDef="let row; columns: displaySelectedTableColumns"></tr>
         </table>
-      </div>
-      <p class="estimatedExchangeSetSize" aria-live="polite"> Estimated Exchange set size <span class="bottomText">{{estimatedTotalSize}} </span></p>
+      </div>     
+       <p class="estimatedExchangeSetSize" aria-live="polite"> Estimated Exchange set size <span class="bottomText">{{estimatedTotalSize}} </span></p>
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
       <ukho-button class="requestEncBtn" (click)="requestEncClicked()">Request ENCs</ukho-button>
       </div>
