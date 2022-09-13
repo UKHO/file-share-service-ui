@@ -31,6 +31,7 @@
           <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
           <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
         </table>
+        <span class="sr-only" role="alert" aria-live="polite">{{selectDeselectEncAlert}}</span>
       </div>
        <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()"><i class="fa fa-plus fa-1x"></i> Add another ENC</a>     
       <app-ess-add-single-encs [renderedFrom]="addSingleEncRenderFrom" [btnText]="addSingleEncBtnText"

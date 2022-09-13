@@ -42,6 +42,7 @@ export class EssListEncsComponent implements OnInit {
   showSelectDeselect: boolean;
   essSilentTokenRequest: SilentRequest;
   essTokenScope: any = [];
+  selectDeselectEncAlert: string;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,  
@@ -101,8 +102,10 @@ export class EssListEncsComponent implements OnInit {
     this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
+      this.selectDeselectEncAlert= "not checked " + enc + " Remove From Selected List";
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
+      this.selectDeselectEncAlert= "not checked " + enc + " Remove From Selected List";
     } else {
       this.showMessage(
         'error',
@@ -155,7 +158,7 @@ export class EssListEncsComponent implements OnInit {
 
   exchangeSetCreationResponse(selectedEncList: any[]) {
     this.displayLoader = true;
-    if (selectedEncList != null) {
+  if (selectedEncList != null) {
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
         this.displayLoader = false;
         this.exchangeSetDetails = result;
@@ -166,7 +169,7 @@ export class EssListEncsComponent implements OnInit {
           this.showMessage('error', 'There has been an error');
         }
       );
-    }
+   }
   }
   
   getEstimatedTotalSize() {
