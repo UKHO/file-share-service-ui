@@ -3,6 +3,7 @@ import { EssDownloadExchangesetComponent } from '../../src/app/features/exchange
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { CommonModule } from '@angular/common';
+import { DialogueModule } from '@ukho/design-system';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -28,7 +29,7 @@ describe('EssDownloadExchangesetComponent', () => {
   
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule],
+      imports: [CommonModule,DialogueModule],
       declarations: [ EssDownloadExchangesetComponent ],
       providers: [
         {

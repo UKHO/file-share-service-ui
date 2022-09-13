@@ -4,15 +4,16 @@
   <div class="exchangesetcontainer">
     <h1 id="main" tabindex="-1">Exchange sets</h1>
 
-    <h2 style="font-size:21px" *ngIf="requestedProductsNotInExchangeSet && requestedProductsNotInExchangeSet.length > 0">
-      The following ENCs are not included in the Exchange Set:
-    </h2>
-
-    <ul>
-      <li *ngFor="let msg of requestedProductsNotInExchangeSet ">
-        {{msg.productName}} - {{msg.reason}}
-      </li>
-    </ul>
+    <div class="warningsBoxForDownload">
+      <ukho-dialogue [type]='messageType' aria-live="polite" *ngIf="displayErrorMessage" tabindex="-1">
+        <h3 style="font-size:21px">
+           {{messageTitle}}
+        </h3>
+        <div *ngFor="let msg of requestedProductsNotInExchangeSet ">
+          <div class="warningMsg">{{messageDesc}} {{msg.productName}} - {{msg.reason}}</div>
+        </div>
+      </ukho-dialogue>
+    </div>
     
     <p class="light" role="alert">Your exchange set is available as a download via your browser</p>
     <p class="light" role="alert">The zip file will be ready soon, please do not refresh or leave this browser window. </p>
