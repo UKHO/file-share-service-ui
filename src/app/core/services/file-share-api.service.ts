@@ -31,7 +31,6 @@ export class FileShareApiService {
 
     clearCookies(): Observable<any> {
         let token = localStorage.getItem('idToken');
-        console.log(token);
         let headers =  {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ token 

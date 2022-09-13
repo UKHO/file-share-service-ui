@@ -43,7 +43,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     return {
         interactionType: AppConfigService.settings["b2cConfig"].interactionType,
         protectedResourceMap: new Map([
-            [AppConfigService.settings["fssConfig"].apiUrl+'/auth/logout', null],
+            [AppConfigService.settings["fssConfig"].stateManagementApiUrl+'/logout', null],
             [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].apiScope]],
             [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].apiScope]],         
         ]),
