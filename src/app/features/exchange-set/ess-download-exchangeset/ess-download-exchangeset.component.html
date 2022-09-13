@@ -1,11 +1,16 @@
 <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i class="fas fa-less-than"></i>  Start again</a>
 
 <div class="container">
+  <div>
+    <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" >
+        <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
+    </ukho-dialogue>
+</div>
   <div class="exchangesetcontainer">
     <h1 id="main" tabindex="-1">Exchange sets</h1>
 
     <div class="warningsBoxForDownload">
-      <ukho-dialogue [type]='messageType' aria-live="polite" *ngIf="displayErrorMessage" tabindex="-1">
+      <ukho-dialogue [type]='messageType' aria-live="polite" *ngIf="displayMessage" tabindex="-1">
         <h3 style="font-size:21px">
            {{messageTitle}}
         </h3>
@@ -20,9 +25,12 @@
   </div>
   <div class="ess-container">
     <div class="ess-download-wrapper">
-      <h3 style="padding-left: 15px;">Exchange set download</h3>
-      <div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert"
+      <h4 style="padding-left: 15px;margin-top: 20px;margin-bottom: 20px">Exchange set download</h4>
+      <div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayEssLoader" aria-live='polite' role="alert"
         aria-label="Results Loading"><i class="fas fa-circle-notch fa-spin" style="font-size:220px;color:green"></i></div>
+        <div *ngIf="displayDownloadBtn">
+          <ukho-button class="btnDownload" (click)="download()">Download</ukho-button>
+        </div>
     </div>
     <div class="divider"></div>
     <div style="flex: 3">
