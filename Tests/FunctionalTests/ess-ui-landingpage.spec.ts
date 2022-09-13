@@ -18,16 +18,18 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
      })
 
-      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806 
-      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806 
+     test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
+
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
-          //await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload your whole permit file or a .csv file");
-          //await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
+          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload your whole permit file or a .csv file");
+          await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
      test('Verify clicking on First Radio Button, "click to choose file" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
+
           await esslandingPageObjects.expect.chooseuploadfileoptionSelectorIsVisible();
           await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible();
      })
@@ -35,6 +37,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
      test('Verify clicking on Second Radio Button, "Select single ENCs" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
+
           await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
           await esslandingPageObjects.expect.proceedButtonSelectorIsVisible();
      })
@@ -70,7 +73,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/FileOtherThanCSVorTXT.xlsx');
-         // await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt');
+          await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt');
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13811
@@ -79,9 +82,10 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
+
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
-          })
+     })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13817
      test('Upload TXT file with valid & invalid ENCs and verify ENC uploaded', async ({ page }) => {
@@ -89,6 +93,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
+
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
@@ -101,30 +106,32 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          //await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
-          
+
+          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13826
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in TXT File, upload only valid and once.', async ({ page }) => {
-          
+
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220']
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData//ValidAndDuplicateENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
+
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
-          
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
-     //   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944
-     //   test('Verify that error displays when user enters invalid single ENC', async ({ page }) => {
-     //      await page.click(esslandingpageObjects.addencradiobtnSelector);
-     //      await page.fill(esslandingpageObjects.addSingleENCTextboxSelector, esslandingpageObjects.invalidENCValue);
-     //      await page.click(esslandingpageObjects.proceedButtonSelector);
-     //      await expect(page.locator(esslandingpageObjects.errorMessageForInvalidENCSelector)).toContainText(esslandingpageObjects.messageForInvalidENCs)
-     // })
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944
+     test('Verify that error displays when user enters invalid single ENC', async ({ page }) => {
+
+          await esslandingPageObjects.addencradiobtnSelectorClick();
+          await esslandingPageObjects.setaddSingleENCTextboxSelector("A1720150");
+          await esslandingPageObjects.proceedButtonSelectorClick();
+
+          await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
+     })
 
 });

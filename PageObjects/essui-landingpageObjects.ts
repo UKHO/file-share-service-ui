@@ -1,7 +1,7 @@
 import { Page, Locator, expect } from "@playwright/test";
 
 export class EssLandingPageObjects {
-    readonly expect: EssLandingpageAssertions;
+    readonly expect: EssLandingPageAssertions;
     readonly radioButtonNameSelector: Locator;
     readonly exchangesettextSelector: Locator;
     readonly uploadbtntextSelector: Locator;
@@ -16,22 +16,20 @@ export class EssLandingPageObjects {
     readonly errorMessageExcludeENCsSelector: Locator;
     readonly txtFileNameWithExtension: Locator;
     readonly chooseuploadfileSelector: Locator;
-    readonly invalidENCValue: Locator;
     readonly errorMessageForInvalidENCSelector: Locator;
-    readonly messageForInvalidENCs: Locator;
     readonly selectionTextSelector: Locator;
     readonly startAgainLinkSelector: Locator;
     readonly addSingleENCTextboxSelector: Locator;
     readonly ENClistTable: Locator;
 
     constructor(readonly page: Page) {
-        this.expect = new EssLandingpageAssertions(this);
+        this.expect = new EssLandingPageAssertions(this);
         this.radioButtonNameSelector = this.page.locator("//label[text()='Upload your whole permit file or a .csv file']");
         this.exchangesettextSelector = this.page.locator("h1#main");
         this.uploadbtntextSelector = this.page.locator("#radioUploadEnc");
         this.addenctextSelector = this.page.locator("#radioAddEnc");
-        this.uploadradiobtnSelector = this.page.locator("#ukho-radio-1");
-        this.addencradiobtnSelector = this.page.locator("#ukho-radio-2");
+        this.uploadradiobtnSelector = this.page.locator("//input[@value='UploadEncFile']");
+        this.addencradiobtnSelector = this.page.locator("//input[@value='AddSingleEnc']");
         this.chooseuploadfileoptionSelector = this.page.locator("#file-upload");
         this.chooseuploadfileproceedSelector = this.page.locator("ukho-button.UploadButton");
         this.addsingleencSelector = this.page.locator("button[type='submit']");
@@ -40,12 +38,10 @@ export class EssLandingPageObjects {
         this.errorMessageExcludeENCsSelector = this.page.locator("section:has-text('Some values have not been added to list.')");
         this.txtFileNameWithExtension = this.page.locator("ValidAndInvalidENCs");
         this.chooseuploadfileSelector = this.page.locator("span.instructions.ng-star-inserted");
-        this.invalidENCValue = this.page.locator("A1720150");
         this.errorMessageForInvalidENCSelector = this.page.locator("section:has-text('Invalid ENC number')");
-        this.messageForInvalidENCs = this.page.locator("Invalid ENC number");
         this.selectionTextSelector = this.page.locator("body > app-root:nth-child(1) > div:nth-child(4) > app-ess-list-encs:nth-child(2) > div:nth-child(2) > div:nth-child(4) > div:nth-child(3) > h3:nth-child(1)");
         this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
-        this.addSingleENCTextboxSelector = this.page.locator("#ukho-form-field-1");
+        this.addSingleENCTextboxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
         this.ENClistTable = this.page.locator('//table/tbody/tr');
     }
 
@@ -57,12 +53,6 @@ export class EssLandingPageObjects {
         ]);
         await fileChooserDataFile.setFiles(filePath);
     }
-
-    // async addSingleENC(page: Page): Promise<void> {
-    //     await this.addencradiobtnSelectorClick();
-    //     await page.fill(elementSelector, esslandingpageObjects.ENCValue2);
-    //     await this.proceedButtonSelectorClick();
-    // }
 
     async uploadradiobtnSelectorClick(): Promise<void> {
         await this.uploadradiobtnSelector.click();
@@ -76,10 +66,14 @@ export class EssLandingPageObjects {
         await this.proceedButtonSelector.click();
     }
 
+    async setaddSingleENCTextboxSelector(data: string): Promise<void> {
+        await this.addSingleENCTextboxSelector.fill(data);
+    }
+
 }
 
 
-class EssLandingpageAssertions {
+class EssLandingPageAssertions {
     constructor(readonly esslandingPageObjects: EssLandingPageObjects) {
     }
 
@@ -97,7 +91,7 @@ class EssLandingpageAssertions {
 
     async exchangesettextSelectorIsVisible(): Promise<void> {
 
-        expect(this.esslandingPageObjects.exchangesettextSelector).toBeVisible;
+        expect(await this.esslandingPageObjects.exchangesettextSelector).toBeVisible;
     }
 
     async chooseuploadfileoptionSelectorIsVisible(): Promise<void> {
@@ -121,7 +115,6 @@ class EssLandingpageAssertions {
     }
 
     async uploadbtntextSelectorContainText(expected: string): Promise<void> {
-        console.log(this.esslandingPageObjects.uploadbtntextSelector,"uploadbtntextSelector")
 
         expect(this.esslandingPageObjects.uploadbtntextSelector).toContainText(expected);
     }
@@ -130,7 +123,7 @@ class EssLandingpageAssertions {
 
         expect(this.esslandingPageObjects.addenctextSelector).toContainText(expected);
     }
-    
+
     async errorMessageSelectorContainText(expected: string): Promise<void> {
 
         expect(this.esslandingPageObjects.errorMessageSelector).toContainText(expected);
@@ -139,6 +132,11 @@ class EssLandingpageAssertions {
     async errorMessageExcludeENCsSelectorContainText(expected: string): Promise<void> {
 
         expect(this.esslandingPageObjects.errorMessageExcludeENCsSelector).toContainText(expected);
+    }
+
+    async errorMessageForInvalidENCSelectorContainText(expected: string): Promise<void> {
+
+        expect(this.esslandingPageObjects.errorMessageForInvalidENCSelector.innerText()).toEqual(expected);
     }
 
     async uploadedDataSelectorToBeEqual(expected: string): Promise<void> {
