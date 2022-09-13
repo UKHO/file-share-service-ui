@@ -184,11 +184,11 @@ export class EssListEncsComponent implements OnInit {
   }
   selectDeselectAll() {
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
-      this.essUploadFileService.addAllSelectedEncs();
       this.selectDeselectAlert = "Selected All ENC's" ;
+      this.essUploadFileService.addAllSelectedEncs();     
     } else {
-      this.essUploadFileService.clearSelectedEncs();
       this.selectDeselectAlert = "DeSelected All ENC's" ;
+      this.essUploadFileService.clearSelectedEncs();    
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
