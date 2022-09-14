@@ -61,8 +61,37 @@ stages:
     displayName: "Build (Build ,test and publish artifact )"
     dependsOn: []
     jobs:
+
+     - job: Dependencychecker
+       pool: $(WindowPool)
+       displayName: "Dependency checker"
+       workspace:
+        clean: all
+       steps:
+          - task: CmdLine@1
+            displayName: "Run OWASP Dependency Checker"
+            inputs:
+              filename: 'dependency-check.bat'
+              arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate'
+
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish Artifact: OWASP Dependency Checker Report"
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)\DCReport'
+              ArtifactName: "OWASP Dependency Checker Report"
+
+          - task: PowerShell@1
+            displayName: "Fail Build if Dependency Check Finds Any Vulnerabilities"
+            inputs:
+              scriptType: inlineScript
+              arguments: '-ReportLocation $(Build.ArtifactStagingDirectory)\DCReport\*'
+              inlineScript: |
+                param($ReportLocation)
+                Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
+
      - job: BuildTestPublish
        pool: $(DeploymentPool)
+       dependsOn: Dependencychecker
        container: ${{variables.Container}}
        workspace:
          clean: all # what to clean up before the job runs outputs | resources | all
@@ -76,10 +105,6 @@ stages:
             displayName: 'Install Node.js'
 
           - script: |
-              npm version 
-            displayName: 'npm version'
-
-          - script: |
               npm ci
             displayName: 'npm restore'
           
@@ -91,10 +116,6 @@ stages:
              npm run test:unit
             continueOnError: false
             displayName: 'Unit test with Jest'
-
-          - script: |
-              npm version 
-            displayName: 'npm version'
 
           - task: PublishTestResults@2
             condition: succeededOrFailed()
