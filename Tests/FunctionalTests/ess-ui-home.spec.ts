@@ -4,13 +4,16 @@ import { autoTestConfig } from '../../appSetting.json';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
-import { esslandingpageObjectsConfig } from '../../PageObjects/essui-landingpageObjects.json';
+import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 
 
 test.describe('ESS UI Home Page Functional Test Scenarios', () => {
 
+    let esslandingPageObjects: EssLandingPageObjects;
+
     test.beforeEach(async ({ page }) => {
 
+        esslandingPageObjects = new EssLandingPageObjects(page);
         await page.goto(autoTestConfig.url);
         await page.waitForLoadState();
         await AcceptCookies(page);
@@ -57,7 +60,8 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.goto(autoTestConfig.url+"/#/exchangesets");
         await page.waitForLoadState('load');
-        expect(await page.innerText(esslandingpageObjectsConfig.radioButtonNameSelector)).toEqual(esslandingpageObjectsConfig.radioButton1Name);
+        await esslandingPageObjects.expect.verifyUploadRadioButtonName("Upload your whole permit file or a .csv file");
+        
     });
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13795
