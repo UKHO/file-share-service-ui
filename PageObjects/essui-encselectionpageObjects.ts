@@ -59,6 +59,7 @@ export class EncSelectionPageObjects {
         this.selectionTextSelector = this.page.locator("//h3[text()='Your selection ']");
         this.ENCTableENClist = this.page.locator('//table/tbody/tr');
         this.ENCTableCheckboxlist = this.page.locator('//table/tbody/tr/td[2]/ukho-checkbox/input');
+        
     }
 
     async addSingleENC(data: string): Promise<void> {

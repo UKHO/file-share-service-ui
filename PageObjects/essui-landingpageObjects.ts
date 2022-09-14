@@ -41,7 +41,7 @@ export class EssLandingPageObjects {
         this.errorMessageForInvalidENCSelector = this.page.locator("section:has-text('Invalid ENC number')");
         this.selectionTextSelector = this.page.locator("body > app-root:nth-child(1) > div:nth-child(4) > app-ess-list-encs:nth-child(2) > div:nth-child(2) > div:nth-child(4) > div:nth-child(3) > h3:nth-child(1)");
         this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
-        this.addSingleENCTextboxSelector = this.page.locator("#ukho-form-field-1");
+        this.addSingleENCTextboxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
         this.ENClistTable = this.page.locator('//table/tbody/tr');
     }
 
