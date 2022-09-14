@@ -97,7 +97,7 @@ export class EssListEncsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-  handleChange(enc: string) {
+  handleChange(enc: string,event?: Event | null) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
     this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
@@ -105,7 +105,7 @@ export class EssListEncsComponent implements OnInit {
       this.selectDeselectEncAlert= "not checked " + enc + " Remove From Selected List";
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
-      this.selectDeselectEncAlert= "not checked " + enc + " Remove From Selected List";
+      this.selectDeselectEncAlert= "checked " + enc + " Added From Selected List";
     } else {
       this.showMessage(
         'error',
@@ -114,6 +114,12 @@ export class EssListEncsComponent implements OnInit {
       window.scrollTo(0, 0);
     }
     this.syncEncsBetweenTables();
+    setTimeout(() => {
+      const element = document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement;
+      if(element && event){
+          element.focus();
+      }
+    },5);
   }
 
   syncEncsBetweenTables() {
@@ -134,7 +140,7 @@ export class EssListEncsComponent implements OnInit {
     }
   }
 
-  onSortChange(sortState: SortState) {
+    onSortChange(sortState: SortState) {
     this.encList = [
       ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
