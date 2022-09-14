@@ -62,7 +62,6 @@ stages:
     dependsOn: []
     jobs:
      - job: BuildTestPublish
-       dependsOn: Dependencychecker
        pool: $(DeploymentPool)
        container: ${{variables.Container}}
        workspace:
