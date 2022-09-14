@@ -76,6 +76,10 @@ stages:
             displayName: 'Install Node.js'
 
           - script: |
+              npm version 
+            displayName: 'npm version'
+
+          - script: |
               npm ci
             displayName: 'npm restore'
           
