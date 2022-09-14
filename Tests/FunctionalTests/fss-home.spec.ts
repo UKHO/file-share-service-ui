@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects';
+import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { AcceptCookies } from '../../Helper/CommonHelper';
 
 test.describe('FSS UI Home Page Functional Test Scenarios', () => {

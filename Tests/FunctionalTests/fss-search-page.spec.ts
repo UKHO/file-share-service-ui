@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects';
+import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
+import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { ClickWaitRetry, SearchAttribute} from '../../Helper/SearchPageHelper';
 import { stringOperatorList, symbolOperatorListForFileSize, symbolOperatorListForDate } from '../../Helper/ConstantHelper'

@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects';
-import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects';
-import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects';
+import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
+import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
+import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 
 test.describe('Test Sign In Page Scenario', () => {
