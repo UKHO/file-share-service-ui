@@ -76,6 +76,10 @@ stages:
             displayName: 'Install Node.js'
 
           - script: |
+              npm version
+            displayName: 'list directories'
+
+          - script: |
               ls
               pwd
             displayName: 'list directories'
