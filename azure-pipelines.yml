@@ -116,6 +116,10 @@ stages:
             continueOnError: false
             displayName: 'Unit test with Jest'
 
+          - script: |
+              npm version 
+            displayName: 'npm version'
+
           - task: PublishTestResults@2
             condition: succeededOrFailed()
             inputs:
