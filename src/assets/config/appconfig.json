@@ -1,6 +1,6 @@
 {
   "Environment": "",
-  "GoogleTagManagerId":"Not-Needed-For-Running-Locally",
+  "GoogleTagManagerId": "Not-Needed-For-Running-Locally",
   "b2cConfig": {
     "tenantName": "",
     "clientId": "",
@@ -25,34 +25,34 @@
     "stateManagementApiUrl": "",
     "batchAttributes": [
       {
-          "attributeSortType":"alphabetical",
-          "attribute":"Media Type",
-          "sortOrder":"ascending"
+        "attributeSortType": "alphabetical",
+        "attribute": "Media Type",
+        "sortOrder": "ascending"
       },
       {
-          "attributeSortType":"alphabetical",
-          "attribute":"Product Type",
-          "sortOrder":"ascending"
+        "attributeSortType": "alphabetical",
+        "attribute": "Product Type",
+        "sortOrder": "ascending"
       },
       {
-        "attributeSortType":"numeric",
-        "attribute":"Year / Week",
-        "sortOrder":"descending"
+        "attributeSortType": "numeric",
+        "attribute": "Year / Week",
+        "sortOrder": "descending"
       },
       {
-        "attributeSortType":"numeric",
-        "attribute":"Year",
-        "sortOrder":"descending"
+        "attributeSortType": "numeric",
+        "attribute": "Year",
+        "sortOrder": "descending"
       }
     ]
   },
   "essConfig": {
     "MaxEncLimit": "250",
-    "MaxEncSelectionLimit":"100",
-    "maxRetries":"3",
-    "initialDelayMs":"1000",
+    "MaxEncSelectionLimit": "100",
+    "maxRetries": "3",
+    "initialDelayMs": "1000",
     "apiUrl": "",
     "apiScope": "",
-    "avgSizeofENCinMB":"0.3"
+    "avgSizeofENCinMB": "0.3"
   }
 }
