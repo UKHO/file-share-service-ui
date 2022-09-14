@@ -63,8 +63,8 @@ export class EssAddSingleEncsComponent implements OnInit {
           }
           else {
             this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
+            this.addValidEncAlert= this.txtSingleEnc + "  Added to List";
             this.txtSingleEnc = '';
-            this.addValidEncAlert = "ENC number Added into List";
           }
         }
         else {

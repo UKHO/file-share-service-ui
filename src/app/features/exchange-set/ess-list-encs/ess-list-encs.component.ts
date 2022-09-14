@@ -102,10 +102,10 @@ export class EssListEncsComponent implements OnInit {
     this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
-      this.selectDeselectEncAlert= "not checked " + enc + " Remove From Selected List";
+      this.selectDeselectEncAlert= enc + " Remove From Selected List";
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
-      this.selectDeselectEncAlert= "checked " + enc + " Added From Selected List";
+      this.selectDeselectEncAlert= enc + " Added From Selected List";
     } else {
       this.showMessage(
         'error',
