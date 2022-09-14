@@ -146,4 +146,8 @@ class EssLandingPageAssertions {
         expect(uploadedEncs[0]).toEqual(expected);
     }
 
+    async verifyUploadRadioButtonName(expected:string): Promise<void> {
+        expect(await this.esslandingPageObjects.radioButtonNameSelector.innerText()).toEqual(expected);
+    }
+
 }
