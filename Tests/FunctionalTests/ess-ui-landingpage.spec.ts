@@ -91,7 +91,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
@@ -127,7 +126,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("A1720150");
           await esslandingPageObjects.proceedButtonSelectorClick();
-
           await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
      })
 });

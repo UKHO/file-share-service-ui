@@ -35,7 +35,7 @@ export class EssLandingPageObjects {
         this.addsingleencSelector = this.page.locator("button[type='submit']");
         this.proceedButtonSelector = this.page.locator("//button[@type='submit']");
         this.errorMessageSelector = this.page.locator("section:has-text('Please select a .csv or .txt file')");
-        this.errorMessageExcludeENCsSelector = this.page.locator("section:has-text('Some values have not been added to list.')");
+        this.errorMessageExcludeENCsSelector = this.page.locator("//ukho-dialogue/section");
         this.txtFileNameWithExtension = this.page.locator("ValidAndInvalidENCs");
         this.chooseuploadfileSelector = this.page.locator("span.instructions.ng-star-inserted");
         this.errorMessageForInvalidENCSelector = this.page.locator("section:has-text('Invalid ENC number')");
@@ -91,48 +91,46 @@ class EssLandingPageAssertions {
 
     async exchangesettextSelectorIsVisible(): Promise<void> {
 
-        expect(await this.esslandingPageObjects.exchangesettextSelector).toBeVisible;
+         expect(await this.esslandingPageObjects.exchangesettextSelector).toBeVisible;
     }
 
     async chooseuploadfileoptionSelectorIsVisible(): Promise<void> {
 
-        expect(this.esslandingPageObjects.chooseuploadfileoptionSelector).toBeVisible;
+         expect(await this.esslandingPageObjects.chooseuploadfileoptionSelector).toBeVisible;
     }
 
     async chooseuploadfileproceedSelectorIsVisible(): Promise<void> {
 
-        expect(this.esslandingPageObjects.chooseuploadfileproceedSelector).toBeVisible;
+         expect(await this.esslandingPageObjects.chooseuploadfileproceedSelector).toBeVisible;
     }
 
     async addsingleencSelectorIsVisible(): Promise<void> {
 
-        expect(this.esslandingPageObjects.addsingleencSelector).toBeVisible;
+         expect(await this.esslandingPageObjects.addsingleencSelector).toBeVisible;
     }
 
     async proceedButtonSelectorIsVisible(): Promise<void> {
 
-        expect(this.esslandingPageObjects.proceedButtonSelector).toBeVisible;
+         expect(await this.esslandingPageObjects.proceedButtonSelector).toBeVisible;
     }
 
     async uploadbtntextSelectorContainText(expected: string): Promise<void> {
-        console.log(this.esslandingPageObjects.uploadbtntextSelector,"uploadbtntextSelector")
-
-        expect(this.esslandingPageObjects.uploadbtntextSelector).toContainText(expected);
+         expect(await await this.esslandingPageObjects.uploadbtntextSelector.innerText()).toEqual(expected);
     }
 
     async addenctextSelectorContainText(expected: string): Promise<void> {
 
-        expect(this.esslandingPageObjects.addenctextSelector).toContainText(expected);
+         expect(await this.esslandingPageObjects.addenctextSelector.innerText()).toEqual(expected);
     }
 
     async errorMessageSelectorContainText(expected: string): Promise<void> {
 
-        expect(this.esslandingPageObjects.errorMessageSelector).toContainText(expected);
+         expect(await this.esslandingPageObjects.errorMessageSelector.innerText()).toEqual(expected);
     }
 
     async errorMessageForInvalidENCSelectorContainText(expected: string): Promise<void> {
 
-        expect(this.esslandingPageObjects.errorMessageExcludeENCsSelector).toContainText(expected);
+         expect(await this.esslandingPageObjects.errorMessageForInvalidENCSelector.innerText()).toEqual(expected);
     }
 
     async errorMessageExcludeENCsSelectorContainText(expected: string): Promise<void> {
@@ -147,7 +145,7 @@ class EssLandingPageAssertions {
     }
 
     async verifyUploadRadioButtonName(expected:string): Promise<void> {
-        expect(await this.esslandingPageObjects.radioButtonNameSelector.innerText()).toEqual(expected);
+         expect(await this.esslandingPageObjects.radioButtonNameSelector.innerText()).toEqual(expected);
     }
 
 }
