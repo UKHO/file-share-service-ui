@@ -39,7 +39,7 @@ stages:
     pool:
       name: $(coverityPool)
       demands:
-      - Agent.Name -equals HTFSPRDUAG02-Melanie-A01
+      - Agent.Name -equals HTFSPRDUAG03-Melanie-A01
     jobs:
     - job: Coverity
       workspace:
@@ -67,7 +67,7 @@ stages:
        pool:
         name: $(WindowPool)
         demands:
-        - Agent.Name -equals HTFSPRDUAG02-Melanie-A01
+        - Agent.Name -equals HTFSPRDUAG03-Melanie-A01
        displayName: "Dependency checker"
        workspace:
         clean: all
@@ -174,7 +174,7 @@ stages:
         pool:
           name: $(WindowPool)
           demands:
-          - Agent.Name -equals HTFSPRDUAG02-Melanie-A01
+          - Agent.Name -equals HTFSPRDUAG03-Melanie-A01
         displayName: "Functional Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
@@ -224,7 +224,7 @@ stages:
         pool:
           name: $(WindowPool)
           demands:
-          - Agent.Name -equals HTFSPRDUAG02-Melanie-A01
+          - Agent.Name -equals HTFSPRDUAG03-Melanie-A01
         displayName: "End-To-End Tests"
         steps:
            - checkout: self
@@ -264,7 +264,7 @@ stages:
         pool:
           name: $(WindowPool)
           demands:
-          - Agent.Name -equals HTFSPRDUAG02-Melanie-A01
+          - Agent.Name -equals HTFSPRDUAG03-Melanie-A01
         displayName: "Accessibility Tests"
         steps:
            - checkout: self
