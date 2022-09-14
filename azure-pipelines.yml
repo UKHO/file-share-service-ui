@@ -106,6 +106,7 @@ stages:
 
           - script: |
               ls
+              pwd
             displayName: 'list directories'
 
           - script: |
