@@ -105,6 +105,10 @@ stages:
             displayName: 'Install Node.js'
 
           - script: |
+              ls
+            displayName: 'list directories'
+
+          - script: |
               npm ci
             displayName: 'npm restore'
           
