@@ -27,12 +27,14 @@ export class EssDownloadExchangesetComponent implements OnInit {
   downloadUrl: string;
   exchangeSetCellCount: number;
   avgEstimatedSize: any;
-  requestedProductsNotInExchangeSet: any[];
-
+  requestedProductsNotInExchangeSet : any[];
+  messageTitle: string = "";
+  displayErrorMessage = false;
+  displayMessage = false;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
+  @ViewChild('ukhoTarget') ukhoDialogForEnc: ElementRef;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
-  displayErrorMessage = false;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private fileShareApiService: FileShareApiService,
@@ -49,6 +51,13 @@ export class EssDownloadExchangesetComponent implements OnInit {
     this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
     this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
     this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
+    
+    if(this.requestedProductsNotInExchangeSet && this.requestedProductsNotInExchangeSet.length > 0){
+      this.displayMessage = true;
+      this.messageTitle = 'The following ENCs are not included in the Exchange Set:';
+      this.showMessage("warning", this.messageTitle);
+    }
+
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus();
@@ -113,14 +122,18 @@ export class EssDownloadExchangesetComponent implements OnInit {
 
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
-    messageDesc: string = ''
+    messageTitle: string = "", messageDesc: string = ""
   ) {
     this.messageType = messageType;
+    this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;
-    this.displayErrorMessage = true;
     if (this.ukhoDialog !== undefined) {
       this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
       this.ukhoDialog.nativeElement.focus();
+    }
+    if (this.ukhoDialogForEnc !== undefined) {
+      this.ukhoDialogForEnc.nativeElement.setAttribute('tabindex', '-1');
+      this.ukhoDialogForEnc.nativeElement.focus();
     }
   }
 }
