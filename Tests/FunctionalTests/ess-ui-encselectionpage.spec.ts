@@ -136,7 +136,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
       expect(await page.innerText(encselectionpageObjectsConfig.countForLeftTableSelector)).toEqual("Showing " + leftTableRowsCount + " ENCs");
       expect(await page.innerText(encselectionpageObjectsConfig.countForRightTableSelector)).toEqual("" + rightTableRowsCount + " ENCs selected");
-      if (rightTableRowsCount < 3) {
+      if (rightTableRowsCount < 4) {
          expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + Math.round(rightTableRowsCount * (0.3) * 1024) + "KB");
       }
       else
