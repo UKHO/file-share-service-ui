@@ -134,7 +134,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13809
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14102 //SPRINT 4 (Added data in ValidENCs.csv)
-     test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
+     test.only('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
           // await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
           // await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/ValidENCs.csv');
           // await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
