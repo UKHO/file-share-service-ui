@@ -12,6 +12,29 @@
 
 .showListEncTOtal {
     float: right;
+    font-family: JohnstonITC, Helvetica, sans-serif;
+    color: #09315b;
+    font-weight: 400;
+    font-size: 0.9em;
+    line-height: 24px;
+    margin-bottom: 12px;
+}
+
+.ShowEncList {
+font-family: JohnstonITC,Helvetica,sans-serif;
+    color: #09315b;
+    font-weight: 400;
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+
+.estimatedExchangeSetSize{
+    font-family: JohnstonITC,Helvetica,sans-serif;
+    color: #09315b;
+    font-weight: 400;
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 12px;
 }
 
 table th:last-child {
@@ -59,10 +82,17 @@ table th:last-child {
     font-weight: bold;
     margin: 20px 0 20px 10px;
     display: block;
+    i{
+        padding-right: 6px;
+        font-size: 14px;
+     }
 }
 .lnkAddAnotherEnc
 {
     display: block;
     text-decoration: none;
-    font-weight: 500
+    font-weight: 500;
+    i{
+        font-size: 14px;
+     }
 }

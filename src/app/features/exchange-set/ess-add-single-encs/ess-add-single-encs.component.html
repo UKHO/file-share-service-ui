@@ -6,10 +6,12 @@
     </div>
     <div class="addSingleFileSection">
         <ukho-textinput class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"
-            [(ngModel)]="txtSingleEnc"></ukho-textinput>
+            [(ngModel)]="txtSingleEnc" (keyup.enter)="validateAndAddENC()"></ukho-textinput>
         <br />
+        <span class="sr-only" role="alert" aria-live="polite">{{addValidEncAlert}}</span>
         <ukho-button (click)="validateAndAddENC()">
-            {{this.btnText}}
+            {{this.btnText}} 
            </ukho-button>
     </div>
 </div>
+
