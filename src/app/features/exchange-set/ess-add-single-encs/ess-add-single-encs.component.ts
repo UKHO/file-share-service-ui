@@ -18,7 +18,7 @@ export class EssAddSingleEncsComponent implements OnInit {
   validEncList: string[];
   validEnc: Array<string> = [];
   txtSingleEnc: string = "";
-
+  addValidEncAlert: string;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router) { }
 
@@ -63,6 +63,7 @@ export class EssAddSingleEncsComponent implements OnInit {
           }
           else {
             this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
+            this.addValidEncAlert= this.txtSingleEnc + "  Added to List";
             this.txtSingleEnc = '';
           }
         }

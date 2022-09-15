@@ -5,9 +5,10 @@
 <div class="container">
   <div>
     <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
-      <h3 role="alert">{{messageDesc}}</h3>
+      <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
     </ukho-dialogue>
   </div>
+  <span class="sr-only" role="alert" aria-label="Enc File is Ready"></span>
   <h1 id="main" tabindex="-1">Exchange sets</h1>
   <p>Select up to {{maxEncSelectionLimit}} ENCs and make an exchange set</p>
   <div class="showEncListWrapper">
@@ -24,7 +25,7 @@
           <ng-container ukhoColumnDef="Choose">
             <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);"  class="selectDeselctBtn"   > {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
             <td ukho-cell *ukhoCellDef="let element">
-              <ukho-checkbox  [checked]="element.selected" (change)="handleChange(element.enc)" class="selectEnc"
+              <ukho-checkbox  [checked]="element.selected" (change)="handleChange(element.enc, $event)" class="selectEnc"
                 attr.aria-label="{{element.enc}}" ><span class="sr-only">{{element.enc}} </span></ukho-checkbox>
             </td>
           </ng-container>

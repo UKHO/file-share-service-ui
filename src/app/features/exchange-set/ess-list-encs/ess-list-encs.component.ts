@@ -97,15 +97,15 @@ export class EssListEncsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-  handleChange(enc: string) {
+  handleChange(enc: string,event?: Event | null) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
     this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
-      this.selectDeselectEncAlert= "not checked " + enc + " Remove From Selected List";
+      this.selectDeselectEncAlert= enc + " Remove From Selected List";
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
-      this.selectDeselectEncAlert= "not checked " + enc + " Remove From Selected List";
+      this.selectDeselectEncAlert= enc + " Added From Selected List";
     } else {
       this.showMessage(
         'error',
@@ -114,6 +114,12 @@ export class EssListEncsComponent implements OnInit {
       window.scrollTo(0, 0);
     }
     this.syncEncsBetweenTables();
+    setTimeout(() => {
+      const element = document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement;
+      if(element && event){
+          element.focus();
+      }
+    },5);
   }
 
   syncEncsBetweenTables() {
@@ -134,7 +140,7 @@ export class EssListEncsComponent implements OnInit {
     }
   }
 
-  onSortChange(sortState: SortState) {
+    onSortChange(sortState: SortState) {
     this.encList = [
       ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
@@ -166,12 +172,13 @@ export class EssListEncsComponent implements OnInit {
         this.route.navigate(['exchangesets', 'enc-download']);
       },
         (error) => {
+          this.displayLoader = false;
           this.showMessage('error', 'There has been an error');
         }
       );
    }
   }
-  
+
   getEstimatedTotalSize() {
     var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
     return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
@@ -203,18 +210,12 @@ export class EssListEncsComponent implements OnInit {
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
-        this.displayLoader = false;
-      });
       this.exchangeSetCreationResponse(this.selectedEncList);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-          this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
-            this.displayLoader = false;
-            this.exchangeSetCreationResponse(this.selectedEncList);
-          });
+          this.exchangeSetCreationResponse(this.selectedEncList);
         })
     })
   }
