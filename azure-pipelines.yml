@@ -77,12 +77,16 @@ stages:
 
           - script: |
               npm version
-            displayName: 'list directories'
+            displayName: 'NPM Version'
 
           - script: |
               ls
               pwd
             displayName: 'list directories'
+
+          - script: |
+              npm install --save --legacy-peer-deps
+            displayName: 'npm install with Ignoring legacy dependencies'
 
           - script: |
               npm ci
