@@ -87,10 +87,6 @@ stages:
           - script: |
               npm install --save --legacy-peer-deps
             displayName: 'npm install with Ignoring legacy dependencies'
-
-          - script: |
-              npm ci
-            displayName: 'npm restore'
           
           - script: |
               npm run build
