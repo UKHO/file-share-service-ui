@@ -61,6 +61,7 @@ stages:
     displayName: "Build (Build ,test and publish artifact )"
     dependsOn: []
     jobs:
+
      - job: Dependencychecker
        pool: $(WindowPool)
        displayName: "Dependency checker"
@@ -89,8 +90,8 @@ stages:
                 Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
 
      - job: BuildTestPublish
-       dependsOn: Dependencychecker
        pool: $(DeploymentPool)
+       dependsOn: Dependencychecker
        container: ${{variables.Container}}
        workspace:
          clean: all # what to clean up before the job runs outputs | resources | all
