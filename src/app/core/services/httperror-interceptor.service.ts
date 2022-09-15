@@ -25,6 +25,7 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
                 this.retryCount = index;
               }
               else {
+                throw new Error(err.error);
                 return false;
               }
               return true;
