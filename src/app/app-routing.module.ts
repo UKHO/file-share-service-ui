@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BrowserUtils } from '@azure/msal-browser';
 import { AuthGuard } from './core/services/auth.guard';
 import { FssHomeComponent } from './features/fss-home/fss-home.component';
 const routes: Routes = [
