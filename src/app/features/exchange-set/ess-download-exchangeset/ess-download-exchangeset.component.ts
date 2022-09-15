@@ -26,6 +26,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
   downloadPath: string;
   downloadUrl: string;
   exchangeSetCellCount: number;
+  requestedProductCount : number;
   avgEstimatedSize: any;
   requestedProductsNotInExchangeSet: any[];
 
@@ -47,6 +48,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
   ngOnInit(): void {
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
     this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
+    this.requestedProductCount = this.exchangeSetDetails.requestedProductCount;
     this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
     this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
