@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { LoginPortal } from '../../Helper/CommonHelper';
+import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
@@ -18,6 +18,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
       await page.goto(autoTestConfig.url);
       await page.waitForLoadState('load');
+      await AcceptCookies(page);
       await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
       await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
       await esslandingPageObjects.uploadradiobtnSelectorClick();
