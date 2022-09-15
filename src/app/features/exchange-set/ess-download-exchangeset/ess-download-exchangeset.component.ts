@@ -27,7 +27,6 @@ export class EssDownloadExchangesetComponent implements OnInit {
   downloadUrl: string;
   exchangeSetCellCount: number;
   avgEstimatedSize: any;
-  result:ExchangeSetDetails;
   requestedProductsNotInExchangeSet : any[];
   messageTitle: string = "";
   displayErrorMessage = false;
@@ -51,8 +50,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
     this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
     this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
-    this.result=this.essUploadFileService.getExchangeSetDetails();
-    this.requestedProductsNotInExchangeSet = this.result.requestedProductsNotInExchangeSet;
+    this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
     
     if(this.requestedProductsNotInExchangeSet && this.requestedProductsNotInExchangeSet.length > 0){
       this.displayMessage = true;
@@ -60,7 +58,6 @@ export class EssDownloadExchangesetComponent implements OnInit {
       this.showMessage("warning", this.messageTitle);
     }
 
-    this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus();
