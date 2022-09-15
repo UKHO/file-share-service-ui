@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfigService } from './app-config.service';
-import { ExchangeSetDetails } from '../models/ess-response-types';
 
 
 @Injectable({ providedIn: 'root' })
@@ -14,5 +13,4 @@ export class ExchangeSetApiService {
     exchangeSetCreationResponse(requestedEncList: string[]): Observable<any>{
         return this.http.post<any>(this.baseUrl + '/productData/productIdentifiers', requestedEncList);
     }
-
 }
