@@ -131,10 +131,24 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14113
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 (SPRINT 4)
    test.only('Verify Count of uploaded & selected ENCs along with estimated size of Exchange set.', async ({ page }) => {
-      let leftTableRowsCount = await encSelectionPageObjects.ENCTableENClist.count();
-      await page.click(encselectionpageObjectsConfig.selectAllSelector);
-      let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
+      // let leftTableRowsCount = await encSelectionPageObjects.ENCTableENClistCol1.count();
+      // await page.click(encselectionpageObjectsConfig.selectAllSelector);
+      // let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
+      // expect(await page.innerText(encselectionpageObjectsConfig.countForLeftTableSelector)).toEqual("Showing " + leftTableRowsCount + " ENCs");
+      // expect(await page.innerText(encselectionpageObjectsConfig.countForRightTableSelector)).toEqual("" + rightTableRowsCount + " ENCs selected");
+      // if (rightTableRowsCount < 4) {
+      //    expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + Math.round(rightTableRowsCount * (0.3) * 1024) + "KB");
+      // }
+      // else
+      //    expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + rightTableRowsCount * (0.3) + "MB");
+
+
+      let leftTableRowsCount = await encSelectionPageObjects.ENCTableENClistCol1.count();
+      await await encSelectionPageObjects.selectAllSelector.click();
+      let rightTableRowsCount = await encSelectionPageObjects.ENCTableENClistCol1.count();
+      await encSelectionPageObjects.verifyNumberofENCs();
       expect(await page.innerText(encselectionpageObjectsConfig.countForLeftTableSelector)).toEqual("Showing " + leftTableRowsCount + " ENCs");
+      
       expect(await page.innerText(encselectionpageObjectsConfig.countForRightTableSelector)).toEqual("" + rightTableRowsCount + " ENCs selected");
       if (rightTableRowsCount < 4) {
          expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + Math.round(rightTableRowsCount * (0.3) * 1024) + "KB");

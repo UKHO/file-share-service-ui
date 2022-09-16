@@ -186,7 +186,7 @@ class EncSelectionPageAssertions {
 
     async verifyENCsSortOrder(expectedENCs: string[]): Promise<void> {
 
-        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClist.allInnerTexts();
+        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
 
@@ -232,17 +232,17 @@ class EncSelectionPageAssertions {
 
     async verifyLeftTableRowsCountSelectorCount(expectedCount: any): Promise<void> {
 
-        expect(await this.encSelectionPageObjects.ENCTableENClist.count()).toEqual(expectedCount)
+        expect(await this.encSelectionPageObjects.ENCTableENClistCol1.count()).toEqual(expectedCount)
     }
 
     async firstEncSelectorToEqual(expected: string): Promise<void> {
-        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClist.allInnerTexts();
+        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
         expect(uploadedEncs[0]).toEqual(expected);
     }
 
     async secondEncSelectorContainText(expected: string): Promise<void> {
-        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClist.allInnerTexts();
+        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
         expect(uploadedEncs[1]).toEqual(expected);
     }
@@ -255,6 +255,16 @@ class EncSelectionPageAssertions {
     async textAboveTableSelectorToEqual(expected: string): Promise<void> {
 
         expect(await this.encSelectionPageObjects.textAboveTableSelector.innerText()).toEqual(expected);
+    }
+
+    async verifyNumberofENCs(expected: string): Promise<void> {
+      //  let leftTableRowsCount = await encSelectionPageObjects.ENCTableENClistCol1.count();
+     
+      let rightTableRowsCount = await this.encSelectionPageObjects.ENCTableENClistCol1.count();
+
+        let leftTableRowsCount = await this.encSelectionPageObjects.ENCTableENClistCol1.count();
+        await this.encSelectionPageObjects.selectAllSelector.click();
+        expect(await leftTableRowsCount).toEqual("Showing " + leftTableRowsCount + " ENCs");
     }
 
 }
