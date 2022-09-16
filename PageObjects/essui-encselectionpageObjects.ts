@@ -30,12 +30,13 @@ export class EncSelectionPageObjects {
     readonly chooseBoxSelecetor: Locator;
     readonly errorMsgMaxLimitSelector: Locator;
     readonly errorMsgMaxLimit: Locator;
-    readonly ENCTableENClist: Locator;
+    readonly ENCTableENClistCol1: Locator;
     readonly ENCTableCheckboxlist: Locator;
     readonly uploadradiobtnSelector: Locator;
     readonly addencradiobtnSelector: Locator;
     readonly selectionTextSelector: Locator;
     readonly addSingleENCTextboxSelector: Locator
+    readonly selectAllSelector: Locator
 
     constructor(readonly page: Page) {
         this.expect = new EncSelectionPageAssertions(this);
@@ -57,8 +58,9 @@ export class EncSelectionPageObjects {
         this.chooseBoxSelecetor = this.page.locator("input[id = 'ukho-form-field-5']");
         this.errorMsgMaxLimitSelector = this.page.locator("//ukho-dialogue");
         this.selectionTextSelector = this.page.locator("//h3[text()='Your selection ']");
-        this.ENCTableENClist = this.page.locator('//table/tbody/tr');
+        this.ENCTableENClistCol1 = this.page.locator('//table/tbody/tr/td[1]');
         this.ENCTableCheckboxlist = this.page.locator('//table/tbody/tr/td[2]/ukho-checkbox/input');
+        this.selectAllSelector =this.page.locator("//a[text()='Select all']")
         
     }
 

@@ -20,7 +20,7 @@ export class EssLandingPageObjects {
     readonly selectionTextSelector: Locator;
     readonly startAgainLinkSelector: Locator;
     readonly addSingleENCTextboxSelector: Locator;
-    readonly ENClistTable: Locator;
+    readonly ENClistTableCol1: Locator;
 
     constructor(readonly page: Page) {
         this.expect = new EssLandingPageAssertions(this);
@@ -42,7 +42,8 @@ export class EssLandingPageObjects {
         this.selectionTextSelector = this.page.locator("body > app-root:nth-child(1) > div:nth-child(4) > app-ess-list-encs:nth-child(2) > div:nth-child(2) > div:nth-child(4) > div:nth-child(3) > h3:nth-child(1)");
         this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
         this.addSingleENCTextboxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
-        this.ENClistTable = this.page.locator('//table/tbody/tr');
+        this.ENClistTableCol1 = this.page.locator('//table/tbody/tr/td[1]');
+       // this.ENClistTableCol2 = this.page.locator('//table/tbody/tr/td[2]');
     }
 
     async uploadFile(page: Page, filePath: string): Promise<void> {
@@ -72,50 +73,50 @@ export class EssLandingPageObjects {
 
 }
 
-
 class EssLandingPageAssertions {
     constructor(readonly esslandingPageObjects: EssLandingPageObjects) {
     }
 
     async verifyUploadedENCs(expectedENCs: string[]): Promise<void> {
 
-        const uploadedEncs = await this.esslandingPageObjects.ENClistTable.allInnerTexts();
-
+        let uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
+        
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
 
         for (var i = 0; i < expectedENCs.length; i++) {
 
-            expect(uploadedEncs[i]).toEqual(expectedENCs[i]);
+           expect(uploadedEncs[i]).toEqual(expectedENCs[i]);
+                    
         }
     }
 
     async exchangesettextSelectorIsVisible(): Promise<void> {
 
-         expect(await this.esslandingPageObjects.exchangesettextSelector).toBeVisible;
+         expect(this.esslandingPageObjects.exchangesettextSelector).toBeVisible;
     }
 
     async chooseuploadfileoptionSelectorIsVisible(): Promise<void> {
 
-         expect(await this.esslandingPageObjects.chooseuploadfileoptionSelector).toBeVisible;
+         expect(this.esslandingPageObjects.chooseuploadfileoptionSelector).toBeVisible;
     }
 
     async chooseuploadfileproceedSelectorIsVisible(): Promise<void> {
 
-         expect(await this.esslandingPageObjects.chooseuploadfileproceedSelector).toBeVisible;
+         expect(this.esslandingPageObjects.chooseuploadfileproceedSelector).toBeVisible;
     }
 
     async addsingleencSelectorIsVisible(): Promise<void> {
 
-         expect(await this.esslandingPageObjects.addsingleencSelector).toBeVisible;
+         expect(this.esslandingPageObjects.addsingleencSelector).toBeVisible;
     }
 
     async proceedButtonSelectorIsVisible(): Promise<void> {
 
-         expect(await this.esslandingPageObjects.proceedButtonSelector).toBeVisible;
+         expect(this.esslandingPageObjects.proceedButtonSelector).toBeVisible;
     }
 
     async uploadbtntextSelectorContainText(expected: string): Promise<void> {
-         expect(await await this.esslandingPageObjects.uploadbtntextSelector.innerText()).toEqual(expected);
+         expect(await this.esslandingPageObjects.uploadbtntextSelector.innerText()).toEqual(expected);
     }
 
     async addenctextSelectorContainText(expected: string): Promise<void> {
@@ -140,7 +141,7 @@ class EssLandingPageAssertions {
 
     async uploadedDataSelectorToBeEqual(expected: string): Promise<void> {
 
-        const uploadedEncs = await this.esslandingPageObjects.ENClistTable.allInnerTexts();
+        const uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
         expect(uploadedEncs[0]).toEqual(expected);
     }
 
