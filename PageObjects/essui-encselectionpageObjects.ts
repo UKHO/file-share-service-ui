@@ -43,8 +43,8 @@ export class EncSelectionPageObjects {
         this.encNameSelector = this.page.locator("text=ENC name");
         this.startLinkSelector = this.page.locator(".linkStartAgain");
         this.textAboveTableSelector = this.page.locator("text=Select up to 100 ENCs and make an exchange set");
-        this.rightTableSelector = this.page.locator("//div/div[2]/div[3]/div[1]/table/tbody/tr");
-        this.rightTableEncPositionSeletor = this.page.locator("//div/div[2]/div[3]/div[1]/table/tbody/tr[1]/td[1]");
+        this.rightTableSelector = this.page.locator("//div/div[3]/div[3]/div[1]/table/tbody/tr");
+        this.rightTableEncPositionSeletor = this.page.locator("//div/div[3]/div[3]/div[1]/table/tbody/tr[1]/td[1]");
         this.firstCheckBoxSelector = this.page.locator("//div/table/tbody/tr[1]/td[2]/ukho-checkbox/input");
         this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i");
         this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc");
