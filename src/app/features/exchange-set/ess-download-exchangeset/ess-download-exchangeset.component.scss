@@ -16,6 +16,10 @@
     border: 1px solid #d0d0d0;
     padding: 20px;
     background-color: #f9f9f9;
+    p span{
+        font-weight: 500;
+        font-size: 1.1em;
+    }
 }
 
 .ess-spinner-wrapper {
@@ -28,15 +32,21 @@
     margin: 0px 39px;
 }
 
-.linkStartAgain {
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 20px 0 20px 69px;
-    display: block;
+.estimatedSize{
+    font-size: 1.2em;
 }
-.f21{
-    font-size: 21px;
+.essTitle{
+    font-size: 1.9em;
+    margin-bottom: 12px;
+    font-family: "JohnstonITC", Helvetica, sans-serif;
+    color: #09315b;
+    font-weight: normal;
+}
+.warningMsg{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    margin-left: 35px;
 }
 
 ukho-button.btnDownload {

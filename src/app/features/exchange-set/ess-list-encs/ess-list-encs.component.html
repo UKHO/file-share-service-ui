@@ -1,8 +1,11 @@
 <div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
   class="fas fa-spinner fa-pulse fa-3x" aria-hidden="true"></i></div>
   
-  <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i class="fas fa-less-than"></i>  Start again</a>
 <div class="container">
+  <div>
+    <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i style="padding-right: 6px;font-size: 14px;" class="fas fa-less-than"></i> Start again</a>
+  </div>
+  
   <div>
     <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
       <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
@@ -14,7 +17,7 @@
   <div class="showEncListWrapper">
     <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0">
-        <p class ="ShowEncList">Your ENCs <span class="showListEncTOtal"> Showing{{encList.length}}ENCs </span>
+        <p class ="ShowEncList">Your ENCs <span class="showListEncTOtal"> Showing {{encList.length}} ENCs </span>
         </p>
         <table ukhoSort ukho-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
           <ng-container ukhoColumnDef="enc">
