@@ -20,7 +20,7 @@ export class EssLandingPageObjects {
     readonly selectionTextSelector: Locator;
     readonly startAgainLinkSelector: Locator;
     readonly addSingleENCTextboxSelector: Locator;
-    readonly ENClistTable: Locator;
+    readonly ENClistTableCol1: Locator;
 
     constructor(readonly page: Page) {
         this.expect = new EssLandingPageAssertions(this);
@@ -42,7 +42,7 @@ export class EssLandingPageObjects {
         this.selectionTextSelector = this.page.locator("body > app-root:nth-child(1) > div:nth-child(4) > app-ess-list-encs:nth-child(2) > div:nth-child(2) > div:nth-child(4) > div:nth-child(3) > h3:nth-child(1)");
         this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
         this.addSingleENCTextboxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
-        this.ENClistTable = this.page.locator('//table/tbody/tr');
+        this.ENClistTableCol1 = this.page.locator('//table/tbody/tr/td[1]');
     }
 
     async uploadFile(page: Page, filePath: string): Promise<void> {
@@ -79,7 +79,7 @@ class EssLandingPageAssertions {
 
     async verifyUploadedENCs(expectedENCs: string[]): Promise<void> {
 
-        const uploadedEncs = await this.esslandingPageObjects.ENClistTable.allInnerTexts();
+        const uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
 
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
 
@@ -140,7 +140,7 @@ class EssLandingPageAssertions {
 
     async uploadedDataSelectorToBeEqual(expected: string): Promise<void> {
 
-        const uploadedEncs = await this.esslandingPageObjects.ENClistTable.allInnerTexts();
+        const uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
         expect(uploadedEncs[0]).toEqual(expected);
     }
 

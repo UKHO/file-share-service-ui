@@ -30,7 +30,7 @@ export class EncSelectionPageObjects {
     readonly chooseBoxSelecetor: Locator;
     readonly errorMsgMaxLimitSelector: Locator;
     readonly errorMsgMaxLimit: Locator;
-    readonly ENCTableENClist: Locator;
+    readonly ENCTableENClistCol1: Locator;
     readonly ENCTableCheckboxlist: Locator;
     readonly uploadradiobtnSelector: Locator;
     readonly addencradiobtnSelector: Locator;
@@ -56,8 +56,8 @@ export class EncSelectionPageObjects {
         this.errorMessageForDuplicateNumberSelector = this.page.locator("//h3[text()='ENC already in list.']");
         this.chooseBoxSelecetor = this.page.locator("input[id = 'ukho-form-field-5']");
         this.errorMsgMaxLimitSelector = this.page.locator("//ukho-dialogue");
-        this.selectionTextSelector = this.page.locator("//h3[text()='Your selection ']");
-        this.ENCTableENClist = this.page.locator('//table/tbody/tr');
+        this.selectionTextSelector = this.page.locator("//p[text()='Your selection ']");
+        this.ENCTableENClistCol1 = this.page.locator('//table/tbody/tr/td[1]');
         this.ENCTableCheckboxlist = this.page.locator('//table/tbody/tr/td[2]/ukho-checkbox/input');
         
     }
@@ -184,7 +184,7 @@ class EncSelectionPageAssertions {
 
     async verifyENCsSortOrder(expectedENCs: string[]): Promise<void> {
 
-        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClist.allInnerTexts();
+        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
 
@@ -212,7 +212,7 @@ class EncSelectionPageAssertions {
 
     async selectionTextSelectorVisible(): Promise<void> {
 
-        expect(this.encSelectionPageObjects.selectionTextSelector).toBeVisible();
+        expect(await this.encSelectionPageObjects.selectionTextSelector).toBeVisible();
     }
 
 
@@ -230,17 +230,17 @@ class EncSelectionPageAssertions {
 
     async verifyLeftTableRowsCountSelectorCount(expectedCount: any): Promise<void> {
 
-        expect(await this.encSelectionPageObjects.ENCTableENClist.count()).toEqual(expectedCount)
+        expect(await this.encSelectionPageObjects.ENCTableENClistCol1.count()).toEqual(expectedCount)
     }
 
     async firstEncSelectorToEqual(expected: string): Promise<void> {
-        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClist.allInnerTexts();
+        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
         expect(uploadedEncs[0]).toEqual(expected);
     }
 
     async secondEncSelectorContainText(expected: string): Promise<void> {
-        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClist.allInnerTexts();
+        const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
         expect(uploadedEncs[1]).toEqual(expected);
     }
