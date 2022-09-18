@@ -25,9 +25,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
-        await esslandingPageObjects.uploadFile(page, './Tests/TestData/test.csv');
+        await esslandingPageObjects.uploadFile(page, './Tests/TestData/valid5.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
-        await esDownloadPageObjects.selectAllSelectorClick();
+        await encSelectionPageObjects.selectAllSelectorClick();
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14092
@@ -36,7 +36,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
     test.only('Verify Estimated Size of ES & Spinner untill Download button appears', async ({ page }) => {
        
-        await esDownloadPageObjects.requestENCsSelectorClick();
+        await encSelectionPageObjects.requestENCsSelectorClick();
         await page.waitForTimeout(1000);
 
         // await esDownloadPageObjects.expect.spinnerSelectorVisible();
@@ -51,7 +51,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     test('400 scenario', async ({ page }) => {
 
         await apiRoute400(page);
-        await esDownloadPageObjects.requestENCsSelectorClick();
+        await encSelectionPageObjects.requestENCsSelectorClick();
 
         await esDownloadPageObjects.expect.errorMessageSelectorDisplayed();
     });
@@ -60,7 +60,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     test('403 scenario', async ({ page }) => {
 
         await apiRoute403(page);
-        await esDownloadPageObjects.requestENCsSelectorClick();
+        await encSelectionPageObjects.requestENCsSelectorClick();
 
         await esDownloadPageObjects.expect.errorMessageSelectorDisplayed();
     });
@@ -69,7 +69,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     test('500 scenario', async ({ page }) => {
 
         await apiRoute500(page);
-        await esDownloadPageObjects.requestENCsSelectorClick();
+        await encSelectionPageObjects.requestENCsSelectorClick();
 
         await esDownloadPageObjects.expect.errorMessageSelectorDisplayed();
     });
@@ -81,10 +81,10 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
-        await esDownloadPageObjects.selectAllSelectorClick();
+        await encSelectionPageObjects.selectAllSelectorClick();
 
         await apiRoute200(page);
-        await esDownloadPageObjects.requestENCsSelectorClick();
+        await encSelectionPageObjects.requestENCsSelectorClick();
         await page.waitForTimeout(1000);
 
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
@@ -96,7 +96,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     test('200 Scenario but exclude some ENCs', async ({ page }) => {
 
         await apiRoute200WithExcludedENCs(page);
-        await esDownloadPageObjects.requestENCsSelectorClick();
+        await encSelectionPageObjects.requestENCsSelectorClick();
         
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         await esDownloadPageObjects.expect.ValidateInvalidENCsAsPerCount();

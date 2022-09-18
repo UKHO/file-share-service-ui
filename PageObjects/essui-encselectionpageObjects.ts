@@ -36,6 +36,9 @@ export class EncSelectionPageObjects {
     readonly addencradiobtnSelector: Locator;
     readonly selectionTextSelector: Locator;
     readonly addSingleENCTextboxSelector: Locator
+    readonly selectAllSelector: Locator
+    readonly deselectAllSelector: Locator
+    readonly requestENCsSelector: Locator
 
     constructor(readonly page: Page) {
         this.expect = new EncSelectionPageAssertions(this);
@@ -59,6 +62,9 @@ export class EncSelectionPageObjects {
         this.selectionTextSelector = this.page.locator("//h3[text()='Your selection ']");
         this.ENCTableENClist = this.page.locator('//table/tbody/tr');
         this.ENCTableCheckboxlist = this.page.locator('//table/tbody/tr/td[2]/ukho-checkbox/input');
+        this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
+        this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
+        this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
         
     }
 
@@ -115,7 +121,15 @@ export class EncSelectionPageObjects {
             await this.addENCButtonSelectorClick();
         }
     }
+    async requestENCsSelectorClick(): Promise<void> {
+            await this.requestENCsSelector.click();
+        }
 
+        async selectAllSelectorClick() : Promise<void> {
+
+            await this.selectAllSelector.click();
+    
+        }
 }
 
 class EncSelectionPageAssertions {
