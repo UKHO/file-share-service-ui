@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
 import { LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
@@ -52,7 +52,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await encSelectionPageObjects.encNameSelectorClick();
 
       await encSelectionPageObjects.expect.verifyENCsSortOrder(ascOrderlist);
-
       await encSelectionPageObjects.encNameSelectorClick();
       await encSelectionPageObjects.expect.verifyENCsSortOrder(dscOrderlist);
 
@@ -130,31 +129,12 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14113
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 (SPRINT 4)
-   test.only('Verify Count of uploaded & selected ENCs along with estimated size of Exchange set.', async ({ page }) => {
-      // let leftTableRowsCount = await encSelectionPageObjects.ENCTableENClistCol1.count();
-      // await page.click(encselectionpageObjectsConfig.selectAllSelector);
-      // let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
-      // expect(await page.innerText(encselectionpageObjectsConfig.countForLeftTableSelector)).toEqual("Showing " + leftTableRowsCount + " ENCs");
-      // expect(await page.innerText(encselectionpageObjectsConfig.countForRightTableSelector)).toEqual("" + rightTableRowsCount + " ENCs selected");
-      // if (rightTableRowsCount < 4) {
-      //    expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + Math.round(rightTableRowsCount * (0.3) * 1024) + "KB");
-      // }
-      // else
-      //    expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + rightTableRowsCount * (0.3) + "MB");
+   test('Verify Count of uploaded & selected ENCs along with estimated size of Exchange set.', async ({ page }) => {
 
+      await encSelectionPageObjects.selectAllSelector.click();
+      await encSelectionPageObjects.expect.verifyNumberofENCs();
+      await encSelectionPageObjects.expect.verifySizeofENCs(5);
 
-      let leftTableRowsCount = await encSelectionPageObjects.ENCTableENClistCol1.count();
-      await await encSelectionPageObjects.selectAllSelector.click();
-      let rightTableRowsCount = await encSelectionPageObjects.ENCTableENClistCol1.count();
-      await encSelectionPageObjects.verifyNumberofENCs();
-      expect(await page.innerText(encselectionpageObjectsConfig.countForLeftTableSelector)).toEqual("Showing " + leftTableRowsCount + " ENCs");
-      
-      expect(await page.innerText(encselectionpageObjectsConfig.countForRightTableSelector)).toEqual("" + rightTableRowsCount + " ENCs selected");
-      if (rightTableRowsCount < 4) {
-         expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + Math.round(rightTableRowsCount * (0.3) * 1024) + "KB");
-      }
-      else
-         expect(await page.innerText(encselectionpageObjectsConfig.estimatedExchangeSizeSelector)).toEqual("" + rightTableRowsCount * (0.3) + "MB");
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14108
@@ -162,51 +142,60 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14110
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14111 (SPRINT 4)
    test('Verify Select all and Deselect all functionality', async ({ page }) => {
-      await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
-      await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-      await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/100ENCs.txt');
-      await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
-      // Select All Visible
-      expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeTruthy();
-         
-      // Deselect All Visible
-      await page.click(encselectionpageObjectsConfig.selectAllSelector);
-      expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeTruthy();
-         
-      // left hand table = Right hand table
-      let rightTableRowsCount = await page.locator(encselectionpageObjectsConfig.rightTableRowsCountSelector).count();
-      for (var i = 1; i < rightTableRowsCount; i++) {
-        expect(await page.innerText("//div/table/tbody/tr[" + i + "]/td[1]")).toEqual(await page.innerText("//tbody/tr["+ i +"]"));
-      }
 
-      // All removed from left hand table
-      await page.click(encselectionpageObjectsConfig.deSelectAllSelector);
-      expect(await page.innerText(encselectionpageObjectsConfig.zeroENCsSelectedSelector)).toBeTruthy();
-      expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeTruthy();
-   
-      // More than 100
-      await addAnotherENC(page, encselectionpageObjectsConfig.addAnotherENCSelector);
-      expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeFalsy();
-      expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeFalsy();
-   
-      })
-   
+      
+      // Select All link Visible bydefault
+      await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
+      // Deselect All Visible
+      await encSelectionPageObjects.selectAllSelectorClick();
+      await encSelectionPageObjects.expect.deselectAllSelectorVisible();
+
+      // Select All link Visible again
+      await encSelectionPageObjects.deselectAllSelectorClick();
+      await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
+      // Deselect All Visible when all the individual ENCs from left table selected
+      const selectENCsFromTable = await encSelectionPageObjects.ENCTableCheckboxlist;
+      let numberOfENCs = await selectENCsFromTable.count();
+      for (var i = 0; i < numberOfENCs; i++) {
+         await selectENCsFromTable.nth(i).click();
+      }
+      await encSelectionPageObjects.expect.deselectAllSelectorVisible();
+      // Select All link Visible when all the individual ENCs from left table de-selected
+      for (var i = 0; i < numberOfENCs; i++) {
+         await selectENCsFromTable.nth(i).click();
+      }
+      await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
+      // Select All link get disappeared when Number of ENC uploaded are greater than 100
+      await encSelectionPageObjects.startAgainLinkSelectorClick();
+      await esslandingPageObjects.uploadradiobtnSelectorClick();
+      await esslandingPageObjects.uploadFile(page, './Tests/TestData/100ENCs.txt');
+      await esslandingPageObjects.proceedButtonSelectorClick();
+      await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
+      await encSelectionPageObjects.addAnotherENC("KK123456");
+      //const locator1 = await page.locator('.notexists').isVisible();
+  //expect(locator).toBeTruthy();
+      //await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
+      expect(await encSelectionPageObjects.selectAllSelector.isVisible()).toBeFalsy();
+      //await encSelectionPageObjects.selectAllSelector.isHidden();
+      
+   })
+
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14115
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14116 (SPRINT 4)
    test('Verify that selecting/deselecting individual ENCs does not affect select all/deselect all link', async ({ page }) => {
-      await page.click(encselectionpageObjectsConfig.startAgainLinkSelector);
-      await page.click(esslandingpageObjectsConfig.uploadradiobtnSelector);
-      await uploadFile(page, esslandingpageObjectsConfig.chooseuploadfileSelector, './Tests/TestData/100ENCs.txt');
-      await page.click(esslandingpageObjectsConfig.proceedButtonSelector);
 
-      // Select All visible & selecting individual ENCs
-      await page.click(encselectionpageObjectsConfig.firstCheckBoxSelector);
-      expect(await page.isVisible(encselectionpageObjectsConfig.selectAllSelector)).toBeTruthy();
+      await encSelectionPageObjects.startAgainLinkSelectorClick();
+      await esslandingPageObjects.uploadradiobtnSelectorClick();
+      await esslandingPageObjects.uploadFile(page, './Tests/TestData/100ENCs.txt');
+      await esslandingPageObjects.proceedButtonSelectorClick();
+      // Select All Visible & selecting individual ENCs
+      await encSelectionPageObjects.firstCheckBoxSelectorClick();
+      await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
+      // Deselect All Visible & deselecting individual ENCs
+      await encSelectionPageObjects.selectAllSelectorClick();
+      await encSelectionPageObjects.firstCheckBoxSelectorClick();
+      await encSelectionPageObjects.expect.deselectAllSelectorVisible();
 
-      // Deselect All visible & deselecting individual ENCs
-      await page.click(encselectionpageObjectsConfig.selectAllSelector);
-      await page.click(encselectionpageObjectsConfig.firstCheckBoxSelector);
-      expect(await page.isVisible(encselectionpageObjectsConfig.deSelectAllSelector)).toBeTruthy();
    })
 
 })
