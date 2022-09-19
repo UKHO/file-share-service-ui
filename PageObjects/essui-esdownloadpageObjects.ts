@@ -6,7 +6,6 @@ export class EsDownloadPageObjects {
     readonly expect: EsDownloadPageAssertions;
     readonly selectAllSelector: Locator;
     readonly requestENCsSelector: Locator;
-    readonly downloadTextSelector: Locator;
     readonly downloadButtonSelector: Locator;
     readonly spinnerSelector: Locator;
     readonly includedENCsCountSelector: Locator;
@@ -20,7 +19,6 @@ export class EsDownloadPageObjects {
         this.expect = new EsDownloadPageAssertions(this);
         this.selectAllSelector = this.page.locator("//a[text()='Select all']");
         this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
-        this.downloadTextSelector = this.page.locator("button:has-text('Download')");
         this.downloadButtonSelector = this.page.locator("ukho-button.btnDownload");
         this.spinnerSelector = this.page.locator("i.fas.fa-circle-notch.fa-spin");
         this.includedENCsCountSelector = this.page.locator("(//strong[@class='f21'][2])");
@@ -77,10 +75,7 @@ class EsDownloadPageAssertions {
     async VerifyExchangeSetSize(): Promise<void> {
 
         let ENCsIncluded = parseInt(((await this.esDownloadPageObjects.includedENCsCountSelector.innerHTML()).split(' '))[0]);
-        console.log(ENCsIncluded, "Included");
-        console.log(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText(),"Innertext");
-        //console.log(((ENCsIncluded * 0.3)), "multi");
-
+       
         if (ENCsIncluded < 4) {
             expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + Math.round(ENCsIncluded * (0.3) * 1024) + 'KB');
         }
