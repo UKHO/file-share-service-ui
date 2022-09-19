@@ -20,7 +20,7 @@ export class EsDownloadPageObjects {
         this.expect = new EsDownloadPageAssertions(this);
         this.selectAllSelector = this.page.locator("//a[text()='Select all']");
         this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
-        this.downloadTextSelector = this.page.locator("//h3[text()='Exchange set download']");
+        this.downloadTextSelector = this.page.locator("button:has-text('Download')");
         this.downloadButtonSelector = this.page.locator("ukho-button.btnDownload");
         this.spinnerSelector = this.page.locator("i.fas.fa-circle-notch.fa-spin");
         this.includedENCsCountSelector = this.page.locator("(//strong[@class='f21'][2])");
@@ -51,7 +51,7 @@ class EsDownloadPageAssertions {
 
     async spinnerSelectorHidden(): Promise<void> {
 
-        expect(await this.esDownloadPageObjects.spinnerSelector.isVisible).toBeFalsy();
+        expect(await this.esDownloadPageObjects.spinnerSelector.isHidden).toBeTruthy();
     }
 
     async downloadButtonSelectorEnabled(): Promise<void> {
@@ -78,14 +78,14 @@ class EsDownloadPageAssertions {
 
         let ENCsIncluded = parseInt(((await this.esDownloadPageObjects.includedENCsCountSelector.innerHTML()).split(' '))[0]);
         console.log(ENCsIncluded, "Included");
-        console.log(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText(),"Innettext");
-        console.log((ENCsIncluded * 0.3), "multi");
+        console.log(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText(),"Innertext");
+        //console.log(((ENCsIncluded * 0.3)), "multi");
 
         if (ENCsIncluded < 4) {
             expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + Math.round(ENCsIncluded * (0.3) * 1024) + 'KB');
         }
         else {
-            expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + (ENCsIncluded * 0.3) + 'MB');
+            expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + (ENCsIncluded *(0.3)).toFixed(1) + 'MB');
            
         }
 

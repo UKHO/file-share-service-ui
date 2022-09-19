@@ -25,7 +25,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
-        await esslandingPageObjects.uploadFile(page, './Tests/TestData/valid5.csv');
+        await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
         await encSelectionPageObjects.selectAllSelectorClick();
     })
@@ -39,9 +39,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await encSelectionPageObjects.requestENCsSelectorClick();
         await page.waitForTimeout(1000);
 
-        // await esDownloadPageObjects.expect.spinnerSelectorVisible();
-        // await esDownloadPageObjects.downloadTextSelector.waitFor({state: 'visible'});
-        // await esDownloadPageObjects.expect.spinnerSelectorHidden();
+        await esDownloadPageObjects.expect.spinnerSelectorVisible();
+        await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
+        //await esDownloadPageObjects.expect.spinnerSelectorHidden();
        
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         await esDownloadPageObjects.expect.VerifyExchangeSetSize();
