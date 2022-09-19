@@ -6,7 +6,7 @@ import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
 import { EsDownloadPageObjects } from '../../PageObjects/essui-esdownloadpageObjects';
-import { apiRoute400, apiRoute403, apiRoute500, apiRoute200, apiRoute200WithExcludedENCs } from './ess-api-mock';
+import { apiRoute400, apiRoute403, apiRoute500, apiRoute200, apiRoute200WithExcludedENCs } from '../../PageObjects/ess-api-mock';
 
 test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
 
@@ -33,10 +33,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14093
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14094
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
-    test.only('Verify Estimated Size of ES, Spinner and Download button from Download page', async ({ page }) => {
+    test('Verify Estimated Size of ES, Spinner and Download button from Download page', async ({ page }) => {
        
         await encSelectionPageObjects.requestENCsSelectorClick();
-       // await page.waitForTimeout(1000);
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
@@ -78,7 +77,6 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await encSelectionPageObjects.selectAllSelectorClick();
         await apiRoute200(page);
         await encSelectionPageObjects.requestENCsSelectorClick();
-        //await page.waitForTimeout(1000);
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         await esDownloadPageObjects.expect.selectedTextSelectorVisible();
         await esDownloadPageObjects.expect.includedENCsCountSelectorVisible();

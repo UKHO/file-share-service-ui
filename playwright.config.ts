@@ -4,7 +4,7 @@ import { autoTestConfig } from './appSetting.json';
 
 const config: PlaywrightTestConfig = {
   
-  retries: 2,
+  retries: 3,
   testDir: './Tests',
   /* Maximum time one test can run for. */
   timeout: 100 * 1000,
@@ -35,18 +35,18 @@ const config: PlaywrightTestConfig = {
   /* Configure projects for major browsers */
   projects: [
     //{
-      //name: 'chromium',
-      //use: {
-        //...devices['Desktop Chrome'],
-      //},
+    //  name: 'chromium',
+    //  use: {
+    //    ...devices['Desktop Chrome'],
+    //  },
     //},
 //// Note: Flaky Tests in pipeline, so commenting below browsers for now. Discussed & agreed with Ravi.
-    // {
-    //   name: 'firefox',
-    //   use: {
-    //     ...devices['Desktop Firefox'],
-    //   },
-    // },
+     {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+      },
+    },
 
     // {
     //   name: 'webkit',
@@ -55,12 +55,12 @@ const config: PlaywrightTestConfig = {
     //   },
     // },
 
-    {
-      name: 'Microsoft Edge',
-     use: {
-        channel: 'msedge'
-       }
-    }
+    //{
+    //  name: 'Microsoft Edge',
+    // use: {
+    //    channel: 'msedge'
+     //  }
+    //}
    
   ],
 
