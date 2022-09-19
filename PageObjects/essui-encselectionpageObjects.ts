@@ -61,7 +61,8 @@ export class EncSelectionPageObjects {
         this.selectionTextSelector = this.page.locator("//p[text()='Your selection ']");
         this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
         this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
-        this.ENCTableCheckboxlist = this.page.locator('(//table/tbody)[1]/tr/td[2]');
+        //this.ENCTableCheckboxlist = this.page.locator('(//table/tbody)[1]/tr/td[2]');
+        this.ENCTableCheckboxlist = this.page.locator('(//input[@type="checkbox"])');
         this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");
         
         this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
@@ -252,7 +253,7 @@ class EncSelectionPageAssertions {
     async anotherCheckBoxSelectorChecked(): Promise<void> {
 
        const selectcheckboxFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
-       await expect(selectcheckboxFromTable.nth(1)).not.toBeChecked();
+       await expect(selectcheckboxFromTable.nth(1)).not.toBeChecked();           
     //    await selectcheckboxFromTable.nth(1).not.isChecked();
     //    await expect(this.encSelectionPageObjects.firstCheckBoxSelector).not.toBeChecked();
     }
