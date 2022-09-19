@@ -29,7 +29,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
      test('Verify clicking on First Radio Button, "click to choose file" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
-
           await esslandingPageObjects.expect.chooseuploadfileoptionSelectorIsVisible();
           await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible();
      })
@@ -37,7 +36,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799 
      test('Verify clicking on Second Radio Button, "Select single ENCs" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
-
           await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
           await esslandingPageObjects.expect.proceedButtonSelectorIsVisible();
      })
@@ -81,7 +79,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
@@ -103,9 +100,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
-
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -116,7 +111,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData//ValidAndDuplicateENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
@@ -129,8 +123,5 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
      })
-
-     
-     
 
 });

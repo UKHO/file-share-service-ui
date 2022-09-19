@@ -15,7 +15,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
       esslandingPageObjects = new EssLandingPageObjects(page);
       encSelectionPageObjects = new EncSelectionPageObjects(page);
-
       await page.goto(autoTestConfig.url);
       await page.waitForLoadState('load');
       await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
@@ -32,16 +31,12 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    test('Verify selecting and deselecting multiple checkboxes in left hand table, shows expected result in right hand table', async ({ page }) => {
 
       let encSelected = ['AU220150', 'CA271105', 'AU5PTL01']
-
       // To select ENCs
       await encSelectionPageObjects.expect.verifySelectedENCs(encSelected);
-
       //To deselect ENCs using checkbox
       await encSelectionPageObjects.expect.verifyDeselectedENCs(encSelected);
-
       // To deselect ENCs using "X" button.
       await encSelectionPageObjects.expect.verifyXButtonSelectorClick();
-
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13961
@@ -50,7 +45,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       let ascOrderlist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C']
       let dscOrderlist = ['GB50184C', 'CN484220', 'CA271105', 'AU5PTL01', 'AU220150']
       await encSelectionPageObjects.encNameSelectorClick();
-
       await encSelectionPageObjects.expect.verifyENCsSortOrder(ascOrderlist);
       await encSelectionPageObjects.encNameSelectorClick();
       await encSelectionPageObjects.expect.verifyENCsSortOrder(dscOrderlist);
@@ -73,11 +67,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await esslandingPageObjects.uploadradiobtnSelectorClick();
       await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');
       await esslandingPageObjects.proceedButtonSelectorClick();
-
       await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(100);
-
       await encSelectionPageObjects.EncSelectorAt101thClick();
-
       await encSelectionPageObjects.expect.maxLimitEncmessageSelectorContainText("No more than 100 ENCs can be selected.");
 
    })
@@ -88,10 +79,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    test('Verify that user is able to add a valid single ENCs and link "Start Again" redirects to ESS landing page', async ({ page }) => {
       await encSelectionPageObjects.startAgainLinkSelectorClick();
       await encSelectionPageObjects.addSingleENC("AU210130");
-
       await encSelectionPageObjects.expect.firstEncSelectorToEqual("AU210130");
       await encSelectionPageObjects.expect.selectionTextSelectorVisible();
-
       await encSelectionPageObjects.startAgainLinkSelectorClick();
       await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
    })
@@ -101,18 +90,14 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    test('Verify that after clicking on "Add another ENC" link, user able to add another ENC number', async ({ page }) => {
       await encSelectionPageObjects.startAgainLinkSelectorClick();
       await encSelectionPageObjects.addSingleENC("AU210130");
-
       await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
-
       await encSelectionPageObjects.addAnotherENC("AU220150");
-
       await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220150");
       await encSelectionPageObjects.expect.anotherCheckBoxSelectorChecked();
 
       //13956 - Add another ENC2 - Duplicate No.
       await encSelectionPageObjects.addAnotherENC("AU220150");
       await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list.")
-
       await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
    })
 
@@ -143,7 +128,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14111 (SPRINT 4)
    test('Verify Select all and Deselect all functionality', async ({ page }) => {
 
-      
+
       // Select All link Visible bydefault
       await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
       // Deselect All Visible
@@ -172,11 +157,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await esslandingPageObjects.proceedButtonSelectorClick();
       await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
       await encSelectionPageObjects.addAnotherENC("KK123456");
-      //const locator1 = await page.locator('.notexists').isVisible();
-  //expect(locator).toBeTruthy();
-      //await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
       expect(await encSelectionPageObjects.selectAllSelector.isVisible()).toBeFalsy();
-      //await encSelectionPageObjects.selectAllSelector.isHidden();
       
    })
 

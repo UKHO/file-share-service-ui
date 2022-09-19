@@ -10,8 +10,7 @@ export class EncSelectionPageObjects {
     readonly startLinkSelector: Locator;
     readonly textAboveTableSelector: Locator;
     readonly textAboveTable: Locator;
-    readonly ENCSelectedTablelist: Locator;
-    readonly rightTableEncPositionSeletor: Locator;
+    readonly ENCSelectedTablelist: Locator;    
     readonly firstCheckBoxSelector: Locator;
     readonly XButtonSelector: Locator;
     readonly addAnotherENCSelector: Locator;
@@ -38,6 +37,7 @@ export class EncSelectionPageObjects {
     readonly selectAllSelector: Locator
     readonly deselectAllSelector: Locator
     readonly exchangeSetSizeSelector: Locator
+    readonly requestENCsSelector: Locator
 
 
     constructor(readonly page: Page) {
@@ -46,7 +46,6 @@ export class EncSelectionPageObjects {
         this.encNameSelector = this.page.locator("text=ENC name");
         this.startLinkSelector = this.page.locator(".linkStartAgain");
         this.textAboveTableSelector = this.page.locator("text=Select up to 100 ENCs and make an exchange set");
-        this.rightTableEncPositionSeletor = this.page.locator("//div/div[2]/div[3]/div[1]/table/tbody/tr[1]/td[1]");
         this.firstCheckBoxSelector = this.page.locator("//div/table/tbody/tr[1]/td[2]/ukho-checkbox/input");
         this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i");
         this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc");
@@ -61,14 +60,13 @@ export class EncSelectionPageObjects {
         this.selectionTextSelector = this.page.locator("//p[text()='Your selection ']");
         this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
         this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
-        //this.ENCTableCheckboxlist = this.page.locator('(//table/tbody)[1]/tr/td[2]');
         this.ENCTableCheckboxlist = this.page.locator('(//input[@type="checkbox"])');
-        this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");
-        
+        this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");        
         this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
         this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
         this.leftTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[1]')
         this.rightTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[2]')
+        this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
 
     }
 
@@ -141,6 +139,9 @@ export class EncSelectionPageObjects {
 
         await this.deselectAllSelector.click();
 
+    }
+    async requestENCsSelectorClick(): Promise<void> {
+        await this.requestENCsSelector.click();
     }
 
 
@@ -301,9 +302,11 @@ class EncSelectionPageAssertions {
             expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + Math.round(rightTableRowsCount * (0.3) * 1024) + "KB");
         }
         else
-            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + rightTableRowsCount * (0.3) + "MB");
+            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + (rightTableRowsCount *(0.3)).toFixed(1) + 'MB');
 
     }
+
+    
 
     async selectAllSelectorIsVisible(): Promise<void> {
 
