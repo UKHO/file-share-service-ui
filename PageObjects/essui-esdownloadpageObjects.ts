@@ -4,7 +4,6 @@ import { Page, Locator, expect } from "@playwright/test";
 export class EsDownloadPageObjects {
 
     readonly expect: EsDownloadPageAssertions;
-    readonly selectAllSelector: Locator;
     readonly requestENCsSelector: Locator;
     readonly downloadButtonSelector: Locator;
     readonly spinnerSelector: Locator;
@@ -17,7 +16,6 @@ export class EsDownloadPageObjects {
 
     constructor(readonly page: Page) {
         this.expect = new EsDownloadPageAssertions(this);
-        this.selectAllSelector = this.page.locator("//a[text()='Select all']");
         this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
         this.downloadButtonSelector = this.page.locator("ukho-button.btnDownload");
         this.spinnerSelector = this.page.locator("i.fas.fa-circle-notch.fa-spin");
@@ -29,13 +27,7 @@ export class EsDownloadPageObjects {
         this.errorMessageSelector = this.page.locator("text = There has been an error");
     }
 
-    // async selectAllSelectorClick(): Promise<void> {
-    //     await this.selectAllSelector.click();
-    // }
-
-    // async requestENCsSelectorClick(): Promise<void> {
-    //     await this.requestENCsSelector.click();
-    // }
+    
 }
 
 class EsDownloadPageAssertions {
@@ -94,6 +86,7 @@ class EsDownloadPageAssertions {
         for (var i = 1; i <= invalidEncsCount; i++) {
 
             expect(await inValidEncs.nth(i).innerText).toBeTruthy();
+            expect(await this.esDownloadPageObjects.invalidEncsSelector.innerText()).toEqual(inValidEncs+"- invalidProduct");
         }
     }
 }
