@@ -57,7 +57,7 @@ export class EncSelectionPageObjects {
         this.errorMessageForDuplicateNumberSelector = this.page.locator("//h3[text()='ENC already in list.']");
         this.chooseBoxSelecetor = this.page.locator("input[id = 'ukho-form-field-5']");
         this.errorMsgMaxLimitSelector = this.page.locator("//ukho-dialogue");
-        this.selectionTextSelector = this.page.locator("//h3[text()='Your selection ']");
+        this.selectionTextSelector = this.page.locator("text='Your selection '");
         this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
         this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
         this.ENCTableCheckboxlist = this.page.locator('(//input[@type="checkbox"])');
