@@ -62,8 +62,8 @@ export class EncSelectionPageObjects {
         this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
         this.ENCTableCheckboxlist = this.page.locator('(//input[@type="checkbox"])');
         this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");        
-        this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
-        this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
+        this.selectAllSelector = this.page.locator("//a[text()='Select all']")
+        this.deselectAllSelector = this.page.locator("//a[text()='Deselect all']")
         this.leftTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[1]')
         this.rightTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[2]')
         this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
