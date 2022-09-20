@@ -123,5 +123,4 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
      })
-
 });

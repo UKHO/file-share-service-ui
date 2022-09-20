@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfigService } from './app-config.service';
+import { BatchStatusReponse } from '../models/ess-response-types';
 
 @Injectable({ providedIn: 'root' })
 export class FileShareApiService {
@@ -29,14 +30,26 @@ export class FileShareApiService {
     }
 
     clearCookies(): Observable<any> {
-        return this.http.post(this.stateManagementUrl + '/logout', null);
+        let token = localStorage.getItem('idToken');
+        let headers =  {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ token 
+          }
+       return this.http.post(this.stateManagementUrl + '/logout', null, {headers});   
     }
 
     refreshToken(): Observable<any> {
-        return this.http.put(this.stateManagementUrl + '/tokenrefresh', null);
+        const httpOptions = {
+            withCredentials: true
+        };
+        return this.http.put(this.stateManagementUrl + '/tokenrefresh', null, httpOptions);
     }
 
     getAttributeSearchResult(payload: string): Observable<any> {
         return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload));
+    }
+
+    getBatchStatus(batchId: string): Observable<BatchStatusReponse> {
+        return this.http.get<BatchStatusReponse>(this.baseUrl + "/batch/" + batchId + "/status");
     }
 }

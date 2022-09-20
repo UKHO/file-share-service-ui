@@ -10,8 +10,7 @@ export class ExchangeSetApiService {
 
     constructor(private http: HttpClient) { }
 
-    exchangeSetCreationResponse(requestedEncList: any[]): Observable<any>{
-        return this.http.post(this.baseUrl + '/productData/productIdentifiers', requestedEncList);
+    exchangeSetCreationResponse(requestedEncList: string[]): Observable<any>{
+        return this.http.post<any>(this.baseUrl + '/productData/productIdentifiers', requestedEncList);
     }
-
 }

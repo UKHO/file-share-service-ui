@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { LoginPortal } from '../../Helper/CommonHelper';
+import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
@@ -17,6 +17,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       encSelectionPageObjects = new EncSelectionPageObjects(page);
       await page.goto(autoTestConfig.url);
       await page.waitForLoadState('load');
+      await AcceptCookies(page);
       await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
       await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
       await esslandingPageObjects.uploadradiobtnSelectorClick();
@@ -31,6 +32,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    test('Verify selecting and deselecting multiple checkboxes in left hand table, shows expected result in right hand table', async ({ page }) => {
 
       let encSelected = ['AU220150', 'CA271105', 'AU5PTL01']
+
       // To select ENCs
       await encSelectionPageObjects.expect.verifySelectedENCs(encSelected);
       //To deselect ENCs using checkbox

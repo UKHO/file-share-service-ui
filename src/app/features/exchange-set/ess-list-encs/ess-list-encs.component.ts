@@ -38,11 +38,14 @@ export class EssListEncsComponent implements OnInit {
   exchangeSetDetails: ExchangeSetDetails;
   estimatedTotalSize: string = "0KB";
   selectDeselectText: string;
+  selectDeselectAlert: string;
   showSelectDeselect: boolean;
   essSilentTokenRequest: SilentRequest;
   essTokenScope: any = [];
+  selectDeselectEncAlert: string;
 
   constructor(private essUploadFileService: EssUploadFileService,
+    private elementRef: ElementRef,  
     private route: Router,
     private msalService: MsalService,
     private exchangeSetApiService: ExchangeSetApiService,
@@ -94,13 +97,15 @@ export class EssListEncsComponent implements OnInit {
       this.ukhoDialog.nativeElement.focus();
     }
   }
-  handleChange(enc: string) {
+  handleChange(enc: string,event?: Event | null) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
     this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
+      this.selectDeselectEncAlert= enc + " Remove From Selected List";
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
+      this.selectDeselectEncAlert= enc + " Added From Selected List";
     } else {
       this.showMessage(
         'error',
@@ -109,6 +114,12 @@ export class EssListEncsComponent implements OnInit {
       window.scrollTo(0, 0);
     }
     this.syncEncsBetweenTables();
+    setTimeout(() => {
+      const element = document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement;
+      if(element && event){
+          element.focus();
+      }
+    },5);
   }
 
   syncEncsBetweenTables() {
@@ -129,7 +140,7 @@ export class EssListEncsComponent implements OnInit {
     }
   }
 
-  onSortChange(sortState: SortState) {
+    onSortChange(sortState: SortState) {
     this.encList = [
       ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
@@ -145,11 +156,15 @@ export class EssListEncsComponent implements OnInit {
 
   displaySingleEnc() {
     this.displaySingleEncVal = true;
+    setTimeout(()=>{
+      var encInput = this.elementRef.nativeElement.querySelectorAll('app-ess-add-single-encs .container .addSingleFileSection ukho-textinput input');
+      encInput[0].focus();
+    },);  
   }
 
   exchangeSetCreationResponse(selectedEncList: any[]) {
     this.displayLoader = true;
-    if (selectedEncList != null) {
+  if (selectedEncList != null) {
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
         this.displayLoader = false;
         this.exchangeSetDetails = result;
@@ -157,12 +172,13 @@ export class EssListEncsComponent implements OnInit {
         this.route.navigate(['exchangesets', 'enc-download']);
       },
         (error) => {
+          this.displayLoader = false;
           this.showMessage('error', 'There has been an error');
         }
       );
-    }
+   }
   }
-  
+
   getEstimatedTotalSize() {
     var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
     return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
@@ -178,9 +194,11 @@ export class EssListEncsComponent implements OnInit {
   }
   selectDeselectAll() {
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
-      this.essUploadFileService.addAllSelectedEncs();
+      this.selectDeselectAlert = "Selected All ENC's" ;
+      this.essUploadFileService.addAllSelectedEncs();     
     } else {
-      this.essUploadFileService.clearSelectedEncs();
+      this.selectDeselectAlert = "DeSelected All ENC's" ;
+      this.essUploadFileService.clearSelectedEncs();    
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
@@ -192,18 +210,12 @@ export class EssListEncsComponent implements OnInit {
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
-        this.displayLoader = false;
-      });
       this.exchangeSetCreationResponse(this.selectedEncList);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-          this.exchangeSetApiService.exchangeSetCreationResponse(this.selectedEncList).subscribe((result) => {
-            this.displayLoader = false;
-            this.exchangeSetCreationResponse(this.selectedEncList);
-          });
+          this.exchangeSetCreationResponse(this.selectedEncList);
         })
     })
   }

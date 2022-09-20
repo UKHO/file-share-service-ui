@@ -23,11 +23,11 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
                 (this.retryCount < this.maxRetries - 1) &&
                 (err.status === 408 || err.status === 429 || (err.status >= 500 && err.status < 600))) {
                 this.retryCount = index;
+                return true;
               }
               else {
-                return false;
+                throw new Error(err.error);
               }
-              return true;
             }),
             delay(Math.pow(2, this.retryCount) * this.initialDelayMs)
           )
