@@ -29,7 +29,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
      test('Verify clicking on First Radio Button, "click to choose file" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
-
           await esslandingPageObjects.expect.chooseuploadfileoptionSelectorIsVisible();
           await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible();
      })
@@ -37,15 +36,15 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799 
      test('Verify clicking on Second Radio Button, "Select single ENCs" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
-
           await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
           await esslandingPageObjects.expect.proceedButtonSelectorIsVisible();
      })
 
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13809
+     //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14102 //SPRINT 4 
      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
 
-          let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C']
+          let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', '3A6LTP10', 'B28LTP10', '221A1B2C']
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
@@ -53,10 +52,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13815 
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13815
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14103 //SPRINT 4 
      test('Verify all the uploaded ENCs from .txt file, displayed on the screen', async ({ page }) => {
 
-          let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C']
+          let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C', '908ABCDE', 'B28LTP10']
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
@@ -64,12 +64,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13810 //
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13810 
      test('Verify an error message if user tries to upload other than allowed files', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/FileOtherThanCSVorTXT.xlsx');
-
           await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt file');
 
      })
@@ -80,7 +79,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
@@ -102,9 +100,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
-
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -115,7 +111,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData//ValidAndDuplicateENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-
           await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })

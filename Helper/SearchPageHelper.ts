@@ -196,6 +196,7 @@ export async function SearchAttribute(page: Page, attributeName: string) {
       }
       else {
         await page.click(fssSearchPageObjectsConfig.paginatorLinkNext);
+        await page.waitForTimeout(2000);
       }
     }
   
