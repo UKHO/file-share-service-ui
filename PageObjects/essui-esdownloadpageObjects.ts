@@ -16,8 +16,7 @@ export class EsDownloadPageObjects {
 
     constructor(readonly page: Page) {
         this.expect = new EsDownloadPageAssertions(this);
-        this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
-        this.downloadButtonSelector = this.page.locator("ukho-button.btnDownload");
+        this.downloadButtonSelector = this.page.locator("//button[@type='submit']");
         this.spinnerSelector = this.page.locator("i.fas.fa-circle-notch.fa-spin");
         this.includedENCsCountSelector = this.page.locator("(//strong[@class='f21'][2])");
         this.EstimatedESsizeSelector = this.page.locator("//p[@class='f21']");
