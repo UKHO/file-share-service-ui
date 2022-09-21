@@ -1,4 +1,7 @@
 import { Page, Locator, expect } from "@playwright/test";
+const fs = require('fs');
+let filefound;
+let filedeleted;
 
 
 export class EsDownloadPageObjects {
@@ -21,12 +24,21 @@ export class EsDownloadPageObjects {
         this.includedENCsCountSelector = this.page.locator("(//strong[@class='f21'][2])");
         this.EstimatedESsizeSelector = this.page.locator("//p[@class='f21']");
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
-        this.countInvalidENCsSelector = this.page.locator("div[class='exchangesetcontainer'] li");
-        this.invalidEncsSelector = this.page.locator("div[id='contentArea'] li");
+        this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
         this.errorMessageSelector = this.page.locator("text = There has been an error");
     }
 
-    
+    async downloadFile(page: Page, path: string): Promise<void> {
+
+        const [download] = await Promise.all([
+            page.waitForEvent('download'),
+            this.downloadButtonSelector.click()
+        ]);
+
+        await download.saveAs(path)
+    }
+
+
 }
 
 class EsDownloadPageAssertions {
@@ -66,26 +78,60 @@ class EsDownloadPageAssertions {
     async VerifyExchangeSetSize(): Promise<void> {
 
         let ENCsIncluded = parseInt(((await this.esDownloadPageObjects.includedENCsCountSelector.innerHTML()).split(' '))[0]);
-       
+
         if (ENCsIncluded < 4) {
             expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + Math.round(ENCsIncluded * (0.3) * 1024) + 'KB');
         }
         else {
-            expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + (ENCsIncluded *(0.3)).toFixed(1) + 'MB');
-           
+            expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + (ENCsIncluded * (0.3)).toFixed(1) + 'MB');
+
         }
 
     }
 
-    async ValidateInvalidENCsAsPerCount(): Promise<void> {
+    async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
 
-        let invalidEncsCount = await this.esDownloadPageObjects.countInvalidENCsSelector.count();
-        let inValidEncs = await this.esDownloadPageObjects.invalidEncsSelector;
-
-        for (var i = 1; i <= invalidEncsCount; i++) {
-
-            expect(await inValidEncs.nth(i).innerText).toBeTruthy();
-            expect(await this.esDownloadPageObjects.invalidEncsSelector.innerText()).toEqual(inValidEncs+"- invalidProduct");
+        for (var i = 0; i < 3; i++) {
+            if (i < 2) {
+                expect(await this.esDownloadPageObjects.invalidEncsSelector.nth(i).innerText()).toEqual(InValidENCs[i] + ' - invalidProduct');
+            }
+            else {
+                expect(await this.esDownloadPageObjects.invalidEncsSelector.nth(i).innerText()).toEqual(InValidENCs[i] + ' - productWithdrawn');
+            }
         }
+    }
+
+    async ValidateFileDownloaded(path: string): Promise<void> {
+
+        if (fs.existsSync(path)) {
+            filefound = true;
+        }
+        else {
+            filefound = false;
+        }
+        expect(filefound).toBeTruthy();
+    }
+
+    async ValidateFiledeleted(path: string,): Promise<void> {
+        // to delete the downloaded file
+        if (fs.existsSync(path)) {
+            fs.unlinkSync(path);
+            filedeleted = true;
+        }
+        else {
+            filedeleted = false;
+        }
+        expect(filedeleted).toBeTruthy();
+
+        //to verify file has deleted successfully from the directory
+        if (fs.existsSync(path)) {
+            filedeleted = false;
+        }
+        else {
+            filedeleted = true;
+        }
+        expect(filedeleted).toBeTruthy();
+
     }
 }
+

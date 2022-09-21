@@ -81,8 +81,8 @@ export const apiRoute200WithExcludedENCs = (page: Page) => page.route('**/produc
                     "reason": "invalidProduct"
                 },
                 {
-                    "productName": "CN484220",
-                    "reason": "invalidProduct"
+                    "productName": "GB123456",
+                    "reason": "productWithdrawn"
                 }
             ]
         })

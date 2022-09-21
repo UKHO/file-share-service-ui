@@ -41,6 +41,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         await esDownloadPageObjects.expect.VerifyExchangeSetSize();
+        await esDownloadPageObjects.downloadFile(page, './Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip');
+        await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip");
+        await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip");
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
@@ -85,10 +88,11 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14130 
     test('Verify 200 scenario using playwright mock when all selected ENCs are not included in ES', async ({ page }) => {
 
+        let invalidENCs = ['AU220150', 'AU5PTL01', 'GB123456']
         await apiRoute200WithExcludedENCs(page);
         await encSelectionPageObjects.requestENCsSelectorClick();        
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
-        await esDownloadPageObjects.expect.ValidateInvalidENCsAsPerCount();
+        await esDownloadPageObjects.expect.ValidateInvalidENCsAsPerCount(invalidENCs);
         await esDownloadPageObjects.expect.selectedTextSelectorVisible();
         await esDownloadPageObjects.expect.includedENCsCountSelectorVisible();
     });
