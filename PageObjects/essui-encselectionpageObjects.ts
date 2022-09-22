@@ -60,7 +60,7 @@ export class EncSelectionPageObjects {
         this.selectionTextSelector = this.page.locator("text='Your selection '");
         this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
         this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
-        this.ENCTableCheckboxlist = this.page.locator('(//input[@type="checkbox"])');
+        this.ENCTableCheckboxlist = this.page.locator('(//td/ukho-checkbox)');
         this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");        
         this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
         this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
