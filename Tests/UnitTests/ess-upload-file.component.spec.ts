@@ -196,12 +196,29 @@ describe('EssUploadFileComponent', () => {
       expect(component.messageDesc).toEqual('No ENCs found.');
     });
 
-  it('uploadListener should raise error for unsupported file type', () => {
+  it('uploadListener{ event.srcElement} should raise error for unsupported file type', () => {
     const file = new File([getEncData_csv()], 'test.jpeg');
     Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
     Object.defineProperty(file, 'type', { value: 'image/jpeg' });
     const event = {
       srcElement: {
+        files: [file]
+      }
+    };
+    expect(component.displayErrorMessage).toBe(false);
+    component.uploadListener(event);
+    expect(component.validEncList.length).toEqual(0);
+    expect(component.messageType).toEqual('error');
+    expect(component.messageDesc).toEqual('Please select a .csv or .txt file');
+    expect(component.displayErrorMessage).toBe(true);
+  });
+
+  it('uploadListener{ event.dataTransfer} should raise error for unsupported file type', () => {
+    const file = new File([getEncData_csv()], 'test.jpeg');
+    Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+    Object.defineProperty(file, 'type', { value: 'image/jpeg' });
+    const event = {
+      dataTransfer: {
         files: [file]
       }
     };
