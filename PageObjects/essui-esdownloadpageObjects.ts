@@ -1,11 +1,14 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { EncSelectionPageObjects } from "./essui-encselectionpageObjects"
 const fs = require('fs');
 let filefound;
 let filedeleted;
+var SelectedENCs: number;
 
 
 export class EsDownloadPageObjects {
 
+    encselectionPageObjects: EncSelectionPageObjects;
     readonly expect: EsDownloadPageAssertions;
     readonly requestENCsSelector: Locator;
     readonly downloadButtonSelector: Locator;
@@ -16,9 +19,11 @@ export class EsDownloadPageObjects {
     readonly countInvalidENCsSelector: Locator;
     readonly invalidEncsSelector: Locator;
     readonly errorMessageSelector: Locator;
+    readonly selectedENCsSelector: Locator;
 
     constructor(readonly page: Page) {
         this.expect = new EsDownloadPageAssertions(this);
+        this.encselectionPageObjects = new EncSelectionPageObjects(page)
         this.downloadButtonSelector = this.page.locator("//button[@type='submit']");
         this.spinnerSelector = this.page.locator("i.fas.fa-circle-notch.fa-spin");
         this.includedENCsCountSelector = this.page.locator("(//strong[@class='f21'][2])");
@@ -26,6 +31,7 @@ export class EsDownloadPageObjects {
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
         this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
         this.errorMessageSelector = this.page.locator("text = There has been an error");
+        this.selectedENCsSelector = this.page.locator("(//div/strong)[1]");
     }
 
     async downloadFile(page: Page, path: string): Promise<void> {
@@ -36,6 +42,11 @@ export class EsDownloadPageObjects {
         ]);
 
         await download.saveAs(path)
+    }
+
+    async SelectedENCsCount(): Promise<void> {
+
+        SelectedENCs = parseInt(((await this.encselectionPageObjects.rightTableMesgSelector.innerHTML()).split(' '))[1])
     }
 
 
@@ -131,6 +142,12 @@ class EsDownloadPageAssertions {
             filedeleted = true;
         }
         expect(filedeleted).toBeTruthy();
+
+    }
+
+    async SelectedENCs(): Promise<void> {
+        expect(await this.esDownloadPageObjects.selectedENCsSelector.isVisible).toBeTruthy();
+        expect(await this.esDownloadPageObjects.selectedENCsSelector.innerText()).toEqual(SelectedENCs+' ENCs selected');
 
     }
 }

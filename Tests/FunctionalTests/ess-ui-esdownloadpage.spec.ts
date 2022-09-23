@@ -34,9 +34,11 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14093
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14094
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
-    test('Verify Estimated Size of ES, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
-       
+    test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
+        
+        await esDownloadPageObjects.SelectedENCsCount();
         await encSelectionPageObjects.requestENCsSelectorClick();
+        await esDownloadPageObjects.expect.SelectedENCs();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
