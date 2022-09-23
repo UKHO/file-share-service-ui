@@ -4,7 +4,7 @@ import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
-import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects'
+import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
 
 test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
