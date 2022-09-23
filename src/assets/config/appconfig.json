@@ -53,6 +53,7 @@
     "initialDelayMs": "1000",
     "apiUrl": "",
     "apiScope": "",
-    "avgSizeofENCinMB": "0.3"
+    "avgSizeofENCinMB": "0.3",
+    "defaultEstimatedSizeinMB":"2.3"
   }
 }
