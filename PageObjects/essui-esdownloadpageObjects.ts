@@ -1,9 +1,8 @@
 import { Page, Locator, expect } from "@playwright/test";
-import { EncSelectionPageObjects } from "./essui-encselectionpageObjects"
+import { EncSelectionPageObjects, SelectedENCs } from "./essui-encselectionpageObjects"
 const fs = require('fs');
 let filefound;
 let filedeleted;
-var SelectedENCs: number;
 
 
 export class EsDownloadPageObjects {
@@ -43,13 +42,6 @@ export class EsDownloadPageObjects {
 
         await download.saveAs(path)
     }
-
-    async SelectedENCsCount(): Promise<void> {
-
-        SelectedENCs = parseInt(((await this.encselectionPageObjects.rightTableMesgSelector.innerHTML()).split(' '))[1])
-    }
-
-
 }
 
 class EsDownloadPageAssertions {

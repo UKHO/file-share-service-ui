@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { EssLandingPageObjects } from "./essui-landingpageObjects";
+export var SelectedENCs: number;
 
 
 export class EncSelectionPageObjects {
@@ -142,6 +143,11 @@ export class EncSelectionPageObjects {
     }
     async requestENCsSelectorClick(): Promise<void> {
         await this.requestENCsSelector.click();
+    }
+
+    async SelectedENCsCount(): Promise<void> {
+
+        SelectedENCs = parseInt(((await this.rightTableMesgSelector.innerHTML()).split(' '))[1])
     }
 
 
@@ -318,6 +324,17 @@ class EncSelectionPageAssertions {
 
         expect(this.encSelectionPageObjects.deselectAllSelector.isVisible).toBeTruthy();
 
+    }
+
+    async verifyRequestPayload(expectedENCs: string[], selectedEncs: string[]): Promise<void> {
+        
+        expect(selectedEncs.length).toEqual(expectedENCs.length);
+
+        for (var i = 0; i < expectedENCs.length; i++) {
+
+           expect(selectedEncs[i]).toEqual(expectedENCs[i]);
+
+        }
     }
 
    

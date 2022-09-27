@@ -115,7 +115,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14113
-   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 (SPRINT 4)
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 
    test('Verify Count of uploaded & selected ENCs along with estimated size of Exchange set.', async ({ page }) => {
       let numberofENCs = await encSelectionPageObjects.ENCTableENClistCol1.count();
       await encSelectionPageObjects.selectAllSelector.click();
@@ -127,7 +127,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14108
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14109
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14110
-   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14111 (SPRINT 4)
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14111 
    test('Verify Select all and Deselect all functionality', async ({ page }) => {
 
 
@@ -164,7 +164,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    })
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14115
-   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14116 (SPRINT 4)
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14116 
    test('Verify that selecting/deselecting individual ENCs does not affect select all/deselect all link', async ({ page }) => {
 
       await encSelectionPageObjects.startAgainLinkSelectorClick();
