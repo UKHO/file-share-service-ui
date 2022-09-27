@@ -82,14 +82,9 @@ class EsDownloadPageAssertions {
 
         let ENCsIncluded = parseInt(((await this.esDownloadPageObjects.includedENCsCountSelector.innerHTML()).split(' '))[0]);
 
-        if (ENCsIncluded < 4) {
-            expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + Math.round(ENCsIncluded * (0.3) * 1024) + 'KB');
-        }
-        else {
-            expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + (ENCsIncluded * (0.3)).toFixed(1) + 'MB');
+        expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + ((ENCsIncluded * (0.3))+2.3).toFixed(1) + 'MB');
 
-        }
-
+    
     }
 
     async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
