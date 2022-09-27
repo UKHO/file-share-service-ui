@@ -298,11 +298,12 @@ class EncSelectionPageAssertions {
     async verifySizeofENCs(expected: any): Promise<void> {
         let rightTableRowsCount = await this.encSelectionPageObjects.ENCSelectedTablelist.count();
 
-        if (rightTableRowsCount < 4) {
-            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + Math.round(rightTableRowsCount * (0.3) * 1024) + "KB");
+        if (rightTableRowsCount < 1) {
+            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + '0MB');
+
         }
         else
-            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + (rightTableRowsCount *(0.3)).toFixed(1) + 'MB');
+            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + ((rightTableRowsCount *(0.3))+2.3).toFixed(1) + 'MB');
 
     }
 

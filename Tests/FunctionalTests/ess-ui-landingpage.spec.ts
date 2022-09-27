@@ -2,7 +2,7 @@ import { test } from '@playwright/test';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { autoTestConfig } from '../../appSetting.json';
-import { LoginPortal } from '../../Helper/CommonHelper';
+import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 
 test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
@@ -14,6 +14,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           esslandingPageObjects = new EssLandingPageObjects(page);
           await page.goto(autoTestConfig.url);
           await page.waitForLoadState('load');
+          await AcceptCookies(page);
           await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
      })
