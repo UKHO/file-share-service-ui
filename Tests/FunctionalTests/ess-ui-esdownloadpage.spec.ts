@@ -101,8 +101,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.includedENCsCountSelectorVisible();
     });
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
-     test('Verify Verify all requested valid ENCs included in Exchange sets.', async ({ page }) => {
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316 (SPRINT 5)
+     test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
 
         const selectedEncs = await encSelectionPageObjects.ENCSelectedTablelist.allInnerTexts();
         await encSelectionPageObjects.requestENCsSelectorClick()
