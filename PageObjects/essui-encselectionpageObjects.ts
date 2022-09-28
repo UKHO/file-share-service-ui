@@ -60,7 +60,7 @@ export class EncSelectionPageObjects {
         this.selectionTextSelector = this.page.locator("text='Your selection '");
         this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
         this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
-        this.ENCTableCheckboxlist = this.page.locator('(//input[@type="checkbox"])');
+        this.ENCTableCheckboxlist = this.page.locator('(//td/ukho-checkbox/input)');
         this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");        
         this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
         this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
@@ -104,24 +104,6 @@ export class EncSelectionPageObjects {
 
     async EncSelectorAt101thClick(): Promise<void> {
         await this.EncSelectorAt101th.click();
-    }
-
-    async addMaxLimitENCs(): Promise<void> {
-
-        for (var i = 0; i < 10; i++) {
-            await this.setTypeENCTextBoxSelector("AU21010" + i);
-            await this.addENCButtonSelectorClick();
-        }
-
-        for (var i = 10; i < 100; i++) {
-            await this.setTypeENCTextBoxSelector("CA2101" + i);
-            await this.addENCButtonSelectorClick();
-        }
-
-        for (var i = 100; i < 250; i++) {
-            await this.setTypeENCTextBoxSelector("CN210" + i);
-            await this.addENCButtonSelectorClick();
-        }
     }
 
     async firstCheckBoxSelectorClick(): Promise<void> {
