@@ -36,7 +36,7 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
   exchangeSetDetails: ExchangeSetDetails;
-  estimatedTotalSize: string = "0KB";
+  estimatedTotalSize: string = "0MB";
   selectDeselectText: string;
   selectDeselectAlert: string;
   showSelectDeselect: boolean;
@@ -180,8 +180,12 @@ export class EssListEncsComponent implements OnInit {
   }
 
   getEstimatedTotalSize() {
-    var selectedENCNumber = (this.selectedEncList && this.selectedEncList.length > 0) ? this.selectedEncList.length : 0;
-    return this.essUploadFileService.getEstimatedTotalSize(selectedENCNumber);
+    if(this.selectedEncList && this.selectedEncList.length > 0){
+    return this.essUploadFileService.getEstimatedTotalSize(this.selectedEncList.length);
+    }
+    else{
+      return "0MB"
+    }
   }
   getSelectDeselectText() {
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;

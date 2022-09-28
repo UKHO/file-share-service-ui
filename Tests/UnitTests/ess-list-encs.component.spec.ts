@@ -178,8 +178,8 @@ describe('EssListEncsComponent', () => {
 
   it.each`
   estimatedSize              | expectedResult
-  ${'0KB'}                       |  ${'0KB'}
-  ${'1.5MB'}                     |  ${'1.5MB'}
+  ${'0MB'}                       |  ${'0MB'}
+  ${'2.6MB'}                     |  ${'2.6MB'}
   `('getEstimatedTotalSize called from syncEncsBetweenTables and should return string',
   ({  estimatedSize, expectedResult }: {  estimatedSize: string; expectedResult: string }) => {
     jest.clearAllMocks();

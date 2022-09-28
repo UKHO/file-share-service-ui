@@ -107,24 +107,6 @@ export class EncSelectionPageObjects {
         await this.EncSelectorAt101th.click();
     }
 
-    async addMaxLimitENCs(): Promise<void> {
-
-        for (var i = 0; i < 10; i++) {
-            await this.setTypeENCTextBoxSelector("AU21010" + i);
-            await this.addENCButtonSelectorClick();
-        }
-
-        for (var i = 10; i < 100; i++) {
-            await this.setTypeENCTextBoxSelector("CA2101" + i);
-            await this.addENCButtonSelectorClick();
-        }
-
-        for (var i = 100; i < 250; i++) {
-            await this.setTypeENCTextBoxSelector("CN210" + i);
-            await this.addENCButtonSelectorClick();
-        }
-    }
-
     async firstCheckBoxSelectorClick(): Promise<void> {
         await this.firstCheckBoxSelector.click();
 
@@ -261,8 +243,6 @@ class EncSelectionPageAssertions {
 
         const selectcheckboxFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
         await expect(selectcheckboxFromTable.nth(0)).not.toBeChecked();
-        //    await selectcheckboxFromTable.nth(1).not.isChecked();
-        //    await expect(this.encSelectionPageObjects.firstCheckBoxSelector).not.toBeChecked();
     }
 
     async verifyLeftTableRowsCountSelectorCount(expectedCount: any): Promise<void> {

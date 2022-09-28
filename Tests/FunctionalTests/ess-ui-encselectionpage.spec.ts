@@ -104,11 +104,15 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    })
 
    // // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
-   test('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENCs', async ({ page }) => {
+   test('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENC', async ({ page }) => {
       await encSelectionPageObjects.startAgainLinkSelectorClick();
-      await encSelectionPageObjects.addSingleENC("AU210130");
-      await encSelectionPageObjects.addAnotherENCSelectorClick();
-      await encSelectionPageObjects.addMaxLimitENCs();
+
+      await esslandingPageObjects.uploadradiobtnSelectorClick();
+      await esslandingPageObjects.uploadFile(page, './Tests/TestData/250ENCs.csv');
+      await esslandingPageObjects.proceedButtonSelectorClick();
+            
+      //Adding ENC manually
+      await encSelectionPageObjects.addAnotherENC("IN210101");
 
       await encSelectionPageObjects.expect.errorMsgMaxLimitSelectorContainText("Max ENC limit reached.");
    })
