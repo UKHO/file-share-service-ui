@@ -7,7 +7,7 @@
 
     <div class="uploadENCFileSection">
 
-        <ukho-file-input class="UploadFileIput" id="file-upload" (change)="uploadListener($event)" accept=".txt,.csv"></ukho-file-input>
+        <ukho-file-input class="UploadFileIput" id="file-upload" (drop)="uploadListener($event)" (change)="uploadListener($event)" accept=".txt,.csv"></ukho-file-input>
 
         <ukho-button class="UploadButton" (click)="loadFileReader()">Proceed</ukho-button>
 

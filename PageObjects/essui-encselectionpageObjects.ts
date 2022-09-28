@@ -10,8 +10,7 @@ export class EncSelectionPageObjects {
     readonly startLinkSelector: Locator;
     readonly textAboveTableSelector: Locator;
     readonly textAboveTable: Locator;
-    readonly rightTableSelector: Locator;
-    readonly rightTableEncPositionSeletor: Locator;
+    readonly ENCSelectedTablelist: Locator;    
     readonly firstCheckBoxSelector: Locator;
     readonly XButtonSelector: Locator;
     readonly addAnotherENCSelector: Locator;
@@ -21,12 +20,11 @@ export class EncSelectionPageObjects {
     readonly EncSelectorAt101th: Locator;
     readonly maxLimitEncmessageSelector: Locator;
     readonly maxLimitEncmessage: Locator;
-    readonly firstEncSelector: Locator;
     readonly secondEncSelector: Locator;
-    readonly leftTableRowsCountSelector: Locator;
+    readonly leftTableMesgSelector: Locator;
+    readonly rightTableMesgSelector: Locator;
     readonly errorMessageForDuplicateNumberSelector: Locator;
     readonly errorMsgDuplicateENC: Locator;
-    readonly anotherCheckBoxSelector: Locator;
     readonly chooseBoxSelecetor: Locator;
     readonly errorMsgMaxLimitSelector: Locator;
     readonly errorMsgMaxLimit: Locator;
@@ -36,6 +34,11 @@ export class EncSelectionPageObjects {
     readonly addencradiobtnSelector: Locator;
     readonly selectionTextSelector: Locator;
     readonly addSingleENCTextboxSelector: Locator
+    readonly selectAllSelector: Locator
+    readonly deselectAllSelector: Locator
+    readonly exchangeSetSizeSelector: Locator
+    readonly requestENCsSelector: Locator
+
 
     constructor(readonly page: Page) {
         this.expect = new EncSelectionPageAssertions(this);
@@ -43,8 +46,6 @@ export class EncSelectionPageObjects {
         this.encNameSelector = this.page.locator("text=ENC name");
         this.startLinkSelector = this.page.locator(".linkStartAgain");
         this.textAboveTableSelector = this.page.locator("text=Select up to 100 ENCs and make an exchange set");
-        this.rightTableSelector = this.page.locator("//div/div[3]/div[3]/div[1]/table/tbody/tr");
-        this.rightTableEncPositionSeletor = this.page.locator("//div/div[3]/div[3]/div[1]/table/tbody/tr[1]/td[1]");
         this.firstCheckBoxSelector = this.page.locator("//div/table/tbody/tr[1]/td[2]/ukho-checkbox/input");
         this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i");
         this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc");
@@ -56,10 +57,17 @@ export class EncSelectionPageObjects {
         this.errorMessageForDuplicateNumberSelector = this.page.locator("//h3[text()='ENC already in list.']");
         this.chooseBoxSelecetor = this.page.locator("input[id = 'ukho-form-field-5']");
         this.errorMsgMaxLimitSelector = this.page.locator("//ukho-dialogue");
-        this.selectionTextSelector = this.page.locator("//p[text()='Your selection ']");
-        this.ENCTableENClistCol1 = this.page.locator('//table/tbody/tr/td[1]');
-        this.ENCTableCheckboxlist = this.page.locator('//table/tbody/tr/td[2]/ukho-checkbox/input');
-        
+        this.selectionTextSelector = this.page.locator("text='Your selection '");
+        this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
+        this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
+        this.ENCTableCheckboxlist = this.page.locator('(//td/ukho-checkbox/input)');
+        this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");        
+        this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
+        this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
+        this.leftTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[1]')
+        this.rightTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[2]')
+        this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
+
     }
 
     async addSingleENC(data: string): Promise<void> {
@@ -98,23 +106,26 @@ export class EncSelectionPageObjects {
         await this.EncSelectorAt101th.click();
     }
 
-    async addMaxLimitENCs(): Promise<void> {
+    async firstCheckBoxSelectorClick(): Promise<void> {
+        await this.firstCheckBoxSelector.click();
 
-        for (var i = 0; i < 10; i++) {
-            await this.setTypeENCTextBoxSelector("AU21010" + i);
-            await this.addENCButtonSelectorClick();
-        }
-
-        for (var i = 10; i < 100; i++) {
-            await this.setTypeENCTextBoxSelector("CA2101" + i);
-            await this.addENCButtonSelectorClick();
-        }
-
-        for (var i = 100; i < 250; i++) {
-            await this.setTypeENCTextBoxSelector("CN210" + i);
-            await this.addENCButtonSelectorClick();
-        }
     }
+
+    async selectAllSelectorClick() : Promise<void> {
+
+        await this.selectAllSelector.click();
+
+    }
+
+    async deselectAllSelectorClick() : Promise<void> {
+
+        await this.deselectAllSelector.click();
+
+    }
+    async requestENCsSelectorClick(): Promise<void> {
+        await this.requestENCsSelector.click();
+    }
+
 
 }
 
@@ -125,7 +136,7 @@ class EncSelectionPageAssertions {
     async verifySelectedENCs(expectedENCs: string[]): Promise<void> {
 
         const selectENCsFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
-        const selectedENCsInRightTable = this.encSelectionPageObjects.rightTableSelector;
+        const selectedENCsInRightTable = this.encSelectionPageObjects.ENCSelectedTablelist;
 
         if (expectedENCs.length) {
             for (var i = 0; i < expectedENCs.length; i++) {
@@ -142,7 +153,7 @@ class EncSelectionPageAssertions {
     async verifyDeselectedENCs(expectedENCs: string[]): Promise<void> {
 
         const selectENCsFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
-        const selectedENCsInRightTable = this.encSelectionPageObjects.rightTableSelector;
+        const selectedENCsInRightTable = this.encSelectionPageObjects.ENCSelectedTablelist;
 
         if (expectedENCs.length) {
             for (var i = 0; i < expectedENCs.length; i++) {
@@ -158,7 +169,7 @@ class EncSelectionPageAssertions {
     async verifyRightTableRowsCountSelectorCount(selectCount: any): Promise<void> {
 
         const selectENCsFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
-        const selectedENCsInRightTable = this.encSelectionPageObjects.rightTableSelector;
+        const selectedENCsInRightTable = this.encSelectionPageObjects.ENCSelectedTablelist;
 
         if (selectCount) {
             for (var i = 0; i < selectCount; i++) {
@@ -190,7 +201,8 @@ class EncSelectionPageAssertions {
 
         for (var i = 0; i < expectedENCs.length; i++) {
 
-            expect(uploadedEncs[i]).toEqual(expectedENCs[i]);
+           expect(uploadedEncs[i]).toEqual(expectedENCs[i]);
+           
         }
     }
 
@@ -212,7 +224,7 @@ class EncSelectionPageAssertions {
 
     async selectionTextSelectorVisible(): Promise<void> {
 
-        expect(await this.encSelectionPageObjects.selectionTextSelector).toBeVisible();
+        expect(this.encSelectionPageObjects.selectionTextSelector).toBeVisible();
     }
 
 
@@ -223,9 +235,10 @@ class EncSelectionPageAssertions {
 
     async anotherCheckBoxSelectorChecked(): Promise<void> {
 
-        const selectENCsFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
-
-        expect(await selectENCsFromTable.nth(1).isChecked()).toBeFalsy();
+       const selectcheckboxFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
+       await expect(selectcheckboxFromTable.nth(1)).not.toBeChecked();           
+    //    await selectcheckboxFromTable.nth(1).not.isChecked();
+    //    await expect(this.encSelectionPageObjects.firstCheckBoxSelector).not.toBeChecked();
     }
 
     async verifyLeftTableRowsCountSelectorCount(expectedCount: any): Promise<void> {
@@ -255,5 +268,41 @@ class EncSelectionPageAssertions {
         expect(await this.encSelectionPageObjects.textAboveTableSelector.innerText()).toEqual(expected);
     }
 
+    async verifyNumberofENCs(): Promise<void> {
+
+        let rightTableRowsCount = await this.encSelectionPageObjects.ENCSelectedTablelist.count();
+        let leftTableRowsCount = await this.encSelectionPageObjects.ENCTableENClistCol1.count();
+        expect(leftTableRowsCount).toEqual(rightTableRowsCount);
+        expect(await this.encSelectionPageObjects.leftTableMesgSelector.innerText()).toEqual("Showing " + leftTableRowsCount + " ENCs");
+        expect(await this.encSelectionPageObjects.rightTableMesgSelector.innerText()).toEqual("" + rightTableRowsCount + " ENCs selected");
+    }
+
+    async verifySizeofENCs(expected: any): Promise<void> {
+        let rightTableRowsCount = await this.encSelectionPageObjects.ENCSelectedTablelist.count();
+
+        if (rightTableRowsCount < 1) {
+            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + '0MB');
+
+        }
+        else
+            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + ((rightTableRowsCount *(0.3))+2.3).toFixed(1) + 'MB');
+
+    }
+
+    
+
+    async selectAllSelectorIsVisible(): Promise<void> {
+
+        expect(this.encSelectionPageObjects.selectAllSelector.isVisible).toBeTruthy();
+
+    }
+
+    async deselectAllSelectorVisible(): Promise<void> {
+
+        expect(this.encSelectionPageObjects.deselectAllSelector.isVisible).toBeTruthy();
+
+    }
+
+   
 }
 
