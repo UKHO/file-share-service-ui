@@ -92,10 +92,10 @@ export class FssSearchFilterService {
         if (filterExpression === "")
           filterExpression = defaultSearchExpression;
         else
-          filterExpression = "(" + (filterExpression.concat(" OR ")).concat(defaultSearchExpression) + ")";
+          filterExpression =  (filterExpression.concat(" OR ", defaultSearchExpression));
       }
     }
-    return filterExpression;
+    return "(" +filterExpression + ")";
   }
 
   getFilterExpressionForApplyFilter(fssFilterGroup: FilterGroup[]) {

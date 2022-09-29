@@ -92,7 +92,7 @@ test('should create valid filter expression for single search criteria', () => {
   let expression :string
   expression = 'test';
   var filter = service.getFilterExpressionForSimplifiedSearch(expression);
-  expect(filter).toBe("($batchContains('test') OR contains(filename, 'test'))");
+  expect(filter).toBe("(($batchContains('test') OR contains(filename, 'test')))");
 });
 
 
