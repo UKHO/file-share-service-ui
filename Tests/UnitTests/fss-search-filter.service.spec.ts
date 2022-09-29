@@ -85,6 +85,25 @@ describe('FssSearchFilterService', () => {
     
     expect(filter).toBe("(FileName eq 'TestReport.pdf' AND ((FileSize gt 10 OR (FileSize lt 10000000) AND FileSize gt 100000000) AND FileSize gt 1000000000))");
   });
+
+
+// Test for single search criteria - Simplified Search
+test('should create valid filter expression for single search criteria', () => {
+  let expression :string
+  expression = 'test';
+  var filter = service.getFilterExpressionForSimplifiedSearch(expression);
+  expect(filter).toBe("(($batchContains('test') OR contains(filename, 'test')))");
+});
+
+
+
+ //Test for multiple search criteria - Simplified Search
+ test('should create valid filter expression for multiple search criteria', () => {
+  let expression :string
+  expression = 'test avcs';
+  var filter = service.getFilterExpressionForSimplifiedSearch(expression);
+  expect(filter).toBe("(($batchContains('test') OR contains(filename, 'test')) OR ($batchContains('avcs') OR contains(filename, 'avcs')))");
+});
 });
 
 export function createSearchRow(rowId: number, fields: Field[], operators: Operator[], joinOperator: string, field: string, operator: string, value: any, valueType: "time" | "text" | "date" | "email" | "password" | "tel" | "url", isValueHidden: boolean,time: string) {

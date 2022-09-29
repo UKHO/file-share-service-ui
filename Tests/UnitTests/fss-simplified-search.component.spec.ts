@@ -50,19 +50,19 @@ describe('FssSimplifiedSearchComponent', () => {
   });
 
   test('should return filterExpression when the simplified search button is clicked with extra blank space', () => {
-    var expectedfilterExpression = "(($batchContains('AVCS') OR $batchContains('DVD')) OR $batchContains('2022'))";
+    var expectedfilterExpression = "(($batchContains('AVCS') OR contains(filename, 'AVCS')) OR ($batchContains('DVD') OR contains(filename, 'DVD')) OR ($batchContains('2022') OR contains(filename, '2022')))";
     var filterExpression = searchFilterservice.getFilterExpressionForSimplifiedSearch("AVCS    DVD  2022");
     expect(filterExpression).toEqual(expectedfilterExpression);
   });
 
   test('should return filterExpression when the simplified search button is clicked with no extra blank space', () => {
-    var expectedfilterExpression = "(($batchContains('AVCS') OR $batchContains('DVD')) OR $batchContains('2022'))";
+    var expectedfilterExpression = "(($batchContains('AVCS') OR contains(filename, 'AVCS')) OR ($batchContains('DVD') OR contains(filename, 'DVD')) OR ($batchContains('2022') OR contains(filename, '2022')))";
     var filterExpression = searchFilterservice.getFilterExpressionForSimplifiedSearch("AVCS DVD 2022");
     expect(filterExpression).toEqual(expectedfilterExpression);
   });
 
   test('should strip all single quotes from simplified search text', () => {
-    var expectedfilterExpression = "(($batchContains('AVCS') OR $batchContains('''DVD''')) OR $batchContains('2022'))";
+    var expectedfilterExpression = "(($batchContains('AVCS') OR contains(filename, 'AVCS')) OR ($batchContains('''DVD''') OR contains(filename, '''DVD''')) OR ($batchContains('2022') OR contains(filename, '2022')))";
     var filterExpression = searchFilterservice.getFilterExpressionForSimplifiedSearch("AVCS 'DVD' 2022");
     expect(filterExpression).toEqual(expectedfilterExpression);
   });
