@@ -135,6 +135,22 @@ export async function SearchAttribute(page: Page, attributeName: string) {
       `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
       `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
   }
+
+  export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
+    page: Page, containsOneOf: string[]): Promise<void> {
+  
+    expect(containsOneOf.length).toBeTruthy();
+  
+    const tdPredicate = containsOneOf
+      .map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
+      .join(' or ');
+  
+    await ExpectSelectionsAreEqualforBatchAndFile(page,
+      `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
+      `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`,
+      `${fssSearchPageObjectsConfig.fileAttributeTableFileNameSelector}`
+      );
+  }
   
   export async function ExpectAllResultsHaveFileAttributeValue(
     page: Page, preciseValue: string): Promise<void> {
@@ -157,6 +173,26 @@ export async function SearchAttribute(page: Page, attributeName: string) {
   
     // assert all the resulting batches have the attribute value
     expect(withValueCount).toEqual(resultCount);
+  }
+
+  async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, tablePath: string, tablePathWithCondition: string, 
+    filePath: string): Promise<void> {
+   await page.waitForTimeout(3000);
+   //  count the result rows
+    const resultCount = await page.$$eval(tablePath, matches => matches.length);
+     
+    // fail if there are no matching selections
+    expect(resultCount).toBeTruthy();
+     
+    // count the result rows with the attribute value
+     const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
+
+     const withFileNameCount = await page.$$eval(filePath, matches => matches.length);
+
+     const withBothValueCount = withValueCount + withFileNameCount;
+  
+     // assert all the resulting batches have the attribute value
+     expect(withBothValueCount).toBeGreaterThanOrEqual(resultCount);
   }
   
   export async function GetTotalResultCount(page: Page): Promise<number> {
@@ -196,6 +232,7 @@ export async function SearchAttribute(page: Page, attributeName: string) {
       }
       else {
         await page.click(fssSearchPageObjectsConfig.paginatorLinkNext);
+        await page.waitForTimeout(2000);
       }
     }
   

@@ -16,12 +16,15 @@ export class EssUploadFileService {
   private exchangeSetDetails: ExchangeSetDetails;
   private avgSizeofENC: number;
   private estimatedTotalSize: number;
+  private defaultEstimatedSizeinMB:number;
 
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
     this.avgSizeofENC = Number.parseFloat(AppConfigService.settings["essConfig"].avgSizeofENCinMB);
     this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
+    this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
+ 
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -139,12 +142,12 @@ export class EssUploadFileService {
   
   getEstimatedTotalSize(encCount:number):string {
     
-    this.estimatedTotalSize= (this.avgSizeofENC * encCount);
+    this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
       if(this.estimatedTotalSize>=1){
-       return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
+        return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
       }
       else{
         return Math.round(this.estimatedTotalSize * 1024).toString()+"KB";
       }
-  }
+   }
 }
