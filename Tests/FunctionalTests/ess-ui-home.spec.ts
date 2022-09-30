@@ -88,4 +88,14 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
         await expect(page.url()).toContain("/exchangesets");
         await expect(page).toHaveTitle("Admiralty - File Share Service - Exchange Sets");
     });
+
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14225 (SPRINT-5)
+   test ('Verify clicking on "logout" button page redirect to home page and "login" button is enabled' , async ({ page }) => {
+    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await page.locator(fssHomePageObjectsConfig.yourAccountSelector).hover();
+    await page.locator(fssHomePageObjectsConfig.logOutBtnSelector).click();
+    await page.waitForLoadState('load');
+    expect(await page.isEnabled(fssHomePageObjectsConfig.signinLinkSelector)).toBeTruthy();
+})
+
 });

@@ -26,6 +26,8 @@
         "essLinkSelector": "//li[@id='Exchange sets']",
         "exchngSetTextSelector": "//*[@id='contentArea']/app-fss-search/div/app-fss-simplified-search/div/div[2]/h4",
         "exchngSetLinkSelector": "//*[@id='contentArea']/app-fss-search/div/app-fss-simplified-search/div/div[2]/a",
-        "exchngSetHdngSelector": "//*[@id='main']"
+        "exchngSetHdngSelector": "//*[@id='main']",
+        "yourAccountSelector":"(//button)[1]",
+        "logOutBtnSelector":"#signOutButton"
     }
 }

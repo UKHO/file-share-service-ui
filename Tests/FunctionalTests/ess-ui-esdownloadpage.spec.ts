@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
+import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
@@ -34,9 +34,12 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14093
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14094
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
-    test('Verify Estimated Size of ES, Spinner and Download button from Download page', async ({ page }) => {
-       
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239 (SPRINT 5)
+    test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
+        
+        await encSelectionPageObjects.SelectedENCsCount();
         await encSelectionPageObjects.requestENCsSelectorClick();
+        await esDownloadPageObjects.expect.SelectedENCs();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
@@ -96,5 +99,17 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.ValidateInvalidENCsAsPerCount(invalidENCs);
         await esDownloadPageObjects.expect.selectedTextSelectorVisible();
         await esDownloadPageObjects.expect.includedENCsCountSelectorVisible();
+    });
+
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316 (SPRINT 5)
+     test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
+
+        const selectedEncs = await encSelectionPageObjects.ENCSelectedTablelist.allInnerTexts();
+        await encSelectionPageObjects.requestENCsSelectorClick()
+        await page.on('request', req => {
+            let requestPayload = req.postDataJSON();
+            page.waitForLoadState();
+            encSelectionPageObjects.expect.verifyRequestPayload(requestPayload, selectedEncs)
+        });
     });
 })

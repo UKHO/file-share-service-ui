@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { EssLandingPageObjects } from "./essui-landingpageObjects";
+export var SelectedENCs: number;
 
 
 export class EncSelectionPageObjects {
@@ -10,7 +11,7 @@ export class EncSelectionPageObjects {
     readonly startLinkSelector: Locator;
     readonly textAboveTableSelector: Locator;
     readonly textAboveTable: Locator;
-    readonly ENCSelectedTablelist: Locator;    
+    readonly ENCSelectedTablelist: Locator;
     readonly firstCheckBoxSelector: Locator;
     readonly XButtonSelector: Locator;
     readonly addAnotherENCSelector: Locator;
@@ -61,7 +62,7 @@ export class EncSelectionPageObjects {
         this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
         this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
         this.ENCTableCheckboxlist = this.page.locator('(//td/ukho-checkbox/input)');
-        this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");        
+        this.ENCSelectedTablelist = this.page.locator("(//table/tbody)[2]/tr/td[1]");
         this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
         this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
         this.leftTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[1]')
@@ -111,19 +112,24 @@ export class EncSelectionPageObjects {
 
     }
 
-    async selectAllSelectorClick() : Promise<void> {
+    async selectAllSelectorClick(): Promise<void> {
 
         await this.selectAllSelector.click();
 
     }
 
-    async deselectAllSelectorClick() : Promise<void> {
+    async deselectAllSelectorClick(): Promise<void> {
 
         await this.deselectAllSelector.click();
 
     }
     async requestENCsSelectorClick(): Promise<void> {
         await this.requestENCsSelector.click();
+    }
+
+    async SelectedENCsCount(): Promise<void> {
+
+        SelectedENCs = parseInt(((await this.rightTableMesgSelector.innerHTML()).split(' '))[1])
     }
 
 
@@ -201,8 +207,8 @@ class EncSelectionPageAssertions {
 
         for (var i = 0; i < expectedENCs.length; i++) {
 
-           expect(uploadedEncs[i]).toEqual(expectedENCs[i]);
-           
+            expect(uploadedEncs[i]).toEqual(expectedENCs[i]);
+
         }
     }
 
@@ -235,10 +241,8 @@ class EncSelectionPageAssertions {
 
     async anotherCheckBoxSelectorChecked(): Promise<void> {
 
-       const selectcheckboxFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
-       await expect(selectcheckboxFromTable.nth(1)).not.toBeChecked();           
-    //    await selectcheckboxFromTable.nth(1).not.isChecked();
-    //    await expect(this.encSelectionPageObjects.firstCheckBoxSelector).not.toBeChecked();
+        const selectcheckboxFromTable = this.encSelectionPageObjects.ENCTableCheckboxlist;
+        await expect(selectcheckboxFromTable.nth(0)).not.toBeChecked();
     }
 
     async verifyLeftTableRowsCountSelectorCount(expectedCount: any): Promise<void> {
@@ -285,11 +289,13 @@ class EncSelectionPageAssertions {
 
         }
         else
-            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + ((rightTableRowsCount *(0.3))+2.3).toFixed(1) + 'MB');
+            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + ((rightTableRowsCount * (0.3)) + 2.3).toFixed(1) + 'MB');
 
     }
 
-    
+
+
+
 
     async selectAllSelectorIsVisible(): Promise<void> {
 
@@ -303,6 +309,17 @@ class EncSelectionPageAssertions {
 
     }
 
-   
+    async verifyRequestPayload(expectedENCs: string[], selectedEncs: string[]): Promise<void> {
+
+        expect(selectedEncs.length).toEqual(expectedENCs.length);
+
+        for (var i = 0; i < expectedENCs.length; i++) {
+
+            expect(selectedEncs[i]).toEqual(expectedENCs[i]);
+
+        }
+    }
+
+
 }
 
