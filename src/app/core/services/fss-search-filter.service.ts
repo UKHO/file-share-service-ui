@@ -88,20 +88,21 @@ export class FssSearchFilterService {
     for (let i in searchKeywords) {
       if (searchKeywords[i] !== "") {
         let searchKeyword = searchKeywords[i].replace(/'/g, "''");
+        let defaultSearchExpression = "($batchContains('" + searchKeyword + "') OR contains(filename, '" + searchKeyword + "'))";
         if (filterExpression === "")
-          filterExpression = "$batchContains('" + searchKeyword + "')";
+          filterExpression = defaultSearchExpression;
         else
-          filterExpression = "(" + (filterExpression.concat(" OR ")).concat("$batchContains('" + searchKeyword + "')") + ")";
+          filterExpression =  (filterExpression.concat(" OR ", defaultSearchExpression));
       }
     }
-    return filterExpression;
+    return "(" +filterExpression + ")";
   }
 
   getFilterExpressionForApplyFilter(fssFilterGroup: FilterGroup[]) {
     var filterExpressionForApplyFilter = "";
     fssFilterGroup.forEach(fg => {
       var filterExpressionPerFilterGroup = "";
-      const attributeTitle = fg.title.replace(/'/g,'');
+      const attributeTitle = fg.title.replace(/'/g, '');
       fg.items.forEach(item => {
         const formattedTitle = item.title.replace(/'/g, "''");
         if (item.selected === true) {
@@ -123,7 +124,7 @@ export class FssSearchFilterService {
         }
       }
     });
-    
+
     return filterExpressionForApplyFilter;
   }
 }
