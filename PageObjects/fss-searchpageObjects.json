@@ -46,6 +46,9 @@
        "searchAttributeTableRows":".attribute-table tr",
        "warningMessageSelector":".dialog.warning >h3",
        "warningMessageText":"There is a problem with FileSize value field",
-       "fileAttributeTableFileNameSelector" : ".cdk-table tbody tr td:nth-of-type(1)"
+     
+      "fileAttributeTableFileNameSelector":"(//div/table)[3]"
+
+       
     }
 }

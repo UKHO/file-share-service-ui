@@ -104,6 +104,8 @@ export async function SearchAttribute(page: Page, attributeName: string) {
     await page.waitForTimeout(2000);
     await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
     await page.waitForTimeout(2000);
+    await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
+    await page.waitForTimeout(2000);
   
   }
   export async function ExpectAllResultsHaveBatchUserAttValue(
@@ -113,7 +115,16 @@ export async function SearchAttribute(page: Page, attributeName: string) {
       `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
       `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
   }
+
+  export async function ExpectAllResultsHaveFileName(
+    page: Page, preciseValue: string): Promise<void> {
+      
+      await ExpectSelectionsAreEqual(page,
+        `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
+        `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+    }
   
+    
   export async function ExpectAllResultsContainBatchUserAttValue(
     page: Page, containsValue: string): Promise<void> {
   
@@ -160,21 +171,26 @@ export async function SearchAttribute(page: Page, attributeName: string) {
       `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
   }
   
+
+  
   async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {
    await page.waitForTimeout(3000);
    //  count the result rows
     const resultCount = await page.$$eval(tablePath, matches => matches.length);
+    console.log(resultCount);
      
     // fail if there are no matching selections
     expect(resultCount).toBeTruthy();
      
     // count the result rows with the attribute value
     const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
+    console.log(withValueCount);
   
     // assert all the resulting batches have the attribute value
     expect(withValueCount).toEqual(resultCount);
   }
 
+  
   async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, tablePath: string, tablePathWithCondition: string, 
     filePath: string): Promise<void> {
    await page.waitForTimeout(3000);

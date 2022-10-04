@@ -5,8 +5,8 @@ import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObje
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { ExpectAllResultsHaveBatchUserAttValue,ExpectAllResultsContainAnyBatchUserAttValue,
     ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed,
-    GetTotalResultCount,filterCheckBox, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue  } from '../../Helper/SearchPageHelper';
-import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType } from '../../Helper/ConstantHelper';
+    GetTotalResultCount,filterCheckBox, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue, ExpectAllResultsHaveFileName  } from '../../Helper/SearchPageHelper';
+import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType, attributeFileName } from '../../Helper/ConstantHelper';
 
 test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   
@@ -35,7 +35,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
-  test('Verify search results for single batch attribute search', async ({ page }) => {
+  test ('Verify search results for single batch attribute search', async ({ page }) => {              // Single Batch Attribute value --> Passed
     await InsertSearchText(page, attributeProductType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
@@ -44,6 +44,20 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkNext)).toBeTruthy();
 
   })
+
+  test ('Verify search results for single File name search', async ({ page }) => {               // Single File Name --> Not Passed
+    await InsertSearchText(page, attributeFileName.value);
+    await page.waitForSelector(fssSearchPageObjectsConfig.fileAttributeTableFileNameSelector);
+    await ExpectAllResultsHaveFileName(page, attributeFileName.value);
+    expect(await page.innerHTML(fssSearchPageObjectsConfig.fileAttributeTableFileNameSelector)).toEqual("test");
+
+    // verify paginator links are available on the page
+    // locator for box --> (//div/app-fss-search-results/div)
+   
+  })
+
+
+
 
   test('Verify paginator text showing correct values for search results on first page', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
@@ -59,7 +73,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
-  test('Verify search results for multiple batch attributes search', async ({ page }) => {
+  test ('Verify search results for multiple batch attributes search', async ({ page }) => {   // Multiple Batch Values --> Passed
     const searchText = `L1K2 ${attributeProductType.value}`;
     await InsertSearchText(page, searchText);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
@@ -92,7 +106,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
-  test('Verify batch attributes with multiple values are displayed on filter panel', async ({ page }) => {
+  test ('Verify batch attributes with multiple values are displayed on filter panel', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaTypes.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaTypes.value.split(' '));
@@ -152,7 +166,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
    
   })
 
-  test('Search multiple batch attributes and select filter and Apply filters button returned refined search', async ({ page }) => {
+  test.only ('Search multiple batch attributes and select filter and Apply filters button returned refined search', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaType.value);  
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' '));
