@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { AppConfigService } from './../../../core/services/app-config.service'
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -14,8 +15,14 @@ export class EssUploadFileComponent implements OnInit {
   displayErrorMessage = false;
   validEncList: string[];
   encFile: File;
+  maxEncsLimit:number;
+  maxEncSelectionLimit:number;
+  
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router) { }
+    private route: Router) {     
+        this.maxEncsLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
+        this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
+    }
 
   ngOnInit(): void {
     this.essUploadFileService.infoMessage = false;
@@ -31,11 +38,16 @@ export class EssUploadFileComponent implements OnInit {
   }
 
   loadFileReader() {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.processEncFile(e.target.result);
-    };
-    reader.readAsText(this.encFile);
+    if (this.encFile && this.encFile.type !== 'text/plain' && this.encFile.type !== 'text/csv') {
+      this.showMessage('error', 'Please select a .csv or .txt file');
+    }
+    else{
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.processEncFile(e.target.result);
+      };
+      reader.readAsText(this.encFile);
+    }
   }
 
   processEncFile(encFileData: string): void {
