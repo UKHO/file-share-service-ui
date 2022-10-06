@@ -54,6 +54,7 @@
     "apiUrl": "",
     "apiScope": "",
     "avgSizeofENCinMB": "0.3",
-    "defaultEstimatedSizeinMB":"2.3"
+    "defaultEstimatedSizeinMB":"2.3",
+    "batchAttributeColumnCount":4
   }
 }

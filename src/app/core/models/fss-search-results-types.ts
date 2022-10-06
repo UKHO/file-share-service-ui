@@ -6,6 +6,7 @@ export interface SearchResultViewModel{
     ExpiryDate: BatchAttribute;
     allFilesZipSize:number;
     SerialNumber: number; 
+    batchAttributeList:BatchAttributeList[];
   }
   
   export interface BatchAttribute {
@@ -13,6 +14,11 @@ export interface SearchResultViewModel{
     value: string;
   }
  
+  export interface BatchAttributeList {
+    batchAttributeList:BatchAttribute[]
+  }
+ 
+
   export interface BatchFileDetails{
     columnData: string[];
     rowData:BatchFileDetailsRowData[];
