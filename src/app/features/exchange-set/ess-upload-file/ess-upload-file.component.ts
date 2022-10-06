@@ -19,13 +19,17 @@ export class EssUploadFileComponent implements OnInit {
   maxEncSelectionLimit:number;
   
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router) {     
+    private route: Router, private _elementRef?: ElementRef) {     
         this.maxEncsLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
         this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
     }
 
   ngOnInit(): void {
     this.essUploadFileService.infoMessage = false;
+  }
+
+  ngAfterViewInit(): void {
+    this.addChooseFileButtonAttribute();
   }
 
   uploadListener($event: any): void {
@@ -86,6 +90,13 @@ export class EssUploadFileComponent implements OnInit {
       this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
       this.ukhoDialog.nativeElement.focus();
     }
+  }
+
+  addChooseFileButtonAttribute() {
+    let choosefile_input = this._elementRef?.nativeElement.querySelector('#file-upload input[type="file"]');
+    let choosefile_label = this._elementRef?.nativeElement.querySelector('#file-upload label');
+    choosefile_label?.setAttribute('id', 'chooseFileLabel');
+    choosefile_input?.setAttribute('aria-labelledby', 'uploadExplanationText chooseFileLabel');     
   }
 
 }
