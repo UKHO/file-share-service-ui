@@ -2,24 +2,10 @@
   <div>
     <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i class="fas fa-less-than"></i> Start again</a>
   </div>
-  <div>
-    <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" >
-        <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
-    </ukho-dialogue>
-  </div>
   <div class="exchangesetcontainer">
     <h1 id="main" tabindex="-1">Exchange sets</h1>
 
-    <div class="warningsBoxForDownload">
-      <ukho-dialogue [type]='messageType' aria-live="polite" *ngIf="displayMessage" tabindex="-1">
-        <h3 style="font-size:21px">
-           {{messageTitle}}
-        </h3>
-        <div *ngFor="let msg of requestedProductsNotInExchangeSet ">
-          <div class="warningMsg"> {{msg.productName}} - {{msg.reason}}</div>
-        </div>
-      </ukho-dialogue>
-    </div>
+    <app-ess-info-error-message></app-ess-info-error-message>
     
     <div role="alert">
       <p class="light">Your exchange set is available as a download via your browser</p>

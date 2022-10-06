@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { EssInfoErrorMessageService, InfoErrorMessage } from 'src/app/core/services/ess-info-error-message.service';
+import { EssInfoErrorMessageService, InfoErrorMessage, RequestedProductsNotInExchangeSet } from 'src/app/core/services/ess-info-error-message.service';
 
 @Component({
   selector: 'app-ess-info-error-message',
@@ -9,10 +9,11 @@ import { EssInfoErrorMessageService, InfoErrorMessage } from 'src/app/core/servi
 })
 export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
-  messageTitle = '';
+  messageTitle: string | undefined;
   displayErrorMessage = true;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
-  messageDesc = 'Test Error Message';
+  messageDesc: string | [];
+  requestedProductsNotInExchangeSet: RequestedProductsNotInExchangeSet[] | undefined;
   private essInfoErrorMessagesubscription: Subscription;
   constructor(private essInfoErrorMessageService: EssInfoErrorMessageService) {
   }
@@ -22,18 +23,20 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
     this.essInfoErrorMessagesubscription = this.essInfoErrorMessageService.showInfoMessageBSubject.subscribe((showInfoMessage: InfoErrorMessage) => {
         console.log(showInfoMessage);
         this.displayErrorMessage = showInfoMessage.showInfoErrorMessage;
-        this.showMessage(showInfoMessage.messageType , '' , showInfoMessage.messageDesc);
+        this.showMessage(showInfoMessage.messageType , showInfoMessage.messageDesc , showInfoMessage.messageTitle,showInfoMessage.requestedProductsNotInExchangeSet);
     });
   }
 
   showMessage(
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
-    messageTitle: string = '',
-    messageDesc: string = ''
+    messageDesc: string = '',
+    messageTitle?: string,
+    requestedProductsNotInExchangeSet?: RequestedProductsNotInExchangeSet[] | undefined
   ) {
     this.messageType = messageType;
-    this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;
+    this.messageTitle = messageTitle;
+    this.requestedProductsNotInExchangeSet = requestedProductsNotInExchangeSet;
     if (this.ukhoDialog !== undefined) {
       this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
       this.ukhoDialog.nativeElement.focus();

@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+export interface RequestedProductsNotInExchangeSet{
+  productName: string;
+  reason: string;
+}
 export interface InfoErrorMessage {
   showInfoErrorMessage: boolean;
   messageType: 'info' | 'warning' | 'success' | 'error';
   messageDesc: string;
+  messageTitle?: string;
+  requestedProductsNotInExchangeSet?: RequestedProductsNotInExchangeSet[];
 }
 @Injectable({
   providedIn: 'root',
