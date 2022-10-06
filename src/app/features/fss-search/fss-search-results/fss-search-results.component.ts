@@ -1,6 +1,6 @@
 import { ElementRef, EventEmitter, OnChanges, Output } from '@angular/core';
 import { Component, Input } from '@angular/core';
-import { BatchAttribute, BatchFileDetails, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
+import { BatchAttribute, BatchAttributeList, BatchFileDetails, BatchFileDetailsRowData, SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 import { AnalyticsService } from '../../../core/services/analytics.service';
@@ -24,7 +24,7 @@ export class FssSearchResultsComponent implements OnChanges {
   fssSilentTokenRequest: SilentRequest;
   fssTokenScope: any = [];
   displayLoader: boolean = false;
-
+  batchAttributeColumnCount:number
 
   constructor(private elementRef: ElementRef
     , private fileShareApiService: FileShareApiService
@@ -32,6 +32,7 @@ export class FssSearchResultsComponent implements OnChanges {
     , private msalService: MsalService,
   ) {
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+    this.batchAttributeColumnCount= Number.parseInt(AppConfigService.settings["fssConfig"].batchAttributeColumnCount,10);
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
@@ -50,7 +51,8 @@ export class FssSearchResultsComponent implements OnChanges {
           BatchPublishedDate: { key: 'Batch published date', value: batches[i]['batchPublishedDate'] },
           ExpiryDate: { key: 'Batch expiry date', value: batches[i]['expiryDate'] },
           allFilesZipSize: batches[i]['allFilesZipSize'],
-          SerialNumber: ((currentPage - 1) * 10) + srNo
+          SerialNumber: ((currentPage - 1) * 10) + srNo,
+          batchAttributeList:this.getBatchAttributesList(batches[i])
         });
       }
     }
@@ -71,6 +73,38 @@ export class FssSearchResultsComponent implements OnChanges {
     }
 
     return batchAttributes;
+  }
+
+  getBatchAttributesList(batch: any) {
+    var attributes = batch["attributes"];
+    var batchAttributelists: BatchAttributeList[] = [];
+    
+    if(attributes.length>=this.batchAttributeColumnCount){
+      let i:number=0;
+    for (var a = 0; a < Math.ceil(attributes.length/this.batchAttributeColumnCount) ; a++) {
+    let batchAttributeKeyValuePair: BatchAttribute[] = [];
+    let len:number=0;
+    while (len< this.batchAttributeColumnCount&& i<attributes.length) {
+      
+      batchAttributeKeyValuePair.push({
+        key: attributes[i]["key"],
+        value: attributes[i]["value"]
+      });
+      i=i+1;
+      len=batchAttributeKeyValuePair.length;
+  
+    }
+    batchAttributelists.push({batchAttributeList:batchAttributeKeyValuePair});   
+  }
+}
+    else{
+ 
+ let batchAttributeres: BatchAttribute[] = [];
+ batchAttributeres= this.getBatchAttributes(batch);
+ batchAttributelists.push({batchAttributeList:batchAttributeres});
+}
+   
+    return batchAttributelists;
   }
 
   getBatchFileDetails(batch: any) {

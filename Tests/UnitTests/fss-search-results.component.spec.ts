@@ -38,7 +38,8 @@ describe('FssSearchResultsComponent', () => {
       .compileComponents();
     AppConfigService.settings = {
       fssConfig: {
-        "apiUrl": "https://dummyfssapiurl"
+        "apiUrl": "https://dummyfssapiurl",
+        "batchAttributeColumnCount":7
       }
     };
     fileShareApiService = TestBed.inject(FileShareApiService);
