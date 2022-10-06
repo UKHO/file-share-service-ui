@@ -1,14 +1,15 @@
 import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { EssInfoErrorMessageService } from 'src/app/core/services/ess-info-error-message.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ess-upload-file',
   templateUrl: './ess-upload-file.component.html',
   styleUrls: ['./ess-upload-file.component.scss'],
 })
-export class EssUploadFileComponent implements OnInit {
+export class EssUploadFileComponent implements OnInit{
   validEncList: string[];
   encFile: File;
   constructor(private essUploadFileService: EssUploadFileService,
@@ -72,5 +73,4 @@ export class EssUploadFileComponent implements OnInit {
       messageDesc,
     };
   }
-
 }

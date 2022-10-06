@@ -7,6 +7,7 @@ import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
 import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
+import { EssInfoErrorMessageService } from 'src/app/core/services/ess-info-error-message.service';
 
 interface MappedEnc {
   enc: string;
@@ -27,9 +28,6 @@ export class EssListEncsComponent implements OnInit {
   addSingleEncBtnText: string = 'Add ENC';
   encList: MappedEnc[];
   public displayedColumns = ['enc', 'Choose'];
-  messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
-  messageDesc = '';
-  displayErrorMessage = false;
   maxEncSelectionLimit: number;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
@@ -49,6 +47,7 @@ export class EssListEncsComponent implements OnInit {
     private route: Router,
     private msalService: MsalService,
     private exchangeSetApiService: ExchangeSetApiService,
+    private essInfoErrorMessageService: EssInfoErrorMessageService
   ) {
     this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
     this.essSilentTokenRequest = {
@@ -57,15 +56,11 @@ export class EssListEncsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.displayErrorMessage = this.essUploadFileService.infoMessage;
     this.maxEncSelectionLimit = Number.parseInt(
       AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
       10
     );
     this.essUploadFileService.clearSelectedEncs();
-    if (this.displayErrorMessage) {
-      this.showMessage('info', 'Some values have not been added to list.');
-    }
     this.setEncList();
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
@@ -85,21 +80,20 @@ export class EssListEncsComponent implements OnInit {
     }));
   }
 
-  showMessage(
+  triggerInfoErrorMessage(
+    showInfoErrorMessage: boolean,
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
     messageDesc: string = ''
   ) {
-    this.messageType = messageType;
-    this.messageDesc = messageDesc;
-    this.displayErrorMessage = true;
-    if (this.ukhoDialog !== undefined) {
-      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
-      this.ukhoDialog.nativeElement.focus();
-    }
+    this.essInfoErrorMessageService.showInfoErrorMessage = {
+      showInfoErrorMessage,
+      messageType,
+      messageDesc,
+    };
   }
   handleChange(enc: string,event?: Event | null) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
-    this.displayErrorMessage = false;
+    this.triggerInfoErrorMessage(false,'info', '');
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
       this.selectDeselectEncAlert= enc + ' Remove From Selected List';
@@ -107,17 +101,16 @@ export class EssListEncsComponent implements OnInit {
       this.essUploadFileService.addSelectedEnc(enc);
       this.selectDeselectEncAlert= enc + ' Added From Selected List';
     } else {
-      this.showMessage(
-        'error',
-        'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.'
-      );
-      window.scrollTo(0, 0);
+      const currCheckedElement = (document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement);
+      currCheckedElement.click(); // will uncheck the selected checkbox
+      this.triggerInfoErrorMessage(true,'error', 'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.');
+      return;
     }
     this.syncEncsBetweenTables();
     setTimeout(() => {
       const element = document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement;
       if(element && event){
-          element.focus();
+         element.focus();
       }
     },5);
   }
@@ -174,7 +167,7 @@ export class EssListEncsComponent implements OnInit {
       },
         (error) => {
           this.displayLoader = false;
-          this.showMessage('error', 'There has been an error');
+          this.triggerInfoErrorMessage(true,'error', 'There has been an error');
         }
       );
    }

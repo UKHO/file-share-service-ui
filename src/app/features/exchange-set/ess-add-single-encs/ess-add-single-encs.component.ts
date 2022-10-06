@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from 'src/app/core/services/ess-info-error-message.service';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
