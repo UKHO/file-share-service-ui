@@ -18,9 +18,8 @@ export class EssInfoErrorMessageComponent implements OnInit {
   ngOnInit(): void {
     this.essInfoErrorMessageService.showInfoMessageBSubject.subscribe((showInfoMessage: InfoErrorMessage) => {
         console.log(showInfoMessage);
-        this.messageType = showInfoMessage.messageType;
         this.displayErrorMessage = showInfoMessage.showInfoErrorMessage;
-        this.messageDesc = showInfoMessage.messageDesc;
+        this.showMessage(showInfoMessage.messageType , '' , showInfoMessage.messageDesc);
     });
   }
 
@@ -29,6 +28,7 @@ export class EssInfoErrorMessageComponent implements OnInit {
     messageTitle: string = '',
     messageDesc: string = ''
   ) {
+    window.scrollTo(0, 0);
     this.messageType = messageType;
     this.messageTitle = messageTitle;
     this.messageDesc = messageDesc;

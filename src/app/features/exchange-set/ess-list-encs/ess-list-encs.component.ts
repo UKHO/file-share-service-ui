@@ -36,7 +36,7 @@ export class EssListEncsComponent implements OnInit {
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
   exchangeSetDetails: ExchangeSetDetails;
-  estimatedTotalSize: string = "0MB";
+  estimatedTotalSize: string = '0MB';
   selectDeselectText: string;
   selectDeselectAlert: string;
   showSelectDeselect: boolean;
@@ -45,12 +45,12 @@ export class EssListEncsComponent implements OnInit {
   selectDeselectEncAlert: string;
 
   constructor(private essUploadFileService: EssUploadFileService,
-    private elementRef: ElementRef,  
+    private elementRef: ElementRef,
     private route: Router,
     private msalService: MsalService,
     private exchangeSetApiService: ExchangeSetApiService,
   ) {
-    this.essTokenScope = AppConfigService.settings["essConfig"].apiScope;
+    this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope],
     };
@@ -102,10 +102,10 @@ export class EssListEncsComponent implements OnInit {
     this.displayErrorMessage = false;
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
-      this.selectDeselectEncAlert= enc + " Remove From Selected List";
+      this.selectDeselectEncAlert= enc + ' Remove From Selected List';
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
-      this.selectDeselectEncAlert= enc + " Added From Selected List";
+      this.selectDeselectEncAlert= enc + ' Added From Selected List';
     } else {
       this.showMessage(
         'error',
@@ -151,15 +151,16 @@ export class EssListEncsComponent implements OnInit {
   }
 
   switchToESSLandingPage() {
-    this.route.navigate(["exchangesets"]);
+    this.route.navigate(['exchangesets']);
   }
 
   displaySingleEnc() {
     this.displaySingleEncVal = true;
     setTimeout(()=>{
-      var encInput = this.elementRef.nativeElement.querySelectorAll('app-ess-add-single-encs .container .addSingleFileSection ukho-textinput input');
+      // eslint-disable-next-line max-len
+      const encInput = this.elementRef.nativeElement.querySelectorAll('app-ess-add-single-encs .container .addSingleFileSection ukho-textinput input');
       encInput[0].focus();
-    },);  
+    },);
   }
 
   exchangeSetCreationResponse(selectedEncList: any[]) {
@@ -184,7 +185,7 @@ export class EssListEncsComponent implements OnInit {
     return this.essUploadFileService.getEstimatedTotalSize(this.selectedEncList.length);
     }
     else{
-      return "0MB"
+      return '0MB';
     }
   }
   getSelectDeselectText() {
@@ -198,11 +199,11 @@ export class EssListEncsComponent implements OnInit {
   }
   selectDeselectAll() {
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
-      this.selectDeselectAlert = "Selected All ENC's" ;
-      this.essUploadFileService.addAllSelectedEncs();     
+      this.selectDeselectAlert = 'Selected All ENC\'s' ;
+      this.essUploadFileService.addAllSelectedEncs();
     } else {
-      this.selectDeselectAlert = "DeSelected All ENC's" ;
-      this.essUploadFileService.clearSelectedEncs();    
+      this.selectDeselectAlert = 'DeSelected All ENC\'s' ;
+      this.essUploadFileService.clearSelectedEncs();
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
@@ -220,7 +221,7 @@ export class EssListEncsComponent implements OnInit {
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
           this.exchangeSetCreationResponse(this.selectedEncList);
-        })
-    })
+        });
+    });
   }
 }
