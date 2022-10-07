@@ -183,6 +183,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await encSelectionPageObjects.firstCheckBoxSelectorClick();
       await encSelectionPageObjects.expect.deselectAllSelectorVisible();
 
+      
    })
 
 })
