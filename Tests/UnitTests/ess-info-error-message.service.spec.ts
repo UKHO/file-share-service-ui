@@ -28,7 +28,7 @@ describe('EssInfoErrorMessageService', () => {
       messageType : 'error',
       messageDesc : 'Error Test Message'
     };
-    service.showInfoMessageBSubject.next(errObj);
+    service.showInfoErrorMessage = errObj;
     service.showInfoMessageBSubject.subscribe((errMsg) => {
       expect(errMsg).toStrictEqual(errObj);
     });
