@@ -314,6 +314,7 @@ export class FssSearchComponent implements OnInit {
         const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
         if (attribute) {
           if (attribute["values"].length > 1) {
+            attribute["values"].splice(AppConfigService.settings['fssConfig'].maxAttributeValueCount, 1);        
             this.filterGroups.push({
               title: element.attribute,
               items: this.getAttributesValues(attribute["values"], element.attributeSortType, element.sortOrder),
