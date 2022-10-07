@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { EssInfoErrorMessageService, InfoErrorMessage, RequestedProductsNotInExchangeSet } from 'src/app/core/services/ess-info-error-message.service';
+import { EssInfoErrorMessageService, InfoErrorMessage, RequestedProductsNotInExchangeSet } from '../../../core/services/ess-info-error-message.service';
 
 @Component({
   selector: 'app-ess-info-error-message',
@@ -21,7 +21,7 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
   ngOnInit(): void {
     // eslint-disable-next-line max-len
     this.essInfoErrorMessagesubscription = this.essInfoErrorMessageService.showInfoMessageBSubject.subscribe((showInfoMessage: InfoErrorMessage) => {
-        console.log(showInfoMessage);
+        //console.log(showInfoMessage);
         this.displayErrorMessage = showInfoMessage.showInfoErrorMessage;
         this.showMessage(showInfoMessage.messageType , showInfoMessage.messageDesc , showInfoMessage.messageTitle,showInfoMessage.requestedProductsNotInExchangeSet);
     });

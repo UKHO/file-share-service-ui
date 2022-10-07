@@ -18,8 +18,8 @@ export interface InfoErrorMessage {
 export class EssInfoErrorMessageService {
   private infoErrorMessage: InfoErrorMessage = {
     showInfoErrorMessage: false,
-    messageType: 'warning',
-    messageDesc: 'test message',
+    messageType: 'info',
+    messageDesc: '',
   };
   private showInfoMessageSubject: BehaviorSubject<InfoErrorMessage> = new BehaviorSubject<InfoErrorMessage>(this.infoErrorMessage);
 

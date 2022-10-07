@@ -6,7 +6,7 @@ import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { Router } from '@angular/router';
-import { EssInfoErrorMessageService, RequestedProductsNotInExchangeSet } from 'src/app/core/services/ess-info-error-message.service';
+import { EssInfoErrorMessageService, RequestedProductsNotInExchangeSet } from '../../../core/services/ess-info-error-message.service';
 
 @Component({
   selector: 'app-ess-download-exchangeset',

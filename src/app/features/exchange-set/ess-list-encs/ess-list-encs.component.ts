@@ -6,8 +6,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
-import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
-import { EssInfoErrorMessageService } from 'src/app/core/services/ess-info-error-message.service';
+import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
+import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 
 interface MappedEnc {
   enc: string;
@@ -102,7 +102,9 @@ export class EssListEncsComponent implements OnInit {
       this.selectDeselectEncAlert= enc + ' Added From Selected List';
     } else {
       const currCheckedElement = (document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement);
-      currCheckedElement.click(); // will uncheck the selected checkbox
+      if(currCheckedElement){
+        currCheckedElement.click(); // will uncheck the selected checkbox
+      }
       this.triggerInfoErrorMessage(true,'error', 'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.');
       return;
     }

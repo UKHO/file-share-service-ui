@@ -5,11 +5,13 @@ import { EssUploadFileService } from '../../src/app/core/services/ess-upload-fil
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { Router } from '@angular/router';
-
+import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
+import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
   let fixture: ComponentFixture<EssUploadFileComponent>;
   let essUploadFileService: EssUploadFileService;
+  let essInfoErrorMessageService: EssInfoErrorMessageService;
   const getEncData_csv = () => {
     let data = 'AU220150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
@@ -77,13 +79,14 @@ describe('EssUploadFileComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule],
-      declarations: [EssUploadFileComponent],
+      declarations: [EssUploadFileComponent,EssInfoErrorMessageComponent],
       providers: [
         {
           provide : Router,
           useValue : router
           },
-        EssUploadFileService
+        EssUploadFileService,
+        EssInfoErrorMessageService
       ]
     })
       .compileComponents();
@@ -100,6 +103,7 @@ describe('EssUploadFileComponent', () => {
     fixture = TestBed.createComponent(EssUploadFileComponent);
     component = fixture.componentInstance;
     essUploadFileService = TestBed.inject(EssUploadFileService);
+    essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
     fixture.detectChanges();
   });
 
@@ -119,10 +123,13 @@ describe('EssUploadFileComponent', () => {
     ${'warning'}    | ${'test warning 5'}
     `('showMessage should set correct mesages : $messageType , $messageDesc',
     ({ messageType, messageDesc }: { messageType: 'info' | 'warning' | 'success' | 'error'; messageDesc: string }) => {
-      component.displayErrorMessage = true;
-      component.showMessage(messageType, messageDesc);
-      expect(component.messageType).toEqual(messageType);
-      expect(component.messageDesc).toEqual(messageDesc);
+      const errObj = {
+        showInfoErrorMessage : true,
+        messageType,
+        messageDesc
+      };
+      component.triggerInfoErrorMessage(errObj.showInfoErrorMessage,errObj.messageType,errObj.messageDesc);
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     }
   );
 
@@ -163,8 +170,12 @@ describe('EssUploadFileComponent', () => {
       component.encFile = file;
       component.processEncFile(encDataFunc);
       expect(component.validEncList.length).toEqual(expectedResult);
-      expect(component.messageType).toEqual('info');
-      expect(component.messageDesc).toEqual('Some values have not been added to list.');
+      const errObj = {
+        showInfoErrorMessage : true,
+        messageType : 'info',
+        messageDesc : 'Some values have not been added to list.'
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
   it.each`
      encDataFunc
@@ -177,8 +188,12 @@ describe('EssUploadFileComponent', () => {
       component.encFile = file;
       component.processEncFile(encDataFunc);
       expect(component.validEncList).toBeUndefined();
-      expect(component.messageType).toEqual('error');
-      expect(component.messageDesc).toEqual('Please upload valid ENC file.');
+      const errObj = {
+        showInfoErrorMessage : true,
+        messageType : 'error',
+        messageDesc : 'Please upload valid ENC file.'
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
   it.each`
@@ -192,8 +207,12 @@ describe('EssUploadFileComponent', () => {
       component.encFile = file;
       component.processEncFile(encDataFunc);
       expect(component.validEncList).toEqual([]);
-      expect(component.messageType).toEqual('info');
-      expect(component.messageDesc).toEqual('No ENCs found.');
+      const errObj = {
+        showInfoErrorMessage : true,
+        messageType : 'info',
+        messageDesc : 'No ENCs found.'
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
   it('uploadListener{ event.srcElement} should raise error for unsupported file type', () => {
@@ -205,12 +224,20 @@ describe('EssUploadFileComponent', () => {
         files: [file]
       }
     };
-    expect(component.displayErrorMessage).toBe(false);
+    const errObj = {
+      showInfoErrorMessage : false,
+      messageType : 'info',
+      messageDesc : ''
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     component.uploadListener(event);
     expect(component.validEncList.length).toEqual(0);
-    expect(component.messageType).toEqual('error');
-    expect(component.messageDesc).toEqual('Please select a .csv or .txt file');
-    expect(component.displayErrorMessage).toBe(true);
+    const errObJ = {
+      showInfoErrorMessage : true,
+      messageType : 'error',
+      messageDesc : 'Please select a .csv or .txt file'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
   });
 
   it('uploadListener{ event.dataTransfer} should raise error for unsupported file type', () => {
@@ -222,12 +249,20 @@ describe('EssUploadFileComponent', () => {
         files: [file]
       }
     };
-    expect(component.displayErrorMessage).toBe(false);
+    const errObj = {
+      showInfoErrorMessage : false,
+      messageType : 'info',
+      messageDesc : ''
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     component.uploadListener(event);
     expect(component.validEncList.length).toEqual(0);
-    expect(component.messageType).toEqual('error');
-    expect(component.messageDesc).toEqual('Please select a .csv or .txt file');
-    expect(component.displayErrorMessage).toBe(true);
+    const errObJ = {
+      showInfoErrorMessage : true,
+      messageType : 'error',
+      messageDesc : 'Please select a .csv or .txt file'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
   });
 
   it.each`
@@ -241,6 +276,17 @@ describe('EssUploadFileComponent', () => {
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
       component.processEncFile(fileContent);
+      const errObJ = {
+        showInfoErrorMessage : false,
+        messageType : 'info',
+        messageDesc : ''
+      };
+      if(expectedResult){
+        errObJ.showInfoErrorMessage = expectedResult;
+        errObJ.messageType = 'info';
+        errObJ.messageDesc = 'Some values have not been added to list.';
+      }
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
       expect(essUploadFileService.infoMessage).toBe(expectedResult);
     });
 });

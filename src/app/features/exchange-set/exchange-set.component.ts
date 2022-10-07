@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EssInfoErrorMessageService } from 'src/app/core/services/ess-info-error-message.service';
-import { AppConfigService } from '../../../app/core/services/app-config.service'
+import { EssInfoErrorMessageService } from '../../../app/core/services/ess-info-error-message.service';
+import { AppConfigService } from '../../../app/core/services/app-config.service';
 
 @Component({
   selector: 'app-exchange-set',
@@ -18,12 +18,12 @@ export class ExchangeSetComponent implements OnInit {
 
   constructor(private essInfoErrorMessageService: EssInfoErrorMessageService) {
     this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
-    this.triggerInfoErrorMessage(false,'info', '');
    }
 
   ngOnInit(): void {
     this.radioUploadEncValue = 'UploadEncFile';
     this.radioAddEncValue = 'AddSingleEnc';
+    this.triggerInfoErrorMessage(false,'info', '');
   }
 
   triggerInfoErrorMessage(
