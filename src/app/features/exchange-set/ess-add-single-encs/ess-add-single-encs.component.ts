@@ -20,6 +20,7 @@ export class EssAddSingleEncsComponent implements OnInit {
 
   ngOnInit(): void {
     this.validEnc = this.essUploadFileService.getValidEncs();
+    this.triggerInfoErrorMessage(false,'info', '');
   }
 
   validateAndAddENC() {
