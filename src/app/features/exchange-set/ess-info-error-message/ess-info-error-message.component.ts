@@ -14,7 +14,7 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc: string | [];
   requestedProductsNotInExchangeSet: RequestedProductsNotInExchangeSet[] | undefined;
-  private essInfoErrorMessagesubscription: Subscription;
+  essInfoErrorMessagesubscription: Subscription;
   constructor(private essInfoErrorMessageService: EssInfoErrorMessageService) {
   }
 
@@ -23,6 +23,7 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
     this.essInfoErrorMessagesubscription = this.essInfoErrorMessageService.showInfoMessageBSubject.subscribe((showInfoMessage: InfoErrorMessage) => {
         //console.log(showInfoMessage);
         this.displayErrorMessage = showInfoMessage.showInfoErrorMessage;
+        // eslint-disable-next-line max-len
         this.showMessage(showInfoMessage.messageType , showInfoMessage.messageDesc , showInfoMessage.messageTitle,showInfoMessage.requestedProductsNotInExchangeSet);
     });
   }
