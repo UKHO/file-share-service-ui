@@ -19,11 +19,8 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
   }
 
   ngOnInit(): void {
-    // eslint-disable-next-line max-len
     this.essInfoErrorMessagesubscription = this.essInfoErrorMessageService.showInfoMessageBSubject.subscribe((showInfoMessage: InfoErrorMessage) => {
-        //console.log(showInfoMessage);
         this.displayErrorMessage = showInfoMessage.showInfoErrorMessage;
-        // eslint-disable-next-line max-len
         this.showMessage(showInfoMessage.messageType , showInfoMessage.messageDesc , showInfoMessage.messageTitle,showInfoMessage.requestedProductsNotInExchangeSet);
     });
   }
