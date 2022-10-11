@@ -24,7 +24,7 @@ export class EssUploadFileComponent implements OnInit{
     this.validEncList = [];
     this.encFile = ($event?.srcElement?.files || $event?.dataTransfer?.files)[0];
     this.triggerInfoErrorMessage(false,'info', '');
-    if (this.encFile && this.encFile.type !== 'text/plain' && this.encFile.type !== 'text/csv') {
+    if (this.encFile && this.encFile.type !== 'text/plain' && this.encFile.type !== 'text/csv' &&  this.encFile.type !== 'application/vnd.ms-excel') {
       this.triggerInfoErrorMessage(true,'error', 'Please select a .csv or .txt file');
     }
   }
