@@ -48,6 +48,7 @@ export class FssSearchComponent implements OnInit {
   currentUrl: any = '';
   fssTokenScope: any = [];
   fssSilentTokenRequest: SilentRequest;
+  attribute : any =[];
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
@@ -311,13 +312,13 @@ export class FssSearchComponent implements OnInit {
 
     if (configAttributes.length > 0 && attributeSearchResults.length > 0) {
       for (let element of configAttributes) {
-        const attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
-        if (attribute) {
-          if (attribute["values"].length > 1) {
-            attribute["values"].splice(AppConfigService.settings['fssConfig'].maxAttributeValueCount, 1);        
+        this.attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
+        if (this.attribute) {
+          if (this.attribute["values"].length > 1) {
+            this.attribute["values"].splice(AppConfigService.settings['fssConfig'].maxAttributeValueCount, 1);        
             this.filterGroups.push({
               title: element.attribute,
-              items: this.getAttributesValues(attribute["values"], element.attributeSortType, element.sortOrder),
+              items: this.getAttributesValues(this.attribute["values"], element.attributeSortType, element.sortOrder),
               expanded: true
             });
           }

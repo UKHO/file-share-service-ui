@@ -56,7 +56,8 @@ describe('FssSearchComponent', () => {
                  "attribute":"Year",
                  "sortOrder":"descending"
                }
-             ]
+             ],
+             "maxAttributeValueCount" : 2
          }
       };
       msalService = TestBed.inject(MsalService);
@@ -80,12 +81,15 @@ describe('FssSearchComponent', () => {
 
    it('should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called', () => {
       const batchAttributesFromConfig = AppConfigService.settings["fssConfig"].batchAttributes;
-      //as we defined 3 attributes in test configuration, i.e. "batchAttributes": ["Media Type","Year","Year / Week"]
+      //as we defined 3 attributes in test configuration, i.e. "batchAttributes": ["Media Type","Year","Year / Week"]  
+      const maxAttributeValueCountFromConfig = AppConfigService.settings["fssConfig"].maxAttributeValueCount;
+       //as we defined maxAttributeValueCount is 2 in test configuration
       const expectedFilterGroupLengthFromConfig = 3;
       component.transformSearchAttributesToFilter(inputSearchResultMockData);
-      expect(component.filterGroups.length).toEqual(expectedFilterGroupLengthFromConfig);
+      expect(component.filterGroups.length).toEqual(expectedFilterGroupLengthFromConfig);     
       expect(component.filterGroups.filter(filterGroup => filterGroup.hasOwnProperty("title")).map(filterGroup => filterGroup["title"]))
          .toEqual(batchAttributesFromConfig.map((x:any)=>x["attribute"]));
+      expect(component.attribute["values"].length).toEqual(maxAttributeValueCountFromConfig);
    });
 
 });
