@@ -29,7 +29,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421 (SPRINT 7)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14422 (SPRINT 7)
      test ('Verify clicking on First Radio Button, "click to choose file" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.expect.chooseuploadfileoptionSelectorIsVisible();
