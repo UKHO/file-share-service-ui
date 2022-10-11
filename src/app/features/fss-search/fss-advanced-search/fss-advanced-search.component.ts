@@ -42,7 +42,7 @@ export class FssAdvancedSearchComponent implements OnInit {
   typeaheadFields: (filterTerm: string) => string[] | Observable<string[]>;
   selectedRow: number;
   userLocalTimeZone = this.getLocalTimeFormat();
-  pageRecordCount: number = 10;  
+  pageRecordCount: number = 10;
   pagingLinks: any = [];
   pages: number;
   currentPage: number = 0;
@@ -70,15 +70,15 @@ export class FssAdvancedSearchComponent implements OnInit {
   private subscriptionAdvancedSearchTokenRefresh: Subscription;
   @Input() observableAdvancedSearchTokenRefresh: Observable<void>;
 
-  constructor(private fssSearchTypeService: IFssSearchService,    
+  constructor(private fssSearchTypeService: IFssSearchService,
     private fileShareApiService: FileShareApiService,
-    private elementRef: ElementRef,    
+    private elementRef: ElementRef,
     private fssSearchHelperService: FssSearchHelperService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchGroupingService: FssSearchGroupingService,
     private fssPopularSearchService: FssPopularSearchService,
     private analyticsService: AnalyticsService,
-    private msalService: MsalService) { 
+    private msalService: MsalService) {
     this.displaySimplifiedSearchLink = AppConfigService.settings["fssConfig"].displaySimplifiedSearchLink;
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
@@ -95,59 +95,30 @@ export class FssAdvancedSearchComponent implements OnInit {
       this.addSearchRow(isPopularSearch);
     }
     this.fssPopularSearchService.populateQueryEditor(this.fssSearchRows, popularSearch, this.operators, this.rowGroupings);
-    this.setupGrouping();  
+    this.setupGrouping();
     this.getAdvancedSearchResult();
   }
 
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-    if (!localStorage['batchAttributes']) {
-      this.displayLoader = true;
-      this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-        this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-          localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
-          this.refreshFields(batchAttributeResult);
-          this.addSearchRow();         
-          this.displayLoader = false;
-          this.analyticsService.searchInIt();
-        });
-      },error => {
-        
-        this.msalService.instance
-          .loginPopup(this.fssSilentTokenRequest)
-          .then(response => {
-            this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-              localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
-              this.refreshFields(batchAttributeResult);
-              this.addSearchRow();         
-              this.displayLoader = false;
-              this.analyticsService.searchInIt();
-            });
-          })
-      }); 
-        
-    }
-    else {
-      var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
-      this.refreshFields(batchAttributeResult);
-      this.addSearchRow();
-    }
+    var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
+    this.refreshFields(batchAttributeResult);
+    this.addSearchRow();
+    this.displayLoader = false;
 
-    this.subscriptionPopularSearch = this.observablePopularSearch.subscribe((data) => 
+    this.subscriptionPopularSearch = this.observablePopularSearch.subscribe((data) =>
       this.getPopularSearch(data));
 
-    this.subscriptionAdvancedSearchTokenRefresh = this.observableAdvancedSearchTokenRefresh.subscribe(() => 
+    this.subscriptionAdvancedSearchTokenRefresh = this.observableAdvancedSearchTokenRefresh.subscribe(() =>
       this.getBatchAttributes());
   }
 
   ngOnDestroy() {
-    if (this.subscriptionPopularSearch)
-    {
+    if (this.subscriptionPopularSearch) {
       this.subscriptionPopularSearch.unsubscribe();
     }
-    if (this.subscriptionAdvancedSearchTokenRefresh)
-    {
+    if (this.subscriptionAdvancedSearchTokenRefresh) {
       this.subscriptionAdvancedSearchTokenRefresh.unsubscribe();
     }
   }
@@ -164,22 +135,22 @@ export class FssAdvancedSearchComponent implements OnInit {
   getBatchAttributes() {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
+        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
         this.refreshFields(batchAttributeResult);
         this.refreshExistingFssRowsFields();
-      });    
-    },error => {
-      
+      });
+    }, error => {
+
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
           this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-            localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
+            localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
             this.refreshFields(batchAttributeResult);
             this.refreshExistingFssRowsFields();
-          });    
+          });
         })
-    }); 
+    });
   }
 
   refreshFields(batchAttributeResult: any) {
@@ -191,8 +162,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.typeaheadFields = this.filter(this.filterList);
   }
 
-  refreshExistingFssRowsFields()
-  {
+  refreshExistingFssRowsFields() {
     this.fssSearchRows.forEach(fssSearchRow => {
       fssSearchRow.fields = this.fields;
       fssSearchRow.filterFn = this.typeaheadFields;
@@ -252,10 +222,12 @@ export class FssAdvancedSearchComponent implements OnInit {
   }
 
   getAdvancedSearchResult() {
-    this.onAdvancedSearchClicked.emit({ fssSearchRows: this.fssSearchRows, fields: this.fields, 
-        operators: this.operators, rowGroupings: this.rowGroupings});
-    }
-  
+    this.onAdvancedSearchClicked.emit({
+      fssSearchRows: this.fssSearchRows, fields: this.fields,
+      operators: this.operators, rowGroupings: this.rowGroupings
+    });
+  }
+
   hideMessage() {
     this.messageType = "info";
     this.messageTitle = "";
@@ -306,7 +278,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     }
     else if (this.isGroupIntersectWithOther()) {
       this.showMessage("info", "Groups can not intersect each other.",
-            "A group can only contain complete groups, they cannot contain a part of another group."
+        "A group can only contain complete groups, they cannot contain a part of another group."
       );
     }
     else {
@@ -368,7 +340,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     window.location.reload();
   }
 
-  searchToAdvancedSearch(){
+  searchToAdvancedSearch() {
     this.ShowSimplifiedSearchClicked.emit();
   }
 }

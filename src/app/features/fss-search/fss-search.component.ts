@@ -63,6 +63,7 @@ export class FssSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.SimplifiedSearch;
+    this.setBatchAttributes();
   }
 
   ShowAdvancedSearchClicked() {
@@ -347,6 +348,30 @@ export class FssSearchComponent implements OnInit {
       });
     }
     return batchAttributeValues;
+  }
+
+  setBatchAttributes() {
+    if (!localStorage['batchAttributes']) {
+      this.displayLoader = true;
+      this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+        this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+          localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
+          this.displayLoader = false;
+          this.analyticsService.searchInIt();
+        });
+      }, error => {
+
+        this.msalService.instance
+          .loginPopup(this.fssSilentTokenRequest)
+          .then(response => {
+            this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+              localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
+              this.displayLoader = false;
+              this.analyticsService.searchInIt();
+            });
+          })
+      });
+    }
   }
 
 }
