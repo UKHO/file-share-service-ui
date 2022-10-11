@@ -67,18 +67,24 @@ describe('FssSearchResultsComponent', () => {
   //Test for batch attributes
   test('should return batch attributes when search result data is provided', () => {
     component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-    component.searchResult = Array.of(SearchResultMockData['entries']);
+    component.searchResult = Array.of(SearchResultAttributeMockData['entries']);
     component.ngOnChanges();
     var batches = component.searchResult[0];
 
-    var expectedBatchAttributes = [
-      { "key": "product", "value": "TidalPredictionService" },
-      { "key": "cellname", "value": "AVCS" }];
-
-    var batchAttributes = component.getBatchAttributes(batches[0]);
-
-    expect(batchAttributes.length).toEqual(2);
-    expect(batchAttributes).toEqual(expectedBatchAttributes);
+    var expectedBatchAttributesres = [
+      {
+        "key": "Content",
+        "value": "Catalogue"
+      },
+      {
+        "key": "	Year / Week",
+        "value": "2022/32"
+      }];
+    var configValue=Number.parseInt(AppConfigService.settings["fssConfig"].batchAttributeColumnCount,10);
+    var batchAttributesres = component.getBatchAttributesList(batches[0]);
+    expect(batchAttributesres[0].batchAttributeList.length).toEqual(configValue);
+    expect(batchAttributesres[1].batchAttributeList.length).toEqual(2);
+    expect(batchAttributesres[1].batchAttributeList).toEqual(expectedBatchAttributesres);
   });
 
   //Test for system attributes
@@ -217,6 +223,90 @@ export function MockMSALInstanceFactory() {
     }
   })
 };
+
+export const SearchResultAttributeMockData: any = {
+  "count": 1,
+  "total": 1,
+  "entries": [
+    {
+      "batchId": "9439e409-e545-435c-afd7-f3a5cce527e3",
+      "status": "Committed",
+      "attributes": [
+        {
+          "key": "product",
+          "value": "TidalPredictionService"
+        },
+        {
+          "key": "cellname",
+          "value": "AVCS"
+        },
+        {
+          "key": "Media Type",
+          "value": "CD"
+        },
+        {
+          "key": "Year",
+          "value": "2021"
+        },
+        {
+          "key": "Week Number",
+          "value": "40"
+        },
+        {
+          "key": "S63 Version",
+          "value": "1.2"
+        },
+        {
+          "key": "Exchange Set Type",
+          "value": "Update"
+        },
+        {
+          "key": "Content",
+          "value": "Catalogue"
+        },
+        {
+          "key": "	Year / Week",
+          "value": "2022/32"
+        }
+        
+      ],
+      "businessUnit": "TEST",
+      "batchPublishedDate": "2021-06-18T12:57:48.853Z",
+      "expiryDate": "2022-02-28T13:05:10.14Z",
+      "files": [
+        {
+          "filename": "My Test File.txt",
+          "fileSize": 4000000,
+          "mimeType": "image/jpeg",
+          "hash": null,
+          "attributes": [
+            {
+              "key": "filetype",
+              "value": "Country Delight"
+            }
+          ],
+          "links": {
+            "get": {
+              "href": "/batch/9439e409-e545-435c-afd7-f3a5cce527e3/files/My%20Test%20File.txt"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "_Links": {
+    "self": {
+      "href": "/batch?limit=100&start=0&$filter=filesize%20gt%201000"
+    },
+    "first": {
+      "href": "/batch?limit=100&start=0&$filter=filesize%20gt%201000"
+    },
+    "last": {
+      "href": "/batch?limit=100&start=0&$filter=filesize%20gt%201000"
+    }
+  }
+};
+
 
 export const SearchResultMockData: any = {
   "count": 1,
