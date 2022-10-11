@@ -59,10 +59,10 @@ describe('ExchangeSetComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
-  test('should show the content of paragraph in exchange set', () => {
+  test('should show the sub heading in exchange set', () => {
     const fixture = TestBed.createComponent(ExchangeSetComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p').textContent).toBe('Update your ENCs for a vessel and make an exchange set');
+    expect(fixture.nativeElement.querySelector('p').textContent).toBe('Update your ENCs for a vessel by making an exchange set');
   });
 
   it('should display addUploadEncComponents div when radioUploadEnc is checked ', () => {
@@ -85,7 +85,7 @@ describe('ExchangeSetComponent', () => {
     const essLandingPageText = fixture.debugElement.queryAll(By.css('p'));
     for (var i = 0; i < essLandingPageText.length; i++) {
       if(i == essLandingPageText.length-1)
-      expect(essLandingPageText[i].nativeElement.innerHTML).toBe('You can upload a permit file and select up to 5 ENCs from your full list of holdings, or you can upload a specific list of ENCs as a .csv file or, add a single ENC');
+      expect(essLandingPageText[i].nativeElement.innerHTML).toBe('You can add a single ENC or upload a list.');
     }
   });
 });
