@@ -54,10 +54,12 @@ export class FssSearchService implements IFssSearchService {
 
   refreshUserAttributes(batchAttributeResult: string | any[]) {
     this.userAttributes = [];
-    for (let i = 0; i < batchAttributeResult.length; i++) {
-      const batchAttributes: Field =
-        { value: '$batch(' + batchAttributeResult[i] + ')', text: batchAttributeResult[i], type: 'UserAttribute', dataType: 'attribute' };
-      this.userAttributes.push(batchAttributes);
+    if (batchAttributeResult != null) {
+     for (let i = 0; i < batchAttributeResult.length; i++) {
+        const batchAttributes: Field =
+          { value: '$batch(' + batchAttributeResult[i] + ')', text: batchAttributeResult[i], type: 'UserAttribute', dataType: 'attribute' };
+        this.userAttributes.push(batchAttributes);
+      }
     }
     return this.userAttributes;
   }
