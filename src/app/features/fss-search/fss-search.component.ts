@@ -312,6 +312,7 @@ export class FssSearchComponent implements OnInit {
 
     if (configAttributes.length > 0 && attributeSearchResults.length > 0) {
       for (let element of configAttributes) {
+        this.attribute = [];
         this.attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
         if (this.attribute) {
           if (this.attribute["values"].length > 1) {
