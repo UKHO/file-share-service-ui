@@ -61,7 +61,7 @@ describe('FssAdvancedSearchComponent', () => {
     AppConfigService.settings = {
       fssConfig: {
         "apiUrl": "https://dummyfssapiurl ",
-        displaySimplifiedSearchLink: true
+        "displaySimplifiedSearchLink": true
       }
     };
     searchService = TestBed.inject(FssSearchService);
@@ -345,8 +345,6 @@ describe('FssAdvancedSearchComponent', () => {
 
   test('should show simplified search Link if displaySimplifiedSearchLink is true', () => {
     const fixture = TestBed.createComponent(FssAdvancedSearchComponent);
-    fixture.componentInstance.refreshFields(MockUserAttributeFields());
-    fixture.componentInstance.fields = searchService.getFields(MockUserAttributeFields());
     fixture.componentInstance.observablePopularSearch = of(null);
     fixture.componentInstance.observableAdvancedSearchTokenRefresh = of();
     fixture.detectChanges();
@@ -358,7 +356,6 @@ describe('FssAdvancedSearchComponent', () => {
       expect(fixture.nativeElement.querySelector('a')).toBeNull();
     }
   });
-
 });
 
 export function MockUserAttributeFields() {
