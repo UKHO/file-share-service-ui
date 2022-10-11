@@ -19,19 +19,23 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806 //
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421 (SPRINT 7)
      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
 
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
-          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload your whole permit file or a .csv file");
+          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload a list in a file");
           await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
-     test('Verify clicking on First Radio Button, "click to choose file" control & "Proceed" button available', async ({ page }) => {
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421 (SPRINT 7)
+     test ('Verify clicking on First Radio Button, "click to choose file" control & "Proceed" button available', async ({ page }) => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.expect.chooseuploadfileoptionSelectorIsVisible();
           await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible();
+          await esslandingPageObjects.expect.VerifyMaxENCLimit();
+          await esslandingPageObjects.expect.VerifyMaxSelectedENCLimit();
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799 
