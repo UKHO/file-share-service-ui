@@ -216,10 +216,14 @@ export async function SearchAttribute(page: Page, attributeName: string) {
   
       let attributeFieldCount = 0;
       for (let rc = 0; rc < resultCount; rc++) {
-        const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//th`
+        const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr`
         let colnum = await GetColumnNumber(page, tablepath, tablecloumnName);
-        expect(await page.locator(`(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//td[${colnum}]`).textContent()).toEqual(tablecloumnValue);
-        attributeFieldCount = attributeFieldCount + 1;
+       if(colnum!="")
+       {
+        let data=colnum.split('_');
+        expect(await page.locator(`(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr[${data[0]}]//td[${data[1]}]`).textContent()).toEqual(tablecloumnValue);
+       }
+       attributeFieldCount = attributeFieldCount + 1;
   
       }
   
@@ -238,7 +242,6 @@ export async function SearchAttribute(page: Page, attributeName: string) {
   
   }
 
-
   export async function filterCheckBox(batchAtributeType: string, batchAttributeValue: string): Promise<string> {
 
     let checkBoxMatch = `//ukho-expansion[.//h3[text()='${batchAtributeType}']]//ukho-checkbox/label[text()='${batchAttributeValue}']`;
@@ -246,15 +249,18 @@ export async function SearchAttribute(page: Page, attributeName: string) {
   }
 
   async function GetColumnNumber(page: Page, tablePath: string, columnHeaderText: string) {
-    let colIndex = 0;
-    const resultCount = await page.$$eval(tablePath, matches => matches.length);
-    for (let col = 1; col <= resultCount; col++) {
-      if (await page.locator(`${tablePath}[${col}]`).textContent() === columnHeaderText) {
-        colIndex = col;
-        break;
-  
+    let colIndex = "";
+    const rowCount = await page.$$eval(tablePath, matches => matches.length);
+     for (let row = 1; row <= rowCount; row++) {
+      const resultColCount = await page.$$eval(`${tablePath}[${row}]`+'//th', matches => matches.length); 
+      for (let col = 1;  col<=resultColCount; col++) 
+      {       
+      if (await page.locator(`${tablePath}[${row}]`+'//th'+`[${col}]`).textContent() === columnHeaderText) {
+        console.log(col);
+        return row+1+"_"+col;
       }
     }
+  }
     return colIndex;
   }
 
