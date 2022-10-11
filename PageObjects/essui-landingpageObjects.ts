@@ -24,7 +24,7 @@ export class EssLandingPageObjects {
 
     constructor(readonly page: Page) {
         this.expect = new EssLandingPageAssertions(this);
-        this.radioButtonNameSelector = this.page.locator("//label[text()='Upload your whole permit file or a .csv file']");
+        this.radioButtonNameSelector = this.page.locator("//label[text()='Upload a list in a file']");
         this.exchangesettextSelector = this.page.locator("h1#main");
         this.uploadbtntextSelector = this.page.locator("#radioUploadEnc");
         this.addenctextSelector = this.page.locator("#radioAddEnc");
