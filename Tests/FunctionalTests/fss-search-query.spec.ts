@@ -23,6 +23,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
         .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
+    await page.waitForTimeout(2000);
     await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
   });
 
@@ -115,7 +116,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     
   });
 
-  test('Test to verify file downloaded status changed after click on download button', async ({ page }) => {
+  test ('Test to verify file downloaded status changed after click on download button', async ({ page }) => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);

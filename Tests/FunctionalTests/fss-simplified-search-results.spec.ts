@@ -35,7 +35,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
-  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14327
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14327 (SPRINT 7)
   test('Verify search results for single batch attribute search', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
@@ -93,6 +93,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
+  // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14329 (SPRINT 7)
   test('Verify batch attributes with multiple values are displayed on filter panel', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleProductTypes.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
@@ -186,7 +187,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
      
   })
   
-  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328 (SPRINT 7)
   test ('Verify search results for single File name search', async ({ page }) => {              
     await InsertSearchText(page, attributeFileName.value);
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
