@@ -45,7 +45,7 @@
         "sortOrder": "descending"
       }
     ],
-    "batchAttributeColumnCount":"4"
+    "batchAttributeColumnCount": "7"
   },
   "essConfig": {
     "MaxEncLimit": "250",
@@ -55,6 +55,6 @@
     "apiUrl": "",
     "apiScope": "",
     "avgSizeofENCinMB": "0.3",
-    "defaultEstimatedSizeinMB":"2.3"
+    "defaultEstimatedSizeinMB": "2.3"
   }
 }
