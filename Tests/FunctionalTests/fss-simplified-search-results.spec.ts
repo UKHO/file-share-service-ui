@@ -187,7 +187,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   })
   
   //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328
-  test.only ('Verify search results for single File name search', async ({ page }) => {              
+  test ('Verify search results for single File name search', async ({ page }) => {              
     await InsertSearchText(page, attributeFileName.value);
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
     await page.waitForSelector(fssSearchPageObjectsConfig.fileAttributeTableFileNameSelector);
