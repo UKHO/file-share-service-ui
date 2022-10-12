@@ -103,9 +103,9 @@ export async function InsertSearchText(page: Page, searchBatchAttribute: string)
   await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, searchBatchAttribute);
   await page.waitForTimeout(2000);
   await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
-  await page.waitForTimeout(2000);
-
+  await page.waitForTimeout(2000); 
 }
+
 export async function ExpectAllResultsHaveBatchUserAttValue(
   page: Page, preciseValue: string): Promise<void> {
 
@@ -153,7 +153,7 @@ export async function ExpectAllResultsHaveFileAttributeValue(
 
   await ExpectSelectionsAreEqual(page,
     `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+    `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${preciseValue.toLowerCase()}')])]`);
 }
 
 async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {

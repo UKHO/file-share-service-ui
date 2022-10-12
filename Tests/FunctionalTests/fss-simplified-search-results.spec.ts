@@ -5,8 +5,8 @@ import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObje
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { ExpectAllResultsHaveBatchUserAttValue,ExpectAllResultsContainAnyBatchUserAttValue,
     ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed,
-    GetTotalResultCount,filterCheckBox, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue  } from '../../Helper/SearchPageHelper';
-import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType, attributeMultipleProductTypes } from '../../Helper/ConstantHelper';
+    GetTotalResultCount,filterCheckBox, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue, ExpectAllResultsHaveFileAttributeValue  } from '../../Helper/SearchPageHelper';
+import { attributeProductType,  attributeFileName, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType, attributeMultipleProductTypes } from '../../Helper/ConstantHelper';
 
 test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   
@@ -35,6 +35,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14327
   test('Verify search results for single batch attribute search', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
@@ -185,15 +186,15 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
      
   })
   
-  // New
-  // test('Verify search results for single File name search', async ({ page }) => {               // Single File Name --> Not Passed
-  //   await InsertSearchText(page, attributeFileName.value);
-  //   await page.waitForSelector(fssSearchPageObjectsConfig.fileAttributeTableFileNameSelector);
-  //   await ExpectAllResultsHaveFileName(page, attributeFileName.value);
-  //   expect(await page.innerHTML(fssSearchPageObjectsConfig.fileAttributeTableFileNameSelector)).toEqual("test");
-
-  //   // verify paginator links are available on the page
-  //   // locator for box --> (//div/app-fss-search-results/div)
-   
-  // })
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328
+  test.only ('Verify search results for single File name search', async ({ page }) => {              
+    await InsertSearchText(page, attributeFileName.value);
+    await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
+    await page.waitForSelector(fssSearchPageObjectsConfig.fileAttributeTableFileNameSelector);
+    await ExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value);
+    // verify paginator links are available on the page
+    expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkPrevious)).toBeTruthy();
+    expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkNext)).toBeTruthy();
+     
+   })
 })

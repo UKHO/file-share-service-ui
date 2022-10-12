@@ -22,7 +22,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806 //
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806 
      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
 
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
@@ -128,7 +128,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332  (SPRINT 6)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332  (SPRINT 7)
      test('Verify that the user is able to drag a .csv and .text file.', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
@@ -140,7 +140,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14333  (SPRINT 6)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14333  (SPRINT 7)
      test('Verify a error message if user tries to drag other than allowed files.', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
