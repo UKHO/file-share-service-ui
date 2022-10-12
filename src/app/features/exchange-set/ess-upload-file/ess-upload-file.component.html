@@ -6,10 +6,23 @@
     </div>
 
     <div class="uploadENCFileSection">
+        <div id="uploadExplanationText">
+            <p class="light">You can upload a permit file or csv file with up to {{maxEncsLimit}} ENCs listed. If your list is longer,
+                please split them and load as separate files.
+            </p>
+    
+            <p class="light">Create your list in a spreadsheet and save it as a csv file. Each ENC must be on its own row
+                in a single column.
+            </p>
+    
+            <p class="light">Once you have uploaded a list, you can then make an exchange set containing a 
+                maximum of {{maxEncSelectionLimit}} individual ENCs.
+            </p>
+        </div>        
 
         <ukho-file-input class="UploadFileIput" id="file-upload" (drop)="uploadListener($event)" (change)="uploadListener($event)" accept=".txt,.csv"></ukho-file-input>
 
-        <ukho-button class="UploadButton" (click)="loadFileReader()">Proceed</ukho-button>
+        <ukho-button  (click)="loadFileReader()">Proceed</ukho-button>
 
    </div> 
    <br>

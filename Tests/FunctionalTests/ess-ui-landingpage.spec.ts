@@ -23,7 +23,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
 
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
-          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload your whole permit file or a .csv file");
+          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload a list in a file");
           await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
      })
 

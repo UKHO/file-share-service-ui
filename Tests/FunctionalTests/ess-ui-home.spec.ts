@@ -60,7 +60,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.goto(autoTestConfig.url+"/#/exchangesets");
         await page.waitForLoadState('load');
-        await esslandingPageObjects.expect.verifyUploadRadioButtonName("Upload your whole permit file or a .csv file");
+        await esslandingPageObjects.expect.verifyUploadRadioButtonName("Upload a list in a file");
         
     });
 
