@@ -43,7 +43,7 @@ export const attributeMimeType: BatchAttribute = {key: 'MimeType', value: 'text/
 export const attributeMediaType: BatchAttribute = {key: 'Media Type', value: 'DVD'};
 export const attributeMultipleMediaTypes: BatchAttribute = {key: 'Media Type', value: 'CD DVD'};
 export const attributeMultipleMediaType: BatchAttribute = {key: 'Media Type', value: 'CD DVD'};
-
+export const attributeMultipleProductTypes: BatchAttribute = { key: 'Product Type', value: 'Internal ESS' };
 export const searchNonExistBatchAttribute = 'pqtestresult';
 
 export const batchAttributeKeys = [
