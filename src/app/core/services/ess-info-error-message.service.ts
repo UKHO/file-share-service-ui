@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ProductsNotInExchangeSet } from '../models/ess-response-types';
 
 export interface RequestedProductsNotInExchangeSet{
   productName: string;
@@ -8,9 +9,8 @@ export interface RequestedProductsNotInExchangeSet{
 export interface InfoErrorMessage {
   showInfoErrorMessage: boolean;
   messageType: 'info' | 'warning' | 'success' | 'error';
-  messageDesc: string;
+  messageDesc: string | ProductsNotInExchangeSet[];
   messageTitle?: string;
-  requestedProductsNotInExchangeSet?: RequestedProductsNotInExchangeSet[];
 }
 @Injectable({
   providedIn: 'root',
