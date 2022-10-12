@@ -36,6 +36,7 @@ test.describe('Test Search Attribute Scenario On Simplified Search Page', () => 
 
   test('Verify user clicks on "Advanced Search" link navigates to Advanced Search page', async ({ page }) => {
     await page.waitForSelector(fssSearchPageObjectsConfig.advancedSearchLinkSelector);
+    await page.waitForTimeout(2000);
     await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
     await page.waitForSelector(fssSearchPageObjectsConfig.advancedSearchAddLineSelector);
     await page.click(fssSearchPageObjectsConfig.advancedSearchAddLineSelector);

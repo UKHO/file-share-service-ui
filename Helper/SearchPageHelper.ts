@@ -256,7 +256,6 @@ export async function SearchAttribute(page: Page, attributeName: string) {
       for (let col = 1;  col<=resultColCount; col++) 
       {       
       if (await page.locator(`${tablePath}[${row}]`+'//th'+`[${col}]`).textContent() === columnHeaderText) {
-        console.log(col);
         return row+1+"_"+col;
       }
     }

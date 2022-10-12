@@ -23,6 +23,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
         .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
+        await page.waitForTimeout(2000);
     await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
   });
 
