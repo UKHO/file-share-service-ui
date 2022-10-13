@@ -6,7 +6,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '@ukho/design-system';
 import { Router } from '@angular/router';
-import { ExchangeSetDetails } from 'src/app/core/models/ess-response-types';
+import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
+import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 
 interface MappedEnc {
   enc: string;
@@ -27,16 +28,13 @@ export class EssListEncsComponent implements OnInit {
   addSingleEncBtnText: string = 'Add ENC';
   encList: MappedEnc[];
   public displayedColumns = ['enc', 'Choose'];
-  messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
-  messageDesc = '';
-  displayErrorMessage = false;
   maxEncSelectionLimit: number;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   selectedEncList: string[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
   exchangeSetDetails: ExchangeSetDetails;
-  estimatedTotalSize: string = "0MB";
+  estimatedTotalSize: string = '0MB';
   selectDeselectText: string;
   selectDeselectAlert: string;
   showSelectDeselect: boolean;
@@ -45,27 +43,24 @@ export class EssListEncsComponent implements OnInit {
   selectDeselectEncAlert: string;
 
   constructor(private essUploadFileService: EssUploadFileService,
-    private elementRef: ElementRef,  
+    private elementRef: ElementRef,
     private route: Router,
     private msalService: MsalService,
     private exchangeSetApiService: ExchangeSetApiService,
+    private essInfoErrorMessageService: EssInfoErrorMessageService
   ) {
-    this.essTokenScope = AppConfigService.settings["essConfig"].apiScope;
+    this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope],
     };
   }
 
   ngOnInit(): void {
-    this.displayErrorMessage = this.essUploadFileService.infoMessage;
     this.maxEncSelectionLimit = Number.parseInt(
       AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
       10
     );
     this.essUploadFileService.clearSelectedEncs();
-    if (this.displayErrorMessage) {
-      this.showMessage('info', 'Some values have not been added to list.');
-    }
     this.setEncList();
     this.essUploadFileService.getNotifySingleEnc().subscribe((notify: boolean) => {
       if (notify) {
@@ -85,39 +80,39 @@ export class EssListEncsComponent implements OnInit {
     }));
   }
 
-  showMessage(
+  triggerInfoErrorMessage(
+    showInfoErrorMessage: boolean,
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
     messageDesc: string = ''
   ) {
-    this.messageType = messageType;
-    this.messageDesc = messageDesc;
-    this.displayErrorMessage = true;
-    if (this.ukhoDialog !== undefined) {
-      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
-      this.ukhoDialog.nativeElement.focus();
-    }
+    this.essInfoErrorMessageService.showInfoErrorMessage = {
+      showInfoErrorMessage,
+      messageType,
+      messageDesc,
+    };
   }
   handleChange(enc: string,event?: Event | null) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
-    this.displayErrorMessage = false;
+    this.triggerInfoErrorMessage(false,'info', '');
     if (seletedEncs.includes(enc)) {
       this.essUploadFileService.removeSelectedEncs(enc);
-      this.selectDeselectEncAlert= enc + " Remove From Selected List";
+      this.selectDeselectEncAlert= enc + ' Remove From Selected List';
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
-      this.selectDeselectEncAlert= enc + " Added From Selected List";
+      this.selectDeselectEncAlert= enc + ' Added From Selected List';
     } else {
-      this.showMessage(
-        'error',
-        'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.'
-      );
-      window.scrollTo(0, 0);
+      const currCheckedElement = (document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement);
+      if(currCheckedElement){
+        currCheckedElement.click(); // will uncheck the selected checkbox
+      }
+      this.triggerInfoErrorMessage(true,'error', 'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.');
+      return;
     }
     this.syncEncsBetweenTables();
     setTimeout(() => {
       const element = document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement;
       if(element && event){
-          element.focus();
+         element.focus();
       }
     },5);
   }
@@ -151,15 +146,16 @@ export class EssListEncsComponent implements OnInit {
   }
 
   switchToESSLandingPage() {
-    this.route.navigate(["exchangesets"]);
+    this.route.navigate(['exchangesets']);
   }
 
   displaySingleEnc() {
     this.displaySingleEncVal = true;
     setTimeout(()=>{
-      var encInput = this.elementRef.nativeElement.querySelectorAll('app-ess-add-single-encs .container .addSingleFileSection ukho-textinput input');
+      // eslint-disable-next-line max-len
+      const encInput = this.elementRef.nativeElement.querySelectorAll('app-ess-add-single-encs .container .addSingleFileSection ukho-textinput input');
       encInput[0].focus();
-    },);  
+    },);
   }
 
   exchangeSetCreationResponse(selectedEncList: any[]) {
@@ -173,7 +169,7 @@ export class EssListEncsComponent implements OnInit {
       },
         (error) => {
           this.displayLoader = false;
-          this.showMessage('error', 'There has been an error');
+          this.triggerInfoErrorMessage(true,'error', 'There has been an error');
         }
       );
    }
@@ -184,7 +180,7 @@ export class EssListEncsComponent implements OnInit {
     return this.essUploadFileService.getEstimatedTotalSize(this.selectedEncList.length);
     }
     else{
-      return "0MB"
+      return '0MB';
     }
   }
   getSelectDeselectText() {
@@ -198,11 +194,11 @@ export class EssListEncsComponent implements OnInit {
   }
   selectDeselectAll() {
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
-      this.selectDeselectAlert = "Selected All ENC's" ;
-      this.essUploadFileService.addAllSelectedEncs();     
+      this.selectDeselectAlert = 'Selected All ENC\'s' ;
+      this.essUploadFileService.addAllSelectedEncs();
     } else {
-      this.selectDeselectAlert = "DeSelected All ENC's" ;
-      this.essUploadFileService.clearSelectedEncs();    
+      this.selectDeselectAlert = 'DeSelected All ENC\'s' ;
+      this.essUploadFileService.clearSelectedEncs();
     }
     this.syncEncsBetweenTables();
     this.selectDeselectText = this.getSelectDeselectText();
@@ -220,7 +216,7 @@ export class EssListEncsComponent implements OnInit {
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
           this.exchangeSetCreationResponse(this.selectedEncList);
-        })
-    })
+        });
+    });
   }
 }
