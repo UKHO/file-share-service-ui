@@ -1,10 +1,4 @@
 <div class="container">
-    <div>
-        <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
-            <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
-        </ukho-dialogue>
-    </div>
-
     <div class="uploadENCFileSection">
         <div id="uploadExplanationText">
             <p class="light">You can upload a permit file or csv file with up to {{maxEncsLimit}} ENCs listed. If your list is longer,

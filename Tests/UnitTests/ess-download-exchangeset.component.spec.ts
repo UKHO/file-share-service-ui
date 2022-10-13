@@ -11,7 +11,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-search.component.spec';
 import { ExchangeSetDetails } from '../../src/app/core/models/ess-response-types';
 import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
-
+import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 describe('EssDownloadExchangesetComponent', () => {
   let component: EssDownloadExchangesetComponent;
   let msalService: MsalService;
@@ -47,7 +47,7 @@ describe('EssDownloadExchangesetComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, ButtonModule, HttpClientModule, DialogueModule],
-      declarations: [EssDownloadExchangesetComponent],
+      declarations: [EssDownloadExchangesetComponent,EssInfoErrorMessageComponent],
       providers: [
         {
           provide: EssUploadFileService,
