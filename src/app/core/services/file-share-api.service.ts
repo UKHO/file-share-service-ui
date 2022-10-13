@@ -46,7 +46,7 @@ export class FileShareApiService {
     }
 
     getAttributeSearchResult(payload: string): Observable<any> {
-        return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload));
+        return this.http.get(this.baseUrl + "/attributes/search?$filter=" + encodeURIComponent(payload) + "&MaxAttributeValueCount=" + AppConfigService.settings['fssConfig'].maxAttributeValueCount);
     }
 
     getBatchStatus(batchId: string): Observable<BatchStatusReponse> {
