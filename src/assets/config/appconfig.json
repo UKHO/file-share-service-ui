@@ -44,7 +44,8 @@
         "attribute": "Year",
         "sortOrder": "descending"
       }
-    ]
+    ],
+    "maxAttributeValueCount" : 25
   },
   "essConfig": {
     "MaxEncLimit": "250",
