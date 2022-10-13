@@ -139,6 +139,9 @@ ukho-expansion{
 
 table.attribute-table{
     word-break: break-word;
+	th,td{
+		vertical-align: top;
+	}
 }
 
 table{
