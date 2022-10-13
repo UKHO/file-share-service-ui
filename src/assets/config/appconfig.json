@@ -45,6 +45,7 @@
         "sortOrder": "descending"
       }
     ],
+    "maxAttributeValueCount" : 25,
     "batchAttributeColumnCount": "7"
   },
   "essConfig": {
