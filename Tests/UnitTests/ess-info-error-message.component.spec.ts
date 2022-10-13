@@ -65,8 +65,12 @@ describe('EssInfoErrorMessageComponent', () => {
         messageDesc
       };
     essInfoErrorMessageService.showInfoErrorMessage = errObj;
+    let messageOutput = errObj.messageDesc;
+    if(messageOutput){
+      messageOutput = '<h3 aria-live=\"polite\" role=\"alert\" class=\"warningMsgTitle\">'+errObj.messageDesc+'</h3>';
+    }
     expect(component.displayErrorMessage).toBe(errObj.showInfoErrorMessage);
-    expect(component.messageDesc).toBe(errObj.messageDesc);
+    expect(component.messageDesc).toBe(messageOutput);
     expect(component.messageType).toBe(errObj.messageType);
   });
 });

@@ -133,7 +133,7 @@ class EsDownloadPageAssertions {
     }
 
     async SelectedENCs(): Promise<void> {
-        expect(await this.esDownloadPageObjects.selectedENCsSelector.isVisible).toBeTruthy();
+        expect(await this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
         expect(await this.esDownloadPageObjects.selectedENCsSelector.innerText()).toEqual(SelectedENCs+' ENCs selected');
 
     }

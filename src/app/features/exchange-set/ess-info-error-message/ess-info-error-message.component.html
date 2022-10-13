@@ -1,18 +1,5 @@
-<div>
-    <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage && !requestedProductsNotInExchangeSet" aria-live="polite">
-      <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
-    </ukho-dialogue>
-</div>
-
-
-
 <div class="warningsBoxForDownload">
-  <ukho-dialogue [type]='messageType' aria-live="polite" *ngIf="displayErrorMessage && requestedProductsNotInExchangeSet && requestedProductsNotInExchangeSet.length > 0" tabindex="-1">
-    <h3 style="font-size:21px">
-       {{messageTitle}}
-    </h3>
-    <div *ngFor="let err of requestedProductsNotInExchangeSet">
-      <div class="warningMsg"> {{err.productName}} - {{err.reason}}</div>
-    </div>
-  </ukho-dialogue>
+    <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage">
+      <div [innerHTML]=messageDesc></div>
+    </ukho-dialogue>
 </div>

@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
-import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
+import { ExchangeSetDetails, ProductsNotInExchangeSet } from '../../../core/models/ess-response-types';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { AppConfigService } from '../../../core/services/app-config.service';
@@ -29,7 +29,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   exchangeSetCellCount: number;
   requestedProductCount: number;
   avgEstimatedSize: any;
-  requestedProductsNotInExchangeSet: any[];
+  requestedProductsNotInExchangeSet: ProductsNotInExchangeSet[];
   messageTitle: string = '';
   displayErrorMessage = false;
   displayMessage = false;
@@ -60,7 +60,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
     if(this.requestedProductsNotInExchangeSet && this.requestedProductsNotInExchangeSet.length > 0){
       this.displayMessage = true;
       this.messageTitle = 'The following ENCs are not included in the Exchange Set:';
-      this.triggerInfoErrorMessage(true,'warning', '' , this.messageTitle , this.requestedProductsNotInExchangeSet);
+      this.triggerInfoErrorMessage(true,'warning', this.requestedProductsNotInExchangeSet , this.messageTitle);
     }
 
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
@@ -128,16 +128,14 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   triggerInfoErrorMessage(
     showInfoErrorMessage: boolean,
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
-    messageDesc: string = '',
+    messageDesc: string | ProductsNotInExchangeSet[] = '',
     messageTitle: string = '',
-    requestedProductsNotInExchangeSet?: RequestedProductsNotInExchangeSet[] | undefined
   ) {
     this.essInfoErrorMessageService.showInfoErrorMessage = {
       showInfoErrorMessage,
       messageType,
       messageDesc,
       messageTitle,
-      requestedProductsNotInExchangeSet
     };
   }
 
