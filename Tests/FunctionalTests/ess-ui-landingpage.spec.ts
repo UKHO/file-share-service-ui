@@ -137,7 +137,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.startAgainLinkSelectorClick();
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.DragDropFile(page, './Tests/TestData/ValidAndInvalidENCs.txt', 'ValidAndInvalidENCs.txt', 'text/plain');
-          await esslandingPageObjects.proceedButtonSelectorClick();
+          await esslandingPageObjects.expect.verifyDraggedFile("ValidAndInvalidENCs.txt");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14333  (SPRINT 7)
