@@ -282,6 +282,7 @@ export async function NumberofRowsforBatch(page: Page): Promise<void> {
   for (let i = 0; i < (Batches); i++) {
     const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${i + 1}]//tr[1]`
     var Attributes = await TotalAttributes(page, `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${i + 1}]//tr//th`);
+    // As of now using 7 as hard coaded value.
     if (Attributes <= 7) {
       expect(await page.$$eval(tablepath, matches => matches.length)).toEqual(1)
     }
