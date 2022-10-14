@@ -30,18 +30,18 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
     this.addChooseFileButtonAttribute();
   }
 
-  uploadListener($event: any): void { //
+  uploadListener($event: any): void { // called when user selects/drags file on file-input-control
     this.validEncList = [];
     this.encFile = ($event?.srcElement?.files || $event?.dataTransfer?.files)[0];
     this.triggerInfoErrorMessage(false,'info', '');
-    if (this.checkValidEncFile(this.encFile)) {
+    if (this.isInvalidEncFile(this.encFile)) {
       this.triggerInfoErrorMessage(true,'error', 'Please select a .csv or .txt file');
       return;
     }
   }
 
-  loadFileReader() { //
-      if (this.checkValidEncFile(this.encFile)) {
+  loadFileReader() { // called on click of proceed button
+      if (this.isInvalidEncFile(this.encFile)) {
         this.triggerInfoErrorMessage(true,'error', 'Please select a .csv or .txt file');
         return;
       }
@@ -96,7 +96,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
     choosefile_input?.setAttribute('aria-labelledby', 'uploadExplanationText chooseFileLabel');     
   }
 
-  checkValidEncFile(encFile: File){
+  isInvalidEncFile(encFile: File){
     return encFile && encFile.type !== 'text/plain' && encFile.type !== 'text/csv' &&  encFile.type !== 'application/vnd.ms-excel';
   }
 }
