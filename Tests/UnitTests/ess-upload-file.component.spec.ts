@@ -136,9 +136,10 @@ describe('EssUploadFileComponent', () => {
   );
 
   it.each`
-    fileType           |fileName           | encDataFunc          | expectedResult
-    ${'text/csv'}      |${'test.csv'}      | ${getEncData_csv()}  |  ${4}
-    ${'text/plain'}    |${'test.txt'}      | ${getEncData()}      |  ${1}
+    fileType                          | fileName           | encDataFunc          | expectedResult
+    ${'text/csv'}                     | ${'test.csv'}      | ${getEncData_csv()}  |  ${4}
+    ${'application/vnd.ms-excel'}     | ${'test.csv'}      | ${getEncData_csv()}  |  ${4}
+    ${'text/plain'}                   | ${'test.txt'}      | ${getEncData()}      |  ${1}
     `('processEncFile should set encList',
     ({ fileType, fileName, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([encDataFunc], fileName);
@@ -150,8 +151,9 @@ describe('EssUploadFileComponent', () => {
     });
   it.each`
     fileType           |fileName           | encDataFunc          | expectedResult
-    ${'text/csv'}      |${'test.csv'}      | ${getEncData_csv()}  |  ${4}
-    ${'text/plain'}    |${'test.txt'}      | ${getEncData()}      |  ${1}
+    ${'text/csv'}                     | ${'test.csv'}      | ${getEncData_csv()}  |  ${4}
+    ${'application/vnd.ms-excel'}     | ${'test.csv'}      | ${getEncData_csv()}  |  ${4}
+    ${'text/plain'}                   | ${'test.txt'}      | ${getEncData()}      |  ${1}
     `('processEncFile should set encList',
     ({ fileType, fileName, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([encDataFunc], fileName);
@@ -162,9 +164,10 @@ describe('EssUploadFileComponent', () => {
       expect(component.validEncList.length).toBe(expectedResult);
     });
     it.each`
-    fileType           |fileName         | getEncData                     | encDataFunc                 | expectedResult
-    ${'text/csv'}      |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
-    ${'text/plain'}    |${'test.txt'}    | ${getInvalidEncData()}         | ${getInvalidEncData()}      |  ${1}
+    fileType                          |fileName         | getEncData                     | encDataFunc                 | expectedResult
+    ${'text/csv'}                     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
+    ${'application/vnd.ms-excel'}     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
+    ${'text/plain'}    |${'test.txt'} | ${getInvalidEncData()}         | ${getInvalidEncData()}      |  ${1}
     `('processEncFile should set raise "Some values have not been added to list." info',
     ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([getEncData], fileName);

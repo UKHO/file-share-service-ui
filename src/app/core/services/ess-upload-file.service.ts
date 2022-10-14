@@ -32,7 +32,7 @@ export class EssUploadFileService {
       (encFileType === 'text/plain' &&
         encList[2] === ':ENC' &&
         encList[encList.length - 1] === ':ECS'
-      )) {
+      ) || encFileType === 'application/vnd.ms-excel') {
       return true;
     }
     return false;
@@ -50,7 +50,7 @@ export class EssUploadFileService {
         .slice(3, processedData.length - 1).filter(x => x !== "")
         .map((encItem: string) => encItem.substring(0, 8));
     }
-    else if (encFileType === 'text/csv') {
+    else if (encFileType === 'text/csv' || encFileType === 'application/vnd.ms-excel') {
       return processedData.map(e => e.split(',')[0].trim()).filter(x => x !== "");
     }
     return processedData;
