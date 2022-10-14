@@ -34,7 +34,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14093
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14094
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
-    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239 (SPRINT 5)
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239
     test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
         
         await encSelectionPageObjects.SelectedENCsCount();
@@ -101,7 +101,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.includedENCsCountSelectorVisible();
     });
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316 (SPRINT 5)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
      test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
 
         const selectedEncs = await encSelectionPageObjects.ENCSelectedTablelist.allInnerTexts();
