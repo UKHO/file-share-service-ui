@@ -45,9 +45,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         await esDownloadPageObjects.expect.VerifyExchangeSetSize();
-        await esDownloadPageObjects.downloadFile(page, './Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip');
-        await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip");
-        await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip");
+        await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
+        await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
+        await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101

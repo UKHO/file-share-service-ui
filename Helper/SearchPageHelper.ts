@@ -216,10 +216,14 @@ export async function SearchAttribute(page: Page, attributeName: string) {
   
       let attributeFieldCount = 0;
       for (let rc = 0; rc < resultCount; rc++) {
-        const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//th`
+        const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr`
         let colnum = await GetColumnNumber(page, tablepath, tablecloumnName);
-        expect(await page.locator(`(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//td[${colnum}]`).textContent()).toEqual(tablecloumnValue);
-        attributeFieldCount = attributeFieldCount + 1;
+       if(colnum!="")
+       {
+        let data=colnum.split('_');
+        expect(await page.locator(`(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr[${data[0]}]//td[${data[1]}]`).textContent()).toEqual(tablecloumnValue);
+       }
+       attributeFieldCount = attributeFieldCount + 1;
   
       }
   
@@ -238,7 +242,6 @@ export async function SearchAttribute(page: Page, attributeName: string) {
   
   }
 
-
   export async function filterCheckBox(batchAtributeType: string, batchAttributeValue: string): Promise<string> {
 
     let checkBoxMatch = `//ukho-expansion[.//h3[text()='${batchAtributeType}']]//ukho-checkbox/label[text()='${batchAttributeValue}']`;
@@ -246,23 +249,61 @@ export async function SearchAttribute(page: Page, attributeName: string) {
   }
 
   async function GetColumnNumber(page: Page, tablePath: string, columnHeaderText: string) {
-    let colIndex = 0;
-    const resultCount = await page.$$eval(tablePath, matches => matches.length);
-    for (let col = 1; col <= resultCount; col++) {
-      if (await page.locator(`${tablePath}[${col}]`).textContent() === columnHeaderText) {
-        colIndex = col;
-        break;
-  
+    let colIndex = "";
+    const rowCount = await page.$$eval(tablePath, matches => matches.length);
+     for (let row = 1; row <= rowCount; row++) {
+      const resultColCount = await page.$$eval(`${tablePath}[${row}]`+'//th', matches => matches.length); 
+      for (let col = 1;  col<=resultColCount; col++) 
+      {       
+      if (await page.locator(`${tablePath}[${row}]`+'//th'+`[${col}]`).textContent() === columnHeaderText) {
+        return row+1+"_"+col;
       }
     }
+  }
     return colIndex;
   }
 
-  export async function GetSpecificAttributeCount(page: Page, batchAtributeType: string, batchAttributeValue: string): Promise<number> {
+export async function GetSpecificAttributeCount(page: Page, batchAtributeType: string, batchAttributeValue: string): Promise<number> {
 
     let searchString = `//ukho-expansion[.//h3[text()='${batchAtributeType}']]//ukho-checkbox/label[text()='${batchAttributeValue}']`
     const resultCount = await page.$$eval(searchString, matches => matches.length);
     return resultCount
   
   }
-  
+
+  async function TotalAttributes(page: Page, tablePath: string): Promise<number> {
+  const attresultCount = await page.$$eval(tablePath, matches => matches.length);
+  return attresultCount;
+
+}
+
+export async function NumberofRowsforBatch(page: Page): Promise<void> {
+  const Batches = await GetCountOfBatchRows(page);
+  for (let i = 0; i < (Batches); i++) {
+    const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${i + 1}]//tr[1]`
+    var Attributes = await TotalAttributes(page, `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${i + 1}]//tr//th`);
+    if (Attributes <= 7) {
+      expect(await page.$$eval(tablepath, matches => matches.length)).toEqual(1)
+    }
+    else {
+      expect(await page.$$eval(tablepath, matches => matches.length)).toBeGreaterThan(1)
+    }
+  }
+
+}
+
+export async function AttributeRowsinBatch(page: Page): Promise<void> {
+  let TotalClicksforPaginator = parseInt(((await page.innerHTML(fssSearchPageObjectsConfig.matchingresultmessage)).split(' '))[0]);
+  let countForPagination = parseInt((TotalClicksforPaginator / 10).toFixed());
+  for (let p = 0; p < countForPagination; p++) {
+    await NumberofRowsforBatch(page);
+    //await page.pause()
+    if (await page.locator(fssSearchPageObjectsConfig.paginatorLinkNextDisabled).isVisible()) {
+      break;
+    }
+    else {
+      await page.click(fssSearchPageObjectsConfig.paginatorLinkNext);
+    }
+  }
+
+}
