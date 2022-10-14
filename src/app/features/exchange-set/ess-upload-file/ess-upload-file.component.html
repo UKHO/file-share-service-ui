@@ -14,7 +14,7 @@
             </p>
         </div>        
 
-        <ukho-file-input class="UploadFileIput" id="file-upload" (drop)="uploadListener($event)" (change)="uploadListener($event)" accept=".txt,.csv"></ukho-file-input>
+        <ukho-file-input class="UploadFileIput" id="file-upload" label="Click to choose a file" (drop)="uploadListener($event)" (change)="uploadListener($event)" accept=".txt,.csv"></ukho-file-input>
 
         <ukho-button  (click)="loadFileReader()">Proceed</ukho-button>
 
