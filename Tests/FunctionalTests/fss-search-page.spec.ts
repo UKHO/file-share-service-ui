@@ -15,6 +15,7 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
+    await page.waitForTimeout(2000);
     await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
     });
 

@@ -5,14 +5,9 @@
   <div>
     <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i style="padding-right: 6px;font-size: 14px;" class="fas fa-less-than"></i> Start again</a>
   </div>
-  
-  <div>
-    <ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage" aria-live="polite">
-      <h3 aria-live="polite" role="alert">{{messageDesc}}</h3>
-    </ukho-dialogue>
-  </div>
   <span class="sr-only" role="alert" aria-label="Enc File is Ready"></span>
   <h1 id="main" tabindex="-1">Exchange sets</h1>
+  <app-ess-info-error-message></app-ess-info-error-message>
   <p>Select up to {{maxEncSelectionLimit}} ENCs and make an exchange set</p>
   <div class="showEncListWrapper">
     <div style="flex: 5">

@@ -6,21 +6,24 @@ import { EssUploadFileService } from '../../src/app/core/services/ess-upload-fil
 import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule } from '@ukho/design-system';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
+import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 
 describe('EssAddSingleEncsComponent', () => {
   let component: EssAddSingleEncsComponent;
   let fixture: ComponentFixture<EssAddSingleEncsComponent>;
   let service: EssUploadFileService;
+  let essInfoErrorMessageService: EssInfoErrorMessageService;
   const router = {
     navigate: jest.fn()
   };
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule],
-      declarations: [EssAddSingleEncsComponent],
+      declarations: [EssAddSingleEncsComponent , EssInfoErrorMessageComponent],
       providers: [
         EssUploadFileService,
+        EssInfoErrorMessageService,
         {
           provide: Router,
           useValue: router
@@ -40,6 +43,7 @@ describe('EssAddSingleEncsComponent', () => {
 
     fixture = TestBed.createComponent(EssAddSingleEncsComponent);
     service = TestBed.inject(EssUploadFileService);
+    essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -52,42 +56,59 @@ describe('EssAddSingleEncsComponent', () => {
     component.txtSingleEnc = '';
     component.renderedFrom = 'essHome';
     component.validateAndAddENC();
-    expect(component.messageType).toEqual('error');
-    expect(component.messageDesc).toEqual('Please enter ENC number');
-    expect(component.displayErrorMessage).toBe(true);
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'error',
+      messageDesc : 'Please enter ENC number'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
   it('validateAndAddENC should display error when ENC number is invalid', () => {
     component.txtSingleEnc = 'AS1212121';
     component.renderedFrom = 'essHome';
     component.validateAndAddENC();
-    expect(component.messageType).toEqual('error');
-    expect(component.messageDesc).toEqual('Invalid ENC number');
-    expect(component.displayErrorMessage).toBe(true);
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'error',
+      messageDesc : 'Invalid ENC number'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
   it('validateAndAddENC should set validENC number', () => {
     component.txtSingleEnc = 'AS121212';
     component.validateAndAddENC();
-    expect(component.displayErrorMessage).toBe(false);
+    const errObj = {
+      showInfoErrorMessage : false,
+      messageType : 'info',
+      messageDesc : ''
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
   it('validateAndAddENC should   raise "Please enter ENC number."error', () => {
     component.txtSingleEnc = '';
     component.renderedFrom = 'encList';
     component.validateAndAddENC();
-    expect(component.messageType).toEqual('error');
-    expect(component.messageDesc).toEqual('Please enter ENC number.');
-    expect(component.displayErrorMessage).toBe(true);
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'error',
+      messageDesc : 'Please enter ENC number'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
   it('validateAndAddENC should   raise "Invalid ENC number."error', () => {
     component.txtSingleEnc = 'AU22015';
     component.renderedFrom = 'encList';
     component.validateAndAddENC();
-    expect(component.messageType).toEqual('error');
-    expect(component.messageDesc).toEqual('Invalid ENC number.');
-    expect(component.displayErrorMessage).toBe(true);
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'error',
+      messageDesc : 'Invalid ENC number.'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
   it('validateAndAddENC should   raise "ENC already in list."info', () => {
@@ -95,9 +116,12 @@ describe('EssAddSingleEncsComponent', () => {
     component.txtSingleEnc = 'AU220150';
     component.renderedFrom = 'encList';
     component.validateAndAddENC();
-    expect(component.messageType).toEqual('info');
-    expect(component.messageDesc).toEqual('ENC already in list.');
-    expect(component.displayErrorMessage).toBe(true);
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'info',
+      messageDesc : 'ENC already in list.'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
   it('validateAndAddENC should   raise "Max ENC limit reached."info', () => {
@@ -105,9 +129,12 @@ describe('EssAddSingleEncsComponent', () => {
     component.renderedFrom = 'encList';
     component.txtSingleEnc = 'US4FL18M';
     component.validateAndAddENC();
-    expect(component.messageType).toEqual('info');
-    expect(component.messageDesc).toEqual('Max ENC limit reached.');
-    expect(component.displayErrorMessage).toBe(true);
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'info',
+      messageDesc : 'Max ENC limit reached.'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
   it('validateAndAddENC should set sigle valid ENC', () => {
@@ -116,6 +143,11 @@ describe('EssAddSingleEncsComponent', () => {
     component.renderedFrom = 'encList';
     service.setValidENCs(component.validEnc);
     component.validateAndAddENC();
-    expect(component.displayErrorMessage).toBe(false);
+    const errObj = {
+      showInfoErrorMessage : false,
+      messageType : 'info',
+      messageDesc : ''
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 });

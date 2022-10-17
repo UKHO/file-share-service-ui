@@ -3,17 +3,19 @@ import { autoTestConfig } from '../../appSetting.json';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
-import { ExpectAllResultsHaveBatchUserAttValue,ExpectAllResultsContainAnyBatchUserAttValue,
-    ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed,
-    GetTotalResultCount,filterCheckBox, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue, ExpectAllResultsHaveFileAttributeValue  } from '../../Helper/SearchPageHelper';
-import { attributeProductType,  attributeFileName, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType } from '../../Helper/ConstantHelper';
+import {
+  ExpectAllResultsHaveBatchUserAttValue, ExpectAllResultsContainAnyBatchUserAttValue,
+  ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed,
+  GetTotalResultCount, filterCheckBox, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue,ExpectAllResultsHaveFileAttributeValue
+} from '../../Helper/SearchPageHelper';
+import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType,attributeFileName } from '../../Helper/ConstantHelper';
 
 test.describe('Test Search Result Scenario On Simplified Search Page', () => {
-  
+
   test.beforeEach(async ({ page }) => {
     await page.goto(autoTestConfig.url)
     await AcceptCookies(page);
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
 
@@ -35,7 +37,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
-  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14327 (SPRINT 7)
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14327
   test('Verify search results for single batch attribute search', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
@@ -93,8 +95,8 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
-  // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14329 (SPRINT 7)
-  test.only('Verify batch attributes with multiple values are displayed on filter panel', async ({ page }) => {
+  // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14329
+  test('Verify batch attributes with multiple values are displayed on filter panel', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' '));
@@ -102,7 +104,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     const configuredBatchAttibutes = await page.$$eval(fssSearchPageObjectsConfig.filterBatchAttributes, elements => { return elements.map(element => element.textContent) });
     const filterCount = configuredBatchAttibutes.length;
     expect(filterCount).toBeGreaterThan(0);
-    
+
     for (let i = 0; i < filterCount; i++) {
       expect(batchAttributeKeys.includes(configuredBatchAttibutes[i])).toBeTruthy();
       //filter values count should be more than one
@@ -151,25 +153,25 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainBatchUserAttValue(page, attributeMultipleMediaTypes.value.split(' ')[0]);
-   
+
   })
 
   test('Search multiple batch attributes and select filter and Apply filters button returned refined search', async ({ page }) => {
-    await InsertSearchText(page, attributeMultipleMediaType.value);  
+    await InsertSearchText(page, attributeMultipleMediaType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' '));
 
-    const [attributeValueCD, attributeValueDVD]=attributeMultipleMediaType.value.split(' ');         
+    const [attributeValueCD, attributeValueDVD] = attributeMultipleMediaType.value.split(' ');
     //select batch attributes CD checkbox
     await page.check(await filterCheckBox(attributeMultipleMediaType.key, attributeValueCD));
-   
+
     //clicks on apply filter buttton
-    await page.click(fssSearchPageObjectsConfig.applyFilterButton); 
-     
+    await page.click(fssSearchPageObjectsConfig.applyFilterButton);
+
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
 
     // Verify all rescords belongs to media type value CD
-    await ExpectSpecificColumnValueDisplayed(page,attributeMultipleMediaType.key,attributeValueCD);
+    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueCD);
 
     //uncheck batch attributes CD checkbox
     await page.uncheck(await filterCheckBox(attributeMultipleMediaType.key, attributeValueCD));
@@ -178,16 +180,16 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await page.check(await filterCheckBox(attributeMultipleMediaType.key, attributeValueDVD));
 
     //clicks on apply filter buttton
-    await page.click(fssSearchPageObjectsConfig.applyFilterButton); 
-     
+    await page.click(fssSearchPageObjectsConfig.applyFilterButton);
+
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
 
-     // Verify all rescords belongs to media type value DVD
-     await ExpectSpecificColumnValueDisplayed(page,attributeMultipleMediaType.key,attributeValueDVD);
-     
+    // Verify all rescords belongs to media type value DVD
+    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueDVD);
+
   })
   
-  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328 (SPRINT 7)
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328
   test ('Verify search results for single File name search', async ({ page }) => {              
     await InsertSearchText(page, attributeFileName.value);
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);

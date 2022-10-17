@@ -35,7 +35,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14094
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239 
-    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330  (SPRINT 7)
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
     test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
         
         await encSelectionPageObjects.SelectedENCsCount();
@@ -46,9 +46,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         await esDownloadPageObjects.expect.VerifyExchangeSetSize();
-        await esDownloadPageObjects.downloadFile(page, './Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip');
-        await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip");
-        await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/FunctionalTests/TestData/DownloadFiles/ExchangeSet.zip");
+        await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
+        await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
+        await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
@@ -102,7 +102,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.includedENCsCountSelectorVisible();
     });
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316 (SPRINT 5)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
      test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
 
         const selectedEncs = await encSelectionPageObjects.ENCSelectedTablelist.allInnerTexts();

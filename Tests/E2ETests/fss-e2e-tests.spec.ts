@@ -17,6 +17,7 @@ test.describe('FSS UI E2E Scenarios', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
       .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
+    await page.waitForTimeout(2000);
     await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
     // Get the token from local storage once user logged in
     idToken = await page.evaluate(() => { return localStorage.getItem('idToken') });

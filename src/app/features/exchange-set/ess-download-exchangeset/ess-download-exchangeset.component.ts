@@ -1,18 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
-import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
+import { ExchangeSetDetails, ProductsNotInExchangeSet } from '../../../core/models/ess-response-types';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { Router } from '@angular/router';
+import { EssInfoErrorMessageService, RequestedProductsNotInExchangeSet } from '../../../core/services/ess-info-error-message.service';
 
 @Component({
   selector: 'app-ess-download-exchangeset',
   templateUrl: './ess-download-exchangeset.component.html',
   styleUrls: ['./ess-download-exchangeset.component.scss']
 })
-export class EssDownloadExchangesetComponent implements OnInit {
+export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
 
   exchangeSetDetails: ExchangeSetDetails;
   displayLoader: boolean = false;
@@ -26,10 +27,10 @@ export class EssDownloadExchangesetComponent implements OnInit {
   downloadPath: string;
   downloadUrl: string;
   exchangeSetCellCount: number;
-  requestedProductCount : number;
+  requestedProductCount: number;
   avgEstimatedSize: any;
-  requestedProductsNotInExchangeSet : any[];
-  messageTitle: string = "";
+  requestedProductsNotInExchangeSet: ProductsNotInExchangeSet[];
+  messageTitle: string = '';
   displayErrorMessage = false;
   displayMessage = false;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
@@ -40,8 +41,10 @@ export class EssDownloadExchangesetComponent implements OnInit {
   constructor(private essUploadFileService: EssUploadFileService,
     private fileShareApiService: FileShareApiService,
     private msalService: MsalService,
-    private route: Router) {
-    this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+    private route: Router,
+    private essInfoErrorMessageService: EssInfoErrorMessageService
+    ) {
+    this.fssTokenScope = AppConfigService.settings['fssConfig'].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
@@ -53,11 +56,11 @@ export class EssDownloadExchangesetComponent implements OnInit {
     this.requestedProductCount = this.exchangeSetDetails.requestedProductCount;
     this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
     this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
-    
+
     if(this.requestedProductsNotInExchangeSet && this.requestedProductsNotInExchangeSet.length > 0){
       this.displayMessage = true;
       this.messageTitle = 'The following ENCs are not included in the Exchange Set:';
-      this.showMessage("warning", this.messageTitle);
+      this.triggerInfoErrorMessage(true,'warning', this.requestedProductsNotInExchangeSet , this.messageTitle);
     }
 
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
@@ -74,23 +77,23 @@ export class EssDownloadExchangesetComponent implements OnInit {
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
           this.batchStatusAPI();
-        })
-    })
+        });
+    });
   }
 
   batchStatusAPI() {
     this.fileShareApiService.getBatchStatus(this.batchId).subscribe((response) => {
-      if (response.status == "Committed") {
+      if (response.status == 'Committed') {
         this.displayEssLoader = false;
         this.displayDownloadBtn = true;
       }
-      else if (response.status == "CommitInProgress" || response.status == "Incomplete") {
+      else if (response.status == 'CommitInProgress' || response.status == 'Incomplete') {
         setTimeout(() => {
-          this.checkBatchStatus()
+          this.checkBatchStatus();
         }, 5000);
       }
       else {
-        this.showMessage("warning", "Something went wrong");
+        this.triggerInfoErrorMessage(true,'warning', 'Something went wrong');
         this.displayEssLoader = false;
       }
     });
@@ -104,7 +107,7 @@ export class EssDownloadExchangesetComponent implements OnInit {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       this.fileShareApiService.refreshToken().subscribe((res) => {
         this.displayLoader = false;
-        window.open(this.downloadUrl, "_blank");
+        window.open(this.downloadUrl, '_blank');
       });
     }, error => {
       this.msalService.instance
@@ -112,30 +115,31 @@ export class EssDownloadExchangesetComponent implements OnInit {
         .then(response => {
           this.fileShareApiService.refreshToken().subscribe((res) => {
             this.displayLoader = false;
-            window.open(this.downloadUrl, "_blank");
+            window.open(this.downloadUrl, '_blank');
           });
-        })
-    })
+        });
+    });
   }
 
   switchToESSLandingPage() {
-    this.route.navigate(["exchangesets"]);
+    this.route.navigate(['exchangesets']);
   }
 
-  showMessage(
+  triggerInfoErrorMessage(
+    showInfoErrorMessage: boolean,
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
-    messageTitle: string = "", messageDesc: string = ""
+    messageDesc: string | ProductsNotInExchangeSet[] = '',
+    messageTitle: string = '',
   ) {
-    this.messageType = messageType;
-    this.messageTitle = messageTitle;
-    this.messageDesc = messageDesc;
-    if (this.ukhoDialog !== undefined) {
-      this.ukhoDialog.nativeElement.setAttribute('tabindex', '0');
-      this.ukhoDialog.nativeElement.focus();
-    }
-    if (this.ukhoDialogForEnc !== undefined) {
-      this.ukhoDialogForEnc.nativeElement.setAttribute('tabindex', '-1');
-      this.ukhoDialogForEnc.nativeElement.focus();
-    }
+    this.essInfoErrorMessageService.showInfoErrorMessage = {
+      showInfoErrorMessage,
+      messageType,
+      messageDesc,
+      messageTitle,
+    };
+  }
+
+  ngOnDestroy(): void {
+    this.triggerInfoErrorMessage(false , 'info','');
   }
 }

@@ -22,19 +22,23 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806 
-     test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
+     test.only('Verify Radio buttons text on ESS landing page', async ({ page }) => {
 
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
-          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload your whole permit file or a .csv file");
+          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload a list in a file");
           await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
-     test('Verify clicking on First Radio Button, "click to choose file" control & "Proceed" button available', async ({ page }) => {
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14422
+     test ('Verify clicking on First Radio Button, "click to choose a file" control and "Proceed" button available And also verify Max ENC upload limit & Max Selected ENC limit', async ({ page }) => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.expect.chooseuploadfileoptionSelectorIsVisible();
-          await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible();
+          await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible(); 
+          await esslandingPageObjects.expect.VerifyMaxENCLimit();
+          await esslandingPageObjects.expect.VerifyMaxSelectedENCLimit();
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799 
@@ -128,7 +132,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332  (SPRINT 7)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
      test('Verify that the user is able to drag a .csv and .text file.', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
@@ -140,8 +144,8 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.verifyDraggedFile("ValidAndInvalidENCs.txt");
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14333  (SPRINT 7)
-     test.only('Verify a error message if user tries to drag other than allowed files.', async ({ page }) => {
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14333s
+     test('Verify a error message if user tries to drag other than allowed files.', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.DragDropFile(page, './Tests/TestData/FileOtherThanCSVorTXT.xlsx', 'FileOtherThanCSVorTXT.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

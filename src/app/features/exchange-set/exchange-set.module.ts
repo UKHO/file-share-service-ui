@@ -8,6 +8,7 @@ import { EssUploadFileComponent } from './ess-upload-file/ess-upload-file.compon
 import { EssAddSingleEncsComponent } from './ess-add-single-encs/ess-add-single-encs.component';
 import { EssListEncsComponent } from './ess-list-encs/ess-list-encs.component';
 import { EssDownloadExchangesetComponent } from './ess-download-exchangeset/ess-download-exchangeset.component';
+import { EssInfoErrorMessageComponent } from './ess-info-error-message/ess-info-error-message.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { EssDownloadExchangesetComponent } from './ess-download-exchangeset/ess-
     EssUploadFileComponent,
     EssAddSingleEncsComponent,
     EssListEncsComponent,
-    EssDownloadExchangesetComponent
+    EssDownloadExchangesetComponent,
+    EssInfoErrorMessageComponent
   ],
   imports: [
     CommonModule,
