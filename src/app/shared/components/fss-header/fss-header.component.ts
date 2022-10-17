@@ -76,7 +76,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         this.isPageOverlay.emit(true);
       });
 
-      this.msalBroadcastService.inProgress$
+    this.msalBroadcastService.inProgress$
       .pipe(
         filter((status: InteractionStatus) => status === InteractionStatus.AcquireToken))
       .subscribe(() => {
@@ -167,10 +167,17 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     {
       signedInButtonText: this.userName,
       signInHandler: (() => { }),
-      signOutHandler: (() => { 
+      signOutHandler: (() => {
         this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
           localStorage.setItem('idToken', response.idToken);
-          this.msalService.logout();  
+          this.msalService.logout();
+        }, error => {
+          this.msalService.instance
+            .loginPopup(this.fssSilentTokenRequest)
+            .then(response => {
+              localStorage.setItem('idToken', response.idToken);
+              this.msalService.logout();
+            });
         });
       }),
       isSignedIn: (() => { return true }),
@@ -183,8 +190,8 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         this.msalService.loginPopup(editProfileFlowRequest).subscribe((response: AuthenticationResult) => {
           this.msalService.instance.setActiveAccount(response.account);
           this.getClaims(response.idTokenClaims);
-        });;
-      })     
+        });
+      })
     }
   }
 
