@@ -1,4 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { assert } from "console";
+import {essConfig} from '../src/assets/config/appconfig.json';
 
 export class EssLandingPageObjects {
     readonly expect: EssLandingPageAssertions;
@@ -21,6 +23,8 @@ export class EssLandingPageObjects {
     readonly startAgainLinkSelector: Locator;
     readonly addSingleENCTextboxSelector: Locator;
     readonly ENClistTableCol1: Locator;
+    readonly MaxENCValue:Locator;
+    readonly MaxSelectedENCs:Locator;
 
     constructor(readonly page: Page) {
         this.expect = new EssLandingPageAssertions(this);
@@ -43,6 +47,8 @@ export class EssLandingPageObjects {
         this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
         this.addSingleENCTextboxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
         this.ENClistTableCol1 = this.page.locator('//table/tbody/tr/td[1]');
+        this.MaxENCValue = this.page.locator('//div/div/div/p[1]');
+        this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]')
     }
 
     async uploadFile(page: Page, filePath: string): Promise<void> {
@@ -147,5 +153,18 @@ class EssLandingPageAssertions {
     async verifyUploadRadioButtonName(expected: string): Promise<void> {
         expect(await this.esslandingPageObjects.radioButtonNameSelector.innerText()).toEqual(expected);
     }
+
+    async VerifyMaxENCLimit(): Promise<void> {
+        let MaxLimit = ((await (this.esslandingPageObjects.MaxENCValue).innerText()).split(' '))[12];
+        expect(MaxLimit).toEqual(essConfig.MaxEncLimit)
+    }
+
+
+    async VerifyMaxSelectedENCLimit(): Promise<void> {
+        let MaxSelectedLimit = ((await (this.esslandingPageObjects.MaxSelectedENCs).innerText()).split(' '))[17];
+        expect(MaxSelectedLimit).toEqual(essConfig.MaxEncSelectionLimit);
+    }
+
+
 
 }

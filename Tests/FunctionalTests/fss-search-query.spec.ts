@@ -23,6 +23,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
         .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
+        await page.waitForTimeout(2000);
     await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
   });
 
@@ -36,6 +37,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
 
   test('Batch Attribute table returns correct product on special characters search', async ({ page }) => {
    // page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
+   await page.waitForTimeout(2000);
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "contains");     
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, batchAttributeSpecialChar);
