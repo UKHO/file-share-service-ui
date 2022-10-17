@@ -141,10 +141,10 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14333  (SPRINT 7)
-     test('Verify a error message if user tries to drag other than allowed files.', async ({ page }) => {
+     test.only('Verify a error message if user tries to drag other than allowed files.', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
-          await esslandingPageObjects.DragDropFile(page, './Tests/TestData/FileOtherThanCSVorTXT.xlsx', 'FileOtherThanCSVorTXT.xlsx', 'application/vnd.ms-excel');
+          await esslandingPageObjects.DragDropFile(page, './Tests/TestData/FileOtherThanCSVorTXT.xlsx', 'FileOtherThanCSVorTXT.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt file');
      })
 
