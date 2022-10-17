@@ -187,12 +187,4 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
-  // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14426 (SPRINT 7)
-  // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14427 (SPRINT 7)
-  test('Verifying Number of Rows in a Batch depending upon Number of Attributes', async ({ page }) => {
-    await InsertSearchText(page, attributeMediaType.value);
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await AttributeRowsinBatch(page);
-
-  })
 })
