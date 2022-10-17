@@ -13,13 +13,15 @@ import { ExchangeSetApiService } from '../../src/app/core/services/exchange-set-
 import { By } from '@angular/platform-browser';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { HttpClientModule } from '@angular/common/http';
+import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
+import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
   let msalService: MsalService;
   let exchangeSetApiService: ExchangeSetApiService;
   let fixture: ComponentFixture<EssListEncsComponent>;
-
+  let essInfoErrorMessageService: EssInfoErrorMessageService;
   const router = {
     navigate: jest.fn()
   };
@@ -39,7 +41,9 @@ describe('EssListEncsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule, HttpClientModule],
       declarations: [EssListEncsComponent,
-        EssAddSingleEncsComponent],
+        EssAddSingleEncsComponent,
+        EssInfoErrorMessageComponent,
+      ],
       providers: [
         {
           provide: EssUploadFileService,
@@ -61,7 +65,7 @@ describe('EssListEncsComponent', () => {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory
         },
-        MsalService, ExchangeSetApiService
+        MsalService, ExchangeSetApiService,EssInfoErrorMessageService
       ]
     })
       .compileComponents();
@@ -80,6 +84,7 @@ describe('EssListEncsComponent', () => {
     window.scrollTo = jest.fn();
     msalService = TestBed.inject(MsalService);
     exchangeSetApiService = TestBed.inject(ExchangeSetApiService);
+    essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
     fixture = TestBed.createComponent(EssListEncsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -92,10 +97,7 @@ describe('EssListEncsComponent', () => {
 
   it('should set info message if displayErrorMessage is set to true on ngOnInit', () => {
     component.ngOnInit();
-    expect(component.displayErrorMessage).toBeTruthy();
     expect(component.encList.length).toEqual(5);
-    expect(component.messageType).toEqual('info');
-    expect(component.messageDesc).toEqual('Some values have not been added to list.');
   });
   it('handleChange should call service.removeSelectedEncs if enc is already present', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
@@ -128,8 +130,12 @@ describe('EssListEncsComponent', () => {
     fixture.detectChanges();
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130' , 'AU220830']);
     component.handleChange('AU210470');
-    const dialog = fixture.debugElement.nativeElement.querySelector('ukho-dialogue');
-    expect(dialog).not.toBeNull();
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'error',
+      messageDesc : 'No more than 5 ENCs can be selected.'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
   it('should create EssListEncsComponent', () => {
@@ -226,8 +232,12 @@ describe('EssListEncsComponent', () => {
   it('handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'CU314128']);
     component.handleChange('DU314128');
-    expect(component.messageType).toEqual('error');
-    expect(component.messageDesc).toEqual('No more than 5 ENCs can be selected.');
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'error',
+      messageDesc : 'No more than 5 ENCs can be selected.'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     expect(window.scrollTo).toHaveBeenCalled();
   });
 
@@ -264,7 +274,26 @@ describe('EssListEncsComponent', () => {
     let selectedEncList = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
     component.exchangeSetCreationResponse([selectedEncList]);
     exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((res: any) => {
-      expect(component.displayErrorMessage).toBe(false);
+     // expect(component.displayErrorMessage).toBe(false);
+     const errObj = {
+      showInfoErrorMessage : false,
+      messageType : 'info',
+      messageDesc : ''
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+    });
+  });
+
+  it('exchangeSetCreationResponse should set Error message on error', () => {
+    let selectedEncList = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+    component.exchangeSetCreationResponse([selectedEncList]);
+    exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe(() => {} , (error: any) => {
+     const errObj = {
+      showInfoErrorMessage : false,
+      messageType : 'error',
+      messageDesc : 'There has been an error'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
   });
 });
