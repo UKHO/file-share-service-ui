@@ -60,6 +60,34 @@ export class EssLandingPageObjects {
         await fileChooserDataFile.setFiles(filePath);
     }
 
+
+    async DragDropFile(page: Page, filePath: string, fileName: string, fileType: string): Promise<void> {
+        const fs = require('fs');
+
+        const dataTransfer = await page.evaluateHandle(
+
+            async ({ fileHex, localFileName, localFileType }) => {
+                const dataTransfer = new DataTransfer();
+
+                dataTransfer.items.add(
+                    new File([fileHex], localFileName, { type: localFileType })
+                );
+
+                return dataTransfer;
+            },
+
+            {
+                fileHex: (await fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' })),
+                localFileName: fileName,
+                localFileType: fileType,
+            }
+
+        );
+
+        await page.dispatchEvent("#file-upload", "drop", { dataTransfer });
+    }
+
+
     async uploadradiobtnSelectorClick(): Promise<void> {
         await this.uploadradiobtnSelector.click();
     }
@@ -152,6 +180,9 @@ class EssLandingPageAssertions {
 
     async verifyUploadRadioButtonName(expected: string): Promise<void> {
         expect(await this.esslandingPageObjects.radioButtonNameSelector.innerText()).toEqual(expected);
+    }
+    async verifyDraggedFile(expected: string): Promise<void> {
+        expect(await this.esslandingPageObjects.chooseuploadfileoptionSelector.innerText()).toContain(expected);
     }
 
     async VerifyMaxENCLimit(): Promise<void> {

@@ -120,6 +120,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14113
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 
+   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
    test('Verify Count of uploaded & selected ENCs along with estimated size of Exchange set.', async ({ page }) => {
       let numberofENCs = await encSelectionPageObjects.ENCTableENClistCol1.count();
       await encSelectionPageObjects.selectAllSelector.click();

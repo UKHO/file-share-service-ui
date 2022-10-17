@@ -117,7 +117,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     
   });
 
-  test('Test to verify file downloaded status changed after click on download button', async ({ page }) => {
+  test ('Test to verify file downloaded status changed after click on download button', async ({ page }) => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);

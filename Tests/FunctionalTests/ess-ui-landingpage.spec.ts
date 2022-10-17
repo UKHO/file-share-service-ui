@@ -2,16 +2,19 @@ import { test } from '@playwright/test';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { autoTestConfig } from '../../appSetting.json';
-import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
+import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
+import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
 
 test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      let esslandingPageObjects: EssLandingPageObjects;
+     let encSelectionPageObjects: EncSelectionPageObjects;
 
      test.beforeEach(async ({ page }) => {
 
           esslandingPageObjects = new EssLandingPageObjects(page);
+          encSelectionPageObjects = new EncSelectionPageObjects(page);
           await page.goto(autoTestConfig.url);
           await page.waitForLoadState('load');
           await AcceptCookies(page);
@@ -20,7 +23,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421 (SPRINT 7)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
 
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
@@ -29,7 +32,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14422 (SPRINT 7)
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14422
      test ('Verify clicking on First Radio Button, "click to choose a file" control and "Proceed" button available And also verify Max ENC upload limit & Max Selected ENC limit', async ({ page }) => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.expect.chooseuploadfileoptionSelectorIsVisible();
@@ -128,4 +131,28 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
      })
+
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
+     test('Verify that the user is able to drag a .csv and .text file.', async ({ page }) => {
+
+          await esslandingPageObjects.uploadradiobtnSelectorClick();
+          await esslandingPageObjects.DragDropFile(page, './Tests/TestData/ValidAndInvalidENCs.csv', "ValidAndInvalidENCs.csv", 'text/csv');
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await encSelectionPageObjects.startAgainLinkSelectorClick();
+          await esslandingPageObjects.uploadradiobtnSelectorClick();
+          await esslandingPageObjects.DragDropFile(page, './Tests/TestData/ValidAndInvalidENCs.txt', 'ValidAndInvalidENCs.txt', 'text/plain');
+          await esslandingPageObjects.expect.verifyDraggedFile("ValidAndInvalidENCs.txt");
+     })
+
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14333s
+     test('Verify a error message if user tries to drag other than allowed files.', async ({ page }) => {
+
+          await esslandingPageObjects.uploadradiobtnSelectorClick();
+          await esslandingPageObjects.DragDropFile(page, './Tests/TestData/FileOtherThanCSVorTXT.xlsx', 'FileOtherThanCSVorTXT.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+          await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt file');
+     })
+
 });
+
+
+

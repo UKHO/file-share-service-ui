@@ -56,7 +56,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
     });
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13796
-    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421 (SPRINT 7)
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
     test ('Verify appending "/exchangesets" in  url after login, navigates to ESS landing page', async ({ page }) => {
         await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.goto(autoTestConfig.url+"/#/exchangesets");
