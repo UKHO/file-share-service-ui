@@ -47,7 +47,7 @@ export class EssLandingPageObjects {
         this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
         this.addSingleENCTextboxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
         this.ENClistTableCol1 = this.page.locator('//table/tbody/tr/td[1]');
-        this.MaxENCValue = this.page.locator('//div/div/div/p[1]');
+        this.MaxENCValue = this.page.locator("//p[contains(text(),'You can upload')]");
         this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]')
     }
 
