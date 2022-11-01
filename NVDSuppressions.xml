@@ -17,6 +17,7 @@
   <notes>
     <![CDATA[
  file name: @angular/core:9.0.0
+ suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
  ]]>
   </notes>
   <packageUrl regex="true">^pkg:npm/%40angular%2Fcore@.*$</packageUrl>
@@ -26,14 +27,17 @@
   <notes>
     <![CDATA[
  file name: eventsource:1.1.0
+ suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
  ]]>
   </notes>
   <packageUrl regex="true">^pkg:npm/eventsource@.*$</packageUrl>
   <vulnerabilityName>1070434</vulnerabilityName>
 </suppress>
   <suppress>
-    <notes><![CDATA[
+    <notes>
+      <![CDATA[
    file name: eventsource:1.1.0
+   suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
    ]]></notes>
     <packageUrl regex="true">^pkg:npm/eventsource@.*$</packageUrl>
     <vulnerabilityName>CVE-2022-1650</vulnerabilityName>
@@ -42,14 +46,17 @@
   <notes>
     <![CDATA[
  file name: jpeg-js:0.4.3
+ suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
  ]]>
   </notes>
   <packageUrl regex="true">^pkg:npm/jpeg\-js@.*$</packageUrl>
   <vulnerabilityName>1075625</vulnerabilityName>
 </suppress>
 <suppress>
-  <notes><![CDATA[
+  <notes>
+    <![CDATA[
  file name: jpeg-js:0.4.3
+ suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
  ]]></notes>
   <packageUrl regex="true">^pkg:npm/jpeg\-js@.*$</packageUrl>
   <vulnerabilityName>CVE-2022-25851</vulnerabilityName>
@@ -58,6 +65,7 @@
   <notes>
     <![CDATA[
  file name: minimatch:3.0.4
+ suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
  ]]>
   </notes>
   <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
@@ -67,21 +75,26 @@
   <notes>
     <![CDATA[
  file name: terser:4.8.0
+ suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
  ]]>
   </notes>
   <packageUrl regex="true">^pkg:npm/terser@.*$</packageUrl>
   <vulnerabilityName>1081698</vulnerabilityName>
 </suppress>
 <suppress>
-  <notes><![CDATA[
+  <notes>
+    <![CDATA[
  file name: terser:4.8.0
+ suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
  ]]></notes>
   <packageUrl regex="true">^pkg:npm/terser@.*$</packageUrl>
   <vulnerabilityName>1081699</vulnerabilityName>
 </suppress>
 <suppress>
-  <notes><![CDATA[
+  <notes>
+    <![CDATA[
  file name: terser:4.8.0
+ suppressing on the recovery branch so that we can restore the application state to a known good state (the current state) in the event of a deployment failure
  ]]></notes>
   <packageUrl regex="true">^pkg:npm/terser@.*$</packageUrl>
   <vulnerabilityName>CVE-2022-25858</vulnerabilityName>
