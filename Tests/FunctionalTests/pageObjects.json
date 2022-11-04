@@ -9,7 +9,7 @@
        "signinLinkText":"Sign in",
        "accessibilityLinkSelector": "text=Accessibility",
        "privacypolicyLinkSelector": "text=Privacy policy",
-       "marinedataportalLinkSelector" : "a > img[alt='Admiralty - Maritime Data Solutions Logo']",
+       "marinedataportalLinkSelector" : "#main-menu > div.branding.ng-tns-c89-1 > a > img",
        "marinedataportalPageSelector" : "div.navbar-header + h2",
        "marinedataportalPageText": "Marine Data Portal",       
        "ukhydrographicLinkSelector" : "a > img[alt='Admiralty Maritime Data Solutions | UK Hydrographic office']",
