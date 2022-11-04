@@ -48,10 +48,10 @@ describe('Test Home Page Scenario', () => {
     })
 
     test('Does it navigate to marine data portal page once click on marine data portal link', async () => {
+        await page.waitForSelector(pageObjectsConfig.marinedataportalLinkSelector);
         await page.click(pageObjectsConfig.marinedataportalLinkSelector);
-        page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-        expect(await page.getAttribute(pageObjectsConfig.ukhydrographicPageSelector, "title")).toEqual(pageObjectsConfig.ukhydrographicPageTitle);
-        expect(await page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);
+        await page.waitForLoadState('domcontentloaded');     
+        expect(await page.url()).toEqual(pageObjectsConfig.ukhydrographicPageUrl);        
     })
 
     test('Does it navigate to Admiralty home page once click on UK Hydrographic Office link', async () => {
