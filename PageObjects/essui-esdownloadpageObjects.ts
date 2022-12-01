@@ -83,7 +83,7 @@ class EsDownloadPageAssertions {
 
         let ENCsIncluded = parseInt(((await this.esDownloadPageObjects.includedENCsCountSelector.innerHTML()).split(' '))[0]);
 
-        expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + ((ENCsIncluded * (0.3))+autoTestConfig.encSizeConfig).toFixed(1) + 'MB');
+        expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + ((ENCsIncluded * (0.3))+Number.parseFloat( autoTestConfig.encSizeConfig)).toFixed(1) + 'MB');
 
     
     }
