@@ -112,7 +112,7 @@ stages:
                 - task: AzureCLI@2
                   displayName: "Extract Deployment Variables to deploy KV"
                   inputs:
-                    azureSubscription: 'File-Share-Service-Dev-P4052'
+                    azureSubscription: 'File-Share-Service-QA-P4052'
                     scriptType: 'ps'
                     scriptLocation: 'inlineScript'
                     inlineScript: |
@@ -167,7 +167,7 @@ stages:
                 - task: AzureCLI@2
                   displayName: "Extract Deployment Variables to deploy KV"
                   inputs:
-                    azureSubscription: 'File-Share-Service-Dev-P4052'
+                    azureSubscription: 'File-Share-Service-Live-P4052'
                     scriptType: 'ps'
                     scriptLocation: 'inlineScript'
                     inlineScript: |
