@@ -33,115 +33,7 @@ resources:
       endpoint: UKHO
       ref: refs/heads/master
 
-stages:
-  - stage: CoverityScan
-    displayName: "Coverity Scan"
-    pool:
-      name: $(coverityPool)
-    jobs:
-    - job: Coverity
-      workspace:
-        clean: all
-      steps:
-        - checkout: self
-          submodules: recursive
-        - checkout: covscan
-        - template: typescript-cov.yml@covscan
-          parameters:
-            CovHostUrl: "$(CovHostUrl)"
-            CovUser: "$(CovUser)"
-            CovPwd: "$(CovPwd)"
-            StreamName: "file-share-service-ui"
-            BuildCommand: "run build"
-            StripPath: $(Build.Repository.LocalPath)/file-share-service-ui
-            CoverityScanPath: $(Build.Repository.LocalPath)/coverityscan-buildtemplates
-            FsCaptureSearch: $(Build.Repository.LocalPath)/file-share-service-ui/src
-
-  - stage: Perfrom_Build_Test_Publish
-    displayName: "Build (Build ,test and publish artifact )"
-    dependsOn: []
-    jobs:
-     - job: Dependencychecker
-       pool: $(WindowPool)
-       displayName: "Dependency checker"
-       workspace:
-        clean: all
-       steps:
-          - task: CmdLine@1
-            displayName: "Run OWASP Dependency Checker"
-            inputs:
-              filename: 'dependency-check.bat'
-              arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate'
-
-          - task: PublishBuildArtifacts@1
-            displayName: "Publish Artifact: OWASP Dependency Checker Report"
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)\DCReport'
-              ArtifactName: "OWASP Dependency Checker Report"
-
-          - task: PowerShell@1
-            displayName: "Fail Build if Dependency Check Finds Any Vulnerabilities"
-            inputs:
-              scriptType: inlineScript
-              arguments: '-ReportLocation $(Build.ArtifactStagingDirectory)\DCReport\*'
-              inlineScript: |
-                param($ReportLocation)
-                Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
-
-     - job: BuildTestPublish
-       dependsOn: Dependencychecker
-       pool: $(DeploymentPool)
-       container: ${{variables.Container}}
-       workspace:
-         clean: all # what to clean up before the job runs outputs | resources | all
-       displayName: "Build test publish"
-
-       steps:
-          - checkout: self
-          - task: NodeTool@0
-            inputs:
-              versionSpec: '14.x'
-            displayName: 'Install Node.js'
-
-          - script: |
-              npm ci
-            displayName: 'npm restore'
-          
-          - script: |
-              npm run build
-            displayName: 'npm build'
-          
-          - script: |
-             npm run test:unit
-            continueOnError: false
-            displayName: 'Unit test with Jest'
-
-          - task: PublishTestResults@2
-            condition: succeededOrFailed()
-            inputs:
-              testRunner: 'JUnit'
-              testResultsFiles: 'junit.xml'
-              testRunTitle: Unit Test Results
-            displayName: 'Publish Unit Test Results'
-
-          - task: PublishCodeCoverageResults@1
-            inputs:
-              codeCoverageTool: 'Cobertura'
-              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-              reportDirectory: 'coverage/'
-
-          - task: PublishBuildArtifacts@1
-            displayName: "Publish angularapp artifacts"
-            inputs:
-              PathtoPublish: '$(Build.SourcesDirectory)/dist'
-              ArtifactName: AngularApp
-
-          - task: PublishBuildArtifacts@1
-            displayName: "Publish terraform Artifacts"
-            inputs:
-              PathtoPublish: '$(Build.SourcesDirectory)/Deployment'
-              ArtifactName: terraformartifact
-
+stages:  
   - stage: Devdeploy
     displayName: "Devdeploy (inc terraform, website deploy)"
     variables:
@@ -159,137 +51,51 @@ stages:
           runOnce:
             deploy:
               steps:
-                - template: Deployment/templates/continous-deployment.yml
-                  parameters:
-                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-                    AzureSubscription: "File-Share-Service-Dev-P4052"
-
-      - job: FunctionalTests
-        dependsOn: DevDeploy
-        pool: $(WindowPool)
-        displayName: "Functional Tests"
-        variables: 
-         autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
-        workspace:
-         clean: all
-        steps:
-           - checkout: self
-           - script: 
-              echo "$(autoTestConfig.url)"
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
-              
-           - task: CmdLine@2
-             inputs:
-              script: 'npx playwright install'
-             displayName: install browsers for playwright test
-
-           - script: |
-              npm run test:auto
-             displayName: 'Run Functional Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Functional Test Results
-             displayName: 'Publish Functional Test Results'
-
-      - job: E2ETests
-        dependsOn: FunctionalTests
-        pool: $(WindowPool)
-        displayName: "End-To-End Tests"
-        steps:
-           - checkout: self
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             displayName: 'AppSettings Json tranform for E2E Tests Run'
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
-  
-           - script: |
-              npm run test:e2e
-             displayName: 'Run E2E Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: E2E Test Results
-             displayName: 'Publish End-To-End Test Results'
-
-      - job: AccessibilityTests
-        dependsOn: E2ETests
-        pool: $(WindowPool)
-        displayName: "Accessibility Tests"
-        steps:
-           - checkout: self
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             displayName: AppSettings Json tranform for Accessibility Test Run
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
+                - task: AzureCLI@2
+                  displayName: "Extract Deployment Variables to deploy KV"
+                  inputs:
+                    azureSubscription: 'File-Share-Service-Dev-P4052'
+                    scriptType: 'ps'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az keyvault secret set --name agentRg --vault-name m-fss-ui-dev-deploy-kv --value $(agentRG)
+                      az keyvault secret set --name agentSubnetName --vault-name m-fss-ui-dev-deploy-kv --value $(agentSubnetName)
+                      az keyvault secret set --name agentSubscriptionId --vault-name m-fss-ui-dev-deploy-kv --value $(agentSubscriptionId)
+                      az keyvault secret set --name agentVnetName --vault-name m-fss-ui-dev-deploy-kv --value $(agentVnetName)
+                      az keyvault secret set --name autoTestConfig-apiurl --vault-name m-fss-ui-dev-deploy-kv --value $(autoTestConfig.apiurl)
+                      az keyvault secret set --name autoTestConfig-encSizeConfig --vault-name m-fss-ui-dev-deploy-kv --value $(autoTestConfig.encSizeConfig)
+                      az keyvault secret set --name autoTestConfig-password --vault-name m-fss-ui-dev-deploy-kv --value $(autoTestConfig.password)
+                      az keyvault secret set --name autoTestConfig-url --vault-name m-fss-ui-dev-deploy-kv --value $(autoTestConfig.url)
+                      az keyvault secret set --name autoTestConfig-user --vault-name m-fss-ui-dev-deploy-kv --value $(autoTestConfig.user)
+                      az keyvault secret set --name autoTestConfig-userFullName --vault-name m-fss-ui-dev-deploy-kv --value $(autoTestConfig.userFullName)
+                      az keyvault secret set --name b2cConfig-clientId --vault-name m-fss-ui-dev-deploy-kv --value $(b2cConfig.clientId)
+                      az keyvault secret set --name b2cConfig-tenantName --vault-name m-fss-ui-dev-deploy-kv --value $(b2cConfig.tenantName)
+                      az keyvault secret set --name deploymentResourceGroupName --vault-name m-fss-ui-dev-deploy-kv --value $(DeploymentResourceGroupName)
+                      az keyvault secret set --name deploymentStorageAccountName --vault-name m-fss-ui-dev-deploy-kv --value $(DeploymentStorageAccountName)
+                      az keyvault secret set --name environment --vault-name m-fss-ui-dev-deploy-kv --value $(Environment)
+                      az keyvault secret set --name essConfig-apiScope --vault-name m-fss-ui-dev-deploy-kv --value $(essConfig.apiScope)
+                      az keyvault secret set --name essConfig-apiUrl --vault-name m-fss-ui-dev-deploy-kv --value $(essConfig.apiUrl)
+                      az keyvault secret set --name essConfig-avgSizeofENCinMB --vault-name m-fss-ui-dev-deploy-kv --value $(essConfig.avgSizeofENCinMB)
+                      az keyvault secret set --name essConfig-defaultEstimatedSizeinMB --vault-name m-fss-ui-dev-deploy-kv --value $(essConfig.defaultEstimatedSizeinMB)
+                      az keyvault secret set --name essConfig-MaxEncLimit --vault-name m-fss-ui-dev-deploy-kv --value $(essConfig.MaxEncLimit)
+                      az keyvault secret set --name essConfig-MaxEncSelectionLimit --vault-name m-fss-ui-dev-deploy-kv --value $(essConfig.MaxEncSelectionLimit)
+                      az keyvault secret set --name fssConfig-apiScope --vault-name m-fss-ui-dev-deploy-kv --value $(fssConfig.apiScope)
+                      az keyvault secret set --name fssConfig-apiUrl --vault-name m-fss-ui-dev-deploy-kv --value $(fssConfig.apiUrl)
+                      az keyvault secret set --name fssConfig-displayPopularSearch --vault-name m-fss-ui-dev-deploy-kv --value $(fssConfig.displayPopularSearch)
+                      az keyvault secret set --name fssConfig-displaySimplifiedSearchLink --vault-name m-fss-ui-dev-deploy-kv --value $(fssConfig.displaySimplifiedSearchLink)
+                      az keyvault secret set --name fssConfig-stateManagementApiUrl --vault-name m-fss-ui-dev-deploy-kv --value $(fssConfig.stateManagementApiUrl)
+                      az keyvault secret set --name googleTagManagerId --vault-name m-fss-ui-dev-deploy-kv --value $(GoogleTagManagerId)
+                      az keyvault secret set --name service-dns-url --vault-name m-fss-ui-dev-deploy-kv --value $(SERVICE_DNS_URL)
+                      az keyvault secret set --name spokeRG --vault-name m-fss-ui-dev-deploy-kv --value $(spokeRG)
+                      az keyvault secret set --name spokeSubnetName --vault-name m-fss-ui-dev-deploy-kv --value $(spokeSubnetName)
+                      az keyvault secret set --name spokeVnetName --vault-name m-fss-ui-dev-deploy-kv --value $(spokeVnetName)
+                      az keyvault secret set --name waitTimeInMinute --vault-name m-fss-ui-dev-deploy-kv --value $(waitTimeInMinute)
+                      az keyvault secret set --name whiteListedIps --vault-name m-fss-ui-dev-deploy-kv --value $(whiteListedIps)
       
-           - script: |
-              npm run test:a11y
-             displayName: 'Run Accessibility Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Accessibility Test Results
-             displayName: 'Publish Accessibility Test Results'
-
   - stage: QAdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-QA-Variables"
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
         displayName: "QA - deploy terraform and website"
@@ -303,131 +109,47 @@ stages:
           runOnce:
             deploy:
               steps:
-                - template: Deployment/templates/continous-deployment.yml
-                  parameters:
-                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-                    AzureSubscription: "File-Share-Service-QA-P4052"
-    
-      - job: FunctionalTests
-        dependsOn: QAdeploy
-        pool: $(WindowPool)
-        displayName: "Functional Tests"
-        variables: 
-         autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
-        workspace:
-         clean: all
-        steps:
-           - checkout: self
-
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
-
-           - script: |
-              npm run test:auto
-             displayName: 'Run Functional Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Functional Test Results
-             displayName: 'Publish Functional Test Results'
-
-      - job: E2ETests
-        dependsOn: FunctionalTests
-        pool: $(WindowPool)
-        displayName: "End-To-End Tests"
-        steps:
-           - checkout: self
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             displayName: AppSettings Json tranform for E2E Tests Run
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
-     
-           - script: |
-              npm run test:e2e
-             displayName: 'Run E2E Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: E2E Test Results
-             displayName: 'Publish End-To-End Test Results'
-
-      - job: AccessibilityTests
-        dependsOn: E2ETests
-        pool: $(WindowPool)
-        displayName: "Acccessibility Tests"
-        workspace:
-         clean: all
-        steps:
-           - checkout: self
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             displayName: AppSettings Json tranform for Accessibility Test Run
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
+                - task: AzureCLI@2
+                  displayName: "Extract Deployment Variables to deploy KV"
+                  inputs:
+                    azureSubscription: 'File-Share-Service-Dev-P4052'
+                    scriptType: 'ps'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az keyvault secret set --name agentRg --vault-name m-fss-ui-qa-deploy-kv --value $(agentRG)
+                      az keyvault secret set --name agentSubnetName --vault-name m-fss-ui-qa-deploy-kv --value $(agentSubnetName)
+                      az keyvault secret set --name agentSubscriptionId --vault-name m-fss-ui-qa-deploy-kv --value $(agentSubscriptionId)
+                      az keyvault secret set --name agentVnetName --vault-name m-fss-ui-qa-deploy-kv --value $(agentVnetName)
+                      az keyvault secret set --name autoTestConfig-apiurl --vault-name m-fss-ui-qa-deploy-kv --value $(autoTestConfig.apiurl)
+                      az keyvault secret set --name autoTestConfig-password --vault-name m-fss-ui-qa-deploy-kv --value $(autoTestConfig.password)
+                      az keyvault secret set --name autoTestConfig-url --vault-name m-fss-ui-qa-deploy-kv --value $(autoTestConfig.url)
+                      az keyvault secret set --name autoTestConfig-user --vault-name m-fss-ui-qa-deploy-kv --value $(autoTestConfig.user)
+                      az keyvault secret set --name autoTestConfig-userFullName --vault-name m-fss-ui-qa-deploy-kv --value $(autoTestConfig.userFullName)
+                      az keyvault secret set --name b2cConfig-clientId --vault-name m-fss-ui-qa-deploy-kv --value $(b2cConfig.clientId)
+                      az keyvault secret set --name b2cConfig-tenantName --vault-name m-fss-ui-qa-deploy-kv --value $(b2cConfig.tenantName)
+                      az keyvault secret set --name deploymentResourceGroupName --vault-name m-fss-ui-qa-deploy-kv --value $(DeploymentResourceGroupName)
+                      az keyvault secret set --name deploymentStorageAccountName --vault-name m-fss-ui-qa-deploy-kv --value $(DeploymentStorageAccountName)
+                      az keyvault secret set --name environment --vault-name m-fss-ui-qa-deploy-kv --value $(Environment)
+                      az keyvault secret set --name essConfig-apiScope --vault-name m-fss-ui-qa-deploy-kv --value $(essConfig.apiScope)
+                      az keyvault secret set --name essConfig-apiUrl --vault-name m-fss-ui-qa-deploy-kv --value $(essConfig.apiUrl)
+                      az keyvault secret set --name essConfig-avgSizeofENCinMB --vault-name m-fss-ui-qa-deploy-kv --value $(essConfig.avgSizeofENCinMB)
+                      az keyvault secret set --name essConfig-defaultEstimatedSizeinMB --vault-name m-fss-ui-qa-deploy-kv --value $(essConfig.defaultEstimatedSizeinMB)
+                      az keyvault secret set --name essConfig-MaxEncLimit --vault-name m-fss-ui-qa-deploy-kv --value $(essConfig.MaxEncLimit)
+                      az keyvault secret set --name essConfig-MaxEncSelectionLimit --vault-name m-fss-ui-qa-deploy-kv --value $(essConfig.MaxEncSelectionLimit)
+                      az keyvault secret set --name fssConfig-apiScope --vault-name m-fss-ui-qa-deploy-kv --value $(fssConfig.apiScope)
+                      az keyvault secret set --name fssConfig-apiUrl --vault-name m-fss-ui-qa-deploy-kv --value $(fssConfig.apiUrl)
+                      az keyvault secret set --name fssConfig-displayPopularSearch --vault-name m-fss-ui-qa-deploy-kv --value $(fssConfig.displayPopularSearch)
+                      az keyvault secret set --name fssConfig-stateManagementApiUrl --vault-name m-fss-ui-qa-deploy-kv --value $(fssConfig.stateManagementApiUrl)
+                      az keyvault secret set --name googleTagManagerId --vault-name m-fss-ui-qa-deploy-kv --value $(GoogleTagManagerId)
+                      az keyvault secret set --name service-dns-url --vault-name m-fss-ui-qa-deploy-kv --value $(SERVICE_DNS_URL)
+                      az keyvault secret set --name spokeRG --vault-name m-fss-ui-qa-deploy-kv --value $(spokeRG)
+                      az keyvault secret set --name spokeSubnetName --vault-name m-fss-ui-qa-deploy-kv --value $(spokeSubnetName)
+                      az keyvault secret set --name spokeVnetName --vault-name m-fss-ui-qa-deploy-kv --value $(spokeVnetName)
+                      az keyvault secret set --name waitTimeInMinute --vault-name m-fss-ui-qa-deploy-kv --value $(waitTimeInMinute)
+                      az keyvault secret set --name whiteListedIps --vault-name m-fss-ui-qa-deploy-kv --value $(whiteListedIps)
       
-           - script: |
-              npm run test:a11y
-             displayName: 'Run Accessibility Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Accessibility Test Results
-             displayName: 'Publish Accessibility Test Results'
-
   - stage: LiveDeploy
     displayName: "Livedeploy (inc terraform, website deploy)"
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: LiveDeploy
         displayName: "Live - deploy terraform and website"
@@ -442,7 +164,37 @@ stages:
           runOnce:
             deploy:
               steps:
-                - template: Deployment/templates/continous-deployment.yml
-                  parameters:
-                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-                    AzureSubscription: "File-Share-Service-Live-P4052"
+                - task: AzureCLI@2
+                  displayName: "Extract Deployment Variables to deploy KV"
+                  inputs:
+                    azureSubscription: 'File-Share-Service-Dev-P4052'
+                    scriptType: 'ps'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az keyvault secret set --name agentRg --vault-name m-fss-ui-live-deploy-kv --value $(agentRG)
+                      az keyvault secret set --name agentSubnetName --vault-name m-fss-ui-live-deploy-kv --value $(agentSubnetName)
+                      az keyvault secret set --name agentSubscriptionId --vault-name m-fss-ui-live-deploy-kv --value $(agentSubscriptionId)
+                      az keyvault secret set --name agentVnetName --vault-name m-fss-ui-live-deploy-kv --value $(agentVnetName)
+                      az keyvault secret set --name autoTestConfig-url --vault-name m-fss-ui-live-deploy-kv --value $(autoTestConfig.url)
+                      az keyvault secret set --name b2cConfig-clientId --vault-name m-fss-ui-live-deploy-kv --value $(b2cConfig.clientId)
+                      az keyvault secret set --name b2cConfig-tenantName --vault-name m-fss-ui-live-deploy-kv --value $(b2cConfig.tenantName)
+                      az keyvault secret set --name deploymentResourceGroupName --vault-name m-fss-ui-live-deploy-kv --value $(DeploymentResourceGroupName)
+                      az keyvault secret set --name deploymentStorageAccountName --vault-name m-fss-ui-live-deploy-kv --value $(DeploymentStorageAccountName)
+                      az keyvault secret set --name environment --vault-name m-fss-ui-live-deploy-kv --value $(Environment)
+                      az keyvault secret set --name essConfig-apiScope --vault-name m-fss-ui-live-deploy-kv --value $(essConfig.apiScope)
+                      az keyvault secret set --name essConfig-apiUrl --vault-name m-fss-ui-live-deploy-kv --value $(essConfig.apiUrl)
+                      az keyvault secret set --name essConfig-avgSizeofENCinMB --vault-name m-fss-ui-live-deploy-kv --value $(essConfig.avgSizeofENCinMB)
+                      az keyvault secret set --name essConfig-defaultEstimatedSizeinMB --vault-name m-fss-ui-live-deploy-kv --value $(essConfig.defaultEstimatedSizeinMB)
+                      az keyvault secret set --name essConfig-MaxEncLimit --vault-name m-fss-ui-live-deploy-kv --value $(essConfig.MaxEncLimit)
+                      az keyvault secret set --name essConfig-MaxEncSelectionLimit --vault-name m-fss-ui-live-deploy-kv --value $(essConfig.MaxEncSelectionLimit)
+                      az keyvault secret set --name fssConfig-apiScope --vault-name m-fss-ui-live-deploy-kv --value $(fssConfig.apiScope)
+                      az keyvault secret set --name fssConfig-apiUrl --vault-name m-fss-ui-live-deploy-kv --value $(fssConfig.apiUrl)
+                      az keyvault secret set --name fssConfig-displayPopularSearch --vault-name m-fss-ui-live-deploy-kv --value $(fssConfig.displayPopularSearch)
+                      az keyvault secret set --name fssConfig-stateManagementApiUrl --vault-name m-fss-ui-live-deploy-kv --value $(fssConfig.stateManagementApiUrl)
+                      az keyvault secret set --name googleTagManagerId --vault-name m-fss-ui-live-deploy-kv --value $(GoogleTagManagerId)
+                      az keyvault secret set --name service-dns-url --vault-name m-fss-ui-live-deploy-kv --value $(SERVICE_DNS_URL)
+                      az keyvault secret set --name spokeRG --vault-name m-fss-ui-live-deploy-kv --value $(spokeRG)
+                      az keyvault secret set --name spokeSubnetName --vault-name m-fss-ui-live-deploy-kv --value $(spokeSubnetName)
+                      az keyvault secret set --name spokeVnetName --vault-name m-fss-ui-live-deploy-kv --value $(spokeVnetName)
+                      az keyvault secret set --name waitTimeInMinute --vault-name m-fss-ui-live-deploy-kv --value $(waitTimeInMinute)
+                      az keyvault secret set --name whiteListedIps --vault-name m-fss-ui-live-deploy-kv --value $(whiteListedIps)
