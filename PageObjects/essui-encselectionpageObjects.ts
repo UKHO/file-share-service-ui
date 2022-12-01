@@ -289,7 +289,7 @@ class EncSelectionPageAssertions {
 
         }
         else
-            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + ((rightTableRowsCount * (0.3)) + 2.3).toFixed(1) + 'MB');
+            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + ((rightTableRowsCount * (0.3)) + 0.5).toFixed(1) + 'MB');
 
     }
 
