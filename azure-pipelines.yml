@@ -21,17 +21,6 @@ variables:
     value: "UKHO Ubuntu 1804"
   - name: WindowPool
     value: "NautilusBuild"
-  - name: coverityPool
-    value: NautilusBuild
-  - group: Covscan-vars
-
-resources:
-  repositories:
-    - repository: covscan
-      type: github
-      name: UKHO/coverityscan-buildtemplates
-      endpoint: UKHO
-      ref: refs/heads/master
 
 stages:  
   - stage: Devdeploy
@@ -42,8 +31,6 @@ stages:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
         environment: "FSS-Dev"
-        pool: $(DeploymentPool)
-        container: ${{variables.Container}}
         workspace:
           clean: all
         variables:
@@ -101,8 +88,6 @@ stages:
       - deployment: QADeploy
         displayName: "QA - deploy terraform and website"
         environment: "FSS-QA"
-        pool: $(DeploymentPool)
-        container: ${{variables.Container}}
         workspace:
           clean: all
         variables:
@@ -156,8 +141,6 @@ stages:
       - deployment: LiveDeploy
         displayName: "Live - deploy terraform and website"
         environment: "FSS-Live"
-        pool: $(DeploymentPool)
-        container: ${{variables.Container}}
         workspace:
           clean: all
         variables:
