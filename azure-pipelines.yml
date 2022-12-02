@@ -29,8 +29,10 @@ stages:
       - group: "File-Share-Service-UI-Dev-Variables"
     jobs:
       - deployment: DevDeploy
-        displayName: "Dev - deploy terraform and website"
+        displayName: "Dev - Migrate Deployment Variables"
         environment: "FSS-Dev"
+        pool: $(DeploymentPool)
+        container: ${{variables.Container}}
         workspace:
           clean: all
         variables:
@@ -86,8 +88,10 @@ stages:
       - group: "File-Share-Service-UI-QA-Variables"
     jobs:
       - deployment: QADeploy
-        displayName: "QA - deploy terraform and website"
+        displayName: "QA - Migrate Deployment Variables"
         environment: "FSS-QA"
+        pool: $(DeploymentPool)
+        container: ${{variables.Container}}
         workspace:
           clean: all
         variables:
@@ -139,8 +143,10 @@ stages:
     displayName: "Livedeploy (inc terraform, website deploy)"
     jobs:
       - deployment: LiveDeploy
-        displayName: "Live - deploy terraform and website"
+        displayName: "Live - Migrate Deployment Variables"
         environment: "FSS-Live"
+        pool: $(DeploymentPool)
+        container: ${{variables.Container}}
         workspace:
           clean: all
         variables:
