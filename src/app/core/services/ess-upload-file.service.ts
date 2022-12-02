@@ -60,9 +60,10 @@ export class EssUploadFileService {
     this.validEncs = encList
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
-      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit
+      .filter((enc, index) => index < this.maxEncLimit) // limit records by MaxEncLimit 
+      .map((enc) => enc.toUpperCase());// applies Upper Case to ENC
   }
-
+  
   getValidEncs(): string[] {
     return this.validEncs;
   }
@@ -104,7 +105,7 @@ export class EssUploadFileService {
 
   setValidSingleEnc(signleValidEnc: string) {
     this.validEncs = [];
-    this.validEncs.push(signleValidEnc);
+    this.validEncs.push(signleValidEnc.toUpperCase());
   }
 
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
@@ -117,7 +118,7 @@ export class EssUploadFileService {
   }
 
   addSingleEnc(signleValidEnc: string) {
-    this.validEncs.push(signleValidEnc);
+    this.validEncs.push(signleValidEnc.toUpperCase());
     this.notifySingleEnc.next(true);
   }
 
