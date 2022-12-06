@@ -39,7 +39,7 @@ export class EssUploadFileService {
   }
 
   validateENCFormat(encName: string) {
-    const pattern = /^[A-Z0-9]{2}[1-68][A-Z0-9]{5}$/;
+    const pattern = /^[a-zA-Z0-9]{2}[1-68][a-zA-Z0-9]{5}$/;
     return encName.match(pattern);
   }
 
@@ -59,10 +59,12 @@ export class EssUploadFileService {
   setValidENCs(encList: string[]): void {
     this.validEncs = encList
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
+      .map((enc) => enc.toUpperCase())// applies Upper Case to ENC
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
-      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit
+      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit 
+     
   }
-
+  
   getValidEncs(): string[] {
     return this.validEncs;
   }
@@ -104,7 +106,7 @@ export class EssUploadFileService {
 
   setValidSingleEnc(signleValidEnc: string) {
     this.validEncs = [];
-    this.validEncs.push(signleValidEnc);
+    this.validEncs.push(signleValidEnc.toUpperCase());
   }
 
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
@@ -117,7 +119,7 @@ export class EssUploadFileService {
   }
 
   addSingleEnc(signleValidEnc: string) {
-    this.validEncs.push(signleValidEnc);
+    this.validEncs.push(signleValidEnc.toUpperCase());
     this.notifySingleEnc.next(true);
   }
 

@@ -64,7 +64,7 @@ export class EssAddSingleEncsComponent implements OnInit {
       return;
     }
 
-    if(this.validEnc.includes(this.txtSingleEnc)){
+    if(this.validEnc.includes(this.txtSingleEnc.toUpperCase())){
       this.triggerInfoErrorMessage(true,'info', 'ENC already in list.');
       return;
     }
