@@ -15,12 +15,12 @@ describe('EssUploadFileComponent', () => {
   let essUploadFileService: EssUploadFileService;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
   const getEncData_csv = () => {
-    let data = 'AU220150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
+    let data = 'Au2fg150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
   };
 
   const getInvalidEncData_csv = () => {
-    let data = 'AU220150004\r\nAU5PTL01\r\nCA271105\r\nCN484220';
+    let data = 'AU220150004\r\naU5PTLn1\r\ncA27Y105\r\nCN48tk20';
     return data;
   };
 
@@ -34,7 +34,7 @@ describe('EssUploadFileComponent', () => {
     data += ':DATE 20220630 03:11 \n';
     data += ':VERSION 2 \n';
     data += ':ENC \n';
-    data += 'AU210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'Am210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
     data += ':ECS \n';
     return data;
   };

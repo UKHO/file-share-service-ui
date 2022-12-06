@@ -12,6 +12,16 @@ describe('EssUploadFileService', () => {
       'AU210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
     data += ':ECS \n';
     return data;
+  }; 
+  const getENCDifferentCaseData = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data +=
+      'aU21aD130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
   };
   const getCsvTempData = () => {
     const data = 'AU220150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
@@ -97,14 +107,21 @@ describe('EssUploadFileService', () => {
     encList = service.getValidEncs();
     expect(encList.length).toEqual(1);
   });
-
+  it('getValidEncs should return encs uploaded with different case', () => {
+    expect(service.getValidEncs()).toBeUndefined();
+    let encList = service.getEncFileData(getENCDifferentCaseData());
+    encList = service.extractEncsFromFile('text/plain', encList);
+    service.setValidENCs(encList);
+    encList = service.getValidEncs();
+    expect(encList.length).toEqual(1);
+  });
   it('validateENCFormat should return enc if passed parameter is valid else returns null', () => {
     const validData = 'A7210130';
     const invalidData = 'A1010130';
-    const invalidcaseofData = 'a121c130';
+    const mixedCaseofData = 'a121C1b0';
     expect(service.validateENCFormat(validData)?.length).toBeGreaterThan(0);
     expect(service.validateENCFormat(invalidData)).toBeNull();
-    expect(service.validateENCFormat(invalidcaseofData)).toBeNull();
+    expect(service.validateENCFormat(mixedCaseofData)?.length).toBeGreaterThan(0);
   });
 
   //csv file tests
@@ -199,9 +216,13 @@ describe('EssUploadFileService', () => {
   });
 
   it('setValidSingleEnc should set single ENC in validEnc list', () => {
-    expect(service.setValidSingleEnc('AS121212'));
+
+    let validEncs = ['AU220150', 'Ay5PTp01', 'CA271105', 'CN484220'];
+    service.setValidENCs(validEncs);
+    service.addSingleEnc('AS121212');
+    service.addSingleEnc('aD1tyH1n');
     let encList = service.getValidEncs();
-    expect(encList.length).toEqual(1);
+    expect(encList.length).toEqual(6);
   });
 
   it('checkMaxEncLimit should return true as per configuration settings', () => {
@@ -215,10 +236,11 @@ describe('EssUploadFileService', () => {
   });
 
   it('addSingleEnc should set single ENC in validEnc list', () => {
-    let validEncs = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];
+    let validEncs = ['AU220150', 'Ay5PTp01', 'CA271105', 'CN484220'];
     service.setValidENCs(validEncs);
     service.addSingleEnc('AS121212');
-    expect(service.getValidEncs().length).toEqual(5);
+    service.addSingleEnc('aS12rteL');
+    expect(service.getValidEncs().length).toEqual(6);
   });
 
   it.each`

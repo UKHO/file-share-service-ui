@@ -150,4 +150,13 @@ describe('EssAddSingleEncsComponent', () => {
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
+  it('validateAndAddENC should set single valid different case ENC', () => {
+    component.validEnc = ['AU220150', 'GB50184C', 'GB50702D', 'US5AK57M'];
+    component.txtSingleEnc = 'uf4FL18m';
+    component.renderedFrom = 'encList';
+    service.setValidENCs(component.validEnc);
+    component.validateAndAddENC();
+    
+    expect(component.addValidEncAlert).toEqual("uf4FL18m  Added to List");
+  });
 });
