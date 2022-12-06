@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { EssLandingPageObjects } from "./essui-landingpageObjects";
+import{ autoTestConfig } from "appSetting.json"
 export var SelectedENCs: number;
 
 
@@ -289,7 +290,7 @@ class EncSelectionPageAssertions {
 
         }
         else
-            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + ((rightTableRowsCount * (0.3)) + 2.3).toFixed(1) + 'MB');
+            expect(await this.encSelectionPageObjects.exchangeSetSizeSelector.innerText()).toEqual("" + ((rightTableRowsCount * (0.3)) +Number.parseFloat( autoTestConfig.encSizeConfig)).toFixed(1) + 'MB');
 
     }
 

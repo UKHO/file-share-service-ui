@@ -135,8 +135,8 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(service.getEstimatedTotalSize).toHaveBeenCalled();
     expect(component.avgEstimatedSize).toBe(expectedResult);
 
-    var expectedResultForKB: any = '0KB';
-    service.getEstimatedTotalSize.mockReturnValue('0KB');
+    var expectedResultForKB: any = '0MB';
+    service.getEstimatedTotalSize.mockReturnValue('0MB');
     component.ngOnInit();
     expect(service.getEstimatedTotalSize).toHaveBeenCalled();
     expect(component.avgEstimatedSize).toBe(expectedResultForKB);

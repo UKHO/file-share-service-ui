@@ -141,14 +141,8 @@ export class EssUploadFileService {
     this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
   }
   
-  getEstimatedTotalSize(encCount:number):string {
-    
+  getEstimatedTotalSize(encCount:number):string {  
     this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
-      if(this.estimatedTotalSize>=1){
-        return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
-      }
-      else{
-        return Math.round(this.estimatedTotalSize * 1024).toString()+"KB";
-      }
+      return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
    }
 }
