@@ -59,9 +59,10 @@ export class EssUploadFileService {
   setValidENCs(encList: string[]): void {
     this.validEncs = encList
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
+      .map((enc) => enc.toUpperCase())// applies Upper Case to ENC
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
-      .filter((enc, index) => index < this.maxEncLimit) // limit records by MaxEncLimit 
-      .map((enc) => enc.toUpperCase());// applies Upper Case to ENC
+      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit 
+     
   }
   
   getValidEncs(): string[] {
