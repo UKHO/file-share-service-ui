@@ -159,7 +159,7 @@ describe('EssUploadFileService', () => {
   });
 
   it('setValidENCs and getValidEncs should return valid encs when duplicate record found', () => {
-    const encLists = ['AU220150,AU220150', 'AU220150,AU220150', 'AU5PTL01,AU5PTL01', 'CA271105,CA271105', 'CN484220,CN484220'];
+    const encLists = ['AU220150,Au220150', 'aU220150,au220150', 'Au5PTL01,aU5PTL01', 'cA271105,Ca271105', 'Cn484220,cN484220'];
     let validEncList = service.extractEncsFromFile('text/csv', encLists);
     service.setValidENCs(validEncList);
     validEncList = service.getValidEncs();
