@@ -50,6 +50,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13809
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14102
+     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807          (Sprint 3)
      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
 
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', '3A6LTP10', 'B28LTP10', '221A1B2C']
@@ -62,6 +63,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13815
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14103 
+     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807            (Sprint 3)
      test('Verify all the uploaded ENCs from .txt file, displayed on the screen', async ({ page }) => {
 
           let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C', '908ABCDE', 'B28LTP10']
@@ -150,6 +152,21 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.DragDropFile(page, './Tests/TestData/FileOtherThanCSVorTXT.xlsx', 'FileOtherThanCSVorTXT.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
           await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt file');
+     })
+
+     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808    (Sprint 3)
+     test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
+
+          let encAdded = ["KK123456","AA123456","AB123456","BC123456","KK12H456","3A6LTP10"]
+          await esslandingPageObjects.addencradiobtnSelectorClick();
+          await esslandingPageObjects.setaddSingleENCTextboxSelector("KK123456");
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await encSelectionPageObjects.addAnotherENC("aa123456");
+          await encSelectionPageObjects.addAnotherENC("Ab123456");
+          await encSelectionPageObjects.addAnotherENC("bC123456");
+          await encSelectionPageObjects.addAnotherENC("KK12h456");
+          await encSelectionPageObjects.addAnotherENC("3a6ltp10");
+          await esslandingPageObjects.expect.verifyUploadedENCs(encAdded);
      })
 
 });
