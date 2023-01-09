@@ -427,6 +427,9 @@ stages:
 
   - stage: LiveDeploy
     displayName: "Livedeploy (inc terraform, website deploy)"
+    variables:
+          - group: "File share service terraform Live"
+          - group: "File-Share-Service-UI-Live-Variables"
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: LiveDeploy
@@ -434,10 +437,7 @@ stages:
         environment: "FSS-Live"
         container: ${{variables.Container}}
         workspace:
-          clean: all
-        variables:
-          - group: "File share service terraform Live"
-          - group: "File-Share-Service-UI-Live-Variables"
+          clean: all        
         strategy:
           runOnce:
             deploy:
