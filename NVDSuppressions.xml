@@ -60,4 +60,16 @@
     <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
     <vulnerabilityName>1085778</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1087892</vulnerabilityName>
+    <vulnerabilityName>1087893</vulnerabilityName>
+    <vulnerabilityName>1087894</vulnerabilityName>
+    <vulnerabilityName>1087895</vulnerabilityName>
+  </suppress>
 </suppressions>
