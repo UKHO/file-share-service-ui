@@ -168,7 +168,7 @@ stages:
         dependsOn: DevDeploy
         pool: 
           name: $(WindowPool)
-          demand: FM-Perms
+          demands: FM-Perms
         displayName: "Functional Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
