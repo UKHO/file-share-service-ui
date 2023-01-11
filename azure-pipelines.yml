@@ -167,7 +167,7 @@ stages:
       - job: FunctionalTests
         dependsOn: DevDeploy
         pool: 
-          name: $(DeploymentPool)
+          name: $(WindowPool)
           demand: FM-Perms
         displayName: "Functional Tests"
         variables: 
