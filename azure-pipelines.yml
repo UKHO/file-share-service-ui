@@ -215,7 +215,9 @@ stages:
 
       - job: E2ETests
         dependsOn: FunctionalTests
-        pool: $(WindowPool)
+        pool: 
+          name: $(DeploymentPool)
+          demands: FM-Perms
         displayName: "End-To-End Tests"
         steps:
            - checkout: self
@@ -252,7 +254,9 @@ stages:
 
       - job: AccessibilityTests
         dependsOn: E2ETests
-        pool: $(WindowPool)
+        pool: 
+          name: $(DeploymentPool)
+          demands: FM-Perms
         displayName: "Accessibility Tests"
         steps:
            - checkout: self
@@ -312,7 +316,9 @@ stages:
     
       - job: FunctionalTests
         dependsOn: QAdeploy
-        pool: $(WindowPool)
+        pool: 
+          name: $(DeploymentPool)
+          demands: FM-Perms
         displayName: "Functional Tests"
         variables: 
          autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
@@ -353,7 +359,9 @@ stages:
 
       - job: E2ETests
         dependsOn: FunctionalTests
-        pool: $(WindowPool)
+        pool: 
+          name: $(DeploymentPool)
+          demands: FM-Perms
         displayName: "End-To-End Tests"
         steps:
            - checkout: self
@@ -390,7 +398,9 @@ stages:
 
       - job: AccessibilityTests
         dependsOn: E2ETests
-        pool: $(WindowPool)
+        pool: 
+          name: $(DeploymentPool)
+          demands: FM-Perms
         displayName: "Acccessibility Tests"
         workspace:
          clean: all
