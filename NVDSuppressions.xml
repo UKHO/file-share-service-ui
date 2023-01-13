@@ -13,17 +13,16 @@
    <packageUrl regex="true">^pkg:npm/json\-schema@0\.2\.3$</packageUrl>
    <vulnerabilityName>1006724</vulnerabilityName>
 </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
+<suppress>
+  <notes>
+    <![CDATA[
   file name: decode-uri-component:0.2.0
   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/decode\-uri\-component@.*$</packageUrl>
-    <vulnerabilityName>1085062</vulnerabilityName>
-    <vulnerabilityName>CVE-2022-38900</vulnerabilityName>
-    <vulnerabilityName>1087979</vulnerabilityName>
-  </suppress>
+  </notes>
+  <packageUrl regex="true">^pkg:npm/decode\-uri\-component@.*$</packageUrl>
+  <vulnerabilityName>1085062</vulnerabilityName>
+  <vulnerabilityName>CVE-2022-38900</vulnerabilityName>
+</suppress>
   <suppress>
     <notes>
       <![CDATA[
@@ -60,26 +59,5 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
     <vulnerabilityName>1085778</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: loader-utils:1.4.0
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
-    <vulnerabilityName>1087892</vulnerabilityName>
-    <vulnerabilityName>1087893</vulnerabilityName>
-    <vulnerabilityName>1087894</vulnerabilityName>
-    <vulnerabilityName>1087895</vulnerabilityName>
-    <vulnerabilityName>1087985</vulnerabilityName>
-    <vulnerabilityName>1087986</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[
-   file name: debug:3.1.0
-   ]]></notes>
-    <packageUrl regex="true">^pkg:npm/debug@.*$</packageUrl>
-    <vulnerabilityName>1087958</vulnerabilityName>
   </suppress>
 </suppressions>
