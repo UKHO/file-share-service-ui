@@ -147,7 +147,7 @@ stages:
     variables:
       - group: "File-Share-Service-UI-Dev-Deploy-Variables"
       - name: "Environment"
-        value: $(environment)
+        value: "dev"
       - name: b2cConfig.tennatName
         value: $(b2cConfig-tenantName)
       - name: b2cConfig.clientId
