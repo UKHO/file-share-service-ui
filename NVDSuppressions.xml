@@ -50,6 +50,11 @@
     <vulnerabilityName>CVE-2022-37599</vulnerabilityName>
     <vulnerabilityName>CVE-2022-37601</vulnerabilityName>
     <vulnerabilityName>CVE-2022-37603</vulnerabilityName>
+    <vulnerabilityName>1087892</vulnerabilityName>
+    <vulnerabilityName>1087893</vulnerabilityName>
+    <vulnerabilityName>1087894</vulnerabilityName>
+    <vulnerabilityName>1087895</vulnerabilityName>
+
   </suppress>
   <suppress>
     <notes>
