@@ -146,6 +146,22 @@ stages:
     displayName: "Devdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-Dev-Deploy-Variables"
+      - name: "Environment"
+        value: $(environment)
+      - name: b2cConfig.tennatName
+        value: $(b2cConfig-tenantName)
+      - name: b2cConfig.clientId
+        value: $(b2cConfig-clientId)
+      - name: fssConfig.apiUrl
+        value: $(fssConfig-apiUrl)
+      - name: fssConfig.apiScope
+        value: $(fssConfig-apiScope)
+      - name: fssConfig.stateManagementApiUrl
+        value: $(fssConfig-stateManagementApiUrl)
+      - name: essConfig.apiUrl
+        value: $(essConfig-apiUrl)
+      - name: essConfig.apiScope
+        value: $(essConfig-apiScope)
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
