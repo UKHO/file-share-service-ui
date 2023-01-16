@@ -162,6 +162,18 @@ stages:
         value: $(essConfig-apiUrl)
       - name: essConfig.apiScope
         value: $(essConfig-apiScope)
+      - name: autoTestConfig.url
+        value: $(autoTestConfig-url)
+      - name: autoTestConfig.user
+        value: $(autoTestConfig-user)
+      - name: autoTestConfig.password
+        value: $(autoTestConfig-password)
+      - name: autoTestConfig.userFullName
+        value: $(autoTestConfig-userFullName)
+      - name: autoTestConfig.apiurl
+        value: $(autoTestConfig-apiurl)
+      - name: autoTestConfig.encSizeConfig
+        value: $(autoTestConfig-encSizeConfig)
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
