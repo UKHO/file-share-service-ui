@@ -274,7 +274,14 @@ stages:
               npx playwright install 
              displayName: 'npx playwright install'
   
-  
+
+           - task: FileTransform@2
+             displayName: 'AppSettings Json tranform for E2E Tests Run'
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
+                
            - script: |
               npm run test:e2e
              displayName: 'Run E2E Tests'
@@ -334,8 +341,8 @@ stages:
     variables:
       - group: "File-Share-Service-UI-QA-Deploy-Variables"
       - name: "Environment"
-        value: "qa"
-      - name: b2cConfig.tennatName
+        value: "QA"
+      - name: b2cConfig.tenantName
         value: $(b2cConfig-tenantName)
       - name: b2cConfig.clientId
         value: $(b2cConfig-clientId)
@@ -530,6 +537,20 @@ stages:
         variables: 
           - group: "File share service terraform Live"
           - group: "File-Share-Service-UI-Live-Deploy-Variables"
+          - name: "b2cConfig.tenantName"
+            value: $(b2cConfig-tenantName)
+          - name: "b2cConfig.clientId"
+            value: $(b2cConfig-clientId)
+          - name: "fssConfig.apiUrl"
+            value: $(fssConfig-apiUrl)
+          - name: "fssConfig.apiScope"
+            value: $(fssConfig-apiScope)
+          - name: "fssConfig.stateManagementApiUrl"
+            value: $(fssConfig-stateManagementApiUrl)
+          - name: "essConfig.apiUrl"
+            value: $(essConfig-apiUrl)
+          - name: "essConfig.apiScope"
+            value: $(essConfig-apiScope)
         strategy:
           runOnce:
             deploy:
