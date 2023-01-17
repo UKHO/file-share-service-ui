@@ -269,6 +269,11 @@ stages:
            - script: |
               npm ci
              displayName: 'npm restore'
+
+           - script: |
+              npx playwright install 
+             displayName: 'npx playwright install'
+  
   
            - script: |
               npm run test:e2e
