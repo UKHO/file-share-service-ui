@@ -196,7 +196,10 @@ stages:
         workspace:
           clean: all
         variables:
+          - group: "File-Share-Service-UI-Dev-Deploy-Variables"
           - group: "File share service terraform Dev"
+          - name: fssConfig.displayPopularSearch
+            value: $(fssConfig-displayPopularSearch)
         strategy:
           runOnce:
             deploy:
