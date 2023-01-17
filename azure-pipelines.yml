@@ -269,13 +269,6 @@ stages:
            - script: |
               npm ci
              displayName: 'npm restore'
-
-           - task: FileTransform@2
-             displayName: 'AppSettings Json tranform for E2E Tests Run'
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
   
            - script: |
               npm run test:e2e
