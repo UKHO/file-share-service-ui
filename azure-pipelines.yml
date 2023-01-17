@@ -335,10 +335,22 @@ stages:
         value: $(fssConfig-apiScope)
       - name: fssConfig.stateManagementApiUrl
         value: $(fssConfig-stateManagementApiUrl)
+      - name: fssConfig.displayPopularSearch
+        value: $(fssConfig-displayPopularSearch)
+      - name: fssConfig.displaySimplifiedSearchLink
+        value: $(fssConfig-displaySimplifiedSearchLink)
       - name: essConfig.apiUrl
         value: $(essConfig-apiUrl)
       - name: essConfig.apiScope
         value: $(essConfig-apiScope)
+      - name: essConfig.avgSizeofENCinMB
+        value: $(essConfig-avgSizeofENCinMB)
+      - name: essConfig.defaultEstimatedSizeinMB
+        value: $(essConfig-defaultEstimatedSizeinMB)
+      - name: essConfig.MaxEncLimit
+        value: $(essConfig-MaxEncLimit)
+      - name: essConfig.MaxEncSelectionLimit
+        value: $(essConfig-MaxEncSelectionLimit)
       - name: autoTestConfig.url
         value: $(autoTestConfig-url)
       - name: autoTestConfig.user
