@@ -163,17 +163,17 @@ stages:
       - name: essConfig.apiScope
         value: $(essConfig-apiScope)
       - name: autoTestConfig.url
-        value: "https://fss-dev.admiralty.co.uk"
+        value: $(autoTestConfig-url)
       - name: autoTestConfig.user
-        value: $(autoTestConfig-user)
+        value: "UKHODevTestUser1@outlook.com"
       - name: autoTestConfig.password
-        value: $(autoTestConfig-password)
+        value: "Fh84e3W!kl"
       - name: autoTestConfig.userFullName
-        value: $(autoTestConfig-userFullName)
+        value: "Test User"
       - name: autoTestConfig.apiurl
-        value: $(autoTestConfig-apiurl)
+        value: "https://uatadmiralty.azure-api.net/fss-qa"
       - name: autoTestConfig.encSizeConfig
-        value: $(autoTestConfig-encSizeConfig)
+        value: "https://uatadmiralty.azure-api.net/fss-qa"
       - name: "ServiceDnsUrl"
         value: $(service-dns-url)
     jobs:
@@ -323,6 +323,36 @@ stages:
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-QA-Deploy-Variables"
+            - name: "Environment"
+        value: "dev"
+      - name: b2cConfig.tennatName
+        value: $(b2cConfig-tenantName)
+      - name: b2cConfig.clientId
+        value: $(b2cConfig-clientId)
+      - name: fssConfig.apiUrl
+        value: $(fssConfig-apiUrl)
+      - name: fssConfig.apiScope
+        value: $(fssConfig-apiScope)
+      - name: fssConfig.stateManagementApiUrl
+        value: $(fssConfig-stateManagementApiUrl)
+      - name: essConfig.apiUrl
+        value: $(essConfig-apiUrl)
+      - name: essConfig.apiScope
+        value: $(essConfig-apiScope)
+      - name: autoTestConfig.url
+        value: $(autoTestConfig-url)
+      - name: autoTestConfig.user
+        value: $(autoTestConfig-user)
+      - name: autoTestConfig.password
+        value: $(autoTestConfig-password)
+      - name: autoTestConfig.userFullName
+        value: $(autoTestConfig-userFullName)
+      - name: autoTestConfig.apiurl
+        value: $(autoTestConfig-apiurl)
+      - name: autoTestConfig.encSizeConfig
+        value: $(autoTestConfig-encSizeConfig)
+      - name: "ServiceDnsUrl"
+        value: $(service-dns-url)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
@@ -348,8 +378,6 @@ stages:
           name: $(DeploymentPool)
           demands: FM-Perms
         displayName: "Functional Tests"
-        variables: 
-         autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
         workspace:
          clean: all
         steps:
