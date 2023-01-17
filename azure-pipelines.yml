@@ -256,7 +256,7 @@ stages:
       - job: E2ETests
         dependsOn: FunctionalTests
         pool: 
-          name: $(DeploymentPool)
+          name: $(WindowPool)
           demands: FM-Perms
         displayName: "End-To-End Tests"
         steps:
@@ -288,7 +288,7 @@ stages:
       - job: AccessibilityTests
         dependsOn: E2ETests
         pool: 
-          name: $(DeploymentPool)
+          name: $(WindowPool)
           demands: FM-Perms
         displayName: "Accessibility Tests"
         steps:
@@ -392,7 +392,7 @@ stages:
       - job: FunctionalTests
         dependsOn: QAdeploy
         pool: 
-          name: $(DeploymentPool)
+          name: $(WindowPool)
           demands: FM-Perms
         displayName: "Functional Tests"
         workspace:
@@ -433,7 +433,7 @@ stages:
       - job: E2ETests
         dependsOn: FunctionalTests
         pool: 
-          name: $(DeploymentPool)
+          name: $(WindowPool)
           demands: FM-Perms
         displayName: "End-To-End Tests"
         steps:
@@ -472,7 +472,7 @@ stages:
       - job: AccessibilityTests
         dependsOn: E2ETests
         pool: 
-          name: $(DeploymentPool)
+          name: $(WindowPool)
           demands: FM-Perms
         displayName: "Acccessibility Tests"
         workspace:
