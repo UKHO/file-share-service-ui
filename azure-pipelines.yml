@@ -148,7 +148,7 @@ stages:
       - group: "File-Share-Service-UI-Dev-Deploy-Variables"
       - name: "Environment"
         value: "dev"
-      - name: b2cConfig.tennatName
+      - name: b2cConfig.tenantName
         value: $(b2cConfig-tenantName)
       - name: b2cConfig.clientId
         value: $(b2cConfig-clientId)
@@ -196,10 +196,7 @@ stages:
         workspace:
           clean: all
         variables:
-          - group: "File-Share-Service-UI-Dev-Deploy-Variables"
           - group: "File share service terraform Dev"
-          - name: fssConfig.displayPopularSearch
-            value: $(fssConfig-displayPopularSearch)
         strategy:
           runOnce:
             deploy:
