@@ -173,7 +173,7 @@ stages:
       - name: autoTestConfig.apiurl
         value: "https://uatadmiralty.azure-api.net/fss-qa"
       - name: autoTestConfig.encSizeConfig
-        value: "https://uatadmiralty.azure-api.net/fss-qa"
+        value: "2.3"
       - name: "ServiceDnsUrl"
         value: $(service-dns-url)
     jobs:
@@ -323,8 +323,8 @@ stages:
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-QA-Deploy-Variables"
-            - name: "Environment"
-        value: "dev"
+      - name: "Environment"
+        value: "qa"
       - name: b2cConfig.tennatName
         value: $(b2cConfig-tenantName)
       - name: b2cConfig.clientId
