@@ -342,7 +342,7 @@ stages:
       - group: "File-Share-Service-UI-QA-Deploy-Variables"
       - name: "Environment"
         value: "QA"
-      - name: b2cConfig.tennatName
+      - name: b2cConfig.tenantName
         value: $(b2cConfig-tenantName)
       - name: b2cConfig.clientId
         value: $(b2cConfig-clientId)
