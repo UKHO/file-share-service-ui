@@ -388,6 +388,9 @@ stages:
         displayName: "QA - deploy terraform and website"
         environment: "FSS-QA"
         container: ${{variables.Container}}
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
         workspace:
           clean: all
         variables:
