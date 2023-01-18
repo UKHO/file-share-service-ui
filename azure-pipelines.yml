@@ -256,7 +256,7 @@ stages:
       - job: E2ETests
         dependsOn: FunctionalTests
         pool: 
-          name: $(DeploymentPool)
+          name: $(WindowPool)
           demands: FM-Perms
         displayName: "End-To-End Tests"
         steps:
@@ -281,7 +281,7 @@ stages:
               folderPath: '$(Build.SourcesDirectory)\'
               xmlTransformationRules:
               jsonTargetFiles: 'appSetting.json'
-  
+                
            - script: |
               npm run test:e2e
              displayName: 'Run E2E Tests'
