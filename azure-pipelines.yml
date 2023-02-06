@@ -537,7 +537,7 @@ stages:
         variables: 
           - group: "File share service terraform Live"
           - group: "File-Share-Service-UI-Live-Deploy-Variables"
-          - name: "b2cConfig.tenantName": 
+          - name: "b2cConfig.tenantName"
             value: $(b2cConfig-tenantName)
           - name: "b2cConfig.clientId"
             value: $(b2cConfig-clientId)
