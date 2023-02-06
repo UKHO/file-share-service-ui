@@ -112,4 +112,28 @@
    <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
    <vulnerabilityName>1088664</vulnerabilityName>
 </suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: http-cache-semantics:4.1.0
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
+   <vulnerabilityName>CVE-2022-25881</vulnerabilityName>
+   <vulnerabilityName>1090146</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: loader-utils:1.4.0
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+   <vulnerabilityName>1090170</vulnerabilityName>
+   <vulnerabilityName>1090169</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: loader-utils:2.0.0
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+   <vulnerabilityName>1090171</vulnerabilityName>
+   <vulnerabilityName>1090168</vulnerabilityName>
+</suppress>
 </suppressions>
