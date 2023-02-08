@@ -136,4 +136,11 @@
    <vulnerabilityName>1090171</vulnerabilityName>
    <vulnerabilityName>1090168</vulnerabilityName>
 </suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: http-cache-semantics:4.1.0
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
+   <vulnerabilityName>1090532</vulnerabilityName>
+</suppress>
 </suppressions>
