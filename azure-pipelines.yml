@@ -146,6 +146,48 @@ stages:
     displayName: "Devdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-Dev-Deploy-Variables"
+      - name: "Environment"
+        value: "dev"
+      - name: b2cConfig.tenantName
+        value: $(b2cConfig-tenantName)
+      - name: b2cConfig.clientId
+        value: $(b2cConfig-clientId)
+      - name: fssConfig.apiUrl
+        value: $(fssConfig-apiUrl)
+      - name: fssConfig.apiScope
+        value: $(fssConfig-apiScope)
+      - name: fssConfig.stateManagementApiUrl
+        value: $(fssConfig-stateManagementApiUrl)
+      - name: fssConfig.displayPopularSearch
+        value: $(fssConfig-displayPopularSearch)
+      - name: fssConfig.displaySimplifiedSearchLink
+        value: $(fssConfig-displaySimplifiedSearchLink)
+      - name: essConfig.apiUrl
+        value: $(essConfig-apiUrl)
+      - name: essConfig.apiScope
+        value: $(essConfig-apiScope)
+      - name: essConfig.avgSizeofENCinMB
+        value: $(essConfig-avgSizeofENCinMB)
+      - name: essConfig.defaultEstimatedSizeinMB
+        value: $(essConfig-defaultEstimatedSizeinMB)
+      - name: essConfig.MaxEncLimit
+        value: $(essConfig-MaxEncLimit)
+      - name: essConfig.MaxEncSelectionLimit
+        value: $(essConfig-MaxEncSelectionLimit)
+      - name: autoTestConfig.url
+        value: $(autoTestConfig-url)
+      - name: autoTestConfig.user
+        value: $(autoTestConfig-user)
+      - name: autoTestConfig.password
+        value: $(autoTestConfig-password)
+      - name: autoTestConfig.userFullName
+        value: $(autoTestConfig-userFullName)
+      - name: autoTestConfig.apiurl
+        value: $(autoTestConfig-apiurl)
+      - name: autoTestConfig.encSizeConfig
+        value: $(autoTestConfig-encSizeConfig)
+      - name: "ServiceDnsUrl"
+        value: $(service-dns-url)
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
@@ -166,10 +208,10 @@ stages:
 
       - job: FunctionalTests
         dependsOn: DevDeploy
-        pool: $(WindowPool)
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
         displayName: "Functional Tests"
-        variables: 
-         autoTestConfig.url: $[ dependencies.DevDeploy.outputs['DevDeploy.Deployment.website_url']  ]
         workspace:
          clean: all
         steps:
@@ -213,7 +255,9 @@ stages:
 
       - job: E2ETests
         dependsOn: FunctionalTests
-        pool: $(WindowPool)
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
         displayName: "End-To-End Tests"
         steps:
            - checkout: self
@@ -226,13 +270,18 @@ stages:
               npm ci
              displayName: 'npm restore'
 
+           - script: |
+              npx playwright install 
+             displayName: 'npx playwright install'
+  
+
            - task: FileTransform@2
              displayName: 'AppSettings Json tranform for E2E Tests Run'
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
               xmlTransformationRules:
               jsonTargetFiles: 'appSetting.json'
-  
+                
            - script: |
               npm run test:e2e
              displayName: 'Run E2E Tests'
@@ -250,7 +299,9 @@ stages:
 
       - job: AccessibilityTests
         dependsOn: E2ETests
-        pool: $(WindowPool)
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
         displayName: "Accessibility Tests"
         steps:
            - checkout: self
@@ -289,6 +340,48 @@ stages:
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-QA-Deploy-Variables"
+      - name: "Environment"
+        value: "QA"
+      - name: b2cConfig.tenantName
+        value: $(b2cConfig-tenantName)
+      - name: b2cConfig.clientId
+        value: $(b2cConfig-clientId)
+      - name: fssConfig.apiUrl
+        value: $(fssConfig-apiUrl)
+      - name: fssConfig.apiScope
+        value: $(fssConfig-apiScope)
+      - name: fssConfig.stateManagementApiUrl
+        value: $(fssConfig-stateManagementApiUrl)
+      - name: fssConfig.displayPopularSearch
+        value: $(fssConfig-displayPopularSearch)
+      - name: fssConfig.displaySimplifiedSearchLink
+        value: $(fssConfig-displaySimplifiedSearchLink)
+      - name: essConfig.apiUrl
+        value: $(essConfig-apiUrl)
+      - name: essConfig.apiScope
+        value: $(essConfig-apiScope)
+      - name: essConfig.avgSizeofENCinMB
+        value: $(essConfig-avgSizeofENCinMB)
+      - name: essConfig.defaultEstimatedSizeinMB
+        value: $(essConfig-defaultEstimatedSizeinMB)
+      - name: essConfig.MaxEncLimit
+        value: $(essConfig-MaxEncLimit)
+      - name: essConfig.MaxEncSelectionLimit
+        value: $(essConfig-MaxEncSelectionLimit)
+      - name: autoTestConfig.url
+        value: $(autoTestConfig-url)
+      - name: autoTestConfig.user
+        value: $(autoTestConfig-user)
+      - name: autoTestConfig.password
+        value: $(autoTestConfig-password)
+      - name: autoTestConfig.userFullName
+        value: $(autoTestConfig-userFullName)
+      - name: autoTestConfig.apiurl
+        value: $(autoTestConfig-apiurl)
+      - name: autoTestConfig.encSizeConfig
+        value: $(autoTestConfig-encSizeConfig)
+      - name: "ServiceDnsUrl"
+        value: $(service-dns-url)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
@@ -310,10 +403,10 @@ stages:
     
       - job: FunctionalTests
         dependsOn: QAdeploy
-        pool: $(WindowPool)
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
         displayName: "Functional Tests"
-        variables: 
-         autoTestConfig.url: $[ dependencies.QAdeploy.outputs['QAdeploy.Deployment.website_url']  ]
         workspace:
          clean: all
         steps:
@@ -351,7 +444,9 @@ stages:
 
       - job: E2ETests
         dependsOn: FunctionalTests
-        pool: $(WindowPool)
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
         displayName: "End-To-End Tests"
         steps:
            - checkout: self
@@ -388,7 +483,9 @@ stages:
 
       - job: AccessibilityTests
         dependsOn: E2ETests
-        pool: $(WindowPool)
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
         displayName: "Acccessibility Tests"
         workspace:
          clean: all
@@ -427,6 +524,8 @@ stages:
 
   - stage: LiveDeploy
     displayName: "Livedeploy (inc terraform, website deploy)"
+    variables:          
+          - group: "File-Share-Service-UI-Live-Deploy-Variables"
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: LiveDeploy
@@ -435,9 +534,23 @@ stages:
         container: ${{variables.Container}}
         workspace:
           clean: all
-        variables:
+        variables: 
           - group: "File share service terraform Live"
           - group: "File-Share-Service-UI-Live-Deploy-Variables"
+          - name: "b2cConfig.tenantName"
+            value: $(b2cConfig-tenantName)
+          - name: "b2cConfig.clientId"
+            value: $(b2cConfig-clientId)
+          - name: "fssConfig.apiUrl"
+            value: $(fssConfig-apiUrl)
+          - name: "fssConfig.apiScope"
+            value: $(fssConfig-apiScope)
+          - name: "fssConfig.stateManagementApiUrl"
+            value: $(fssConfig-stateManagementApiUrl)
+          - name: "essConfig.apiUrl"
+            value: $(essConfig-apiUrl)
+          - name: "essConfig.apiScope"
+            value: $(essConfig-apiScope)
         strategy:
           runOnce:
             deploy:
