@@ -44,3 +44,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+/.vs
+/.vs/slnx.sqlite
+/.vs/file-share-service-ui/v17/.wsuo

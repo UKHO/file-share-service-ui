@@ -1,5 +1,6 @@
 parameters:
   - name: ContinueEvenIfResourcesAreGettingDestroyed
+    displayName: "Continue even if resources are getting destroyed"
     type: boolean
     default: false
   - name: AzureSubscription
