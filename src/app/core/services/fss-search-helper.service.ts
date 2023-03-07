@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Field, FssSearchRow, Operator } from '../models/fss-search-types';
 
 @Injectable({
@@ -58,14 +58,14 @@ export class FssSearchHelperService {
 
   setValueFormControl(fieldDataType: string, changedFieldRow: FssSearchRow) {
     if (fieldDataType === 'number') {
-      changedFieldRow!.valueFormControl = new UntypedFormControl('', [Validators.required, Validators.pattern(/^\d+$/)]);
+      changedFieldRow!.valueFormControl = new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]);
     }
     else if (fieldDataType === 'date') {
-      changedFieldRow!.valueFormControl = new UntypedFormControl(null, Validators.required);
-      changedFieldRow!.valueFormControlTime = new UntypedFormControl(null, Validators.required);
+      changedFieldRow!.valueFormControl = new FormControl(null, Validators.required);
+      changedFieldRow!.valueFormControlTime = new FormControl(null, Validators.required);
     }
     else {
-      changedFieldRow!.valueFormControl = new UntypedFormControl()
+      changedFieldRow!.valueFormControl = new FormControl()
     }
     return changedFieldRow
   }

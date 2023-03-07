@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 export interface JoinOperator {
@@ -33,11 +33,11 @@ export class FssSearchRow {
   valueType :"time" | "text" | "date" | "email" | "password" | "tel" | "url";
   isValueHidden :boolean =false;
   rowId:number = 0;
-  fieldFormControl: UntypedFormControl;
+  fieldFormControl: FormControl;
   filterFn: (filterTerm: string) => string[] | Observable<string[]>;
   time: string = "";
-  valueFormControl: UntypedFormControl;
-  valueFormControlTime: UntypedFormControl;
+  valueFormControl: FormControl;
+  valueFormControlTime: FormControl;
   fieldValue: string = "";
 }
 
