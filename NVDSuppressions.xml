@@ -143,4 +143,193 @@
    <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
    <vulnerabilityName>1090532</vulnerabilityName>
 </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: @sideway/formula:3.0.0  Rhz
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/%40sideway%2Fformula@.*$</packageUrl>
+    <vulnerabilityName>1091026</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: glob-parent:3.1.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/glob\-parent@.*$</packageUrl>
+    <vulnerabilityName>CVE-2020-28469</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: glob-parent:3.1.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/glob\-parent@.*$</packageUrl>
+    <vulnerabilityName>1091181</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: json5:2.2.1
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/json5@.*$</packageUrl>
+    <vulnerabilityName>1091148</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091186</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091248</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091251</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091187</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091247</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091250</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: minimatch:3.0.4
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
+    <vulnerabilityName>1091174</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-24771</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-24772</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1088747</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1088748</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-0122</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-24773</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1088746</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1090460</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1088227</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1088229</vulnerabilityName>
+  </suppress>
 </suppressions>
