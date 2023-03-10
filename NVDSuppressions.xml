@@ -332,4 +332,13 @@
     <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
     <vulnerabilityName>1088229</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: json5:1.0.1
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/json5@.*$</packageUrl>
+    <vulnerabilityName>1091147</vulnerabilityName>
+  </suppress>
 </suppressions>
