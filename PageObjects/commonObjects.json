@@ -6,7 +6,7 @@
         "loginPopupSignInPasswordSelector" : "#password",
         "loginPopupSignInButtonSelector" : "#next",
         "loginSignInLinkSelector" : "#signInButton",
-        "loginAccountSelector" : "//button[@class='ng-tns-c89-1']",
+        "loginAccountSelector" : "//div//ukho-button//button",
         "loginAccountLinkSelector" : "#profile button"
     }
 }
