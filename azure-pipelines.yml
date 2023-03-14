@@ -24,6 +24,8 @@ variables:
   - name: coverityPool
     value: NautilusBuild
   - group: Covscan-vars
+  - name: SdkVersion
+    value: "6.0.x"
 
 resources:
   repositories:
@@ -123,6 +125,13 @@ stages:
               testResultsFiles: 'junit.xml'
               testRunTitle: Unit Test Results
             displayName: 'Publish Unit Test Results'
+
+          - task: UseDotNet@2
+            displayName: 'Use .NET Core $(SdkVersion) sdk'
+            inputs:
+              packageType: sdk
+              version: $(SdkVersion)
+              workingDirectory: '$(Build.SourcesDirectory)/dotnet'
 
           - task: PublishCodeCoverageResults@1
             inputs:
