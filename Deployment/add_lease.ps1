@@ -13,7 +13,7 @@ try{
     $headers = @{ Authorization = $accessToken };
     $rawRequest = @{ daysValid = $daysValid; definitionId = $definitionId; ownerId = $ownerId; protectPipeline = $false; runId = $buildId };
     $request = ConvertTo-Json @($rawRequest);
-    $uri = "$collectionUri$teamProject/__apis/build/retention/leases?api-version=7.0";
+    $uri = "$collectionUri$teamProject/_apis/build/retention/leases?api-version=7.0";
 
     Write-Host $headers
     Write-Host $request
