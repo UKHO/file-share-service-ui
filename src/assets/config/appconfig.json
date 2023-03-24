@@ -55,6 +55,7 @@
     "apiUrl": "",
     "apiScope": "",
     "avgSizeofENCinMB": "0.3",
-    "defaultEstimatedSizeinMB": "0.5"
+    "defaultEstimatedSizeinMB": "0.5",
+    "aioExcludeEncs" : ["GB800001","FR800001"]
   }
 }

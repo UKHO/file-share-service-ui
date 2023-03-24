@@ -43,6 +43,11 @@ export class EssAddSingleEncsComponent implements OnInit {
       return;
     }
 
+    if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc)){
+      this.triggerInfoErrorMessage(true,'info', 'AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen');
+      return;
+    }
+
     this.triggerInfoErrorMessage(false,'info', '');
     this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
     this.essUploadFileService.infoMessage = false;
@@ -61,6 +66,11 @@ export class EssAddSingleEncsComponent implements OnInit {
 
     if(!isValidEnc){
       this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
+      return;
+    }
+
+    if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc)){
+      this.triggerInfoErrorMessage(true,'info', 'AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen');
       return;
     }
 

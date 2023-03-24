@@ -17,6 +17,8 @@ export class EssUploadFileService {
   private avgSizeofENC: number;
   private estimatedTotalSize: number;
   private defaultEstimatedSizeinMB:number;
+  private configAioEncList : string[];
+  public aioEncFound : boolean = false;
 
   constructor() {
     this.selectedEncs = [];
@@ -24,7 +26,8 @@ export class EssUploadFileService {
     this.avgSizeofENC = Number.parseFloat(AppConfigService.settings["essConfig"].avgSizeofENCinMB);
     this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
     this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
- 
+    this.configAioEncList = AppConfigService.settings["essConfig"].aioExcludeEncs;
+
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -41,6 +44,10 @@ export class EssUploadFileService {
   validateENCFormat(encName: string) {
     const pattern = /^[a-zA-Z0-9]{2}[1-68][a-zA-Z0-9]{5}$/;
     return encName.match(pattern);
+  }
+
+  excludeAioEnc(encName: string){
+    return !this.configAioEncList.includes(encName);
   }
 
   extractEncsFromFile(encFileType: string, processedData: string[]) {
@@ -61,8 +68,17 @@ export class EssUploadFileService {
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .map((enc) => enc.toUpperCase())// applies Upper Case to ENC
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
-      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit 
-     
+
+
+       let validEncsExAio = this.validEncs
+      .filter((enc) => this.excludeAioEnc(enc)); //exclude AIO list
+
+      if(validEncsExAio.length < this.validEncs.length){
+        this.aioEncFound = true;
+      }
+
+      this.validEncs = validEncsExAio
+      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit   
   }
   
   getValidEncs(): string[] {
