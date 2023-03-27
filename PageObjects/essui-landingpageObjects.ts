@@ -167,7 +167,7 @@ class EssLandingPageAssertions {
         expect(await this.esslandingPageObjects.errorMessageForInvalidENCSelector.innerText()).toEqual(expected);
     }
 
-    async errorMessageExcludeENCsSelectorContainText(expected: string): Promise<void> {
+    async VerifyExcludedENCsMessage(expected: string): Promise<void> {
 
         expect(await this.esslandingPageObjects.errorMessageExcludeENCsSelector.innerText()).toContain(expected);
     }

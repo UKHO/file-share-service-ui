@@ -89,7 +89,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
 
@@ -99,7 +99,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
 
@@ -110,7 +110,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -121,7 +121,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData//ValidAndDuplicateENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -169,25 +169,47 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.verifyUploadedENCs(encAdded);
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/75013
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/75014
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/75071
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75013
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75014 
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071 
      test('Upload TXT file with AIO, non AIO, invalid non AIO ENCs and verify ENC uploaded', async ({ page }) => {
+          
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/AIOTestdata.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText('AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.')
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText('Some values have not been added to list.')
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.')
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('Some values have not been added to list.')
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/75012
-      test('Add single AIO ENC and verify ENC uploaded', async ({ page }) => {
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75013
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75014 
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071 
+     test('Upload CSV file with AIO, non AIO, invalid non AIO ENCs and verify ENC uploaded', async ({ page }) => {
+          
+          await esslandingPageObjects.uploadradiobtnSelectorClick();
+          await esslandingPageObjects.uploadFile(page, './Tests/TestData/AIOTestdata.csv');
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.')
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('Some values have not been added to list.')
+     })
+
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75012
+     test('Add AIO ENC - GB800001 and verify information message', async ({ page }) => {
+          
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("GB800001");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen")
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen")
      })
-    
+     
+      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75012
+      test('Add AIO ENC - FR800002 and verify information message', async ({ page}) => {
+          
+          await esslandingPageObjects.addencradiobtnSelectorClick();
+          await esslandingPageObjects.setaddSingleENCTextboxSelector("FR800002");
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen")
+     })
 })
 
 
