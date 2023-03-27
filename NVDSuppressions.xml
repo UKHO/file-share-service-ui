@@ -145,7 +145,7 @@
     <packageUrl regex="true">^pkg:npm/%40sideway%2Fformula@.*$</packageUrl>
     <vulnerabilityName>1091026</vulnerabilityName>
   </suppress>
-  <suppress>
+  <!--<suppress>
     <notes>
       <![CDATA[
    file name: http-cache-semantics:4.1.0
@@ -153,5 +153,5 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
     <vulnerabilityName>1090532</vulnerabilityName>
-  </suppress>
+  </suppress>-->
 </suppressions>
