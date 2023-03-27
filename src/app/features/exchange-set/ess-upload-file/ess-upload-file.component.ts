@@ -65,10 +65,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
 
       if (this.validEncList.length === 0) {
         if(this.essUploadFileService.aioEncFound){
-          this.triggerInfoErrorMessage(true, 'info', `No Valid ENCs found. <br/> AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.`);
+          this.triggerInfoErrorMessage(true, 'info', `No valid ENCs found. <br/> AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.`);
           return;
         }
-        this.triggerInfoErrorMessage(true, 'info', 'No Valid ENCs found.');
+        this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
         return;
       }
       else if (encList.length > this.validEncList.length) {
