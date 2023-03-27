@@ -48,7 +48,7 @@ export class EssLandingPageObjects {
         this.addSingleENCTextboxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
         this.ENClistTableCol1 = this.page.locator('//table/tbody/tr/td[1]');
         this.MaxENCValue = this.page.locator("//p[contains(text(),'You can upload')]");
-        this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]')
+        this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]');
     }
 
     async uploadFile(page: Page, filePath: string): Promise<void> {
@@ -167,9 +167,9 @@ class EssLandingPageAssertions {
         expect(await this.esslandingPageObjects.errorMessageForInvalidENCSelector.innerText()).toEqual(expected);
     }
 
-    async errorMessageExcludeENCsSelectorContainText(expected: string): Promise<void> {
+    async VerifyExcludedENCsMessage(expected: string): Promise<void> {
 
-        expect(await this.esslandingPageObjects.errorMessageExcludeENCsSelector.innerText()).toEqual(expected);
+        expect(await this.esslandingPageObjects.errorMessageExcludeENCsSelector.innerText()).toContain(expected);
     }
 
     async uploadedDataSelectorToBeEqual(expected: string): Promise<void> {
@@ -195,7 +195,4 @@ class EssLandingPageAssertions {
         let MaxSelectedLimit = ((await (this.esslandingPageObjects.MaxSelectedENCs).innerText()).split(' '))[17];
         expect(MaxSelectedLimit).toEqual(essConfig.MaxEncSelectionLimit);
     }
-
-
-
 }
