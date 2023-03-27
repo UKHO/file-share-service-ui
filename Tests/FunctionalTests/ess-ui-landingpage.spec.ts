@@ -50,7 +50,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13809
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14102
-     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807          (Sprint 3)
+     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807          
      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
 
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', '3A6LTP10', 'B28LTP10', '221A1B2C']
