@@ -62,7 +62,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
       encList = this.essUploadFileService.extractEncsFromFile(this.encFile.type, encList);
       this.essUploadFileService.setValidENCs(encList);
       this.validEncList = this.essUploadFileService.getValidEncs();
-
       if (this.validEncList.length === 0) {
         if(this.essUploadFileService.aioEncFound){
           this.triggerInfoErrorMessage(true, 'info', `No valid ENCs found. <br/> AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.`);
@@ -73,9 +72,11 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
       }
       else if (encList.length > this.validEncList.length) {
         if(this.essUploadFileService.aioEncFound) {
+          this.essUploadFileService.infoMessage = true;
           this.triggerInfoErrorMessage(true, 'info', 'AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.<br/> Some values have not been added to list.');
         }
         else {
+          this.essUploadFileService.infoMessage = true;
           this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
         }
       }
