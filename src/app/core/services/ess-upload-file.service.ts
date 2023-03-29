@@ -18,7 +18,7 @@ export class EssUploadFileService {
   private estimatedTotalSize: number;
   private defaultEstimatedSizeinMB:number;
   private configAioEncList : string[];
-  public aioEncFound : boolean = false;
+  public aioEncFound : boolean;
 
   constructor() {
     this.selectedEncs = [];
@@ -64,6 +64,7 @@ export class EssUploadFileService {
   }
 
   setValidENCs(encList: string[]): void {
+    this.aioEncFound = false;
     this.validEncs = encList
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .map((enc) => enc.toUpperCase())// applies Upper Case to ENC
