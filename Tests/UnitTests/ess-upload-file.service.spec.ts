@@ -59,7 +59,8 @@ describe('EssUploadFileService', () => {
         MaxEncLimit: 10,
         MaxEncSelectionLimit: 5,
         avgSizeofENCinMB:0.3,
-        defaultEstimatedSizeinMB:0.5
+        defaultEstimatedSizeinMB:0.5,
+        aioExcludeEncs :["GB800001","FR800001"]
       },
     };
     TestBed.configureTestingModule({});
@@ -243,6 +244,14 @@ describe('EssUploadFileService', () => {
     expect(service.getValidEncs().length).toEqual(6);
   });
 
+  it('should return true for valid encName', () => { 
+    const validEncName = 'AU220130';
+    const result = service.excludeAioEnc(validEncName); 
+    expect(result).toBe(true);  });
+  it('should return false for invalid AIO encName', () => { 
+    const invalidEncName = 'GB800001';
+    const result = service.excludeAioEnc(invalidEncName); 
+    expect(result).toBe(false);  });
   it.each`
   encCount                       | expectedResult
   ${0}                           |  ${'0.5MB'}
