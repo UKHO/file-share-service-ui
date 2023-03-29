@@ -5,12 +5,13 @@ import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
+import { essConfig } from '../../src/assets/config/appconfig.json';
 
 test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      let esslandingPageObjects: EssLandingPageObjects;
      let encSelectionPageObjects: EncSelectionPageObjects;
-
+     
      test.beforeEach(async ({ page }) => {
 
           esslandingPageObjects = new EssLandingPageObjects(page);
@@ -20,6 +21,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await AcceptCookies(page);
           await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
+
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
@@ -28,7 +30,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
           await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload a list in a file");
-          await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
+          await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENC");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
@@ -194,23 +196,17 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75012
-     test('Add AIO ENC - GB800001 and verify information message', async ({ page }) => {
-          
-          await esslandingPageObjects.addencradiobtnSelectorClick();
-          await esslandingPageObjects.setaddSingleENCTextboxSelector("GB800001");
-          await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen")
+     test('Add AIO ENC and verify information message', async ({ page }) => {
+          let AIOENClist = essConfig.aioExcludeEncs
+          for(let i=0; i<AIOENClist.length; i++)
+          {
+               await esslandingPageObjects.addencradiobtnSelectorClick();
+               await esslandingPageObjects.setaddSingleENCTextboxSelector(AIOENClist[i]);
+               await esslandingPageObjects.proceedButtonSelectorClick();
+               await esslandingPageObjects.expect.VerifyExcludedENCsMessage("AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen")
+          }
      })
      
-      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75012
-      test('Add AIO ENC - FR800001 and verify information message', async ({ page}) => {
-          
-          await esslandingPageObjects.addencradiobtnSelectorClick();
-          await esslandingPageObjects.setaddSingleENCTextboxSelector("FR800001");
-          await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen")
-     })
-
      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071
       test('Upload TXT file with all invalid non AIO ENCs and verify information message', async ({ page}) => {
           

@@ -5,6 +5,7 @@
         "user":"",
         "password":"",
         "userFullName" : "",
-        "apiurl": ""
+        "apiurl": "",
+        "encSizeConfig":""
     }
 }

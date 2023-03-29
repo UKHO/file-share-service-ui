@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { EncSelectionPageObjects, SelectedENCs } from "./essui-encselectionpageObjects";
-import { essConfig } from "../src/assets/config/appconfig.json"
+import { autoTestConfig } from "../appSetting.json"
 const fs = require('fs');
 let filefound;
 let filedeleted;
@@ -83,7 +83,7 @@ class EsDownloadPageAssertions {
 
         let ENCsIncluded = parseInt(((await this.esDownloadPageObjects.includedENCsCountSelector.innerHTML()).split(' '))[0]);
 
-        expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + ((ENCsIncluded * Number.parseFloat(essConfig.avgSizeofENCinMB))+Number.parseFloat( essConfig.defaultEstimatedSizeinMB)).toFixed(1) + 'MB');
+        expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + ((ENCsIncluded *(0.3))+Number.parseFloat( autoTestConfig.encSizeConfig)).toFixed(1) + 'MB');
 
     }
 
