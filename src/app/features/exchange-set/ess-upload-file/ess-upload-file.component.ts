@@ -64,7 +64,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
       this.validEncList = this.essUploadFileService.getValidEncs();
       if (this.validEncList.length === 0) {
         if(this.essUploadFileService.aioEncFound){
-          this.triggerInfoErrorMessage(true, 'info', `No valid ENCs found. <br/> AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.`);
+          this.triggerInfoErrorMessage(true, 'info', `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
           return;
         }
         this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
@@ -73,7 +73,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
       else if (encList.length > this.validEncList.length) {
         if(this.essUploadFileService.aioEncFound) {
           this.essUploadFileService.infoMessage = true;
-          this.triggerInfoErrorMessage(true, 'info', 'AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.<br/> Some values have not been added to list.');
+          this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
         }
         else {
           this.essUploadFileService.infoMessage = true;

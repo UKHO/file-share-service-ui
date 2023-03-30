@@ -179,7 +179,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/AIOTestdata.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.')
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.')
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage('Some values have not been added to list.')
      })
 
@@ -191,19 +191,19 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/AIOTestdata.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.')
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.')
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage('Some values have not been added to list.')
      })
 
      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75012
-     test('Add AIO ENC and verify information message', async ({ page }) => {
+     test.only('Add AIO ENC and verify information message', async ({ page }) => {
           let AIOENClist = essConfig.aioExcludeEncs
           for(let i=0; i<AIOENClist.length; i++)
           {
                await esslandingPageObjects.addencradiobtnSelectorClick();
                await esslandingPageObjects.setaddSingleENCTextboxSelector(AIOENClist[i]);
                await esslandingPageObjects.proceedButtonSelectorClick();
-               await esslandingPageObjects.expect.VerifyExcludedENCsMessage("AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen")
+               await esslandingPageObjects.expect.VerifyExcludedENCsMessage("AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.")
           }
      })
      

@@ -274,7 +274,7 @@ describe('EssUploadFileComponent', () => {
       const errObj = {
         showInfoErrorMessage: true,
         messageType: 'info',
-        messageDesc: `No valid ENCs found. <br/> AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.`
+        messageDesc: `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
@@ -370,7 +370,7 @@ describe('EssUploadFileComponent', () => {
           const errObJ = {
             showInfoErrorMessage: expectedResult,
             messageType: 'info',
-            messageDesc: 'AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen.<br/> Some values have not been added to list.'
+            messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.'
           };
           expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
           expect(essUploadFileService.infoMessage).toBe(expectedResult);

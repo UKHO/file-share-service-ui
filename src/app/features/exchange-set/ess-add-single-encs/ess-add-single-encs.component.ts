@@ -44,7 +44,7 @@ export class EssAddSingleEncsComponent implements OnInit {
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc)){
-      this.triggerInfoErrorMessage(true,'info', 'AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen');
+      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
 
@@ -70,7 +70,7 @@ export class EssAddSingleEncsComponent implements OnInit {
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc)){
-      this.triggerInfoErrorMessage(true,'info', 'AIO is not available from this screen - the AIO CD can be downloaded from the main FSS screen');
+      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
 
