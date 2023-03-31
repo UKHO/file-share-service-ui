@@ -171,30 +171,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.verifyUploadedENCs(encAdded);
      })
 
-     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75013
-     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75014 
-     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071 
-     test('Upload TXT file with AIO, non AIO, invalid non AIO ENCs and verify ENC uploaded', async ({ page }) => {
-          
-          await esslandingPageObjects.uploadradiobtnSelectorClick();
-          await esslandingPageObjects.uploadFile(page, './Tests/TestData/AIOTestdata.txt');
-          await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.')
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('Some values have not been added to list.')
-     })
-
-     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75013
-     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75014 
-     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071 
-     test('Upload CSV file with AIO, non AIO, invalid non AIO ENCs and verify ENC uploaded', async ({ page }) => {
-          
-          await esslandingPageObjects.uploadradiobtnSelectorClick();
-          await esslandingPageObjects.uploadFile(page, './Tests/TestData/AIOTestdata.csv');
-          await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.')
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('Some values have not been added to list.')
-     })
-
      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75012
      test.only('Add AIO ENC and verify information message', async ({ page }) => {
           let AIOENClist = essConfig.aioExcludeEncs
