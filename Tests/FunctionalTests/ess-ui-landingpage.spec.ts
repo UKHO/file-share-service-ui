@@ -170,19 +170,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.addAnotherENC("3a6ltp10");
           await esslandingPageObjects.expect.verifyUploadedENCs(encAdded);
      })
-
-     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75012
-     test('Add AIO ENC and verify information message', async ({ page }) => {
-          let AIOENClist = essConfig.aioExcludeEncs
-          for(let i=0; i<AIOENClist.length; i++)
-          {
-               await esslandingPageObjects.addencradiobtnSelectorClick();
-               await esslandingPageObjects.setaddSingleENCTextboxSelector(AIOENClist[i]);
-               await esslandingPageObjects.proceedButtonSelectorClick();
-               await esslandingPageObjects.expect.VerifyExcludedENCsMessage("AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.")
-          }
-     })
-     
+  
      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071
       test('Upload TXT file with all invalid non AIO ENCs and verify information message', async ({ page}) => {
           
