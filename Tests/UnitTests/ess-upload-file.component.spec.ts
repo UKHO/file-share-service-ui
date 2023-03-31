@@ -29,6 +29,11 @@ describe('EssUploadFileComponent', () => {
     return data;
   };
 
+  const getAioEncData_csv = () => {
+    let data = 'GB800001';
+    return data;
+  };
+
   const getEncData = () => {
     let data = '';
     data += ':DATE 20220630 03:11 \n';
@@ -56,6 +61,15 @@ describe('EssUploadFileComponent', () => {
     data += ':ECS \n';
     return data;
   };
+  const getInvalidAndAioEncData = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data += 'GB800001202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
+  };
   const router = {
     navigate: jest.fn()
   };
@@ -78,15 +92,36 @@ describe('EssUploadFileComponent', () => {
     data += ':ECS \n';
     return data;
   };
+  
+  const getNEncDataWithAio = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data += 'AU210130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU20130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU310130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU410130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU510130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU610130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU710130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU810130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU90130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU2110130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB61C,0,5,GB \n';
+    data += 'GB800001202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB671C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule],
-      declarations: [EssUploadFileComponent,EssInfoErrorMessageComponent],
+      declarations: [EssUploadFileComponent, EssInfoErrorMessageComponent],
       providers: [
         {
-          provide : Router,
-          useValue : router
-          },
+          provide: Router,
+          useValue: router
+        },
         EssUploadFileService,
         EssInfoErrorMessageService
       ]
@@ -98,7 +133,8 @@ describe('EssUploadFileComponent', () => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
-        MaxEncSelectionLimit : 5
+        MaxEncSelectionLimit: 5,
+        aioExcludeEncs: ["GB800001", "FR800001"]
       }
     };
 
@@ -126,11 +162,11 @@ describe('EssUploadFileComponent', () => {
     `('showMessage should set correct mesages : $messageType , $messageDesc',
     ({ messageType, messageDesc }: { messageType: 'info' | 'warning' | 'success' | 'error'; messageDesc: string }) => {
       const errObj = {
-        showInfoErrorMessage : true,
+        showInfoErrorMessage: true,
         messageType,
         messageDesc
       };
-      component.triggerInfoErrorMessage(errObj.showInfoErrorMessage,errObj.messageType,errObj.messageDesc);
+      component.triggerInfoErrorMessage(errObj.showInfoErrorMessage, errObj.messageType, errObj.messageDesc);
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     }
   );
@@ -153,7 +189,7 @@ describe('EssUploadFileComponent', () => {
     fileType           |fileName           | encDataFunc          | expectedResult
     ${'text/csv'}                     | ${'test.csv'}      | ${getEncData_csv()}  |  ${4}
     ${'application/vnd.ms-excel'}     | ${'test.csv'}      | ${getEncData_csv()}  |  ${4}
-    ${'text/plain'}                   | ${'test.txt'}      | ${getEncData()}      |  ${1}
+   ${'text/plain'}                   | ${'test.txt'}      | ${getEncData()}      |  ${1}
     `('processEncFile should set encList',
     ({ fileType, fileName, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([encDataFunc], fileName);
@@ -163,7 +199,7 @@ describe('EssUploadFileComponent', () => {
       component.processEncFile(encDataFunc);
       expect(component.validEncList.length).toBe(expectedResult);
     });
-    it.each`
+  it.each`
     fileType                          |fileName         | getEncData                     | encDataFunc                 | expectedResult
     ${'text/csv'}                     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
     ${'application/vnd.ms-excel'}     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
@@ -176,15 +212,16 @@ describe('EssUploadFileComponent', () => {
       component.processEncFile(encDataFunc);
       expect(component.validEncList.length).toEqual(expectedResult);
       const errObj = {
-        showInfoErrorMessage : true,
-        messageType : 'info',
-        messageDesc : 'Some values have not been added to list.'
+        showInfoErrorMessage: true,
+        messageType: 'info',
+        messageDesc: 'Some values have not been added to list.'
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
+
   it.each`
      encDataFunc
-	 ${getEncData_csv()}  
+               ${getEncData_csv()}  
      ${getEncData()}      
     `('processEncFile should set raise "Please upload valid ENC file." error',
     ({ encDataFunc }: { encDataFunc: string }) => {
@@ -194,18 +231,18 @@ describe('EssUploadFileComponent', () => {
       component.processEncFile(encDataFunc);
       expect(component.validEncList).toBeUndefined();
       const errObj = {
-        showInfoErrorMessage : true,
-        messageType : 'error',
-        messageDesc : 'Please upload valid ENC file.'
+        showInfoErrorMessage: true,
+        messageType: 'error',
+        messageDesc: 'Please upload valid ENC file.'
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
-  it.each`
-    fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
+    it.each`
+    fileType           |fileName         | getEncData              | encDataFunc            | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getNoEncData_csv()}  |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getNoEncData()}      |  ${1}
-    `('processEncFile should set raise "No ENCs found." info',
+    `('processEncFile should set raise "No valid ENCs found. info',
     ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([getEncData], fileName);
       Object.defineProperty(file, 'type', { value: fileType });
@@ -213,9 +250,31 @@ describe('EssUploadFileComponent', () => {
       component.processEncFile(encDataFunc);
       expect(component.validEncList).toEqual([]);
       const errObj = {
-        showInfoErrorMessage : true,
-        messageType : 'info',
-        messageDesc : 'No ENCs found.'
+        showInfoErrorMessage: true,
+        messageType: 'info',
+        messageDesc: 'No valid ENCs found.'
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+    });
+
+
+
+    it.each`
+    fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
+    ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getAioEncData_csv()}      |  ${3}
+    ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getInvalidAndAioEncData()}|  ${1}
+    `('processEncFile should set raise AIO is not available. info',
+    ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
+      const file = new File([getEncData], fileName);
+      Object.defineProperty(file, 'type', { value: fileType });
+      component.encFile = file;
+      console.log(encDataFunc);
+      component.processEncFile(encDataFunc);
+      expect(component.validEncList).toEqual([]);
+      const errObj = {
+        showInfoErrorMessage: true,
+        messageType: 'info',
+        messageDesc: `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
@@ -230,17 +289,17 @@ describe('EssUploadFileComponent', () => {
       }
     };
     const errObj = {
-      showInfoErrorMessage : false,
-      messageType : 'info',
-      messageDesc : ''
+      showInfoErrorMessage: false,
+      messageType: 'info',
+      messageDesc: ''
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     component.uploadListener(event);
     expect(component.validEncList.length).toEqual(0);
     const errObJ = {
-      showInfoErrorMessage : true,
-      messageType : 'error',
-      messageDesc : 'Please select a .csv or .txt file'
+      showInfoErrorMessage: true,
+      messageType: 'error',
+      messageDesc: 'Please select a .csv or .txt file'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
   });
@@ -255,60 +314,84 @@ describe('EssUploadFileComponent', () => {
       }
     };
     const errObj = {
-      showInfoErrorMessage : false,
-      messageType : 'info',
-      messageDesc : ''
+      showInfoErrorMessage: false,
+      messageType: 'info',
+      messageDesc: ''
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     component.uploadListener(event);
     expect(component.validEncList.length).toEqual(0);
     const errObJ = {
-      showInfoErrorMessage : true,
-      messageType : 'error',
-      messageDesc : 'Please select a .csv or .txt file'
+      showInfoErrorMessage: true,
+      messageType: 'error',
+      messageDesc: 'Please select a .csv or .txt file'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
   });
 
-  it.each`
-  encDataFunc       | expectedResult
-  ${getNEncData}    | ${true}
-  ${getEncData}     | ${false}
-    `('infomessage is true when enc list count exceeds MaxEncLimit',
-    ({ encDataFunc, expectedResult }: { encDataFunc: () => string,  expectedResult: boolean }) => {
-      const fileContent = encDataFunc();
-      const file = new File([fileContent], 'test.txt');
-      Object.defineProperty(file, 'type', { value: 'text/plain' });
-      component.encFile = file;
-      component.processEncFile(fileContent);
-      const errObJ = {
-        showInfoErrorMessage : false,
-        messageType : 'info',
-        messageDesc : ''
-      };
-      if(expectedResult){
-        errObJ.showInfoErrorMessage = expectedResult;
-        errObJ.messageType = 'info';
-        errObJ.messageDesc = 'Some values have not been added to list.';
-      }
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-      expect(essUploadFileService.infoMessage).toBe(expectedResult);
-    });
+    it.each`
+    encDataFunc       | expectedResult
+    ${getNEncData}    | ${true}
+    ${getEncData}     | ${false}
+      `('infomessage is true when enc list count exceeds MaxEncLimit',
+      ({ encDataFunc, expectedResult }: { encDataFunc: () => string,  expectedResult: boolean }) => {
+        const fileContent = encDataFunc();
+        const file = new File([fileContent], 'test.txt');
+        Object.defineProperty(file, 'type', { value: 'text/plain' });
+        component.encFile = file;
+        component.processEncFile(fileContent);
+        const errObJ = {
+          showInfoErrorMessage : false,
+          messageType : 'info',
+          messageDesc : ''
+        };
+        if(expectedResult){
+          errObJ.showInfoErrorMessage = expectedResult;
+          errObJ.messageType = 'info';
+          errObJ.messageDesc = 'Some values have not been added to list.';
+        }
+        expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+        expect(essUploadFileService.infoMessage).toBe(expectedResult);
+      });
 
-    test('should show the explaination text in ess upload file component with max enc limit from config', () => {
-      const fixture = TestBed.createComponent(EssUploadFileComponent);
-      fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector('p').textContent).toBe('You can upload a permit file or csv file with up to 10 ENCs listed. If your list is longer, please split them and load as separate files. ');
-    });
+    it.each`
+    encDataFunc                   | expectedResult
+    ${getNEncDataWithAio}         | ${true}
+    ${getEncData}                 | ${false}
+      `('infomessage should show message AIO is not available when AIO Enc is found in the ENC list',
+      ({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+        const fileContent = encDataFunc();
+        const file = new File([fileContent], 'test.txt');
+        Object.defineProperty(file, 'type', { value: 'text/plain' });
+        component.encFile = file;
+        component.processEncFile(fileContent);
+        var aioEns=essUploadFileService.aioEncFound;
+        if(aioEns){
+          const errObJ = {
+            showInfoErrorMessage: expectedResult,
+            messageType: 'info',
+            messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.'
+          };
+          expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+          expect(essUploadFileService.infoMessage).toBe(expectedResult);
+        } 
+        
+      });
 
-    test('should show the explaination text  in upload file component with max enc selection limit from config', () => {
-      const fixture = TestBed.createComponent(EssUploadFileComponent);
-      fixture.detectChanges();
-      const essLandingPageText = fixture.debugElement.queryAll(By.css('p'));
-      for (var i = 0; i < essLandingPageText.length; i++) {
-        if(i == essLandingPageText.length-1)
+  test('should show the explaination text in ess upload file component with max enc limit from config', () => {
+    const fixture = TestBed.createComponent(EssUploadFileComponent);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('p').textContent).toBe('You can upload a permit file or csv file with up to 10 ENCs listed. If your list is longer, please split them and load as separate files. ');
+  });
+
+  test('should show the explaination text  in upload file component with max enc selection limit from config', () => {
+    const fixture = TestBed.createComponent(EssUploadFileComponent);
+    fixture.detectChanges();
+    const essLandingPageText = fixture.debugElement.queryAll(By.css('p'));
+    for (var i = 0; i < essLandingPageText.length; i++) {
+      if (i == essLandingPageText.length - 1)
         expect(essLandingPageText[i].nativeElement.innerHTML).toBe('Once you have uploaded a list, you can then make an exchange set containing a maximum of 5 individual ENCs. ');
-      }
-    });
-  
+    }
+  });
+
 });

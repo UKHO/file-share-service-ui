@@ -5,12 +5,13 @@ import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
+import { essConfig } from '../../src/assets/config/appconfig.json';
 
 test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      let esslandingPageObjects: EssLandingPageObjects;
      let encSelectionPageObjects: EncSelectionPageObjects;
-
+     
      test.beforeEach(async ({ page }) => {
 
           esslandingPageObjects = new EssLandingPageObjects(page);
@@ -20,6 +21,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await AcceptCookies(page);
           await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
+
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
@@ -28,7 +30,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
           await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
           await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload a list in a file");
-          await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENCs");
+          await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENC");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
@@ -50,7 +52,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13809
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14102
-     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807          (Sprint 3)
+     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807          
      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
 
           let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', '3A6LTP10', 'B28LTP10', '221A1B2C']
@@ -63,7 +65,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13815
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14103 
-     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807            (Sprint 3)
+     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807            
      test('Verify all the uploaded ENCs from .txt file, displayed on the screen', async ({ page }) => {
 
           let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C', '908ABCDE', 'B28LTP10']
@@ -89,7 +91,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
 
@@ -99,7 +101,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
 
@@ -110,7 +112,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -121,7 +123,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData//ValidAndDuplicateENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.errorMessageExcludeENCsSelectorContainText("Some values have not been added to list.");
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -154,7 +156,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt file');
      })
 
-     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808    (Sprint 3)
+     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808  
      test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
 
           let encAdded = ["KK123456","AA123456","AB123456","BC123456","KK12H456","3A6LTP10"]
@@ -168,8 +170,25 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.addAnotherENC("3a6ltp10");
           await esslandingPageObjects.expect.verifyUploadedENCs(encAdded);
      })
+  
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071
+      test('Upload TXT file with all invalid non AIO ENCs and verify information message', async ({ page}) => {
+          
+          await esslandingPageObjects.uploadradiobtnSelectorClick();
+          await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.txt');
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found.')
+     })
 
-});
+     // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071
+      test('Upload CSV file with all invalid non AIO ENCs and verify information message', async ({ page}) => {
+          
+          await esslandingPageObjects.uploadradiobtnSelectorClick();
+          await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.csv');
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found.')
+     })
+})
 
 
 

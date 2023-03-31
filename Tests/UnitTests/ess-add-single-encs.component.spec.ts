@@ -37,7 +37,8 @@ describe('EssAddSingleEncsComponent', () => {
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
-        MaxEncLimit: 10
+        MaxEncLimit: 10,
+        aioExcludeEncs :["GB800001","FR800001"]
       }
     };
 
@@ -107,6 +108,17 @@ describe('EssAddSingleEncsComponent', () => {
       showInfoErrorMessage : true,
       messageType : 'error',
       messageDesc : 'Invalid ENC number.'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+  });
+  it('validateAndAddENC should   raise "Invalid AIO ENC number."error', () => {
+    component.txtSingleEnc = 'GB800001';
+    component.renderedFrom = 'encList';
+    component.validateAndAddENC();
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'info',
+      messageDesc : 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });

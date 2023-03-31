@@ -10,19 +10,19 @@ import { AppConfigService } from './../../../core/services/app-config.service';
   styleUrls: ['./ess-upload-file.component.scss'],
 })
 export class EssUploadFileComponent implements OnInit, AfterViewInit {
-  validEncList: string[]; 
+  validEncList: string[];
   encFile: File;
-  maxEncsLimit:number;
-  maxEncSelectionLimit:number;
-  
+  maxEncsLimit: number;
+  maxEncSelectionLimit: number;
+
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, private _elementRef?: ElementRef) {     
-        this.maxEncsLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
-        this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
-    }
+    private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, private _elementRef?: ElementRef) {
+    this.maxEncsLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
+    this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
+  }
 
   ngOnInit(): void {
-    this.triggerInfoErrorMessage(false,'info', '');
+    this.triggerInfoErrorMessage(false, 'info', '');
     this.essUploadFileService.infoMessage = false;
   }
 
@@ -33,23 +33,23 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
   uploadListener($event: any): void { // called when user selects/drags file on file-input-control
     this.validEncList = [];
     this.encFile = ($event?.srcElement?.files || $event?.dataTransfer?.files)[0];
-    this.triggerInfoErrorMessage(false,'info', '');
+    this.triggerInfoErrorMessage(false, 'info', '');
     if (this.isInvalidEncFile(this.encFile)) {
-      this.triggerInfoErrorMessage(true,'error', 'Please select a .csv or .txt file');
+      this.triggerInfoErrorMessage(true, 'error', 'Please select a .csv or .txt file');
       return;
     }
   }
 
   loadFileReader() { // called on click of proceed button
-      if (this.isInvalidEncFile(this.encFile)) {
-        this.triggerInfoErrorMessage(true,'error', 'Please select a .csv or .txt file');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.processEncFile(e.target.result);
-      };
-      reader.readAsText(this.encFile);
+    if (this.isInvalidEncFile(this.encFile)) {
+      this.triggerInfoErrorMessage(true, 'error', 'Please select a .csv or .txt file');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.processEncFile(e.target.result);
+    };
+    reader.readAsText(this.encFile);
   }
 
   processEncFile(encFileData: string): void {
@@ -63,14 +63,24 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
       this.essUploadFileService.setValidENCs(encList);
       this.validEncList = this.essUploadFileService.getValidEncs();
       if (this.validEncList.length === 0) {
-        this.triggerInfoErrorMessage(true,'info', 'No ENCs found.');
+        if(this.essUploadFileService.aioEncFound){
+          this.triggerInfoErrorMessage(true, 'info', `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
+          return;
+        }
+        this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
         return;
       }
-      if (encList.length > this.validEncList.length) {
-        this.essUploadFileService.infoMessage = true;
-        this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
+      else if (encList.length > this.validEncList.length) {
+        if(this.essUploadFileService.aioEncFound) {
+          this.essUploadFileService.infoMessage = true;
+          this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
+        }
+        else {
+          this.essUploadFileService.infoMessage = true;
+          this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
+        }
       }
-      this.route.navigate(['exchangesets' , 'enc-list']);
+      this.route.navigate(['exchangesets', 'enc-list']);
     }
     else {
       this.triggerInfoErrorMessage(true, 'error', 'Please upload valid ENC file.');
@@ -93,10 +103,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
     let choosefile_input = this._elementRef?.nativeElement.querySelector('#file-upload input[type="file"]');
     let choosefile_label = this._elementRef?.nativeElement.querySelector('#file-upload label');
     choosefile_label?.setAttribute('id', 'chooseFileLabel');
-    choosefile_input?.setAttribute('aria-labelledby', 'uploadExplanationText chooseFileLabel');     
+    choosefile_input?.setAttribute('aria-labelledby', 'uploadExplanationText chooseFileLabel');
   }
 
-  isInvalidEncFile(encFile: File){
-    return encFile && encFile.type !== 'text/plain' && encFile.type !== 'text/csv' &&  encFile.type !== 'application/vnd.ms-excel';
+  isInvalidEncFile(encFile: File) {
+    return encFile && encFile.type !== 'text/plain' && encFile.type !== 'text/csv' && encFile.type !== 'application/vnd.ms-excel';
   }
 }

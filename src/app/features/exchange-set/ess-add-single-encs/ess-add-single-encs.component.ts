@@ -43,6 +43,11 @@ export class EssAddSingleEncsComponent implements OnInit {
       return;
     }
 
+    if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      return;
+    }
+
     this.triggerInfoErrorMessage(false,'info', '');
     this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
     this.essUploadFileService.infoMessage = false;
@@ -61,6 +66,11 @@ export class EssAddSingleEncsComponent implements OnInit {
 
     if(!isValidEnc){
       this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
+      return;
+    }
+
+    if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
 
