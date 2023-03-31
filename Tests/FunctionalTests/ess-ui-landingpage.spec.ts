@@ -172,7 +172,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75012
-     test.only('Add AIO ENC and verify information message', async ({ page }) => {
+     test('Add AIO ENC and verify information message', async ({ page }) => {
           let AIOENClist = essConfig.aioExcludeEncs
           for(let i=0; i<AIOENClist.length; i++)
           {
