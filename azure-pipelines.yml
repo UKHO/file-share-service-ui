@@ -188,6 +188,8 @@ stages:
         value: $(autoTestConfig-encSizeConfig)
       - name: "ServiceDnsUrl"
         value: $(service-dns-url)
+      - name: "essConfig.aioExcludeEncs"
+        value: $(essConfig-aioExcludeEncs)
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
