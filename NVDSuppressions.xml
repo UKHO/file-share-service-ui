@@ -211,4 +211,31 @@
     <vulnerabilityName>CVE-2023-28155</vulnerabilityName>
     <vulnerabilityName>1091459</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: decode-uri-component:0.2.0 - temp suppression
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/decode\-uri\-component@.*$</packageUrl>
+    <vulnerabilityName>1091569</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0 - temp suppression
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091568</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0 - temp suppression
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091567</vulnerabilityName>
+  </suppress>
 </suppressions>
