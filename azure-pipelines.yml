@@ -16,7 +16,7 @@ variables:
   - name: BuildCounter
     value: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
   - name: Container
-    value: "ukhydrographicoffice/terraform-azure-powershell:1.0.2"
+    value: "ukhydrographicoffice/terraform-azure-powershell:1.3.7"
   - name: DeploymentPool
     value: "UKHO Ubuntu 1804"
   - name: WindowPool

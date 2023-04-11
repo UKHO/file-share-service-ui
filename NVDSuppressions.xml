@@ -211,4 +211,38 @@
     <vulnerabilityName>CVE-2023-28155</vulnerabilityName>
     <vulnerabilityName>1091459</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: decode-uri-component:0.2.0
+   Temporary suppression until new design package can be implemented and Angular updated.
+   Bug to track: https://dev.azure.com/ukhydro/Abzu/_workitems/edit/76838
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/decode\-uri\-component@.*$</packageUrl>
+    <vulnerabilityName>1091569</vulnerabilityName>
+    <vulnerabilityName>1091652</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0
+   Temporary suppression until new design package can be implemented and Angular updated.
+   Bug to track: https://dev.azure.com/ukhydro/Abzu/_workitems/edit/74432
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091568</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
+   Temporary suppression until new design package can be implemented and Angular updated.
+   Bug to track: https://dev.azure.com/ukhydro/Abzu/_workitems/edit/74433
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1091567</vulnerabilityName>
+  </suppress>
 </suppressions>
