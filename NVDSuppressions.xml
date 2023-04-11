@@ -221,6 +221,7 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/decode\-uri\-component@.*$</packageUrl>
     <vulnerabilityName>1091569</vulnerabilityName>
+    <vulnerabilityName>1091652</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
