@@ -136,7 +136,7 @@ export class FssSearchResultsComponent implements OnChanges {
         this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
         setTimeout(() => {
           this.closeDownloadAllFileWindow();
-        }, 5000);
+        }, 10000);
       });
     }, error => {
       
@@ -149,7 +149,7 @@ export class FssSearchResultsComponent implements OnChanges {
             this.downloadAllFileWindow = window.open(this.baseUrl + filePath);
             setTimeout(() => {
               this.closeDownloadAllFileWindow();
-            }, 5000);
+            }, 10000);
           });
         })
     })
