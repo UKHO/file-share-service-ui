@@ -89,7 +89,6 @@ stages:
      #           Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
 
      - job: BuildTestPublish
-       dependsOn: Dependencychecker
        pool: $(DeploymentPool)
        container: ${{variables.Container}}
        workspace:
