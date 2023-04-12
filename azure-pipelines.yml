@@ -559,3 +559,11 @@ stages:
                   parameters:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-Live-P4052"
+
+      - job: PostDeploymentActions
+        dependsOn:
+        - LiveDeploy
+        pool: $(WindowPool)
+        displayName: Post Deployment Actions
+        steps:
+          - template: Deployment/templates/retain-pipeline.yml
