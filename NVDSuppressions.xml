@@ -245,4 +245,22 @@
     <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
     <vulnerabilityName>1091567</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: http-cache-semantics:4.1.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
+    <vulnerabilityName>1091807</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: request:2.88.2
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
+    <vulnerabilityName>1091725</vulnerabilityName>
+  </suppress>
 </suppressions>
