@@ -4,13 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from '../../src/app/app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-
+import { MsalService } from '@azure/msal-angular';
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let activatedRoute: ActivatedRoute;
   let router: Router;
-  let titleService: Title
+  let titleService: Title;
+  let msalService: MsalService
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -23,7 +24,7 @@ describe('AppComponent', () => {
     });
 
   it('should exist', () => {
-    component = new AppComponent(activatedRoute, router, titleService);
+    component = new AppComponent(activatedRoute, router, titleService, msalService);
     expect(component).toBeDefined();
   })
 
