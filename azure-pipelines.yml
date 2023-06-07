@@ -188,6 +188,8 @@ stages:
         value: $(autoTestConfig-encSizeConfig)
       - name: "ServiceDnsUrl"
         value: $(service-dns-url)
+      - name: essConfig.aioExcludeEncs
+        value: $(essConfig-aioExcludeEncs)
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
@@ -382,6 +384,8 @@ stages:
         value: $(autoTestConfig-encSizeConfig)
       - name: "ServiceDnsUrl"
         value: $(service-dns-url)
+      - name: essConfig.aioExcludeEncs
+        value: $(essConfig-aioExcludeEncs)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
@@ -551,6 +555,8 @@ stages:
             value: $(essConfig-apiUrl)
           - name: "essConfig.apiScope"
             value: $(essConfig-apiScope)
+          - name: essConfig.aioExcludeEncs
+            value: $(essConfig-aioExcludeEncs)
         strategy:
           runOnce:
             deploy:
