@@ -37,8 +37,7 @@ export class AppComponent implements OnInit {
 
   @HostListener('window:unload', ['$event'])
   unloadhandler() {
-    //this.msalService.logout();
-    console.log("closed");
+    this.msalService.logout();
   }
 
   ngOnInit() {
