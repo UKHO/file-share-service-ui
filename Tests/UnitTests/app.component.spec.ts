@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from '../../src/app/app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MsalService } from '@azure/msal-angular';
+import { MsalModule, MsalService } from '@azure/msal-angular';
 
 
 describe('AppComponent', () => {
@@ -16,8 +16,9 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[RouterTestingModule],
+      imports: [RouterTestingModule, MsalModule],
       declarations: [AppComponent],
+      providers: [MsalService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
     titleService = TestBed.inject(Title);
