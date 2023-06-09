@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from '../../src/app/app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MsalModule, MsalService } from '@azure/msal-angular';
+import { MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 
 describe('AppComponent', () => {
@@ -18,7 +19,12 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MsalModule],
       declarations: [AppComponent],
-      providers: [MsalService],
+      providers: [
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        MsalService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
     titleService = TestBed.inject(Title);
@@ -38,4 +44,21 @@ describe('AppComponent', () => {
     expect(atag.textContent).toContain('Skip to Main Content');
   });
 
+
+  export function MockMSALInstanceFactory() {
+    return new PublicClientApplication({
+      auth: {
+        clientId: "",
+        authority: "",
+        redirectUri: "/",
+        knownAuthorities: [],
+        postLogoutRedirectUri: "/",
+        navigateToLoginRequestUrl: false
+      },
+      cache: {
+        cacheLocation: "localStorage",
+        storeAuthStateInCookie: true
+      }
+    })
+  };
 })
