@@ -44,21 +44,21 @@ describe('AppComponent', () => {
     expect(atag.textContent).toContain('Skip to Main Content');
   });
 
-
-  export function MockMSALInstanceFactory() {
-    return new PublicClientApplication({
-      auth: {
-        clientId: "",
-        authority: "",
-        redirectUri: "/",
-        knownAuthorities: [],
-        postLogoutRedirectUri: "/",
-        navigateToLoginRequestUrl: false
-      },
-      cache: {
-        cacheLocation: "localStorage",
-        storeAuthStateInCookie: true
-      }
-    })
-  };
 })
+
+export function MockMSALInstanceFactory() {
+  return new PublicClientApplication({
+    auth: {
+      clientId: "",
+      authority: "",
+      redirectUri: "/",
+      knownAuthorities: [],
+      postLogoutRedirectUri: "/",
+      navigateToLoginRequestUrl: false
+    },
+    cache: {
+      cacheLocation: "localStorage",
+      storeAuthStateInCookie: true
+    }
+  })
+};
