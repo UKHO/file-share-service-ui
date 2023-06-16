@@ -317,4 +317,67 @@
     <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
     <vulnerabilityName>CVE-2023-28154</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1091350</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1091351</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1088746</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1090460</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1088227</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>1088229</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: webpack:5.50.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
+    <vulnerabilityName>1091367</vulnerabilityName>
+  </suppress>
 </suppressions>
