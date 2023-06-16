@@ -263,4 +263,58 @@
     <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
     <vulnerabilityName>1091725</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[v12 update
+   file name: glob-parent:3.1.0 
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/glob\-parent@.*$</packageUrl>
+    <vulnerabilityName>CVE-2020-28469</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[v12 update
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-24771</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[v12 update
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-24772</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[v12 update
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-0122</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[v12 update
+   file name: node-forge:0.10.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/node\-forge@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-24773</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[v12 update
+   file name: webpack:5.50.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
+    <vulnerabilityName>CVE-2023-28154</vulnerabilityName>
+  </suppress>
 </suppressions>
