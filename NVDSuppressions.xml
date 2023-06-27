@@ -389,4 +389,22 @@
     <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
     <vulnerabilityName>1091367</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: semver:7.3.7
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/semver@.*$</packageUrl>
+    <vulnerabilityName>CVE-2022-25883</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: semver:7.3.7
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/semver@.*$</packageUrl>
+    <vulnerabilityName>1092310</vulnerabilityName>
+  </suppress>
 </suppressions>
