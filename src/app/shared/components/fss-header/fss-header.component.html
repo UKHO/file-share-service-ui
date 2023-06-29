@@ -1,5 +1,14 @@
-  <ukho-header [title]=title 
-               [logoImgUrl]=logoImgUrl [logoAltText]=logoAltText [logoLinkUrl]=logoLinkUrl
-               [menuItems]=this.getMenuItems()
-               [authOptions]=authOptions>
-  </ukho-header>
+  <admiralty-header [headerTitle]="title"
+                  [logoAltText]="logoAltText"
+                  [logoImgUrl]="logoImgUrl"
+                  [logoLinkUrl]="logoLinkUrl">
+  <admiralty-header-menu-item menu-title="Exchange Set" [active]="essActive" (menuItemClick)="menuExchangeClick()" slot="items" [style.visibility]="(userSignedIn == false) ? 'hidden' :'visible' "></admiralty-header-menu-item>
+  <admiralty-header-menu-item menu-title="Search" [active]="srchActive" (menuItemClick)="menuSearchClick()" slot="items" [style.visibility]="(userSignedIn == false) ? 'hidden' :'visible' "></admiralty-header-menu-item>
+  
+  <admiralty-header-profile [isSignedIn]="userSignedIn"
+                            slot="profile"
+                            (signInClicked)="handleSignInClick()"
+                            (signOutClicked)="handleSignOut()"
+                            [signedInText]="signedInName">
+  </admiralty-header-profile>
+</admiralty-header>

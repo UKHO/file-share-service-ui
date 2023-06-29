@@ -1,20 +1,30 @@
 import { AfterViewInit, Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { HeaderComponent } from '@ukho/design-system';
+//import { HeaderComponent } from '@ukho/design-system';
 import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult, InteractionStatus, PopupRequest, SilentRequest } from '@azure/msal-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
+import { SignInClicked } from 'src/app/core/services/signInClick.service';
 
 @Component({
   selector: 'app-fss-header',
   templateUrl: './fss-header.component.html',
   styleUrls: ['./fss-header.component.scss']
 })
-export class FssHeaderComponent extends HeaderComponent implements OnInit, AfterViewInit {
+export class FssHeaderComponent implements OnInit, AfterViewInit {
   userName: string = "";
   @Output() isPageOverlay = new EventEmitter<boolean>();
+
+  title = AppConfigService.settings["fssConfig"].fssTitle;
+  logoImgUrl = "/assets/svg/Admiralty%20stacked%20logo.svg";
+  logoAltText = "Admiralty - Maritime Data Solutions Logo";
+  logoLinkUrl = "https://www.admiralty.co.uk/";
+  userSignedIn = false;
+  essActive = false;
+  srchActive = true;
+  signedInName = ""
 
   skipToContent: string = "";
   firstName: string = '';
@@ -26,8 +36,9 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
-    private analyticsService: AnalyticsService) {
-    super();
+    private analyticsService: AnalyticsService,
+    private signInButtonService: SignInClicked) {
+
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
@@ -37,36 +48,24 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     //added unique id for testing & accessibility
     // NOTE :
     // `ukho-header` does not allow to change `id` it uses `title` as a `id` changed Exchange sets -> Exchange-sets
-    const exchnageSetElem = document.querySelector('.links')?.children[0].childNodes[0] as HTMLElement;
-    if (!(exchnageSetElem instanceof Comment) && exchnageSetElem.getAttribute('id') === 'Exchange sets') {
-      exchnageSetElem.setAttribute('id', 'Exchange-sets');
-    }
+    //const exchnageSetElem = document.querySelector('.links')?.children[0].childNodes[0] as HTMLElement;
+    //if (!(exchnageSetElem instanceof Comment) && exchnageSetElem.getAttribute('id') === 'Exchange sets') {
+    //  exchnageSetElem.setAttribute('id', 'Exchange-sets');
+    //}
   }
 
   ngOnInit(): void {
     this.handleSignIn();
     this.setSkipToContent();
-    this.menuItems = [
-      {
-        title: 'Exchange sets',
-        clickAction: (() => {
-          if (this.authOptions?.isSignedIn()) {
-            this.route.navigate(["exchangesets"]);
-          }
-          this.handleActiveTab('Exchange sets');
-        }),
-        navActive: this.isActive
-      },
-      {
-        title: 'Search',
-        clickAction: (() => {
-          if (this.authOptions?.isSignedIn()) {
-            this.route.navigate(["search"])
-          }
-        }),
-        navActive: this.isActive
+
+    this.signInButtonService.currentstate.subscribe(state => {
+      if (state == true) {
+        this.signInButtonService.changeState(false);
+        this.logInPopup();
       }
-    ];
+    });
+
+    
 
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
@@ -96,13 +95,6 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
     this.logoLinkUrl = "https://www.admiralty.co.uk/";
 
-    this.authOptions = {
-      signedInButtonText: 'Sign in',
-      signInHandler: (() => { this.logInPopup(); }),
-      signOutHandler: (() => { }),
-      isSignedIn: (() => { return false }),
-      userProfileHandler: (() => { })
-    }
     this.handleSigninAwareness();
   }
 
@@ -112,6 +104,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
     ).subscribe((event: any) => { this.skipToContent = `#mainContainer`; });
   }
 
+  /*
   handleActiveTab(title: any) {
     for (var item of this.menuItems) {
       item.navActive = false;
@@ -119,9 +112,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         item.navActive = true;
       }
     }
-  }
+  }*/
 
   logInPopup() {
+    this.msalService.instance.handleRedirectPromise();
     this.msalService.loginPopup({ ...this.msalGuardConfig.authRequest } as PopupRequest).subscribe((response: AuthenticationResult) => {
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
@@ -129,8 +123,10 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         localStorage.setItem('idToken', response.idToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
-        this.isActive = true;
-        this.handleActiveTab(this.menuItems[1].title)
+        this.srchActive = true;
+        this.userSignedIn = true;
+        //this.isActive = true;
+        //this.handleActiveTab(this.menuItems[1].title)
         this.analyticsService.login();
       }
     });
@@ -141,28 +137,59 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       const url = `${event.url}`
+      console.log("Rhz Start sgn...", url)
       if (url.includes('search')) {
-        if (!this.authOptions?.isSignedIn()) {
+        if (!this.userSignedIn) {
           this.route.navigate(['']);
           this.isActive = false;
-          this.handleActiveTab(this.menuItems[1].title)
+          //this.handleActiveTab(this.menuItems[1].title)
         }
         else {
           this.isActive = true;
-          this.handleActiveTab(this.menuItems[1].title)
+          //this.handleActiveTab(this.menuItems[1].title)
         }
       }
       else if (url.includes('exchangesets')) {
-        this.handleActiveTab(this.menuItems[0].title)
+        //this.handleActiveTab(this.menuItems[0].title)
+      }
+      else if (url.includes('logout')) {
+        this.route.navigate(['logout']);
       }
     });
   }
+
+  handleSignInClick() {
+    this.logInPopup()
+  }
+
+  handleSignOut() {
+    this.userSignedIn = false;
+    this.msalService.logout();
+  }
+
+  menuExchangeClick() {
+    console.log("exchange clicked")
+    this.route.navigate(["exchangesets"]);
+    this.essActive = true;
+    this.srchActive = false;
+  }
+
+  menuSearchClick() {
+    console.log("search clicked")
+    this.route.navigate(["simpleSearch"])
+    this.essActive = false;
+    this.srchActive = true;
+  }
+
 
   /** Extract claims of user once user is Signed in */
   getClaims(claims: any) {
     this.firstName = claims ? claims['given_name'] : null;
     this.lastName = claims ? claims['family_name'] : null;
     this.userName = this.firstName + ' ' + this.lastName;
+
+    this.signedInName = this.userName;
+    /*
     this.authOptions =
     {
       signedInButtonText: this.userName,
@@ -192,7 +219,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
           this.getClaims(response.idTokenClaims);
         });
       })
-    }
+    }*/
   }
 
   /**Once signed in handles user redirects and also handle expiry if token expires.*/
@@ -208,14 +235,15 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
         }
       }
     }
-    this.getMenuItems();
+    //this.getMenuItems();
   }
 
+  /*
   getMenuItems() {
     if (this.authOptions?.isSignedIn()) {
       return this.menuItems;
     } else {
       return [];
     }
-  }
+  }*/
 }
