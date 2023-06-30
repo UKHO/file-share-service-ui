@@ -32,31 +32,31 @@ import { PublicClientApplication } from '@azure/msal-browser';
         expect(fixture).toBeTruthy(); 
       });
 
-      test('should render the element ukho-card', () =>{
+      test('should render the element admiralty-card', () =>{
       const fixture = TestBed.createComponent(FssHomeComponent);
       fixture.detectChanges();     
-      expect(fixture.nativeElement.querySelector('ukho-card')).not.toBeNull();
+      expect(fixture.nativeElement.querySelector('admiralty-card')).not.toBeNull();
     });
 
-      test('should render different texts inside ukho-card', () =>{
+      test('should render different texts inside admiralty-card', () =>{
         const fixture = TestBed.createComponent(FssHomeComponent);
         fixture.detectChanges();     
-        const home = fixture.debugElement.query(By.css('ukho-card')).nativeElement;
+        const home = fixture.debugElement.query(By.css('admiralty-card')).nativeElement;
         expect(home.querySelector('p').textContent).not.toBeNull();
         expect(home.querySelector('p').textContent).toEqual('The ADMIRALTY File Share Service allows you to search for and download files.');
         });
      
-      test('should render SignIn button inside ukho-card', () =>{
+      test('should render SignIn button inside admiralty-card', () =>{
         const fixture = TestBed.createComponent(FssHomeComponent);
         fixture.detectChanges();     
-        const home = fixture.debugElement.query(By.css('ukho-card'));
-        expect(home.nativeElement.querySelector('ukho-button').textContent).toEqual('Sign in');
+        const home = fixture.debugElement.query(By.css('admiralty-card'));
+        expect(home.nativeElement.querySelector('admiralty-button').textContent).toEqual('Sign in');
       });
 
-      test('should render Create Account link inside ukho-card', () =>{
+      test('should render Create Account link inside admiralty-card', () =>{
         const fixture = TestBed.createComponent(FssHomeComponent);
         fixture.detectChanges();     
-        const home = fixture.debugElement.query(By.css('ukho-card'));
+        const home = fixture.debugElement.query(By.css('admiralty-card'));
         expect(home.nativeElement.querySelector('#fss-createaccount').textContent).not.toBeNull();
         expect(home.nativeElement.querySelector('#fss-createaccount').textContent).toEqual('Create a new account');
         

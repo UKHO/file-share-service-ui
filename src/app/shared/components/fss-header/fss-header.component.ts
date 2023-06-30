@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-//import { HeaderComponent } from '@ukho/design-system';
+import { AfterViewInit, Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult, InteractionStatus, PopupRequest, SilentRequest } from '@azure/msal-browser';
@@ -7,13 +6,14 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { SignInClicked } from 'src/app/core/services/signInClick.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-fss-header',
   templateUrl: './fss-header.component.html',
   styleUrls: ['./fss-header.component.scss']
 })
-export class FssHeaderComponent implements OnInit, AfterViewInit {
+export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   userName: string = "";
   @Output() isPageOverlay = new EventEmitter<boolean>();
 
@@ -25,6 +25,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit {
   essActive = false;
   srchActive = true;
   signedInName = ""
+  clickSub: Subscription;
 
   skipToContent: string = "";
   firstName: string = '';
@@ -58,7 +59,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit {
     this.handleSignIn();
     this.setSkipToContent();
 
-    this.signInButtonService.currentstate.subscribe(state => {
+    this.clickSub = this.signInButtonService.currentstate.subscribe(state => {
       if (state == true) {
         this.signInButtonService.changeState(false);
         this.logInPopup();
@@ -167,6 +168,20 @@ export class FssHeaderComponent implements OnInit, AfterViewInit {
     this.msalService.logout();
   }
 
+  handleUseProfileClick()  {
+    console.log("Rhz Profile");
+    const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
+    let editProfileFlowRequest = {
+      scopes: ["openid", AppConfigService.settings["b2cConfig"].clientId],
+      authority: "https://" + tenantName + ".b2clogin.com/" + tenantName + ".onmicrosoft.com/" + AppConfigService.settings["b2cConfig"].editProfile,
+    };
+    this.msalService.loginPopup(editProfileFlowRequest).subscribe((response: AuthenticationResult) => {
+      this.msalService.instance.setActiveAccount(response.account);
+      this.getClaims(response.idTokenClaims);
+    });
+  }
+
+
   menuExchangeClick() {
     console.log("exchange clicked")
     this.route.navigate(["exchangesets"]);
@@ -189,37 +204,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit {
     this.userName = this.firstName + ' ' + this.lastName;
 
     this.signedInName = this.userName;
-    /*
-    this.authOptions =
-    {
-      signedInButtonText: this.userName,
-      signInHandler: (() => { }),
-      signOutHandler: (() => {
-        this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-          localStorage.setItem('idToken', response.idToken);
-          this.msalService.logout();
-        }, error => {
-          this.msalService.instance
-            .loginPopup(this.fssSilentTokenRequest)
-            .then(response => {
-              localStorage.setItem('idToken', response.idToken);
-              this.msalService.logout();
-            });
-        });
-      }),
-      isSignedIn: (() => { return true }),
-      userProfileHandler: (() => {
-        const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
-        let editProfileFlowRequest = {
-          scopes: ["openid", AppConfigService.settings["b2cConfig"].clientId],
-          authority: "https://" + tenantName + ".b2clogin.com/" + tenantName + ".onmicrosoft.com/" + AppConfigService.settings["b2cConfig"].editProfile,
-        };
-        this.msalService.loginPopup(editProfileFlowRequest).subscribe((response: AuthenticationResult) => {
-          this.msalService.instance.setActiveAccount(response.account);
-          this.getClaims(response.idTokenClaims);
-        });
-      })
-    }*/
+    
   }
 
   /**Once signed in handles user redirects and also handle expiry if token expires.*/
@@ -246,4 +231,11 @@ export class FssHeaderComponent implements OnInit, AfterViewInit {
       return [];
     }
   }*/
+
+  ngOnDestroy(): void {
+    this.clickSub.unsubscribe();
+  }
+
 }
+
+
