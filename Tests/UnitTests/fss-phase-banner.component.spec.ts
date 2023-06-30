@@ -24,26 +24,26 @@ describe('FssPhaseBannerComponent', () => {
 
   test('should have banner component', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
-    const banner = fixture.debugElement.nativeElement.querySelector('ukho-phase-banner');
-    const header = fixture.debugElement.nativeElement.querySelector('ukho-header');
+    const banner = fixture.debugElement.nativeElement.querySelector('admiralty-phase-banner');
+    const header = fixture.debugElement.nativeElement.querySelector('admiralty-header');
     expect(banner).not.toBeNull();
     expect(header).toBeFalsy();
   });
 
-  test('should render the phase-value "beta" in ukho-phase-banner', () => {
+  test('should render the phase-value "beta" in admiralty-phase-banner', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('strong').textContent).toContain(AppConfigService.settings["fssConfig"].phase);
   });
 
-  test('should render the phase-value "beta" in ukho-phase-banner', () => {
+  test('should render the phase-value "beta" in admiralty-phase-banner', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     fixture.detectChanges();
     const phase = fixture.nativeElement.querySelector('strong').textContent;
     expect(phase).toBeTruthy();
   });
 
-  test('should render the feedback link of ukho-phase-banner', () => {
+  test('should render the feedback link of admiralty-phase-banner', () => {
     const fixture = TestBed.createComponent(FssPhaseBannerComponent);
     fixture.detectChanges();
     const banner = fixture.debugElement.query(By.css('span')).nativeElement;
@@ -52,19 +52,19 @@ describe('FssPhaseBannerComponent', () => {
 
   test('should exist', () => {
     component = new FssPhaseBannerComponent();
-    component.ngOnInit();
+    //component.ngOnInit();
     expect(component).toBeDefined();
   });
 
   test('should exist phase in banner', () => {
     component = new FssPhaseBannerComponent();
-    component.ngOnInit();
+    //component.ngOnInit();
     expect(component.phase).toEqual('beta');
   });
 
   test('should exist mailto link in banner', () => {
     component = new FssPhaseBannerComponent();
-    component.ngOnInit();
+    //component.ngOnInit();
     expect(component.link).toContain('mailto:');
   });
 });

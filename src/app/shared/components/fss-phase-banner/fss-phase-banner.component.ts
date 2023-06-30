@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { PhaseBannerComponent } from '@ukho/design-system'
+import { Component } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 
 @Component({
@@ -7,14 +6,10 @@ import { AppConfigService } from '../../../core/services/app-config.service';
   templateUrl: './fss-phase-banner.component.html',
   styleUrls: ['./fss-phase-banner.component.scss']
 })
-export class FssPhaseBannerComponent extends PhaseBannerComponent implements OnInit {
+export class FssPhaseBannerComponent {
+  phase = AppConfigService.settings["fssConfig"].phase;
+  link = 'mailto:' + AppConfigService.settings["fssConfig"].feedbackEmailId;
+  
 
-  constructor() {
-    super();
-  }
-
-  ngOnInit(): void {
-      this.phase = AppConfigService.settings["fssConfig"].phase;
-      this.link = 'mailto:' + AppConfigService.settings["fssConfig"].feedbackEmailId;
-  }
+  
 }
