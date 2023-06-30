@@ -168,7 +168,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.msalService.logout();
   }
 
-  handleUseProfileClick()  {
+  handleUserProfileClick()  {
     console.log("Rhz Profile");
     const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
     let editProfileFlowRequest = {
