@@ -154,7 +154,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         //this.handleActiveTab(this.menuItems[0].title)
       }
       else if (url.includes('logout')) {
-        this.route.navigate(['logout']);
+        console.log("Rhz Attempting to navigate to Logout component");
       }
     });
   }
