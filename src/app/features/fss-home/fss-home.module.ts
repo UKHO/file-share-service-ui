@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { FssHomeRoutingModule } from './fss-home-routing.module';
 import { FssHomeComponent } from './fss-home.component';
-import { CardModule,ButtonModule} from '@ukho/design-system';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
+
 
 
 @NgModule({
@@ -13,8 +14,7 @@ import { CardModule,ButtonModule} from '@ukho/design-system';
   imports: [
     CommonModule,
     FssHomeRoutingModule,
-    CardModule,
-    ButtonModule
+    DesignSystemModule
   ]
 })
 export class FssHomeModule { }
