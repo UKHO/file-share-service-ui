@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
+import { MsalService } from '@azure/msal-angular';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,7 +17,8 @@ export class AppComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
+    private msalService: MsalService
   ) { 
   
     router.events.subscribe((e) => {
@@ -30,6 +32,11 @@ export class AppComponent implements OnInit {
       }
       
     });
+  }
+
+  @HostListener('window:unload', ['$event'])
+  unloadhandler() {
+    this.msalService.logout();
   }
 
   ngOnInit() {
