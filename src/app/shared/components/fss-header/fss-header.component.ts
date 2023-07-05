@@ -5,7 +5,7 @@ import { AuthenticationResult, InteractionStatus, PopupRequest, SilentRequest } 
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
-import { SignInClicked } from 'src/app/core/services/signInClick.service';
+import { SignInClicked } from '../../../core/services/signInClick.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -17,13 +17,15 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   userName: string = "";
   @Output() isPageOverlay = new EventEmitter<boolean>();
 
-  title = AppConfigService.settings["fssConfig"].fssTitle;
-  logoImgUrl = "/assets/svg/Admiralty%20stacked%20logo.svg";
-  logoAltText = "Admiralty - Maritime Data Solutions Logo";
-  logoLinkUrl = "https://www.admiralty.co.uk/";
-  userSignedIn = false;
-  essActive = false;
-  srchActive = true;
+  title: string = AppConfigService.settings["fssConfig"].fssTitle;
+  logoImgUrl: string = "/assets/svg/Admiralty%20stacked%20logo.svg";
+  logoAltText: string = "Admiralty - Maritime Data Solutions Logo";
+  logoLinkUrl: string = "https://www.admiralty.co.uk/";
+  essTitle: string = "Exchange sets";
+  searchTitle : string = "Search"
+  userSignedIn: boolean = false;
+  essActive: boolean = false;
+  searchActive: boolean = true;
   signedInName = ""
   clickSub: Subscription;
 
@@ -44,6 +46,13 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
+
+    this.clickSub = this.signInButtonService.currentstate.subscribe(state => {
+      if (state == true) {
+        this.signInButtonService.changeState(false);
+        this.logInPopup();
+      }
+    });
   }
   ngAfterViewInit(): void {
     //added unique id for testing & accessibility
@@ -59,12 +68,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.handleSignIn();
     this.setSkipToContent();
 
-    this.clickSub = this.signInButtonService.currentstate.subscribe(state => {
-      if (state == true) {
-        this.signInButtonService.changeState(false);
-        this.logInPopup();
-      }
-    });
+    
 
     
 
@@ -91,10 +95,10 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.handleSigninAwareness();
       });
 
-    this.title = AppConfigService.settings["fssConfig"].fssTitle;
-    this.logoImgUrl = "/assets/svg/Admiralty%20stacked%20logo.svg";
-    this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
-    this.logoLinkUrl = "https://www.admiralty.co.uk/";
+    //this.title = AppConfigService.settings["fssConfig"].fssTitle;
+    //this.logoImgUrl = "/assets/svg/Admiralty%20stacked%20logo.svg";
+    //this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
+    //this.logoLinkUrl = "https://www.admiralty.co.uk/";
 
     this.handleSigninAwareness();
   }
@@ -124,7 +128,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         localStorage.setItem('idToken', response.idToken);
         localStorage.setItem('claims', JSON.stringify(response.idTokenClaims));
         this.route.navigate(['search'])
-        this.srchActive = true;
+        this.searchActive = true;
         this.userSignedIn = true;
         //this.isActive = true;
         //this.handleActiveTab(this.menuItems[1].title)
@@ -186,14 +190,14 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log("exchange clicked")
     this.route.navigate(["exchangesets"]);
     this.essActive = true;
-    this.srchActive = false;
+    this.searchActive = false;
   }
 
   menuSearchClick() {
     console.log("search clicked")
     this.route.navigate(["simpleSearch"])
     this.essActive = false;
-    this.srchActive = true;
+    this.searchActive = true;
   }
 
 

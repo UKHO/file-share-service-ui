@@ -6,8 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./fss-footer.component.scss']
 })
 export class FssFooterComponent {
-  imageLink = "https://www.gov.uk/ukho";
-  imageSrc = "/assets/svg/UKHO%20stacked%20logo.svg";
-  imageAlt = "Admiralty Maritime Data Solutions | UK Hydrographic office";
-  
+  imageLink: string = "https://www.gov.uk/ukho";
+  imageSrc: string = "/assets/svg/UKHO%20stacked%20logo.svg";
+  imageAlt: string = "Admiralty Maritime Data Solutions | UK Hydrographic office";
+  privacyUrl: string = "https://www.admiralty.co.uk/cookie-policy";
+  privacyTitle: string = "Privacy Policy";
+  accessibilityTitle: string = "Accessibility";
+  accessibilityUrl: string = "#/accessibility";
 }

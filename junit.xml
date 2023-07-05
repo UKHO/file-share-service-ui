@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="4.981">
+  <testsuite name="FssHeaderComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-05T17:58:05" time="3.802" tests="8">
+    <testcase classname="FssHeaderComponent should exist msalService" name="FssHeaderComponent should exist msalService" time="0.086">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist signInButtonService" name="FssHeaderComponent should exist signInButtonService" time="0.024">
+    </testcase>
+    <testcase classname="FssHeaderComponent should have header component" name="FssHeaderComponent should have header component" time="0.048">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist" name="FssHeaderComponent should exist" time="0.026">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist the title in header" name="FssHeaderComponent should exist the title in header" time="0.02">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist Exchange set menu item in header" name="FssHeaderComponent should exist Exchange set menu item in header" time="0.016">
+    </testcase>
+    <testcase classname="FssHeaderComponent should not exist Exchange set search, menu item in header if not logged in" name="FssHeaderComponent should not exist Exchange set search, menu item in header if not logged in" time="0.02">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist Search menu item in header" name="FssHeaderComponent should exist Search menu item in header" time="0.013">
+    </testcase>
+  </testsuite>
+</testsuites>

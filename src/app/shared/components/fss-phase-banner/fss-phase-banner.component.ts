@@ -7,9 +7,7 @@ import { AppConfigService } from '../../../core/services/app-config.service';
   styleUrls: ['./fss-phase-banner.component.scss']
 })
 export class FssPhaseBannerComponent {
-  phase = AppConfigService.settings["fssConfig"].phase;
-  link = 'mailto:' + AppConfigService.settings["fssConfig"].feedbackEmailId;
-  
-
+  phase: string = AppConfigService.settings["fssConfig"].phase;
+  link: string = 'mailto:' + AppConfigService.settings["fssConfig"].feedbackEmailId;
   
 }
