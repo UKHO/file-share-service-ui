@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-//import { Router } from '@angular/router';
-//import { MsalService } from '@azure/msal-angular';
 import { SignInClicked } from '../../core/services/signInClick.service';
 @Component({
   selector: 'app-fss-home',
@@ -14,7 +12,6 @@ export class FssHomeComponent  {
 
   
   Signin() {
-    //document.getElementById('signInButton')?.click();
     this.signInButtonService.click();
   }
 

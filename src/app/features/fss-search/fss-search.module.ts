@@ -12,6 +12,7 @@ import { FssPopularSearchBatchesComponent } from './fss-popular-search-batches/f
 import { FssAdvancedSearchComponent } from './fss-advanced-search/fss-advanced-search.component';
 import { FssSimplifiedSearchComponent } from './fss-simplified-search/fss-simplified-search.component';
 import { FssSimplifiedFilterComponent } from './fss-simplified-search/fss-simplified-filter/fss-simplified-filter.component';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { FssSimplifiedFilterComponent } from './fss-simplified-search/fss-simpli
   imports: [
     CommonModule,
     FssSearchRoutingModule,
+    DesignSystemModule,
     ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule,ReactiveFormsModule,DialogueModule,ExpansionModule,CardModule, TableModule,PaginatorModule, TypeaheadModule, HorizontalRuleModule, FilterModule
   ],
   providers: [FileShareApiService]

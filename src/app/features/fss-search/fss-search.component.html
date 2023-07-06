@@ -7,10 +7,10 @@
 
   <div #ukhoTarget>
 
-    <ukho-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite" tabindex="-1">
+    <admiralty-dialogue [type]='messageType' *ngIf="displayMessage" aria-live="polite" tabindex="-1">
       <h3>{{messageTitle}}</h3>
       <div>{{messageDesc}}</div>
-    </ukho-dialogue>
+    </admiralty-dialogue>
   </div>
 
   <app-fss-simplified-search *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"
@@ -40,15 +40,15 @@
     </div>
     <br />
     <div class="pagination">
-      <ukho-paginator [label]="paginatorLabel" [pages]="pages" [currentPage]="currentPage"
-        (pageChange)="pageChange($event)">
-      </ukho-paginator>
+      <admiralty-paginator [label]="paginatorLabel" [pages]="pages" [currentPage]="currentPage"
+        (pageChange)="pageChange(currentPage)">
+      </admiralty-paginator>
       <a href="#gotoFilterMenu" class="skip-to-content-link SkipToFilter section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"  >Go to Filter </a>
     </div> 
 </div>
 
 <div *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch">
   <br />
-  <ukho-hr aria-hidden="true"></ukho-hr>
+  <admiralty-hr aria-hidden="true"></admiralty-hr>
   <app-fss-popular-search-batches (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
 </div>
