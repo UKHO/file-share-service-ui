@@ -248,8 +248,9 @@ export class FssSearchComponent implements OnInit {
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
   }
 
-  onPageChangeHandler(value: Event) {
-    console.log(value)
+  onPageChangeHandler(changeEvent: Event) {
+    let value = changeEvent as CustomEvent<number>; 
+    this.pageChange(value.detail)
   }
 
   pageChange(currentPage: number) {
