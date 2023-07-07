@@ -1,717 +1,709 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="330" failures="0" errors="0" time="22.577">
-  <testsuite name="EssAddSingleEncsComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:07:53" time="6.4" tests="11">
-    <testcase classname="EssAddSingleEncsComponent should create" name="EssAddSingleEncsComponent should create" time="0.568">
+<testsuites name="jest tests" tests="327" failures="0" errors="0" time="21.52">
+  <testsuite name="FssSearchResultsComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:17" time="5.64" tests="9">
+    <testcase classname="FssSearchResultsComponent should create FssSearchResultsComponent" name="FssSearchResultsComponent should create FssSearchResultsComponent" time="0.42">
     </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should display error when ENC field is blank" name="EssAddSingleEncsComponent validateAndAddENC should display error when ENC field is blank" time="0.276">
+    <testcase classname="FssSearchResultsComponent should return search result count 1 when search result for 1 batch is provided" name="FssSearchResultsComponent should return search result count 1 when search result for 1 batch is provided" time="0.134">
     </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should display error when ENC number is invalid" name="EssAddSingleEncsComponent validateAndAddENC should display error when ENC number is invalid" time="0.194">
+    <testcase classname="FssSearchResultsComponent should return batch attributes when search result data is provided" name="FssSearchResultsComponent should return batch attributes when search result data is provided" time="0.108">
     </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should set validENC number" name="EssAddSingleEncsComponent validateAndAddENC should set validENC number" time="0.17">
+    <testcase classname="FssSearchResultsComponent should return system attributes when search result data is provided" name="FssSearchResultsComponent should return system attributes when search result data is provided" time="0.153">
     </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Please enter ENC number.&quot;error" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Please enter ENC number.&quot;error" time="0.127">
+    <testcase classname="FssSearchResultsComponent should return file details column data" name="FssSearchResultsComponent should return file details column data" time="0.128">
     </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Invalid ENC number.&quot;error" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Invalid ENC number.&quot;error" time="0.16">
+    <testcase classname="FssSearchResultsComponent should return batch file details when search result data is provided" name="FssSearchResultsComponent should return batch file details when search result data is provided" time="0.118">
     </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Invalid AIO ENC number.&quot;error" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Invalid AIO ENC number.&quot;error" time="0.152">
+    <testcase classname="FssSearchResultsComponent should return file download link when search result data is provided" name="FssSearchResultsComponent should return file download link when search result data is provided" time="0.251">
     </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;ENC already in list.&quot;info" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;ENC already in list.&quot;info" time="0.154">
+    <testcase classname="FssSearchResultsComponent should convert file size from bytes to respective size units" name="FssSearchResultsComponent should convert file size from bytes to respective size units" time="0.123">
     </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Max ENC limit reached.&quot;info" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Max ENC limit reached.&quot;info" time="0.153">
-    </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should set sigle valid ENC" name="EssAddSingleEncsComponent validateAndAddENC should set sigle valid ENC" time="0.188">
-    </testcase>
-    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should set single valid different case ENC" name="EssAddSingleEncsComponent validateAndAddENC should set single valid different case ENC" time="0.149">
+    <testcase classname="FssSearchResultsComponent should show Download All button when allFilesZipSize is not null" name="FssSearchResultsComponent should show Download All button when allFilesZipSize is not null" time="0.188">
     </testcase>
   </testsuite>
-  <testsuite name="EssUploadFileComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:07:53" time="6.538" tests="32">
-    <testcase classname="EssUploadFileComponent should create" name="EssUploadFileComponent should create" time="0.332">
+  <testsuite name="EssUploadFileComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:17" time="6.019" tests="32">
+    <testcase classname="EssUploadFileComponent should create" name="EssUploadFileComponent should create" time="0.354">
     </testcase>
-    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : info , test info 1" name="EssUploadFileComponent showMessage should set correct mesages : info , test info 1" time="0.15">
+    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : info , test info 1" name="EssUploadFileComponent showMessage should set correct mesages : info , test info 1" time="0.113">
     </testcase>
-    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : error , test error 1" name="EssUploadFileComponent showMessage should set correct mesages : error , test error 1" time="0.089">
+    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : error , test error 1" name="EssUploadFileComponent showMessage should set correct mesages : error , test error 1" time="0.098">
     </testcase>
-    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : success , test success 1" name="EssUploadFileComponent showMessage should set correct mesages : success , test success 1" time="0.1">
+    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : success , test success 1" name="EssUploadFileComponent showMessage should set correct mesages : success , test success 1" time="0.098">
     </testcase>
-    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : warning , test warning 1" name="EssUploadFileComponent showMessage should set correct mesages : warning , test warning 1" time="0.073">
+    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : warning , test warning 1" name="EssUploadFileComponent showMessage should set correct mesages : warning , test warning 1" time="0.087">
     </testcase>
-    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : info , test info 2" name="EssUploadFileComponent showMessage should set correct mesages : info , test info 2" time="0.087">
+    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : info , test info 2" name="EssUploadFileComponent showMessage should set correct mesages : info , test info 2" time="0.075">
     </testcase>
-    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : error , test error 3" name="EssUploadFileComponent showMessage should set correct mesages : error , test error 3" time="0.092">
+    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : error , test error 3" name="EssUploadFileComponent showMessage should set correct mesages : error , test error 3" time="0.08">
     </testcase>
     <testcase classname="EssUploadFileComponent showMessage should set correct mesages : success , test success 4" name="EssUploadFileComponent showMessage should set correct mesages : success , test success 4" time="0.088">
     </testcase>
-    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : warning , test warning 5" name="EssUploadFileComponent showMessage should set correct mesages : warning , test warning 5" time="0.144">
+    <testcase classname="EssUploadFileComponent showMessage should set correct mesages : warning , test warning 5" name="EssUploadFileComponent showMessage should set correct mesages : warning , test warning 5" time="0.072">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.135">
+    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.089">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.136">
+    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.086">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.094">
+    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.075">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.07">
+    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.072">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.071">
+    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.078">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.074">
+    <testcase classname="EssUploadFileComponent processEncFile should set encList" name="EssUploadFileComponent processEncFile should set encList" time="0.051">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" name="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" time="0.068">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" name="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" time="0.07">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" name="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" time="0.06">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" name="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" time="0.064">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" name="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" time="0.076">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" name="EssUploadFileComponent processEncFile should set raise &quot;Some values have not been added to list.&quot; info" time="0.081">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Please upload valid ENC file.&quot; error" name="EssUploadFileComponent processEncFile should set raise &quot;Please upload valid ENC file.&quot; error" time="0.072">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Please upload valid ENC file.&quot; error" name="EssUploadFileComponent processEncFile should set raise &quot;Please upload valid ENC file.&quot; error" time="0.066">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Please upload valid ENC file.&quot; error" name="EssUploadFileComponent processEncFile should set raise &quot;Please upload valid ENC file.&quot; error" time="0.05">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;Please upload valid ENC file.&quot; error" name="EssUploadFileComponent processEncFile should set raise &quot;Please upload valid ENC file.&quot; error" time="0.066">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;No valid ENCs found. info" name="EssUploadFileComponent processEncFile should set raise &quot;No valid ENCs found. info" time="0.067">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;No valid ENCs found. info" name="EssUploadFileComponent processEncFile should set raise &quot;No valid ENCs found. info" time="0.108">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;No valid ENCs found. info" name="EssUploadFileComponent processEncFile should set raise &quot;No valid ENCs found. info" time="0.071">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise &quot;No valid ENCs found. info" name="EssUploadFileComponent processEncFile should set raise &quot;No valid ENCs found. info" time="0.066">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise AIO is not available. info" name="EssUploadFileComponent processEncFile should set raise AIO is not available. info" time="0.082">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise AIO is not available. info" name="EssUploadFileComponent processEncFile should set raise AIO is not available. info" time="0.068">
     </testcase>
-    <testcase classname="EssUploadFileComponent processEncFile should set raise AIO is not available. info" name="EssUploadFileComponent processEncFile should set raise AIO is not available. info" time="0.09">
+    <testcase classname="EssUploadFileComponent processEncFile should set raise AIO is not available. info" name="EssUploadFileComponent processEncFile should set raise AIO is not available. info" time="0.085">
     </testcase>
-    <testcase classname="EssUploadFileComponent uploadListener{ event.srcElement} should raise error for unsupported file type" name="EssUploadFileComponent uploadListener{ event.srcElement} should raise error for unsupported file type" time="0.086">
+    <testcase classname="EssUploadFileComponent uploadListener{ event.srcElement} should raise error for unsupported file type" name="EssUploadFileComponent uploadListener{ event.srcElement} should raise error for unsupported file type" time="0.089">
     </testcase>
-    <testcase classname="EssUploadFileComponent uploadListener{ event.dataTransfer} should raise error for unsupported file type" name="EssUploadFileComponent uploadListener{ event.dataTransfer} should raise error for unsupported file type" time="0.059">
+    <testcase classname="EssUploadFileComponent uploadListener{ event.dataTransfer} should raise error for unsupported file type" name="EssUploadFileComponent uploadListener{ event.dataTransfer} should raise error for unsupported file type" time="0.069">
     </testcase>
-    <testcase classname="EssUploadFileComponent infomessage is true when enc list count exceeds MaxEncLimit" name="EssUploadFileComponent infomessage is true when enc list count exceeds MaxEncLimit" time="0.065">
+    <testcase classname="EssUploadFileComponent infomessage is true when enc list count exceeds MaxEncLimit" name="EssUploadFileComponent infomessage is true when enc list count exceeds MaxEncLimit" time="0.056">
     </testcase>
-    <testcase classname="EssUploadFileComponent infomessage is true when enc list count exceeds MaxEncLimit" name="EssUploadFileComponent infomessage is true when enc list count exceeds MaxEncLimit" time="0.082">
+    <testcase classname="EssUploadFileComponent infomessage is true when enc list count exceeds MaxEncLimit" name="EssUploadFileComponent infomessage is true when enc list count exceeds MaxEncLimit" time="0.057">
+    </testcase>
+    <testcase classname="EssUploadFileComponent infomessage should show message AIO is not available when AIO Enc is found in the ENC list" name="EssUploadFileComponent infomessage should show message AIO is not available when AIO Enc is found in the ENC list" time="0.088">
     </testcase>
     <testcase classname="EssUploadFileComponent infomessage should show message AIO is not available when AIO Enc is found in the ENC list" name="EssUploadFileComponent infomessage should show message AIO is not available when AIO Enc is found in the ENC list" time="0.064">
     </testcase>
-    <testcase classname="EssUploadFileComponent infomessage should show message AIO is not available when AIO Enc is found in the ENC list" name="EssUploadFileComponent infomessage should show message AIO is not available when AIO Enc is found in the ENC list" time="0.086">
+    <testcase classname="EssUploadFileComponent should show the explaination text in ess upload file component with max enc limit from config" name="EssUploadFileComponent should show the explaination text in ess upload file component with max enc limit from config" time="0.054">
     </testcase>
-    <testcase classname="EssUploadFileComponent should show the explaination text in ess upload file component with max enc limit from config" name="EssUploadFileComponent should show the explaination text in ess upload file component with max enc limit from config" time="0.122">
-    </testcase>
-    <testcase classname="EssUploadFileComponent should show the explaination text  in upload file component with max enc selection limit from config" name="EssUploadFileComponent should show the explaination text  in upload file component with max enc selection limit from config" time="0.088">
+    <testcase classname="EssUploadFileComponent should show the explaination text  in upload file component with max enc selection limit from config" name="EssUploadFileComponent should show the explaination text  in upload file component with max enc selection limit from config" time="0.075">
     </testcase>
   </testsuite>
-  <testsuite name="FssSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:07:53" time="7.323" tests="15">
-    <testcase classname="FssSearchComponent should create FssSearchComponent" name="FssSearchComponent should create FssSearchComponent" time="0.294">
+  <testsuite name="EssAddSingleEncsComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:17" time="6.072" tests="11">
+    <testcase classname="EssAddSingleEncsComponent should create" name="EssAddSingleEncsComponent should create" time="0.438">
     </testcase>
-    <testcase classname="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" name="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" time="0.149">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should display error when ENC field is blank" name="EssAddSingleEncsComponent validateAndAddENC should display error when ENC field is blank" time="0.227">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should create EssDownloadExchangesetComponent" name="EssDownloadExchangesetComponent should create EssDownloadExchangesetComponent" time="1.324">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should display error when ENC number is invalid" name="EssAddSingleEncsComponent validateAndAddENC should display error when ENC number is invalid" time="0.196">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should render text inside an h1 tag" name="EssDownloadExchangesetComponent should render text inside an h1 tag" time="0.215">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should set validENC number" name="EssAddSingleEncsComponent validateAndAddENC should set validENC number" time="0.151">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should render text inside an p tag" name="EssDownloadExchangesetComponent should render text inside an p tag" time="0.169">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Please enter ENC number.&quot;error" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Please enter ENC number.&quot;error" time="0.214">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should render text inside an p tag" name="EssDownloadExchangesetComponent should render text inside an p tag" time="0.151">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Invalid ENC number.&quot;error" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Invalid ENC number.&quot;error" time="0.175">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should return Exchangeset cell count" name="EssDownloadExchangesetComponent should return Exchangeset cell count" time="0.139">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Invalid AIO ENC number.&quot;error" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Invalid AIO ENC number.&quot;error" time="0.134">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should render estimated size" name="EssDownloadExchangesetComponent should render estimated size" time="0.167">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;ENC already in list.&quot;info" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;ENC already in list.&quot;info" time="0.169">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should return exchangeSetTotalCount" name="EssDownloadExchangesetComponent should return exchangeSetTotalCount" time="0.09">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Max ENC limit reached.&quot;info" name="EssAddSingleEncsComponent validateAndAddENC should   raise &quot;Max ENC limit reached.&quot;info" time="0.156">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should display download button when batch status is Committed" name="EssDownloadExchangesetComponent should display download button when batch status is Committed" time="0.069">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should set sigle valid ENC" name="EssAddSingleEncsComponent validateAndAddENC should set sigle valid ENC" time="0.155">
     </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should hide download button when batch status is CommitInProgress" name="EssDownloadExchangesetComponent should hide download button when batch status is CommitInProgress" time="0.077">
-    </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should show error message when batch status is Failed" name="EssDownloadExchangesetComponent should show error message when batch status is Failed" time="0.08">
-    </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should display loader when download button is clicked and hide loader after refreshToken API response" name="EssDownloadExchangesetComponent should display loader when download button is clicked and hide loader after refreshToken API response" time="0.083">
-    </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should call loginPopup() when error in acquireTokenSilent in checkBatchStatus" name="EssDownloadExchangesetComponent should call loginPopup() when error in acquireTokenSilent in checkBatchStatus" time="0.1">
-    </testcase>
-    <testcase classname="EssDownloadExchangesetComponent should call batchStatusAPI() when no error in acquireTokenSilent in checkBatchStatus" name="EssDownloadExchangesetComponent should call batchStatusAPI() when no error in acquireTokenSilent in checkBatchStatus" time="0.084">
+    <testcase classname="EssAddSingleEncsComponent validateAndAddENC should set single valid different case ENC" name="EssAddSingleEncsComponent validateAndAddENC should set single valid different case ENC" time="0.132">
     </testcase>
   </testsuite>
-  <testsuite name="FssSimplifiedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:00" time="2.542" tests="9">
-    <testcase classname="FssSimplifiedSearchComponent should create FssSimplifiedSearchComponent" name="FssSimplifiedSearchComponent should create FssSimplifiedSearchComponent" time="0.235">
+  <testsuite name="EssUploadFileService" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:23" time="1.616" tests="29">
+    <testcase classname="EssUploadFileService should be created" name="EssUploadFileService should be created" time="0.065">
     </testcase>
-    <testcase classname="FssSimplifiedSearchComponent should emit when the simplified search button is clicked" name="FssSimplifiedSearchComponent should emit when the simplified search button is clicked" time="0.102">
+    <testcase classname="EssUploadFileService getEncFileData should return parsed json" name="EssUploadFileService getEncFileData should return parsed json" time="0.014">
     </testcase>
-    <testcase classname="FssSimplifiedSearchComponent should show Advanced search Link" name="FssSimplifiedSearchComponent should show Advanced search Link" time="0.11">
+    <testcase classname="EssUploadFileService isValidEncFile should return true/false based on file type and file contents" name="EssUploadFileService isValidEncFile should return true/false based on file type and file contents" time="0.013">
     </testcase>
-    <testcase classname="FssSimplifiedSearchComponent should return filterExpression when the simplified search button is clicked with extra blank space" name="FssSimplifiedSearchComponent should return filterExpression when the simplified search button is clicked with extra blank space" time="0.09">
+    <testcase classname="EssUploadFileService extractEncsFromFile should return enc&quot;s if :ENC and :ECS exist in file" name="EssUploadFileService extractEncsFromFile should return enc&quot;s if :ENC and :ECS exist in file" time="0.015">
     </testcase>
-    <testcase classname="FssSimplifiedSearchComponent should return filterExpression when the simplified search button is clicked with no extra blank space" name="FssSimplifiedSearchComponent should return filterExpression when the simplified search button is clicked with no extra blank space" time="0.075">
+    <testcase classname="EssUploadFileService extractEncsFromFile should return enc&quot;s if :ENC and :ECS do not exist in file" name="EssUploadFileService extractEncsFromFile should return enc&quot;s if :ENC and :ECS do not exist in file" time="0.013">
     </testcase>
-    <testcase classname="FssSimplifiedSearchComponent should strip all single quotes from simplified search text" name="FssSimplifiedSearchComponent should strip all single quotes from simplified search text" time="0.102">
+    <testcase classname="EssUploadFileService getValidEncs should return encs" name="EssUploadFileService getValidEncs should return encs" time="0.011">
     </testcase>
-    <testcase classname="FssSimplifiedSearchComponent should show the content of exchange sets on search page" name="FssSimplifiedSearchComponent should show the content of exchange sets on search page" time="0.073">
+    <testcase classname="EssUploadFileService getValidEncs should return encs uploaded with different case" name="EssUploadFileService getValidEncs should return encs uploaded with different case" time="0.011">
     </testcase>
-    <testcase classname="FssSimplifiedSearchComponent should show the subtitle of exchange sets on search page" name="FssSimplifiedSearchComponent should show the subtitle of exchange sets on search page" time="0.117">
+    <testcase classname="EssUploadFileService validateENCFormat should return enc if passed parameter is valid else returns null" name="EssUploadFileService validateENCFormat should return enc if passed parameter is valid else returns null" time="0.023">
     </testcase>
-    <testcase classname="FssSimplifiedSearchComponent should show Make an exchange set Link" name="FssSimplifiedSearchComponent should show Make an exchange set Link" time="0.083">
+    <testcase classname="EssUploadFileService getEncFileData should return enc file data for csv file" name="EssUploadFileService getEncFileData should return enc file data for csv file" time="0.013">
     </testcase>
-  </testsuite>
-  <testsuite name="FssSearchResultsComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:00" time="3.483" tests="9">
-    <testcase classname="FssSearchResultsComponent should create FssSearchResultsComponent" name="FssSearchResultsComponent should create FssSearchResultsComponent" time="0.39">
+    <testcase classname="EssUploadFileService isValidEncFile should return true/false based on file type and file contents for csv File" name="EssUploadFileService isValidEncFile should return true/false based on file type and file contents for csv File" time="0.02">
     </testcase>
-    <testcase classname="FssSearchResultsComponent should return search result count 1 when search result for 1 batch is provided" name="FssSearchResultsComponent should return search result count 1 when search result for 1 batch is provided" time="0.172">
+    <testcase classname="EssUploadFileService extractEncsFromFile should extract encs from file" name="EssUploadFileService extractEncsFromFile should extract encs from file" time="0.025">
     </testcase>
-    <testcase classname="FssSearchResultsComponent should return batch attributes when search result data is provided" name="FssSearchResultsComponent should return batch attributes when search result data is provided" time="0.159">
+    <testcase classname="EssUploadFileService extractEncsFromFile should extract encs from file and also removes blank data" name="EssUploadFileService extractEncsFromFile should extract encs from file and also removes blank data" time="0.009">
     </testcase>
-    <testcase classname="FssSearchResultsComponent should return system attributes when search result data is provided" name="FssSearchResultsComponent should return system attributes when search result data is provided" time="0.172">
+    <testcase classname="EssUploadFileService setValidENCs and getValidEncs should return valid encs" name="EssUploadFileService setValidENCs and getValidEncs should return valid encs" time="0.019">
     </testcase>
-    <testcase classname="FssSearchResultsComponent should return file details column data" name="FssSearchResultsComponent should return file details column data" time="0.144">
+    <testcase classname="EssUploadFileService setValidENCs and getValidEncs should return valid encs when duplicate record found" name="EssUploadFileService setValidENCs and getValidEncs should return valid encs when duplicate record found" time="0.012">
     </testcase>
-    <testcase classname="FssSearchResultsComponent should return batch file details when search result data is provided" name="FssSearchResultsComponent should return batch file details when search result data is provided" time="0.099">
+    <testcase classname="EssUploadFileService setValidENCs and getValidEncs should return valid encs as per configuration settings" name="EssUploadFileService setValidENCs and getValidEncs should return valid encs as per configuration settings" time="0.017">
     </testcase>
-    <testcase classname="FssSearchResultsComponent should return file download link when search result data is provided" name="FssSearchResultsComponent should return file download link when search result data is provided" time="0.196">
+    <testcase classname="EssUploadFileService service.infoMessage should set true/false" name="EssUploadFileService service.infoMessage should set true/false" time="0.045">
     </testcase>
-    <testcase classname="FssSearchResultsComponent should convert file size from bytes to respective size units" name="FssSearchResultsComponent should convert file size from bytes to respective size units" time="0.108">
+    <testcase classname="EssUploadFileService addSelectedEnc adds enc into selectedEncs" name="EssUploadFileService addSelectedEnc adds enc into selectedEncs" time="0.01">
     </testcase>
-    <testcase classname="FssSearchResultsComponent should show Download All button when allFilesZipSize is not null" name="FssSearchResultsComponent should show Download All button when allFilesZipSize is not null" time="0.226">
+    <testcase classname="EssUploadFileService removeSelectedEncs removes enc from selectedEncs" name="EssUploadFileService removeSelectedEncs removes enc from selectedEncs" time="0.01">
     </testcase>
-  </testsuite>
-  <testsuite name="FssHomeComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:01" time="2.6" tests="5">
-    <testcase classname="FssHomeComponent should have home component" name="FssHomeComponent should have home component" time="0.223">
+    <testcase classname="EssUploadFileService clearSelectedEncs clears enc from selectedEncs" name="EssUploadFileService clearSelectedEncs clears enc from selectedEncs" time="0.018">
     </testcase>
-    <testcase classname="FssHomeComponent should render the element admiralty-card" name="FssHomeComponent should render the element admiralty-card" time="0.1">
+    <testcase classname="EssUploadFileService valid encs should always be less than MaxEncLimit" name="EssUploadFileService valid encs should always be less than MaxEncLimit" time="0.044">
     </testcase>
-    <testcase classname="FssHomeComponent should render different texts inside admiralty-card" name="FssHomeComponent should render different texts inside admiralty-card" time="0.072">
+    <testcase classname="EssUploadFileService setValidSingleEnc should set single ENC in validEnc list" name="EssUploadFileService setValidSingleEnc should set single ENC in validEnc list" time="0.009">
     </testcase>
-    <testcase classname="FssHomeComponent should render SignIn button inside admiralty-card" name="FssHomeComponent should render SignIn button inside admiralty-card" time="0.097">
+    <testcase classname="EssUploadFileService checkMaxEncLimit should return true as per configuration settings" name="EssUploadFileService checkMaxEncLimit should return true as per configuration settings" time="0.011">
     </testcase>
-    <testcase classname="FssHomeComponent should render Create Account link inside admiralty-card" name="FssHomeComponent should render Create Account link inside admiralty-card" time="0.04">
+    <testcase classname="EssUploadFileService checkMaxEncLimit should return false as per configuration settings" name="EssUploadFileService checkMaxEncLimit should return false as per configuration settings" time="0.031">
     </testcase>
-  </testsuite>
-  <testsuite name="FssHeaderComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:03" time="1.8" tests="8">
-    <testcase classname="FssHeaderComponent should exist msalService" name="FssHeaderComponent should exist msalService" time="0.31">
+    <testcase classname="EssUploadFileService addSingleEnc should set single ENC in validEnc list" name="EssUploadFileService addSingleEnc should set single ENC in validEnc list" time="0.008">
     </testcase>
-    <testcase classname="FssHeaderComponent should exist signInButtonService" name="FssHeaderComponent should exist signInButtonService" time="0.065">
+    <testcase classname="EssUploadFileService should return true for valid encName" name="EssUploadFileService should return true for valid encName" time="0.007">
     </testcase>
-    <testcase classname="FssHeaderComponent should have header component" name="FssHeaderComponent should have header component" time="0.087">
+    <testcase classname="EssUploadFileService should return false for invalid AIO encName" name="EssUploadFileService should return false for invalid AIO encName" time="0.007">
     </testcase>
-    <testcase classname="FssHeaderComponent should exist" name="FssHeaderComponent should exist" time="0.051">
+    <testcase classname="EssUploadFileService getEstimatedTotalSize should return valid string" name="EssUploadFileService getEstimatedTotalSize should return valid string" time="0.008">
     </testcase>
-    <testcase classname="FssHeaderComponent should exist the title in header" name="FssHeaderComponent should exist the title in header" time="0.051">
+    <testcase classname="EssUploadFileService getEstimatedTotalSize should return valid string" name="EssUploadFileService getEstimatedTotalSize should return valid string" time="0.007">
     </testcase>
-    <testcase classname="FssHeaderComponent should exist Exchange set menu item in header" name="FssHeaderComponent should exist Exchange set menu item in header" time="0.027">
-    </testcase>
-    <testcase classname="FssHeaderComponent should not exist Exchange set search, menu item in header if not logged in" name="FssHeaderComponent should not exist Exchange set search, menu item in header if not logged in" time="0.053">
-    </testcase>
-    <testcase classname="FssHeaderComponent should exist Search menu item in header" name="FssHeaderComponent should exist Search menu item in header" time="0.032">
+    <testcase classname="EssUploadFileService getEstimatedTotalSize should return valid string" name="EssUploadFileService getEstimatedTotalSize should return valid string" time="0.013">
     </testcase>
   </testsuite>
-  <testsuite name="FssSimplifiedFilterComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:03" time="1.833" tests="3">
-    <testcase classname="FssSimplifiedFilterComponent should create" name="FssSimplifiedFilterComponent should create" time="0.311">
+  <testsuite name="FssSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:17" time="7.406" tests="15">
+    <testcase classname="FssSearchComponent should create FssSearchComponent" name="FssSearchComponent should create FssSearchComponent" time="0.279">
     </testcase>
-    <testcase classname="FssSimplifiedFilterComponent should emit when the simplified apply filter button is clicked" name="FssSimplifiedFilterComponent should emit when the simplified apply filter button is clicked" time="0.087">
+    <testcase classname="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" name="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" time="0.121">
     </testcase>
-    <testcase classname="FssSimplifiedFilterComponent should return applyFilterExpression when the simplified apply filter button is clicked" name="FssSimplifiedFilterComponent should return applyFilterExpression when the simplified apply filter button is clicked" time="0.091">
+    <testcase classname="EssDownloadExchangesetComponent should create EssDownloadExchangesetComponent" name="EssDownloadExchangesetComponent should create EssDownloadExchangesetComponent" time="1.448">
     </testcase>
-  </testsuite>
-  <testsuite name="FssSearchRowComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:04" time="2.811" tests="8">
-    <testcase classname="FssSearchRowComponent should create FssSearchRowComponent" name="FssSearchRowComponent should create FssSearchRowComponent" time="0.268">
+    <testcase classname="EssDownloadExchangesetComponent should render text inside an h1 tag" name="EssDownloadExchangesetComponent should render text inside an h1 tag" time="0.171">
     </testcase>
-    <testcase classname="FssSearchRowComponent should return enable grouping true when consecutive search rows checked" name="FssSearchRowComponent should return enable grouping true when consecutive search rows checked" time="0.095">
+    <testcase classname="EssDownloadExchangesetComponent should render text inside an p tag" name="EssDownloadExchangesetComponent should render text inside an p tag" time="0.187">
     </testcase>
-    <testcase classname="FssSearchRowComponent should return enable grouping false when non consecutive search rows checked" name="FssSearchRowComponent should return enable grouping false when non consecutive search rows checked" time="0.068">
+    <testcase classname="EssDownloadExchangesetComponent should render text inside an p tag" name="EssDownloadExchangesetComponent should render text inside an p tag" time="0.116">
     </testcase>
-    <testcase classname="FssSearchRowComponent should emit when the search row delete button is clicked" name="FssSearchRowComponent should emit when the search row delete button is clicked" time="0.07">
+    <testcase classname="EssDownloadExchangesetComponent should return Exchangeset cell count" name="EssDownloadExchangesetComponent should return Exchangeset cell count" time="0.089">
     </testcase>
-    <testcase classname="FssSearchRowComponent should emit when group delete button is clicked" name="FssSearchRowComponent should emit when group delete button is clicked" time="0.06">
+    <testcase classname="EssDownloadExchangesetComponent should render estimated size" name="EssDownloadExchangesetComponent should render estimated size" time="0.123">
     </testcase>
-    <testcase classname="FssSearchRowComponent should emit when filed change in search row" name="FssSearchRowComponent should emit when filed change in search row" time="0.075">
+    <testcase classname="EssDownloadExchangesetComponent should return exchangeSetTotalCount" name="EssDownloadExchangesetComponent should return exchangeSetTotalCount" time="0.117">
     </testcase>
-    <testcase classname="FssSearchRowComponent should emit group when onGroupClick" name="FssSearchRowComponent should emit group when onGroupClick" time="0.087">
+    <testcase classname="EssDownloadExchangesetComponent should display download button when batch status is Committed" name="EssDownloadExchangesetComponent should display download button when batch status is Committed" time="0.071">
     </testcase>
-    <testcase classname="FssSearchRowComponent should disable grouping onCheckbox changed" name="FssSearchRowComponent should disable grouping onCheckbox changed" time="0.045">
+    <testcase classname="EssDownloadExchangesetComponent should hide download button when batch status is CommitInProgress" name="EssDownloadExchangesetComponent should hide download button when batch status is CommitInProgress" time="0.086">
     </testcase>
-  </testsuite>
-  <testsuite name="FssFooterComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:04" time="2.554" tests="4">
-    <testcase classname="FssFooterComponent should have footer component" name="FssFooterComponent should have footer component" time="0.233">
+    <testcase classname="EssDownloadExchangesetComponent should show error message when batch status is Failed" name="EssDownloadExchangesetComponent should show error message when batch status is Failed" time="0.082">
     </testcase>
-    <testcase classname="FssFooterComponent should render image and navigation in ukho-footer" name="FssFooterComponent should render image and navigation in ukho-footer" time="0.07">
+    <testcase classname="EssDownloadExchangesetComponent should display loader when download button is clicked and hide loader after refreshToken API response" name="EssDownloadExchangesetComponent should display loader when download button is clicked and hide loader after refreshToken API response" time="0.142">
     </testcase>
-    <testcase classname="FssFooterComponent should render 2 navigation elements in admiralty-footer" name="FssFooterComponent should render 2 navigation elements in admiralty-footer" time="0.048">
+    <testcase classname="EssDownloadExchangesetComponent should call loginPopup() when error in acquireTokenSilent in checkBatchStatus" name="EssDownloadExchangesetComponent should call loginPopup() when error in acquireTokenSilent in checkBatchStatus" time="0.181">
     </testcase>
-    <testcase classname="FssFooterComponent should exist data for footer navigation" name="FssFooterComponent should exist data for footer navigation" time="0.047">
+    <testcase classname="EssDownloadExchangesetComponent should call batchStatusAPI() when no error in acquireTokenSilent in checkBatchStatus" name="EssDownloadExchangesetComponent should call batchStatusAPI() when no error in acquireTokenSilent in checkBatchStatus" time="0.089">
     </testcase>
   </testsuite>
-  <testsuite name="ExchangeSetComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:05" time="2.061" tests="7">
-    <testcase classname="ExchangeSetComponent should create exchange set component" name="ExchangeSetComponent should create exchange set component" time="0.292">
+  <testsuite name="FssSearchRowComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:23" time="2.346" tests="8">
+    <testcase classname="FssSearchRowComponent should create FssSearchRowComponent" name="FssSearchRowComponent should create FssSearchRowComponent" time="0.292">
     </testcase>
-    <testcase classname="ExchangeSetComponent should have 2 radio button in exchange set component" name="ExchangeSetComponent should have 2 radio button in exchange set component" time="0.118">
+    <testcase classname="FssSearchRowComponent should return enable grouping true when consecutive search rows checked" name="FssSearchRowComponent should return enable grouping true when consecutive search rows checked" time="0.092">
     </testcase>
-    <testcase classname="ExchangeSetComponent should return 2 radio buttons value in exchange set" name="ExchangeSetComponent should return 2 radio buttons value in exchange set" time="0.085">
+    <testcase classname="FssSearchRowComponent should return enable grouping false when non consecutive search rows checked" name="FssSearchRowComponent should return enable grouping false when non consecutive search rows checked" time="0.062">
     </testcase>
-    <testcase classname="ExchangeSetComponent should show the sub heading in exchange set" name="ExchangeSetComponent should show the sub heading in exchange set" time="0.086">
+    <testcase classname="FssSearchRowComponent should emit when the search row delete button is clicked" name="FssSearchRowComponent should emit when the search row delete button is clicked" time="0.056">
     </testcase>
-    <testcase classname="ExchangeSetComponent should display addUploadEncComponents div when radioUploadEnc is checked " name="ExchangeSetComponent should display addUploadEncComponents div when radioUploadEnc is checked " time="0.065">
+    <testcase classname="FssSearchRowComponent should emit when group delete button is clicked" name="FssSearchRowComponent should emit when group delete button is clicked" time="0.07">
     </testcase>
-    <testcase classname="ExchangeSetComponent should display addSingleFileSection div when radioAddEnc is checked " name="ExchangeSetComponent should display addSingleFileSection div when radioAddEnc is checked " time="0.041">
+    <testcase classname="FssSearchRowComponent should emit when filed change in search row" name="FssSearchRowComponent should emit when filed change in search row" time="0.054">
+    </testcase>
+    <testcase classname="FssSearchRowComponent should emit group when onGroupClick" name="FssSearchRowComponent should emit group when onGroupClick" time="0.058">
+    </testcase>
+    <testcase classname="FssSearchRowComponent should disable grouping onCheckbox changed" name="FssSearchRowComponent should disable grouping onCheckbox changed" time="0.051">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:25" time="1.267" tests="2">
+    <testcase classname="FssSearchComponent should create FssSearchComponent" name="FssSearchComponent should create FssSearchComponent" time="0.28">
+    </testcase>
+    <testcase classname="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" name="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" time="0.079">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssHeaderComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:25" time="2.621" tests="8">
+    <testcase classname="FssHeaderComponent should exist msalService" name="FssHeaderComponent should exist msalService" time="0.176">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist signInButtonService" name="FssHeaderComponent should exist signInButtonService" time="0.084">
+    </testcase>
+    <testcase classname="FssHeaderComponent should have header component" name="FssHeaderComponent should have header component" time="0.09">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist" name="FssHeaderComponent should exist" time="0.055">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist the title in header" name="FssHeaderComponent should exist the title in header" time="0.032">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist Exchange set menu item in header" name="FssHeaderComponent should exist Exchange set menu item in header" time="0.049">
+    </testcase>
+    <testcase classname="FssHeaderComponent should not exist Exchange set search, menu item in header if not logged in" name="FssHeaderComponent should not exist Exchange set search, menu item in header if not logged in" time="0.034">
+    </testcase>
+    <testcase classname="FssHeaderComponent should exist Search menu item in header" name="FssHeaderComponent should exist Search menu item in header" time="0.053">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSimplifiedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:26" time="2.332" tests="9">
+    <testcase classname="FssSimplifiedSearchComponent should create FssSimplifiedSearchComponent" name="FssSimplifiedSearchComponent should create FssSimplifiedSearchComponent" time="0.345">
+    </testcase>
+    <testcase classname="FssSimplifiedSearchComponent should emit when the simplified search button is clicked" name="FssSimplifiedSearchComponent should emit when the simplified search button is clicked" time="0.154">
+    </testcase>
+    <testcase classname="FssSimplifiedSearchComponent should show Advanced search Link" name="FssSimplifiedSearchComponent should show Advanced search Link" time="0.072">
+    </testcase>
+    <testcase classname="FssSimplifiedSearchComponent should return filterExpression when the simplified search button is clicked with extra blank space" name="FssSimplifiedSearchComponent should return filterExpression when the simplified search button is clicked with extra blank space" time="0.079">
+    </testcase>
+    <testcase classname="FssSimplifiedSearchComponent should return filterExpression when the simplified search button is clicked with no extra blank space" name="FssSimplifiedSearchComponent should return filterExpression when the simplified search button is clicked with no extra blank space" time="0.105">
+    </testcase>
+    <testcase classname="FssSimplifiedSearchComponent should strip all single quotes from simplified search text" name="FssSimplifiedSearchComponent should strip all single quotes from simplified search text" time="0.075">
+    </testcase>
+    <testcase classname="FssSimplifiedSearchComponent should show the content of exchange sets on search page" name="FssSimplifiedSearchComponent should show the content of exchange sets on search page" time="0.088">
+    </testcase>
+    <testcase classname="FssSimplifiedSearchComponent should show the subtitle of exchange sets on search page" name="FssSimplifiedSearchComponent should show the subtitle of exchange sets on search page" time="0.063">
+    </testcase>
+    <testcase classname="FssSimplifiedSearchComponent should show Make an exchange set Link" name="FssSimplifiedSearchComponent should show Make an exchange set Link" time="0.086">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssHomeComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:26" time="2.799" tests="5">
+    <testcase classname="FssHomeComponent should have home component" name="FssHomeComponent should have home component" time="0.296">
+    </testcase>
+    <testcase classname="FssHomeComponent should render the element admiralty-card" name="FssHomeComponent should render the element admiralty-card" time="0.078">
+    </testcase>
+    <testcase classname="FssHomeComponent should render different texts inside admiralty-card" name="FssHomeComponent should render different texts inside admiralty-card" time="0.05">
+    </testcase>
+    <testcase classname="FssHomeComponent should render SignIn button inside admiralty-card" name="FssHomeComponent should render SignIn button inside admiralty-card" time="0.061">
+    </testcase>
+    <testcase classname="FssHomeComponent should render Create Account link inside admiralty-card" name="FssHomeComponent should render Create Account link inside admiralty-card" time="0.035">
+    </testcase>
+  </testsuite>
+  <testsuite name="ExchangeSetComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:27" time="2.053" tests="7">
+    <testcase classname="ExchangeSetComponent should create exchange set component" name="ExchangeSetComponent should create exchange set component" time="0.327">
+    </testcase>
+    <testcase classname="ExchangeSetComponent should have 2 radio button in exchange set component" name="ExchangeSetComponent should have 2 radio button in exchange set component" time="0.09">
+    </testcase>
+    <testcase classname="ExchangeSetComponent should return 2 radio buttons value in exchange set" name="ExchangeSetComponent should return 2 radio buttons value in exchange set" time="0.066">
+    </testcase>
+    <testcase classname="ExchangeSetComponent should show the sub heading in exchange set" name="ExchangeSetComponent should show the sub heading in exchange set" time="0.059">
+    </testcase>
+    <testcase classname="ExchangeSetComponent should display addUploadEncComponents div when radioUploadEnc is checked " name="ExchangeSetComponent should display addUploadEncComponents div when radioUploadEnc is checked " time="0.086">
+    </testcase>
+    <testcase classname="ExchangeSetComponent should display addSingleFileSection div when radioAddEnc is checked " name="ExchangeSetComponent should display addSingleFileSection div when radioAddEnc is checked " time="0.045">
     </testcase>
     <testcase classname="ExchangeSetComponent should show the content of paragraph in exchange set with selection limit from config" name="ExchangeSetComponent should show the content of paragraph in exchange set with selection limit from config" time="0.067">
     </testcase>
   </testsuite>
-  <testsuite name="FssAdvancedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:07:53" time="14.641" tests="21">
-    <testcase classname="FssAdvancedSearchComponent should create" name="FssAdvancedSearchComponent should create" time="0.676">
+  <testsuite name="FssPhaseBannerComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:28" time="1.233" tests="4">
+    <testcase classname="FssPhaseBannerComponent should have banner component" name="FssPhaseBannerComponent should have banner component" time="0.149">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.862">
+    <testcase classname="FssPhaseBannerComponent beta should exist in phase for banner" name="FssPhaseBannerComponent beta should exist in phase for banner" time="0.046">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.339">
+    <testcase classname="FssPhaseBannerComponent mailto link should exist in link for banner" name="FssPhaseBannerComponent mailto link should exist in link for banner" time="0.036">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return filtered operators based on number datatype" name="FssAdvancedSearchComponent should return filtered operators based on number datatype" time="0.335">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return value type text based on datatype string" name="FssAdvancedSearchComponent should return value type text based on datatype string" time="0.301">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" name="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" time="0.269">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return second row based on rowid passed" name="FssAdvancedSearchComponent should return second row based on rowid passed" time="0.269">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.257">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.307">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" name="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" time="0.284">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" name="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" time="0.256">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.238">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" name="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" time="0.305">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" name="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" time="0.277">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" name="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" time="0.285">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" name="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" time="0.222">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" time="0.271">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" name="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" time="0.242">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" name="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" time="0.263">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should emit when the advanced search button is clicked" name="FssAdvancedSearchComponent should emit when the advanced search button is clicked" time="0.198">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" name="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" time="0.943">
+    <testcase classname="FssPhaseBannerComponent feedback should exist in link for banner" name="FssPhaseBannerComponent feedback should exist in link for banner" time="0.023">
     </testcase>
   </testsuite>
-  <testsuite name="FssAdvancedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:07:53" time="14.669" tests="33">
-    <testcase classname="FssAdvancedSearchComponent should create" name="FssAdvancedSearchComponent should create" time="0.653">
+  <testsuite name="AppComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:29" time="1.684" tests="2">
+    <testcase classname="AppComponent should exist" name="AppComponent should exist" time="0.154">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.872">
+    <testcase classname="AppComponent should render &quot;Skip to Main Content&quot; in an anchor tag" name="AppComponent should render &quot;Skip to Main Content&quot; in an anchor tag" time="0.105">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.279">
+  </testsuite>
+  <testsuite name="FssAdvancedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:17" time="13.796" tests="21">
+    <testcase classname="FssAdvancedSearchComponent should create" name="FssAdvancedSearchComponent should create" time="0.627">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return filtered operators based on number datatype" name="FssAdvancedSearchComponent should return filtered operators based on number datatype" time="0.321">
+    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.814">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.371">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return filtered operators based on number datatype" name="FssAdvancedSearchComponent should return filtered operators based on number datatype" time="0.32">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return value type text based on datatype string" name="FssAdvancedSearchComponent should return value type text based on datatype string" time="0.386">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" name="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" time="0.326">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return second row based on rowid passed" name="FssAdvancedSearchComponent should return second row based on rowid passed" time="0.267">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.234">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.258">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" name="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" time="0.324">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" name="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" time="0.232">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.263">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" name="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" time="0.273">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" name="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" time="0.33">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" name="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" time="0.26">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" name="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" time="0.218">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" time="0.247">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" name="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" time="0.204">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" name="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" time="0.337">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should emit when the advanced search button is clicked" name="FssAdvancedSearchComponent should emit when the advanced search button is clicked" time="0.169">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" name="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" time="0.879">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssFooterComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:29" time="2.151" tests="4">
+    <testcase classname="FssFooterComponent should have footer component" name="FssFooterComponent should have footer component" time="0.188">
+    </testcase>
+    <testcase classname="FssFooterComponent should render image and navigation in ukho-footer" name="FssFooterComponent should render image and navigation in ukho-footer" time="0.063">
+    </testcase>
+    <testcase classname="FssFooterComponent should render 2 navigation elements in admiralty-footer" name="FssFooterComponent should render 2 navigation elements in admiralty-footer" time="0.1">
+    </testcase>
+    <testcase classname="FssFooterComponent should exist data for footer navigation" name="FssFooterComponent should exist data for footer navigation" time="0.049">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssAdvancedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:17" time="14.12" tests="33">
+    <testcase classname="FssAdvancedSearchComponent should create" name="FssAdvancedSearchComponent should create" time="0.701">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.847">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.335">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return filtered operators based on number datatype" name="FssAdvancedSearchComponent should return filtered operators based on number datatype" time="0.398">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return value type text based on datatype string" name="FssAdvancedSearchComponent should return value type text based on datatype string" time="0.299">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" name="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" time="0.242">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return second row based on rowid passed" name="FssAdvancedSearchComponent should return second row based on rowid passed" time="0.289">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.252">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.248">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" name="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" time="0.322">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" name="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" time="0.234">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.273">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" name="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" time="0.26">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" name="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" time="0.293">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" name="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" time="0.217">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" name="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" time="0.209">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" time="0.241">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" name="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" time="0.257">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" name="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" time="0.325">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should emit when the advanced search button is clicked" name="FssAdvancedSearchComponent should emit when the advanced search button is clicked" time="0.183">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" name="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" time="0.886">
+    </testcase>
+    <testcase classname="FssSearchHelperService should be created" name="FssSearchHelperService should be created" time="0.011">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return field value &quot;FileName&quot; when field text is changed to &quot;@FileName&quot;" name="FssSearchHelperService should return field value &quot;FileName&quot; when field text is changed to &quot;@FileName&quot;" time="0.008">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return false as endswith operator does not exists for BatchExpiryDate" name="FssSearchHelperService should return false as endswith operator does not exists for BatchExpiryDate" time="0.011">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return true as endswith operator exists for BatchExpiryDate" name="FssSearchHelperService should return true as endswith operator exists for BatchExpiryDate" time="0.015">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssSearchHelperService should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.012">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssSearchHelperService should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.027">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return second row based on rowid passed" name="FssSearchHelperService should return second row based on rowid passed" time="0.009">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return filtered operators based on number datatype" name="FssSearchHelperService should return filtered operators based on number datatype" time="0.008">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return value type text based on datatype string" name="FssSearchHelperService should return value type text based on datatype string" time="0.008">
+    </testcase>
+    <testcase classname="FssSearchHelperService should return operator type nullOperator based on operator value ne null" name="FssSearchHelperService should return operator type nullOperator based on operator value ne null" time="0.01">
+    </testcase>
+    <testcase classname="FssSearchHelperService should hide Value input when nullOperator is selected in the row" name="FssSearchHelperService should hide Value input when nullOperator is selected in the row" time="0.013">
+    </testcase>
+    <testcase classname="FssSearchHelperService should show Value input when other than nullOperator is selected in the row" name="FssSearchHelperService should show Value input when other than nullOperator is selected in the row" time="0.025">
+    </testcase>
+  </testsuite>
+  <testsuite name="EssInfoErrorMessageComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:30" time="2.052" tests="12">
+    <testcase classname="EssInfoErrorMessageComponent should create" name="EssInfoErrorMessageComponent should create" time="0.175">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent ngOnInit should set inital error messages" name="EssInfoErrorMessageComponent ngOnInit should set inital error messages" time="0.043">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent ngOnDestroy should essInfoErrorMessagesubscription.unsubscribe" name="EssInfoErrorMessageComponent ngOnDestroy should essInfoErrorMessagesubscription.unsubscribe" time="0.043">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 1" time="0.037">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 1" time="0.033">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 1" time="0.023">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 1" time="0.025">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 2" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 2" time="0.025">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 3" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 3" time="0.032">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 4" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 4" time="0.027">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 5" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 5" time="0.024">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : false info , " name="EssInfoErrorMessageComponent showMessage should set correct mesages : false info , " time="0.036">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSearchFilterService" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:31" time="1.129" tests="6">
+    <testcase classname="FssSearchFilterService should be created" name="FssSearchFilterService should be created" time="0.074">
+    </testcase>
+    <testcase classname="FssSearchFilterService should create valid filter expression for single search criteria" name="FssSearchFilterService should create valid filter expression for single search criteria" time="0.064">
+    </testcase>
+    <testcase classname="FssSearchFilterService should create valid filter expression for multiple search criteria" name="FssSearchFilterService should create valid filter expression for multiple search criteria" time="0.025">
+    </testcase>
+    <testcase classname="FssSearchFilterService should create valid filter expression for multiple search criteria for grouping query" name="FssSearchFilterService should create valid filter expression for multiple search criteria for grouping query" time="0.013">
+    </testcase>
+    <testcase classname="FssSearchFilterService should create valid filter expression for single search criteria" name="FssSearchFilterService should create valid filter expression for single search criteria" time="0.015">
+    </testcase>
+    <testcase classname="FssSearchFilterService should create valid filter expression for multiple search criteria" name="FssSearchFilterService should create valid filter expression for multiple search criteria" time="0.011">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSearchGroupingService" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:31" time="1.275" tests="4">
+    <testcase classname="FssSearchGroupingService FssSearchGroupingService should be created" name="FssSearchGroupingService FssSearchGroupingService should be created" time="0.058">
+    </testcase>
+    <testcase classname="FssSearchGroupingService should create valid grouping levels for selected groupings" name="FssSearchGroupingService should create valid grouping levels for selected groupings" time="0.029">
+    </testcase>
+    <testcase classname="FssSearchGroupingService should create valid ui groupings for selected groupings &amp; grouping levels" name="FssSearchGroupingService should create valid ui groupings for selected groupings &amp; grouping levels" time="0.025">
+    </testcase>
+    <testcase classname="FssSearchGroupingService should reset groupings on selected row deletion" name="FssSearchGroupingService should reset groupings on selected row deletion" time="0.039">
+    </testcase>
+  </testsuite>
+  <testsuite name="AuthGuard" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:31" time="1.349" tests="8">
+    <testcase classname="AuthGuard should be created" name="AuthGuard should be created" time="0.066">
+    </testcase>
+    <testcase classname="AuthGuard canActivate should return false and call router with [&quot;search&quot;] if account exists and url is /" name="AuthGuard canActivate should return false and call router with [&quot;search&quot;] if account exists and url is /" time="0.035">
+    </testcase>
+    <testcase classname="AuthGuard canActivate should return true if account exists and url is /search" name="AuthGuard canActivate should return true if account exists and url is /search" time="0.012">
+    </testcase>
+    <testcase classname="AuthGuard canActivate should return true if account exists and url is /enc-list" name="AuthGuard canActivate should return true if account exists and url is /enc-list" time="0.01">
+    </testcase>
+    <testcase classname="AuthGuard canActivate should return false if account exists and enc list is null and url is /enc-list" name="AuthGuard canActivate should return false if account exists and enc list is null and url is /enc-list" time="0.016">
+    </testcase>
+    <testcase classname="AuthGuard canActivate should return false and call router.navigation with [&quot;&quot;] if account is null and url is /search" name="AuthGuard canActivate should return false and call router.navigation with [&quot;&quot;] if account is null and url is /search" time="0.021">
+    </testcase>
+    <testcase classname="AuthGuard canActivate should return true if account is null and url is /" name="AuthGuard canActivate should return true if account is null and url is /" time="0.013">
+    </testcase>
+    <testcase classname="AuthGuard canActivate should return false if account is null and url is &quot;&quot;" name="AuthGuard canActivate should return false if account is null and url is &quot;&quot;" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSearchValidatorService" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:32" time="1.137" tests="5">
+    <testcase classname="FssSearchValidatorService should be created" name="FssSearchValidatorService should be created" time="0.084">
+    </testcase>
+    <testcase classname="FssSearchValidatorService should highlight the value field when FileSize value is not entered" name="FssSearchValidatorService should highlight the value field when FileSize value is not entered" time="0.029">
+    </testcase>
+    <testcase classname="FssSearchValidatorService should return datatype as &quot;date&quot; when SystemAttribute BatchExpiryDate is passed" name="FssSearchValidatorService should return datatype as &quot;date&quot; when SystemAttribute BatchExpiryDate is passed" time="0.024">
+    </testcase>
+    <testcase classname="FssSearchValidatorService should highlight the value field when BatchExpiryDate value is not entered when non null operator is selected" name="FssSearchValidatorService should highlight the value field when BatchExpiryDate value is not entered when non null operator is selected" time="0.027">
+    </testcase>
+    <testcase classname="FssSearchValidatorService should return operator type nullOperator based on operator value ne null" name="FssSearchValidatorService should return operator type nullOperator based on operator value ne null" time="0.026">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssPopularSearchBatchesComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:32" time="1.655" tests="1">
+    <testcase classname="FssPopularSearchBatchesComponent should create" name="FssPopularSearchBatchesComponent should create" time="0.118">
+    </testcase>
+  </testsuite>
+  <testsuite name="EssInfoErrorMessageService" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:32" time="0.883" tests="4">
+    <testcase classname="EssInfoErrorMessageService should be created" name="EssInfoErrorMessageService should be created" time="0.061">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageService infoErrorMessage should not be null" name="EssInfoErrorMessageService infoErrorMessage should not be null" time="0.026">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageService showInfoMessageSubject should not be null" name="EssInfoErrorMessageService showInfoMessageSubject should not be null" time="0.034">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageService showInfoErrorMessage should emit messages from showInfoMessageBSubject" name="EssInfoErrorMessageService showInfoErrorMessage should emit messages from showInfoMessageBSubject" time="0.015">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssSearchService" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:32" time="0.936" tests="8">
+    <testcase classname="FssSearchService should be created" name="FssSearchService should be created" time="0.085">
+    </testcase>
+    <testcase classname="FssSearchService should convert object of type any into Field[]" name="FssSearchService should convert object of type any into Field[]" time="0.014">
+    </testcase>
+    <testcase classname="FssSearchService should return the count of getJoinOperators list as 2" name="FssSearchService should return the count of getJoinOperators list as 2" time="0.014">
+    </testcase>
+    <testcase classname="FssSearchService should return the count of getOperators list as 14" name="FssSearchService should return the count of getOperators list as 14" time="0.012">
+    </testcase>
+    <testcase classname="FssSearchService should return the value of first JoinOperator as and" name="FssSearchService should return the value of first JoinOperator as and" time="0.037">
+    </testcase>
+    <testcase classname="FssSearchService should return the value of last JoinOperator as or" name="FssSearchService should return the value of last JoinOperator as or" time="0.01">
+    </testcase>
+    <testcase classname="FssSearchService should return the the value of first Operator list as eq" name="FssSearchService should return the the value of first Operator list as eq" time="0.012">
+    </testcase>
+    <testcase classname="FssSearchService should return the the value of last Operator list as not contains" name="FssSearchService should return the the value of last Operator list as not contains" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="FssAdvancedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:23" time="10.781" tests="31">
+    <testcase classname="FssAdvancedSearchComponent should create" name="FssAdvancedSearchComponent should create" time="0.711">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.882">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.358">
+    </testcase>
+    <testcase classname="FssAdvancedSearchComponent should return filtered operators based on number datatype" name="FssAdvancedSearchComponent should return filtered operators based on number datatype" time="0.271">
     </testcase>
     <testcase classname="FssAdvancedSearchComponent should return value type text based on datatype string" name="FssAdvancedSearchComponent should return value type text based on datatype string" time="0.316">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" name="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" time="0.275">
+    <testcase classname="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" name="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" time="0.228">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return second row based on rowid passed" name="FssAdvancedSearchComponent should return second row based on rowid passed" time="0.386">
+    <testcase classname="FssAdvancedSearchComponent should return second row based on rowid passed" name="FssAdvancedSearchComponent should return second row based on rowid passed" time="0.297">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.231">
+    <testcase classname="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.245">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.285">
+    <testcase classname="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.21">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" name="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" time="0.334">
+    <testcase classname="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" name="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" time="0.25">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" name="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" time="0.222">
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" name="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" time="0.236">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.333">
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.235">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" name="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" time="0.229">
+    <testcase classname="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" name="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" time="0.223">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" name="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" time="0.297">
+    <testcase classname="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" name="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" time="0.183">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" name="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" time="0.226">
+    <testcase classname="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" name="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" time="0.187">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" name="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" time="0.191">
+    <testcase classname="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" name="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" time="0.225">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" time="0.215">
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" time="0.18">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" name="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" time="0.321">
+    <testcase classname="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" name="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" time="0.167">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" name="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" time="0.289">
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" name="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" time="0.124">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should emit when the advanced search button is clicked" name="FssAdvancedSearchComponent should emit when the advanced search button is clicked" time="0.2">
+    <testcase classname="FssAdvancedSearchComponent should emit when the advanced search button is clicked" name="FssAdvancedSearchComponent should emit when the advanced search button is clicked" time="0.112">
     </testcase>
-    <testcase classname="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" name="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" time="0.888">
+    <testcase classname="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" name="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" time="0.475">
     </testcase>
-    <testcase classname="FssSearchHelperService should be created" name="FssSearchHelperService should be created" time="0.009">
+    <testcase classname="FssPopularSearchService should be created" name="FssPopularSearchService should be created" time="0.005">
     </testcase>
-    <testcase classname="FssSearchHelperService should return field value &quot;FileName&quot; when field text is changed to &quot;@FileName&quot;" name="FssSearchHelperService should return field value &quot;FileName&quot; when field text is changed to &quot;@FileName&quot;" time="0.018">
+    <testcase classname="FssPopularSearchService should return datatype as &quot;string&quot; when SystemAttribute BusinessUnit is passed" name="FssPopularSearchService should return datatype as &quot;string&quot; when SystemAttribute BusinessUnit is passed" time="0.006">
     </testcase>
-    <testcase classname="FssSearchHelperService should return false as endswith operator does not exists for BatchExpiryDate" name="FssSearchHelperService should return false as endswith operator does not exists for BatchExpiryDate" time="0.008">
+    <testcase classname="FssPopularSearchService should return filtered operators based on date datatype" name="FssPopularSearchService should return filtered operators based on date datatype" time="0.011">
     </testcase>
-    <testcase classname="FssSearchHelperService should return true as endswith operator exists for BatchExpiryDate" name="FssSearchHelperService should return true as endswith operator exists for BatchExpiryDate" time="0.007">
+    <testcase classname="FssPopularSearchService should return value type date based on datatype date" name="FssPopularSearchService should return value type date based on datatype date" time="0.004">
     </testcase>
-    <testcase classname="FssSearchHelperService should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssSearchHelperService should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.014">
+    <testcase classname="FssPopularSearchService should return 7 days previous date when 7,0,0 is passed in getDateBeforeNDays " name="FssPopularSearchService should return 7 days previous date when 7,0,0 is passed in getDateBeforeNDays " time="0.004">
     </testcase>
-    <testcase classname="FssSearchHelperService should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssSearchHelperService should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.009">
+    <testcase classname="FssPopularSearchService should return week number 36 when date passed is 2021-09-15" name="FssPopularSearchService should return week number 36 when date passed is 2021-09-15" time="0.004">
     </testcase>
-    <testcase classname="FssSearchHelperService should return second row based on rowid passed" name="FssSearchHelperService should return second row based on rowid passed" time="0.008">
-    </testcase>
-    <testcase classname="FssSearchHelperService should return filtered operators based on number datatype" name="FssSearchHelperService should return filtered operators based on number datatype" time="0.024">
-    </testcase>
-    <testcase classname="FssSearchHelperService should return value type text based on datatype string" name="FssSearchHelperService should return value type text based on datatype string" time="0.012">
-    </testcase>
-    <testcase classname="FssSearchHelperService should return operator type nullOperator based on operator value ne null" name="FssSearchHelperService should return operator type nullOperator based on operator value ne null" time="0.007">
-    </testcase>
-    <testcase classname="FssSearchHelperService should hide Value input when nullOperator is selected in the row" name="FssSearchHelperService should hide Value input when nullOperator is selected in the row" time="0.008">
-    </testcase>
-    <testcase classname="FssSearchHelperService should show Value input when other than nullOperator is selected in the row" name="FssSearchHelperService should show Value input when other than nullOperator is selected in the row" time="0.008">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssAdvancedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:07:53" time="14.814" tests="31">
-    <testcase classname="FssAdvancedSearchComponent should create" name="FssAdvancedSearchComponent should create" time="0.644">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="0.854">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.321">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return filtered operators based on number datatype" name="FssAdvancedSearchComponent should return filtered operators based on number datatype" time="0.409">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return value type text based on datatype string" name="FssAdvancedSearchComponent should return value type text based on datatype string" time="0.33">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" name="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" time="0.31">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return second row based on rowid passed" name="FssAdvancedSearchComponent should return second row based on rowid passed" time="0.358">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.308">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.261">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" name="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" time="0.267">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" name="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" time="0.282">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.272">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" name="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" time="0.297">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" name="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" time="0.253">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" name="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" time="0.206">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" name="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" time="0.229">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" time="0.298">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" name="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" time="0.269">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" name="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" time="0.227">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should emit when the advanced search button is clicked" name="FssAdvancedSearchComponent should emit when the advanced search button is clicked" time="0.25">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" name="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" time="0.818">
-    </testcase>
-    <testcase classname="FssPopularSearchService should be created" name="FssPopularSearchService should be created" time="0.014">
-    </testcase>
-    <testcase classname="FssPopularSearchService should return datatype as &quot;string&quot; when SystemAttribute BusinessUnit is passed" name="FssPopularSearchService should return datatype as &quot;string&quot; when SystemAttribute BusinessUnit is passed" time="0.026">
-    </testcase>
-    <testcase classname="FssPopularSearchService should return filtered operators based on date datatype" name="FssPopularSearchService should return filtered operators based on date datatype" time="0.007">
-    </testcase>
-    <testcase classname="FssPopularSearchService should return value type date based on datatype date" name="FssPopularSearchService should return value type date based on datatype date" time="0.007">
-    </testcase>
-    <testcase classname="FssPopularSearchService should return 7 days previous date when 7,0,0 is passed in getDateBeforeNDays " name="FssPopularSearchService should return 7 days previous date when 7,0,0 is passed in getDateBeforeNDays " time="0.005">
-    </testcase>
-    <testcase classname="FssPopularSearchService should return week number 36 when date passed is 2021-09-15" name="FssPopularSearchService should return week number 36 when date passed is 2021-09-15" time="0.005">
-    </testcase>
-    <testcase classname="FssPopularSearchService should return Year 2020 when date passed is 2021-01-01 and week number is 53" name="FssPopularSearchService should return Year 2020 when date passed is 2021-01-01 and week number is 53" time="0.008">
+    <testcase classname="FssPopularSearchService should return Year 2020 when date passed is 2021-01-01 and week number is 53" name="FssPopularSearchService should return Year 2020 when date passed is 2021-01-01 and week number is 53" time="0.005">
     </testcase>
     <testcase classname="FssPopularSearchService should return Year 2021 when date passed is 2021-01-07 and week number is 1" name="FssPopularSearchService should return Year 2021 when date passed is 2021-01-07 and week number is 1" time="0.007">
     </testcase>
-    <testcase classname="FssPopularSearchService should return System attribute test as @BusinessUnit when value passed is BusinessUnit" name="FssPopularSearchService should return System attribute test as @BusinessUnit when value passed is BusinessUnit" time="0.008">
+    <testcase classname="FssPopularSearchService should return System attribute test as @BusinessUnit when value passed is BusinessUnit" name="FssPopularSearchService should return System attribute test as @BusinessUnit when value passed is BusinessUnit" time="0.007">
     </testcase>
     <testcase classname="FssPopularSearchService should return User attribute test as Week Number when value passed is $batch(Week Number)" name="FssPopularSearchService should return User attribute test as Week Number when value passed is $batch(Week Number)" time="0.012">
     </testcase>
   </testsuite>
-  <testsuite name="EssInfoErrorMessageComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:06" time="1.911" tests="12">
-    <testcase classname="EssInfoErrorMessageComponent should create" name="EssInfoErrorMessageComponent should create" time="0.158">
+  <testsuite name="FssAdvancedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-07T17:01:17" time="18.152" tests="49">
+    <testcase classname="FssAdvancedSearchComponent should create" name="FssAdvancedSearchComponent should create" time="0.699">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent ngOnInit should set inital error messages" name="EssInfoErrorMessageComponent ngOnInit should set inital error messages" time="0.045">
+    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="1.088">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent ngOnDestroy should essInfoErrorMessagesubscription.unsubscribe" name="EssInfoErrorMessageComponent ngOnDestroy should essInfoErrorMessagesubscription.unsubscribe" time="0.049">
+    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.356">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 1" time="0.028">
+    <testcase classname="FssAdvancedSearchComponent should return filtered operators based on number datatype" name="FssAdvancedSearchComponent should return filtered operators based on number datatype" time="0.302">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 1" time="0.032">
+    <testcase classname="FssAdvancedSearchComponent should return value type text based on datatype string" name="FssAdvancedSearchComponent should return value type text based on datatype string" time="0.266">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 1" time="0.022">
+    <testcase classname="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" name="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" time="0.258">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 1" time="0.021">
+    <testcase classname="FssAdvancedSearchComponent should return second row based on rowid passed" name="FssAdvancedSearchComponent should return second row based on rowid passed" time="0.233">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 2" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 2" time="0.021">
+    <testcase classname="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.238">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 3" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 3" time="0.04">
+    <testcase classname="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.206">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 4" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 4" time="0.028">
+    <testcase classname="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" name="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" time="0.351">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 5" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 5" time="0.029">
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" name="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" time="0.261">
     </testcase>
-    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : false info , " name="EssInfoErrorMessageComponent showMessage should set correct mesages : false info , " time="0.018">
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.242">
     </testcase>
-  </testsuite>
-  <testsuite name="AppComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:07" time="1.621" tests="2">
-    <testcase classname="AppComponent should exist" name="AppComponent should exist" time="0.132">
+    <testcase classname="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" name="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" time="0.209">
     </testcase>
-    <testcase classname="AppComponent should render &quot;Skip to Main Content&quot; in an anchor tag" name="AppComponent should render &quot;Skip to Main Content&quot; in an anchor tag" time="0.08">
+    <testcase classname="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" name="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" time="0.263">
     </testcase>
-  </testsuite>
-  <testsuite name="EssUploadFileService" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:08" time="1.328" tests="29">
-    <testcase classname="EssUploadFileService should be created" name="EssUploadFileService should be created" time="0.05">
+    <testcase classname="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" name="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" time="0.233">
     </testcase>
-    <testcase classname="EssUploadFileService getEncFileData should return parsed json" name="EssUploadFileService getEncFileData should return parsed json" time="0.013">
+    <testcase classname="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" name="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" time="0.216">
     </testcase>
-    <testcase classname="EssUploadFileService isValidEncFile should return true/false based on file type and file contents" name="EssUploadFileService isValidEncFile should return true/false based on file type and file contents" time="0.014">
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" time="0.228">
     </testcase>
-    <testcase classname="EssUploadFileService extractEncsFromFile should return enc&quot;s if :ENC and :ECS exist in file" name="EssUploadFileService extractEncsFromFile should return enc&quot;s if :ENC and :ECS exist in file" time="0.011">
+    <testcase classname="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" name="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" time="0.219">
     </testcase>
-    <testcase classname="EssUploadFileService extractEncsFromFile should return enc&quot;s if :ENC and :ECS do not exist in file" name="EssUploadFileService extractEncsFromFile should return enc&quot;s if :ENC and :ECS do not exist in file" time="0.011">
+    <testcase classname="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" name="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" time="0.199">
     </testcase>
-    <testcase classname="EssUploadFileService getValidEncs should return encs" name="EssUploadFileService getValidEncs should return encs" time="0.01">
+    <testcase classname="FssAdvancedSearchComponent should emit when the advanced search button is clicked" name="FssAdvancedSearchComponent should emit when the advanced search button is clicked" time="0.217">
     </testcase>
-    <testcase classname="EssUploadFileService getValidEncs should return encs uploaded with different case" name="EssUploadFileService getValidEncs should return encs uploaded with different case" time="0.011">
+    <testcase classname="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" name="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" time="0.853">
     </testcase>
-    <testcase classname="EssUploadFileService validateENCFormat should return enc if passed parameter is valid else returns null" name="EssUploadFileService validateENCFormat should return enc if passed parameter is valid else returns null" time="0.013">
+    <testcase classname="EssListEncsComponent should create" name="EssListEncsComponent should create" time="0.233">
     </testcase>
-    <testcase classname="EssUploadFileService getEncFileData should return enc file data for csv file" name="EssUploadFileService getEncFileData should return enc file data for csv file" time="0.013">
+    <testcase classname="EssListEncsComponent should set info message if displayErrorMessage is set to true on ngOnInit" name="EssListEncsComponent should set info message if displayErrorMessage is set to true on ngOnInit" time="0.256">
     </testcase>
-    <testcase classname="EssUploadFileService isValidEncFile should return true/false based on file type and file contents for csv File" name="EssUploadFileService isValidEncFile should return true/false based on file type and file contents for csv File" time="0.011">
+    <testcase classname="EssListEncsComponent handleChange should call service.removeSelectedEncs if enc is already present" name="EssListEncsComponent handleChange should call service.removeSelectedEncs if enc is already present" time="0.163">
     </testcase>
-    <testcase classname="EssUploadFileService extractEncsFromFile should extract encs from file" name="EssUploadFileService extractEncsFromFile should extract encs from file" time="0.013">
+    <testcase classname="EssListEncsComponent handleChange should call service.addSelectedEnc if enc is not present" name="EssListEncsComponent handleChange should call service.addSelectedEnc if enc is not present" time="0.164">
     </testcase>
-    <testcase classname="EssUploadFileService extractEncsFromFile should extract encs from file and also removes blank data" name="EssUploadFileService extractEncsFromFile should extract encs from file and also removes blank data" time="0.01">
+    <testcase classname="EssListEncsComponent handleChange should not call service.addSelectedEnc if selected enc&quot;s are greater than MaxEncSelectionLimit" name="EssListEncsComponent handleChange should not call service.addSelectedEnc if selected enc&quot;s are greater than MaxEncSelectionLimit" time="0.158">
     </testcase>
-    <testcase classname="EssUploadFileService setValidENCs and getValidEncs should return valid encs" name="EssUploadFileService setValidENCs and getValidEncs should return valid encs" time="0.01">
+    <testcase classname="EssListEncsComponent syncEncsBetweenTables should set encList and selectedEncList" name="EssListEncsComponent syncEncsBetweenTables should set encList and selectedEncList" time="0.126">
     </testcase>
-    <testcase classname="EssUploadFileService setValidENCs and getValidEncs should return valid encs when duplicate record found" name="EssUploadFileService setValidENCs and getValidEncs should return valid encs when duplicate record found" time="0.009">
+    <testcase classname="EssListEncsComponent should show the error message when user select encs more than selection limit" name="EssListEncsComponent should show the error message when user select encs more than selection limit" time="0.166">
     </testcase>
-    <testcase classname="EssUploadFileService setValidENCs and getValidEncs should return valid encs as per configuration settings" name="EssUploadFileService setValidENCs and getValidEncs should return valid encs as per configuration settings" time="0.024">
+    <testcase classname="EssListEncsComponent should create EssListEncsComponent" name="EssListEncsComponent should create EssListEncsComponent" time="0.176">
     </testcase>
-    <testcase classname="EssUploadFileService service.infoMessage should set true/false" name="EssUploadFileService service.infoMessage should set true/false" time="0.01">
+    <testcase classname="EssListEncsComponent should render text inside an h1 tag" name="EssListEncsComponent should render text inside an h1 tag" time="0.17">
     </testcase>
-    <testcase classname="EssUploadFileService addSelectedEnc adds enc into selectedEncs" name="EssUploadFileService addSelectedEnc adds enc into selectedEncs" time="0.017">
+    <testcase classname="EssListEncsComponent should render text inside an p tag" name="EssListEncsComponent should render text inside an p tag" time="0.133">
     </testcase>
-    <testcase classname="EssUploadFileService removeSelectedEncs removes enc from selectedEncs" name="EssUploadFileService removeSelectedEncs removes enc from selectedEncs" time="0.011">
+    <testcase classname="EssListEncsComponent getValidEncs should return enc" name="EssListEncsComponent getValidEncs should return enc" time="0.115">
     </testcase>
-    <testcase classname="EssUploadFileService clearSelectedEncs clears enc from selectedEncs" name="EssUploadFileService clearSelectedEncs clears enc from selectedEncs" time="0.008">
+    <testcase classname="EssListEncsComponent should display Select All text when enc list is less than or equal to configurable enc limit" name="EssListEncsComponent should display Select All text when enc list is less than or equal to configurable enc limit" time="0.129">
     </testcase>
-    <testcase classname="EssUploadFileService valid encs should always be less than MaxEncLimit" name="EssUploadFileService valid encs should always be less than MaxEncLimit" time="0.01">
+    <testcase classname="EssListEncsComponent showListEncTOtal class applied to a selector" name="EssListEncsComponent showListEncTOtal class applied to a selector" time="0.123">
     </testcase>
-    <testcase classname="EssUploadFileService setValidSingleEnc should set single ENC in validEnc list" name="EssUploadFileService setValidSingleEnc should set single ENC in validEnc list" time="0.01">
+    <testcase classname="EssListEncsComponent bottomText class applied to a tag" name="EssListEncsComponent bottomText class applied to a tag" time="0.108">
     </testcase>
-    <testcase classname="EssUploadFileService checkMaxEncLimit should return true as per configuration settings" name="EssUploadFileService checkMaxEncLimit should return true as per configuration settings" time="0.013">
+    <testcase classname="EssListEncsComponent getEstimatedTotalSize called from syncEncsBetweenTables and should return string" name="EssListEncsComponent getEstimatedTotalSize called from syncEncsBetweenTables and should return string" time="0.092">
     </testcase>
-    <testcase classname="EssUploadFileService checkMaxEncLimit should return false as per configuration settings" name="EssUploadFileService checkMaxEncLimit should return false as per configuration settings" time="0.009">
+    <testcase classname="EssListEncsComponent getEstimatedTotalSize called from syncEncsBetweenTables and should return string" name="EssListEncsComponent getEstimatedTotalSize called from syncEncsBetweenTables and should return string" time="0.082">
     </testcase>
-    <testcase classname="EssUploadFileService addSingleEnc should set single ENC in validEnc list" name="EssUploadFileService addSingleEnc should set single ENC in validEnc list" time="0.01">
-    </testcase>
-    <testcase classname="EssUploadFileService should return true for valid encName" name="EssUploadFileService should return true for valid encName" time="0.013">
-    </testcase>
-    <testcase classname="EssUploadFileService should return false for invalid AIO encName" name="EssUploadFileService should return false for invalid AIO encName" time="0.008">
-    </testcase>
-    <testcase classname="EssUploadFileService getEstimatedTotalSize should return valid string" name="EssUploadFileService getEstimatedTotalSize should return valid string" time="0.008">
-    </testcase>
-    <testcase classname="EssUploadFileService getEstimatedTotalSize should return valid string" name="EssUploadFileService getEstimatedTotalSize should return valid string" time="0.008">
-    </testcase>
-    <testcase classname="EssUploadFileService getEstimatedTotalSize should return valid string" name="EssUploadFileService getEstimatedTotalSize should return valid string" time="0.012">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssPopularSearchBatchesComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:08" time="0.822" tests="1">
-    <testcase classname="FssPopularSearchBatchesComponent should create" name="FssPopularSearchBatchesComponent should create" time="0.171">
-    </testcase>
-  </testsuite>
-  <testsuite name="AuthGuard" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:08" time="0.931" tests="8">
-    <testcase classname="AuthGuard should be created" name="AuthGuard should be created" time="0.064">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return false and call router with [&quot;search&quot;] if account exists and url is /" name="AuthGuard canActivate should return false and call router with [&quot;search&quot;] if account exists and url is /" time="0.024">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return true if account exists and url is /search" name="AuthGuard canActivate should return true if account exists and url is /search" time="0.014">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return true if account exists and url is /enc-list" name="AuthGuard canActivate should return true if account exists and url is /enc-list" time="0.012">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return false if account exists and enc list is null and url is /enc-list" name="AuthGuard canActivate should return false if account exists and enc list is null and url is /enc-list" time="0.013">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return false and call router.navigation with [&quot;&quot;] if account is null and url is /search" name="AuthGuard canActivate should return false and call router.navigation with [&quot;&quot;] if account is null and url is /search" time="0.023">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return true if account is null and url is /" name="AuthGuard canActivate should return true if account is null and url is /" time="0.012">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return false if account is null and url is &quot;&quot;" name="AuthGuard canActivate should return false if account is null and url is &quot;&quot;" time="0.017">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssSearchGroupingService" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:08" time="0.998" tests="4">
-    <testcase classname="FssSearchGroupingService FssSearchGroupingService should be created" name="FssSearchGroupingService FssSearchGroupingService should be created" time="0.063">
-    </testcase>
-    <testcase classname="FssSearchGroupingService should create valid grouping levels for selected groupings" name="FssSearchGroupingService should create valid grouping levels for selected groupings" time="0.021">
-    </testcase>
-    <testcase classname="FssSearchGroupingService should create valid ui groupings for selected groupings &amp; grouping levels" name="FssSearchGroupingService should create valid ui groupings for selected groupings &amp; grouping levels" time="0.016">
-    </testcase>
-    <testcase classname="FssSearchGroupingService should reset groupings on selected row deletion" name="FssSearchGroupingService should reset groupings on selected row deletion" time="0.013">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:08" time="1.177" tests="2">
-    <testcase classname="FssSearchComponent should create FssSearchComponent" name="FssSearchComponent should create FssSearchComponent" time="0.275">
-    </testcase>
-    <testcase classname="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" name="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" time="0.083">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssPhaseBannerComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:09" time="1.032" tests="4">
-    <testcase classname="FssPhaseBannerComponent should have banner component" name="FssPhaseBannerComponent should have banner component" time="0.118">
-    </testcase>
-    <testcase classname="FssPhaseBannerComponent beta should exist in phase for banner" name="FssPhaseBannerComponent beta should exist in phase for banner" time="0.049">
-    </testcase>
-    <testcase classname="FssPhaseBannerComponent mailto link should exist in link for banner" name="FssPhaseBannerComponent mailto link should exist in link for banner" time="0.033">
-    </testcase>
-    <testcase classname="FssPhaseBannerComponent feedback should exist in link for banner" name="FssPhaseBannerComponent feedback should exist in link for banner" time="0.024">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssSearchService" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:09" time="1.032" tests="8">
-    <testcase classname="FssSearchService should be created" name="FssSearchService should be created" time="0.054">
-    </testcase>
-    <testcase classname="FssSearchService should convert object of type any into Field[]" name="FssSearchService should convert object of type any into Field[]" time="0.017">
-    </testcase>
-    <testcase classname="FssSearchService should return the count of getJoinOperators list as 2" name="FssSearchService should return the count of getJoinOperators list as 2" time="0.013">
-    </testcase>
-    <testcase classname="FssSearchService should return the count of getOperators list as 14" name="FssSearchService should return the count of getOperators list as 14" time="0.011">
-    </testcase>
-    <testcase classname="FssSearchService should return the value of first JoinOperator as and" name="FssSearchService should return the value of first JoinOperator as and" time="0.011">
-    </testcase>
-    <testcase classname="FssSearchService should return the value of last JoinOperator as or" name="FssSearchService should return the value of last JoinOperator as or" time="0.012">
-    </testcase>
-    <testcase classname="FssSearchService should return the the value of first Operator list as eq" name="FssSearchService should return the the value of first Operator list as eq" time="0.011">
-    </testcase>
-    <testcase classname="FssSearchService should return the the value of last Operator list as not contains" name="FssSearchService should return the the value of last Operator list as not contains" time="0.01">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssSearchValidatorService" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:09" time="1.105" tests="5">
-    <testcase classname="FssSearchValidatorService should be created" name="FssSearchValidatorService should be created" time="0.058">
-    </testcase>
-    <testcase classname="FssSearchValidatorService should highlight the value field when FileSize value is not entered" name="FssSearchValidatorService should highlight the value field when FileSize value is not entered" time="0.027">
-    </testcase>
-    <testcase classname="FssSearchValidatorService should return datatype as &quot;date&quot; when SystemAttribute BatchExpiryDate is passed" name="FssSearchValidatorService should return datatype as &quot;date&quot; when SystemAttribute BatchExpiryDate is passed" time="0.013">
-    </testcase>
-    <testcase classname="FssSearchValidatorService should highlight the value field when BatchExpiryDate value is not entered when non null operator is selected" name="FssSearchValidatorService should highlight the value field when BatchExpiryDate value is not entered when non null operator is selected" time="0.022">
-    </testcase>
-    <testcase classname="FssSearchValidatorService should return operator type nullOperator based on operator value ne null" name="FssSearchValidatorService should return operator type nullOperator based on operator value ne null" time="0.025">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssSearchFilterService" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:09" time="1.13" tests="6">
-    <testcase classname="FssSearchFilterService should be created" name="FssSearchFilterService should be created" time="0.049">
-    </testcase>
-    <testcase classname="FssSearchFilterService should create valid filter expression for single search criteria" name="FssSearchFilterService should create valid filter expression for single search criteria" time="0.017">
-    </testcase>
-    <testcase classname="FssSearchFilterService should create valid filter expression for multiple search criteria" name="FssSearchFilterService should create valid filter expression for multiple search criteria" time="0.011">
-    </testcase>
-    <testcase classname="FssSearchFilterService should create valid filter expression for multiple search criteria for grouping query" name="FssSearchFilterService should create valid filter expression for multiple search criteria for grouping query" time="0.012">
-    </testcase>
-    <testcase classname="FssSearchFilterService should create valid filter expression for single search criteria" name="FssSearchFilterService should create valid filter expression for single search criteria" time="0.011">
-    </testcase>
-    <testcase classname="FssSearchFilterService should create valid filter expression for multiple search criteria" name="FssSearchFilterService should create valid filter expression for multiple search criteria" time="0.011">
-    </testcase>
-  </testsuite>
-  <testsuite name="EssInfoErrorMessageService" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:08:09" time="0.87" tests="4">
-    <testcase classname="EssInfoErrorMessageService should be created" name="EssInfoErrorMessageService should be created" time="0.038">
-    </testcase>
-    <testcase classname="EssInfoErrorMessageService infoErrorMessage should not be null" name="EssInfoErrorMessageService infoErrorMessage should not be null" time="0.009">
-    </testcase>
-    <testcase classname="EssInfoErrorMessageService showInfoMessageSubject should not be null" name="EssInfoErrorMessageService showInfoMessageSubject should not be null" time="0.007">
-    </testcase>
-    <testcase classname="EssInfoErrorMessageService showInfoErrorMessage should emit messages from showInfoMessageBSubject" name="EssInfoErrorMessageService showInfoErrorMessage should emit messages from showInfoMessageBSubject" time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="FssAdvancedSearchComponent" errors="0" failures="0" skipped="0" timestamp="2023-07-06T16:07:53" time="18.781" tests="49">
-    <testcase classname="FssAdvancedSearchComponent should create" name="FssAdvancedSearchComponent should create" time="0.644">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" name="FssAdvancedSearchComponent should return datatype as &quot;attribute&quot; when UserAttribute is passed" time="1.063">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" name="FssAdvancedSearchComponent should return datatype as &quot;string&quot; when SystemAttribute FileName is passed" time="0.408">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return filtered operators based on number datatype" name="FssAdvancedSearchComponent should return filtered operators based on number datatype" time="0.311">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return value type text based on datatype string" name="FssAdvancedSearchComponent should return value type text based on datatype string" time="0.368">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" name="FssAdvancedSearchComponent should return operator type nullOperator based on operator value ne null" time="0.307">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return second row based on rowid passed" name="FssAdvancedSearchComponent should return second row based on rowid passed" time="0.297">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only SystemAttribute fields when type = SystemAttribute is passed through pipe" time="0.237">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" name="FssAdvancedSearchComponent should return only UserAttribute fields when type = UserAttribute is passed through pipe" time="0.266">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" name="FssAdvancedSearchComponent should return flag false when FileSize value is passed as number" time="0.305">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" name="FssAdvancedSearchComponent should return row count 2 when Add new line is called twice" time="0.225">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 when 3 rows exist and delete is called" time="0.225">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" name="FssAdvancedSearchComponent should hide Value input when nullOperator is selected in the row" time="0.233">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" name="FssAdvancedSearchComponent should return group already exists validation when duplicate group is added" time="0.271">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" name="FssAdvancedSearchComponent should return group cannot intersect validation when intersecting group is added" time="0.22">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" name="FssAdvancedSearchComponent should return group count 2 when 1 groups exist and add group clicked is called" time="0.238">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" name="FssAdvancedSearchComponent should return row count 2 &amp; modify grouping when 3 rows exist and delete is called" time="0.266">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" name="FssAdvancedSearchComponent should return group count 1 when 2 groups exist and delete group is called" time="0.307">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" name="FssAdvancedSearchComponent should return row count 2 when addSearchRow function is called twice" time="0.223">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should emit when the advanced search button is clicked" name="FssAdvancedSearchComponent should emit when the advanced search button is clicked" time="0.232">
-    </testcase>
-    <testcase classname="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" name="FssAdvancedSearchComponent should show simplified search Link if displaySimplifiedSearchLink is true" time="0.732">
-    </testcase>
-    <testcase classname="EssListEncsComponent should create" name="EssListEncsComponent should create" time="0.252">
-    </testcase>
-    <testcase classname="EssListEncsComponent should set info message if displayErrorMessage is set to true on ngOnInit" name="EssListEncsComponent should set info message if displayErrorMessage is set to true on ngOnInit" time="0.217">
-    </testcase>
-    <testcase classname="EssListEncsComponent handleChange should call service.removeSelectedEncs if enc is already present" name="EssListEncsComponent handleChange should call service.removeSelectedEncs if enc is already present" time="0.23">
-    </testcase>
-    <testcase classname="EssListEncsComponent handleChange should call service.addSelectedEnc if enc is not present" name="EssListEncsComponent handleChange should call service.addSelectedEnc if enc is not present" time="0.188">
-    </testcase>
-    <testcase classname="EssListEncsComponent handleChange should not call service.addSelectedEnc if selected enc&quot;s are greater than MaxEncSelectionLimit" name="EssListEncsComponent handleChange should not call service.addSelectedEnc if selected enc&quot;s are greater than MaxEncSelectionLimit" time="0.185">
-    </testcase>
-    <testcase classname="EssListEncsComponent syncEncsBetweenTables should set encList and selectedEncList" name="EssListEncsComponent syncEncsBetweenTables should set encList and selectedEncList" time="0.158">
-    </testcase>
-    <testcase classname="EssListEncsComponent should show the error message when user select encs more than selection limit" name="EssListEncsComponent should show the error message when user select encs more than selection limit" time="0.168">
-    </testcase>
-    <testcase classname="EssListEncsComponent should create EssListEncsComponent" name="EssListEncsComponent should create EssListEncsComponent" time="0.111">
-    </testcase>
-    <testcase classname="EssListEncsComponent should render text inside an h1 tag" name="EssListEncsComponent should render text inside an h1 tag" time="0.106">
-    </testcase>
-    <testcase classname="EssListEncsComponent should render text inside an p tag" name="EssListEncsComponent should render text inside an p tag" time="0.105">
-    </testcase>
-    <testcase classname="EssListEncsComponent getValidEncs should return enc" name="EssListEncsComponent getValidEncs should return enc" time="0.088">
-    </testcase>
-    <testcase classname="EssListEncsComponent should display Select All text when enc list is less than or equal to configurable enc limit" name="EssListEncsComponent should display Select All text when enc list is less than or equal to configurable enc limit" time="0.088">
-    </testcase>
-    <testcase classname="EssListEncsComponent showListEncTOtal class applied to a selector" name="EssListEncsComponent showListEncTOtal class applied to a selector" time="0.099">
-    </testcase>
-    <testcase classname="EssListEncsComponent bottomText class applied to a tag" name="EssListEncsComponent bottomText class applied to a tag" time="0.104">
-    </testcase>
-    <testcase classname="EssListEncsComponent getEstimatedTotalSize called from syncEncsBetweenTables and should return string" name="EssListEncsComponent getEstimatedTotalSize called from syncEncsBetweenTables and should return string" time="0.083">
-    </testcase>
-    <testcase classname="EssListEncsComponent getEstimatedTotalSize called from syncEncsBetweenTables and should return string" name="EssListEncsComponent getEstimatedTotalSize called from syncEncsBetweenTables and should return string" time="0.076">
-    </testcase>
-    <testcase classname="EssListEncsComponent should return exchangeSet details data" name="EssListEncsComponent should return exchangeSet details data" time="0.079">
+    <testcase classname="EssListEncsComponent should return exchangeSet details data" name="EssListEncsComponent should return exchangeSet details data" time="0.081">
     </testcase>
     <testcase classname="EssListEncsComponent should display Deselect All button when select all button is clicked" name="EssListEncsComponent should display Deselect All button when select all button is clicked" time="0.075">
     </testcase>
-    <testcase classname="EssListEncsComponent should display Select All button when Deselect all button is clicked" name="EssListEncsComponent should display Select All button when Deselect all button is clicked" time="0.08">
+    <testcase classname="EssListEncsComponent should display Select All button when Deselect all button is clicked" name="EssListEncsComponent should display Select All button when Deselect all button is clicked" time="0.075">
     </testcase>
     <testcase classname="EssListEncsComponent should hide select all button if enc list greater than max enc limit" name="EssListEncsComponent should hide select all button if enc list greater than max enc limit" time="0.066">
     </testcase>
-    <testcase classname="EssListEncsComponent should show select all button if enc list less than or equal to max enc limit" name="EssListEncsComponent should show select all button if enc list less than or equal to max enc limit" time="0.069">
+    <testcase classname="EssListEncsComponent should show select all button if enc list less than or equal to max enc limit" name="EssListEncsComponent should show select all button if enc list less than or equal to max enc limit" time="0.063">
     </testcase>
-    <testcase classname="EssListEncsComponent handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded" name="EssListEncsComponent handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded" time="0.065">
+    <testcase classname="EssListEncsComponent handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded" name="EssListEncsComponent handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded" time="0.069">
     </testcase>
-    <testcase classname="EssListEncsComponent selectDeselectAll should call &quot;service.addAllSelectedEncs&quot; if selectDeselectText=Select all enc length is greater than maxEncSelectionLimit" name="EssListEncsComponent selectDeselectAll should call &quot;service.addAllSelectedEncs&quot; if selectDeselectText=Select all enc length is greater than maxEncSelectionLimit" time="0.079">
+    <testcase classname="EssListEncsComponent selectDeselectAll should call &quot;service.addAllSelectedEncs&quot; if selectDeselectText=Select all enc length is greater than maxEncSelectionLimit" name="EssListEncsComponent selectDeselectAll should call &quot;service.addAllSelectedEncs&quot; if selectDeselectText=Select all enc length is greater than maxEncSelectionLimit" time="0.076">
     </testcase>
-    <testcase classname="EssListEncsComponent selectDeselectAll should call &quot;service.clearSelectedEncs&quot; if selectDeselectText=Deselect all" name="EssListEncsComponent selectDeselectAll should call &quot;service.clearSelectedEncs&quot; if selectDeselectText=Deselect all" time="0.075">
+    <testcase classname="EssListEncsComponent selectDeselectAll should call &quot;service.clearSelectedEncs&quot; if selectDeselectText=Deselect all" name="EssListEncsComponent selectDeselectAll should call &quot;service.clearSelectedEncs&quot; if selectDeselectText=Deselect all" time="0.073">
     </testcase>
-    <testcase classname="EssListEncsComponent getSelectDeselectText should return correct texts(Select all / Deselect all)" name="EssListEncsComponent getSelectDeselectText should return correct texts(Select all / Deselect all)" time="0.086">
+    <testcase classname="EssListEncsComponent getSelectDeselectText should return correct texts(Select all / Deselect all)" name="EssListEncsComponent getSelectDeselectText should return correct texts(Select all / Deselect all)" time="0.075">
     </testcase>
-    <testcase classname="EssListEncsComponent should return exchangeSetResponse on exchangeSetCreationResponse" name="EssListEncsComponent should return exchangeSetResponse on exchangeSetCreationResponse" time="0.106">
+    <testcase classname="EssListEncsComponent should return exchangeSetResponse on exchangeSetCreationResponse" name="EssListEncsComponent should return exchangeSetResponse on exchangeSetCreationResponse" time="0.1">
     </testcase>
-    <testcase classname="EssListEncsComponent exchangeSetCreationResponse should set ExchangeSetDetails" name="EssListEncsComponent exchangeSetCreationResponse should set ExchangeSetDetails" time="0.08">
+    <testcase classname="EssListEncsComponent exchangeSetCreationResponse should set ExchangeSetDetails" name="EssListEncsComponent exchangeSetCreationResponse should set ExchangeSetDetails" time="0.078">
     </testcase>
-    <testcase classname="EssListEncsComponent exchangeSetCreationResponse should set Error message on error" name="EssListEncsComponent exchangeSetCreationResponse should set Error message on error" time="0.081">
+    <testcase classname="EssListEncsComponent exchangeSetCreationResponse should set Error message on error" name="EssListEncsComponent exchangeSetCreationResponse should set Error message on error" time="0.077">
     </testcase>
   </testsuite>
 </testsuites>
