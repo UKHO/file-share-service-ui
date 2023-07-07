@@ -248,7 +248,11 @@ export class FssSearchComponent implements OnInit {
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
   }
 
-  pageChange(currentPage: any) {
+  onPageChangeHandler(value: Event) {
+    console.log(value)
+  }
+
+  pageChange(currentPage: number) {
     var paginatorAction = this.currentPage > currentPage ? "prev" : "next";
     this.displayLoader = true;
     this.currentPage = currentPage;
