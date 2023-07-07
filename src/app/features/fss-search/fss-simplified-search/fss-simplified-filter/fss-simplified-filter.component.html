@@ -1,1 +1,6 @@
-<ukho-filter [groups]="filterGroups" (filtersChange)="onApplyFilterClick($event)"></ukho-filter>
+<!--<ukho-filter [groups]="filterGroups" (filtersChange)="onApplyFilterClick($event)"></ukho-filter>-->
+<admiralty-filter>
+  <admiralty-filter-group [groupTitle]=group.title   *ngFor="let group of filterGroups"  >
+
+  </admiralty-filter-group>
+</admiralty-filter>
