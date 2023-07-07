@@ -40,7 +40,7 @@
     <br />
     <div class="pagination">
       <admiralty-paginator [label]="paginatorLabel" [pages]="pages" [currentPage]="currentPage"
-        (pageChange)="pageChange(currentPage)">
+        (pageChange)="pageChange($event)">
       </admiralty-paginator>
       <a href="#gotoFilterMenu" class="skip-to-content-link SkipToFilter section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"  >Go to Filter </a>
     </div> 
