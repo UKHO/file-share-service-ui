@@ -13,7 +13,7 @@
     <tbody>
         <tr *ngFor="let fssSearchRow of fssSearchRows; let i = index;" [id]=i>
             <td width="5%">
-                <ukho-checkbox id="fss-querytable-group-{{i+1}}" [(ngModel)]="fssSearchRow.group" (change)="onCheckboxClick()"></ukho-checkbox>
+                <admiralty-checkbox id="fss-querytable-group-{{i+1}}" [(ngModel)]="fssSearchRow.group" (admiraltyChange)="onCheckboxClick()"></admiralty-checkbox>
             </td>
             <td *ngIf="maxGroupingLevel === 0" [attr.aria-hidden]="maxGroupingLevel === 0"></td>
             <ng-container *ngFor="let grouping of uiGroupings | filter:'rowIndex':i">
