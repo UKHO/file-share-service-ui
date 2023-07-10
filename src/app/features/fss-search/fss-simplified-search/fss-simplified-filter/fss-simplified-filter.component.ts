@@ -22,12 +22,17 @@ export class FssSimplifiedFilterComponent implements OnInit{
   }
 
   onClearFilterClick() {
-    console.log("clearing filter");
-    this.filterGroups.forEach((groupItem) => {
-      for (let item of groupItem.items) {
-        item.selected = false;
-      }
+    //this.filterGroups.forEach((groupItem) => {
+    //  for (let item of groupItem.items) {
+    //    item.selected = false;
+    //  }
+   // });
+    this.filterGroups = this.filterGroups.map((group: FilterGroup) => {
+      const items = group.items.map((item) => {
+        const { selected, ...rest } = item;
+        return rest;
+      });
+      return { ...group, items };
     });
   }
-
 } 
