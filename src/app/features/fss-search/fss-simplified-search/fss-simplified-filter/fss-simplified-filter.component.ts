@@ -15,9 +15,17 @@ export class FssSimplifiedFilterComponent implements OnInit{
   ngOnInit(): void { }
 
 
-  onApplyFilterClick(filterGroups: FilterGroup[])
+  onApplyFilterClick()
   {
-    this.onApplyFilterButtonClicked.emit(filterGroups);
+    this.onApplyFilterButtonClicked.emit(this.filterGroups);
+  }
+
+  onClearFilterClick() {
+    this.filterGroups.forEach((groupItem) => {
+      for (let item of groupItem.items) {
+        item.selected = false;
+      }
+    });
   }
 
 } 

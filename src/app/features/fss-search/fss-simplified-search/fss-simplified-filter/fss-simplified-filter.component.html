@@ -1,8 +1,8 @@
 <!--<ukho-filter [groups]="filterGroups" (filtersChange)="onApplyFilterClick($event)"></ukho-filter>-->
-<admiralty-filter>
+<admiralty-filter filter-title="Filters"  (filterApplied)="onApplyFilterClick()" (filterCleared)="onClearFilterClick()">
   <admiralty-filter-group [groupTitle]=group.title *ngFor="let group of filterGroups">
     <div style="display: flex; flex-direction: column">
-      <admiralty-checkbox [labelText]=item.title *ngFor="let item of group.items">
+      <admiralty-checkbox [labelText]=item.title  [checked]=item.selected  *ngFor="let item of group.items">
 
       </admiralty-checkbox>
     </div>
