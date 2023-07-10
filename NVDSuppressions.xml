@@ -425,4 +425,40 @@
     <packageUrl regex="true">^pkg:npm/word\-wrap@.*$</packageUrl>
     <vulnerabilityName>1092330</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: json5:1.0.1
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/json5@.*$</packageUrl>
+    <vulnerabilityName>1092425</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: json5:2.2.1
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/json5@.*$</packageUrl>
+    <vulnerabilityName>1092426</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: semver:7.3.7
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/semver@.*$</packageUrl>
+    <vulnerabilityName>1092413</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: tough-cookie:4.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/tough\-cookie@.*$</packageUrl>
+    <vulnerabilityName>CVE-2023-26136</vulnerabilityName>
+  </suppress>
 </suppressions>
