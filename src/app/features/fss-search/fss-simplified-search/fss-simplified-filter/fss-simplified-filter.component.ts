@@ -22,9 +22,16 @@ export class FssSimplifiedFilterComponent implements OnInit{
     this.onApplyFilterButtonClicked.emit(this.filterGroups);
   }
 
+  onCheckBoxClick(item: any) {
+    item.selected = !item.selected;
+  }
+
+
   onCheckBoxChange(changeEvent: Event) {
     let value = changeEvent as CustomEvent<AdmiraltyCheckboxCustomEvent<FilterGroup>>;
+    console.log("Start change check")
     console.log(value.detail);
+    console.log("End change check")
   }
 
   onClearFilterClick() {

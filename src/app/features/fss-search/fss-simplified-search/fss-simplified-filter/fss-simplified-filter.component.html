@@ -4,6 +4,7 @@
     <div style="display: flex; flex-direction: column">
       <admiralty-checkbox [labelText]=item.title
                           [checked]=item.selected
+                          (click)="onCheckBoxClick(item)"
                           (admiraltyChange)="onCheckBoxChange($event)" *ngFor="let item of group.items">
 
       </admiralty-checkbox>
