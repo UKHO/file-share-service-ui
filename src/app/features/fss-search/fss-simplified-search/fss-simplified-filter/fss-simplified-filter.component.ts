@@ -17,10 +17,12 @@ export class FssSimplifiedFilterComponent implements OnInit{
 
   onApplyFilterClick()
   {
+    console.log("filter applied");
     this.onApplyFilterButtonClicked.emit(this.filterGroups);
   }
 
   onClearFilterClick() {
+    console.log("clearing filter");
     this.filterGroups.forEach((groupItem) => {
       for (let item of groupItem.items) {
         item.selected = false;
