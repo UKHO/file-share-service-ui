@@ -479,4 +479,31 @@
     <packageUrl regex="true">^pkg:npm/tough\-cookie@.*$</packageUrl>
     <vulnerabilityName>1092448</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: semver:5.7.1
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/semver@.*$</packageUrl>
+    <vulnerabilityName>1092459</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: semver:6.3.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/semver@.*$</packageUrl>
+    <vulnerabilityName>1092460</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: semver:7.3.7
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/semver@.*$</packageUrl>
+    <vulnerabilityName>1092461</vulnerabilityName>
+  </suppress>
 </suppressions>
