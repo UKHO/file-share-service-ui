@@ -44,36 +44,75 @@ ukho-dialogue section {
     margin: 0 0 10px 0;
 }
 
+admiralty-dialogue section {
+  margin: 0 0 10px 0;
+}
+
 #mainContainer {
-	.header-image {
-		width: 100%;
-		display: inherit;
-		height: 240px;
-		background: url(/assets/images/UKHO-1400x240.jpg) center center;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
-	ukho-card{
-	p {
-		font-size: x-large;
-		font-weight: 300;
-		margin-bottom: 20px;
-	}
-	button{
-		float: left;
-	}
-	a#fss-createaccount {
-		padding: 20px 0  20px 40px;
-		float: left;
-		&:hover {
-			text-decoration: none;
-		}
-	}
-}}
+  .header-image {
+    width: 100%;
+    display: inherit;
+    height: 240px;
+    background: url(/assets/images/UKHO-1400x240.jpg) center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  ukho-card {
+    p {
+      font-size: x-large;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    button {
+      float: left;
+    }
+
+    a#fss-createaccount {
+      padding: 20px 0 20px 40px;
+      float: left;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  admiralty-card {
+    p {
+      font-size: x-large;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    button {
+      float: left;
+    }
+
+    a#fss-createaccount {
+      padding: 20px 0 20px 40px;
+      float: left;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}
 
 ukho-phase-banner.phasebanner {
 	padding: 10px;
 	width: auto;
+}
+
+admiralty-phase-banner.phasebanner {
+  padding: 10px;
+  width: auto;
+}
+
+admiralty-table {
+  width: 100%;
 }
 
 button.fileDownload{
@@ -118,6 +157,12 @@ ukho-expansion{
 	section.expansion.bordered{
 		border-bottom: none !important;
 	}
+}
+
+admiralty-expansion {
+  section.expansion.bordered {
+    border-bottom: none !important;
+  }
 }
 
 .querytable, .attribute-table, .system-attribute-table {
@@ -173,6 +218,12 @@ ukho-expansion{
 	section{
 		border-bottom: none;
 	}
+}
+
+admiralty-expansion {
+  section {
+    border-bottom: none;
+  }
 }
 
 .result-margin{
