@@ -33,7 +33,7 @@
           <admiralty-table-header-cell>Download</admiralty-table-header-cell>
         </admiralty-table-header>
         <admiralty-table-body>
-          <admiralty-table-row *ngFor="let elements of batch.batchFileDetails.rowData">
+          <admiralty-table-row *ngFor="let element of batch.batchFileDetails.rowData">
             <admiralty-table-cell>{{element.FileName}}</admiralty-table-cell>
             <admiralty-table-cell>{{element.MimeType}}</admiralty-table-cell>
             <admiralty-table-cell>{{element.FileSize}}</admiralty-table-cell>
