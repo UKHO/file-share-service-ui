@@ -1,5 +1,5 @@
 <div class="result-margin" *ngFor="let batch of searchResultVM" id="{{batch.BatchID.value}}">
-  <ukho-card>
+  <admiralty-card>
     <table class="attribute-table">
       <caption class="sr-only">Attributes for Batch {{batch.SerialNumber}} </caption>
       <tr>
@@ -10,8 +10,7 @@
       </tr>
     </table>
 
-    <ukho-expansion class="expansionLabel" heading="Choose files to download" [alignHeadingRight]=true
-      [initialExpanded]=false>
+    <admiralty-expansion class="expansionLabel" heading="Choose files to download" align-Heading-Right=true>
       <table class="system-attribute-table">
         <caption class="sr-only">Details for Batch {{batch.SerialNumber}} </caption>
         <tr>
@@ -55,12 +54,13 @@
       <ng-container>
         <div class="downloadAllElement">
           <div class="downloadAllDialogItem" *ngIf="!batch.allFilesZipSize">
-            <ukho-dialogue id="downloadAllMessage{{batch.SerialNumber}}">
-              <h3>'Download all' function will be available when the files have been prepared</h3>
+            <admiralty-dialogue [type]='messageType'
+                                heading="'Download all' function will be available when the files have been prepared"
+                                id="downloadAllMessage{{batch.SerialNumber}}">
               <div>
                 You can select and download individual files, or try again later
               </div>
-            </ukho-dialogue>
+            </admiralty-dialogue>
           </div>
           <div class="downloadAllButtonItem">
             <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)"
@@ -70,6 +70,6 @@
           </div>
         </div>
       </ng-container>
-    </ukho-expansion>
-  </ukho-card>
+    </admiralty-expansion>
+  </admiralty-card>
 </div>
