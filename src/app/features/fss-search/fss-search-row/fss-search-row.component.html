@@ -25,10 +25,10 @@
                 </td>
             </ng-container>
             <td width="10%">
-                <ukho-select id="fss-querytable-joinoperator-{{i+1}}" *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
+                <admiralty-select id="fss-querytable-joinoperator-{{i+1}}" *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
                         {{joinOperator.text}}</option>
-                </ukho-select>
+                </admiralty-select>
             </td>
             <td width="25%">
                 <ukho-typeahead id="fss-querytable-field-{{i+1}}" class="ukhoTypeahead" [label]="label" [FormControl]="fssSearchRow.fieldFormControl" [showResultsOnInitialFocus]="true"
@@ -36,22 +36,22 @@
                 (valueChanged)="onFieldChange($event, fssSearchRow.rowId)"></ukho-typeahead>
             </td>
             <td width="20%">
-                <ukho-select id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
+                <admiralty-select id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (change)="onOperatorChange(operatorSelect, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "
                      value="{{Operator.value}}">{{Operator.text}}</option>
-                </ukho-select>
+                </admiralty-select>
             </td>
             <td class="valueTD" width="35.5%">
-                <ukho-textinput id="fss-querytable-value-{{i+1}}" [(ngModel)]="fssSearchRow.value" 
+                <admiralty-input id="fss-querytable-value-{{i+1}}" [(ngModel)]="fssSearchRow.value" 
                 *ngIf="!fssSearchRow.isValueHidden"
                 [type]= "fssSearchRow.valueType"
-                [formControl] = "fssSearchRow.valueFormControl"></ukho-textinput>
+                [formControl] = "fssSearchRow.valueFormControl"></admiralty-input>
 
-                <ukho-textinput id="fss-querytable-time-{{i+1}}" *ngIf="fssSearchRow.valueType == 'date' && !fssSearchRow.isValueHidden"
+                <admiralty-input id="fss-querytable-time-{{i+1}}" *ngIf="fssSearchRow.valueType == 'date' && !fssSearchRow.isValueHidden"
                  [(ngModel)]="fssSearchRow.time"
                 type = "time"
-                [formControl] = "fssSearchRow.valueFormControlTime"></ukho-textinput>
+                [formControl] = "fssSearchRow.valueFormControlTime"></admiralty-input>
              </td>
             <td>
                 <button class="delete deleteRow fa fa-times fa-1x" (click)="onSearchRowDelete(fssSearchRow.rowId)" aria-label="Delete Row"></button>

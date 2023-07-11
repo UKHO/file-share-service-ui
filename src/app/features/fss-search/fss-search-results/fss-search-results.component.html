@@ -28,13 +28,10 @@
       <admiralty-table>
         <admiralty-table-header>
           <admiralty-table-header-cell *ngFor="let heading of batch.batchFileDetails.columnData">{{heading}}</admiralty-table-header-cell>
-          <!--<admiralty-table-header-cell>FileName</admiralty-table-header-cell>
-          <admiralty-table-header-cell>MimeType</admiralty-table-header-cell>
-          <admiralty-table-header-cell>FileSize</admiralty-table-header-cell>
-          <admiralty-table-header-cell>Download</admiralty-table-header-cell>-->
         </admiralty-table-header>
         <admiralty-table-body>
           <admiralty-table-row *ngFor="let element of batch.batchFileDetails.rowData">
+            <!--<caption class="sr-only">Dowload files for Batch {{batch.SerialNumber}} Rhz: not sure what to do with this.</caption>-->
             <admiralty-table-cell>{{element.FileName}}</admiralty-table-cell>
             <admiralty-table-cell>{{element.MimeType}}</admiralty-table-cell>
             <admiralty-table-cell>{{element.FileSize}}</admiralty-table-cell>
@@ -48,32 +45,6 @@
         </admiralty-table-body>
       </admiralty-table>
 
-      <!--<table ukho-table [dataSource]="batch.batchFileDetails.rowData">
-        <caption class="sr-only">Dowload files for Batch {{batch.SerialNumber}}</caption>
-        <ng-container ukhoColumnDef="FileName">
-          <th ukho-header-cell *ukhoHeaderCellDef>FileName </th>
-          <td ukho-cell *ukhoCellDef="let element">{{element.FileName}}</td>
-        </ng-container>
-        <ng-container ukhoColumnDef="MimeType">
-          <th ukho-header-cell *ukhoHeaderCellDef>MimeType </th>
-          <td ukho-cell *ukhoCellDef="let element">{{element.MimeType}}</td>
-        </ng-container>
-        <ng-container ukhoColumnDef="FileSize">
-          <th ukho-header-cell *ukhoHeaderCellDef>FileSize </th>
-          <td ukho-cell *ukhoCellDef="let element">{{element.FileSize}}</td>
-        </ng-container>
-        <ng-container ukhoColumnDef="Download">
-          <th ukho-header-cell *ukhoHeaderCellDef>Download</th>
-          <td ukho-cell *ukhoCellDef="let element">
-            <button class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
-              attr.data-file-download-batch-id="{{batch.BatchID.value}}"
-              attr.aria-label="Download File for {{element.FileName}}"
-              (click)="downloadFile($event.target, element)"></button>
-          </td>
-        </ng-container>
-        <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
-        <tr ukho-row *ukhoRowDef="let row; columns: batch.batchFileDetails.columnData"></tr>
-      </table>-->
       <ng-container>
         <div class="downloadAllElement">
           <div class="downloadAllDialogItem" *ngIf="!batch.allFilesZipSize">
