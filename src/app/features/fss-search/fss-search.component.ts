@@ -64,18 +64,24 @@ export class FssSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.SimplifiedSearch;
+    console.log("Search Type:", this.activeSearchType)
+    console.log("Display Popular:", this.displayPopularSearch) //Rhz
   }
 
   ShowAdvancedSearchClicked() {
     this.activeSearchType = SearchType.AdvancedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
+    console.log("Search Type ADV:", this.activeSearchType)
+    console.log("Display Popular:", this.displayPopularSearch) //Rhz
   }
 
   ShowSimplifiedSearchClicked() {
     this.activeSearchType = SearchType.SimplifiedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
+    console.log("Search Type:", this.activeSearchType)
+    console.log("Display Popular:", this.displayPopularSearch) //Rhz
   }
 
   onAdvancedSearchClicked(fssAdvancedSearch: any) {
