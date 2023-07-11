@@ -25,7 +25,29 @@
         </tr>
       </table>
 
-      <table ukho-table [dataSource]="batch.batchFileDetails.rowData">
+      <admiralty-table>
+        <admiralty-table-header>
+          <admiralty-table-header-cell>FileName</admiralty-table-header-cell>
+          <admiralty-table-header-cell>MimeType</admiralty-table-header-cell>
+          <admiralty-table-header-cell>FileSize</admiralty-table-header-cell>
+          <admiralty-table-header-cell>Download</admiralty-table-header-cell>
+        </admiralty-table-header>
+        <admiralty-table-body>
+          <admiralty-table-row *ngFor="let elements of batch.batchFileDetails.rowData">
+            <admiralty-table-cell>{{element.FileName}}</admiralty-table-cell>
+            <admiralty-table-cell>{{element.MimeType}}</admiralty-table-cell>
+            <admiralty-table-cell>{{element.FileSize}}</admiralty-table-cell>
+            <admiralty-table-cell>
+              <button class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
+                      attr.data-file-download-batch-id="{{batch.BatchID.value}}"
+                      attr.aria-label="Download File for {{element.FileName}}"
+                      (click)="downloadFile($event.target, element)"></button>
+            </admiralty-table-cell>
+          </admiralty-table-row>
+        </admiralty-table-body>
+      </admiralty-table>
+
+      <!--<table ukho-table [dataSource]="batch.batchFileDetails.rowData">
         <caption class="sr-only">Dowload files for Batch {{batch.SerialNumber}}</caption>
         <ng-container ukhoColumnDef="FileName">
           <th ukho-header-cell *ukhoHeaderCellDef>FileName </th>
@@ -50,7 +72,7 @@
         </ng-container>
         <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
         <tr ukho-row *ukhoRowDef="let row; columns: batch.batchFileDetails.columnData"></tr>
-      </table>
+      </table>-->
       <ng-container>
         <div class="downloadAllElement">
           <div class="downloadAllDialogItem" *ngIf="!batch.allFilesZipSize">
