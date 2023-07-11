@@ -506,4 +506,13 @@
     <packageUrl regex="true">^pkg:npm/semver@.*$</packageUrl>
     <vulnerabilityName>1092461</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: tough-cookie:4.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/tough\-cookie@.*$</packageUrl>
+    <vulnerabilityName>1092470</vulnerabilityName>
+  </suppress>
 </suppressions>
