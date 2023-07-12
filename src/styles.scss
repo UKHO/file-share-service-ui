@@ -102,8 +102,8 @@ admiralty-dialogue section {
 }
 
 admiralty-select.no-labels {
-  padding-top: 12px;
-  margin-bottom: 0px;
+  padding-top: 12px !important;
+  margin-bottom: 0px !important;
   admiralty-label {
     display: none;
   }
