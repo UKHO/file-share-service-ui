@@ -72,6 +72,7 @@ export class FssSearchComponent implements OnInit {
     this.activeSearchType = SearchType.AdvancedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
+    this.displayPopularSearch = true;  //Rhz
     console.log("Search Type ADV:", this.activeSearchType)
     console.log("Display Popular:", this.displayPopularSearch) //Rhz
   }
