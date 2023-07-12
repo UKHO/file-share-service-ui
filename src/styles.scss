@@ -101,6 +101,17 @@ admiralty-dialogue section {
   }
 }
 
+admiralty-select.no-labels {
+  admiralty-label {
+    display: none;
+  }
+
+  admiralty-hint {
+    display: none;
+  }
+}
+
+
 ukho-phase-banner.phasebanner {
 	padding: 10px;
 	width: auto;

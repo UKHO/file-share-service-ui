@@ -55,7 +55,8 @@ export class FssSearchComponent implements OnInit {
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService, private titleService: Title, private router: Router) {
-    this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+    //this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
+    this.displayPopularSearch = true;  //Rhz
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
@@ -72,7 +73,7 @@ export class FssSearchComponent implements OnInit {
     this.activeSearchType = SearchType.AdvancedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
-    this.displayPopularSearch = true;  //Rhz
+    
     console.log("Search Type ADV:", this.activeSearchType)
     console.log("Display Popular:", this.displayPopularSearch) //Rhz
   }
