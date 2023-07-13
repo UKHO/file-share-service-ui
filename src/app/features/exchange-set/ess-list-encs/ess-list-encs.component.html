@@ -14,7 +14,7 @@
       <div *ngIf="encList && encList.length > 0">
         <p class ="ShowEncList">Your ENCs <span class="showListEncTOtal"> Showing {{encList.length}} ENCs </span>
         </p>
-        <table ukhoSort ukho-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
+        <!--<table ukhoSort ukho-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
           <ng-container ukhoColumnDef="enc">
             <th ukhoSortHeader ukhoHeaderCell *ukhoHeaderCellDef>ENC name
             </th>
@@ -29,7 +29,29 @@
           </ng-container>
           <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
           <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
-        </table>
+        </table>-->
+      <admiralty-table>
+        <admiralty-table-header>
+          <admiralty-table-header-cell>ENC name</admiralty-table-header-cell>
+          <admiralty-table-header-cell>
+            <admiralty-checkbox label-Text="Select"></admiralty-checkbox>
+          </admiralty-table-header-cell>
+        </admiralty-table-header>
+        <admiralty-table-body>
+          <admiralty-table-row *ngFor="let element of encList">
+            <admiralty-table-cell>{{element.enc}}</admiralty-table-cell>
+            <admiralty-table-cell>
+              <admiralty-checkbox [checked]="element.selected"
+                                  (click)="handleChange(element.enc, $event)"
+                                  class="selectEnc"
+                                  attr.aria-label="{{element.enc}}">
+                                    <span class="sr-only">{{element.enc}} </span>
+                                  </admiralty-checkbox>
+
+            </admiralty-table-cell>
+          </admiralty-table-row>
+        </admiralty-table-body>
+      </admiralty-table>
         <span class="sr-only" role="alert" aria-live="polite">{{selectDeselectEncAlert}}</span>
       </div>
        <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()"><i class="fa fa-plus fa-1x"></i> Add another ENC</a>     
