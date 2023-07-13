@@ -12,6 +12,7 @@ import { MockMSALInstanceFactory } from './fss-search.component.spec';
 import { ExchangeSetDetails } from '../../src/app/core/models/ess-response-types';
 import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
 describe('EssDownloadExchangesetComponent', () => {
   let component: EssDownloadExchangesetComponent;
   let msalService: MsalService;
@@ -46,7 +47,7 @@ describe('EssDownloadExchangesetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, ButtonModule, HttpClientModule, DialogueModule],
+      imports: [CommonModule, ButtonModule, HttpClientModule, DialogueModule, DesignSystemModule],
       declarations: [EssDownloadExchangesetComponent,EssInfoErrorMessageComponent],
       providers: [
         {

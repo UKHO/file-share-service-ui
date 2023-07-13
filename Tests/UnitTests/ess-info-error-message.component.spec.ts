@@ -3,13 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { DialogueModule } from '@ukho/design-system';
 import { EssInfoErrorMessageService, InfoErrorMessage } from '../../src/app/core/services/ess-info-error-message.service';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
+
 describe('EssInfoErrorMessageComponent', () => {
   let component: EssInfoErrorMessageComponent;
   let fixture: ComponentFixture<EssInfoErrorMessageComponent>;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DialogueModule],
+      imports: [DialogueModule, DesignSystemModule],
       declarations: [ EssInfoErrorMessageComponent ],
       providers: [EssInfoErrorMessageService]
     })
