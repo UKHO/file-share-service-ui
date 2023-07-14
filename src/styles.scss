@@ -104,8 +104,11 @@ admiralty-dialogue section {
 /*Rhz New Styles*/
 
 admiralty-select.no-labels {
-  padding-top: 12px !important;
-  margin-bottom: 0px !important;
+  select {
+    padding-top: 12px !important;
+    margin-bottom: 0px !important;
+  }
+
   admiralty-label {
     display: none;
   }

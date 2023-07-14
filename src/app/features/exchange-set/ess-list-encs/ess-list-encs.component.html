@@ -12,46 +12,70 @@
   <div class="showEncListWrapper">
     <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0">
-        <p class ="ShowEncList">Your ENCs <span class="showListEncTOtal"> Showing {{encList.length}} ENCs </span>
+        <p class="ShowEncList">
+          Your ENCs <span class="showListEncTOtal"> Showing {{encList.length}} ENCs </span>
         </p>
         <!--<table ukhoSort ukho-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
-          <ng-container ukhoColumnDef="enc">
-            <th ukhoSortHeader ukhoHeaderCell *ukhoHeaderCellDef>ENC name
+    <ng-container ukhoColumnDef="enc">
+      <th ukhoSortHeader ukhoHeaderCell *ukhoHeaderCellDef>ENC name
+      </th>
+      <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
+    </ng-container>
+    <ng-container ukhoColumnDef="Choose">
+      <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);"  class="selectDeselctBtn"   > {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
+      <td ukho-cell *ukhoCellDef="let element">
+        <ukho-checkbox  [checked]="element.selected" (change)="handleChange(element.enc, $event)" class="selectEnc"
+          attr.aria-label="{{element.enc}}" ><span class="sr-only">{{element.enc}} </span></ukho-checkbox>
+      </td>
+    </ng-container>
+    <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
+    <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
+  </table>-->
+
+        <table cdkSort cdk-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
+          <ng-container cdkColumnDef="enc">
+            <th cdkSortHeader cdkHeaderCell *cdkHeaderCellDef>
+              ENC name
             </th>
-            <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
+            <td cdk-cell *cdkCellDef="let element">{{element.enc}}</td>
           </ng-container>
-          <ng-container ukhoColumnDef="Choose">
-            <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);"  class="selectDeselctBtn"   > {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
-            <td ukho-cell *ukhoCellDef="let element">
-              <ukho-checkbox  [checked]="element.selected" (change)="handleChange(element.enc, $event)" class="selectEnc"
-                attr.aria-label="{{element.enc}}" ><span class="sr-only">{{element.enc}} </span></ukho-checkbox>
-            </td>
-          </ng-container>
-          <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
-          <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
-        </table>-->
-      <admiralty-table class="scroll-list">
-        <admiralty-table-header class="thead">
-          <admiralty-table-header-cell class="th">ENC name</admiralty-table-header-cell>
-          <admiralty-table-header-cell class="th">
-            <admiralty-checkbox label-Text="Select"></admiralty-checkbox>
-          </admiralty-table-header-cell>
-        </admiralty-table-header>
-        <admiralty-table-body class="tbody">
-          <admiralty-table-row class="tr" *ngFor="let element of encList">
-            <admiralty-table-cell>{{element.enc}}</admiralty-table-cell>
-            <admiralty-table-cell>
+          <ng-container cdkColumnDef="Choose">
+            <th class="selectDeselectHeader" cdk-header-cell *cdkHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);" class="selectDeselctBtn"> {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
+            <td cdk-cell *cdkCellDef="let element">
               <admiralty-checkbox [checked]="element.selected"
                                   (click)="handleChange(element.enc, $event)"
                                   class="selectEnc"
                                   attr.aria-label="{{element.enc}}">
-                                    <span class="sr-only">{{element.enc}} </span>
-                                  </admiralty-checkbox>
+                <span class="sr-only">{{element.enc}} </span>
+              </admiralty-checkbox>
+            </td>
+          </ng-container>
+          <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+          <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+        </table>
 
-            </admiralty-table-cell>
-          </admiralty-table-row>
-        </admiralty-table-body>
-      </admiralty-table>
+        <!--<admiralty-table class="scroll-list">
+    <admiralty-table-header class="thead">
+      <admiralty-table-header-cell class="th">ENC name</admiralty-table-header-cell>
+      <admiralty-table-header-cell class="th">
+        <admiralty-checkbox label-Text="Select"></admiralty-checkbox>
+      </admiralty-table-header-cell>
+    </admiralty-table-header>
+    <admiralty-table-body class="tbody">
+      <admiralty-table-row class="tr" *ngFor="let element of encList">
+        <admiralty-table-cell>{{element.enc}}</admiralty-table-cell>
+        <admiralty-table-cell>
+          <admiralty-checkbox [checked]="element.selected"
+                              (click)="handleChange(element.enc, $event)"
+                              class="selectEnc"
+                              attr.aria-label="{{element.enc}}">
+                                <span class="sr-only">{{element.enc}} </span>
+                              </admiralty-checkbox>
+
+        </admiralty-table-cell>
+      </admiralty-table-row>
+    </admiralty-table-body>
+  </admiralty-table>-->
         <span class="sr-only" role="alert" aria-live="polite">{{selectDeselectEncAlert}}</span>
       </div>
        <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()"><i class="fa fa-plus fa-1x"></i> Add another ENC</a>     
@@ -63,21 +87,25 @@
       <p class ="ShowEncList">Your selection <span class="showListEncTOtal"> {{(selectedEncList && selectedEncList.length>0)?selectedEncList.length:0}} ENCs selected </span>
       </p>
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
-        <!--<table ukho-table [dataSource]="selectedEncList" class="enc-list-table">
-          <ng-container ukhoColumnDef="enc">
-            <th ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
-            <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
-          </ng-container>
-          <ng-container ukhoColumnDef="X">
-            <th ukho-header-cell *ukhoHeaderCellDef></th>
-            <td  class="selectionClose" ukho-cell *ukhoCellDef="let element">
-              <button (click)="handleChange(element)" attr.aria-label="Remove {{element}} from selected ENC "><i class="fa fa-times fa-1x"></i> </button>
-            </td>
-          </ng-container>
-          <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
-          <tr ukho-row *ukhoRowDef="let row; columns: displaySelectedTableColumns"></tr>
-        </table>-->
-        <admiralty-table>
+        <table ukho-table [dataSource]="selectedEncList" class="enc-list-table">
+    <ng-container ukhoColumnDef="enc">
+      <th ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
+      <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
+    </ng-container>
+    <ng-container ukhoColumnDef="X">
+      <th ukho-header-cell *ukhoHeaderCellDef></th>
+      <td  class="selectionClose" ukho-cell *ukhoCellDef="let element">
+        <button (click)="handleChange(element)" attr.aria-label="Remove {{element}} from selected ENC "><i class="fa fa-times fa-1x"></i> </button>
+      </td>
+    </ng-container>
+    <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
+    <tr ukho-row *ukhoRowDef="let row; columns: displaySelectedTableColumns"></tr>
+  </table>
+
+
+
+
+        <!--<admiralty-table>
           <admiralty-table-header>
             <admiralty-table-header-cell>ENC name</admiralty-table-header-cell>
 
@@ -88,13 +116,18 @@
               <admiralty-table-cell class="selectionClose">
                 <admiralty-button (click)="handleChange(element)"
                                   attr.aria-label="Remove {{element}} from selected ENC ">
-                             <i class="fa fa-times fa-1x"></i>
+                  <i class="fa fa-times fa-1x"></i>
                 </admiralty-button>
 
               </admiralty-table-cell>
             </admiralty-table-row>
           </admiralty-table-body>
-        </admiralty-table>
+        </admiralty-table>-->
+
+        
+
+
+
       </div>     
        <p class="estimatedExchangeSetSize" aria-live="polite"> Estimated Exchange set size <span class="bottomText">{{estimatedTotalSize}} </span></p>
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
