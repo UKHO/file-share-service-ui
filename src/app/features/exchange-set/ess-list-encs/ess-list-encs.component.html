@@ -32,37 +32,15 @@
     <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
   </table>-->
 
-        <table cdkSort cdk-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
-          <ng-container cdkColumnDef="enc">
-            <th cdkSortHeader cdkHeaderCell *cdkHeaderCellDef>
-              ENC name
-            </th>
-            <td cdk-cell *cdkCellDef="let element">{{element.enc}}</td>
-          </ng-container>
-          <ng-container cdkColumnDef="Choose">
-            <th class="selectDeselectHeader" cdk-header-cell *cdkHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);" class="selectDeselctBtn"> {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
-            <td cdk-cell *cdkCellDef="let element">
-              <admiralty-checkbox [checked]="element.selected"
-                                  (click)="handleChange(element.enc, $event)"
-                                  class="selectEnc"
-                                  attr.aria-label="{{element.enc}}">
-                <span class="sr-only">{{element.enc}} </span>
-              </admiralty-checkbox>
-            </td>
-          </ng-container>
-          <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-          <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-
-        <!--<admiralty-table class="scroll-list">
-    <admiralty-table-header class="thead">
-      <admiralty-table-header-cell class="th">ENC name</admiralty-table-header-cell>
-      <admiralty-table-header-cell class="th">
+   <admiralty-table>
+    <admiralty-table-header>
+      <admiralty-table-header-cell>ENC name</admiralty-table-header-cell>
+      <admiralty-table-header-cell>
         <admiralty-checkbox label-Text="Select"></admiralty-checkbox>
       </admiralty-table-header-cell>
     </admiralty-table-header>
-    <admiralty-table-body class="tbody">
-      <admiralty-table-row class="tr" *ngFor="let element of encList">
+    <admiralty-table-body>
+      <admiralty-table-row *ngFor="let element of encList">
         <admiralty-table-cell>{{element.enc}}</admiralty-table-cell>
         <admiralty-table-cell>
           <admiralty-checkbox [checked]="element.selected"
@@ -75,7 +53,7 @@
         </admiralty-table-cell>
       </admiralty-table-row>
     </admiralty-table-body>
-  </admiralty-table>-->
+  </admiralty-table>
         <span class="sr-only" role="alert" aria-live="polite">{{selectDeselectEncAlert}}</span>
       </div>
        <a href="javascript:void(0)" class="lnkAddAnotherEnc" (click)="displaySingleEnc()"><i class="fa fa-plus fa-1x"></i> Add another ENC</a>     
@@ -101,31 +79,6 @@
     <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
     <tr ukho-row *ukhoRowDef="let row; columns: displaySelectedTableColumns"></tr>
   </table>
-
-
-
-
-        <!--<admiralty-table>
-          <admiralty-table-header>
-            <admiralty-table-header-cell>ENC name</admiralty-table-header-cell>
-
-          </admiralty-table-header>
-          <admiralty-table-body>
-            <admiralty-table-row *ngFor="let element of selectedEncList">
-              <admiralty-table-cell>{{element}}</admiralty-table-cell>
-              <admiralty-table-cell class="selectionClose">
-                <admiralty-button (click)="handleChange(element)"
-                                  attr.aria-label="Remove {{element}} from selected ENC ">
-                  <i class="fa fa-times fa-1x"></i>
-                </admiralty-button>
-
-              </admiralty-table-cell>
-            </admiralty-table-row>
-          </admiralty-table-body>
-        </admiralty-table>-->
-
-        
-
 
 
       </div>     
