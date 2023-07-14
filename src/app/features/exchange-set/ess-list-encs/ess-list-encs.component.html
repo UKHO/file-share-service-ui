@@ -30,15 +30,15 @@
           <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>
           <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
         </table>-->
-      <admiralty-table>
-        <admiralty-table-header>
-          <admiralty-table-header-cell>ENC name</admiralty-table-header-cell>
-          <admiralty-table-header-cell>
+      <admiralty-table class="scroll-list">
+        <admiralty-table-header class="thead">
+          <admiralty-table-header-cell class="th">ENC name</admiralty-table-header-cell>
+          <admiralty-table-header-cell class="th">
             <admiralty-checkbox label-Text="Select"></admiralty-checkbox>
           </admiralty-table-header-cell>
         </admiralty-table-header>
-        <admiralty-table-body>
-          <admiralty-table-row *ngFor="let element of encList">
+        <admiralty-table-body class="tbody">
+          <admiralty-table-row class="tr" *ngFor="let element of encList">
             <admiralty-table-cell>{{element.enc}}</admiralty-table-cell>
             <admiralty-table-cell>
               <admiralty-checkbox [checked]="element.selected"
