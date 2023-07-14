@@ -86,8 +86,7 @@
             <admiralty-table-row *ngFor="let element of selectedEncList">
               <admiralty-table-cell>{{element}}</admiralty-table-cell>
               <admiralty-table-cell class="selectionClose">
-                <admiralty-button [checked]="element.selected"
-                                  (click)="handleChange(element)"
+                <admiralty-button (click)="handleChange(element)"
                                   attr.aria-label="Remove {{element}} from selected ENC ">
                              <i class="fa fa-times fa-1x"></i>
                 </admiralty-button>
