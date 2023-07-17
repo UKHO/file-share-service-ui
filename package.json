@@ -28,8 +28,8 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
-    "@ukho/admiralty-angular": "^0.3.1--canary.46.bfb989d.0",
-    "@ukho/admiralty-core": "^0.3.1--canary.46.bfb989d.0",
+    "@ukho/admiralty-angular": "^0.3.7",
+    "@ukho/admiralty-core": "^0.3.7",
     "@ukho/design-system": "^4.7.1",
     "angular-google-tag-manager": "1.4.2",
     "jest-junit": "^12.1.0",
@@ -75,4 +75,3 @@
     "terser": "5.14.2"
   }
 }
-
