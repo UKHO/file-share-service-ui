@@ -30,16 +30,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
     this.addChooseFileButtonAttribute();
   }
 
-  //uploadListener($event: any): void { // called when user selects/drags file on file-input-control
-  //  this.validEncList = [];
-  //  this.encFile = ($event?.srcElement?.files || $event?.dataTransfer?.files)[0];
-  //  this.triggerInfoErrorMessage(false, 'info', '');
-  //  if (this.isInvalidEncFile(this.encFile)) {
-  //    this.triggerInfoErrorMessage(true, 'error', 'Please select a .csv or .txt file');
-  //    return;
-  //  }
-  //}
-
   onFileInputChange(changeEvent: Event) {
     this.validEncList = [];
     let data = changeEvent as CustomEvent<any>;
