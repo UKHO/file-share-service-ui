@@ -515,4 +515,13 @@
     <packageUrl regex="true">^pkg:npm/tough\-cookie@.*$</packageUrl>
     <vulnerabilityName>1092470</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: word-wrap:1.2.3
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/word\-wrap@.*$</packageUrl>
+    <vulnerabilityName>1092593</vulnerabilityName>
+  </suppress>
 </suppressions>
