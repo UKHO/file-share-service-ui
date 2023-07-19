@@ -5,8 +5,10 @@
     "loginPopupNextButtonSelector": "#continue",
     "loginPopupSignInPasswordSelector": "#password",
     "loginPopupSignInButtonSelector": "#next",
-    "loginSignInLinkSelector": "#signInButton",
-    "loginAccountSelector": "//div//ukho-button//button",
+    "profileLinkSelector": "admiralty-header-profile",
+    "signoutLinkName": "Sign Out",
+    "signinLinkText": "Sign in",
+    "loginAccountSelector": "//div//admiralty-button//button",
     "loginAccountLinkSelector": "#profile button"
   }
 }

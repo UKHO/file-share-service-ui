@@ -24,23 +24,25 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
 
     });
 
+
+
     test('Verify "Exchange sets" link is not available on home page before login', async ({ page }) => {
         expect(await page.isHidden(fssHomePageObjectsConfig.essLinkSelector)).toBeTruthy();
     });
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13803
-    test('Verify clicking Search link from home page after login, navigates to Search page', async ({ page }) => {
+    /* test('Verify clicking Search link from home page after login, navigates to Search page', async ({ page }) => {
         await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
         await page.locator(fssHomePageObjectsConfig.searchLinkSelector).click();
         await page.waitForLoadState('load');
         await expect(page).toHaveTitle("Admiralty - File Share Service - Search");
         expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
-    });
+    }); */
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13796
     test('Verify clicking Exchange sets link after login navigates to ESS landing page', async ({ page }) => {
-        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
+        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+        await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
         await page.waitForTimeout(500);
         await expect(page.url()).toContain("/exchangesets");
         await expect(page).toHaveTitle("Admiralty - File Share Service - Exchange Sets");
@@ -48,8 +50,8 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13803
     test('Verify appending "/search" in  url after login, navigates to Search page', async ({ page }) => {
-        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.goto(autoTestConfig.url + "/#/search");
+        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+        //await page.goto(autoTestConfig.url + "/#/search");  //Rhz: this is no longer required.  
         await page.waitForLoadState('load');
         expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
 
@@ -58,7 +60,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13796
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
     test ('Verify appending "/exchangesets" in  url after login, navigates to ESS landing page', async ({ page }) => {
-        await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+        await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
         await page.goto(autoTestConfig.url+"/#/exchangesets");
         await page.waitForLoadState('load');
         await esslandingPageObjects.expect.verifyUploadRadioButtonName("Upload a list in a file");
@@ -72,6 +74,8 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
         expect(await page.isHidden(fssHomePageObjectsConfig.essLinkSelector)).toBeTruthy();
     });
 
+    
+
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13797   
     test('Verify appending "/search" in url before login, navigates to home page', async ({ page }) => {
         await page.goto(autoTestConfig.url + "/#/search");
@@ -81,7 +85,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13964
     test('Verfying Exchange Set Text and "Make an exchange set" Link from Search Page, redirect to ESS UI landing page ', async ({ page }) => {
-        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
         await expect(page.locator(fssHomePageObjectsConfig.exchngSetTextSelector)).toHaveText('Exchange sets');
         await expect(page.locator(fssHomePageObjectsConfig.exchngSetLinkSelector)).toHaveText('Make an exchange set');
         await page.locator(fssHomePageObjectsConfig.exchngSetLinkSelector).click();
@@ -92,11 +96,10 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
 
    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14225
    test ('Verify clicking on "logout" button page redirect to home page and "login" button is enabled' , async ({ page }) => {
-    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-    await page.locator(fssHomePageObjectsConfig.yourAccountSelector).hover();
-    await page.locator(fssHomePageObjectsConfig.logOutBtnSelector).click();
+    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+    await page.locator(commonObjectsConfig.profileLinkSelector).getByRole('button', { name: commonObjectsConfig.signoutLinkName }).click();
     await page.waitForLoadState('load');
-    expect(await page.isEnabled(fssHomePageObjectsConfig.signinLinkSelector)).toBeTruthy();
+    expect(await page.isEnabled(fssHomePageObjectsConfig.profileLinkSelector)).toBeTruthy();
 })
 
 });

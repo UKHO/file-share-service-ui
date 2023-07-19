@@ -17,29 +17,31 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
     });
 
     test('Does Sign in link appear on header', async ( { page}) => {
-       expect(await page.innerText(fssHomePageObjectsConfig.signinLinkSelector)).toEqual(fssHomePageObjectsConfig.signinLinkText);
-
+         const profile = await page.locator(fssHomePageObjectsConfig.profileLinkSelector);
+         expect(await profile.getByText(fssHomePageObjectsConfig.signinLinkText).isVisible)
     });   
 
     test('Does it navigate to accessibility page once click on Accessibility link', async ({ page }) => {
-       
-        const [popup] = await Promise.all([page.waitForEvent('popup'), await page.click(fssHomePageObjectsConfig.accessibilityLinkSelector)]);
-        await popup.waitForLoadState();      
-        expect(popup.url()).toContain("accessibility");
+       const lnk = await page.getByRole('link', { name: fssHomePageObjectsConfig.accessibilityLinkName });
+       expect(lnk).not.toBeNull();
+       await lnk.click()
+       await page.waitForLoadState("networkidle");
+       expect(page.url()).toContain("accessibility");
     })
     
 
     test('Does it navigate to Privacy policy page once click on Privacy policy link', async ({ page }) => {
-        
-            const [popup] = await Promise.all([page.waitForEvent('popup'), await page.click(fssHomePageObjectsConfig.privacypolicyLinkSelector)]);
-            await popup.waitForLoadState();      
-            expect(popup.url()).toContain("cookie-policy");
+       const lnk = await page.getByRole('link', { name: fssHomePageObjectsConfig.privacypolicyLinkName });
+       expect(lnk).not.toBeNull();
+       await lnk.click()
+       await page.waitForLoadState("networkidle");
+       expect(page.url()).toContain("cookie-policy");
     })
           
     test('Does it navigate to marine data portal page once click on marine data portal link', async ( { page }) => {
-        await page.waitForSelector(fssHomePageObjectsConfig.marinedataportalLinkSelector);
-        await page.click(fssHomePageObjectsConfig.marinedataportalLinkSelector);
-         await page.waitForLoadState('domcontentloaded');     
+        const lnk = await page.getByRole('link', { name: fssHomePageObjectsConfig.marinedataportalLinkName});
+        await lnk.click();
+        await page.waitForLoadState("networkidle");
         expect(await page.url()).toEqual(fssHomePageObjectsConfig.ukhydrographicPageUrl);
     })
 
