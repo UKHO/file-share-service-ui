@@ -18,7 +18,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await page.goto(autoTestConfig.url);
       await page.waitForLoadState('load');
       await AcceptCookies(page);
-      await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+      await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+      //await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
       await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
       await esslandingPageObjects.uploadradiobtnSelectorClick();
       await esslandingPageObjects.uploadFile(page, './Tests/TestData/ENCs_Sorting.csv');
