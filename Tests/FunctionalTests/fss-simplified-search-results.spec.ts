@@ -15,7 +15,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(autoTestConfig.url)
     await AcceptCookies(page);
-    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
 
@@ -23,28 +23,23 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   test('Verify No results for non existing batch attribute value search', async ({ page }) => {
     //Enter non existing value in search box
+    //await page.getByRole("textbox").fill(searchNonExistBatchAttribute);
+    //await page.getByRole('button', {name : "Search"}).click();
     await InsertSearchText(page, searchNonExistBatchAttribute);
-    try {
-      await page.waitForSelector(fssSearchPageObjectsConfig.dialogInfoSelector);
-
-    } catch {
-      await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
-      await page.waitForSelector(fssSearchPageObjectsConfig.dialogInfoSelector);
-    }
-
-    const infoText = await page.innerText(fssSearchPageObjectsConfig.dialogInfoSelector);
-    expect(infoText).toEqual(fssSearchPageObjectsConfig.dialogInfoText);
+    const infoText = await page.locator(".dialogue-title").innerText();
+    expect(infoText).toContain(fssSearchPageObjectsConfig.dialogInfoText);
 
   })
 
   //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14327
   test('Verify search results for single batch attribute search', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
+
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
     // verify paginator links are available on the page
-    expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkPrevious)).toBeTruthy();
-    expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkNext)).toBeTruthy();
+    expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext })).toBeTruthy();
+    expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkPrevious })).toBeTruthy();
 
   })
 
@@ -87,7 +82,6 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   test('Verify search results specific batch attributes Not displayed on filter panel', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
     const filterSpeficAttributeCount = await GetSpecificAttributeCount(page, attributeProductType.key, attributeProductType.value);
@@ -117,36 +111,37 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   test('Verify batch attributes filter can select or deselect', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' '));
+    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' ')); //RHZ 
     const [attrCD, attrDVD] = attributeMultipleMediaType.value.split(' ');
-    
+
     //select filter check box 
-    await page.check(await filterCheckBox(attributeMultipleMediaType.key, attrCD));   
-    await page.check(await filterCheckBox(attributeMultipleMediaType.key, attrDVD));
+    await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').click();
+    await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').click();
 
     // Assert the filter checked state
-    expect(await page.isChecked(await filterCheckBox(attributeMultipleMediaType.key, attrCD))).toBeTruthy()
-    expect(await page.isChecked(await filterCheckBox(attributeMultipleMediaType.key, attrDVD))).toBeTruthy()
+    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').isChecked()).toBeTruthy();
+    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').isChecked()).toBeTruthy();
 
     //clicks on clear filter buttton
     await page.click(fssSearchPageObjectsConfig.clearFilterButton);
 
     // Assert the filter checked state
-    expect(await page.isChecked(await filterCheckBox(attributeMultipleMediaType.key, attrCD))).toBeFalsy()
-    expect(await page.isChecked(await filterCheckBox(attributeMultipleMediaType.key, attrDVD))).toBeFalsy()
+    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').isChecked()).toBeFalsy();
+    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').isChecked()).toBeFalsy();
+
 
   })
 
   test('Select batch attributes filter and clicks on Apply filters button and refine the search', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaTypes.value);
-
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaTypes.value.split(' '));
     //select batch attributes filter
-    await page.check(await filterCheckBox(attributeMultipleMediaTypes.key, attributeMultipleMediaTypes.value.split(' ')[0]));
+    await page.locator('admiralty-checkbox').filter({ hasText: attributeMultipleMediaTypes.value.split(' ')[0] }).locator('div').click();
 
     // Assert the filter checked state
-    expect(await page.isChecked(await filterCheckBox(attributeMultipleMediaTypes.key, attributeMultipleMediaTypes.value.split(' ')[0]))).toBeTruthy()
+    const cbChecked = await page.locator('admiralty-checkbox').filter({ hasText: attributeMultipleMediaTypes.value.split(' ')[0] }).locator('div').isChecked();
+    expect(cbChecked).toBeTruthy();
 
     //clicks on clear filter buttton
     await page.click(fssSearchPageObjectsConfig.applyFilterButton);
@@ -159,45 +154,49 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   test('Search multiple batch attributes and select filter and Apply filters button returned refined search', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' '));
+    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' ')); //RHZ 
 
     const [attributeValueCD, attributeValueDVD] = attributeMultipleMediaType.value.split(' ');
     //select batch attributes CD checkbox
-    await page.check(await filterCheckBox(attributeMultipleMediaType.key, attributeValueCD));
+    await page.locator('admiralty-checkbox').filter({ hasText: attributeValueCD }).locator('div').click();
 
     //clicks on apply filter buttton
-    await page.click(fssSearchPageObjectsConfig.applyFilterButton);
+    await page.getByRole('button', { name: 'Apply filters' }).click();
 
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
 
     // Verify all rescords belongs to media type value CD
-    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueCD);
+    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueCD); //RHZ 
 
     //uncheck batch attributes CD checkbox
-    await page.uncheck(await filterCheckBox(attributeMultipleMediaType.key, attributeValueCD));
+    await page.getByLabel(attributeValueCD).uncheck();
 
     //select batch attributes DVD checkbox
-    await page.check(await filterCheckBox(attributeMultipleMediaType.key, attributeValueDVD));
+    await page.locator('admiralty-checkbox').filter({ hasText: attributeValueDVD }).locator('div').click();
 
     //clicks on apply filter buttton
-    await page.click(fssSearchPageObjectsConfig.applyFilterButton);
+    await page.getByRole('button', { name: 'Apply filters' }).click();
 
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
 
     // Verify all rescords belongs to media type value DVD
-    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueDVD);
+    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueDVD); //RHZ 
 
   })
-  
+
   //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328
-  test ('Verify search results for single File name search', async ({ page }) => {              
+  test('Verify search results for single File name search', async ({ page }) => {
     await InsertSearchText(page, attributeFileName.value);
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
-    await page.waitForSelector(fssSearchPageObjectsConfig.fileAttributeTableFileNameSelector);
-    await ExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value);
+    //======================================
+    await page.waitForTimeout(2000);
+    await expect(page.getByText(attributeFileName.value).first()).toBeVisible();
+
+    //=======================================
+    await ExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value);    //RHZ 
     // verify paginator links are available on the page
-    expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkPrevious)).toBeTruthy();
-    expect(await page.isVisible(fssSearchPageObjectsConfig.paginatorLinkNext)).toBeTruthy();
-     
-   })
+    expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext })).toBeTruthy();
+    expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkPrevious })).toBeTruthy();
+
+  })
 })

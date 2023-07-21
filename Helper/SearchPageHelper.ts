@@ -98,12 +98,15 @@ export function DataCollectionComparison(collectionSource: any, collectionTarget
 }
 
 export async function InsertSearchText(page: Page, searchBatchAttribute: string) {
+  //await page.waitForTimeout(2000);
+  //await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, "");
+  //await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, searchBatchAttribute);
+  //await page.waitForTimeout(2000);
+  //await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
+  //await page.waitForTimeout(2000);
+  await page.getByRole("textbox").fill(searchBatchAttribute);
+  await page.getByRole('button', { name: "Search" }).click();
   await page.waitForTimeout(2000);
-  await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, "");
-  await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, searchBatchAttribute);
-  await page.waitForTimeout(2000);
-  await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
-  await page.waitForTimeout(2000); 
 }
 
 export async function ExpectAllResultsHaveBatchUserAttValue(
