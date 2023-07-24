@@ -41,7 +41,7 @@ export class EssLandingPageObjects {
         this.errorMessageSelector = this.page.locator("section:has-text('Please select a .csv or .txt file')");
         this.errorMessageExcludeENCsSelector = this.page.locator("//ukho-dialogue/section");
         this.txtFileNameWithExtension = this.page.locator("ValidAndInvalidENCs");
-        this.chooseuploadfileSelector = this.page.locator("span.instructions.ng-star-inserted");
+        this.chooseuploadfileSelector = page.locator('label').filter({ hasText: 'Click to choose a file' });
         this.errorMessageForInvalidENCSelector = this.page.locator("section:has-text('Invalid ENC number')");
         this.selectionTextSelector = this.page.locator("body > app-root:nth-child(1) > div:nth-child(4) > app-ess-list-encs:nth-child(2) > div:nth-child(2) > div:nth-child(4) > div:nth-child(3) > h3:nth-child(1)");
         this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");

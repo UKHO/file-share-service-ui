@@ -31,7 +31,7 @@ export class EsDownloadPageObjects {
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
         this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
         this.errorMessageSelector = this.page.locator("text = There has been an error");
-        this.selectedENCsSelector = this.page.locator("(//div/strong)[1]");
+        this.selectedENCsSelector = this.page.getByText(SelectedENCs + ' ENCs selected')
     }
 
     async downloadFile(page: Page, path: string): Promise<void> {
@@ -134,7 +134,6 @@ class EsDownloadPageAssertions {
 
     async SelectedENCs(): Promise<void> {
         expect(await this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
-        expect(await this.esDownloadPageObjects.selectedENCsSelector.innerText()).toEqual(SelectedENCs+' ENCs selected');
 
     }
 }

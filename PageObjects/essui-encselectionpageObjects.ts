@@ -68,7 +68,7 @@ export class EncSelectionPageObjects {
         this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
         this.leftTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[1]')
         this.rightTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[2]')
-        this.requestENCsSelector = this.page.locator("ukho-button.requestEncBtn");
+        this.requestENCsSelector = page.getByRole('button', { name: 'Request ENCs' })
 
     }
 

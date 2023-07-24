@@ -22,8 +22,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await page.goto(autoTestConfig.url);
         await page.waitForLoadState('load');
         await AcceptCookies(page);
-        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
+        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+        await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
