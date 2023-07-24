@@ -524,4 +524,13 @@
     <packageUrl regex="true">^pkg:npm/word\-wrap@.*$</packageUrl>
     <vulnerabilityName>1092593</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: minimatch:3.0.4
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
+    <vulnerabilityName>1092637</vulnerabilityName>
+  </suppress>
 </suppressions>
