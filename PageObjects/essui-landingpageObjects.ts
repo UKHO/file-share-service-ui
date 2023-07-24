@@ -149,12 +149,11 @@ class EssLandingPageAssertions {
     }
 
     async uploadbtntextSelectorContainText(expected: string): Promise<void> {
-        expect(await this.esslandingPageObjects.uploadbtntextSelector.innerText()).toEqual(expected);
+      await expect(this.esslandingPageObjects.page.getByRole('radio', { name: expected })).toBeVisible();
     }
 
     async addenctextSelectorContainText(expected: string): Promise<void> {
-
-        expect(await this.esslandingPageObjects.addenctextSelector.innerText()).toEqual(expected);
+      await expect(this.esslandingPageObjects.page.getByRole('radio', { name: expected })).toBeVisible();
     }
 
     async errorMessageSelectorContainText(expected: string): Promise<void> {
