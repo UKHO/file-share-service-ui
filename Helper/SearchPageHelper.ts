@@ -154,9 +154,12 @@ export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
 export async function ExpectAllResultsHaveFileAttributeValue(
   page: Page, preciseValue: string): Promise<void> {
 
+  //await ExpectSelectionsAreEqual(page,
+  //  `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
+  //  `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${preciseValue.toLowerCase()}')])]`);
   await ExpectSelectionsAreEqual(page,
-    `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${preciseValue.toLowerCase()}')])]`);
+    `//admiralty-table[@role='table']`,
+    `//admiralty-table[@role='table' and  .//admiralty-table-cell[contains(., '${preciseValue.toLowerCase()}')]]`);  //Rhz
 }
 
 async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {

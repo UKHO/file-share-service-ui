@@ -19,7 +19,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
   test.beforeEach(async ( {page}) => {
     await page.goto(autoTestConfig.url);
     await AcceptCookies(page);
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
         .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
@@ -112,7 +112,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
     const resultCount = await GetCountOfBatchRows(page);        
     //Get the product counts on UI
-    const paginatorText=await page.innerText(fssSearchPageObjectsConfig.paginatorSelector);
+    const paginatorText = await page.innerText(fssSearchPageObjectsConfig.paginatorPageCount);
     expect(paginatorText).toContain(`Showing 1-${resultCount}`);
     
   });

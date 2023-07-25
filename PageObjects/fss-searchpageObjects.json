@@ -39,6 +39,7 @@
     "paginatorTextSelector": "[aria-label='pagination']>p",
     "paginatorLinkPrevious": "Previous Page",
     "paginatorLinkNext": "Next Page",
+    "paginatorPageCount": "admiralty-paginator nav",
     "filterBatchAttributes": ".filters h3",
     "clearFilterButton": "button.text-link[type='reset']",
     "applyFilterButton": "//button[text()='Apply filters']",
