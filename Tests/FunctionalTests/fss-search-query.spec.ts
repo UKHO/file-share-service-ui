@@ -174,7 +174,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
 
     await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
     // Verify dialog info for no records
-    const infoText = await page.innerText(fssSearchPageObjectsConfig.dialogInfoSelector);
+    const infoText = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
     expect(infoText).toEqual(fssSearchPageObjectsConfig.dialogInfoText);
   });
 
@@ -183,10 +183,10 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeFileSize.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, 'L1K2');
-    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogWarningSelector);
+    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
 
     // Verify warning message
-    const warningMessage = await page.innerText(fssSearchPageObjectsConfig.dialogWarningSelector);
+    const warningMessage = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
     expect(warningMessage).toEqual(fssSearchPageObjectsConfig.dialogWarningText);
   });
 
@@ -197,7 +197,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
 
     // Verify dialog info for no records
-    const infoText = await page.innerText(fssSearchPageObjectsConfig.dialogInfoSelector);
+    const infoText = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
     expect(infoText).toEqual(fssSearchPageObjectsConfig.dialogInfoText);
   });
 

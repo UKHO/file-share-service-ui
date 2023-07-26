@@ -26,7 +26,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     //await page.getByRole("textbox").fill(searchNonExistBatchAttribute);
     //await page.getByRole('button', {name : "Search"}).click();
     await InsertSearchText(page, searchNonExistBatchAttribute);
-    const infoText = await page.locator(".dialogue-title").innerText();
+    const infoText = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
     expect(infoText).toContain(fssSearchPageObjectsConfig.dialogInfoText);
 
   })
