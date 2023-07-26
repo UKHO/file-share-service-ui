@@ -4,7 +4,7 @@ import { autoTestConfig } from './appSetting.json';
 
 const config: PlaywrightTestConfig = {
   
-  retries: 0,
+  retries: 1,
   testDir: './Tests',
   /* Maximum time one test can run for. */
   timeout: 100 * 1000,

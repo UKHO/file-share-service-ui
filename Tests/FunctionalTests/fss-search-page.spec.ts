@@ -26,19 +26,19 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
     expect(simplifiedSearchLink).toEqual(fssSearchPageObjectsConfig.simplifiedSearchLinkText);
   });
 
-  test('Verify if click search button without selecting a field value', async ({ page }) => {
-    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogWarningSelector);
+  test('Verify if click search button without selecting a field value', async ( {page}) => {
+    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
     const maxtime = Date.now() + 20000;
     while (Date.now() < maxtime) {
-      if (await page.locator(fssSearchPageObjectsConfig.dialogWarningSelector).textContent() === fssSearchPageObjectsConfig.warningMessageValue) {
+      if (await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).textContent() === fssSearchPageObjectsConfig.warningMessageValue) {
         break;
       }
       else {
-        await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogWarningSelector);
+        await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
       }
     }
 
-    var errorMessage = await page.innerText(fssSearchPageObjectsConfig.dialogWarningSelector);
+    var errorMessage = await page.innerText(fssSearchPageObjectsConfig.dialogTitleSelector);
     expect(errorMessage).toContain(fssSearchPageObjectsConfig.warningMessageValue);
 
   })
