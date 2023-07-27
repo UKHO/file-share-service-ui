@@ -5,7 +5,7 @@ import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObje
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import {
   ExpectAllResultsHaveBatchUserAttValue, ExpectAllResultsContainAnyBatchUserAttValue,
-  ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed,
+  ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed, AdmiraltyExpectAllResultsHaveFileAttributeValue,
   GetTotalResultCount, filterCheckBox, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue,ExpectAllResultsHaveFileAttributeValue
 } from '../../Helper/SearchPageHelper';
 import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType,attributeFileName } from '../../Helper/ConstantHelper';
@@ -193,7 +193,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await expect(page.getByText(attributeFileName.value).first()).toBeVisible();
 
     //=======================================
-    await ExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value);    //RHZ 
+    await AdmiraltyExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value); 
     // verify paginator links are available on the page
     expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext })).toBeTruthy();
     expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkPrevious })).toBeTruthy();

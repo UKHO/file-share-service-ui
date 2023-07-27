@@ -162,6 +162,30 @@ export async function ExpectAllResultsHaveFileAttributeValue(
     `//admiralty-table[@role='table' and  .//admiralty-table-cell[contains(., '${preciseValue.toLowerCase()}')]]`);  //Rhz
 }
 
+export async function AdmiraltyExpectAllResultsHaveFileAttributeValue(
+  page: Page, preciseValue: string): Promise<void> {
+  const admiraltyTables = await page.$$('admiralty-table');
+  const filteredTables = await Promise.all(admiraltyTables.map(async (table) => {
+    const cells = await table.$$('admiralty-table-cell');
+    const hasTest = await Promise.all(cells.map(async (cell) => {
+      const text = await cell.textContent();
+      if (text != null) {
+        return text.toLowerCase().includes(preciseValue.toLowerCase());
+      } else {
+        return false;
+      }
+    }));
+    return hasTest.includes(true) ? table : null;
+  }));
+
+  const filteredTablesWithoutNulls = filteredTables.filter((table) => table !== null);
+
+  expect(admiraltyTables.length).toEqual(filteredTablesWithoutNulls.length);
+}
+
+
+
+
 async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {
   await page.waitForTimeout(3000);
   //  count the result rows
