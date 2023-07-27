@@ -193,8 +193,8 @@ async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, tableBatchAtt
 
     for (let rc = 0; rc < resultCount; rc++) {
       const searchedBatchAttibutes = await page.$$eval(`${tableBatchAttribute}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
-      page.waitForTimeout(2000);
-      const searchFileName = await page.$$eval(`${filePath}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
+      //page.waitForTimeout(2000);
+      //const searchFileName = await page.$$eval(`${filePath}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
 
       switch (true) {
         case (searchedBatchAttibutes[rc]?.includes(condition[0])):
@@ -248,7 +248,10 @@ export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumn
     expect(attributeFieldCount).toEqual(resultCount);
 
     //if next page paginator link is disable break the infinite loop
-    if (await page.locator(fssSearchPageObjectsConfig.paginatorLinkNextDisabled).isVisible()) {
+    //it seems that playwright equates disabled to visible false
+    //await page.locator(fssSearchPageObjectsConfig.paginatorLinkNextDisabled).isVisible()
+    const visibleState = await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext }).isVisible();
+    if (!visibleState) {
       break;
     }
     else {
