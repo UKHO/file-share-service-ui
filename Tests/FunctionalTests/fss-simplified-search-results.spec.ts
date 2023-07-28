@@ -95,14 +95,14 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' '));
 
-    const configuredBatchAttibutes = await page.$$eval(fssSearchPageObjectsConfig.filterBatchAttributes, elements => { return elements.map(element => element.textContent) });
+    const configuredBatchAttibutes = await page.$$eval('admiralty-filter h3', elements => { return elements.map(element => element.textContent) })
     const filterCount = configuredBatchAttibutes.length;
     expect(filterCount).toBeGreaterThan(0);
 
     for (let i = 0; i < filterCount; i++) {
       expect(batchAttributeKeys.includes(configuredBatchAttibutes[i])).toBeTruthy();
       //filter values count should be more than one
-      const batchAttibutesValues = await page.$$eval(`[aria-label='${configuredBatchAttibutes[i]}'] label`, elements => { return elements.map(element => element.textContent) });
+      const batchAttibutesValues = await page.$$eval(`//admiralty-filter//admiralty-expansion[contains(., '${configuredBatchAttibutes[i]}')]//admiralty-checkbox`, elements => { return elements.map(element => element.textContent) });
       expect(batchAttibutesValues.length).toBeGreaterThan(1);
     }
 
