@@ -7,7 +7,7 @@ import {SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, TryGetFileSiz
   , ExpectAllResultsHaveBatchUserAttValue,
   ExpectAllResultsContainBatchUserAttValue,
   ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount,
-  GetCountOfBatchRows} from '../../Helper/SearchPageHelper';
+  GetCountOfBatchRows,AdmiraltyGetFileSizeCount} from '../../Helper/SearchPageHelper';
 import { attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize, searchNonExistBatchAttribute} from '../../Helper/ConstantHelper';
 
 const searchQuerySqlInjection = "adds''; drop table BatchAttribute";
@@ -150,21 +150,26 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     expect(countWithFileSizeFilter).toBeLessThan(countWithoutFileSizeFilter);
 
     // get all the file attribute tables (one per batch)
-    const fileAttTables = await page.$$(`//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`);
+    //const fileAttTables = await page.$$(`//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`); //Rhz
+    const fileAttTables = await page.$$(`//admiralty-table`);
     expect(fileAttTables.length).toBeTruthy();
     const filterFileSize = parseInt(attributeFileSize.value, 10);
 
-    // each table must contain at least one file smaller than the filter 
-    for (const fileAttTable of fileAttTables) {
-      const tds = await fileAttTable.$$eval('td', nodes => nodes.map(node => node.innerText));
-      const fileCount = tds
-          .filter(innerText => innerText)
-          .map(innerText => TryGetFileSizeInBytes(innerText))
-          .filter(fileSize => fileSize && fileSize < filterFileSize)
-          .length;
+    // each table must contain at least one file smaller than the filter
+    const fileCount = await AdmiraltyGetFileSizeCount(page, filterFileSize);
+    expect(fileCount).toBeTruthy();
 
-      expect(fileCount).toBeTruthy();
-    }
+    //the following replaced by AdmiraltyGetFileSizeCount Rhz
+    //for (const fileAttTable of fileAttTables) {
+    //  const tds = await fileAttTable.$$eval('td', nodes => nodes.map(node => node.innerText));
+    //  const fileCount = tds
+    //      .filter(innerText => innerText)
+    //      .map(innerText => TryGetFileSizeInBytes(innerText))
+    //      .filter(fileSize => fileSize && fileSize < filterFileSize)
+    //      .length;
+
+    //  expect(fileCount).toBeTruthy();
+    //}
   });
 
   test('Test to verify no result for search query', async ({ page }) => {

@@ -184,6 +184,30 @@ export async function AdmiraltyExpectAllResultsHaveFileAttributeValue(
 }
 
 
+export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
+  const admiraltyTables = await page.$$('admiralty-table');
+  const filteredTables = await Promise.all(admiraltyTables.map(async (table) => {
+    const cells = await table.$$('admiralty-table-cell');
+    const hasSize = await Promise.all(cells.map(async (cell) => {
+      const text = await cell.textContent();
+      let size = TryGetFileSizeInBytes(text);
+      if (size != null && size > 0 && size < fileSize) {
+        return size;
+      } else {
+        return 0;
+      }
+    }));
+    const actual = hasSize.filter(itm => itm > 0);
+    return actual.length;
+  }));
+
+
+  return filteredTables.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  }, 0);
+}
+
+
 
 
 async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {

@@ -87,6 +87,15 @@ class EsDownloadPageAssertions {
 
     }
 
+    VerifyExchangeSetSizeIsValid(estimated: string, included: number): void {
+    //new for Admiralty
+      let x1 = included * (0.3);
+      let x2 = Number.parseFloat(autoTestConfig.encSizeConfig);
+      let lit: string = 'Estimated size ' + (x1 + x2).toFixed(1) + 'MB';
+      expect(estimated).toEqual(lit);
+    }
+
+
     async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
 
         for (var i = 0; i < 3; i++) {
