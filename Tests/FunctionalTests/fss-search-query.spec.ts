@@ -6,7 +6,7 @@ import {AcceptCookies, LoginPortal} from '../../Helper/CommonHelper';
 import {SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, TryGetFileSizeInBytes
   , ExpectAllResultsHaveBatchUserAttValue,
   ExpectAllResultsContainBatchUserAttValue,
-  ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount,
+  ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount, AdmiraltyExpectAllResultsHaveFileAttributeValue,
   GetCountOfBatchRows,AdmiraltyGetFileSizeCount} from '../../Helper/SearchPageHelper';
 import { attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize, searchNonExistBatchAttribute} from '../../Helper/ConstantHelper';
 
@@ -57,7 +57,8 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelectorSecondRow, attributeMimeType.value);
     await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
-    await ExpectAllResultsHaveFileAttributeValue(page, attributeMimeType.value);
+    //await ExpectAllResultsHaveFileAttributeValue(page, attributeMimeType.value);
+    await AdmiraltyExpectAllResultsHaveFileAttributeValue(page, attributeMimeType.value);
   });
 
   test('Test to verify grouping button is disabled', async ({ page }) => {    
