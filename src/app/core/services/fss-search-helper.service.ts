@@ -105,15 +105,18 @@ export class FssSearchHelperService {
       changedFieldRow!.isValueHidden = true;
       changedFieldRow!.value = "";
       changedFieldRow!.time = "";
+      console.log("is null operator");
     }
     else {
       changedFieldRow!.isValueHidden = false;
+      console.log("is not null operator");
     }
   }
 
   onOperatorChanged(changedOperator:any, operators: Operator[], fssSearchRows: FssSearchRow[]){
     var operatorType = this.getOperatorType(changedOperator.operatorValue, operators);
     var changedFieldRow = this.getSearchRow(changedOperator.rowId, fssSearchRows);
+    console.log("Operator changed", changedOperator.rowId); 
     this.toggleValueInput(changedFieldRow!, operatorType);
 
     return changedFieldRow;
