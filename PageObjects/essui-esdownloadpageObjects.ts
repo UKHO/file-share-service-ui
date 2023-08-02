@@ -31,8 +31,8 @@ export class EsDownloadPageObjects {
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
         this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
         this.errorMessageSelector = this.page.locator("text = There has been an error");
-        //this.selectedENCsSelector = this.page.locator("(//div/strong)[1]");
-        this.selectedENCsSelector = this.page.locator('p').filter({ hasText: ' ENCs selected' });
+        this.selectedENCsSelector = this.page.locator("(//div/strong)[1]");
+        
     }
 
     async downloadFile(page: Page, path: string): Promise<void> {
@@ -88,13 +88,6 @@ class EsDownloadPageAssertions {
 
     }
 
-    VerifyExchangeSetSizeIsValid(estimated: string, included: number): void {
-    //new for Admiralty
-      let estimatedSize = included * (0.3);
-      let defaultSize = Number.parseFloat(autoTestConfig.encSizeConfig);
-      let literal: string = 'Estimated size ' + (estimatedSize + defaultSize).toFixed(1) + 'MB';
-    expect(estimated).toEqual(literal);
-    }
 
     async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
 
@@ -143,7 +136,7 @@ class EsDownloadPageAssertions {
 
     async SelectedENCs(): Promise<void> {
         expect(await this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
-        //expect(await this.esDownloadPageObjects.selectedENCsSelector.innerText()).toEqual(SelectedENCs+' ENCs selected');
+        expect(await this.esDownloadPageObjects.selectedENCsSelector.innerText()).toEqual(SelectedENCs+' ENCs selected');
 
     }
 }
