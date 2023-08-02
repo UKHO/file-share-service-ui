@@ -45,7 +45,15 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
-        await esDownloadPageObjects.expect.VerifyExchangeSetSize();
+        //=========================================
+        let estimatedString = await page.locator('p').filter({ hasText: 'Estimated size' }).textContent() as string;
+        let includedDisplay = await page.locator('strong').filter({ hasText: 'ENCs included' }).textContent();
+        let valueString: string = includedDisplay?.split(' ')[0] as string;
+        let ENCsIncludedValue = parseInt(valueString);
+        esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, ENCsIncludedValue)
+        //await esDownloadPageObjects.expect.VerifyExchangeSetSize();
+        //=========================================
+
         await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
         await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
         await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
