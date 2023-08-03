@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { SelectChangeEventDetail } from '@ukho/admiralty-core';
 import { FssSearchRow, RowGrouping, UIGrouping, UIGroupingDetails } from './../../../core/models/fss-search-types';
 
 @Component({
@@ -35,10 +36,14 @@ export class FssSearchRowComponent implements OnChanges {
     this.toggleGrouping();
   }
 
-  onOperatorChange(operator: any, rowId: number) {
+  onOperatorChange(operator: Event, rowId: number) {
     console.log('emitting change from row'); //rhz
     console.log('operator:', operator);  //rhz
-    this.onOperatorChanged.emit({ operatorValue: operator.select.nativeElement.value, rowId: rowId });
+    const data = operator as CustomEvent<SelectChangeEventDetail>; //rhz
+    console.log('operator detail: ', data.detail) //rhz
+    let result: string = data.detail.value as string; //rhz
+    //this.onOperatorChanged.emit({ operatorValue: operator.select.nativeElement.value, rowId: rowId });
+    this.onOperatorChanged.emit({ operatorValue: result, rowId: rowId });
   }
 
   onFieldChange(fieldValue: any, rowId: number){
