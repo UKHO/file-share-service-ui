@@ -55,8 +55,7 @@ export class FssSearchComponent implements OnInit {
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
     private analyticsService: AnalyticsService, private titleService: Title, private router: Router) {
-    //this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
-    this.displayPopularSearch = true;  //Rhz
+    this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
@@ -65,8 +64,6 @@ export class FssSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.SimplifiedSearch;
-    console.log("Search Type:", this.activeSearchType)
-    console.log("Display Popular:", this.displayPopularSearch) //Rhz
   }
 
   ShowAdvancedSearchClicked() {
@@ -74,16 +71,14 @@ export class FssSearchComponent implements OnInit {
     this.displaySearchResult = false;
     this.displayMessage = false;
     
-    console.log("Search Type ADV:", this.activeSearchType)
-    console.log("Display Popular:", this.displayPopularSearch) //Rhz
+    console.log("Search Type ADV:", this.activeSearchType) //Rhz
   }
 
   ShowSimplifiedSearchClicked() {
     this.activeSearchType = SearchType.SimplifiedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
-    console.log("Search Type:", this.activeSearchType)
-    console.log("Display Popular:", this.displayPopularSearch) //Rhz
+    console.log("Search Type:", this.activeSearchType) //Rhz
   }
 
   onAdvancedSearchClicked(fssAdvancedSearch: any) {

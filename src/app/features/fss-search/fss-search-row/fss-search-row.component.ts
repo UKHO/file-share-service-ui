@@ -36,6 +36,8 @@ export class FssSearchRowComponent implements OnChanges {
   }
 
   onOperatorChange(operator: any, rowId: number) {
+    console.log('emitting change from row'); //rhz
+    console.log('operator:', operator);  //rhz
     this.onOperatorChanged.emit({ operatorValue: operator.select.nativeElement.value, rowId: rowId });
   }
 
