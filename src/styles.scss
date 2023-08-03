@@ -455,6 +455,43 @@ ukho-textinput.text-input-wrap{
 }
 
 
+/*========= Admiralty=========*/
+.admiralty-valueTD {
+  text-align: left;
+
+  admiralty-input {
+    &[ng-reflect-type="date"], &[ng-reflect-type="time"] {
+      display: inline-block;
+      width: 47%;
+      margin: 0 10px 0 0;
+      vertical-align: top;
+    }
+
+    &.validated, &.invalid {
+      input.form-text-input {
+        padding-right: 0;
+      }
+    }
+  }
+
+  admiralty-input.text-input-wrap {
+    &[ng-reflect-type="date"] {
+      display: inline-block;
+      width: 43%;
+
+      input {
+        padding-right: 3%;
+      }
+    }
+
+    &[ng-reflect-type="time"] {
+      width: 45%;
+      display: inline-block;
+      left: 7%;
+    }
+  }
+}
+
 .siplifideSearchBtn button.primary{
 	margin-top: 28px;
     height: 55px;
