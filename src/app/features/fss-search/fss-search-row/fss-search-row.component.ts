@@ -37,13 +37,9 @@ export class FssSearchRowComponent implements OnChanges {
   }
 
   onOperatorChange(operator: Event, rowId: number) {
-    console.log('emitting change from row'); //rhz
-    console.log('operator:', operator);  //rhz
-    const data = operator as CustomEvent<SelectChangeEventDetail>; //rhz
-    console.log('operator detail: ', data.detail) //rhz
-    let result: string = data.detail.value as string; //rhz
-    //this.onOperatorChanged.emit({ operatorValue: operator.select.nativeElement.value, rowId: rowId });
-    this.onOperatorChanged.emit({ operatorValue: result, rowId: rowId });
+    const customEventData = operator as CustomEvent<SelectChangeEventDetail>;
+    let operatorData: string = customEventData.detail.value as string;
+    this.onOperatorChanged.emit({ operatorValue: operatorData, rowId: rowId });
   }
 
   onFieldChange(fieldValue: any, rowId: number){

@@ -239,7 +239,6 @@ export class FssAdvancedSearchComponent implements OnInit {
   }
 
   onOperatorChanged(changedOperator: any) {
-    console.log('incoming params from advanced search:',changedOperator)
     var changedFieldRow = this.fssSearchHelperService.onOperatorChanged(changedOperator, this.operators, this.fssSearchRows);
   }
 
