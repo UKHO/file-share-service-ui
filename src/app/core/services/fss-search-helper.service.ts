@@ -105,11 +105,11 @@ export class FssSearchHelperService {
       changedFieldRow!.isValueHidden = true;
       changedFieldRow!.value = "";
       changedFieldRow!.time = "";
-      console.log("is null operator");
+      console.log("operatorType is null operator");
     }
     else {
       changedFieldRow!.isValueHidden = false;
-      console.log("is not null operator");  //rhz
+      console.log("operatorType is not null operator");  //rhz
     }
   }
 
