@@ -13,7 +13,7 @@ test.describe('FSS UI E2E Scenarios', () => {
     await page.goto(autoTestConfig.url);
     await AcceptCookies(page);
     page.waitForNavigation();
-    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
       .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
@@ -63,9 +63,9 @@ test.describe('FSS UI E2E Scenarios', () => {
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, `'${attributeFileSize.value}'`);
     await page.waitForTimeout(2000);
-    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.warningMessageSelector);
+    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
     //Verification of warning message
-    const warningMessage = await page.innerText(fssSearchPageObjectsConfig.warningMessageSelector);
+    const warningMessage = await page.innerText(fssSearchPageObjectsConfig.dialogInfoSelector);
     expect(warningMessage).toContain(fssSearchPageObjectsConfig.warningMessageText);
     //Search Query String
     const queryString = `${attributeFileSize.key} eq '${attributeFileSize.value}'`;
