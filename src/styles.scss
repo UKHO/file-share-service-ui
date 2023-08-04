@@ -119,17 +119,16 @@ admiralty-select.no-labels {
 }
 
 
+/*Scrolling Table */
 admiralty-table.scroll-list {
   .thead {
-    display: block;
-    width: 100%;
+    display: flex;
 
     .th {
-      background-color: #4aab37;
       flex-basis: 100%;
 
       &:last-child {
-        flex-basis: 10%;
+        flex-basis: 100%;
       }
     }
   }
@@ -175,6 +174,18 @@ admiralty-table.scroll-list {
     }
   }
 }
+
+/*Style for date and time*/
+td.admiralty-valueTD {
+  text-align: left;
+
+  admiralty-input.dateTime {
+    display: inline-block;
+    margin: 0 10px 0 0;
+    vertical-align: top;
+  }
+}
+  
 
 /* End New Styles*/
 

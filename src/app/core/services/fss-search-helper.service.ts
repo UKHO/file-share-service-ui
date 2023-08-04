@@ -63,9 +63,11 @@ export class FssSearchHelperService {
     else if (fieldDataType === 'date') {
       changedFieldRow!.valueFormControl = new FormControl(null, Validators.required);
       changedFieldRow!.valueFormControlTime = new FormControl(null, Validators.required);
+      changedFieldRow!.dynamicClass = 'dateTime'
     }
     else {
       changedFieldRow!.valueFormControl = new FormControl()
+      changedFieldRow!.dynamicClass = '' 
     }
     return changedFieldRow
   }
@@ -105,17 +107,13 @@ export class FssSearchHelperService {
       changedFieldRow!.isValueHidden = true;
       changedFieldRow!.value = "";
       changedFieldRow!.time = "";
-      console.log("operatorType is null operator");
     }
     else {
       changedFieldRow!.isValueHidden = false;
-      console.log("operatorType is not null operator");  //rhz
     }
   }
 
   onOperatorChanged(changedOperator: any, operators: Operator[], fssSearchRows: FssSearchRow[]) {
-    console.log("Service Operator changed called:"); //rhz
-    console.log("Service Operator changed extract:", changedOperator.rowId); //rhz
     var operatorType = this.getOperatorType(changedOperator.operatorValue, operators);
     var changedFieldRow = this.getSearchRow(changedOperator.rowId, fssSearchRows);
     this.toggleValueInput(changedFieldRow!, operatorType);

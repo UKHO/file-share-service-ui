@@ -47,12 +47,12 @@
                 <admiralty-input id="fss-querytable-value-{{i+1}}" [(ngModel)]="fssSearchRow.value" 
                 *ngIf="!fssSearchRow.isValueHidden"
                 [type]= "fssSearchRow.valueType"
-                [formControl] = "fssSearchRow.valueFormControl"></admiralty-input>
+                [formControl] = "fssSearchRow.valueFormControl" [ngClass]="fssSearchRow.dynamicClass"></admiralty-input>
 
                 <admiralty-input id="fss-querytable-time-{{i+1}}" *ngIf="fssSearchRow.valueType == 'date' && !fssSearchRow.isValueHidden"
                  [(ngModel)]="fssSearchRow.time"
                 type = "time"
-                [formControl] = "fssSearchRow.valueFormControlTime"></admiralty-input>
+                [formControl] = "fssSearchRow.valueFormControlTime" [ngClass]="fssSearchRow.dynamicClass"></admiralty-input>
              </td>
             <td>
                 <button class="delete deleteRow fa fa-times fa-1x" (click)="onSearchRowDelete(fssSearchRow.rowId)" aria-label="Delete Row"></button>
