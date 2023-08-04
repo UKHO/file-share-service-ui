@@ -1,8 +1,9 @@
 import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit} from '@angular/core';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { AppConfigService } from './../../../core/services/app-config.service';
+import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -32,8 +33,8 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
 
   onFileInputChange(changeEvent: Event) {
     this.validEncList = [];
-    let data = changeEvent as CustomEvent<any>;
-    let fileList: File[] = data.detail;
+    const data = changeEvent as CustomEvent<FileInputChangeEventDetail>;
+    const fileList: File[] = data.detail.files;
     if (fileList.length > 1) {
       this.triggerInfoErrorMessage(true, 'error', 'Only one file can be processed at a time.');
       return;
