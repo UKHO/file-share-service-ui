@@ -37,8 +37,8 @@
             </td>-->
             <td width="25%">
               <admiralty-type-ahead resultsOnInitFocus="true" type="text" (selectionChanged)="onFieldChange($event, fssSearchRow.rowId)">
-                <admiralty-type-ahead-item *ngFor="let item of fssSearchRow.filterFn"
-                                           [value]="item"></admiralty-type-ahead-item>
+                <admiralty-type-ahead-item *ngFor="let item of fssSearchRow.fields"
+                                           [value]="item.text"></admiralty-type-ahead-item>
               </admiralty-type-ahead>
             </td>
             <td width="20%">
