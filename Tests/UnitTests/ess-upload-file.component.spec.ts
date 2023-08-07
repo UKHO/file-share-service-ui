@@ -9,6 +9,7 @@ import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { By } from '@angular/platform-browser';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
+import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
@@ -285,9 +286,10 @@ describe('EssUploadFileComponent', () => {
       const file = new File([getEncData_csv()], 'test.jpeg');
       Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
-      const event = {
-        detail: [file]
-      }
+      const event: CustomEvent<FileInputChangeEventDetail> = new CustomEvent<FileInputChangeEventDetail>(
+        "fileInputChange",
+        { detail: { files: [file] } });
+
       const errObj = {
         showInfoErrorMessage: false,
         messageType: 'info',
@@ -308,9 +310,10 @@ describe('EssUploadFileComponent', () => {
       const file = new File([getEncData_csv()], 'test.jpeg');
       Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
-      const event = {
-        detail: [file,file]
-      }
+      const event: CustomEvent<FileInputChangeEventDetail> = new CustomEvent<FileInputChangeEventDetail>(
+        "fileInputChange",
+        { detail: { files: [file, file] } });
+      
       const errObj = {
         showInfoErrorMessage: false,
         messageType: 'info',
