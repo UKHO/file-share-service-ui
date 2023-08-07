@@ -42,8 +42,9 @@ export class FssSearchRowComponent implements OnChanges {
     this.onOperatorChanged.emit({ operatorValue: operatorData, rowId: rowId });
   }
 
-  onFieldChange(fieldValue: any, rowId: number){
-    this.onFieldChanged.emit({ currentFieldValue: fieldValue, rowId: rowId });
+  onFieldChange(eventData: Event, rowId: number) {
+    const fieldData = eventData as CustomEvent<string>;
+    this.onFieldChanged.emit({ currentFieldValue: fieldData.detail, rowId: rowId });
   }
 
   onCheckboxClick(){   
