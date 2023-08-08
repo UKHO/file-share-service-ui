@@ -105,7 +105,7 @@ select{
 
 /*Rhz New Styles*/
 
-/*admiralty-select.no-labels {
+admiralty-select.no-labels {
   select {
     padding-top: 12px !important;
     margin-bottom: 0px !important;
@@ -118,7 +118,7 @@ select{
   admiralty-hint {
     display: none;
   }
-}*/
+}
 
 
 /*Scrolling Table */
@@ -187,6 +187,12 @@ td.admiralty-valueTD {
     vertical-align: top;
   }
 }
+
+/*Type ahead style*/
+admiralty-type-ahead.dropdown-left {
+  text-align: left;
+}
+
   
 
 /* End New Styles*/
