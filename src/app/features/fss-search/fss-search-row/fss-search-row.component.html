@@ -24,7 +24,7 @@
                             (click)="onGroupDelete(grouping.rowGrouping)" aria-label="UnGroup selected search rows"></button>                                            
                 </td>
             </ng-container>
-            <td width="10%">
+            <td width="10%" class="select-adjust">
                 <admiralty-select class="no-labels" id="fss-querytable-joinoperator-{{i+1}}" *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
                         {{joinOperator.text}}</option>
@@ -41,7 +41,7 @@
                                            [value]="item.text"></admiralty-type-ahead-item>
               </admiralty-type-ahead>
             </td>
-            <td width="20%">
+            <td width="20%" class="select-adjust">
                 <admiralty-select class="no-labels" id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (admiraltyChange)="onOperatorChange($event, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "
