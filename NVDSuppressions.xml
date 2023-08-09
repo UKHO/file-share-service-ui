@@ -533,4 +533,22 @@
     <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
     <vulnerabilityName>1092637</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1092893</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1092892</vulnerabilityName>
+  </suppress>
 </suppressions>
