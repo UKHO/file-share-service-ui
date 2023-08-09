@@ -24,7 +24,7 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
         let messageDesc = showInfoMessage.messageDesc;
         if(messageDesc && typeof showInfoMessage.messageDesc === 'object'){
           messageDesc = '';
-          messageDesc += '<h3 aria-live="polite" role="alert">'+showInfoMessage.messageTitle+'</h3>';
+          //messageDesc += '<h3 aria-live="polite" role="alert">'+showInfoMessage.messageTitle+'</h3>';
           for (const desc of showInfoMessage.messageDesc) {
             messageDesc += '<div class="warningMsg">'+desc.productName +' - '+ desc.reason +' </div>' ;
           }

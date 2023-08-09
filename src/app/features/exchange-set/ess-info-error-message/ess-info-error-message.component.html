@@ -1,8 +1,5 @@
 <div class="warningsBoxForDownload">
   <admiralty-dialogue [type]='messageType' [heading]="messageTitle" *ngIf="displayErrorMessage" aria-live="polite">
-    <div [innerHTML]=messageDesc></div>
+    <div [innerHTML]="messageDesc"></div>
   </admiralty-dialogue>
-  <!--<ukho-dialogue [type]='messageType' *ngIf="displayErrorMessage">
-    <div [innerHTML]=messageDesc></div>
-  </ukho-dialogue>-->
 </div>
