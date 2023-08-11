@@ -4,8 +4,8 @@ const { compilerOptions } = require('./tsconfig');
 module.exports = {
   preset: 'jest-preset-angular',
   roots: ['<rootDir>/Tests/UnitTests/'],
-  //testMatch: ['**/+(*.)+(spec).+(ts)'],
-  testMatch: ['**/ess-upload-file.component.spec.ts'],
+  testMatch: ['**/+(*.)+(spec).+(ts)'],
+  //testMatch: ['**/fss-search-row.component.spec.ts'],
   setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
   collectCoverage: true,
   coverageReporters: ['html','cobertura'],

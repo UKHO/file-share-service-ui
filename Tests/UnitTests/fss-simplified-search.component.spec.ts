@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA} from '@angular/core';
-import { ButtonModule,TextinputModule, DialogueModule } from '@ukho/design-system';
 import {jest} from '@jest/globals';
 import { FssSimplifiedSearchComponent } from '../../src/app/features/fss-search/fss-simplified-search/fss-simplified-search.component';
 import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
@@ -15,8 +14,7 @@ describe('FssSimplifiedSearchComponent', () => {
   let route:Router;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,CommonModule,
-        ButtonModule, TextinputModule, DialogueModule],
+      imports: [RouterTestingModule,CommonModule],
       declarations: [ FssSimplifiedSearchComponent ],
       schemas: [NO_ERRORS_SCHEMA]
     })

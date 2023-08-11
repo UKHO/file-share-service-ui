@@ -5,7 +5,6 @@ import { EssUploadFileService } from '../../src/app/core/services/ess-upload-fil
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { ButtonModule, DialogueModule } from '@ukho/design-system';
 import { HttpClientModule } from '@angular/common/http';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-search.component.spec';
@@ -47,7 +46,7 @@ describe('EssDownloadExchangesetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, ButtonModule, HttpClientModule, DialogueModule, DesignSystemModule],
+      imports: [CommonModule, HttpClientModule, DesignSystemModule],
       declarations: [EssDownloadExchangesetComponent,EssInfoErrorMessageComponent],
       providers: [
         {

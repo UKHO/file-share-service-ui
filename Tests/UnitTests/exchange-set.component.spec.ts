@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ExchangeSetComponent } from '../../src/app/features/exchange-set/exchange-set.component';
-import {RadioComponent} from '@ukho/design-system'
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA,DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -16,7 +15,7 @@ describe('ExchangeSetComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [ ExchangeSetComponent,RadioComponent,EssInfoErrorMessageComponent ],
+      declarations: [ ExchangeSetComponent,EssInfoErrorMessageComponent ],
       providers:[EssInfoErrorMessageService],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FssHomeComponent } from '../../src/app/features/fss-home/fss-home.component';
-import { CardComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
@@ -14,7 +13,7 @@ import { PublicClientApplication } from '@azure/msal-browser';
     beforeEach(async () => {
       await TestBed.configureTestingModule({
         imports: [RouterTestingModule],
-        declarations: [FssHomeComponent , CardComponent],
+        declarations: [FssHomeComponent],
         providers: [
           {
             provide: MSAL_INSTANCE,

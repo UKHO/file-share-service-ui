@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FilterGroup } from '@ukho/design-system';
+import { FilterGroup } from '../../../../shared/components/ukho-table/filter.types';
 import { AdmiraltyCheckboxCustomEvent } from '@ukho/admiralty-core'
 import { DefaultValueAccessor } from '@angular/forms';
 

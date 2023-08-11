@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FssFooterComponent } from '../../src/app/shared/components/fss-footer/fss-footer.component';
-import { FooterComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
@@ -12,7 +11,7 @@ describe('FssFooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [FssFooterComponent, FooterComponent],
+      declarations: [FssFooterComponent],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
     AppConfigService.settings = {

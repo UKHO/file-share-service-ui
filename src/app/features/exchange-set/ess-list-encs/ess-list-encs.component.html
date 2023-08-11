@@ -24,8 +24,13 @@
           <ng-container ukhoColumnDef="Choose">
             <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);"  class="selectDeselctBtn"   > {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
             <td ukho-cell *ukhoCellDef="let element">
-              <ukho-checkbox  [checked]="element.selected" (change)="handleChange(element.enc, $event)" class="selectEnc"
-                attr.aria-label="{{element.enc}}" ><span class="sr-only">{{element.enc}} </span></ukho-checkbox>
+              <!--<ukho-checkbox  [checked]="element.selected" (change)="handleChange(element.enc, $event)" class="selectEnc"
+    attr.aria-label="{{element.enc}}" ><span class="sr-only">{{element.enc}} </span></ukho-checkbox>-->
+              <admiralty-checkbox [checked]="element.selected"
+                                  (click)="handleChange(element.enc, $event)" class="selectEnc"
+                                  attr.aria-label="{{element.enc}}">
+                                      <span class="sr-only">{{element.enc}} </span>
+              </admiralty-checkbox>
             </td>
           </ng-container>
           <tr ukho-header-row *ukhoHeaderRowDef="displayedColumns"></tr>

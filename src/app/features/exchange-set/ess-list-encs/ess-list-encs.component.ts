@@ -4,7 +4,7 @@ import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { SortState } from '@ukho/design-system';
+import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
 import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';

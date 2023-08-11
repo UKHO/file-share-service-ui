@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
-import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, FileInputComponent } from '@ukho/design-system';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
@@ -117,7 +116,7 @@ describe('EssUploadFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, DesignSystemModule],
+      imports: [CommonModule, DesignSystemModule],
       declarations: [EssUploadFileComponent, EssInfoErrorMessageComponent],
       providers: [
         {

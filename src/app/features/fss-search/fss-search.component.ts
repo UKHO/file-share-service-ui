@@ -7,7 +7,7 @@ import { FssSearchFilterService } from '../../core/services/fss-search-filter.se
 import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
-import { FilterGroup, FilterItem } from '@ukho/design-system';
+import { FilterGroup, FilterItem } from '../../shared/components/ukho-table/filter.types';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { SilentRequest } from '@azure/msal-browser';

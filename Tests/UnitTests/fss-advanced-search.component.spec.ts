@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule, FilterModule } from '@ukho/design-system';
+import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { FssSearchComponent } from '../../src/app/features/fss-search/fss-search.component';
 import { FilterPipe } from '../../src/app/features/fss-search/filter.pipe';
@@ -38,7 +38,7 @@ describe('FssAdvancedSearchComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,
         FssSearchRoutingModule, HttpClientModule,
-        ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule, FilterModule],
+        TableModule],
       declarations: [FssAdvancedSearchComponent,
         FssSearchRowComponent,
         FssSearchResultsComponent,

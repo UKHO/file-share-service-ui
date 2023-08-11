@@ -1,0 +1,85 @@
+@use "./styles/colours";
+@use "./styles/responsive";
+@use "./styles/icons";
+@use "./styles/typography";
+
+table {
+  border-top: 1px solid colours.$colour-divider;
+  border-spacing: 0;
+  margin-bottom: 30px;
+
+  thead {
+    border-bottom: 5px solid colours.$colour-admiralty-blue;
+
+    tr {
+      background-color: colours.$colour-table-row-bg;
+    }
+  }
+
+  td,
+  th {
+    color: colours.$colour-admiralty-blue;
+    font-size: 18px;
+    line-height: 30px;
+    padding: 6px 20px;
+
+    @include responsive.not-desktop {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+
+  tr {
+    &:nth-child(even) {
+      background-color: colours.$colour-table-row-alt-bg;
+    }
+
+    td {
+      border-bottom: 1px solid colours.$colour-divider;
+    }
+
+    &:last-child td {
+      border-bottom: 1px solid transparent;
+    }
+  }
+
+  th {
+    border-bottom: 5px solid colours.$colour-admiralty-blue;
+    text-align: left;
+    font-weight: typography.$font-weight-medium;
+  }
+
+  td {
+    border-right: 1px solid colours.$colour-divider;
+    font-weight: typography.$font-weight-light;
+
+    &:last-child {
+      border-right: 1px solid transparent;
+    }
+  }
+}
+
+th[ukhoSortHeader] {
+  white-space: nowrap;
+
+  &::after {
+    @extend .fas;
+    content: icons.fa-content(icons.$fa-var-caret-up);
+    opacity: 0.4;
+    margin-left: 0.4rem;
+  }
+
+  &.asc::after {
+    opacity: 1;
+  }
+
+  &.desc::after {
+    @extend .fas;
+    content: icons.fa-content(icons.$fa-var-caret-down);
+    opacity: 1;
+  }
+
+  &:focus {
+    outline: 3px solid colours.$colour-utility-focus;
+  }
+}

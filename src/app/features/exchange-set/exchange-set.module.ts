@@ -1,5 +1,6 @@
 import { FormsModule } from '@angular/forms';
-import { DialogueModule, CardModule, ButtonModule, TextinputModule, FileInputModule, RadioModule, RadioGroupModule, TableModule, CheckboxModule } from '@ukho/design-system';
+//import { DialogueModule, CardModule, ButtonModule, TextinputModule, FileInputModule, RadioModule, RadioGroupModule, TableModule, CheckboxModule } from '@ukho/design-system';
+import { TableModule } from '../../shared/components/ukho-table/table.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExchangeSetRoutingModule } from './exchange-set-routing.module';
@@ -24,16 +25,16 @@ import { CdkTableModule } from '@angular/cdk/table';
   imports: [
     CommonModule,
     ExchangeSetRoutingModule,
-    DialogueModule,
-    CardModule,
-    ButtonModule,
-    TextinputModule,
-    RadioModule,
-    FileInputModule,
-    RadioGroupModule,
+    //DialogueModule,
+    //CardModule,
+    //ButtonModule,
+    //TextinputModule,
+    //RadioModule,
+    //FileInputModule,
+    //RadioGroupModule,
     FormsModule,
     TableModule,
-    CheckboxModule,
+    /*CheckboxModule,*/
     DesignSystemModule,
     CdkTableModule
   ]
