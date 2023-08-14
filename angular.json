@@ -35,7 +35,7 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "./node_modules/@ukho/design-system/assets",
+                "input": "./node_modules/@ukho/admiralty-core/dist/collection/assets",
                 "output": "./assets"
               }
             ],

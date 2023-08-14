@@ -65,7 +65,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.handleSignIn();
+    this.monitorNavigation();
     this.setSkipToContent();
 
     
@@ -137,25 +137,28 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  handleSignIn() {
+  monitorNavigation() {
     this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      const url = `${event.url}`
-      console.log("Rhz Start sgn...", url)
+      const url = `${event.url}`.toLocaleLowerCase();
+      console.log("Navigation", url)
       if (url.includes('search')) {
         if (!this.userSignedIn) {
           this.route.navigate(['']);
           this.isActive = false;
-          //this.handleActiveTab(this.menuItems[1].title)
+          this.essActive = false;
+          this.searchActive = true;
         }
         else {
           this.isActive = true;
-          //this.handleActiveTab(this.menuItems[1].title)
+          this.essActive = false;
+          this.searchActive = true;
         }
       }
       else if (url.includes('exchangesets')) {
-        //this.handleActiveTab(this.menuItems[0].title)
+        this.essActive = true;
+        this.searchActive = false;
       }
       else if (url.includes('logout')) {
         console.log("Rhz Attempting to navigate to Logout component");
@@ -187,17 +190,11 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   menuExchangeClick() {
-    console.log("exchange clicked")
     this.route.navigate(["exchangesets"]);
-    this.essActive = true;
-    this.searchActive = false;
   }
 
   menuSearchClick() {
-    console.log("search clicked")
     this.route.navigate(["simpleSearch"])
-    this.essActive = false;
-    this.searchActive = true;
   }
 
 
