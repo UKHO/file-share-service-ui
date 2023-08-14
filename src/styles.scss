@@ -195,8 +195,8 @@ admiralty-type-ahead.dropdown-left {
 
 /*Temp adjustment for admiralty select container*/
 td.select-adjust {
-  padding-top: 0px;
-  padding-bottom: 25px;
+  padding-top: 0px !important;
+  padding-bottom: 25px !important;
 }
   
 
@@ -210,7 +210,9 @@ td.select-adjust {
 admiralty-phase-banner.phasebanner {
   padding: 10px;
   width: auto;
-  
+  .phase-banner {
+    width: auto;
+  }
 }
 
 
