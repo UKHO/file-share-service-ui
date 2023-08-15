@@ -22,8 +22,8 @@ export class EncSelectionPageObjects {
   readonly maxLimitEncmessageDialogueSelector: Locator;
   readonly maxLimitEncmessage: Locator;
   readonly secondEncSelector: Locator;
-  readonly leftTableMesgSelector: Locator;
-  readonly rightTableMesgSelector: Locator;
+  readonly leftTableDisplaySelector: Locator;
+  readonly rightTableDisplaySelector: Locator;
   readonly errorMessageForDuplicateNumberSelector: Locator;
   readonly errorMsgDuplicateENC: Locator;
   readonly chooseBoxSelecetor: Locator;
@@ -66,11 +66,13 @@ export class EncSelectionPageObjects {
     this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]'); //rhz ok
     this.encTableButtonList = this.page.getByRole('row').filter({ has: this.page.getByRole("button") });
     this.encTableCheckboxList = this.page.getByRole('row').filter({ has: this.page.getByRole("checkbox") });
-    this.encTableListCountDisplay = this.page.locator("span[class='showListEncTOtal']");  //rhz need to correct case
+    this.encTableListCountDisplay = this.page.locator("span[class='showListEncTotal']");
     this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
     this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
-    this.leftTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[1]')
-    this.rightTableMesgSelector = this.page.locator('(//span[@class="showListEncTOtal"])[2]')
+    //this.leftTableMesgSelector = this.page.locator('(//span[@class="showListEncTotal"])[1]')
+    //this.rightTableMesgSelector = this.page.locator('(//span[@class="showListEncTotal"])[2]')
+    this.leftTableDisplaySelector = this.page.locator("span[class='showListEncTotal']").nth(0)
+    this.rightTableDisplaySelector = this.page.locator("span[class='showListEncTotal']").nth(1)
     this.requestENCsSelector = page.getByRole('button', { name: 'Request ENCs' })
     this.pageUnderTest = page;
 
@@ -134,7 +136,7 @@ export class EncSelectionPageObjects {
 
   async SelectedENCsCount(): Promise<void> {
 
-    SelectedENCs = parseInt(((await this.rightTableMesgSelector.innerHTML()).split(' '))[1])
+    SelectedENCs = parseInt(((await this.rightTableDisplaySelector.innerHTML()).split(' '))[1])
   }
 
 
@@ -284,8 +286,8 @@ class EncSelectionPageAssertions {
     let rightTableRowsCount = await this.encSelectionPageObjects.encTableButtonList.count();
     let leftTableRowsCount = await this.encSelectionPageObjects.encTableCheckboxList.count();
     expect(leftTableRowsCount).toEqual(rightTableRowsCount);
-    expect(await this.encSelectionPageObjects.leftTableMesgSelector.innerText()).toEqual("Showing " + leftTableRowsCount + " ENCs");
-    expect(await this.encSelectionPageObjects.rightTableMesgSelector.innerText()).toEqual("" + rightTableRowsCount + " ENCs selected");
+    expect(await this.encSelectionPageObjects.leftTableDisplaySelector.innerText()).toEqual("Showing " + leftTableRowsCount + " ENCs");
+    expect(await this.encSelectionPageObjects.rightTableDisplaySelector.innerText()).toEqual("" + rightTableRowsCount + " ENCs selected");
   }
 
   async verifySizeofENCs(expected: any): Promise<void> {
