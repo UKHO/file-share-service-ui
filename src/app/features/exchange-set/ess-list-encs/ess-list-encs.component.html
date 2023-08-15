@@ -13,7 +13,7 @@
     <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0">
         <p class="ShowEncList">
-          Your ENCs <span class="showListEncTOtal"> Showing {{encList.length}} ENCs </span>
+          Your ENCs <span class="showListEncTotal"> Showing {{encList.length}} ENCs </span>
         </p>
         <table ukhoSort ukho-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
           <ng-container ukhoColumnDef="enc">
@@ -24,8 +24,6 @@
           <ng-container ukhoColumnDef="Choose">
             <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);"  class="selectDeselctBtn"   > {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
             <td ukho-cell *ukhoCellDef="let element">
-              <!--<ukho-checkbox  [checked]="element.selected" (change)="handleChange(element.enc, $event)" class="selectEnc"
-    attr.aria-label="{{element.enc}}" ><span class="sr-only">{{element.enc}} </span></ukho-checkbox>-->
               <admiralty-checkbox [checked]="element.selected"
                                   (click)="handleChange(element.enc, $event)" class="selectEnc"
                                   attr.aria-label="{{element.enc}}">
@@ -37,28 +35,7 @@
           <tr ukho-row *ukhoRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
-   <!--<admiralty-table>
-    <admiralty-table-header>
-      <admiralty-table-header-cell>ENC name</admiralty-table-header-cell>
-      <admiralty-table-header-cell>
-        <admiralty-checkbox label-Text="Select"></admiralty-checkbox>
-      </admiralty-table-header-cell>
-    </admiralty-table-header>
-    <admiralty-table-body>
-      <admiralty-table-row *ngFor="let element of encList">
-        <admiralty-table-cell>{{element.enc}}</admiralty-table-cell>
-        <admiralty-table-cell>
-          <admiralty-checkbox [checked]="element.selected"
-                              (click)="handleChange(element.enc, $event)"
-                              class="selectEnc"
-                              attr.aria-label="{{element.enc}}">
-                                <span class="sr-only">{{element.enc}} </span>
-                              </admiralty-checkbox>
-
-        </admiralty-table-cell>
-      </admiralty-table-row>
-    </admiralty-table-body>
-  </admiralty-table>-->
+   
 
         <span class="sr-only" role="alert" aria-live="polite">{{selectDeselectEncAlert}}</span>
       </div>
@@ -68,7 +45,7 @@
     </div>
     <div class="divider"></div>
     <div style="flex: 3">
-      <p class ="ShowEncList">Your selection <span class="showListEncTOtal"> {{(selectedEncList && selectedEncList.length>0)?selectedEncList.length:0}} ENCs selected </span>
+      <p class ="ShowEncList">Your selection <span class="showListEncTotal"> {{(selectedEncList && selectedEncList.length>0)?selectedEncList.length:0}} ENCs selected </span>
       </p>
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
 
