@@ -12,7 +12,8 @@ test.describe('ESS UI Landing Page Accessibility Test Scenarios', () => {
     await AcceptCookies(page);
     await injectAxe(page)
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-    await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
+    //await page.locator(fssHomePageObjectsConfig.essLinkSelector).click(); //rhz
+    await page.locator('admiralty-header').getByText('Exchange sets').click();
     await page.waitForTimeout(500);
   })
 
