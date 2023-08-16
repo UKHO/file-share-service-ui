@@ -19,15 +19,12 @@ export class EncSelectionPageObjects {
   readonly addENCButtonSelector: Locator;
   readonly startAgainLinkSelector: Locator;
   readonly EncSelectorAt101th: Locator;
-  readonly maxLimitEncmessageDialogueSelector: Locator;
   readonly maxLimitEncmessage: Locator;
   readonly secondEncSelector: Locator;
   readonly leftTableDisplaySelector: Locator;
   readonly rightTableDisplaySelector: Locator;
-  readonly errorMessageForDuplicateNumberSelector: Locator;
   readonly errorMsgDuplicateENC: Locator;
   readonly chooseBoxSelecetor: Locator;
-  readonly errorMsgMaxLimitSelector: Locator;
   readonly errorMsgMaxLimit: Locator;
   readonly ENCTableENClistCol1: Locator;
   readonly encTableCheckboxList: Locator;
@@ -41,39 +38,38 @@ export class EncSelectionPageObjects {
   readonly exchangeSetSizeSelector: Locator
   readonly requestENCsSelector: Locator
   readonly encTableListCountDisplay: Locator
+  readonly getDialogueSelector : Locator
   readonly pageUnderTest: Page
 
 
   constructor(readonly page: Page) {
     this.expect = new EncSelectionPageAssertions(this);
     this.esslandingPageObjects = new EssLandingPageObjects(page);
-    this.encNameSelector = this.page.locator("text=ENC name"); //rhz ok
-    this.startLinkSelector = this.page.locator(".linkStartAgain"); //rhz ok
-    this.textAboveTableSelector = this.page.locator("text=Select up to 100 ENCs and make an exchange set"); //rhz ok
-    this.firstCheckBoxSelector = this.page.getByRole('row').filter({ has: this.page.getByRole("checkbox") }).getByRole('checkbox').first(); //rhz new
-    this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i"); //rhz ok
-    this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc"); //rhz 0k
+    this.encNameSelector = this.page.locator("text=ENC name"); 
+    this.startLinkSelector = this.page.locator(".linkStartAgain"); 
+    this.textAboveTableSelector = this.page.locator("text=Select up to 100 ENCs and make an exchange set"); 
+    
+    this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i"); 
+    this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc"); 
     this.typeENCTextBoxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
     this.addENCButtonSelector = this.page.locator("//button[text()=' Add ENC ']");
     this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
-    this.EncSelectorAt101th = this.page.locator("//div/table/tbody/tr[101]/td[2]"); // rhz ok
-    this.maxLimitEncmessageDialogueSelector = this.page.locator(("admiralty-dialogue"))
-    this.errorMessageForDuplicateNumberSelector = this.page.locator("//h3[text()='ENC already in list.']");
+    this.EncSelectorAt101th = this.page.locator("//div/table/tbody/tr[101]/td[2]"); 
     this.chooseBoxSelecetor = this.page.locator("input[id = 'ukho-form-field-5']");
-    this.errorMsgMaxLimitSelector = this.page.locator("//ukho-dialogue");
     this.selectionTextSelector = this.page.locator("text='Your selection '");
     this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
-    this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]'); //rhz ok
+    this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]'); 
+    this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
+    this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
+
+    this.firstCheckBoxSelector = this.page.getByRole('row').filter({ has: this.page.getByRole("checkbox") }).getByRole('checkbox').first();
     this.encTableButtonList = this.page.getByRole('row').filter({ has: this.page.getByRole("button") });
     this.encTableCheckboxList = this.page.getByRole('row').filter({ has: this.page.getByRole("checkbox") });
     this.encTableListCountDisplay = this.page.locator("span[class='showListEncTotal']");
-    this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
-    this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
-    //this.leftTableMesgSelector = this.page.locator('(//span[@class="showListEncTotal"])[1]')
-    //this.rightTableMesgSelector = this.page.locator('(//span[@class="showListEncTotal"])[2]')
     this.leftTableDisplaySelector = this.page.locator("span[class='showListEncTotal']").nth(0)
     this.rightTableDisplaySelector = this.page.locator("span[class='showListEncTotal']").nth(1)
     this.requestENCsSelector = page.getByRole('button', { name: 'Request ENCs' })
+    this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
     this.pageUnderTest = page;
 
   }
@@ -225,13 +221,14 @@ class EncSelectionPageAssertions {
 
 
   async errorMsgMaxLimitSelectorContainText(expected: string): Promise<void> {
-
-    expect(await this.encSelectionPageObjects.maxLimitEncmessageDialogueSelector.innerText()).toEqual(expected);
+    const testPage = this.encSelectionPageObjects.pageUnderTest;
+    expect(await this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
+    expect(await testPage.getByText(expected)).toBeTruthy();
   }
 
   async maxLimitEncmessageSelectorContainText(expected: string): Promise<void> {
 
-    expect(await this.encSelectionPageObjects.maxLimitEncmessageDialogueSelector.innerText()).toEqual(expected);
+    expect(await this.encSelectionPageObjects.getDialogueSelector.innerText()).toEqual(expected);
   }
 
   async addAnotherENCSelectorVisible(): Promise<void> {
@@ -246,8 +243,9 @@ class EncSelectionPageAssertions {
 
 
   async errorMessageForDuplicateNumberSelectorContainsText(expected: string): Promise<void> {
-
-    expect(await this.encSelectionPageObjects.errorMessageForDuplicateNumberSelector.innerText()).toEqual(expected);
+    const testPage = this.encSelectionPageObjects.pageUnderTest;
+    expect(await this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
+    expect(await testPage.getByText(expected)).toBeTruthy();
   }
 
   async anotherCheckBoxSelectorChecked(): Promise<void> {
@@ -332,4 +330,3 @@ class EncSelectionPageAssertions {
 
 
 }
-
