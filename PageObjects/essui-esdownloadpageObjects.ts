@@ -32,7 +32,7 @@ export class EsDownloadPageObjects {
         this.EstimatedESsizeSelector = this.page.locator("//p[@class='f21']");
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
         this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
-        this.errorMessageSelector = this.page.locator("text = There has been an error");
+        this.errorMessageSelector = this.page.getByText("There has been an error");
         //this.selectedENCsSelector = this.page.getByText(SelectedENCs + ' ENCs selected')
         this.selectedENCsSelector = this.page.locator('p').filter({ hasText: ' ENCs selected' });
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
@@ -80,8 +80,8 @@ class EsDownloadPageAssertions {
     }
 
     async errorMessageSelectorDisplayed(): Promise<void> {
-
-        expect(await this.esDownloadPageObjects.errorMessageSelector.innerText()).toBeTruthy();
+      expect(this.esDownloadPageObjects.getDialogueSelector).toBeTruthy();
+      expect(this.esDownloadPageObjects.errorMessageSelector).toBeTruthy();
     }
 
     async VerifyExchangeSetSize(): Promise<void> {
