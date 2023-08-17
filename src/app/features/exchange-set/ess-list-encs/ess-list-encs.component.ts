@@ -91,7 +91,8 @@ export class EssListEncsComponent implements OnInit {
       messageDesc,
     };
   }
-  handleChange(enc: string,event?: Event | null) {
+  handleChange(enc: string, event?: Event | null) {
+    console.log('HandleChange called');
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
     this.triggerInfoErrorMessage(false,'info', '');
     if (seletedEncs.includes(enc)) {

@@ -34,8 +34,9 @@ test.describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () =
   });
 
   test('check a11y for no search result html and axe run options', async ({ page }) => {
-    await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
-    await page.waitForSelector(fssSearchPageObjectsConfig.dialogWarningSelector);
+    //await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
+    await page.getByRole('button', { name: "Search" }).click();
+    await page.waitForSelector(fssSearchPageObjectsConfig.dialogTitleSelector);
     await injectAxe(page);
     await checkA11y(page, undefined, {
       axeOptions: {
@@ -50,8 +51,10 @@ test.describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () =
   });
 
   test('check a11y for simplified search result html and axe run options', async ({ page }) => {
-    await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, attributeProductType.value);
-    await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
+    //await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, attributeProductType.value);
+    //await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
+    await page.getByRole("textbox").fill(attributeProductType.value);
+    await page.getByRole('button', { name: "Search" }).click();
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await injectAxe(page);
     await checkA11y(page, undefined, {
