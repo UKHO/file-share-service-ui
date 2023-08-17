@@ -551,4 +551,40 @@
     <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
     <vulnerabilityName>1092892</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1093000</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:1.4.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1093003</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1092999</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1093002</vulnerabilityName>
+  </suppress>
 </suppressions>
