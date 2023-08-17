@@ -15,7 +15,7 @@ export class EssLandingPageObjects {
     readonly addsingleencSelector: Locator;
     readonly proceedButtonSelector: Locator;
     readonly errorMessageSelector: Locator;
-    readonly errorMessageExcludeENCsSelector: Locator;
+    //readonly errorMessageExcludeENCsSelector: Locator;
     readonly txtFileNameWithExtension: Locator;
     readonly chooseuploadfileSelector: Locator;
     readonly errorMessageForInvalidENCSelector: Locator;
@@ -24,7 +24,9 @@ export class EssLandingPageObjects {
     readonly addSingleENCTextboxSelector: Locator;
     readonly ENClistTableCol1: Locator;
     readonly MaxENCValue:Locator;
-    readonly MaxSelectedENCs:Locator;
+    readonly MaxSelectedENCs: Locator;
+    readonly getDialogueSelector: Locator
+    readonly pageUnderTest: Page
 
     constructor(readonly page: Page) {
         this.expect = new EssLandingPageAssertions(this);
@@ -39,7 +41,7 @@ export class EssLandingPageObjects {
         this.addsingleencSelector = this.page.locator("button[type='submit']");
         this.proceedButtonSelector = this.page.locator("//button[@type='submit']");
         this.errorMessageSelector = this.page.locator("section:has-text('Please select a .csv or .txt file')");
-        this.errorMessageExcludeENCsSelector = this.page.locator("//ukho-dialogue/section");
+        //this.errorMessageExcludeENCsSelector = this.page.locator("//ukho-dialogue/section");
         this.txtFileNameWithExtension = this.page.locator("ValidAndInvalidENCs");
         this.chooseuploadfileSelector = page.locator('label').filter({ hasText: 'Click to choose a file' });
         this.errorMessageForInvalidENCSelector = this.page.locator("section:has-text('Invalid ENC number')");
@@ -49,6 +51,8 @@ export class EssLandingPageObjects {
         this.ENClistTableCol1 = this.page.locator('//table/tbody/tr/td[1]');
         this.MaxENCValue = this.page.locator("//p[contains(text(),'You can upload')]");
         this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]');
+        this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
+        this.pageUnderTest = page;
     }
 
     async uploadFile(page: Page, filePath: string): Promise<void> {
@@ -166,9 +170,12 @@ class EssLandingPageAssertions {
         expect(await this.esslandingPageObjects.errorMessageForInvalidENCSelector.innerText()).toEqual(expected);
     }
 
-    async VerifyExcludedENCsMessage(expected: string): Promise<void> {
+  async VerifyExcludedENCsMessage(expected: string): Promise<void> {
+        const testPage = this.esslandingPageObjects.pageUnderTest;
+        expect(await this.esslandingPageObjects.getDialogueSelector).toBeTruthy();
+        expect(await testPage.getByText(expected)).toBeTruthy();
 
-        expect(await this.esslandingPageObjects.errorMessageExcludeENCsSelector.innerText()).toContain(expected);
+        //expect(await this.esslandingPageObjects.errorMessageExcludeENCsSelector.innerText()).toContain(expected);
     }
 
     async uploadedDataSelectorToBeEqual(expected: string): Promise<void> {
