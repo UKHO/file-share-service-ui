@@ -12,9 +12,10 @@ test.describe('FSS UI Simplified Search Page Accessibility Test Scenarios', () =
     
     await page.goto(autoTestConfig.url)
     await AcceptCookies(page);
-    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
+    await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);         
-    var simplifiedSearchBox= (await page.$$(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
+    //var simplifiedSearchBox= (await page.$$(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector)).length
+    var simplifiedSearchBox = await page.getByLabel('Search').count();
     expect(simplifiedSearchBox).toEqual(1);  
     
   })    
