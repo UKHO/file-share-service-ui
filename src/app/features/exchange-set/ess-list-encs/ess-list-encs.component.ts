@@ -25,10 +25,9 @@ enum SelectDeselect {
 })
 export class EssListEncsComponent implements OnInit {
   displayLoader: boolean = false;
-  addSingleEncRenderFrom: string = 'encListArray';
+  addSingleEncRenderFrom: string = 'encList';
   addSingleEncBtnText: string = 'Add ENC';
-  //encList: MappedEnc[];
-  encListArray: MappedEnc[];
+  encList: MappedEnc[];
   public displayedColumns = ['enc', 'Choose'];
   maxEncSelectionLimit: number;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
@@ -76,7 +75,7 @@ export class EssListEncsComponent implements OnInit {
   }
 
   setEncList() {
-    this.encListArray = this.essUploadFileService.getValidEncs().map((enc) => ({
+    this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
       enc,
       selected: false
     }));
@@ -112,7 +111,7 @@ export class EssListEncsComponent implements OnInit {
     }
     this.syncEncsBetweenTables();
     setTimeout(() => {
-      const element = document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement;
+      const element = document.querySelector(`admiralty-checkbox[aria-label=${enc}] input`) as HTMLElement;
       if(element && event){
          element.focus();
       }
@@ -121,7 +120,7 @@ export class EssListEncsComponent implements OnInit {
 
   syncEncsBetweenTables() {
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
-    this.encListArray = this.encListArray.map((item, index) => ({
+    this.encList = this.encList.map((item, index) => ({
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
@@ -138,8 +137,8 @@ export class EssListEncsComponent implements OnInit {
   }
 
     onSortChange(sortState: SortState) {
-    this.encListArray = [
-      ...this.encListArray.sort((a: any, b: any) =>
+    this.encList = [
+      ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
           ? a[sortState.column].localeCompare(b[sortState.column])
           : b[sortState.column].localeCompare(a[sortState.column])
@@ -190,7 +189,7 @@ export class EssListEncsComponent implements OnInit {
     return selectDeselectText;
   }
   checkMaxEncSelectionAndSelectedEncLength() {
-    const listLength = this.encListArray.length;
+    const listLength = this.encList.length;
     const maxEncSelectionLimit = this.maxEncSelectionLimit > listLength ? listLength : this.maxEncSelectionLimit;
     return maxEncSelectionLimit === this.selectedEncList.length;
 
@@ -208,7 +207,7 @@ export class EssListEncsComponent implements OnInit {
   }
 
   getSelectDeselectVisibility() {
-    return this.encListArray.length <= this.maxEncSelectionLimit;
+    return this.encList.length <= this.maxEncSelectionLimit;
   }
   requestEncClicked() {
     this.displayLoader = true;

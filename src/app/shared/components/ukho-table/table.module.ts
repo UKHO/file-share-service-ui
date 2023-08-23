@@ -59,4 +59,4 @@ const EXPORTED_DECLARATIONS = [
   exports: [EXPORTED_DECLARATIONS],
   imports: [CommonModule, CdkTableModule],
 })
-export class TableModule {}
+export class TableModule { }

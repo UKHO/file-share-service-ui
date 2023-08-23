@@ -11,7 +11,6 @@ import { EssListEncsComponent } from './ess-list-encs/ess-list-encs.component';
 import { EssDownloadExchangesetComponent } from './ess-download-exchangeset/ess-download-exchangeset.component';
 import { EssInfoErrorMessageComponent } from './ess-info-error-message/ess-info-error-message.component';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
-import { CdkTableModule } from '@angular/cdk/table';
 
 @NgModule({
   declarations: [
@@ -25,18 +24,10 @@ import { CdkTableModule } from '@angular/cdk/table';
   imports: [
     CommonModule,
     ExchangeSetRoutingModule,
-    //DialogueModule,
-    //CardModule,
-    //ButtonModule,
-    //TextinputModule,
-    //RadioModule,
-    //FileInputModule,
-    //RadioGroupModule,
     FormsModule,
     TableModule,
     /*CheckboxModule,*/
     DesignSystemModule,
-    CdkTableModule
   ]
 })
 export class ExchangeSetModule { }
