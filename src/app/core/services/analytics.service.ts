@@ -1,4 +1,4 @@
-import { ThrowStmt } from '@angular/compiler';
+//import { ThrowStmt } from '@angular/compiler'; rhz 24/08/23
 import { Injectable } from '@angular/core';
 import { GoogleTagManagerService} from 'angular-google-tag-manager';
 import { AppConfigService } from '../../core/services/app-config.service';
