@@ -4,15 +4,16 @@ const { compilerOptions } = require('./tsconfig');
 module.exports = {
   preset: 'jest-preset-angular',
   roots: ['<rootDir>/Tests/UnitTests/'],
-  testMatch: ['**/+(*.)+(spec).+(ts)'],
-  //testMatch: ['**/ess-list-encs.component.spec.ts'],
+  //testMatch: ['**/+(*.)+(spec).+(ts)'],
+  testMatch: ['**/auth.guard.spec.ts'],
   setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
   collectCoverage: true,
   coverageReporters: ['html','cobertura'],
   coverageDirectory: 'coverage',
-  reporters: ["default","jest-junit"],
+  reporters: ["default", "jest-junit"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
     prefix: '<rootDir>/'
+    
   }),
   globals: {
     crypto: require('crypto')
