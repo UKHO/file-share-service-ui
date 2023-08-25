@@ -3,7 +3,7 @@ import { FssSearchService } from './../../../core/services/fss-search.service';
 import { Operator, IFssSearchService, Field, JoinOperator, FssSearchRow, RowGrouping, UIGroupingDetails, GroupingLevel, UIGrouping } from './../../../core/models/fss-search-types';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
 import { Observable, Subscription } from 'rxjs';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { FssSearchHelperService } from '../../../core/services/fss-search-helper.service';
 import { FssSearchValidatorService } from '../../../core/services/fss-search-validator.service';
 import { FssSearchGroupingService } from '../../../core/services/fss-search-grouping.service';
@@ -229,11 +229,11 @@ export class FssAdvancedSearchComponent implements OnInit {
     fssSearchRow.isValueHidden = false;
     fssSearchRow.rowId = this.rowId;
     fssSearchRow.time = "";
-    fssSearchRow.valueFormControl = new FormControl();
-    fssSearchRow.valueFormControlTime = new FormControl();
-    fssSearchRow.fieldFormControl = new FormControl();
+    fssSearchRow.valueFormControl = new UntypedFormControl();
+    fssSearchRow.valueFormControlTime = new UntypedFormControl();
+    fssSearchRow.fieldFormControl = new UntypedFormControl();
     fssSearchRow.filterFn = this.typeaheadFields;
-    fssSearchRow.fieldFormControl = new FormControl('', [Validators.required, this.fssSearchValidatorService.FieldValidator(this.fields)]);
+    fssSearchRow.fieldFormControl = new UntypedFormControl('', [Validators.required, this.fssSearchValidatorService.FieldValidator(this.fields)]);
     fssSearchRow.fieldValue = "";
     return fssSearchRow;
   }

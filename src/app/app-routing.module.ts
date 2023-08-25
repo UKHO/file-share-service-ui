@@ -55,7 +55,7 @@ const isIframe = window.opener && window !== window.opener
 @NgModule({
   imports: [RouterModule.forRoot(routes,{
     useHash: true,
-    initialNavigation: isIframe ? 'disabled' : 'enabled',
+    initialNavigation: isIframe ? 'disabled' : 'enabledBlocking',
     anchorScrolling: 'enabled',
   })],
   providers: [AuthGuard],
