@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="8" failures="0" errors="0" time="10.552">
-  <testsuite name="AuthGuard" errors="0" failures="0" skipped="0" timestamp="2023-08-25T16:09:14" time="9.476" tests="8">
-    <testcase classname="AuthGuard should be created" name="AuthGuard should be created" time="0.022">
+<testsuites name="jest tests" tests="2" failures="2" errors="0" time="3.728">
+  <testsuite name="FssSearchComponent" errors="0" failures="2" skipped="0" timestamp="2023-08-25T16:40:48" time="2.658" tests="2">
+    <testcase classname="FssSearchComponent should create FssSearchComponent" name="FssSearchComponent should create FssSearchComponent" time="0.045">
+      <failure>Error: NG0204: Can&apos;t resolve all parameters for MsalService: (?, ?).
+    at getUndecoratedInjectableFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5299:11)
+    at getUndecoratedInjectableFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5291:12)
+    at injectableDefOrInjectorDefFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5323:48)
+    at providerToFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5312:21)
+    at R3Injector.providerToRecord [as processProvider] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5235:20)
+    at processProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5118:57)
+    at fn (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5371:7)
+    at forEachSingleProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5369:7)
+    at new forEachSingleProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5118:5)
+    at createInjectorWithoutInjectorInstances (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:6071:10)
+    at new createInjectorWithoutInjectorInstances (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:12059:24)
+    at TestBedCompiler.finalize (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14139:26)
+    at TestBedImpl.finalize [as testModuleRef] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14841:43)
+    at TestBedImpl.testModuleRef [as inject] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14770:25)
+    at Function.inject (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14674:33)
+    at C:\Source\Repos\file-share-service-ui\Tests\UnitTests\fss-search.component.spec.ts:63:29</failure>
     </testcase>
-    <testcase classname="AuthGuard canActivate should return false and call router with [&quot;search&quot;] if account exists and url is /" name="AuthGuard canActivate should return false and call router with [&quot;search&quot;] if account exists and url is /" time="0.005">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return true if account exists and url is /search" name="AuthGuard canActivate should return true if account exists and url is /search" time="0.002">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return true if account exists and url is /enc-list" name="AuthGuard canActivate should return true if account exists and url is /enc-list" time="0.002">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return false if account exists and enc list is null and url is /enc-list" name="AuthGuard canActivate should return false if account exists and enc list is null and url is /enc-list" time="0.002">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return false and call router.navigation with [&quot;&quot;] if account is null and url is /search" name="AuthGuard canActivate should return false and call router.navigation with [&quot;&quot;] if account is null and url is /search" time="0.002">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return true if account is null and url is /" name="AuthGuard canActivate should return true if account is null and url is /" time="0.002">
-    </testcase>
-    <testcase classname="AuthGuard canActivate should return false if account is null and url is &quot;&quot;" name="AuthGuard canActivate should return false if account is null and url is &quot;&quot;" time="0.003">
+    <testcase classname="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" name="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" time="0.004">
+      <failure>Error: NG0204: Can&apos;t resolve all parameters for MsalService: (?, ?).
+    at getUndecoratedInjectableFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5299:11)
+    at getUndecoratedInjectableFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5291:12)
+    at injectableDefOrInjectorDefFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5323:48)
+    at providerToFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5312:21)
+    at R3Injector.providerToRecord [as processProvider] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5235:20)
+    at processProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5118:57)
+    at fn (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5371:7)
+    at forEachSingleProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5369:7)
+    at new forEachSingleProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5118:5)
+    at createInjectorWithoutInjectorInstances (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:6071:10)
+    at new createInjectorWithoutInjectorInstances (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:12059:24)
+    at TestBedCompiler.finalize (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14139:26)
+    at TestBedImpl.finalize [as testModuleRef] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14841:43)
+    at TestBedImpl.testModuleRef [as inject] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14770:25)
+    at Function.inject (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14674:33)
+    at C:\Source\Repos\file-share-service-ui\Tests\UnitTests\fss-search.component.spec.ts:63:29</failure>
     </testcase>
   </testsuite>
 </testsuites>
