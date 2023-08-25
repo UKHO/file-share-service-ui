@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-<!--<suppress>
+<suppress>
    <notes><![CDATA[
    file name: json-schema:0.2.3
    json-schema is vulnerable to Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')
@@ -13,7 +13,7 @@
    <packageUrl regex="true">^pkg:npm/json\-schema@0\.2\.3$</packageUrl>
    <vulnerabilityName>1006724</vulnerabilityName>
 </suppress>
-<suppress>
+<!--<suppress>
   <notes>
     <![CDATA[
   file name: decode-uri-component:0.2.0
