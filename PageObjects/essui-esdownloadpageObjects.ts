@@ -32,6 +32,7 @@ export class EsDownloadPageObjects {
         this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
         this.errorMessageSelector = this.page.locator("text = There has been an error");
         this.selectedENCsSelector = this.page.locator("(//div/strong)[1]");
+        
     }
 
     async downloadFile(page: Page, path: string): Promise<void> {
@@ -86,6 +87,7 @@ class EsDownloadPageAssertions {
         expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + ((ENCsIncluded *(0.3))+Number.parseFloat( autoTestConfig.encSizeConfig)).toFixed(1) + 'MB');
 
     }
+
 
     async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
 
