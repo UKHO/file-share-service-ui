@@ -587,4 +587,31 @@
     <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
     <vulnerabilityName>1093002</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: decode-uri-component:0.2.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/decode\-uri\-component@.*$</packageUrl>
+    <vulnerabilityName>1092365</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: http-cache-semantics:4.1.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
+    <vulnerabilityName>1092316</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: request:2.88.2
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
+    <vulnerabilityName>1092779</vulnerabilityName>
+  </suppress>
 </suppressions>
