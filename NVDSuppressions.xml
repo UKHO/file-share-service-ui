@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-<suppress>
-   <notes><![CDATA[
-   file name: json-schema:0.2.3
-   json-schema is vulnerable to Improperly Controlled Modification of Object Prototype Attributes ('Prototype Pollution')
-   CVE-2021-3918
-   json-schema:0.2.3 is a dev dependency needed by "@angular/cli". It is not included in or used by our production code. On this 
-   basis it was deemed acceptable to suppress the vulnerability. 
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
    ]]>
-   </notes>
-   <packageUrl regex="true">^pkg:npm/json\-schema@0\.2\.3$</packageUrl>
-   <vulnerabilityName>1006724</vulnerabilityName>
-</suppress>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1092999</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: loader-utils:2.0.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
+    <vulnerabilityName>1093002</vulnerabilityName>
+  </suppress>
 </suppressions>
