@@ -1,43 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="2" failures="2" errors="0" time="3.728">
-  <testsuite name="FssSearchComponent" errors="0" failures="2" skipped="0" timestamp="2023-08-25T16:40:48" time="2.658" tests="2">
-    <testcase classname="FssSearchComponent should create FssSearchComponent" name="FssSearchComponent should create FssSearchComponent" time="0.045">
-      <failure>Error: NG0204: Can&apos;t resolve all parameters for MsalService: (?, ?).
-    at getUndecoratedInjectableFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5299:11)
-    at getUndecoratedInjectableFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5291:12)
-    at injectableDefOrInjectorDefFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5323:48)
-    at providerToFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5312:21)
-    at R3Injector.providerToRecord [as processProvider] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5235:20)
-    at processProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5118:57)
-    at fn (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5371:7)
-    at forEachSingleProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5369:7)
-    at new forEachSingleProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5118:5)
-    at createInjectorWithoutInjectorInstances (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:6071:10)
-    at new createInjectorWithoutInjectorInstances (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:12059:24)
-    at TestBedCompiler.finalize (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14139:26)
-    at TestBedImpl.finalize [as testModuleRef] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14841:43)
-    at TestBedImpl.testModuleRef [as inject] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14770:25)
-    at Function.inject (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14674:33)
-    at C:\Source\Repos\file-share-service-ui\Tests\UnitTests\fss-search.component.spec.ts:63:29</failure>
+<testsuites name="jest tests" tests="12" failures="0" errors="0" time="9.763">
+  <testsuite name="EssInfoErrorMessageComponent" errors="0" failures="0" skipped="0" timestamp="2023-08-31T17:11:01" time="8.697" tests="12">
+    <testcase classname="EssInfoErrorMessageComponent should create" name="EssInfoErrorMessageComponent should create" time="0.064">
     </testcase>
-    <testcase classname="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" name="FssSearchComponent should have filterGroups ordered to match the configuration after transformSearchAttributesToFilter is called" time="0.004">
-      <failure>Error: NG0204: Can&apos;t resolve all parameters for MsalService: (?, ?).
-    at getUndecoratedInjectableFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5299:11)
-    at getUndecoratedInjectableFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5291:12)
-    at injectableDefOrInjectorDefFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5323:48)
-    at providerToFactory (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5312:21)
-    at R3Injector.providerToRecord [as processProvider] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5235:20)
-    at processProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5118:57)
-    at fn (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5371:7)
-    at forEachSingleProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5369:7)
-    at new forEachSingleProvider (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:5118:5)
-    at createInjectorWithoutInjectorInstances (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:6071:10)
-    at new createInjectorWithoutInjectorInstances (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\core.mjs:12059:24)
-    at TestBedCompiler.finalize (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14139:26)
-    at TestBedImpl.finalize [as testModuleRef] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14841:43)
-    at TestBedImpl.testModuleRef [as inject] (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14770:25)
-    at Function.inject (C:\Source\Repos\file-share-service-ui\node_modules\@angular\core\fesm2020\testing.mjs:14674:33)
-    at C:\Source\Repos\file-share-service-ui\Tests\UnitTests\fss-search.component.spec.ts:63:29</failure>
+    <testcase classname="EssInfoErrorMessageComponent ngOnInit should set inital error messages" name="EssInfoErrorMessageComponent ngOnInit should set inital error messages" time="0.008">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent ngOnDestroy should essInfoErrorMessagesubscription.unsubscribe" name="EssInfoErrorMessageComponent ngOnDestroy should essInfoErrorMessagesubscription.unsubscribe" time="0.008">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 1" time="0.051">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 1" time="0.019">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 1" time="0.017">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 1" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 1" time="0.021">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 2" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true info , test info 2" time="0.019">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 3" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true error , test error 3" time="0.02">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 4" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true success , test success 4" time="0.016">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 5" name="EssInfoErrorMessageComponent showMessage should set correct mesages : true warning , test warning 5" time="0.015">
+    </testcase>
+    <testcase classname="EssInfoErrorMessageComponent showMessage should set correct mesages : false info , " name="EssInfoErrorMessageComponent showMessage should set correct mesages : false info , " time="0.007">
     </testcase>
   </testsuite>
 </testsuites>
