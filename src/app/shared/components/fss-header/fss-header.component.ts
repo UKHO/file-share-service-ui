@@ -45,6 +45,7 @@ export class FssHeaderComponent extends HeaderComponent implements OnInit, After
 
   ngOnInit(): void {
     this.handleSignIn();
+    this.handleSigninAwareness();
     this.setSkipToContent();
     this.menuItems = [
       {

@@ -4,26 +4,36 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from '../../src/app/app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { PublicClientApplication } from '@azure/msal-browser';
 
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let activatedRoute: ActivatedRoute;
   let router: Router;
-  let titleService: Title
+  let titleService: Title;
+  let msalService: MsalService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports:[RouterTestingModule],
+      imports: [RouterTestingModule, MsalModule],
       declarations: [AppComponent],
+      providers: [
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        MsalService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
     titleService = TestBed.inject(Title);
-    router = TestBed.inject(Router); 
+    router = TestBed.inject(Router);
+    msalService = TestBed.inject(MsalService);
     });
 
   it('should exist', () => {
-    component = new AppComponent(activatedRoute, router, titleService);
+    component = new AppComponent(activatedRoute, router, titleService,msalService);
     expect(component).toBeDefined();
   })
 
@@ -35,3 +45,20 @@ describe('AppComponent', () => {
   });
 
 })
+
+export function MockMSALInstanceFactory() {
+  return new PublicClientApplication({
+    auth: {
+      clientId: "",
+      authority: "",
+      redirectUri: "/",
+      knownAuthorities: [],
+      postLogoutRedirectUri: "/",
+      navigateToLoginRequestUrl: false
+    },
+    cache: {
+      cacheLocation: "localStorage",
+      storeAuthStateInCookie: true
+    }
+  })
+};
