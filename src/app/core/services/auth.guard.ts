@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { Observable } from 'rxjs';
 import { EssUploadFileService } from './ess-upload-file.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard  {
   routes = ['/search' , '/exchangesets' ];
   childRoutes = ['/exchangesets/enc-list', '/exchangesets/enc-download'];
   constructor(private msalService: MsalService,

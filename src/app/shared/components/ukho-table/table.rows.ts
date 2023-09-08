@@ -31,7 +31,6 @@ import {
   export class RowDefDirective<T> extends CdkRowDef<T> {}
   
   @Component({
-    moduleId: module.id,
     selector: 'ukho-header-row, tr[ukho-header-row]',
     template: CDK_ROW_TEMPLATE,
     // See note on CdkTable for explanation on why this uses the default change detection strategy.
@@ -47,7 +46,6 @@ import {
   }
   
   @Component({
-    moduleId: module.id,
     selector: 'ukho-footer-row, tr[ukho-footer-row]',
     template: CDK_ROW_TEMPLATE,
     // See note on CdkTable for explanation on why this uses the default change detection strategy.
@@ -63,7 +61,6 @@ import {
   }
   
   @Component({
-    moduleId: module.id,
     selector: 'ukho-row, tr[ukho-row]',
     template: CDK_ROW_TEMPLATE,
     // See note on CdkTable for explanation on why this uses the default change detection strategy.
