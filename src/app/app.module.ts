@@ -1,4 +1,4 @@
-import { InjectionToken, NgModule,APP_INITIALIZER } from '@angular/core';
+import { NgModule,APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -8,10 +8,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppConfigService } from './core/services/app-config.service';
 import { AnalyticsService } from './core/services/analytics.service';
 import { HttpErrorInterceptorService } from './core/services/httperror-interceptor.service';
-import { msalConfig } from '../assets/config/auth-config';
 import {
   MsalModule,
-  MsalRedirectComponent,
   MsalGuard,
   MsalGuardConfiguration,
   MsalInterceptor,
@@ -23,13 +21,10 @@ import {
   MSAL_INTERCEPTOR_CONFIG,
 } from '@azure/msal-angular';
 import {
-  BrowserCacheLocation,
   IPublicClientApplication,
   PublicClientApplication,
   InteractionType
 } from '@azure/msal-browser';
-
-//const AUTH_CONFIG_URL_TOKEN = new InjectionToken<string>('AUTH_CONFIG_URL');
 
 export function initializerFactory(env: AppConfigService): any {
   const configUrl: string = 'assets/config/appconfig.json';
@@ -41,9 +36,6 @@ export function GTMFactory(): any {
   const googleTagManagerId = AppConfigService.settings.GoogleTagManagerId;
   return googleTagManagerId;
 }
-
-
-
 
 
 export function MSALInstanceFactory(): IPublicClientApplication {
@@ -103,40 +95,10 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     AppRoutingModule,
     HttpClientModule,
     MsalModule
-    /*MsalModule.forRoot(
-      new PublicClientApplication({
-        auth: {
-          clientId: msalConfig.auth.clientId
-        },
-        cache: {
-          cacheLocation: BrowserCacheLocation.LocalStorage,
-          storeAuthStateInCookie: true
-        }
-      }),
-      {
-        // The routing guard configuration. 
-        interactionType: InteractionType.Popup,
-        authRequest: {
-          scopes: []
-        }
-      },
-      {
-        // MSAL interceptor configuration.
-        // The protected resource mapping maps your web API with the corresponding app scopes. If your code needs to call another web API, add the URI mapping here.
-        interactionType: InteractionType.Popup,
-        protectedResourceMap: new Map([
-          ['/logout', null]
-        ])
-      }
-    )*/
   ],
   providers: [
     AppConfigService,
     AnalyticsService,
-    //{
-    //  provide: AUTH_CONFIG_URL_TOKEN,
-    //  useValue: 'assets/config/appconfig.json' //configFile
-    //},
     {
       provide: APP_INITIALIZER,
       useFactory: initializerFactory,

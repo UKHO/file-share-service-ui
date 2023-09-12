@@ -118,7 +118,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }*/
 
   logInPopup() {
-    //this.msalService.instance.handleRedirectPromise();
+    this.msalService.instance.handleRedirectPromise();
     this.msalService.loginPopup({ ...this.msalGuardConfig.authRequest } as PopupRequest).subscribe((response: AuthenticationResult) => {
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);

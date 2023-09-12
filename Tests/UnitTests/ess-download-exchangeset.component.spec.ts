@@ -12,6 +12,9 @@ import { ExchangeSetDetails } from '../../src/app/core/models/ess-response-types
 import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
+import { ViewportScroller } from '@angular/common';
+//import { MockViewportScroller } from './ess-info-error-message.component.spec';
+
 describe('EssDownloadExchangesetComponent', () => {
   let component: EssDownloadExchangesetComponent;
   let msalService: MsalService;
@@ -52,6 +55,10 @@ describe('EssDownloadExchangesetComponent', () => {
         {
           provide: EssUploadFileService,
           useValue: service
+        },
+        {
+          provide: ViewportScroller,
+          useClass: MockViewportScroller
         },
         {
           provide: Router,
@@ -310,4 +317,18 @@ export const batchStatusCommitInProgressMockData: any = {
 export const batchStatusFailedMockData: any = {
   "batchId": "57bcd783-37af-4b04-8c6a-3ac5ed0f1844",
   "status": "Failed"
+}
+
+class MockViewportScroller implements ViewportScroller {
+  setOffset(offset: [number, number] | (() => [number, number])): void {
+  }
+  getScrollPosition(): [number, number] {
+    return [0, 0];
+  }
+  scrollToPosition(position: [number, number]): void {
+  }
+  scrollToAnchor(anchor: string): void {
+  }
+  setHistoryScrollRestoration(scrollRestoration: 'auto' | 'manual'): void {
+  }
 }
