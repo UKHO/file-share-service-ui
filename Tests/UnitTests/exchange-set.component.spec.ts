@@ -40,11 +40,12 @@ describe('ExchangeSetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should have 2 radio button in exchange set component', () => {
-    const fixture = TestBed.createComponent(ExchangeSetComponent);
-    const radio = fixture.debugElement.nativeElement.querySelector('admiralty-radio');
-    expect(radio).not.toBeNull();
-  });
+  //RHZ this test is satisfied by the one below
+  //test('should have 2 radio button in exchange set component', () => {
+  //  const fixture = TestBed.createComponent(ExchangeSetComponent);
+  //  const radio = fixture.debugElement.nativeElement.querySelector('admiralty-radio');
+  //  expect(radio).not.toBeNull();
+  //});
 
   test('should return 2 radio buttons value in exchange set', () => {
     component.ngOnInit();

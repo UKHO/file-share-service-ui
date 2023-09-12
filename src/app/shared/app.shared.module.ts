@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent } from './components';
-import { MsalConfigDynamicModule } from 'src/app/shared/components/msal-config-dynamic.module';
+//import { MsalConfigDynamicModule } from 'src/app/shared/components/msal-config-dynamic.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -17,7 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     //HeaderModule, FooterModule, PhaseBannerModule, HorizontalRuleModule,
     BrowserModule, HttpClientModule, ReactiveFormsModule, DesignSystemModule.forRoot(),
-    MsalConfigDynamicModule.forRoot('assets/config/appconfig.json')
+    //MsalConfigDynamicModule.forRoot('assets/config/appconfig.json')
   ],
   providers:[],
 

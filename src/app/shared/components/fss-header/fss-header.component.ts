@@ -69,7 +69,6 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setSkipToContent();
 
     
-
     
 
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
@@ -99,7 +98,6 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     //this.logoImgUrl = "/assets/svg/Admiralty%20stacked%20logo.svg";
     //this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
     //this.logoLinkUrl = "https://www.admiralty.co.uk/";
-
     this.handleSigninAwareness();
   }
 
@@ -120,7 +118,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }*/
 
   logInPopup() {
-    this.msalService.instance.handleRedirectPromise();
+    //this.msalService.instance.handleRedirectPromise();
     this.msalService.loginPopup({ ...this.msalGuardConfig.authRequest } as PopupRequest).subscribe((response: AuthenticationResult) => {
       if (response != null && response.account != null) {
         this.msalService.instance.setActiveAccount(response.account);
