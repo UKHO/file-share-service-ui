@@ -1,9 +1,9 @@
-/*@use "./styles/colours";
+@use "./styles/colours";
 @use "./styles/responsive";
-@use "./styles/icons";
+/*@use "./styles/icons";*/
 @use "./styles/typography";
 
-table {
+  table {
   border-top: 1px solid colours.$colour-divider;
   border-spacing: 0;
   margin-bottom: 30px;
@@ -59,7 +59,7 @@ table {
   }
 }
 
-th[ukhoSortHeader] {
+/*th[ukhoSortHeader] {
   white-space: nowrap;
 
   &::after {
@@ -82,5 +82,5 @@ th[ukhoSortHeader] {
   &:focus {
     outline: 3px solid colours.$colour-utility-focus;
   }
-}
-*/
+}*/
+
