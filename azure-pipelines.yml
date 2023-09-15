@@ -69,7 +69,7 @@ stages:
      - job: Dependencychecker
        pool: $(WindowPool)
        displayName: "Dependency checker"
-       condition: : eq(variables['DisableDependencyCheck'], false)
+       condition: eq(variables['DisableDependencyCheck'], false)
        workspace:
         clean: all
        steps:
