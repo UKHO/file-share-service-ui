@@ -4,19 +4,10 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: loader-utils:2.0.0
+   file name: ejs:3.1.9
    ]]>
     </notes>
-    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
-    <vulnerabilityName>1092999</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: loader-utils:2.0.0
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/loader\-utils@.*$</packageUrl>
-    <vulnerabilityName>1093002</vulnerabilityName>
+    <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
+    <cve>CVE-2023-29827</cve>
   </suppress>
 </suppressions>
