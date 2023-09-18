@@ -5,7 +5,7 @@ module.exports = {
   preset: 'jest-preset-angular',
   roots: ['<rootDir>/Tests/UnitTests/'],
   testMatch: ['**/+(*.)+(spec).+(ts)'],
-  //testMatch: ['**/exchange-set.component.spec.ts'],
+  //testMatch: ['**/fss-header.component.spec.ts'],
   setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
   collectCoverage: true,
   coverageReporters: ['html','cobertura'],

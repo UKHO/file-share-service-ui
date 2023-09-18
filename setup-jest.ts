@@ -1,4 +1,5 @@
 import 'jest-preset-angular/setup-jest.mjs';
+import crypto from 'crypto';
 //import { jest } from '@jest/globals';
 //window.open = jest.fn();
 //console.error = jest.fn();
@@ -18,4 +19,11 @@ Object.defineProperty(document.body.style, 'transform', {
       enumerable: true,
       configurable: true
     })
+});
+
+
+Object.defineProperty(global.self, 'crypto', {
+  value: {
+    randomUUID: (arr: any) => crypto.randomUUID()
+  }
 });
