@@ -105,7 +105,8 @@ export async function InsertSearchText(page: Page, searchBatchAttribute: string)
   //await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
   //await page.waitForTimeout(2000);
   await page.getByRole("textbox").fill(searchBatchAttribute);
-  await page.getByRole('button', { name: "Search" }).click();
+  //await page.getByRole('button', { name: "Search" }).click();
+  await page.getByTestId('sim-search-button').click();
   await page.waitForTimeout(2000);
 }
 
