@@ -31,7 +31,8 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
-    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
+    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
+    await page.getByTestId('adv-search-button').click();
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
   });
 
