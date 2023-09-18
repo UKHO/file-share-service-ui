@@ -3,7 +3,7 @@
       
     <div class="simplifiedSection">
         <admiralty-input label="Search" type="text" class="simplifiedTextbox" [(ngModel)]="fieldValue"  (keyup.enter)="getSimplifiedSearchResult()"></admiralty-input>
-        <admiralty-button class="siplifideSearchBtn" (click)="getSimplifiedSearchResult()">Search</admiralty-button>
+        <admiralty-button data-testid="sim-search-button" class="siplifideSearchBtn" (click)="getSimplifiedSearchResult()">Search</admiralty-button>
     </div>
     <a href="javascript:void(0)" class="switchToAdvanced" (click)="searchToSimplifiedSearch()">Advanced Search</a>
         </div>
