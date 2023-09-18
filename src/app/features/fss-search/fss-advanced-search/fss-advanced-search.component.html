@@ -14,7 +14,7 @@
     <div class="searchSection">
         <button (click)="addSearchRow()" class="addNewLine"> <i class="fa fa-plus fa-1x"></i> Add new line </button>
         <div class="searchBtn">
-        <admiralty-button (click)="getAdvancedSearchResult()">Search</admiralty-button>
+        <admiralty-button data-testid="search-button" (click)="getAdvancedSearchResult()">Search</admiralty-button>
         <a href="javascript:void(0)" class="switchToSimplified" *ngIf="displaySimplifiedSearchLink" (click)="searchToAdvancedSearch()">Simplified Search</a> 
         </div>
     </div>   
