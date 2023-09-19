@@ -152,6 +152,9 @@ test.describe('Test Search Query Scenario On Search Page', () => {
 
     //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await page.getByTestId('adv-search-button').click();
+    let spin = page.getByTestId('search-spinner');
+    await spin.waitFor({ state: "visible" });
+    await spin.waitFor({ state: "hidden" });
     const countWithFileSizeFilter = await GetTotalResultCount(page);
     expect(countWithFileSizeFilter).toBeTruthy();
     expect(countWithFileSizeFilter).toBeLessThan(countWithoutFileSizeFilter);
