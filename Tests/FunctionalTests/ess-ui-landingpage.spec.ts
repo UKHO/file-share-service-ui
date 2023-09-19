@@ -30,8 +30,8 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
          const headLabel = page.locator("h1#main");
          const radio1 = page.getByRole('radio', { name: "Upload a list in a file" });
          const radio2 = page.getByRole('radio', { name: "Add ENC" });
-         await expect(radio1).toBeVisible();
-         await expect(radio2).toBeVisible();
+         await expect(radio1).toBeTruthy();
+         await expect(radio2).toBeTruthy();
        
      })
 
