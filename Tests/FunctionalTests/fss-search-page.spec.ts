@@ -27,7 +27,7 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
   });
 
   test('Verify if click search button without selecting a field value', async ( {page}) => {
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
+    await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, "");
     await page.getByTestId('adv-search-button').click();
     const maxtime = Date.now() + 20000;
     while (Date.now() < maxtime) {

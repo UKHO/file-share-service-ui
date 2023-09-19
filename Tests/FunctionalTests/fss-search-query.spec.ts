@@ -31,19 +31,16 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await page.getByTestId('adv-search-button').click();
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
   });
 
   test('Batch Attribute table returns correct product on special characters search', async ({ page }) => {
-   // page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
-   await page.waitForTimeout(2000);
+    await page.waitForTimeout(2000);
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "contains");     
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, batchAttributeSpecialChar);
 
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await page.getByTestId('adv-search-button').click();
     await ExpectAllResultsContainBatchUserAttValue(page, batchAttributeSpecialChar);
   });
@@ -57,10 +54,8 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttributeSecondRow(page, attributeMimeType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelectorSecondRow, "eq");     
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelectorSecondRow, attributeMimeType.value);
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await page.getByTestId('adv-search-button').click();
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
-    //await ExpectAllResultsHaveFileAttributeValue(page, attributeMimeType.value);
     await AdmiraltyExpectAllResultsHaveFileAttributeValue(page, attributeMimeType.value);
   });
 
@@ -112,7 +107,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");     
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await page.getByTestId('adv-search-button').click();
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
     const resultCount = await GetCountOfBatchRows(page);        
@@ -126,7 +120,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await page.getByTestId('adv-search-button').click();
     // Click on expand button
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
@@ -141,7 +134,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');     
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);      
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await page.getByTestId('adv-search-button').click();
     const countWithoutFileSizeFilter = await GetTotalResultCount(page);
     expect(countWithoutFileSizeFilter).toBeTruthy();
@@ -150,7 +142,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelectorSecondRow, 'lt');
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelectorSecondRow, attributeFileSize.value);
 
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
     await page.getByTestId('adv-search-button').click();
     let spin = page.getByTestId('search-spinner');
     await spin.waitFor({ state: "visible" });
@@ -187,7 +178,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, 'L1K2');
 
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
     await page.getByTestId('adv-search-button').click();
     // Verify dialog info for no records
     const infoText = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
@@ -199,7 +189,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeFileSize.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, 'L1K2');
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
     await page.getByTestId('adv-search-button').click();
     // Verify warning message
     const warningMessage = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
@@ -210,7 +199,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeBusinessUnit.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, searchQuerySqlInjection);
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
     await page.getByTestId('adv-search-button').click();
     // Verify dialog info for no records
     const infoText = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
