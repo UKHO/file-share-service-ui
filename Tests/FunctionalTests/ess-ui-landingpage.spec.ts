@@ -27,8 +27,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
-       await expect(page.getByRole('radio', { name: "Upload a list in a file" })).toBeVisible();
-       await expect(page.getByRole('radio', { name: "Add ENC" })).toBeVisible();
+         const headLabel = page.locator("h1#main");
+         const radio1 = page.getByRole('radio', { name: "Upload a list in a file" });
+         const radio2 = page.getByRole('radio', { name: "Add ENC" });
+         await expect(radio1).toBeVisible();
+         await expect(radio2).toBeVisible();
+       
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
