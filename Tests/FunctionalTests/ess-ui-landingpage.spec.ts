@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { autoTestConfig } from '../../appSetting.json';
@@ -27,10 +27,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
-
-       //await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
-       //await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload a list in a file");
-       //await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENC");
        await expect(page.getByRole('radio', { name: "Upload a list in a file" })).toBeVisible();
        await expect(page.getByRole('radio', { name: "Add ENC" })).toBeVisible();
      })
