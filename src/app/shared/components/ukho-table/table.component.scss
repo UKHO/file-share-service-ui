@@ -59,28 +59,5 @@
   }
 }
 
-/*th[ukhoSortHeader] {
-  white-space: nowrap;
 
-  &::after {
-    @extend .fas;
-    content: icons.fa-content(icons.$fa-var-caret-up);
-    opacity: 0.4;
-    margin-left: 0.4rem;
-  }
-
-  &.asc::after {
-    opacity: 1;
-  }
-
-  &.desc::after {
-    @extend .fas;
-    content: icons.fa-content(icons.$fa-var-caret-down);
-    opacity: 1;
-  }
-
-  &:focus {
-    outline: 3px solid colours.$colour-utility-focus;
-  }
-}*/
 
