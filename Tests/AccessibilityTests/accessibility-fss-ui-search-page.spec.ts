@@ -18,7 +18,8 @@ test.describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector,"contains");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
-    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable, undefined, 10000);
+    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable, undefined, 10000);
+    await page.getByTestId('adv-search-button').click();
     await injectAxe(page);
   })  
 
