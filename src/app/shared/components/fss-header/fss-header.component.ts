@@ -94,10 +94,6 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.handleSigninAwareness();
       });
 
-    //this.title = AppConfigService.settings["fssConfig"].fssTitle;
-    //this.logoImgUrl = "/assets/svg/Admiralty%20stacked%20logo.svg";
-    //this.logoAltText = "Admiralty - Maritime Data Solutions Logo";
-    //this.logoLinkUrl = "https://www.admiralty.co.uk/";
     this.handleSigninAwareness();
   }
 
@@ -107,15 +103,6 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe((event: any) => { this.skipToContent = `#mainContainer`; });
   }
 
-  /*
-  handleActiveTab(title: any) {
-    for (var item of this.menuItems) {
-      item.navActive = false;
-      if (item.title == title) {
-        item.navActive = true;
-      }
-    }
-  }*/
 
   logInPopup() {
     this.msalService.instance.handleRedirectPromise();
@@ -128,8 +115,6 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.route.navigate(['search'])
         this.searchActive = true;
         this.userSignedIn = true;
-        //this.isActive = true;
-        //this.handleActiveTab(this.menuItems[1].title)
         this.analyticsService.login();
       }
     });
@@ -159,7 +144,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.searchActive = false;
       }
       else if (url.includes('logout')) {
-        console.log("Rhz Attempting to navigate to Logout component");
+        console.log("Logging out...");
       }
     });
   }
@@ -174,7 +159,6 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   handleUserProfileClick()  {
-    console.log("Rhz Profile");
     const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
     let editProfileFlowRequest = {
       scopes: ["openid", AppConfigService.settings["b2cConfig"].clientId],
@@ -219,17 +203,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     }
-    //this.getMenuItems();
   }
-
-  /*
-  getMenuItems() {
-    if (this.authOptions?.isSignedIn()) {
-      return this.menuItems;
-    } else {
-      return [];
-    }
-  }*/
 
   ngOnDestroy(): void {
     this.clickSub.unsubscribe();

@@ -20,7 +20,6 @@ test.describe('ESS UI ENC download Page Accessibility Test Scenarios', () => {
         await AcceptCookies(page);
         await injectAxe(page)
         await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
-        //await page.locator(fssHomePageObjectsConfig.essLinkSelector).click(); //rhz
         await page.locator('admiralty-header').getByText('Exchange sets').click();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/ENCs_Sorting.csv');

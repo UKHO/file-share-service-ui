@@ -70,15 +70,12 @@ export class FssSearchComponent implements OnInit {
     this.activeSearchType = SearchType.AdvancedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
-    
-    console.log("Search Type ADV:", this.activeSearchType) //Rhz
   }
 
   ShowSimplifiedSearchClicked() {
     this.activeSearchType = SearchType.SimplifiedSearch;
     this.displaySearchResult = false;
     this.displayMessage = false;
-    console.log("Search Type:", this.activeSearchType) //Rhz
   }
 
   onAdvancedSearchClicked(fssAdvancedSearch: any) {

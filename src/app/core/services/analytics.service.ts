@@ -1,9 +1,6 @@
-//import { ThrowStmt } from '@angular/compiler'; rhz 24/08/23
 import { Injectable } from '@angular/core';
 import { GoogleTagManagerService} from 'angular-google-tag-manager';
 import { AppConfigService } from '../../core/services/app-config.service';
-// import { EnhancedForm } from 'src/app/components/enhanced-order-configuration/enhanced-order-configuration.component';
-// import { SelectedItem } from '../../components/selected-items/selectedItem';
 
 enum Categories {
   Login = 'User Login',
