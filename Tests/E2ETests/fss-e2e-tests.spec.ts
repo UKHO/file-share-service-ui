@@ -28,9 +28,12 @@ test.describe('FSS UI E2E Scenarios', () => {
     await SearchAttribute(page, attributeBusinessUnit.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeBusinessUnit.value);
-    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
+    await page.getByTestId('adv-search-button').click();
     // Verification of attribute table records
-    const noOfRecods = (await page.$$(fssSearchPageObjectsConfig.searchAttributeTableRows)).length;
+    const card = page.locator("admiralty-card").first();
+    const table = card.getByRole("table");
+    await expect(table).toHaveClass("attribute-table");
+    const noOfRecods = await table.getByRole("row").count();
     expect(noOfRecods).toBeGreaterThanOrEqual(2);
     // Search Query String
     const queryString = `${attributeBusinessUnit.key} eq '${attributeBusinessUnit.value}'`;
@@ -46,7 +49,7 @@ test.describe('FSS UI E2E Scenarios', () => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
-    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable);
+    await page.getByTestId('adv-search-button').click();
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
     // Search Query String
     const queryString = `$batch("${attributeProductType.key}") eq '${attributeProductType.value}'`;
@@ -63,10 +66,9 @@ test.describe('FSS UI E2E Scenarios', () => {
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, `'${attributeFileSize.value}'`);
     await page.waitForTimeout(2000);
-    await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.dialogInfoSelector);
+    await page.getByTestId('adv-search-button').click();
     //Verification of warning message
-    const warningMessage = await page.innerText(fssSearchPageObjectsConfig.dialogInfoSelector);
-    expect(warningMessage).toContain(fssSearchPageObjectsConfig.warningMessageText);
+    await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).textContent() === fssSearchPageObjectsConfig.warningMessageValue;
     //Search Query String
     const queryString = `${attributeFileSize.key} eq '${attributeFileSize.value}'`;
     const testUrl = `${autoTestConfig.apiurl}/batch?$filter=${queryString}`;    
