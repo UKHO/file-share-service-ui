@@ -11,6 +11,8 @@ import { EssListEncsComponent } from './ess-list-encs/ess-list-encs.component';
 import { EssDownloadExchangesetComponent } from './ess-download-exchangeset/ess-download-exchangeset.component';
 import { EssInfoErrorMessageComponent } from './ess-info-error-message/ess-info-error-message.component';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { faSync, faX } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,12 @@ import { DesignSystemModule } from '@ukho/admiralty-angular';
     FormsModule,
     TableModule,
     /*CheckboxModule,*/
+    FontAwesomeModule,
     DesignSystemModule,
   ]
 })
-export class ExchangeSetModule { }
+export class ExchangeSetModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faSync,faX);
+  }
+}
