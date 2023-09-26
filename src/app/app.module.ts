@@ -7,6 +7,7 @@ import { SharedModule } from   './shared/app.shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppConfigService } from './core/services/app-config.service';
 import { AnalyticsService } from './core/services/analytics.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { HttpErrorInterceptorService } from './core/services/httperror-interceptor.service';
 import {
   MsalModule,
@@ -86,6 +87,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 @NgModule({
   declarations: [
     AppComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -94,6 +96,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     SharedModule,
     AppRoutingModule,
     HttpClientModule,
+    FontAwesomeModule,
     MsalModule
   ],
   providers: [
