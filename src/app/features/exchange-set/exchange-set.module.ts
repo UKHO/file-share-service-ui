@@ -12,7 +12,7 @@ import { EssDownloadExchangesetComponent } from './ess-download-exchangeset/ess-
 import { EssInfoErrorMessageComponent } from './ess-info-error-message/ess-info-error-message.component';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faSync, faX } from '@fortawesome/free-solid-svg-icons';
+import { faSync, faX, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
@@ -35,6 +35,6 @@ import { faSync, faX } from '@fortawesome/free-solid-svg-icons';
 })
 export class ExchangeSetModule {
   constructor(library: FaIconLibrary) {
-    library.addIcons(faSync,faX);
+    library.addIcons(faSync, faX, faCircleNotch);
   }
 }

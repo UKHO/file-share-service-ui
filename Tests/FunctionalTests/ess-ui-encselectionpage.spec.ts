@@ -39,7 +39,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     //To deselect ENCs using checkbox
     await encSelectionPageObjects.expect.verifyDeselectedENCs(encSelected);
     // To deselect ENCs using "X" button.
-    await encSelectionPageObjects.expect.verifyXButtonSelectorClick();
+    await encSelectionPageObjects.expect.verifyXButtonSelectorClick('AU220150');
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13961
