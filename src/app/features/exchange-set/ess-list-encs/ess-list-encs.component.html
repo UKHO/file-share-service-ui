@@ -55,7 +55,7 @@
           <ng-container ukhoColumnDef="X">
             <th ukho-header-cell *ukhoHeaderCellDef></th>
             <td class="selectionClose" ukho-cell *ukhoCellDef="let element">
-              <button data-testid=element  (click)="handleChange(element)" attr.aria-label="Remove {{element}} from selected ENC "><fa-icon [icon]="['fas', 'x']"></fa-icon> </button>
+              <button attr.data-testid = "{{element}}"  (click)="handleChange(element)" attr.aria-label="Remove {{element}} from selected ENC"><fa-icon [icon]="['fas', 'x']"></fa-icon> </button>
             </td>
           </ng-container>
           <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
