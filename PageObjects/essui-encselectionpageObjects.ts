@@ -197,14 +197,12 @@ class EncSelectionPageAssertions {
 
   async verifyXButtonSelectorClick(testId: string): Promise<void> {
     const testPage = this.encSelectionPageObjects.pageUnderTest;
-    await testPage.getByLabel(testId).click();
-    //await this.encSelectionPageObjects.firstCheckBoxSelector.click();
+    const admiraltyCheckbox = testPage.getByLabel(testId).getByRole("checkbox").first();
+    await admiraltyCheckbox.click();
+    //now click the "X" on the left
     await testPage.getByTestId(testId).click();
-    //await this.encSelectionPageObjects.XButtonSelector.click();
-    await expect(testPage.getByLabel(testId)).not.toBeChecked();
-    //await expect(this.encSelectionPageObjects.firstCheckBoxSelector).not.toBeChecked();
+    await expect(admiraltyCheckbox).not.toBeChecked();
     await expect(testPage.getByTestId(testId)).toBeHidden();
-    //await expect(this.encSelectionPageObjects.XButtonSelector).toBeHidden();
   }
 
 
