@@ -20,7 +20,7 @@ variables:
   - name: Container
     value: "ukhydrographicoffice/terraform-azure-powershell:1.3.7"
   - name: DeploymentPool
-    value: "Mare Nectaris"
+    value: "UKHO Ubuntu 1804"
   - name: WindowPool
     value: "NautilusBuild"
   - name: coverityPool
