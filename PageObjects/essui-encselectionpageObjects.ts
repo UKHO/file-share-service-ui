@@ -149,9 +149,8 @@ class EncSelectionPageAssertions {
     if (expectedENCs.length) {
       for (var i = 0; i < expectedENCs.length; i++) {
 
-        await testPage.getByRole('row', { name: expectedENCs[i] }).getByLabel('', { exact: true }).check();
-
-        const matchItem = testPage.getByRole('row').filter({ hasText: `Remove ${expectedENCs[i]} from selected ENC` });
+        await testPage.getByLabel(expectedENCs[i]).getByRole("checkbox").first().check();
+        const matchItem = testPage.getByTestId(expectedENCs[i])
 
         expect(matchItem).toBeTruthy();
       }
@@ -168,7 +167,7 @@ class EncSelectionPageAssertions {
     if (expectedENCs.length) {
       for (var i = 0; i < expectedENCs.length; i++) {
 
-        await testPage.getByRole('row', { name: expectedENCs[i] }).getByLabel('', { exact: true }).uncheck();
+        await testPage.getByLabel(expectedENCs[i]).getByRole("checkbox").first().uncheck();
 
       }
 
