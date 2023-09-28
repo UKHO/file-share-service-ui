@@ -17,7 +17,7 @@
     <div class="ess-download-wrapper">
       <h4 style="padding-left: 15px;margin-top: 20px;margin-bottom: 20px">Exchange set download</h4>
       <div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayEssLoader" aria-live='polite' role="alert" aria-label="Results Loading">
-        <fa-icon [icon]="['fas','circle-notch']" [spin]="true" size="10x" [style]="{'stroke': 'green', 'color': 'green'}"></fa-icon>
+        <i class="fa-solid fa-circle-notch fa-spin" style="font-size:220px;color:green"></i>
       </div>
         <div *ngIf="displayDownloadBtn">
           <admiralty-button class="btnDownload" (click)="download()">Download</admiralty-button>

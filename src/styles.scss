@@ -713,6 +713,9 @@ app-root {
 	cursor: pointer;
 }
 
+.fa-spin {
+  animation: fa-spin 2s infinite linear !important;
+}
 
 .selectionClose{
 	text-align: center;
