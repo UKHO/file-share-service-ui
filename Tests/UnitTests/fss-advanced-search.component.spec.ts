@@ -191,9 +191,8 @@ describe('FssAdvancedSearchComponent', () => {
       { value: 'gt', text: '>', type: 'operator', supportedDataTypes: ['number', 'date'] },
       { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] }
     ];
-    //searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
+    searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
     searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileSize', 'eq', 'test', 'tel', false));
-    //searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
     component.fssSearchRows = searchRows;
     component.fields = searchService.getFields(MockUserAttributeFields())
     component.operators = searchService.getOperators();

@@ -7,7 +7,6 @@ import { FileShareApiService } from '../../src/app/core/services/file-share-api.
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
-//import { CardComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 

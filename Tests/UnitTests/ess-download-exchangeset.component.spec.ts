@@ -13,7 +13,6 @@ import { FileShareApiService } from '../../src/app/core/services/file-share-api.
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { ViewportScroller } from '@angular/common';
-//import { MockViewportScroller } from './ess-info-error-message.component.spec';
 
 describe('EssDownloadExchangesetComponent', () => {
   let component: EssDownloadExchangesetComponent;
