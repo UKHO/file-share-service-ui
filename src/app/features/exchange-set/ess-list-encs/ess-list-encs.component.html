@@ -17,7 +17,8 @@
         </p>
         <table ukhoSort ukho-table [dataSource]="encList" class="enc-list-table" (sortChange)="onSortChange($event)">
           <ng-container ukhoColumnDef="enc">
-            <th ukhoSortHeader ukhoHeaderCell *ukhoHeaderCellDef>ENC name
+            <th ukhoSortHeader ukhoHeaderCell *ukhoHeaderCellDef>
+              ENC name <i class="fa-solid {{sortGraphic}}"></i>
             </th>
             <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
           </ng-container>

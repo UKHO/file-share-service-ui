@@ -42,6 +42,9 @@ export class EssListEncsComponent implements OnInit {
   essSilentTokenRequest: SilentRequest;
   essTokenScope: any = [];
   selectDeselectEncAlert: string;
+  sortGraphicUp: string = "fa-chevron-up";
+  sortGraphicDown: string = "fa-chevron-down";
+  sortGraphic: string = this.sortGraphicUp;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
@@ -136,7 +139,13 @@ export class EssListEncsComponent implements OnInit {
     }
   }
 
-    onSortChange(sortState: SortState) {
+  onSortChange(sortState: SortState) {
+    if (sortState.direction === 'asc') {
+      this.sortGraphic = this.sortGraphicUp;
+    }
+    else {
+      this.sortGraphic = this.sortGraphicDown;
+    }
     this.encList = [
       ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
