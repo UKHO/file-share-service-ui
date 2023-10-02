@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import {
   ExpectAllResultsHaveBatchUserAttValue, ExpectAllResultsContainAnyBatchUserAttValue,
   ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed, AdmiraltyExpectAllResultsHaveFileAttributeValue,
-  GetTotalResultCount, filterCheckBox, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue,ExpectAllResultsHaveFileAttributeValue
+  GetTotalResultCount, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue,ExpectAllResultsHaveFileAttributeValue
 } from '../../Helper/SearchPageHelper';
 import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType,attributeFileName } from '../../Helper/ConstantHelper';
 
@@ -23,8 +22,6 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   test('Verify No results for non existing batch attribute value search', async ({ page }) => {
     //Enter non existing value in search box
-    //await page.getByRole("textbox").fill(searchNonExistBatchAttribute);
-    //await page.getByRole('button', {name : "Search"}).click();
     await InsertSearchText(page, searchNonExistBatchAttribute);
     const infoText = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
     expect(infoText).toContain(fssSearchPageObjectsConfig.dialogInfoText);

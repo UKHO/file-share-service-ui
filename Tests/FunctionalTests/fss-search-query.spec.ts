@@ -1,20 +1,18 @@
 import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
 import {AcceptCookies, LoginPortal} from '../../Helper/CommonHelper';
-import {SearchAttribute, SearchAttributeSecondRow, ClickWaitRetry, TryGetFileSizeInBytes
-  , ExpectAllResultsHaveBatchUserAttValue,
+import {SearchAttribute, SearchAttributeSecondRow, 
+  ExpectAllResultsHaveBatchUserAttValue,
   ExpectAllResultsContainBatchUserAttValue,
-  ExpectAllResultsHaveFileAttributeValue, GetTotalResultCount, AdmiraltyExpectAllResultsHaveFileAttributeValue,
+  GetTotalResultCount, AdmiraltyExpectAllResultsHaveFileAttributeValue,
   GetCountOfBatchRows,AdmiraltyGetFileSizeCount} from '../../Helper/SearchPageHelper';
-import { attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize, searchNonExistBatchAttribute} from '../../Helper/ConstantHelper';
+import { attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize} from '../../Helper/ConstantHelper';
 
 const searchQuerySqlInjection = "adds''; drop table BatchAttribute";
 const batchAttributeSpecialChar = '$£';
 
 test.describe('Test Search Query Scenario On Search Page', () => {
-  //jest.setTimeout(pageTimeOut.timeOutInMilliSeconds);
 
   test.beforeEach(async ( {page}) => {
     await page.goto(autoTestConfig.url);
@@ -46,7 +44,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
   });
 
   test('Batch Attribute table returns correct values on multiple attributes search', async ({ page }) => {
-   // page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "eq");     
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
@@ -173,7 +170,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
   });
 
   test('Test to verify warning message for invalid field value', async ({ page }) => {
-   // page.setDefaultTimeout(pageTimeOut.timeOutInMilliSeconds);
     await SearchAttribute(page, attributeFileSize.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, 'L1K2');

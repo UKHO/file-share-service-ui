@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
@@ -19,7 +18,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await page.waitForLoadState('load');
     await AcceptCookies(page);
     await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
-    //await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
     await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/ENCs_Sorting.csv');

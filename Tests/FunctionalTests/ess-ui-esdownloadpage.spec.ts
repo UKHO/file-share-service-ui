@@ -2,7 +2,6 @@ import { test } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
 import { EsDownloadPageObjects } from '../../PageObjects/essui-esdownloadpageObjects';
@@ -51,7 +50,6 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         let valueString: string = includedDisplay?.split(' ')[0] as string;
         let ENCsIncludedValue = parseInt(valueString);
         esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, ENCsIncludedValue)
-        //await esDownloadPageObjects.expect.VerifyExchangeSetSize();
         //=========================================
         await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
         await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");

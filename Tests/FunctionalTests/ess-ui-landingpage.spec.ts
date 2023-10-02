@@ -3,9 +3,7 @@ import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObject
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
-import { essConfig } from '../../src/assets/config/appconfig.json';
 
 test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
