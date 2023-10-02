@@ -2,9 +2,8 @@ import { test } from '@playwright/test';
 import { injectAxe, checkA11y} from 'axe-playwright'
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { attributeProductType} from '../../Helper/ConstantHelper';
-import { SearchAttribute, ClickWaitRetry } from '../../Helper/SearchPageHelper';
+import { SearchAttribute } from '../../Helper/SearchPageHelper';
 import { autoTestConfig } from '../../appSetting.json';
 
 test.describe('FSS UI Search Page Accessibility Test Scenarios', () => {
@@ -18,7 +17,6 @@ test.describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector,"contains");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
-    //await ClickWaitRetry(page, fssSearchPageObjectsConfig.searchAttributeButton, fssSearchPageObjectsConfig.searchAttributeTable, undefined, 10000);
     await page.getByTestId('adv-search-button').click();
     await injectAxe(page);
   })  

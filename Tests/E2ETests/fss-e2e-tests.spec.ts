@@ -4,7 +4,6 @@ import { attributeBusinessUnit, attributeProductType, attributeFileSize} from '.
 import { SearchAttribute,ExpectAllResultsHaveBatchUserAttValue, ClickWaitRetry } from '../../Helper/SearchPageHelper';
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 
 let idToken: string | null;
 test.describe('FSS UI E2E Scenarios', () => {

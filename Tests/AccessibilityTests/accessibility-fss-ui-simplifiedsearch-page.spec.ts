@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 import { injectAxe, checkA11y} from 'axe-playwright'
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { attributeProductType} from '../../Helper/ConstantHelper';
 import { autoTestConfig } from '../../appSetting.json';
 

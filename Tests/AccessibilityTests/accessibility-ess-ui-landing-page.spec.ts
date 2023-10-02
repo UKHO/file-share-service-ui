@@ -2,8 +2,6 @@ import { test, expect } from '@playwright/test';
 import { injectAxe, checkA11y} from 'axe-playwright'
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { autoTestConfig } from '../../appSetting.json';
-import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 
 test.describe('ESS UI Landing Page Accessibility Test Scenarios', () => {
   
