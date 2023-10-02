@@ -15,7 +15,6 @@ export class EssLandingPageObjects {
     readonly addsingleencSelector: Locator;
     readonly proceedButtonSelector: Locator;
     readonly errorMessageSelector: Locator;
-    //readonly errorMessageExcludeENCsSelector: Locator;
     readonly txtFileNameWithExtension: Locator;
     readonly chooseuploadfileSelector: Locator;
     readonly errorMessageForInvalidENCSelector: Locator;
@@ -41,7 +40,6 @@ export class EssLandingPageObjects {
         this.addsingleencSelector = this.page.locator("button[type='submit']");
         this.proceedButtonSelector = this.page.locator("//button[@type='submit']");
         this.errorMessageSelector = this.page.locator("section:has-text('Please select a .csv or .txt file')");
-        //this.errorMessageExcludeENCsSelector = this.page.locator("//ukho-dialogue/section");
         this.txtFileNameWithExtension = this.page.locator("ValidAndInvalidENCs");
         this.chooseuploadfileSelector = page.locator('label').filter({ hasText: 'Click to choose a file' });
         this.errorMessageForInvalidENCSelector = this.page.locator("section:has-text('Invalid ENC number')");

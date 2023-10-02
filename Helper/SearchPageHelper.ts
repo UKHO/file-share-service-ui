@@ -98,14 +98,7 @@ export function DataCollectionComparison(collectionSource: any, collectionTarget
 }
 
 export async function InsertSearchText(page: Page, searchBatchAttribute: string) {
-  //await page.waitForTimeout(2000);
-  //await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, "");
-  //await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, searchBatchAttribute);
-  //await page.waitForTimeout(2000);
-  //await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
-  //await page.waitForTimeout(2000);
   await page.getByRole("textbox").fill(searchBatchAttribute);
-  //await page.getByRole('button', { name: "Search" }).click();
   await page.getByTestId('sim-search-button').click();
   await page.waitForTimeout(2000);
 }
@@ -239,8 +232,6 @@ async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, tableBatchAtt
 
     for (let rc = 0; rc < resultCount; rc++) {
       const searchedBatchAttibutes = await page.$$eval(`${tableBatchAttribute}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
-      //page.waitForTimeout(2000);
-      //const searchFileName = await page.$$eval(`${filePath}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
 
       switch (true) {
         case (searchedBatchAttibutes[rc]?.includes(condition[0])):
@@ -295,7 +286,6 @@ export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumn
 
     //if next page paginator link is disable break the infinite loop
     //it seems that playwright equates disabled to visible false
-    //await page.locator(fssSearchPageObjectsConfig.paginatorLinkNextDisabled).isVisible()
     const visibleState = await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext }).isVisible();
     if (!visibleState) {
       break;

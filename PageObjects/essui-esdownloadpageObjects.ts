@@ -33,7 +33,6 @@ export class EsDownloadPageObjects {
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
         this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
         this.errorMessageSelector = this.page.getByText("There has been an error");
-        //this.selectedENCsSelector = this.page.getByText(SelectedENCs + ' ENCs selected')
         this.selectedENCsSelector = this.page.locator('p').filter({ hasText: ' ENCs selected' });
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
         this.pageUnderTest = page;
@@ -107,15 +106,6 @@ class EsDownloadPageAssertions {
        expect(await testPage.getByText(InValidENCs[0] + ' - invalidProduct')).toBeTruthy();
        expect(await testPage.getByText(InValidENCs[1] + ' - invalidProduct')).toBeTruthy();
        expect(await testPage.getByText(InValidENCs[2] + ' - productWithdrawn')).toBeTruthy();
-
-        //for (var i = 0; i < 3; i++) {
-        //    if (i < 2) {
-        //        expect(await this.esDownloadPageObjects.invalidEncsSelector.nth(i).innerText()).toEqual(InValidENCs[i] + ' - invalidProduct');
-        //    }
-        //    else {
-        //        expect(await this.esDownloadPageObjects.invalidEncsSelector.nth(i).innerText()).toEqual(InValidENCs[i] + ' - productWithdrawn');
-        //    }
-        //}
     }
 
     async ValidateFileDownloaded(path: string): Promise<void> {
