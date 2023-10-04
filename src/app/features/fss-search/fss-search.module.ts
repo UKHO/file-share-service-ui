@@ -1,5 +1,4 @@
 import { FssSearchComponent } from './fss-search.component';
-//import { ButtonModule,SelectModule,CheckboxModule,TextinputModule,DialogueModule, ExpansionModule, CardModule, TableModule,PaginatorModule, TypeaheadModule, HorizontalRuleModule, FilterModule } from '@ukho/design-system';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FssSearchRoutingModule } from './fss-search-routing.module';

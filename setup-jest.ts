@@ -1,8 +1,6 @@
 import 'jest-preset-angular/setup-jest.mjs';
 import crypto from 'crypto';
-//import { jest } from '@jest/globals';
-//window.open = jest.fn();
-//console.error = jest.fn();
+
 Object.defineProperty(window, 'CSS', { value: null });
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => ({
