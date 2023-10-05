@@ -68,8 +68,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.monitorNavigation();
     this.setSkipToContent();
 
-    
-    
+      
 
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
@@ -210,5 +209,6 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 }
+
 
 

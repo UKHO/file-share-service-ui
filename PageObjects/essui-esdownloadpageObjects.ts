@@ -36,6 +36,8 @@ export class EsDownloadPageObjects {
         this.selectedENCsSelector = this.page.locator('p').filter({ hasText: ' ENCs selected' });
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
         this.pageUnderTest = page;
+       
+
     }
 
     async downloadFile(page: Page, path: string): Promise<void> {
@@ -91,6 +93,7 @@ class EsDownloadPageAssertions {
 
     }
 
+
     VerifyExchangeSetSizeIsValid(estimated: string, included: number): void {
     //new for Admiralty
       let estimatedSize = included * (0.3);
@@ -98,6 +101,8 @@ class EsDownloadPageAssertions {
       let literal: string = 'Estimated size ' + (estimatedSize + defaultSize).toFixed(1) + 'MB';
       expect(estimated).toEqual(literal);
     }
+
+  
 
 
   async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {

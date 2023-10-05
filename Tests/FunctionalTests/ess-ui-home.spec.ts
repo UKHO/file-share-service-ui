@@ -46,9 +46,12 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13803
     test('Verify appending "/search" in  url after login, navigates to Search page', async ({ page }) => {
+
         await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
         await page.waitForLoadState('load');
         expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
+
+
 
     });
 

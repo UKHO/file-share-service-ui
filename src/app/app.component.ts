@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { MsalService } from '@azure/msal-angular';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

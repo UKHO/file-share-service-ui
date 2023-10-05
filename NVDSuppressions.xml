@@ -12,5 +12,5 @@
     <vulnerabilityName>CVE-2023-44270</vulnerabilityName>
     <vulnerabilityName>GHSA-7fh5-64p2-3v2j</vulnerabilityName>
   </suppress>
-  
+
 </suppressions>

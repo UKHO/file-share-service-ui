@@ -28,7 +28,8 @@ describe('AppComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
     titleService = TestBed.inject(Title);
-    router = TestBed.inject(Router); 
+    router = TestBed.inject(Router);
+    msalService = TestBed.inject(MsalService);
     });
 
   it('should exist', () => {
