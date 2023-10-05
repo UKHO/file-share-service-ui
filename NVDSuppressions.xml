@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: postcss:8.4.27
+   problem file: @angular-devkit/build-angular which references postcss:8.4.27
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/postcss@.*$</packageUrl>
+    <vulnerabilityName>CVE-2023-44270</vulnerabilityName>
+    <vulnerabilityName>GHSA-7fh5-64p2-3v2j</vulnerabilityName>
+  </suppress>
   
 </suppressions>
