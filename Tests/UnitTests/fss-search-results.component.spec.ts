@@ -1,18 +1,18 @@
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule, TableModule } from '@ukho/design-system';
+import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
 import { formatBytes, FssSearchResultsComponent } from '../../src/app/features/fss-search/fss-search-results/fss-search-results.component';
 import { FileShareApiService } from '../../src/app/core/services/file-share-api.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
-import { CardComponent } from '@ukho/design-system';
 import { By } from '@angular/platform-browser';
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchResultViewModel } from 'src/app/core/models/fss-search-results-types';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
 
 describe('FssSearchResultsComponent', () => {
   let component: FssSearchResultsComponent;
@@ -23,8 +23,8 @@ describe('FssSearchResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientModule, TableModule, ButtonModule, RouterTestingModule],
-      declarations: [FssSearchResultsComponent, CardComponent],
+      imports: [HttpClientModule, TableModule, RouterTestingModule, DesignSystemModule],
+      declarations: [FssSearchResultsComponent],
       providers: [FileShareApiService, MsalService, AnalyticsService, {
         provide: MSAL_INSTANCE,
         useFactory: MockMSALInstanceFactory
@@ -144,9 +144,9 @@ describe('FssSearchResultsComponent', () => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       var ExpectedDownloadFileName = component.searchResultVM[0].batchFileDetails.rowData[0].FileName;
-      const element = fixture.nativeElement.querySelectorAll('tr')[5];
-      let fileName = element.cells[0].innerHTML;
-      expect(element).not.toBeNull();
+      const element = fixture.nativeElement.querySelectorAll('admiralty-table-cell')[0];
+      let fileName = element.innerHTML;
+      expect(fileName).not.toBeNull();
       expect(fileName).toEqual(ExpectedDownloadFileName);
     })
 
@@ -187,13 +187,14 @@ describe('FssSearchResultsComponent', () => {
         if (item.allFilesZipSize) {
           expect(pnlBatchDetails.querySelector("a").textContent).toContain("batch " + SrNumber);
           expect(pnlBatchDetails.querySelector("a").classList.contains('isDownloadAllDisabled')).toBe(false);
-          expect(pnlBatchDetails.querySelector("ukho-dialogue")).toBeNull();
+          expect(pnlBatchDetails.querySelector("admiralty-dialogue")).toBeNull();
         }
         else
         {
           expect(pnlBatchDetails.querySelector("a").textContent).toContain("batch " + SrNumber);
           expect(pnlBatchDetails.querySelector("a").classList.contains('isDownloadAllDisabled')).toBe(true);
-          expect(pnlBatchDetails.querySelector("ukho-dialogue").textContent).toEqual("'Download all' function will be available when the files have been prepared You can select and download individual files, or try again later ");
+          expect(pnlBatchDetails.querySelector("admiralty-dialogue").heading).toEqual("'Download all' function will be available when the files have been prepared");
+          expect(pnlBatchDetails.querySelector("admiralty-dialogue").textContent).toContain("You can select and download individual files, or try again later")
         }
       });
     });

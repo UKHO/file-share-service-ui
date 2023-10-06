@@ -33,7 +33,7 @@ describe('AppComponent', () => {
     });
 
   it('should exist', () => {
-    component = new AppComponent(activatedRoute, router, titleService,msalService);
+    component = new AppComponent(activatedRoute, router, titleService, msalService);
     expect(component).toBeDefined();
   })
 

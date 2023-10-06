@@ -98,12 +98,9 @@ export function DataCollectionComparison(collectionSource: any, collectionTarget
 }
 
 export async function InsertSearchText(page: Page, searchBatchAttribute: string) {
+  await page.getByRole("textbox").fill(searchBatchAttribute);
+  await page.getByTestId('sim-search-button').click();
   await page.waitForTimeout(2000);
-  await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, "");
-  await page.fill(fssSearchPageObjectsConfig.inputSimplifiedSearchBoxSelector, searchBatchAttribute);
-  await page.waitForTimeout(2000);
-  await page.click(fssSearchPageObjectsConfig.simplifiedSearchButtonSelector);
-  await page.waitForTimeout(2000); 
 }
 
 export async function ExpectAllResultsHaveBatchUserAttValue(
@@ -152,9 +149,57 @@ export async function ExpectAllResultsHaveFileAttributeValue(
   page: Page, preciseValue: string): Promise<void> {
 
   await ExpectSelectionsAreEqual(page,
-    `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${preciseValue.toLowerCase()}')])]`);
+    `//admiralty-table[@role='table']`,
+    `//admiralty-table[@role='table' and  .//admiralty-table-cell[contains(., '${preciseValue.toLowerCase()}')]]`); 
 }
+
+export async function AdmiraltyExpectAllResultsHaveFileAttributeValue(
+  page: Page, preciseValue: string): Promise<void> {
+  const admiraltyTables = await page.$$('admiralty-table');
+  const filteredTables = await Promise.all(admiraltyTables.map(async (table) => {
+    const cells = await table.$$('admiralty-table-cell');
+    const hasTest = await Promise.all(cells.map(async (cell) => {
+      const text = await cell.textContent();
+      if (text != null) {
+        return text.toLowerCase().includes(preciseValue.toLowerCase());
+      } else {
+        return false;
+      }
+    }));
+    return hasTest.includes(true) ? table : null;
+  }));
+
+  const filteredTablesWithoutNulls = filteredTables.filter((table) => table !== null);
+
+  expect(admiraltyTables.length).toEqual(filteredTablesWithoutNulls.length);
+}
+
+
+export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
+  const admiraltyTables = await page.$$('admiralty-table');
+  const filteredTables = await Promise.all(admiraltyTables.map(async (table) => {
+    const cells = await table.$$('admiralty-table-cell');
+    const hasSize = await Promise.all(cells.map(async (cell) => {
+      const text = await cell.textContent();
+      let size = TryGetFileSizeInBytes(text);
+      if (size != null && size > 0 && size < fileSize) {
+        return size;
+      } else {
+        return 0;
+      }
+    }));
+    const actual = hasSize.filter(itm => itm > 0);
+    return actual.length;
+  }));
+
+
+  return filteredTables.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  }, 0);
+}
+
+
+
 
 async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {
   await page.waitForTimeout(3000);
@@ -187,8 +232,6 @@ async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, tableBatchAtt
 
     for (let rc = 0; rc < resultCount; rc++) {
       const searchedBatchAttibutes = await page.$$eval(`${tableBatchAttribute}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
-      page.waitForTimeout(2000);
-      const searchFileName = await page.$$eval(`${filePath}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
 
       switch (true) {
         case (searchedBatchAttibutes[rc]?.includes(condition[0])):
@@ -242,7 +285,9 @@ export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumn
     expect(attributeFieldCount).toEqual(resultCount);
 
     //if next page paginator link is disable break the infinite loop
-    if (await page.locator(fssSearchPageObjectsConfig.paginatorLinkNextDisabled).isVisible()) {
+    //it seems that playwright equates disabled to visible false
+    const visibleState = await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext }).isVisible();
+    if (!visibleState) {
       break;
     }
     else {

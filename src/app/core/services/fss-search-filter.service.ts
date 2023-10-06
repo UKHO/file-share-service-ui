@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FssSearchRow, RowGrouping } from '../models/fss-search-types';
-import { FilterGroup } from '@ukho/design-system/filter/filter.types';
+import { FilterGroup } from '../../shared/components/ukho-table/filter.types';;
 
 @Injectable({
   providedIn: 'root'

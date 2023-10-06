@@ -9,9 +9,10 @@ module.exports = {
   collectCoverage: true,
   coverageReporters: ['html','cobertura'],
   coverageDirectory: 'coverage',
-  reporters: ["default","jest-junit"],
+  reporters: ["default", "jest-junit"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {
     prefix: '<rootDir>/'
+    
   }),
   globals: {
     crypto: require('crypto')

@@ -1,0 +1,130 @@
+/* Core Palette */
+$colour-admiralty-blue: #09315b;
+$colour-black: #000000;
+$colour-white: #ffffff;
+$colour-dark-blue: #03284f;
+$colour-bg: #ffffff;
+
+/* Supporting Palette */
+$colour-text: #333333;
+$colour-line: #d0d0d0;
+$colour-bg-grey: #eeeeee;
+$colour-bg-text: #ffffff;
+$colour-bg-header: #d8d8d8;
+$colour-divider: #d8d8d8;
+$colour-bg-footer: #b3bcc8;
+
+/* Secondary Palette */
+$colour-teal: #007e97;
+$colour-bright-blue: #65c4db;
+$colour-green: #989b00;
+
+/* Digital Product Colours */
+$colour-product-raster-chart: #ef3e33;
+$colour-product-list-of-lights: #00a996;
+$colour-product-passage-planner: #85a4d1;
+$colour-product-tide: #fcd446;
+$colour-product-vector-chart: #de0076;
+$colour-product-nautical-publications: #7577c0;
+$colour-product-digital-publications: #83afb4;
+$colour-product-digital-radio-signals: #75cff5;
+
+/* Utility Colours */
+$colour-utility-warning: #e3660e;
+$colour-utility-warning-bg: #f8ede3;
+$colour-utility-error: #e20d0d;
+$colour-utility-error-bg: #f7e1e1;
+$colour-utility-success: #47a234;
+$colour-utility-success-bg: #e7f1e5;
+$colour-utility-info: #0177c1;
+$colour-utility-info-bg: #e0ecf3;
+$colour-utility-focus: #ffdd00;
+
+/* Button Colours */
+/* Primary */
+$colour-button-standard: $colour-admiralty-blue;
+$colour-button-border-standard: $colour-admiralty-blue;
+$colour-button-hover: #03284f;
+$colour-button-border-hover: #03284f;
+$colour-button-deselected: #adadad;
+$colour-button-border-deselected: #adadad;
+$colour-button-selected: #ffffff;
+$colour-button-border-selected: $colour-admiralty-blue;
+$colour-button-text: #ffffff;
+$colour-button-text-selected: $colour-admiralty-blue;
+$colour-button-border-selected: $colour-admiralty-blue;
+$colour-button-icon: #ffffff;
+$colour-button-icon-selected: $colour-admiralty-blue;
+/* Secondary */
+$colour-button-secondary-standard: #ffffff;
+$colour-button-secondary-border-standard: #05284e;
+$colour-button-secondary-hover: #eeeeee;
+$colour-button-secondary-border-hover: #05284e;
+$colour-button-secondary-deselected: #adadad;
+$colour-button-secondary-border-deselected: #adadad;
+$colour-button-secondary-selected: #05284e;
+$colour-button-secondary-border-selected: #05284e;
+$colour-button-secondary-text: #05284e;
+$colour-button-secondary-text-selected: #ffffff;
+$colour-button-secondary-icon: #05284e;
+$colour-button-secondary-icon-selected: #ffffff;
+
+/* Link Colours */
+$colour-link: $colour-admiralty-blue;
+
+/* Nav colours */
+$colour-nav-item: #333333;
+$colour-nav-main-bg-hover: #eef3f4;
+$colour-nav-bg-hover: #f0f0f0;
+$colour-nav-bg: #f8f8f8;
+$colour-nav-subitem: $colour-admiralty-blue;
+$colour-nav-subitem-icon: $colour-admiralty-blue;
+
+/* Table colours */
+$colour-table-row-bg: $colour-bg;
+$colour-table-row-alt-bg: #eef3f4;
+
+/* Tab colours */
+$colour-tab-active: #ffffff;
+$colour-tab-inactive: #eeeeee;
+$colour-tab-hover: #eef3f4;
+
+/* form text input colours */
+$colour-textinput-border: $colour-dark-blue;
+$colour-textinput-border-active: $colour-utility-info;
+$colour-textinput-border-disabled: #adadad;
+$colour-textinput-border-valid: $colour-utility-success;
+$colour-textinput-border-invalid: $colour-utility-error;
+$colour-textinput-text: $colour-admiralty-blue;
+$colour-textinput-text-active: $colour-utility-info;
+$colour-textinput-text-disabled: #adadad;
+$colour-textinput-text-valid: $colour-utility-success;
+$colour-textinput-text-invalid: $colour-utility-error;
+$colour-textinput-icon-valid: $colour-utility-success;
+$colour-textinput-icon-invalid: $colour-utility-error;
+$colour-textinput-bg: #f6f6f6;
+$colour-errormessage-text: $colour-utility-error;
+
+/* form textarea colours */
+$colour-textarea-border: $colour-dark-blue;
+$colour-textarea-border-focused: $colour-utility-info;
+
+/* radio button */
+$colour-radio: $colour-dark-blue;
+
+/* checkbox */
+$colour-checkbox: $colour-dark-blue;
+
+/* code snippet */
+$colour-codesnippet-bg: $colour-bg-grey;
+$colour-codesnippet-line: $colour-line;
+
+@function darken($color) {
+  $darker-color: scale-color($color, $lightness: -19%, $saturation: 60%);
+  @return $darker-color;
+}
+
+@function lighten($color) {
+  $lighter-color: scale-color($color, $lightness: 10%, $saturation: -25%);
+  @return $lighter-color;
+}

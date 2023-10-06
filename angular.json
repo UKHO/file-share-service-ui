@@ -1,7 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -35,12 +37,13 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "./node_modules/@ukho/design-system/assets",
+                "input": "./node_modules/@ukho/admiralty-core/dist/collection/assets",
                 "output": "./assets"
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": []
           },
@@ -113,6 +116,5 @@
         }
       }
     }
-  },
-  "defaultProject": "ukho-fileshareservice-ui"
+  }
 }

@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FilterGroup } from '@ukho/design-system';
+import { FilterGroup } from '../../../../shared/components/ukho-table/filter.types';
+import { AdmiraltyCheckboxCustomEvent } from '@ukho/admiralty-core'
+import { DefaultValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-fss-simplified-filter',
@@ -15,9 +17,30 @@ export class FssSimplifiedFilterComponent implements OnInit{
   ngOnInit(): void { }
 
 
-  onApplyFilterClick(filterGroups: FilterGroup[])
+  onApplyFilterClick()
   {
-    this.onApplyFilterButtonClicked.emit(filterGroups);
+    this.onApplyFilterButtonClicked.emit(this.filterGroups);
   }
 
+  onCheckBoxClick(item: any) {
+    item.selected = !item.selected;
+  }
+
+
+  onCheckBoxChange(changeEvent: Event) {
+    let value = changeEvent as CustomEvent<AdmiraltyCheckboxCustomEvent<FilterGroup>>;
+    console.log("Start change check")
+    console.log(value.detail);
+    console.log("End change check")
+  }
+
+  onClearFilterClick() {
+    this.filterGroups = this.filterGroups.map((group: FilterGroup) => {
+      const items = group.items.map((item) => {
+        const { selected, ...rest } = item;
+        return rest;
+      });
+      return { ...group, items };
+    });
+  }
 } 

@@ -6,6 +6,8 @@ parameters:
     type: boolean
     default: false
 
+  
+
 trigger:
   - main
   - release/*
@@ -90,6 +92,7 @@ stages:
 
      - job: BuildTestPublish
        dependsOn: Dependencychecker
+        
        pool: $(DeploymentPool)
        container: ${{variables.Container}}
        workspace:
@@ -100,7 +103,7 @@ stages:
           - checkout: self
           - task: NodeTool@0
             inputs:
-              versionSpec: '14.x'
+              versionSpec: '18.x'
             displayName: 'Install Node.js'
 
           - script: |

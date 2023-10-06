@@ -1,5 +1,5 @@
 <div class="result-margin" *ngFor="let batch of searchResultVM" id="{{batch.BatchID.value}}">
-  <ukho-card>
+  <admiralty-card>
     <table class="attribute-table">
       <caption class="sr-only">Attributes for Batch {{batch.SerialNumber}} </caption>
       <tr>
@@ -10,8 +10,7 @@
       </tr>
     </table>
 
-    <ukho-expansion class="expansionLabel" heading="Choose files to download" [alignHeadingRight]=true
-      [initialExpanded]=false>
+    <admiralty-expansion class="expansionLabel" heading="Choose files to download" align-Heading-Right=true>
       <table class="system-attribute-table">
         <caption class="sr-only">Details for Batch {{batch.SerialNumber}} </caption>
         <tr>
@@ -26,41 +25,36 @@
         </tr>
       </table>
 
-      <table ukho-table [dataSource]="batch.batchFileDetails.rowData">
-        <caption class="sr-only">Dowload files for Batch {{batch.SerialNumber}}</caption>
-        <ng-container ukhoColumnDef="FileName">
-          <th ukho-header-cell *ukhoHeaderCellDef>FileName </th>
-          <td ukho-cell *ukhoCellDef="let element">{{element.FileName}}</td>
-        </ng-container>
-        <ng-container ukhoColumnDef="MimeType">
-          <th ukho-header-cell *ukhoHeaderCellDef>MimeType </th>
-          <td ukho-cell *ukhoCellDef="let element">{{element.MimeType}}</td>
-        </ng-container>
-        <ng-container ukhoColumnDef="FileSize">
-          <th ukho-header-cell *ukhoHeaderCellDef>FileSize </th>
-          <td ukho-cell *ukhoCellDef="let element">{{element.FileSize}}</td>
-        </ng-container>
-        <ng-container ukhoColumnDef="Download">
-          <th ukho-header-cell *ukhoHeaderCellDef>Download</th>
-          <td ukho-cell *ukhoCellDef="let element">
-            <button class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
-              attr.data-file-download-batch-id="{{batch.BatchID.value}}"
-              attr.aria-label="Download File for {{element.FileName}}"
-              (click)="downloadFile($event.target, element)"></button>
-          </td>
-        </ng-container>
-        <tr ukho-header-row *ukhoHeaderRowDef="batch.batchFileDetails.columnData"></tr>
-        <tr ukho-row *ukhoRowDef="let row; columns: batch.batchFileDetails.columnData"></tr>
-      </table>
+      <admiralty-table>
+        <admiralty-table-header>
+          <admiralty-table-header-cell *ngFor="let heading of batch.batchFileDetails.columnData">{{heading}}</admiralty-table-header-cell>
+        </admiralty-table-header>
+        <admiralty-table-body>
+          <admiralty-table-row *ngFor="let element of batch.batchFileDetails.rowData">
+            <!--<caption class="sr-only">Dowload files for Batch {{batch.SerialNumber}} Rhz: not sure what to do with this.</caption>-->
+            <admiralty-table-cell>{{element.FileName}}</admiralty-table-cell>
+            <admiralty-table-cell>{{element.MimeType}}</admiralty-table-cell>
+            <admiralty-table-cell>{{element.FileSize}}</admiralty-table-cell>
+            <admiralty-table-cell>
+              <button class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
+                      attr.data-file-download-batch-id="{{batch.BatchID.value}}"
+                      attr.aria-label="Download File for {{element.FileName}}"
+                      (click)="downloadFile($event.target, element)"></button>
+            </admiralty-table-cell>
+          </admiralty-table-row>
+        </admiralty-table-body>
+      </admiralty-table>
+
       <ng-container>
         <div class="downloadAllElement">
           <div class="downloadAllDialogItem" *ngIf="!batch.allFilesZipSize">
-            <ukho-dialogue id="downloadAllMessage{{batch.SerialNumber}}">
-              <h3>'Download all' function will be available when the files have been prepared</h3>
+            <admiralty-dialogue [type]='messageType'
+                                heading="'Download all' function will be available when the files have been prepared"
+                                id="downloadAllMessage{{batch.SerialNumber}}">
               <div>
                 You can select and download individual files, or try again later
               </div>
-            </ukho-dialogue>
+            </admiralty-dialogue>
           </div>
           <div class="downloadAllButtonItem">
             <a [ngClass]="{isDownloadAllDisabled:!batch.allFilesZipSize}" href="javascript:void(0)"
@@ -70,6 +64,6 @@
           </div>
         </div>
       </ng-container>
-    </ukho-expansion>
-  </ukho-card>
+    </admiralty-expansion>
+  </admiralty-card>
 </div>

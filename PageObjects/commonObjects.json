@@ -1,12 +1,14 @@
 {
-    "commonObjectsConfig": {
-        "acceptCookieSelector" : "#onetrust-accept-btn-handler",
-        "loginPopupSignInEmailSelector" : "#signInEmail",
-        "loginPopupNextButtonSelector" : "#continue",
-        "loginPopupSignInPasswordSelector" : "#password",
-        "loginPopupSignInButtonSelector" : "#next",
-        "loginSignInLinkSelector" : "#signInButton",
-        "loginAccountSelector" : "//button[@class='ng-tns-c89-1']",
-        "loginAccountLinkSelector" : "#profile button"
-    }
+  "commonObjectsConfig": {
+    "acceptCookieSelector": "#onetrust-accept-btn-handler",
+    "loginPopupSignInEmailSelector": "#signInEmail",
+    "loginPopupNextButtonSelector": "#continue",
+    "loginPopupSignInPasswordSelector": "#password",
+    "loginPopupSignInButtonSelector": "#next",
+    "profileLinkSelector": "admiralty-header-profile",
+    "signoutLinkName": "Sign Out",
+    "signinLinkText": "Sign in",
+    "loginAccountSelector": "//div//admiralty-button//button",
+    "loginAccountLinkSelector": "#profile button"
+  }
 }

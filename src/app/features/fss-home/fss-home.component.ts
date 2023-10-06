@@ -1,21 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
+import { Component } from '@angular/core';
+import { SignInClicked } from '../../core/services/signInClick.service';
 @Component({
   selector: 'app-fss-home',
   templateUrl: './fss-home.component.html',
   styleUrls: ['./fss-home.component.scss']
 })
-export class FssHomeComponent implements OnInit {
+export class FssHomeComponent  {
   name: string = "";
 
-  constructor(private msalService: MsalService,
-    private route: Router) { }
+  constructor(private signInButtonService: SignInClicked) { }
 
-  ngOnInit(): void {}
   
   Signin() {
-    document.getElementById('signInButton')?.click();
+    this.signInButtonService.click();
   }
 
 }

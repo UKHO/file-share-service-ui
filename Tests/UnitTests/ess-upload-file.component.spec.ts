@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
-import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, FileInputComponent } from '@ukho/design-system';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
@@ -8,6 +7,8 @@ import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { By } from '@angular/platform-browser';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
+import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
@@ -115,7 +116,7 @@ describe('EssUploadFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule],
+      imports: [CommonModule, DesignSystemModule],
       declarations: [EssUploadFileComponent, EssInfoErrorMessageComponent],
       providers: [
         {
@@ -279,55 +280,56 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
-  it('uploadListener{ event.srcElement} should raise error for unsupported file type', () => {
-    const file = new File([getEncData_csv()], 'test.jpeg');
-    Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
-    Object.defineProperty(file, 'type', { value: 'image/jpeg' });
-    const event = {
-      srcElement: {
-        files: [file]
-      }
-    };
-    const errObj = {
-      showInfoErrorMessage: false,
-      messageType: 'info',
-      messageDesc: ''
-    };
-    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-    component.uploadListener(event);
-    expect(component.validEncList.length).toEqual(0);
-    const errObJ = {
-      showInfoErrorMessage: true,
-      messageType: 'error',
-      messageDesc: 'Please select a .csv or .txt file'
-    };
-    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-  });
 
-  it('uploadListener{ event.dataTransfer} should raise error for unsupported file type', () => {
-    const file = new File([getEncData_csv()], 'test.jpeg');
-    Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
-    Object.defineProperty(file, 'type', { value: 'image/jpeg' });
-    const event = {
-      dataTransfer: {
-        files: [file]
-      }
-    };
-    const errObj = {
-      showInfoErrorMessage: false,
-      messageType: 'info',
-      messageDesc: ''
-    };
-    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-    component.uploadListener(event);
-    expect(component.validEncList.length).toEqual(0);
-    const errObJ = {
-      showInfoErrorMessage: true,
-      messageType: 'error',
-      messageDesc: 'Please select a .csv or .txt file'
-    };
-    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-  });
+    it('onFileInputChange{ event.srcElement} should raise error for unsupported file type', () => {
+      const file = new File([getEncData_csv()], 'test.jpeg');
+      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+      Object.defineProperty(file, 'type', { value: 'image/jpeg' });
+      const event: CustomEvent<FileInputChangeEventDetail> = new CustomEvent<FileInputChangeEventDetail>(
+        "fileInputChange",
+        { detail: { files: [file] } });
+
+      const errObj = {
+        showInfoErrorMessage: false,
+        messageType: 'info',
+        messageDesc: ''
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+      component.onFileInputChange(event as unknown as Event);
+      expect(component.validEncList.length).toEqual(0);
+      const errObJ = {
+        showInfoErrorMessage: true,
+        messageType: 'error',
+        messageDesc: 'Please select a .csv or .txt file'
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+    });
+
+    it('onFileInputChange{ event.srcElement} should raise error if more than one file submitted', () => {
+      const file = new File([getEncData_csv()], 'test.jpeg');
+      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+      Object.defineProperty(file, 'type', { value: 'image/jpeg' });
+      const event: CustomEvent<FileInputChangeEventDetail> = new CustomEvent<FileInputChangeEventDetail>(
+        "fileInputChange",
+        { detail: { files: [file, file] } });
+      
+      const errObj = {
+        showInfoErrorMessage: false,
+        messageType: 'info',
+        messageDesc: ''
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+      component.onFileInputChange(event as unknown as Event);
+      expect(component.validEncList.length).toEqual(0);
+      const errObJ = {
+        showInfoErrorMessage: true,
+        messageType: 'error',
+        messageDesc: 'Only one file can be processed at a time.'
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+    });
+
+  
 
     it.each`
     encDataFunc       | expectedResult

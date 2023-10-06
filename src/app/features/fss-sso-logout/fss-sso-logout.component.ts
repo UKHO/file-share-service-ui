@@ -11,18 +11,15 @@ import { FileShareApiService } from 'src/app/core/services/file-share-api.servic
 export class FssSsoLogoutComponent implements OnInit {
 
   constructor(private route: Router,
-    private fileShareApiService: FileShareApiService,
+    //private fileShareApiService: FileShareApiService,
     private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
-    this.logout();
+    //Rhz This may impact something else, won't know till finished.
+    //We are redirected here as a result of a call to MsalService.logout, not sure why
+    localStorage.clear();
+    this.analyticsService.logOut();
+    this.route.navigate(['']);
   }
 
-  logout(){
-     this.fileShareApiService.clearCookies().subscribe(res => {
-      localStorage.clear();
-      this.route.navigate(['']);
-      this.analyticsService.logOut();
-     });
-  }
 }

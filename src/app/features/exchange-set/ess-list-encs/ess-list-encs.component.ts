@@ -4,7 +4,7 @@ import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { SortState } from '@ukho/design-system';
+import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
 import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
@@ -17,6 +17,7 @@ enum SelectDeselect {
   select = 'Select all',
   deselect = 'Deselect all'
 };
+
 @Component({
   selector: 'app-ess-list-encs',
   templateUrl: './ess-list-encs.component.html',
@@ -41,6 +42,9 @@ export class EssListEncsComponent implements OnInit {
   essSilentTokenRequest: SilentRequest;
   essTokenScope: any = [];
   selectDeselectEncAlert: string;
+  sortGraphicUp: string = "fa-chevron-up";
+  sortGraphicDown: string = "fa-chevron-down";
+  sortGraphic: string = this.sortGraphicUp;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
@@ -91,7 +95,7 @@ export class EssListEncsComponent implements OnInit {
       messageDesc,
     };
   }
-  handleChange(enc: string,event?: Event | null) {
+  handleChange(enc: string, event?: Event | null) {
     const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
     this.triggerInfoErrorMessage(false,'info', '');
     if (seletedEncs.includes(enc)) {
@@ -110,7 +114,7 @@ export class EssListEncsComponent implements OnInit {
     }
     this.syncEncsBetweenTables();
     setTimeout(() => {
-      const element = document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement;
+      const element = document.querySelector(`admiralty-checkbox[aria-label=${enc}] input`) as HTMLElement;
       if(element && event){
          element.focus();
       }
@@ -135,7 +139,13 @@ export class EssListEncsComponent implements OnInit {
     }
   }
 
-    onSortChange(sortState: SortState) {
+  onSortChange(sortState: SortState) {
+    if (sortState.direction === 'asc') {
+      this.sortGraphic = this.sortGraphicUp;
+    }
+    else {
+      this.sortGraphic = this.sortGraphicDown;
+    }
     this.encList = [
       ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
@@ -188,7 +198,8 @@ export class EssListEncsComponent implements OnInit {
     return selectDeselectText;
   }
   checkMaxEncSelectionAndSelectedEncLength() {
-    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.encList.length ? this.encList.length : this.maxEncSelectionLimit;
+    const listLength = this.encList.length;
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > listLength ? listLength : this.maxEncSelectionLimit;
     return maxEncSelectionLimit === this.selectedEncList.length;
 
   }

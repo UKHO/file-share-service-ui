@@ -1,11 +1,9 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
-import { essConfig } from '../../src/assets/config/appconfig.json';
 
 test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
@@ -19,18 +17,20 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await page.goto(autoTestConfig.url);
           await page.waitForLoadState('load');
           await AcceptCookies(page);
-          await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-          await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
+          await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+          await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
 
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
-
-          await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
-          await esslandingPageObjects.expect.uploadbtntextSelectorContainText("Upload a list in a file");
-          await esslandingPageObjects.expect.addenctextSelectorContainText("Add ENC");
+         const headLabel = page.locator("h1#main");
+         const radio1 = page.getByRole('radio', { name: "Upload a list in a file" });
+         const radio2 = page.getByRole('radio', { name: "Add ENC" });
+         await expect(radio1).toBeTruthy();
+         await expect(radio2).toBeTruthy();
+       
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799

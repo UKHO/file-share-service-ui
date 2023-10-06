@@ -2,7 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation 
 import { Subscription } from 'rxjs';
 import { ProductsNotInExchangeSet } from 'src/app/core/models/ess-response-types';
 import { EssInfoErrorMessageService, InfoErrorMessage, RequestedProductsNotInExchangeSet } from '../../../core/services/ess-info-error-message.service';
-
+import { ViewportScroller } from '@angular/common';
 @Component({
   selector: 'app-ess-info-error-message',
   templateUrl: './ess-info-error-message.component.html',
@@ -16,7 +16,7 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc: string | ProductsNotInExchangeSet[];
   essInfoErrorMessagesubscription: Subscription;
-  constructor(private essInfoErrorMessageService: EssInfoErrorMessageService) {
+  constructor(private essInfoErrorMessageService: EssInfoErrorMessageService, private scroll : ViewportScroller ) {
   }
 
   ngOnInit(): void {
@@ -24,7 +24,7 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
         let messageDesc = showInfoMessage.messageDesc;
         if(messageDesc && typeof showInfoMessage.messageDesc === 'object'){
           messageDesc = '';
-          messageDesc += '<h3 aria-live="polite" role="alert">'+showInfoMessage.messageTitle+'</h3>';
+          //messageDesc += '<h3 aria-live="polite" role="alert">'+showInfoMessage.messageTitle+'</h3>';
           for (const desc of showInfoMessage.messageDesc) {
             messageDesc += '<div class="warningMsg">'+desc.productName +' - '+ desc.reason +' </div>' ;
           }
@@ -49,7 +49,7 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
       this.ukhoDialog.nativeElement.focus();
     }
     if(messageDesc){
-       window.scrollTo(0, 0);
+       this.scroll.scrollToPosition([0,0]);
     }
   }
 

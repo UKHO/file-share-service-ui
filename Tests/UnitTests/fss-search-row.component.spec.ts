@@ -103,15 +103,15 @@ describe('FssSearchRowComponent', () => {
       expect(component.onGroupDeleted.emit).toHaveBeenCalledWith(deleteGrouping);
     });
 
-    // Test to check emit value when onFieldChanged
+    // Test to check emit value when onFieldChanged Rhz
     test('should emit when filed change in search row', () => {
-      let changedField: any= {value: 'FileSize',text: '@FileSize (in bytes)', type: 'SystemAttribute', dataType: 'number'}
+      let changedFieldEvent: CustomEvent<string> = new CustomEvent<string>('fieldChange', { detail: '@FileSize (in bytes)' })
       let rowId: number = 2;
 
-      var expectedEmitValue = { currentFieldValue: changedField, rowId: rowId }
+      var expectedEmitValue = { currentFieldValue: changedFieldEvent.detail, rowId: rowId }
 
       jest.spyOn(component.onFieldChanged, 'emit');
-      component.onFieldChange(changedField,rowId);
+      component.onFieldChange(changedFieldEvent,rowId);
       expect(component.onFieldChanged.emit).toHaveBeenCalledWith(expectedEmitValue);
     });
 

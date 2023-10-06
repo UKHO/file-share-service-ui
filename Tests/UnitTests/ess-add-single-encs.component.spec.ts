@@ -3,7 +3,7 @@ import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/e
 import { NO_ERRORS_SCHEMA, DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
-import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule } from '@ukho/design-system';
+import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
@@ -19,7 +19,7 @@ describe('EssAddSingleEncsComponent', () => {
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule],
+      imports: [CommonModule, TableModule],
       declarations: [EssAddSingleEncsComponent , EssInfoErrorMessageComponent],
       providers: [
         EssUploadFileService,

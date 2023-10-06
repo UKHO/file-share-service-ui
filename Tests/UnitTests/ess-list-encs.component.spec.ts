@@ -1,7 +1,7 @@
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
-import { DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule  , CheckboxModule,TextinputModule} from '@ukho/design-system';
+import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,7 @@ import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { HttpClientModule } from '@angular/common/http';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -39,7 +40,8 @@ describe('EssListEncsComponent', () => {
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, CommonModule, DialogueModule, FileInputModule, RadioModule, ButtonModule, CardModule, TableModule, CheckboxModule, TextinputModule, HttpClientModule],
+      imports: [FormsModule, CommonModule, 
+                TableModule,  HttpClientModule, DesignSystemModule],
       declarations: [EssListEncsComponent,
         EssAddSingleEncsComponent,
         EssInfoErrorMessageComponent,
@@ -140,6 +142,7 @@ describe('EssListEncsComponent', () => {
 
   it('should create EssListEncsComponent', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
+    fixture.detectChanges();
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });

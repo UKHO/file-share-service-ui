@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule, FilterModule } from '@ukho/design-system';
+import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { FssSearchComponent } from '../../src/app/features/fss-search/fss-search.component';
 import { FilterPipe } from '../../src/app/features/fss-search/filter.pipe';
@@ -38,7 +38,7 @@ describe('FssAdvancedSearchComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CommonModule,
         FssSearchRoutingModule, HttpClientModule,
-        ButtonModule, SelectModule, CheckboxModule, TextinputModule, DialogueModule, ExpansionModule, CardModule, TableModule, TypeaheadModule, FilterModule],
+        TableModule],
       declarations: [FssAdvancedSearchComponent,
         FssSearchRowComponent,
         FssSearchResultsComponent,
@@ -191,9 +191,8 @@ describe('FssAdvancedSearchComponent', () => {
       { value: 'gt', text: '>', type: 'operator', supportedDataTypes: ['number', 'date'] },
       { value: 'le', text: '<=', type: 'operator', supportedDataTypes: ['number', 'date'] }
     ];
-    //searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
+    searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileName', 'eq', 'TestReport.pdf', 'text', false));
     searchRows.push(createSearchRow(1, fields, operators, 'AND', 'FileSize', 'eq', 'test', 'tel', false));
-    //searchRows.push(createSearchRow(3, fields, operators, 'AND', 'ExpiryDate', 'gt', '2021-12-31T13:00:00.000Z', 'date', false));
     component.fssSearchRows = searchRows;
     component.fields = searchService.getFields(MockUserAttributeFields())
     component.operators = searchService.getOperators();

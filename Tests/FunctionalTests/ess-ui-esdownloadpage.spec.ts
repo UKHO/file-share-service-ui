@@ -2,7 +2,6 @@ import { test } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
-import { commonObjectsConfig } from '../../PageObjects/commonObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
 import { EsDownloadPageObjects } from '../../PageObjects/essui-esdownloadpageObjects';
@@ -22,8 +21,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await page.goto(autoTestConfig.url);
         await page.waitForLoadState('load');
         await AcceptCookies(page);
-        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password, commonObjectsConfig.loginSignInLinkSelector);
-        await page.locator(fssHomePageObjectsConfig.essLinkSelector).click();
+        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+        await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
@@ -45,7 +44,13 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
-        await esDownloadPageObjects.expect.VerifyExchangeSetSize();
+        //=========================================
+        let estimatedString = await page.locator('p').filter({ hasText: 'Estimated size' }).textContent() as string;
+        let includedDisplay = await page.locator('strong').filter({ hasText: 'ENCs included' }).textContent();
+        let valueString: string = includedDisplay?.split(' ')[0] as string;
+        let ENCsIncludedValue = parseInt(valueString);
+        esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, ENCsIncludedValue)
+        //=========================================
         await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
         await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
         await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
@@ -105,7 +110,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
      test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
 
-        const selectedEncs = await encSelectionPageObjects.ENCSelectedTablelist.allInnerTexts();
+       const selectedEncs = await encSelectionPageObjects.encTableButtonList.allInnerTexts();
         await encSelectionPageObjects.requestENCsSelectorClick()
         await page.on('request', req => {
             let requestPayload = req.postDataJSON();

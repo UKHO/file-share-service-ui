@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ButtonModule, FilterModule } from '@ukho/design-system';
-import { FilterGroup } from '@ukho/design-system/filter/filter.types';
+import { FilterGroup } from '../../src/app/shared/components/ukho-table/filter.types';
 import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
 import { FssSimplifiedFilterComponent } from '../../src/app/features/fss-search/fss-simplified-search/fss-simplified-filter/fss-simplified-filter.component';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
 
 describe('FssSimplifiedFilterComponent', () => {
   let component: FssSimplifiedFilterComponent;
@@ -11,8 +11,7 @@ describe('FssSimplifiedFilterComponent', () => {
   let applyFilterservice: FssSearchFilterService;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule,
-        ButtonModule, FilterModule],
+      imports: [CommonModule, DesignSystemModule],
       declarations: [ FssSimplifiedFilterComponent ]
     })
     .compileComponents();
@@ -31,7 +30,7 @@ describe('FssSimplifiedFilterComponent', () => {
 
   test('should emit when the simplified apply filter button is clicked', () => {
     jest.spyOn(component.onApplyFilterButtonClicked, 'emit');
-    component.onApplyFilterClick(ApplyFilterMockData)
+    component.onApplyFilterClick()
     expect(component.onApplyFilterButtonClicked.emit).toHaveBeenCalled();
   });
 

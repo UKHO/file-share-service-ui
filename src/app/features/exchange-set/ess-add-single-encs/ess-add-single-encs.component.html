@@ -1,12 +1,12 @@
 <div class="container">
     <div class="addSingleFileSection">
-        <ukho-textinput class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"
-            [(ngModel)]="txtSingleEnc" (keyup.enter)="validateAndAddENC()"></ukho-textinput>
+        <admiralty-input class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"
+            [(ngModel)]="txtSingleEnc" (keyup.enter)="validateAndAddENC()"></admiralty-input>
         <br />
         <span class="sr-only" role="alert" aria-live="polite">{{addValidEncAlert}}</span>
-        <ukho-button (click)="validateAndAddENC()">
+        <admiralty-button (click)="validateAndAddENC()">
             {{this.btnText}} 
-           </ukho-button>
+           </admiralty-button>
     </div>
 </div>
 

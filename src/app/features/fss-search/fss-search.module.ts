@@ -1,5 +1,4 @@
 import { FssSearchComponent } from './fss-search.component';
-import { ButtonModule,SelectModule,CheckboxModule,TextinputModule,DialogueModule, ExpansionModule, CardModule, TableModule,PaginatorModule, TypeaheadModule, HorizontalRuleModule, FilterModule } from '@ukho/design-system';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FssSearchRoutingModule } from './fss-search-routing.module';
@@ -12,6 +11,7 @@ import { FssPopularSearchBatchesComponent } from './fss-popular-search-batches/f
 import { FssAdvancedSearchComponent } from './fss-advanced-search/fss-advanced-search.component';
 import { FssSimplifiedSearchComponent } from './fss-simplified-search/fss-simplified-search.component';
 import { FssSimplifiedFilterComponent } from './fss-simplified-search/fss-simplified-filter/fss-simplified-filter.component';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
 
 
 @NgModule({
@@ -28,7 +28,8 @@ import { FssSimplifiedFilterComponent } from './fss-simplified-search/fss-simpli
   imports: [
     CommonModule,
     FssSearchRoutingModule,
-    ButtonModule,SelectModule,CheckboxModule,TextinputModule,FormsModule,ReactiveFormsModule,DialogueModule,ExpansionModule,CardModule, TableModule,PaginatorModule, TypeaheadModule, HorizontalRuleModule, FilterModule
+    DesignSystemModule,
+    FormsModule,ReactiveFormsModule,
   ],
   providers: [FileShareApiService]
 })

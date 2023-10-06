@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.msalService.instance.initialize();
     this.router
       .events.pipe(
         filter(event => event instanceof NavigationEnd),

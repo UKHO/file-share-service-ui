@@ -1,5 +1,6 @@
 import { FormsModule } from '@angular/forms';
-import { DialogueModule, CardModule, ButtonModule, TextinputModule, FileInputModule, RadioModule, RadioGroupModule, TableModule, CheckboxModule } from '@ukho/design-system';
+//import { DialogueModule, CardModule, ButtonModule, TextinputModule, FileInputModule, RadioModule, RadioGroupModule, TableModule, CheckboxModule } from '@ukho/design-system';
+import { TableModule } from '../../shared/components/ukho-table/table.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExchangeSetRoutingModule } from './exchange-set-routing.module';
@@ -9,6 +10,8 @@ import { EssAddSingleEncsComponent } from './ess-add-single-encs/ess-add-single-
 import { EssListEncsComponent } from './ess-list-encs/ess-list-encs.component';
 import { EssDownloadExchangesetComponent } from './ess-download-exchangeset/ess-download-exchangeset.component';
 import { EssInfoErrorMessageComponent } from './ess-info-error-message/ess-info-error-message.component';
+import { DesignSystemModule } from '@ukho/admiralty-angular';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -22,16 +25,13 @@ import { EssInfoErrorMessageComponent } from './ess-info-error-message/ess-info-
   imports: [
     CommonModule,
     ExchangeSetRoutingModule,
-    DialogueModule,
-    CardModule,
-    ButtonModule,
-    TextinputModule,
-    RadioModule,
-    FileInputModule,
-    RadioGroupModule,
     FormsModule,
     TableModule,
-    CheckboxModule
+    /*CheckboxModule,*/
+    FontAwesomeModule,
+    DesignSystemModule,
   ]
 })
-export class ExchangeSetModule { }
+export class ExchangeSetModule {
+  
+}

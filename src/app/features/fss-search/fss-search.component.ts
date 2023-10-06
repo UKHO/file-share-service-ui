@@ -7,7 +7,7 @@ import { FssSearchFilterService } from '../../core/services/fss-search-filter.se
 import { Subject } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
-import { FilterGroup, FilterItem } from '@ukho/design-system';
+import { FilterGroup, FilterItem } from '../../shared/components/ukho-table/filter.types';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { SilentRequest } from '@azure/msal-browser';
@@ -246,6 +246,11 @@ export class FssSearchComponent implements OnInit {
   private setPaginatorLabel(currentPage: number) {
     this.paginatorLabel = "Showing " + (((currentPage * this.pageRecordCount) - this.pageRecordCount) + 1) +
       "-" + (((currentPage * this.pageRecordCount) > this.searchResultTotal) ? this.searchResultTotal : (currentPage * this.pageRecordCount)) + " of " + this.searchResultTotal;
+  }
+
+  onPageChangeHandler(changeEvent: Event) {
+    let value = changeEvent as CustomEvent<number>; 
+    this.pageChange(value.detail)
   }
 
   pageChange(currentPage: number) {

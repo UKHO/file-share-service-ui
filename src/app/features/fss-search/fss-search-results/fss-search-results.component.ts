@@ -24,6 +24,7 @@ export class FssSearchResultsComponent implements OnChanges {
   fssSilentTokenRequest: SilentRequest;
   fssTokenScope: any = [];
   displayLoader: boolean = false;
+  messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
 
 
   constructor(private elementRef: ElementRef

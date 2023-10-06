@@ -45,7 +45,7 @@
         "sortOrder": "descending"
       }
     ],
-    "maxAttributeValueCount" : 25
+    "maxAttributeValueCount": 25
   },
   "essConfig": {
     "MaxEncLimit": "250",
@@ -56,6 +56,6 @@
     "apiScope": "",
     "avgSizeofENCinMB": "0.3",
     "defaultEstimatedSizeinMB": "0.5",
-    "aioExcludeEncs" : ["GB800001","FR800001"]
+    "aioExcludeEncs": [ "GB800001", "FR800001" ]
   }
 }
