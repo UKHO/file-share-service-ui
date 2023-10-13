@@ -115,16 +115,14 @@ describe('EssDownloadExchangesetComponent', () => {
     const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('p').textContent).toContain(
-      `Your exchange set is available as a download via your browser`
-    );
+    expect(compiled.querySelector('p').textContent).toContain(`This can take a few minutes.`);
   });
 
   test('should render text inside an p tag', () => {
     const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelectorAll('p')[1].textContent).toContain('The zip file will be ready soon, please do not refresh or leave this browser window.');
+    expect(compiled.querySelectorAll('p')[1].textContent).toContain('Please do not refresh this page.');
   });
 
   test('should return Exchangeset cell count', () => {
@@ -155,22 +153,25 @@ describe('EssDownloadExchangesetComponent', () => {
   it('should display download button when batch status is Committed', () => {
     service.getBatchStatus.mockReturnValue(of(batchStatusCommittedMockData));
     component.batchStatusAPI();
-    expect(component.displayDownloadBtn).toBe(true);
-    expect(component.displayEssLoader).toBe(false);
+    expect(component.exchangeSetLoading).toBe(false);
+    expect(component.exchangeSetReady).toBe(true);
+    expect(component.downloadComplete).toBe(false);
   });
 
   it('should hide download button when batch status is CommitInProgress', () => {
     service.getBatchStatus.mockReturnValue(of(batchStatusCommitInProgressMockData));
     component.batchStatusAPI();
-    expect(component.displayDownloadBtn).toBe(false);
-    expect(component.displayEssLoader).toBe(true);
+    expect(component.exchangeSetLoading).toBe(true);
+    expect(component.exchangeSetReady).toBe(false);
+    expect(component.downloadComplete).toBe(false);
   });
 
   it('should show error message when batch status is Failed', () => {
     service.getBatchStatus.mockReturnValue(of(batchStatusFailedMockData));
     component.batchStatusAPI();
-    expect(component.displayDownloadBtn).toBe(false);
-    expect(component.displayEssLoader).toBe(false);
+    expect(component.exchangeSetLoading).toBe(false);
+    expect(component.exchangeSetReady).toBe(false);
+    expect(component.downloadComplete).toBe(false);
   });
 
   it('should display loader when download button is clicked and hide loader after refreshToken API response', () => {

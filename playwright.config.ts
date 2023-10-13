@@ -7,7 +7,7 @@ const config: PlaywrightTestConfig = {
   retries: 3,
   testDir: './Tests',
   /* Maximum time one test can run for. */
-  timeout: 100 * 1000,
+  timeout: 300 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.

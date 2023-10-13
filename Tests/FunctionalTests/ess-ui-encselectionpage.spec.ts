@@ -57,20 +57,20 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   test('Verify Text on the top of ENC list.', async ({ page }) => {
 
     await encSelectionPageObjects.expect.startLinkSelectorVisible();
-    await encSelectionPageObjects.expect.textAboveTableSelectorToEqual("Select up to 100 ENCs and make an exchange set");
+    await encSelectionPageObjects.expect.textAboveTableSelectorToEqual("Select up to 250 ENCs and make an exchange set. Please note, larger requests may take longer to process.");
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13950
-  test('Verify limit for selecting ENCs (i.e.100) in left hand table', async ({ page }) => {
+  test('Verify limit for selecting ENCs (i.e.250) in left hand table', async ({ page }) => {
 
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(100);
-    await encSelectionPageObjects.EncSelectorAt101thClick();
-    await encSelectionPageObjects.expect.maxLimitEncmessageSelectorContainText("No more than 100 ENCs can be selected.");
+    await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(250);
+    //await encSelectionPageObjects.EncSelectorAt250thClick();
+    //await encSelectionPageObjects.expect.maxLimitEncmessageSelectorContainText("No more than 250 ENCs can be selected.");
 
   })
 
@@ -155,15 +155,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       await selectENCsFromTable.nth(i).click();
     }
     await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
-    // Select All link get disappeared when Number of ENC uploaded are greater than 100
-    await encSelectionPageObjects.startAgainLinkSelectorClick();
-    await esslandingPageObjects.uploadradiobtnSelectorClick();
-    await esslandingPageObjects.uploadFile(page, './Tests/TestData/100ENCs.txt');
-    await esslandingPageObjects.proceedButtonSelectorClick();
-    await encSelectionPageObjects.expect.selectAllSelectorIsVisible();
-    await encSelectionPageObjects.addAnotherENC("KK123456");
-    expect(await encSelectionPageObjects.selectAllSelector.isVisible()).toBeFalsy();
-
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14115

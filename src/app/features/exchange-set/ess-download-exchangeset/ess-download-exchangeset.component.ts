@@ -17,8 +17,8 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
 
   exchangeSetDetails: ExchangeSetDetails;
   displayLoader: boolean = false;
-  displayEssLoader: boolean = true;
-  displayDownloadBtn: boolean = false;
+  //displayEssLoader: boolean = true;
+  //displayDownloadBtn: boolean = false;
   batchDetailsUrl: string;
   batchId: string;
   fssTokenScope: any = [];
@@ -37,7 +37,9 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   @ViewChild('ukhoTarget') ukhoDialogForEnc: ElementRef;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc = '';
-
+  exchangeSetLoading = false;
+  exchangeSetReady = false;
+  downloadComplete = false;
   constructor(private essUploadFileService: EssUploadFileService,
     private fileShareApiService: FileShareApiService,
     private msalService: MsalService,
@@ -48,6 +50,8 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
+
+    this.showProgressMessage(true, false, false);
   }
 
   ngOnInit(): void {
@@ -84,8 +88,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   batchStatusAPI() {
     this.fileShareApiService.getBatchStatus(this.batchId).subscribe((response) => {
       if (response.status == 'Committed') {
-        this.displayEssLoader = false;
-        this.displayDownloadBtn = true;
+        this.showProgressMessage(false, true, false);
       }
       else if (response.status == 'CommitInProgress' || response.status == 'Incomplete') {
         setTimeout(() => {
@@ -94,7 +97,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
       }
       else {
         this.triggerInfoErrorMessage(true,'warning', 'Something went wrong');
-        this.displayEssLoader = false;
+        this.showProgressMessage(false, false, false);
       }
     });
   }
@@ -107,7 +110,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       this.fileShareApiService.refreshToken().subscribe((res) => {
         this.displayLoader = false;
-        window.open(this.downloadUrl, '_blank');
+        window.open(this.downloadUrl, '_blank');        
       });
     }, error => {
       this.msalService.instance
@@ -115,10 +118,11 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
         .then(response => {
           this.fileShareApiService.refreshToken().subscribe((res) => {
             this.displayLoader = false;
-            window.open(this.downloadUrl, '_blank');
+            window.open(this.downloadUrl, '_blank');            
           });
         });
     });
+    this.showProgressMessage(false, false, true);
   }
 
   switchToESSLandingPage() {
@@ -141,5 +145,11 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
 
   ngOnDestroy(): void {
     this.triggerInfoErrorMessage(false , 'info','');
+  }
+
+  showProgressMessage(showLoading: boolean, showReady: boolean, showComplete: boolean): void {
+    this.exchangeSetLoading = showLoading;
+    this.exchangeSetReady = showReady;
+    this.downloadComplete = showComplete;
   }
 }

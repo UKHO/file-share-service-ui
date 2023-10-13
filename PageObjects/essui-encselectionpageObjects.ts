@@ -18,7 +18,7 @@ export class EncSelectionPageObjects {
   readonly typeENCTextBoxSelector: Locator;
   readonly addENCButtonSelector: Locator;
   readonly startAgainLinkSelector: Locator;
-  readonly EncSelectorAt101th: Locator;
+  readonly EncSelectorAt250th: Locator;
   readonly maxLimitEncmessage: Locator;
   readonly secondEncSelector: Locator;
   readonly leftTableDisplaySelector: Locator;
@@ -47,14 +47,14 @@ export class EncSelectionPageObjects {
     this.esslandingPageObjects = new EssLandingPageObjects(page);
     this.encNameSelector = this.page.locator("text=ENC name"); 
     this.startLinkSelector = this.page.locator(".linkStartAgain"); 
-    this.textAboveTableSelector = this.page.locator("text=Select up to 100 ENCs and make an exchange set"); 
+    this.textAboveTableSelector = this.page.locator("text=Select up to 250 ENCs and make an exchange set"); 
     
     this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i"); 
     this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc"); 
     this.typeENCTextBoxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
     this.addENCButtonSelector = this.page.locator("//button[text()=' Add ENC ']");
     this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
-    this.EncSelectorAt101th = this.page.locator("//div/table/tbody/tr[101]/td[2]"); 
+    this.EncSelectorAt250th = this.page.locator("//div/table/tbody/tr[250]/td[2]"); 
     this.chooseBoxSelecetor = this.page.locator("input[id = 'ukho-form-field-5']");
     this.selectionTextSelector = this.page.locator("text='Your selection '");
     this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
@@ -106,8 +106,8 @@ export class EncSelectionPageObjects {
     await this.encNameSelector.click();
   }
 
-  async EncSelectorAt101thClick(): Promise<void> {
-    await this.EncSelectorAt101th.click();
+  async EncSelectorAt250thClick(): Promise<void> {
+    await this.EncSelectorAt250th.click();
   }
 
   async firstCheckBoxSelectorClick(): Promise<void> {
