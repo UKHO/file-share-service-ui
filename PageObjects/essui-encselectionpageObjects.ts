@@ -47,7 +47,7 @@ export class EncSelectionPageObjects {
     this.esslandingPageObjects = new EssLandingPageObjects(page);
     this.encNameSelector = this.page.locator("text=ENC name"); 
     this.startLinkSelector = this.page.locator(".linkStartAgain"); 
-    this.textAboveTableSelector = this.page.locator("text=Select up to 100 ENCs and make an exchange set"); 
+    this.textAboveTableSelector = this.page.locator("text=Select up to 250 ENCs and make an exchange set"); 
     
     this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i"); 
     this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc"); 
