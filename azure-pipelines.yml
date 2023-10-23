@@ -20,7 +20,7 @@ variables:
   - name: Container
     value: "ukhydrographicoffice/terraform-azure-powershell:1.3.7"
   - name: DeploymentPool
-    value: "UKHO Ubuntu 1804"
+    value: "Mare Nectaris"
   - name: WindowPool
     value: "NautilusBuild"
   - name: coverityPool
@@ -36,29 +36,6 @@ resources:
       ref: refs/heads/master
 
 stages:
-  - stage: CoverityScan
-    displayName: "Coverity Scan"
-    pool:
-      name: $(coverityPool)
-    jobs:
-    - job: Coverity
-      workspace:
-        clean: all
-      steps:
-        - checkout: self
-          submodules: recursive
-        - checkout: covscan
-        - template: typescript-cov.yml@covscan
-          parameters:
-            CovHostUrl: "$(CovHostUrl)"
-            CovUser: "$(CovUser)"
-            CovPwd: "$(CovPwd)"
-            StreamName: "file-share-service-ui"
-            BuildCommand: "run build"
-            StripPath: $(Build.Repository.LocalPath)/file-share-service-ui
-            CoverityScanPath: $(Build.Repository.LocalPath)/coverityscan-buildtemplates
-            FsCaptureSearch: $(Build.Repository.LocalPath)/file-share-service-ui/src
-
   - stage: Perfrom_Build_Test_Publish
     displayName: "Build (Build ,test and publish artifact )"
     dependsOn: []
