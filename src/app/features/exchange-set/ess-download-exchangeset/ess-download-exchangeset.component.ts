@@ -16,9 +16,7 @@ import { EssInfoErrorMessageService, RequestedProductsNotInExchangeSet } from '.
 export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
 
   exchangeSetDetails: ExchangeSetDetails;
-  displayLoader: boolean = false;
-  //displayEssLoader: boolean = true;
-  //displayDownloadBtn: boolean = false;
+  displayLoader: boolean = false; 
   batchDetailsUrl: string;
   batchId: string;
   fssTokenScope: any = [];

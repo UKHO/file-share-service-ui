@@ -9,7 +9,7 @@
   <div class="ess-container">
     <div class="ess-download-wrapper">
       <div *ngIf="exchangeSetLoading">
-        <h4 style="padding-left: 15px; margin-top: 20px; margin-bottom: 3px">Exchange set loading</h4>
+        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 3px">Exchange set loading</h4>
         <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 1px">This can take a few minutes.</p>
         <p style="padding-left: 15px; margin-top: 1px; margin-bottom: 5px">Please do not refresh this page.</p>
         <div class="spinner-wrapper ess-spinner-wrapper" aria-live='polite' role="alert" aria-label="Results Loading">
@@ -17,12 +17,13 @@
         </div>
       </div>
       <div *ngIf="exchangeSetReady">
-        <h4 style="padding-left: 15px; margin-top: 20px; margin-bottom: 2px">Exchange set ready</h4>
-        <p style="padding-left: 15px; margin-top: 2px; margin-bottom: 5px">Please click the <a data-testid="download-exs" href="javascript:void(0)" (click)="download()">"Download"</a> button to download your exchange set.</p>
+        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">Exchange set ready</h4>
+        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px">Please click the "Download" button to download your exchange set.</p>
+        <admiralty-button class="btnDownload" (click)="download()">Download</admiralty-button>
       </div>
       <div *ngIf="downloadComplete">
-        <h4 style="padding-left: 15px; margin-top: 20px; margin-bottom: 2px">Download complete</h4>
-        <p style="padding-left: 15px; margin-top: 2px; margin-bottom: 5px"><a href="javascript:void(0)" (click)="download()">Download</a> the file again or <a href="javascript:void(0)" (click)="switchToESSLandingPage()"> create another exchange set.</a></p>
+        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">Download complete</h4>
+        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px"><a data-testid="download-exs" href="javascript:void(0)" (click)="download()">Download</a> the file again or <a data-testid="create-exs" href="javascript:void(0)" (click)="switchToESSLandingPage()">create another exchange set.</a></p>
       </div>
     </div>
     <div class="divider"></div>
