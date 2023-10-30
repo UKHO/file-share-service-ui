@@ -69,9 +69,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
     await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(250);
-    //await encSelectionPageObjects.EncSelectorAt250thClick();
-    //await encSelectionPageObjects.expect.maxLimitEncmessageSelectorContainText("No more than 250 ENCs can be selected.");
-
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944 (For valid ENC no.)
