@@ -20,12 +20,15 @@ export class EsDownloadPageObjects {
     readonly invalidEncsSelector: Locator;
     readonly errorMessageSelector: Locator;
     readonly selectedENCsSelector: Locator;
-    readonly getDialogueSelector: Locator
+    readonly getDialogueSelector: Locator;
+    readonly downloadLinkSelector: Locator;
+    readonly createLinkSelector: Locator;
+
     readonly pageUnderTest: Page
 
     constructor(readonly page: Page) {
         this.expect = new EsDownloadPageAssertions(this);
-        this.encselectionPageObjects = new EncSelectionPageObjects(page)
+        this.encselectionPageObjects = new EncSelectionPageObjects(page);
         this.downloadButtonSelector = this.page.locator("//button[@type='submit']");
         this.spinnerSelector = this.page.locator("i.fas.fa-circle-notch.fa-spin");
         this.includedENCsCountSelector = this.page.locator("(//strong[@class='f21'][2])");
@@ -35,8 +38,9 @@ export class EsDownloadPageObjects {
         this.errorMessageSelector = this.page.getByText("There has been an error");
         this.selectedENCsSelector = this.page.locator('p').filter({ hasText: ' ENCs selected' });
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
-        this.pageUnderTest = page;
-       
+        this.downloadLinkSelector = this.page.getByTestId('download-exs');
+        this.createLinkSelector = this.page.getByTestId('create-exs')
+        this.pageUnderTest = page;      
 
     }
 
@@ -68,6 +72,31 @@ class EsDownloadPageAssertions {
     async downloadButtonSelectorEnabled(): Promise<void> {
 
         expect(await this.esDownloadPageObjects.downloadButtonSelector.isVisible).toBeTruthy();
+    }
+
+    async downloadButtonSelectorHidden(): Promise<void> {
+
+      expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden).toBeTruthy();
+    }
+
+    async createLinkSelectorEnabled(): Promise<void> {
+
+        expect(await this.esDownloadPageObjects.createLinkSelector.isVisible).toBeTruthy();
+    }
+
+    async createLinkSelectorHidden(): Promise<void> {
+
+      expect(await this.esDownloadPageObjects.createLinkSelector.isHidden).toBeTruthy();
+    }
+
+    async downloadLinkSelectorEnabled(): Promise<void> {
+
+      expect(await this.esDownloadPageObjects.downloadLinkSelector.isVisible).toBeTruthy();
+    }
+
+    async downloadLinkSelectorHidden(): Promise<void> {
+
+      expect(await this.esDownloadPageObjects.downloadLinkSelector.isHidden).toBeTruthy();
     }
 
     async selectedTextSelectorVisible(): Promise<void> {

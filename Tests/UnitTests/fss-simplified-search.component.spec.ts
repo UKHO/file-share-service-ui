@@ -7,6 +7,7 @@ import { FssSearchFilterService } from '../../src/app/core/services/fss-search-f
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 describe('FssSimplifiedSearchComponent', () => {
   let component: FssSimplifiedSearchComponent;
   let fixture: ComponentFixture<FssSimplifiedSearchComponent>;
@@ -24,6 +25,11 @@ describe('FssSimplifiedSearchComponent', () => {
   });
 
   beforeEach(() => {
+    AppConfigService.settings = {
+      essConfig: {
+        MaxEncSelectionLimit: 250        
+      }
+    };
     fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -68,7 +74,7 @@ describe('FssSimplifiedSearchComponent', () => {
   test('should show the content of exchange sets on search page', () => {
     const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p').textContent).toBe('You can make a small (100 ENC), custom exchange set here and download it');
+    expect(fixture.nativeElement.querySelector('p').textContent).toBe('You can make a small (250 ENC), custom exchange set here and download it');
   });
 
   test('should show the subtitle of exchange sets on search page', () => {

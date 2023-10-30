@@ -4,24 +4,27 @@
   </div>
   <div class="exchangesetcontainer">
     <h1 id="main" tabindex="-1">Exchange sets</h1>
-
     <app-ess-info-error-message></app-ess-info-error-message>
-    
-    <div role="alert">
-      <p class="light">Your exchange set is available as a download via your browser</p>
-      <p class="light">The zip file will be ready soon, please do not refresh or leave this browser window. </p>
-    </div>
-      
   </div>
   <div class="ess-container">
     <div class="ess-download-wrapper">
-      <h4 style="padding-left: 15px;margin-top: 20px;margin-bottom: 20px">Exchange set download</h4>
-      <div class="spinner-wrapper ess-spinner-wrapper" *ngIf="displayEssLoader" aria-live='polite' role="alert" aria-label="Results Loading">
-        <i class="fa-solid fa-circle-notch fa-spin" style="font-size:220px;color:green"></i>
-      </div>
-        <div *ngIf="displayDownloadBtn">
-          <admiralty-button class="btnDownload" (click)="download()">Download</admiralty-button>
+      <div *ngIf="exchangeSetLoading">
+        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 3px">Exchange set loading</h4>
+        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 1px">This can take a few minutes.</p>
+        <p style="padding-left: 15px; margin-top: 1px; margin-bottom: 5px">Please do not refresh this page.</p>
+        <div class="spinner-wrapper ess-spinner-wrapper" aria-live='polite' role="alert" aria-label="Results Loading">
+          <i class="fa-solid fa-circle-notch fa-spin" style="font-size:180px;color:green"></i>
         </div>
+      </div>
+      <div *ngIf="exchangeSetReady">
+        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">Exchange set ready</h4>
+        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px">Please click the "Download" button to download your exchange set.</p>
+        <admiralty-button class="btnDownload" (click)="download()">Download</admiralty-button>
+      </div>
+      <div *ngIf="downloadComplete">
+        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">Download complete</h4>
+        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px"><a data-testid="download-exs" href="javascript:void(0)" (click)="download()">Download</a> the file again or <a data-testid="create-exs" href="javascript:void(0)" (click)="switchToESSLandingPage()">create another exchange set.</a></p>
+      </div>
     </div>
     <div class="divider"></div>
     <div style="flex: 3">

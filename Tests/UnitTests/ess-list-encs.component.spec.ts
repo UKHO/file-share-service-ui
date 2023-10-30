@@ -159,7 +159,7 @@ describe('EssListEncsComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('p').textContent).toContain(
-      `Select up to 5 ENCs and make an exchange set`
+      `Select up to 5 ENCs and make an exchange set. Please note, larger requests may take longer to process.`
     );
   });
 

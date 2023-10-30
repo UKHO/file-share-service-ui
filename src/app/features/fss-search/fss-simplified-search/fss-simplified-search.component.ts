@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FssSearchFilterService } from '../../../core/services/fss-search-filter.service';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { AppConfigService } from '../../../core/services/app-config.service';
 
     
 @Component({
@@ -14,10 +15,15 @@ export class FssSimplifiedSearchComponent implements OnInit {
   @Output() ShowAdvancedSearchClicked = new EventEmitter<boolean>();
   @Output() onSimplifiedSearchClicked = new EventEmitter<string>();
   @Output() ShowEsslinkClicked = new EventEmitter<boolean>();
+  maxEncSelectionLimit: number;
   
   constructor(  private route: Router) { }
 
   ngOnInit(): void {
+    this.maxEncSelectionLimit = Number.parseInt(
+      AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
+      10
+    );
   }
 
   searchToSimplifiedSearch(){

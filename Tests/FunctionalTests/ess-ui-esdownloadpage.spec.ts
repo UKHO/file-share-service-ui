@@ -40,6 +40,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await encSelectionPageObjects.SelectedENCsCount();
         await encSelectionPageObjects.requestENCsSelectorClick();
         await esDownloadPageObjects.expect.SelectedENCs();
+        await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
@@ -50,10 +51,16 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         let valueString: string = includedDisplay?.split(' ')[0] as string;
         let ENCsIncludedValue = parseInt(valueString);
         esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, ENCsIncludedValue)
+        await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
+        await esDownloadPageObjects.expect.createLinkSelectorHidden();
+
         //=========================================
         await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
         await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
         await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
+        await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
+        await esDownloadPageObjects.expect.createLinkSelectorEnabled();
+
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
