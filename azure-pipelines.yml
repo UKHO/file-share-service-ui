@@ -6,8 +6,6 @@ parameters:
     type: boolean
     default: false
 
-  
-
 trigger:
   - main
   - release/*
@@ -27,71 +25,71 @@ variables:
     value: NautilusBuild
   - group: Covscan-vars
 
-resources:
-  repositories:
-    - repository: covscan
-      type: github
-      name: UKHO/coverityscan-buildtemplates
-      endpoint: UKHO
-      ref: refs/heads/master
+# resources:
+#   repositories:
+#     - repository: covscan
+#       type: github
+#       name: UKHO/coverityscan-buildtemplates
+#       endpoint: UKHO
+#       ref: refs/heads/master
 
 stages:
-  - stage: CoverityScan
-    displayName: "Coverity Scan"
-    pool:
-      name: $(coverityPool)
-    jobs:
-    - job: Coverity
-      workspace:
-        clean: all
-      steps:
-        - checkout: self
-          submodules: recursive
-        - checkout: covscan
-        - template: typescript-cov.yml@covscan
-          parameters:
-            CovHostUrl: "$(CovHostUrl)"
-            CovUser: "$(CovUser)"
-            CovPwd: "$(CovPwd)"
-            StreamName: "file-share-service-ui"
-            BuildCommand: "run build"
-            StripPath: $(Build.Repository.LocalPath)/file-share-service-ui
-            CoverityScanPath: $(Build.Repository.LocalPath)/coverityscan-buildtemplates
-            FsCaptureSearch: $(Build.Repository.LocalPath)/file-share-service-ui/src
+  # - stage: CoverityScan
+  #   displayName: "Coverity Scan"
+  #   pool:
+  #     name: $(coverityPool)
+  #   jobs:
+  #   - job: Coverity
+  #     workspace:
+  #       clean: all
+  #     steps:
+  #       - checkout: self
+  #         submodules: recursive
+  #       - checkout: covscan
+  #       - template: typescript-cov.yml@covscan
+  #         parameters:
+  #           CovHostUrl: "$(CovHostUrl)"
+  #           CovUser: "$(CovUser)"
+  #           CovPwd: "$(CovPwd)"
+  #           StreamName: "file-share-service-ui"
+  #           BuildCommand: "run build"
+  #           StripPath: $(Build.Repository.LocalPath)/file-share-service-ui
+  #           CoverityScanPath: $(Build.Repository.LocalPath)/coverityscan-buildtemplates
+  #           FsCaptureSearch: $(Build.Repository.LocalPath)/file-share-service-ui/src
 
-  - stage: Perfrom_Build_Test_Publish
+  - stage: Perform_Build_Test_Publish
     displayName: "Build (Build ,test and publish artifact )"
     dependsOn: []
     jobs:
-     - job: Dependencychecker
-       pool: $(WindowPool)
-       displayName: "Dependency checker"
-       workspace:
-        clean: all
-       steps:
-          - task: CmdLine@1
-            displayName: "Run OWASP Dependency Checker"
-            inputs:
-              filename: 'dependency-check.bat'
-              arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate'
+     # - job: Dependencychecker
+     #   pool: $(WindowPool)
+     #   displayName: "Dependency checker"
+     #   workspace:
+     #    clean: all
+     #   steps:
+     #      - task: CmdLine@1
+     #        displayName: "Run OWASP Dependency Checker"
+     #        inputs:
+     #          filename: 'dependency-check.bat'
+     #          arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate'
 
-          - task: PublishBuildArtifacts@1
-            displayName: "Publish Artifact: OWASP Dependency Checker Report"
-            inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)\DCReport'
-              ArtifactName: "OWASP Dependency Checker Report"
+     #      - task: PublishBuildArtifacts@1
+     #        displayName: "Publish Artifact: OWASP Dependency Checker Report"
+     #        inputs:
+     #          PathtoPublish: '$(Build.ArtifactStagingDirectory)\DCReport'
+     #          ArtifactName: "OWASP Dependency Checker Report"
 
-          - task: PowerShell@1
-            displayName: "Fail Build if Dependency Check Finds Any Vulnerabilities"
-            inputs:
-              scriptType: inlineScript
-              arguments: '-ReportLocation $(Build.ArtifactStagingDirectory)\DCReport\*'
-              inlineScript: |
-                param($ReportLocation)
-                Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
+     #      - task: PowerShell@1
+     #        displayName: "Fail Build if Dependency Check Finds Any Vulnerabilities"
+     #        inputs:
+     #          scriptType: inlineScript
+     #          arguments: '-ReportLocation $(Build.ArtifactStagingDirectory)\DCReport\*'
+     #          inlineScript: |
+     #            param($ReportLocation)
+     #            Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
 
      - job: BuildTestPublish
-       dependsOn: Dependencychecker
+       # dependsOn: Dependencychecker
         
        pool: $(DeploymentPool)
        container: ${{variables.Container}}
@@ -281,7 +279,7 @@ stages:
   
 
            - task: FileTransform@2
-             displayName: 'AppSettings Json tranform for E2E Tests Run'
+             displayName: 'AppSettings Json transform for E2E Tests Run'
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
               xmlTransformationRules:
@@ -320,7 +318,198 @@ stages:
              displayName: 'npm restore'
 
            - task: FileTransform@2
-             displayName: AppSettings Json tranform for Accessibility Test Run
+             displayName: AppSettings Json transform for Accessibility Test Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
+      
+           - script: |
+              npm run test:a11y
+             displayName: 'Run Accessibility Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Accessibility Test Results
+             displayName: 'Publish Accessibility Test Results'
+
+  - stage: vNextE2eDeploy
+    dependsOn:
+      - Perform_Build_Test_Publish #HB Switch back to Devdeploy (or vNext IAT when that's done)
+      # - Devdeploy
+    displayName: "vNext E2E Deploy (inc terraform, website deploy)"
+    variables:
+      - group: "File-Share-Service-UI-vNext-E2E-Deploy-Variables"
+      - name: "Environment"
+        value: "vNextE2e"
+      - name: b2cConfig.tenantName
+        value: $(b2cConfig-tenantName)
+      - name: b2cConfig.clientId
+        value: $(b2cConfig-clientId)
+      - name: fssConfig.apiUrl
+        value: $(fssConfig-apiUrl)
+      - name: fssConfig.apiScope
+        value: $(fssConfig-apiScope)
+      - name: fssConfig.stateManagementApiUrl
+        value: $(fssConfig-stateManagementApiUrl)
+      - name: fssConfig.displayPopularSearch
+        value: $(fssConfig-displayPopularSearch)
+      - name: fssConfig.displaySimplifiedSearchLink
+        value: $(fssConfig-displaySimplifiedSearchLink)
+      - name: essConfig.apiUrl
+        value: $(essConfig-apiUrl)
+      - name: essConfig.apiScope
+        value: $(essConfig-apiScope)
+      - name: essConfig.avgSizeofENCinMB
+        value: $(essConfig-avgSizeofENCinMB)
+      - name: essConfig.defaultEstimatedSizeinMB
+        value: $(essConfig-defaultEstimatedSizeinMB)
+      - name: essConfig.MaxEncLimit
+        value: $(essConfig-MaxEncLimit)
+      - name: essConfig.MaxEncSelectionLimit
+        value: $(essConfig-MaxEncSelectionLimit)
+      - name: autoTestConfig.url
+        value: $(autoTestConfig-url)
+      - name: autoTestConfig.user
+        value: $(autoTestConfig-user)
+      - name: autoTestConfig.password
+        value: $(autoTestConfig-password)
+      - name: autoTestConfig.userFullName
+        value: $(autoTestConfig-userFullName)
+      - name: autoTestConfig.apiurl
+        value: $(autoTestConfig-apiurl)
+      - name: autoTestConfig.encSizeConfig
+        value: $(autoTestConfig-encSizeConfig)
+      - name: "ServiceDnsUrl"
+        value: $(service-dns-url)
+      - name: essConfig.aioExcludeEncs
+        value: $(essConfig-aioExcludeEncs)
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/main'), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))) #HB - limit this in some way
+    jobs:
+      - deployment: vNextE2eDeploy
+        displayName: "vNext E2E - deploy terraform and website"
+        environment: "FSS-vNext-E2E"
+        container: ${{variables.Container}}
+        workspace:
+          clean: all
+        variables:
+          - group: "File share service terraform vNext E2E"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: Deployment/templates/continous-deployment.yml
+                  parameters:
+                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+                    AzureSubscription: "File-Share-Service-vNext-E2E-A.011.08"
+    
+      - job: FunctionalTests
+        dependsOn: vNextE2eDeploy
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
+        displayName: "Functional Tests"
+        workspace:
+         clean: all
+        steps:
+           - checkout: self
+
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@2
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
+
+           - script: |
+              npm run test:auto
+             displayName: 'Run Functional Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: Functional Test Results
+             displayName: 'Publish Functional Test Results'
+
+      - job: E2ETests
+        dependsOn: FunctionalTests
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
+        displayName: "End-To-End Tests"
+        steps:
+           - checkout: self
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@2
+             displayName: AppSettings Json transform for E2E Tests Run
+             inputs:
+              folderPath: '$(Build.SourcesDirectory)\'
+              xmlTransformationRules:
+              jsonTargetFiles: 'appSetting.json'
+     
+           - script: |
+              npm run test:e2e
+             displayName: 'Run E2E Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
+
+           - task: PublishTestResults@2
+             condition: succeededOrFailed()
+             inputs:
+               testRunner: 'JUnit'
+               testResultsFiles: 'junit.xml'
+               mergeTestResults: true
+               searchFolder:  '$(System.DefaultWorkingDirectory)/'
+               testRunTitle: E2E Test Results
+             displayName: 'Publish End-To-End Test Results'
+
+      - job: AccessibilityTests
+        dependsOn: E2ETests
+        pool: 
+          name: $(WindowPool)
+          demands: FM-Perms
+        displayName: "Acccessibility Tests"
+        workspace:
+         clean: all
+        steps:
+           - checkout: self
+           - task: NodeTool@0
+             inputs:
+              versionSpec: '14.x'
+             displayName: 'Install Node.js'
+
+           - script: |
+              npm ci
+             displayName: 'npm restore'
+
+           - task: FileTransform@2
+             displayName: AppSettings Json transform for Accessibility Test Run
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
               xmlTransformationRules:
@@ -342,6 +531,7 @@ stages:
              displayName: 'Publish Accessibility Test Results'
 
   - stage: QAdeploy
+    dependsOn: Devdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-QA-Deploy-Variables"
@@ -467,7 +657,7 @@ stages:
              displayName: 'npm restore'
 
            - task: FileTransform@2
-             displayName: AppSettings Json tranform for E2E Tests Run
+             displayName: AppSettings Json transform for E2E Tests Run
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
               xmlTransformationRules:
@@ -508,7 +698,7 @@ stages:
              displayName: 'npm restore'
 
            - task: FileTransform@2
-             displayName: AppSettings Json tranform for Accessibility Test Run
+             displayName: AppSettings Json transform for Accessibility Test Run
              inputs:
               folderPath: '$(Build.SourcesDirectory)\'
               xmlTransformationRules:
@@ -530,6 +720,7 @@ stages:
              displayName: 'Publish Accessibility Test Results'
 
   - stage: LiveDeploy
+    dependsOn: QAdeploy
     displayName: "Livedeploy (inc terraform, website deploy)"
     variables:          
           - group: "File-Share-Service-UI-Live-Deploy-Variables"
