@@ -339,10 +339,201 @@ stages:
                testRunTitle: Accessibility Test Results
              displayName: 'Publish Accessibility Test Results'
 
+  - stage: vNextIatDeploy
+    dependsOn:
+      - Perform_Build_Test_Publish #HB Switch back to Devdeploy
+      # - Devdeploy
+    displayName: "vNext IAT Deploy (inc terraform, website deploy)"
+    variables:
+      - group: "File-Share-Service-UI-vNext-IAT-Deploy-Variables"
+      - name: "Environment"
+        value: "vNextIat"
+      - name: b2cConfig.tenantName
+        value: $(b2cConfig-tenantName)
+      - name: b2cConfig.clientId
+        value: $(b2cConfig-clientId)
+      - name: fssConfig.apiUrl
+        value: $(fssConfig-apiUrl)
+      - name: fssConfig.apiScope
+        value: $(fssConfig-apiScope)
+      - name: fssConfig.stateManagementApiUrl
+        value: $(fssConfig-stateManagementApiUrl)
+      - name: fssConfig.displayPopularSearch
+        value: $(fssConfig-displayPopularSearch)
+      - name: fssConfig.displaySimplifiedSearchLink
+        value: $(fssConfig-displaySimplifiedSearchLink)
+      - name: essConfig.apiUrl
+        value: $(essConfig-apiUrl)
+      - name: essConfig.apiScope
+        value: $(essConfig-apiScope)
+      - name: essConfig.avgSizeofENCinMB
+        value: $(essConfig-avgSizeofENCinMB)
+      - name: essConfig.defaultEstimatedSizeinMB
+        value: $(essConfig-defaultEstimatedSizeinMB)
+      - name: essConfig.MaxEncLimit
+        value: $(essConfig-MaxEncLimit)
+      - name: essConfig.MaxEncSelectionLimit
+        value: $(essConfig-MaxEncSelectionLimit)
+      - name: autoTestConfig.url
+        value: $(autoTestConfig-url)
+      - name: autoTestConfig.user
+        value: $(autoTestConfig-user)
+      - name: autoTestConfig.password
+        value: $(autoTestConfig-password)
+      - name: autoTestConfig.userFullName
+        value: $(autoTestConfig-userFullName)
+      - name: autoTestConfig.apiurl
+        value: $(autoTestConfig-apiurl)
+      - name: autoTestConfig.encSizeConfig
+        value: $(autoTestConfig-encSizeConfig)
+      - name: "ServiceDnsUrl"
+        value: $(service-dns-url)
+      - name: essConfig.aioExcludeEncs
+        value: $(essConfig-aioExcludeEncs)
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/main'), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))) #HB - limit this in some way
+    jobs:
+      - deployment: vNextIatDeploy
+        displayName: "vNext IAT - deploy terraform and website"
+        environment: "FSS-vNext-IAT"
+        container: ${{variables.Container}}
+        workspace:
+          clean: all
+        variables:
+          - group: "File share service terraform vNext IAT"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: Deployment/templates/continous-deployment.yml
+                  parameters:
+                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+                    AzureSubscription: "File-Share-Service-vNext-IAT-A.011.08"
+    
+      # - job: FunctionalTests
+      #   dependsOn: vNextIatDeploy
+      #   pool: 
+      #     name: $(WindowPool)
+      #     demands: FM-Perms
+      #   displayName: "Functional Tests"
+      #   workspace:
+      #    clean: all
+      #   steps:
+      #      - checkout: self
+
+      #      - task: NodeTool@0
+      #        inputs:
+      #         versionSpec: '14.x'
+      #        displayName: 'Install Node.js'
+
+      #      - script: |
+      #         npm ci
+      #        displayName: 'npm restore'
+
+      #      - task: FileTransform@2
+      #        inputs:
+      #         folderPath: '$(Build.SourcesDirectory)\'
+      #         xmlTransformationRules:
+      #         jsonTargetFiles: 'appSetting.json'
+
+      #      - script: |
+      #         npm run test:auto
+      #        displayName: 'Run Functional Tests'
+      #        workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+
+      #      - task: PublishTestResults@2
+      #        condition: succeededOrFailed()
+      #        inputs:
+      #          testRunner: 'JUnit'
+      #          testResultsFiles: 'junit.xml'
+      #          mergeTestResults: true
+      #          searchFolder:  '$(System.DefaultWorkingDirectory)/'
+      #          testRunTitle: Functional Test Results
+      #        displayName: 'Publish Functional Test Results'
+
+      # - job: E2ETests
+      #   dependsOn: FunctionalTests
+      #   pool: 
+      #     name: $(WindowPool)
+      #     demands: FM-Perms
+      #   displayName: "End-To-End Tests"
+      #   steps:
+      #      - checkout: self
+      #      - task: NodeTool@0
+      #        inputs:
+      #         versionSpec: '14.x'
+      #        displayName: 'Install Node.js'
+
+      #      - script: |
+      #         npm ci
+      #        displayName: 'npm restore'
+
+      #      - task: FileTransform@2
+      #        displayName: AppSettings Json transform for E2E Tests Run
+      #        inputs:
+      #         folderPath: '$(Build.SourcesDirectory)\'
+      #         xmlTransformationRules:
+      #         jsonTargetFiles: 'appSetting.json'
+     
+      #      - script: |
+      #         npm run test:e2e
+      #        displayName: 'Run E2E Tests'
+      #        workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
+
+      #      - task: PublishTestResults@2
+      #        condition: succeededOrFailed()
+      #        inputs:
+      #          testRunner: 'JUnit'
+      #          testResultsFiles: 'junit.xml'
+      #          mergeTestResults: true
+      #          searchFolder:  '$(System.DefaultWorkingDirectory)/'
+      #          testRunTitle: E2E Test Results
+      #        displayName: 'Publish End-To-End Test Results'
+
+      # - job: AccessibilityTests
+      #   dependsOn: E2ETests
+      #   pool: 
+      #     name: $(WindowPool)
+      #     demands: FM-Perms
+      #   displayName: "Acccessibility Tests"
+      #   workspace:
+      #    clean: all
+      #   steps:
+      #      - checkout: self
+      #      - task: NodeTool@0
+      #        inputs:
+      #         versionSpec: '14.x'
+      #        displayName: 'Install Node.js'
+
+      #      - script: |
+      #         npm ci
+      #        displayName: 'npm restore'
+
+      #      - task: FileTransform@2
+      #        displayName: AppSettings Json transform for Accessibility Test Run
+      #        inputs:
+      #         folderPath: '$(Build.SourcesDirectory)\'
+      #         xmlTransformationRules:
+      #         jsonTargetFiles: 'appSetting.json'
+      
+      #      - script: |
+      #         npm run test:a11y
+      #        displayName: 'Run Accessibility Tests'
+      #        workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+
+      #      - task: PublishTestResults@2
+      #        condition: succeededOrFailed()
+      #        inputs:
+      #          testRunner: 'JUnit'
+      #          testResultsFiles: 'junit.xml'
+      #          mergeTestResults: true
+      #          searchFolder:  '$(System.DefaultWorkingDirectory)/'
+      #          testRunTitle: Accessibility Test Results
+      #        displayName: 'Publish Accessibility Test Results'
+
   - stage: vNextE2eDeploy
     dependsOn:
-      - Perform_Build_Test_Publish #HB Switch back to Devdeploy (or vNext IAT when that's done)
-      # - Devdeploy
+      - Perform_Build_Test_Publish #HB Switch back to vNextIatDeploy
+      # - vNextIatDeploy
     displayName: "vNext E2E Deploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-vNext-E2E-Deploy-Variables"
@@ -409,127 +600,6 @@ stages:
                     ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
                     AzureSubscription: "File-Share-Service-vNext-E2E-A.011.08"
     
-      - job: FunctionalTests
-        dependsOn: vNextE2eDeploy
-        pool: 
-          name: $(WindowPool)
-          demands: FM-Perms
-        displayName: "Functional Tests"
-        workspace:
-         clean: all
-        steps:
-           - checkout: self
-
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
-
-           - script: |
-              npm run test:auto
-             displayName: 'Run Functional Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Functional Test Results
-             displayName: 'Publish Functional Test Results'
-
-      - job: E2ETests
-        dependsOn: FunctionalTests
-        pool: 
-          name: $(WindowPool)
-          demands: FM-Perms
-        displayName: "End-To-End Tests"
-        steps:
-           - checkout: self
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             displayName: AppSettings Json transform for E2E Tests Run
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
-     
-           - script: |
-              npm run test:e2e
-             displayName: 'Run E2E Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: E2E Test Results
-             displayName: 'Publish End-To-End Test Results'
-
-      - job: AccessibilityTests
-        dependsOn: E2ETests
-        pool: 
-          name: $(WindowPool)
-          demands: FM-Perms
-        displayName: "Acccessibility Tests"
-        workspace:
-         clean: all
-        steps:
-           - checkout: self
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
-
-           - script: |
-              npm ci
-             displayName: 'npm restore'
-
-           - task: FileTransform@2
-             displayName: AppSettings Json transform for Accessibility Test Run
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
-      
-           - script: |
-              npm run test:a11y
-             displayName: 'Run Accessibility Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
-
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Accessibility Test Results
-             displayName: 'Publish Accessibility Test Results'
-
   - stage: QAdeploy
     dependsOn: Devdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
