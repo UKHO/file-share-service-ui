@@ -16,6 +16,8 @@ export class FssSearchHelperService {
     var changedFieldValue = this.getFieldValue(changedField.currentFieldValue, fields);
     changedFieldRow!.selectedField = changedFieldValue;
 
+    changedFieldRow!.value = "";
+
     var fieldDataType = this.getFieldDataType(changedFieldValue, fields);
     // getFieldRow
     

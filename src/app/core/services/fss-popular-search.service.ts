@@ -27,6 +27,7 @@ export class FssPopularSearchService {
           var dateTime = this.getDateTime(value);
           fssSearchRow.value = dateTime[0];
           fssSearchRow.time = dateTime[1];
+          fssSearchRow.dynamicClass = "dateTime";
         }
         else {
           fssSearchRow.value = String(value);

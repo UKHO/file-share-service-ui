@@ -13,4 +13,14 @@
     <vulnerabilityName>GHSA-7fh5-64p2-3v2j</vulnerabilityName>
   </suppress>
 
+  <suppress>
+    <notes>
+      <![CDATA[
+ file name: axios:1.5.0
+ ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/axios@.*$</packageUrl>
+    <vulnerabilityName>CVE-2023-45857</vulnerabilityName>
+    <vulnerabilityName>GHSA-wf5p-g6vw-rhxx</vulnerabilityName>
+  </suppress>
 </suppressions>

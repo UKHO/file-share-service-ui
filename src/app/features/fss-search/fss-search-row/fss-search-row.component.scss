@@ -40,3 +40,23 @@ table {
  .fa-object-ungroup{
     font-size: 0.7em;   
  }
+
+.icon-group-color {
+  color: navy;
+  background-color: skyblue;
+  padding-bottom: 5px;
+}
+.icon-color {
+  color: navy;
+  margin-bottom: 25px;
+  cursor:pointer;
+}
+
+
+tr {
+  &:nth-child(even) {
+    background-color:Background;
+  }
+
+  
+}
