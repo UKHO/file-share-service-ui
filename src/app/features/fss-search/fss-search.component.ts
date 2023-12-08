@@ -48,7 +48,8 @@ export class FssSearchComponent implements OnInit {
   currentUrl: any = '';
   fssTokenScope: any = [];
   fssSilentTokenRequest: SilentRequest;
-  attribute : any =[];
+  attribute: any = [];
+  resultsText: string;
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
@@ -79,12 +80,25 @@ export class FssSearchComponent implements OnInit {
   }
 
   onAdvancedSearchClicked(fssAdvancedSearch: any) {
-    if (this.fssSearchValidatorService.validateSearchInput(
-      fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
+    console.log('onAdvancedSearchClicked:', fssAdvancedSearch)
+    if ((fssAdvancedSearch.fssSearchRows.length == 1 && fssAdvancedSearch.fssSearchRows[0].selectedField == '') || (this.fssSearchValidatorService.validateSearchInput(
+      fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators))) {
       var filter = this.fssSearchFilterService.getFilterExpression(
         fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-        this.getSearchResult(filter);
+        if (fssAdvancedSearch.fssSearchRows.length == 1) {
+          console.log("only 1 row with value:", fssAdvancedSearch.fssSearchRows[0].value)
+          this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(fssAdvancedSearch.fssSearchRows[0].value);
+          this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
+            this.transformSearchAttributesToFilter(result.batchAttributes);
+          });
+        }
+        if (fssAdvancedSearch.fssSearchRows.length == 1 && fssAdvancedSearch.fssSearchRows[0].selectedField == '') {
+          this.getSimplifiedSearchApiResult(fssAdvancedSearch.fssSearchRows[0].value);
+        } else {
+          this.getSearchResult(filter);
+        }
+        
       }, error => {
         this.msalService.instance
           .loginPopup(this.fssSilentTokenRequest)
@@ -126,6 +140,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   getSimplifiedSearchApiResult(searchFilterText: string) {
+    console.log('getSimplifiedSearchApiResult:', searchFilterText)
     this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
     this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
       this.transformSearchAttributesToFilter(result.batchAttributes);
@@ -134,6 +149,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   getSearchResult(filter: string) {
+    console.log('getSearchResult:', filter)
     this.displayLoader = true;
     if (filter != null) {
       this.searchResult = [];
@@ -142,6 +158,7 @@ export class FssSearchComponent implements OnInit {
         if (this.searchResult.count > 0) {
           var searchResultCount = this.searchResult['count'];
           this.searchResultTotal = this.searchResult['total'];
+          this.resultsText = searchResultCount > 1 ? "results" : "result";  
           this.currentPage = 1;
           this.pages = this.searchResultTotal % searchResultCount === 0 ?
             Math.floor(this.searchResultTotal / searchResultCount) :

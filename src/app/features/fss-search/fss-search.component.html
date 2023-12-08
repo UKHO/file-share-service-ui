@@ -24,14 +24,13 @@
 
   <div *ngIf="displaySearchResult">
     <a href="#skipResultsLink" class="skip-to-content-link skipResults section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" >Skip to Search Results </a>
-    <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : ''">
+    <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : 'SimplifiedSearch'">
       
-      <app-fss-simplified-filter id="gotoFilterMenu" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" tabindex="-1"
+      <app-fss-simplified-filter id="gotoFilterMenu"  tabindex="-1"
       (onApplyFilterButtonClicked)="onApplyFilterButtonClicked($event)" [filterGroups]="filterGroups"></app-fss-simplified-filter>
       <div>
-        <h2 id="skipResultsLink" tabindex="-1" #showSearchResult >
-          <span class="totalResultLabel" *ngIf="searchResultTotal == 1" role="alert" aria-live="polite">{{this.searchResultTotal}} result found</span>
-          <span class="totalResultLabel" *ngIf="searchResultTotal > 1" role="alert" aria-live="polite">{{this.searchResultTotal}} results found</span>
+        <h2 id="skipResultsLink" tabindex="-1" #showSearchResult>
+          <span class="totalResultLabel" role="alert" aria-live="polite">{{searchResultTotal}} {{resultsText}} found</span>
           <span *ngIf="searchResultTotal > pageRecordCount" class="paginatorLabel" role="alert" aria-live="polite"> {{this.paginatorLabel}}</span>
         </h2>
         <app-fss-search-results class="SimplifiedSearchResult" [searchResult]="searchResult" [currentPage]="currentPage"></app-fss-search-results>
@@ -46,7 +45,7 @@
     </div> 
 </div>
 
-<div *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch && displayPopularSearch">
+<div>
   <br />
   <admiralty-hr aria-hidden="true"></admiralty-hr>
   <app-fss-popular-search-batches (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>

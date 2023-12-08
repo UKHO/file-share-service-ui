@@ -22,7 +22,8 @@ export class FssPopularSearchBatchesComponent implements OnInit {
     });
   }
 
-  onPopularSearchClick(popularSearch:any){
+  onPopularSearchClick(popularSearch: any) {
+    console.log("emmitting")
     this.popularSearchClicked.emit(popularSearch)
   }
 
