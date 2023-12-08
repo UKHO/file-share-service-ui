@@ -4,13 +4,14 @@ import { FileShareApiService } from '../../core/services/file-share-api.service'
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { FssSearchValidatorService } from '../../core/services/fss-search-validator.service';
 import { FssSearchFilterService } from '../../core/services/fss-search-filter.service';
-import { Subject } from 'rxjs';
+import { Subject,Subscription } from 'rxjs';
 import { AppConfigService } from '../../core/services/app-config.service';
 import { SearchType } from '../../core/models/fss-search-types';
 import { FilterGroup, FilterItem } from '../../shared/components/ukho-table/filter.types';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { SilentRequest } from '@azure/msal-browser';
+import { SearchMenuState, SearchTypeChanged } from '../../core/services/state.service';
 
 @Component({
   selector: 'app-fss-search',
@@ -49,21 +50,41 @@ export class FssSearchComponent implements OnInit {
   fssTokenScope: any = [];
   fssSilentTokenRequest: SilentRequest;
   attribute : any =[];
+  clickSub: Subscription;
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
     private fssSearchValidatorService: FssSearchValidatorService,
     private fssSearchFilterService: FssSearchFilterService,
+    private selectedMenu: SearchMenuState,
+    private searchTypeChangedService: SearchTypeChanged,
     private analyticsService: AnalyticsService, private titleService: Title, private router: Router) {
     this.displayPopularSearch = AppConfigService.settings["fssConfig"].displayPopularSearch;
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
+
+    this.clickSub = this.searchTypeChangedService.currentstate.subscribe(state => {
+      if (state == true) {
+        this.searchTypeChangedService.changeState(false);
+        if (this.selectedMenu.SelectedOption == "simplemenu") {
+          this.ShowSimplifiedSearchClicked();
+        } else if (this.selectedMenu.SelectedOption == "advancedmenu") {
+          this.ShowAdvancedSearchClicked()
+        }
+      }
+    });
+
+
   };
 
   ngOnInit(): void {
-    this.activeSearchType = SearchType.SimplifiedSearch;
+    if (this.selectedMenu.SelectedOption == "simplemenu") {
+      this.activeSearchType = SearchType.SimplifiedSearch;
+    } else if (this.selectedMenu.SelectedOption == "advancedmenu"){
+         this.activeSearchType = SearchType.AdvancedSearch;
+    }	
   }
 
   ShowAdvancedSearchClicked() {

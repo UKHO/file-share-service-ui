@@ -4,7 +4,7 @@
                   [logoLinkUrl]="logoLinkUrl">
   <admiralty-header-menu-item [menuTitle]="essTitle" [active]="essActive" (menuItemClick)="menuExchangeClick()" slot="items" [style.visibility]="(userSignedIn == false) ? 'hidden' :'visible' "></admiralty-header-menu-item>
   <admiralty-header-menu-item [menuTitle]="searchTitle" [active]="searchActive" (menuItemClick)="menuSearchClick()" slot="items" [style.visibility]="(userSignedIn == false) ? 'hidden' :'visible' "></admiralty-header-menu-item>
-  
+  <admiralty-header-menu-item [menuTitle]="advSearchTitle" [active]="advSearchActive" (menuItemClick)="menuAdvSearchClick()" slot="items" [style.visibility]="(userSignedIn == false) ? 'hidden' :'visible' "></admiralty-header-menu-item>
   <admiralty-header-profile [isSignedIn]="userSignedIn"
                             slot="profile"
                             (signInClicked)="handleSignInClick()"

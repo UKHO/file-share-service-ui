@@ -7,6 +7,7 @@ import { SharedModule } from   './shared/app.shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppConfigService } from './core/services/app-config.service';
 import { AnalyticsService } from './core/services/analytics.service';
+import { SearchMenuState} from './core/services/state.service';
 import { HttpErrorInterceptorService } from './core/services/httperror-interceptor.service';
 import {
   MsalModule,
@@ -98,6 +99,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MsalModule
   ],
   providers: [
+    SearchMenuState,
     AppConfigService,
     AnalyticsService,
     {

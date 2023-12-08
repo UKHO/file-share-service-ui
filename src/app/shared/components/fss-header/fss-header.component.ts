@@ -2,10 +2,11 @@ import { AfterViewInit, Component, EventEmitter, Inject, OnDestroy, OnInit, Outp
 import { MsalBroadcastService, MsalGuardConfiguration, MsalService, MSAL_GUARD_CONFIG } from "@azure/msal-angular";
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { AuthenticationResult, InteractionStatus, PopupRequest, SilentRequest } from '@azure/msal-browser';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, NavigationError, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { SignInClicked } from '../../../core/services/signInClick.service';
+import { SearchMenuState, SearchTypeChanged} from '../../../core/services/state.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -22,10 +23,12 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   logoAltText: string = "Admiralty - Maritime Data Solutions Logo";
   logoLinkUrl: string = "https://www.admiralty.co.uk/";
   essTitle: string = "Exchange sets";
-  searchTitle : string = "Search"
+  searchTitle: string = "Search"
+  advSearchTitle: string = "Advanced Search"  //rhz
   userSignedIn: boolean = false;
   essActive: boolean = false;
   searchActive: boolean = true;
+  advSearchActive: boolean = false; //rhz
   signedInName = ""
   clickSub: Subscription;
 
@@ -40,8 +43,10 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
     private analyticsService: AnalyticsService,
-    private signInButtonService: SignInClicked) {
-
+    private signInButtonService: SignInClicked,
+    private selectedMenu: SearchMenuState,
+    private searchTypeChangedService: SearchTypeChanged) {
+    
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
@@ -65,6 +70,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.monitorTest();
     this.monitorNavigation();
     this.setSkipToContent();
 
@@ -119,6 +125,30 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  monitorTest() {
+    //this.currentRoute = "";
+    this.route.events.subscribe((event: any) => {
+        if (event instanceof NavigationStart) {
+            // Show progress spinner or progress bar
+            console.log('Route change detected:', event);
+            if (this.selectedMenu.SelectedOption == "simplemenu") {
+              this.isActive = true;
+              this.essActive = false;
+              this.searchActive = true;
+              this.advSearchActive = false;
+            }
+            else if (this.selectedMenu.SelectedOption == "advancedmenu") {
+              this.isActive = false;
+              this.essActive = false;
+              this.searchActive = false;
+              this.advSearchActive = true;
+            }
+        }
+        
+    });
+
+}
+
   monitorNavigation() {
     this.route.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -130,17 +160,25 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
           this.route.navigate(['']);
           this.isActive = false;
           this.essActive = false;
-          this.searchActive = true;
+          this.searchActive = false;
         }
-        else {
+        else if (this.selectedMenu.SelectedOption == "simplemenu") {
           this.isActive = true;
           this.essActive = false;
           this.searchActive = true;
+          this.advSearchActive = false;
+        }
+        else if (this.selectedMenu.SelectedOption == "advancedmenu") {
+          this.isActive = false;
+          this.essActive = false;
+          this.searchActive = false;
+          this.advSearchActive = true;
         }
       }
       else if (url.includes('exchangesets')) {
         this.essActive = true;
         this.searchActive = false;
+        this.advSearchActive = false;
       }
       else if (url.includes('logout')) {
         console.log("Logging out...");
@@ -175,7 +213,15 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   menuSearchClick() {
-    this.route.navigate(["simpleSearch"])
+    this.selectedMenu.SelectedOption = "simplemenu";
+    this.searchTypeChangedService.click();
+    this.route.navigate(["asimpleSearch"])
+  }
+
+  menuAdvSearchClick() {
+    this.selectedMenu.SelectedOption = "advancedmenu";
+    this.searchTypeChangedService.click();
+    this.route.navigate([''])
   }
 
 
