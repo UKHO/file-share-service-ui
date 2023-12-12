@@ -3,7 +3,7 @@
 
 <div class="container">
   <h1 id="main" tabindex="-1">Search files</h1>
-  <p class="light">Complete the parameters to create a search query.</p>
+
 
   <div #ukhoTarget>
 
@@ -12,22 +12,31 @@
     </admiralty-dialogue>
   </div>
 
+  <div>
+    <app-fss-popular-search-batches (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
+    <br />
+    <br />
+    <admiralty-hr aria-hidden="true"></admiralty-hr>
+
+  </div>
+  <p class="light">Please enter a Category and appropriate Operator and Value to create a search query then click Search.</p>
+
   <app-fss-simplified-search *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"
-    (ShowAdvancedSearchClicked)="ShowAdvancedSearchClicked()"
-    (onSimplifiedSearchClicked)="onSimplifiedSearchClicked($event)"></app-fss-simplified-search>
+                             (ShowAdvancedSearchClicked)="ShowAdvancedSearchClicked()"
+                             (onSimplifiedSearchClicked)="onSimplifiedSearchClicked($event)"></app-fss-simplified-search>
 
   <app-fss-advanced-search *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch" #UkhoAdvanceSearch
-    (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()" 
-    (onAdvancedSearchClicked)="onAdvancedSearchClicked($event)"
-    [observablePopularSearch]="eventPopularSearch.asObservable()"
-    [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
+                           (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()"
+                           (onAdvancedSearchClicked)="onAdvancedSearchClicked($event)"
+                           [observablePopularSearch]="eventPopularSearch.asObservable()"
+                           [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
 
   <div *ngIf="displaySearchResult">
-    <a href="#skipResultsLink" class="skip-to-content-link skipResults section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" >Skip to Search Results </a>
+    <a href="#skipResultsLink" class="skip-to-content-link skipResults section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch">Skip to Search Results </a>
     <div [ngClass]="activeSearchType === SearchTypeEnum.SimplifiedSearch ? 'SimplifiedSearch' : 'SimplifiedSearch'">
-      
-      <app-fss-simplified-filter id="gotoFilterMenu"  tabindex="-1"
-      (onApplyFilterButtonClicked)="onApplyFilterButtonClicked($event)" [filterGroups]="filterGroups"></app-fss-simplified-filter>
+
+      <app-fss-simplified-filter id="gotoFilterMenu" tabindex="-1"
+                                 (onApplyFilterButtonClicked)="onApplyFilterButtonClicked($event)" [filterGroups]="filterGroups"></app-fss-simplified-filter>
       <div>
         <h2 id="skipResultsLink" tabindex="-1" #showSearchResult>
           <span class="totalResultLabel" role="alert" aria-live="polite">{{searchResultTotal}} {{resultsText}} found</span>
@@ -39,14 +48,15 @@
     <br />
     <div class="pagination">
       <admiralty-paginator [label]="paginatorLabel" [pages]="pages" [currentPage]="currentPage"
-        (pageChange)="onPageChangeHandler($event)">>
+                           (pageChange)="onPageChangeHandler($event)">
+        >
       </admiralty-paginator>
-      <a href="#gotoFilterMenu" class="skip-to-content-link SkipToFilter section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"  >Go to Filter </a>
-    </div> 
-</div>
+      <a href="#gotoFilterMenu" class="skip-to-content-link SkipToFilter section" *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch">Go to Filter </a>
+    </div>
+  </div>
 
-<div>
-  <br />
-  <admiralty-hr aria-hidden="true"></admiralty-hr>
-  <app-fss-popular-search-batches (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
-</div>
+  <!--<div>
+    <br />
+    <admiralty-hr aria-hidden="true"></admiralty-hr>
+    <app-fss-popular-search-batches (popularSearchClicked)="popularSearchClicked($event)"></app-fss-popular-search-batches>
+  </div>-->

@@ -1,7 +1,16 @@
-<h3>Popular searches</h3>
-<div *ngFor="let popularSearch of popularSearches" (click)="onPopularSearchClick(popularSearch)" class="SearchBatch">
+<h3>Quick links</h3>
+<!--<div *ngFor="let popularSearch of popularSearches" (click)="onPopularSearchClick(popularSearch)" class="SearchBatch">
     <p *ngIf="popularSearch.isActive === true" class='popular-search-para'>
         {{popularSearch.displayName}} 
         <button class="popular-search " attr.aria-label="Popular Search for {{popularSearch.displayName}} "><i class="fa-solid fa-angle-right"></i></button>
     </p>
-</div>
+</div>-->
+
+
+
+<admiralty-select class="no-labels" 
+                  (admiraltyChange)="onSelectionChange($event)">
+  <option *ngFor="let popularSearch of popularSearches "
+          value="{{popularSearch.displayName}}">{{popularSearch.displayName}}</option>
+
+</admiralty-select>

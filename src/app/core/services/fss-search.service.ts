@@ -19,6 +19,7 @@ export class FssSearchService implements IFssSearchService {
 
   getFields(batchAttributeResult: any) {  
     const fields: Field[] = [
+      {value: '', text: '@Any', type: 'SystemAttribute', dataType: 'string' },
       {value: 'BusinessUnit',text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string'},
       {value: 'FileName',text: '@FileName', type: 'SystemAttribute', dataType: 'string'},
       {value: 'MimeType',text: '@MimeType', type: 'SystemAttribute', dataType: 'string'},

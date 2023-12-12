@@ -234,7 +234,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     fssSearchRow.fieldFormControl = new UntypedFormControl();
     fssSearchRow.filterFn = this.typeaheadFields;
     fssSearchRow.fieldFormControl = new UntypedFormControl('', [Validators.required, this.fssSearchValidatorService.FieldValidator(this.fields)]);
-    fssSearchRow.fieldValue = "";
+    fssSearchRow.fieldValue = "@Any";
     return fssSearchRow;
   }
 

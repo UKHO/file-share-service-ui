@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PopularSearchConfigService } from '../../../core/services/popular-search-config.service';
+import { SelectChangeEventDetail } from '@ukho/admiralty-core';
 
 @Component({
   selector: 'app-fss-popular-search-batches',
@@ -23,8 +24,22 @@ export class FssPopularSearchBatchesComponent implements OnInit {
   }
 
   onPopularSearchClick(popularSearch: any) {
-    console.log("emmitting")
+
     this.popularSearchClicked.emit(popularSearch)
+  }
+
+  onSelectionChange(operator: Event) {
+    const customEventData = operator as CustomEvent<SelectChangeEventDetail>;
+    let data: string = customEventData.detail.value as string;
+
+    //console.log("data: ", this.popularSearches[0]);
+    //const key = data;
+    const item = this.popularSearches.find((obj: { displayName: string; }) => obj.displayName == data);
+    //console.log("found data: ", item);
+
+    
+    this.popularSearchClicked.emit(item);
+    
   }
 
 }
