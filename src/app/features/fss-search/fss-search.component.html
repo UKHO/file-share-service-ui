@@ -19,11 +19,21 @@
     <admiralty-hr aria-hidden="true"></admiralty-hr>
 
   </div>
-  <p class="light">Please enter a Category and appropriate Operator and Value to create a search query then click Search.</p>
+
+  <p *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch" class="light">Please enter a Category and appropriate Operator and Value to create a search query then click Search.</p>
+  <p *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" class="light">Please enter something then click Search.</p>
 
   <app-fss-simplified-search *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"
                              (ShowAdvancedSearchClicked)="ShowAdvancedSearchClicked()"
                              (onSimplifiedSearchClicked)="onSimplifiedSearchClicked($event)"></app-fss-simplified-search>
+
+  <div *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" style="display: none;">
+    <app-fss-advanced-search #UkhoAdvanceSearch
+                             (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()"
+                             (onAdvancedSearchClicked)="onAdvancedSearchClicked($event)"
+                             [observablePopularSearch]="eventPopularSearch.asObservable()"
+                             [observableAdvancedSearchTokenRefresh]="eventAdvancedSearchTokenRefresh.asObservable()"></app-fss-advanced-search>
+  </div>
 
   <app-fss-advanced-search *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch" #UkhoAdvanceSearch
                            (ShowSimplifiedSearchClicked)="ShowSimplifiedSearchClicked()"
