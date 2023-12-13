@@ -42,9 +42,16 @@ export class FssSearchRowComponent implements OnChanges {
     this.onOperatorChanged.emit({ operatorValue: operatorData, rowId: rowId });
   }
 
+  //onFieldChange(eventData: Event, rowId: number) {
+  //  const fieldData = eventData as CustomEvent<string>;
+  //  this.onFieldChanged.emit({ currentFieldValue: fieldData.detail, rowId: rowId });
+  //}
+
+  //The following replaces the above to work with Admiralty-Select instead of Admiralty-type-ahead.
   onFieldChange(eventData: Event, rowId: number) {
-    const fieldData = eventData as CustomEvent<string>;
-    this.onFieldChanged.emit({ currentFieldValue: fieldData.detail, rowId: rowId });
+    const customEventData = eventData as CustomEvent<SelectChangeEventDetail>;
+    let fieldData: string = customEventData.detail.value as string;
+    this.onFieldChanged.emit({ currentFieldValue: fieldData, rowId: rowId });
   }
 
   onCheckboxClick(){   

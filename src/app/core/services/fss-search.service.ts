@@ -19,13 +19,13 @@ export class FssSearchService implements IFssSearchService {
 
   getFields(batchAttributeResult: any) {  
     const fields: Field[] = [
-      {value: '', text: '@Any', type: 'SystemAttribute', dataType: 'string' },
-      {value: 'BusinessUnit',text: '@BusinessUnit', type: 'SystemAttribute', dataType: 'string'},
-      {value: 'FileName',text: '@FileName', type: 'SystemAttribute', dataType: 'string'},
-      {value: 'MimeType',text: '@MimeType', type: 'SystemAttribute', dataType: 'string'},
-      {value: 'FileSize',text: '@FileSize (in bytes)', type: 'SystemAttribute', dataType: 'number'},
-      {value: 'ExpiryDate',text: '@BatchExpiryDate', type: 'SystemAttribute', dataType: 'date'},
-      {value: 'BatchPublishedDate',text: '@BatchPublishedDate', type: 'SystemAttribute', dataType: 'date'}
+      {value: '', text: 'Any', type: 'SystemAttribute', dataType: 'string' },
+      {value: 'BusinessUnit',text: 'Business Unit', type: 'SystemAttribute', dataType: 'string'},
+      {value: 'FileName',text: 'File Name', type: 'SystemAttribute', dataType: 'string'},
+      {value: 'MimeType',text: 'Mime Type', type: 'SystemAttribute', dataType: 'string'},
+      {value: 'FileSize',text: 'File Size (in bytes)', type: 'SystemAttribute', dataType: 'number'},
+      {value: 'ExpiryDate',text: 'Batch Expiry Date', type: 'SystemAttribute', dataType: 'date'},
+      {value: 'BatchPublishedDate',text: 'Batch Published Date', type: 'SystemAttribute', dataType: 'date'}
     ];
 
     this.userAttributes = this.refreshUserAttributes(batchAttributeResult);

@@ -17,11 +17,11 @@
     <br />
     <br />
     <admiralty-hr aria-hidden="true"></admiralty-hr>
-
+    <br />
   </div>
 
-  <p *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch" class="light">Please enter a Category and appropriate Operator and Value to create a search query then click Search.</p>
-  <p *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" class="light">Please enter something then click Search.</p>
+  <p *ngIf="activeSearchType === SearchTypeEnum.AdvancedSearch" class="light">Please select a Category and appropriate Operator and Value to create a search query then click Search.</p>
+  <p *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch" class="light">Please enter search term then click Search.</p>
 
   <app-fss-simplified-search *ngIf="activeSearchType === SearchTypeEnum.SimplifiedSearch"
                              (ShowAdvancedSearchClicked)="ShowAdvancedSearchClicked()"

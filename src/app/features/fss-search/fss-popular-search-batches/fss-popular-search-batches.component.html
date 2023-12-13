@@ -8,9 +8,10 @@
 
 
 
-<admiralty-select class="no-labels" 
+<admiralty-select class="no-labels" [(ngModel)]="selectedItem"
                   (admiraltyChange)="onSelectionChange($event)">
   <option *ngFor="let popularSearch of popularSearches "
-          value="{{popularSearch.displayName}}">{{popularSearch.displayName}}</option>
-
+          value="{{popularSearch.displayName}}">
+    {{popularSearch.displayName}}
+  </option>
 </admiralty-select>

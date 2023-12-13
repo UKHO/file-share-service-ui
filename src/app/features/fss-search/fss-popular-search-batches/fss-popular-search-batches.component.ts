@@ -11,7 +11,7 @@ export class FssPopularSearchBatchesComponent implements OnInit {
   
   @Output() popularSearchClicked = new EventEmitter<boolean>();
   popularSearches:any = [];
-
+  selectedItem: string;
   constructor(private popularSearchConfigService: PopularSearchConfigService) { }
 
   ngOnInit(): void {
@@ -20,6 +20,7 @@ export class FssPopularSearchBatchesComponent implements OnInit {
       for(let key in configJson){
         this.popularSearches.push(configJson[key]);
       }
+      this.selectedItem = this.popularSearches[0].displayName;
     });
   }
 
@@ -32,11 +33,7 @@ export class FssPopularSearchBatchesComponent implements OnInit {
     const customEventData = operator as CustomEvent<SelectChangeEventDetail>;
     let data: string = customEventData.detail.value as string;
 
-    //console.log("data: ", this.popularSearches[0]);
-    //const key = data;
     const item = this.popularSearches.find((obj: { displayName: string; }) => obj.displayName == data);
-    //console.log("found data: ", item);
-
     
     this.popularSearchClicked.emit(item);
     
