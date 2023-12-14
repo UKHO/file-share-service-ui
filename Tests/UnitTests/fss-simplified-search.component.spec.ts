@@ -71,21 +71,24 @@ describe('FssSimplifiedSearchComponent', () => {
     expect(filterExpression).toEqual(expectedfilterExpression);
   });
 
-  test('should show the content of exchange sets on search page', () => {
-    const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p').textContent).toBe('You can make a small (250 ENC), custom exchange set here and download it');
-  });
+  // Test Suspended this has been removed Rhz
+  //test('should show the content of exchange sets on search page', () => {
+  //  const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
+  //  fixture.detectChanges();
+  //  expect(fixture.nativeElement.querySelector('p').textContent).toBe('You can make a small (250 ENC), custom exchange set here and download it');
+  //});
 
-  test('should show the subtitle of exchange sets on search page', () => {
-    const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('h4').textContent).toBe('Exchange sets');
-  });
+  // Test Suspended this has been removed Rhz
+  //test('should show the subtitle of exchange sets on search page', () => {
+  //  const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
+  //  fixture.detectChanges();
+  //  expect(fixture.nativeElement.querySelector('h4').textContent).toBe('Exchange sets');
+  //});
 
-  test('should show Make an exchange set Link', () => {
-    const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
-    fixture.detectChanges();
-    expect(fixture.debugElement.queryAll(By.css('switchToAdvanced switchToESS'))).toBeTruthy();
-  });
+  // Test Suspended this has been removed Rhz
+  //test('should show Make an exchange set Link', () => {
+  //  const fixture = TestBed.createComponent(FssSimplifiedSearchComponent);
+  //  fixture.detectChanges();
+  //  expect(fixture.debugElement.queryAll(By.css('switchToAdvanced switchToESS'))).toBeTruthy();
+  //});
  });
