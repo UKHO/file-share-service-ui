@@ -34,8 +34,10 @@ export class FssPopularSearchBatchesComponent implements OnInit {
     let data: string = customEventData.detail.value as string;
 
     const item = this.popularSearches.find((obj: { displayName: string; }) => obj.displayName == data);
+    if (item.isActive) {
+      this.popularSearchClicked.emit(item);
+    }
     
-    this.popularSearchClicked.emit(item);
     
   }
 

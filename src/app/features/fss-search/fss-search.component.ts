@@ -80,32 +80,31 @@ export class FssSearchComponent implements OnInit {
   }
 
   onAdvancedSearchClicked(fssAdvancedSearch: any) {
-    console.log('onAdvancedSearchClicked:', fssAdvancedSearch)
-    if ((fssAdvancedSearch.fssSearchRows.length == 1 && fssAdvancedSearch.fssSearchRows[0].selectedField == '') || (this.fssSearchValidatorService.validateSearchInput(
-      fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators))) {
-      var filter = this.fssSearchFilterService.getFilterExpression(
-        fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
-      this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-        if (fssAdvancedSearch.fssSearchRows.length == 1) {
-          console.log("only 1 row with value:", fssAdvancedSearch.fssSearchRows[0].value)
-          this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(fssAdvancedSearch.fssSearchRows[0].value);
-          this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
-            this.transformSearchAttributesToFilter(result.batchAttributes);
-          });
-        }
-        if (fssAdvancedSearch.fssSearchRows.length == 1 && fssAdvancedSearch.fssSearchRows[0].selectedField == '') {
-          this.getSimplifiedSearchApiResult(fssAdvancedSearch.fssSearchRows[0].value);
-        } else {
-          this.getSearchResult(filter);
-        }
-        
-      }, error => {
-        this.msalService.instance
-          .loginPopup(this.fssSilentTokenRequest)
-          .then(response => {
+    const rowLength = fssAdvancedSearch.fssSearchRows.length;
+    const selectedField = fssAdvancedSearch.fssSearchRows[0].selectedField;
+    if ((rowLength == 1 && selectedField == '') || (this.fssSearchValidatorService.validateSearchInput(
+            fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators))) {
+        var filter = this.fssSearchFilterService.getFilterExpression(fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
+        this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+          if (rowLength == 1) {
+            this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(fssAdvancedSearch.fssSearchRows[0].value);
+            this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
+              this.transformSearchAttributesToFilter(result.batchAttributes);
+            });
+          }
+          if (rowLength == 1 && selectedField == '') {
+            this.getSimplifiedSearchApiResult(fssAdvancedSearch.fssSearchRows[0].value);
+          } else {
             this.getSearchResult(filter);
-          })
-      })
+          }
+        
+        }, error => {
+            this.msalService.instance
+             .loginPopup(this.fssSilentTokenRequest)
+             .then(response => {
+                this.getSearchResult(filter);
+             })
+        })
     }
     else {
       this.errorMessageDescription = this.fssSearchValidatorService.errorMessageDescription;
@@ -140,7 +139,6 @@ export class FssSearchComponent implements OnInit {
   }
 
   getSimplifiedSearchApiResult(searchFilterText: string) {
-    console.log('getSimplifiedSearchApiResult:', searchFilterText)
     this.MainQueryFilterExpression = this.fssSearchFilterService.getFilterExpressionForSimplifiedSearch(searchFilterText);
     this.fileShareApiService.getAttributeSearchResult(this.MainQueryFilterExpression).subscribe((result) => {
       this.transformSearchAttributesToFilter(result.batchAttributes);
@@ -149,7 +147,6 @@ export class FssSearchComponent implements OnInit {
   }
 
   getSearchResult(filter: string) {
-    console.log('getSearchResult:', filter)
     this.displayLoader = true;
     if (filter != null) {
       this.searchResult = [];
