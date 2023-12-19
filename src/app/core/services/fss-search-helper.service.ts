@@ -12,7 +12,7 @@ export class FssSearchHelperService {
   onFieldChanged(changedField:any, fields: Field[], operators: Operator[], fssSearchRows: FssSearchRow[]){
     // getFieldDataType
     var changedFieldRow = this.getSearchRow(changedField.rowId, fssSearchRows);
-
+    console.log("changedFieldRow: ", changedFieldRow);
     var changedFieldValue = this.getFieldValue(changedField.currentFieldValue, fields);
     changedFieldRow!.selectedField = changedFieldValue;
 

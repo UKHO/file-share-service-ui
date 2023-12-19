@@ -1,9 +1,9 @@
 {
-  "Environment": "",
+  "Environment": "mgiaidtestb2c.b2clogin.com",
   "GoogleTagManagerId": "Not-Needed-For-Running-Locally",
   "b2cConfig": {
-    "tenantName": "",
-    "clientId": "",
+    "tenantName": "mgiaidtestb2c",
+    "clientId": "d4ab354e-a3b2-480e-ad50-4e60f2ca0021",
     "redirectUri": "/",
     "postLogoutRedirectUri": "/logout.html",
     "navigateToLoginRequestUrl": true,
@@ -20,9 +20,9 @@
     "displaySimplifiedSearchLink": true,
     "phase": "beta",
     "feedbackEmailId": "products.feedback@UKHO.gov.uk",
-    "apiUrl": "",
-    "apiScope": "",
-    "stateManagementApiUrl": "",
+    "apiUrl": "https://fss-qa.admiralty.co.uk/api",
+    "apiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/FileShareServiceAPIQA/Public",
+    "stateManagementApiUrl": "https://fss-qa.admiralty.co.uk/api/auth",
     "batchAttributes": [
       {
         "attributeSortType": "alphabetical",
@@ -52,8 +52,8 @@
     "MaxEncSelectionLimit": "250",
     "maxRetries": "3",
     "initialDelayMs": "1000",
-    "apiUrl": "",
-    "apiScope": "",
+    "apiUrl": "https://uatadmiralty.azure-api.net/ess-qa",
+    "apiScope": "https://mgiaidtestb2c.onmicrosoft.com/ExchangeSetService/Request",
     "avgSizeofENCinMB": "0.3",
     "defaultEstimatedSizeinMB": "0.5",
     "aioExcludeEncs": [ "GB800001", "FR800001" ]
