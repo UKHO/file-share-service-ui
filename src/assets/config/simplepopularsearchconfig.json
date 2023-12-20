@@ -1,0 +1,280 @@
+{
+  "adpsoftware": {
+    "displayName": "ADP Software",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "ADP"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Content)",
+        "operator": "contains",
+        "isDynamicValue": false,
+        "value": "Software"
+      }
+    ]
+  },
+  "adp": {
+    "displayName": "ADP (including ADRS, ADLL, ATT) Updates",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "ADP"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Week Number)",
+        "operator": "eq",
+        "isDynamicValue": true,
+        "value": "this.getWeekNumber(new Date())"
+      }
+    ]
+  },
+  "enppdfs": {
+    "displayName": "AENP Publications (PDFs)",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "AENP"
+      },
+      {
+        "andOr": "and",
+        "field": "MimeType",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "application/pdf"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Edition)",
+        "operator": "ne",
+        "isDynamicValue": false,
+        "value": "1"
+      }
+    ]
+  },
+  "aenpsoftware": {
+    "displayName": "AENP Software",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "AENP"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Content)",
+        "operator": "contains",
+        "isDynamicValue": false,
+        "value": "Software"
+      }
+    ]
+  },
+  "enpupdatefiles": {
+    "displayName": "AENP Update files",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "AENP"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Week Number)",
+        "operator": "eq",
+        "isDynamicValue": true,
+        "value": "this.getWeekNumber(new Date())"
+      }
+    ]
+  },
+  "arcsbasecds": {
+    "displayName": "ARCS Base CDs",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "arcs"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Disc)",
+        "operator": "startswith",
+        "isDynamicValue": false,
+        "value": "RC"
+      }
+    ]
+  },
+  "arcsupdatecds": {
+    "displayName": "ARCS Update CDs",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "arcs"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Exchange Set Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "Update"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Week Number)",
+        "operator": "eq",
+        "isDynamicValue": true,
+        "value": "this.getWeekNumber(new Date())"
+      }
+    ]
+  },
+  "avcs": {
+    "displayName": "AVCS Update files and DVDs",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "AVCS"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(S63 Version)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "1.2"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Week Number)",
+        "operator": "eq",
+        "isDynamicValue": true,
+        "value": "this.getWeekNumber(new Date())"
+      }
+    ]
+  },
+  "aio": {
+    "displayName": "Admiralty Information Overlay (AIO) Updates",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Product Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "AIO"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Week Number)",
+        "operator": "eq",
+        "isDynamicValue": true,
+        "value": "this.getWeekNumber(new Date())"
+      }
+    ]
+  },
+  "batchespublishedinprevious7days": {
+    "displayName": "Batches published in previous 7 days",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "BusinessUnit",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "adds"
+      },
+      {
+        "andOr": "and",
+        "field": "BatchPublishedDate",
+        "operator": "ge",
+        "isDynamicValue": true,
+        "value": "this.getDateBeforeNDays(7,0,0)"
+      }
+    ]
+  },
+  "batchespublishedfrom7to14days": {
+    "displayName": "Batches published from 7 to 14 days",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "BusinessUnit",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "adds"
+      },
+      {
+        "andOr": "and",
+        "field": "BatchPublishedDate",
+        "operator": "ge",
+        "isDynamicValue": true,
+        "value": "this.getDateBeforeNDays(14,0,0)"
+      },
+      {
+        "andOr": "and",
+        "field": "BatchPublishedDate",
+        "operator": "le",
+        "isDynamicValue": true,
+        "value": "this.getDateBeforeNDays(7,23,59)"
+      }
+    ],
+    "rowGroupings": [
+      {
+        "startIndex": 0,
+        "endIndex": 2
+      },
+      {
+        "startIndex": 1,
+        "endIndex": 2
+      }
+    ]
+  },
+  "currentweekfiles": {
+    "displayName": "Current Week Files",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Week Number)",
+        "operator": "eq",
+        "isDynamicValue": true,
+        "value": "this.getWeekNumber(new Date())"
+      }
+    ]
+  },
+  "currentweekyearfiles": {
+    "displayName": "Current Week Year Files",
+    "isActive": true,
+    "rows": [
+      {
+        "field": "$batch(Week Number)",
+        "operator": "eq",
+        "isDynamicValue": true,
+        "value": "this.getWeekNumber(new Date())"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Year)",
+        "operator": "eq",
+        "isDynamicValue": true,
+        "value": "this.getYear(new Date())"
+      }
+    ]
+  }
+}

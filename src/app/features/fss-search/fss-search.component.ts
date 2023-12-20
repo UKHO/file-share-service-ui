@@ -48,7 +48,8 @@ export class FssSearchComponent implements OnInit {
   currentUrl: any = '';
   fssTokenScope: any = [];
   fssSilentTokenRequest: SilentRequest;
-  attribute : any =[];
+  attribute: any = [];
+  resultsText: string;
 
   constructor(private msalService: MsalService,
     private fileShareApiService: FileShareApiService,
@@ -142,6 +143,7 @@ export class FssSearchComponent implements OnInit {
         if (this.searchResult.count > 0) {
           var searchResultCount = this.searchResult['count'];
           this.searchResultTotal = this.searchResult['total'];
+          this.resultsText = searchResultCount > 1 ? "results" : "result";
           this.currentPage = 1;
           this.pages = this.searchResultTotal % searchResultCount === 0 ?
             Math.floor(this.searchResultTotal / searchResultCount) :

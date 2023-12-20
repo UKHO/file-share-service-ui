@@ -8,8 +8,8 @@ export class PopularSearchConfigService {
 
   constructor(private http: HttpClient) {}
 
-  getPopularSearchData() {
-    return this.http.get('assets/config/popularsearchconfig.json');
+  getPopularSearchData(fileName: string) {
+    return this.http.get(`assets/config/${fileName}`);
   }
 
 }
