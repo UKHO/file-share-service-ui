@@ -23,4 +23,14 @@
     <vulnerabilityName>CVE-2023-45857</vulnerabilityName>
     <vulnerabilityName>GHSA-wf5p-g6vw-rhxx</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: vite:4.4.7
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
+    <vulnerabilityName>CVE-2023-49293</vulnerabilityName>
+    <vulnerabilityName>GHSA-92r3-m2mg-pj97</vulnerabilityName>
+  </suppress>
 </suppressions>
