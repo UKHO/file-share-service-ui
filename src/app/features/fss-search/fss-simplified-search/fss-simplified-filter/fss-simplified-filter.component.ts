@@ -27,12 +27,7 @@ export class FssSimplifiedFilterComponent implements OnInit{
   }
 
 
-  onCheckBoxChange(changeEvent: Event) {
-    let value = changeEvent as CustomEvent<AdmiraltyCheckboxCustomEvent<FilterGroup>>;
-    console.log("Start change check")
-    console.log(value.detail);
-    console.log("End change check")
-  }
+  
 
   onClearFilterClick() {
     this.filterGroups = this.filterGroups.map((group: FilterGroup) => {
