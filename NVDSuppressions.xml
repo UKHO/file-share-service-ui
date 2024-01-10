@@ -41,5 +41,6 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/follow\-redirects@.*$</packageUrl>
     <vulnerabilityName>CVE-2023-26159</vulnerabilityName>
+    <vulnerabilityName>GHSA-jchw-25xp-jwwc</vulnerabilityName>
   </suppress>
 </suppressions>
