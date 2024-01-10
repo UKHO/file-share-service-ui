@@ -33,4 +33,14 @@
     <vulnerabilityName>CVE-2023-49293</vulnerabilityName>
     <vulnerabilityName>GHSA-92r3-m2mg-pj97</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: follow-redirects:1.15.2
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/follow\-redirects@.*$</packageUrl>
+    <vulnerabilityName>CVE-2023-26159</vulnerabilityName>
+    <vulnerabilityName>GHSA-jchw-25xp-jwwc</vulnerabilityName>
+  </suppress>
 </suppressions>
