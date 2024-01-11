@@ -2,7 +2,7 @@
 <admiralty-filter filter-title="Filters"  (filterApplied)="onApplyFilterClick()" (filterCleared)="onClearFilterClick()">
   <admiralty-filter-group [groupTitle]=group.title *ngFor="let group of filterGroups">
     <div style="display: flex; flex-direction: column">
-      <admiralty-checkbox [labelText]=item.title
+      <admiralty-checkbox [labelText]=item.title data-testid=item.title
                           [checked]=item.selected
                           (click)="onCheckBoxClick(item)"
                           *ngFor="let item of group.items">

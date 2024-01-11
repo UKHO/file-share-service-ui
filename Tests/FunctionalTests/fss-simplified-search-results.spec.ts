@@ -166,7 +166,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueCD); //RHZ 
 
     //uncheck batch attributes CD checkbox
-    await page.getByLabel(attributeValueCD).uncheck();
+    await page.getByTestId(attributeValueCD).uncheck();
 
     //select batch attributes DVD checkbox
     await page.locator('admiralty-checkbox').filter({ hasText: attributeValueDVD }).locator('div').click();
