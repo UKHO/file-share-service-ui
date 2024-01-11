@@ -155,7 +155,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
     const [attributeValueCD, attributeValueDVD] = attributeMultipleMediaType.value.split(' ');
     //select batch attributes CD checkbox
-    await page.locator('admiralty-checkbox').filter({ hasText: attributeValueCD }).locator('div').click();
+    await page.getByTestId(attributeValueCD).click();
 
     //clicks on apply filter buttton
     await page.getByRole('button', { name: 'Apply filters' }).click();
@@ -166,11 +166,10 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueCD); //RHZ 
 
     //uncheck batch attributes CD checkbox
-    await page.getByLabel(attributeValueCD).uncheck();
+    await page.getByTestId(attributeValueCD).click();
 
     //select batch attributes DVD checkbox
-    await page.locator('admiralty-checkbox').filter({ hasText: attributeValueDVD }).locator('div').click();
-
+    await page.getByTestId(attributeValueDVD).click();
     //clicks on apply filter buttton
     await page.getByRole('button', { name: 'Apply filters' }).click();
 
