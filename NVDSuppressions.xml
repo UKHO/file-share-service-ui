@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
   <suppress>
     <notes>
@@ -12,17 +11,6 @@
     <vulnerabilityName>CVE-2023-44270</vulnerabilityName>
     <vulnerabilityName>GHSA-7fh5-64p2-3v2j</vulnerabilityName>
   </suppress>
-
-  <suppress>
-    <notes>
-      <![CDATA[
- file name: axios:1.5.0
- ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/axios@.*$</packageUrl>
-    <vulnerabilityName>CVE-2023-45857</vulnerabilityName>
-    <vulnerabilityName>GHSA-wf5p-g6vw-rhxx</vulnerabilityName>
-  </suppress>
   <suppress>
     <notes>
       <![CDATA[
@@ -32,15 +20,7 @@
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
     <vulnerabilityName>CVE-2023-49293</vulnerabilityName>
     <vulnerabilityName>GHSA-92r3-m2mg-pj97</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: follow-redirects:1.15.2
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/follow\-redirects@.*$</packageUrl>
-    <vulnerabilityName>CVE-2023-26159</vulnerabilityName>
-    <vulnerabilityName>GHSA-jchw-25xp-jwwc</vulnerabilityName>
+    <vulnerabilityName>CVE-2024-23331</vulnerabilityName>
+    <vulnerabilityName>GHSA-c24v-8rfc-w8vw</vulnerabilityName>
   </suppress>
 </suppressions>
