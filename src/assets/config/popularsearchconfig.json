@@ -27,13 +27,6 @@
         "operator": "eq",
         "isDynamicValue": false,
         "value": "ADP"
-      },
-      {
-        "andOr": "and",
-        "field": "$batch(Week Number)",
-        "operator": "eq",
-        "isDynamicValue": true,
-        "value": "this.getWeekNumber(new Date())"
       }
     ]
   },
@@ -91,13 +84,6 @@
         "operator": "eq",
         "isDynamicValue": false,
         "value": "AENP"
-      },
-      {
-        "andOr": "and",
-        "field": "$batch(Week Number)",
-        "operator": "eq",
-        "isDynamicValue": true,
-        "value": "this.getWeekNumber(new Date())"
       }
     ]
   },
@@ -136,13 +122,6 @@
         "operator": "eq",
         "isDynamicValue": false,
         "value": "Update"
-      },
-      {
-        "andOr": "and",
-        "field": "$batch(Week Number)",
-        "operator": "eq",
-        "isDynamicValue": true,
-        "value": "this.getWeekNumber(new Date())"
       }
     ]
   },
@@ -162,13 +141,6 @@
         "operator": "eq",
         "isDynamicValue": false,
         "value": "1.2"
-      },
-      {
-        "andOr": "and",
-        "field": "$batch(Week Number)",
-        "operator": "eq",
-        "isDynamicValue": true,
-        "value": "this.getWeekNumber(new Date())"
       }
     ]
   },
@@ -181,13 +153,6 @@
         "operator": "eq",
         "isDynamicValue": false,
         "value": "AIO"
-      },
-      {
-        "andOr": "and",
-        "field": "$batch(Week Number)",
-        "operator": "eq",
-        "isDynamicValue": true,
-        "value": "this.getWeekNumber(new Date())"
       }
     ]
   },
