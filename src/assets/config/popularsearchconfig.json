@@ -27,6 +27,13 @@
         "operator": "eq",
         "isDynamicValue": false,
         "value": "ADP"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Exchange Set Type)",
+        "operator": "eq",
+        "isDynamicValue": false,
+        "value": "Base"
       }
     ]
   },
@@ -84,6 +91,13 @@
         "operator": "eq",
         "isDynamicValue": false,
         "value": "AENP"
+      },
+      {
+        "andOr": "and",
+        "field": "$batch(Content)",
+        "operator": "contains",
+        "isDynamicValue": false,
+        "value": "UCF"
       }
     ]
   },
