@@ -26,6 +26,8 @@ variables:
     value: "UKHO Ubuntu 1804"
   - name: WindowPool
     value: "NautilusBuild"
+  - name: NodeVersion
+    value: 18.x
 
 stages:
   - stage: Perfrom_Build_Test_Publish
@@ -39,11 +41,20 @@ stages:
          workspace:
           clean: all
          steps:
+            - task: NodeTool@0
+              inputs:
+                versionSpec: $(NodeVersion)
+              displayName: 'Install Node.js'
+
+            - script: |
+                npm ci
+              displayName: 'npm restore'
+
             - task: CmdLine@1
               displayName: "Run OWASP Dependency Checker"
               inputs:
                 filename: 'dependency-check.bat'
-                arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate'
+                arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate --disableYarnAudit'
 
             - task: PublishBuildArtifacts@1
               displayName: "Publish Artifact: OWASP Dependency Checker Report"
@@ -73,7 +84,7 @@ stages:
           - checkout: self
           - task: NodeTool@0
             inputs:
-              versionSpec: '18.x'
+              versionSpec: $(NodeVersion)
             displayName: 'Install Node.js'
 
           - script: |
