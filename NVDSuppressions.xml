@@ -3,7 +3,30 @@
   <suppress>
     <notes>
       <![CDATA[
+   file name: postcss:8.4.27
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/postcss@.*$</packageUrl>
+    <vulnerabilityName>CVE-2023-44270</vulnerabilityName>
+    <vulnerabilityName>GHSA-7fh5-64p2-3v2j</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: vite:4.4.7
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
+    <cve>CVE-2024-23331</cve>
+    <vulnerabilityName>GHSA-c24v-8rfc-w8vw</vulnerabilityName>
+    <cve>CVE-2023-49293</cve>
+    <vulnerabilityName>GHSA-92r3-m2mg-pj97</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
    file name: ejs:3.1.9
+   Server side vulnerability only. Not really a vulnerability either - see https://github.com/mde/ejs/issues/720#issuecomment-1587399501
    ]]>
     </notes>
     <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
