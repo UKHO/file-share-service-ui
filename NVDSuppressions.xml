@@ -4,6 +4,7 @@
     <notes>
       <![CDATA[
    file name: postcss:8.4.27
+   problem file: @angular-devkit/build-angular which references postcss:8.4.27
    ]]>
     </notes>
     <packageUrl regex="true">^pkg:npm/postcss@.*$</packageUrl>
