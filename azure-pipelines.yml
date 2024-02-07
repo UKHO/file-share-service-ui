@@ -13,6 +13,7 @@ parameters:
 trigger:
   - main
   - release/*
+  - develop
 
 pool: $(DeploymentPool)
 
@@ -360,7 +361,7 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/main'), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))) #HB - limit this in some way
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
     jobs:
       - deployment: vNextIatDeploy
         displayName: "vNext IAT - deploy terraform and website"
@@ -429,7 +430,7 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/main'), not(startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))) #HB - limit this in some way
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
     jobs:
       - deployment: vNextE2eDeploy
         displayName: "vNext E2E - deploy terraform and website"
@@ -497,7 +498,7 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
         displayName: "QA - deploy terraform and website"
@@ -642,7 +643,7 @@ stages:
     displayName: "Livedeploy (inc terraform, website deploy)"
     variables:          
           - group: "File-Share-Service-UI-Live-Deploy-Variables"
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'),startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: LiveDeploy
         displayName: "Live - deploy terraform and website"
