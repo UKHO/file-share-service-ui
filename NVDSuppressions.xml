@@ -3,24 +3,10 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: postcss:8.4.27
-   problem file: @angular-devkit/build-angular which references postcss:8.4.27
+   file name: ejs:3.1.9
    ]]>
     </notes>
-    <packageUrl regex="true">^pkg:npm/postcss@.*$</packageUrl>
-    <vulnerabilityName>CVE-2023-44270</vulnerabilityName>
-    <vulnerabilityName>GHSA-7fh5-64p2-3v2j</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: vite:4.4.7
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
-    <vulnerabilityName>CVE-2023-49293</vulnerabilityName>
-    <vulnerabilityName>GHSA-92r3-m2mg-pj97</vulnerabilityName>
-    <vulnerabilityName>CVE-2024-23331</vulnerabilityName>
-    <vulnerabilityName>GHSA-c24v-8rfc-w8vw</vulnerabilityName>
+    <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
+    <cve>CVE-2023-29827</cve>
   </suppress>
 </suppressions>
