@@ -34,9 +34,8 @@ stages:
     displayName: "Build (Build ,test and publish artifact )"
     dependsOn: []
     jobs:
-     #- ${{ if ne(parameters.SkipDependencyCheck, true) }}:
+     - ${{ if ne(parameters.SkipDependencyCheck, true) }}:
        - job: Dependencychecker
-         condition: eq('${{ parameters.SkipDependencyCheck }}', false)
          pool: $(WindowPool)
          displayName: "Dependency checker"
          workspace:
