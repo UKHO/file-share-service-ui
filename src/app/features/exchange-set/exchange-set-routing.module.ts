@@ -3,9 +3,11 @@ import { EssListEncsComponent } from './ess-list-encs/ess-list-encs.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ExchangeSetComponent } from './exchange-set.component';
-import { AuthGuard } from 'src/app/core/services/auth.guard';
+import { AuthGuard } from '../../core/services/auth.guard';
+import { ExchangeSetTypeComponent } from './exchange-set-type/exchange-set-type.component';
 const routes: Routes = [
-  { path: '', component: ExchangeSetComponent },
+  { path: '', component: ExchangeSetTypeComponent },
+  { path: 'enc-upload', component: ExchangeSetComponent },
   { path: 'enc-list', component: EssListEncsComponent , canActivate : [AuthGuard]},
   { path: 'enc-download', component: EssDownloadExchangesetComponent, canActivate : [AuthGuard]}
 ];

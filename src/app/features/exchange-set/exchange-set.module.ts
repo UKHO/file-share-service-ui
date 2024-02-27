@@ -12,6 +12,7 @@ import { EssDownloadExchangesetComponent } from './ess-download-exchangeset/ess-
 import { EssInfoErrorMessageComponent } from './ess-info-error-message/ess-info-error-message.component';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { ExchangeSetTypeComponent } from './exchange-set-type/exchange-set-type.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
     EssAddSingleEncsComponent,
     EssListEncsComponent,
     EssDownloadExchangesetComponent,
-    EssInfoErrorMessageComponent
+    EssInfoErrorMessageComponent,
+    ExchangeSetTypeComponent
   ],
   imports: [
     CommonModule,

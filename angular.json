@@ -3,7 +3,8 @@
   "cli": {
     "schematicCollections": [
       "@angular-eslint/schematics"
-    ]
+    ],
+    "analytics": false
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -82,6 +83,14 @@
                   "with": "src/environments/environment.qa.ts"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           }
         },
@@ -96,8 +105,12 @@
             },
             "qa": {
               "browserTarget": "ukho-fileshareservice-ui:build:qa"
+            },
+            "development": {
+              "browserTarget": "ukho-fileshareservice-ui:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

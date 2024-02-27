@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="exchangesetcontainer">
+      <h1 id="main" tabindex="-1">Exchange sets</h1>
+      <app-ess-info-error-message></app-ess-info-error-message>
+      <p class="light">Select exchange set type</p>
+        <div class="exchangeset-form-container">
+            <admiralty-radio-group (change)="selectedExchangeSetType(rgExchageSetType)"  id="radioGroup" name="AddUploadENC" [(ngModel)]="rgExchageSetType" display-vertical>
+                <admiralty-radio name="exchangeSetType" id="base" [value]="radioBase">{{radioBase}} Download</admiralty-radio>
+                <admiralty-radio name="exchangeSetType" id="delta" [value]="radioDelta">{{radioDelta}} Download</admiralty-radio>
+              </admiralty-radio-group>
+              <div *ngIf="rgExchageSetType === radioDelta" class="enc-datetime-container">
+                <admiralty-input (change)="setDeltaDownloadDate(selectedDeltaDownloadDate)"  [(ngModel)]="selectedDeltaDownloadDate" label="Select date & time for delta download" type="date"></admiralty-input>
+              </div>
+              <admiralty-button variant="primary" (click)="setExchangeSet()">  Proceed </admiralty-button>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ExchangeSetDetails } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
+import { Time } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,8 @@ export class EssUploadFileService {
   private defaultEstimatedSizeinMB:number;
   private configAioEncList : string[];
   public aioEncFound : boolean;
-
+  private _exchangeSetDownloadType: 'Base' | 'Delta';
+  private _exchangeSetDeltaDate:string | undefined;
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
@@ -163,4 +165,23 @@ export class EssUploadFileService {
     this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
       return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
    }
+
+   get exchangeSetDownloadType() : 'Base' | 'Delta' {
+      return this._exchangeSetDownloadType;
+   }
+
+   set exchangeSetDownloadType(type: 'Base' | 'Delta') {
+    this._exchangeSetDownloadType = type;
+   }
+
+  get exchangeSetDeltaDate() : string | undefined {
+    return this._exchangeSetDeltaDate;
+  }
+
+  set exchangeSetDeltaDate(date: string | undefined) {
+    this._exchangeSetDeltaDate = date;
+  }
+
+
+
 }
