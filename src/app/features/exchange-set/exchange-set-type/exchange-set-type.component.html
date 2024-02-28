@@ -9,7 +9,8 @@
                 <admiralty-radio name="exchangeSetType" id="delta" [value]="radioDelta">{{radioDelta}} Download</admiralty-radio>
               </admiralty-radio-group>
               <div *ngIf="rgExchageSetType === radioDelta" class="enc-datetime-container">
-                <admiralty-input (change)="setDeltaDownloadDate(selectedDeltaDownloadDate)"  [(ngModel)]="selectedDeltaDownloadDate" label="Select date & time for delta download" type="date"></admiralty-input>
+                <!-- <admiralty-input (change)="setDeltaDownloadDate(selectedDeltaDownloadDate)"  [(ngModel)]="selectedDeltaDownloadDate" label="Select date & time for delta download" type="date"></admiralty-input> -->
+                <admiralty-input  [(ngModel)]="selectedDeltaDownloadDate" label="Select date & time for delta download" type="date"></admiralty-input>
               </div>
               <admiralty-button variant="primary" (click)="setExchangeSet()">  Proceed </admiralty-button>
         </div>

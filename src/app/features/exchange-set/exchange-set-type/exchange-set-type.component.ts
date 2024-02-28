@@ -34,14 +34,22 @@ export class ExchangeSetTypeComponent implements OnDestroy  {
       return
     }
 
-    if(this.rgExchageSetType === this.radioDelta && !this.selectedDeltaDownloadDate){
-      this.triggerInfoErrorMessage(true,'error','','Select delta download date');
-      return;
-    }
+    if(this.rgExchageSetType === this.radioDelta){
+      
+      if(!this.selectedDeltaDownloadDate){
+        this.triggerInfoErrorMessage(true,'error','','Select delta download date');
+        return;
+      } 
+      
+      if(this.selectedDeltaDownloadDate && !this.isValidDeltaDateSelected(this.selectedDeltaDownloadDate)){
+        this.triggerInfoErrorMessage(true,'error','','Selected date must be less than or equal to 27 days');
+        return;
+      }
 
-    if(!this.essUploadFileService.exchangeSetDeltaDate && this.rgExchageSetType === this.radioDelta){
-      this.triggerInfoErrorMessage(true,'error','','Selected date must be less than or equal to 27 days');
-      return;
+      this.triggerInfoErrorMessage(false , 'info','');
+      const selectedDeltaDate = this._selectedDeltaDownloadDate;
+      selectedDeltaDate.setHours(selectedDeltaDate.getHours() - 24);
+      this.essUploadFileService.exchangeSetDeltaDate = selectedDeltaDate.toUTCString();
     }
 
     this.triggerInfoErrorMessage(false,'info', '');
@@ -74,17 +82,19 @@ export class ExchangeSetTypeComponent implements OnDestroy  {
     return true;
   }
 
-  setDeltaDownloadDate(selectedDate: any){
-    console.log(selectedDate);
-    if(!this.isValidDeltaDateSelected(selectedDate)){
-      this.triggerInfoErrorMessage(true,'error','','Selected date must be less than or equal to 27 days');
-      return;
-    }
-    this.triggerInfoErrorMessage(false , 'info','');
-    const selectedDeltaDate = this._selectedDeltaDownloadDate;
-    selectedDeltaDate.setHours(selectedDeltaDate.getHours() - 24);
-    this.essUploadFileService.exchangeSetDeltaDate = selectedDeltaDate.toUTCString();
-  }
+  // setDeltaDownloadDate(selectedDate: any){
+  //   console.log(selectedDate);
+  //   if(!this.isValidDeltaDateSelected(selectedDate)){
+  //     this.triggerInfoErrorMessage(true,'error','','Selected date must be less than or equal to 27 days');
+  //     return;
+  //   }
+  //   this.triggerInfoErrorMessage(false , 'info','');
+  //   const selectedDeltaDate = this._selectedDeltaDownloadDate;
+  //   selectedDeltaDate.setHours(selectedDeltaDate.getHours() - 24);
+  //   this.essUploadFileService.exchangeSetDeltaDate = selectedDeltaDate.toUTCString();
+  // }
+
+
   
   triggerInfoErrorMessage(
     showInfoErrorMessage: boolean,
