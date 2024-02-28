@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { ExchangeSetDetails } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 import { Time } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +22,8 @@ export class EssUploadFileService {
   private configAioEncList : string[];
   public aioEncFound : boolean;
   private _exchangeSetDownloadType: 'Base' | 'Delta';
-  private _exchangeSetDeltaDate:string | undefined;
-  constructor() {
+  private _exchangeSetDeltaDate:any;
+  constructor(private http: HttpClient) {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
     this.avgSizeofENC = Number.parseFloat(AppConfigService.settings["essConfig"].avgSizeofENCinMB);
@@ -174,14 +175,28 @@ export class EssUploadFileService {
     this._exchangeSetDownloadType = type;
    }
 
-  get exchangeSetDeltaDate() : string | undefined {
+  get exchangeSetDeltaDate() : any {
     return this._exchangeSetDeltaDate;
   }
 
-  set exchangeSetDeltaDate(date: string | undefined) {
+  set exchangeSetDeltaDate(date: any) {
     this._exchangeSetDeltaDate = date;
   }
 
-
+  exchangeSetProductDataSinceDateTime(): Observable<any>{
+    console.log(this.exchangeSetDeltaDate);
+    const sinceDate = new Date(this.exchangeSetDeltaDate);
+    const currentDate = new Date();
+    sinceDate.setHours(currentDate.getHours());
+    sinceDate.setMinutes(currentDate.getMinutes());
+    sinceDate.setSeconds(currentDate.getSeconds());
+    sinceDate.setMilliseconds(currentDate.getMilliseconds());
+    sinceDate.setHours(sinceDate.getHours() - 24);
+    sinceDate.setMinutes(sinceDate.getSeconds() + 20);
+    console.log(sinceDate);
+    const url = `https://uatadmiralty.azure-api.net/ess-qa/productData?sinceDateTime=${sinceDate.toUTCString()}`;
+    console.log(url);
+    return this.http.post( url, {});
+}
 
 }

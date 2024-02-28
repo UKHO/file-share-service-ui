@@ -63,6 +63,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
   }
 
   processEncFile(encFileData: string): void {
+
+    this.essUploadFileService.exchangeSetProductDataSinceDateTime().subscribe((data) => {
+      console.log(data);
+    });
     /*
       trims leading & trailing whitespaces , splits texts in new lines
       trims leading & trailing individual ENC's whitespaces

@@ -35,7 +35,7 @@ export class ExchangeSetTypeComponent implements OnDestroy  {
     }
 
     if(this.rgExchageSetType === this.radioDelta){
-      
+
       if(!this.selectedDeltaDownloadDate){
         this.triggerInfoErrorMessage(true,'error','','Select delta download date');
         return;
@@ -48,8 +48,8 @@ export class ExchangeSetTypeComponent implements OnDestroy  {
 
       this.triggerInfoErrorMessage(false , 'info','');
       const selectedDeltaDate = this._selectedDeltaDownloadDate;
-      selectedDeltaDate.setHours(selectedDeltaDate.getHours() - 24);
-      this.essUploadFileService.exchangeSetDeltaDate = selectedDeltaDate.toUTCString();
+      //selectedDeltaDate.setHours(selectedDeltaDate.getHours() - 24);
+      this.essUploadFileService.exchangeSetDeltaDate = selectedDeltaDate;
     }
 
     this.triggerInfoErrorMessage(false,'info', '');
