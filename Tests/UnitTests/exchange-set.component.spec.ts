@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ExchangeSetComponent } from '../../src/app/features/exchange-set/exchange-set.component';
+import { ExchangeSetComponent } from '../../src/app/features/exchange-set/ess-input-types/exchange-set.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA,DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
