@@ -19,9 +19,15 @@ export class EssTypesComponent implements OnInit {
   }
 
   onOptionChange(option: string) {
-    this.selectedOption = option;
-    this.isDeltaOption = option === 'delta';
-    this.checkProceedButtonState();
+    if (option === 'base') {
+      this.selectedOption = option;
+      this.isDeltaOption = false;
+      this.checkProceedButtonState();
+    } else if (option === 'delta') {
+      this.selectedOption = option;
+      this.isDeltaOption = true;
+      this.isRadioSelected = false;
+    }
   }
 
   onDateChange(event: Event) {
@@ -39,6 +45,17 @@ export class EssTypesComponent implements OnInit {
   }
 
   private checkProceedButtonState() {
-    this.isRadioSelected = this.selectedOption === 'base' || (this.isDeltaOption && this.isDateSelected);
+    if (this.selectedOption === 'base') {
+      this.isRadioSelected = true;
+    } else if (this.selectedOption === 'delta' && this.isDateSelected) {
+      this.isRadioSelected = true;
+    } else {
+      this.isRadioSelected = false;
+    }
   }
 }
+
+
+
+
+
