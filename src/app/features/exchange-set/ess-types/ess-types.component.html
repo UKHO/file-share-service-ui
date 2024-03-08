@@ -1,21 +1,19 @@
 <div class="container">
-    <h1 id="main" tabindex="-1">Exchange sets</h1>
-    <div class="radio-container">
-      <admiralty-radio class="radio-option" name="options" value="base" (change)="onOptionChange('base')" >
-        <span class="radio-text">Base Download</span>
-        <p class="radio-description">Select Base Download for a full download file from base data.</p>
-      </admiralty-radio>
-      <admiralty-radio class="radio-option" name="options" value="delta" (change)="onOptionChange('delta')" checked>
-        <span class="radio-text">Delta Download</span>
-        <p class="radio-description">Select Delta Download for updates required prior to 27 days from today's date.</p>
-      </admiralty-radio>
-    </div>
-    <div class="date-input-container" *ngIf="isDeltaOption">
-      <admiralty-input label="Date Last Updated" type="Date" class="date-input" (change)="onDateChange($event)"></admiralty-input>
-    </div>
-    <div class="button-container">
-      <admiralty-button (click)="onProceedClicked()" class="proceed-button" [disabled]="!isRadioSelected">
-        Proceed
-      </admiralty-button>
-    </div>
+  <h1 id="main" tabindex="-1">Exchange sets</h1>
+  <div class="radio-container">
+      <admiralty-radio-group class="radio-option-group"display-vertical [value]="'delta'">
+          <admiralty-radio class="radio-option" name="options" value="base" (change)="onOptionChange('base')">Base Download</admiralty-radio>
+          <span id="baseLabel" class="radio-description">Select Base Download for a full download file from base data.</span>
+          <admiralty-radio class="radio-option" name="options" value="delta" (change)="onOptionChange('delta')" checked>Delta Download</admiralty-radio>
+          <span id="deltaLabel" class="radio-description">Select Delta Download for updates required prior to 27 days from today's date.</span>
+      </admiralty-radio-group>
   </div>
+  <div class="date-input-container" *ngIf="isDeltaOption">
+      <admiralty-input label="Date Last Updated" type="Date" class="date-input" (change)="onDateChange($event)"></admiralty-input>
+  </div>
+  <div class="button-container">
+      <admiralty-button (click)="onProceedClicked()" class="proceed-button" [disabled]="!isRadioSelected">
+          Proceed
+      </admiralty-button>
+  </div>
+</div>

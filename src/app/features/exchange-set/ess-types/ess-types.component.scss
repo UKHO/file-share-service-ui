@@ -1,17 +1,22 @@
 $margin-bottom: 20px;
 $margin-top: 20px;
 
-
-.radio-option{
+.radio-option-group {
   margin: 1px;
 }
 
-.next-button {
-  margin-top: $margin-top;
-}
-.date-input-container{
+.date-input-container {
   width: 30%;
+
 }
-.radio-description{
-  margin-top: $margin-top;
+
+.radio-description {
+  margin-top: $margin-top; 
 }
+.radio-container{
+  margin-bottom: 0%;
+  margin-top:0%;
+}
+.radio-option[value="delta"] {
+   margin-top: $margin-bottom; 
+ }
