@@ -17,7 +17,7 @@ export class EssTypesComponent implements OnInit {
  constructor(private elementRef: ElementRef, private router: Router) {}
 
  ngOnInit(): void {
-    this.onOptionChange('delta');
+    this.onOptionChange(this.deltaOptionValue);
  }
 
  onOptionChange(option: string) {
