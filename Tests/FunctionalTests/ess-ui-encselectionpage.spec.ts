@@ -4,25 +4,30 @@ import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
+import { ExchangeSetSelectionPageObjects } from '../../PageObjects/essui-exchangesetselectionpageObjects';
+
 
 test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   let esslandingPageObjects: EssLandingPageObjects;
   let encSelectionPageObjects: EncSelectionPageObjects;
+  let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
 
   test.beforeEach(async ({ page }) => {
 
     esslandingPageObjects = new EssLandingPageObjects(page);
     encSelectionPageObjects = new EncSelectionPageObjects(page);
+    exchangeSetSelectionPageObjects = new ExchangeSetSelectionPageObjects(page);
     await page.goto(autoTestConfig.url);
     await page.waitForLoadState('load');
     await AcceptCookies(page);
     await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
     await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/ENCs_Sorting.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13960
@@ -65,6 +70,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   test('Verify limit for selecting ENCs (i.e.250) in left hand table', async ({ page }) => {
 
     await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
@@ -76,10 +83,14 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13946 (For "Start again" link)
   test('Verify that user is able to add a valid single ENCs and link "Start Again" redirects to ESS landing page', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await encSelectionPageObjects.addSingleENC("AU210130");
     await encSelectionPageObjects.expect.firstEncSelectorToEqual("AU210130");
     await encSelectionPageObjects.expect.selectionTextSelectorVisible();
     await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.expect.exchangesettextSelectorIsVisible();
   })
 
@@ -87,6 +98,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13956 - Duplicate ENC
   test('Verify that after clicking on "Add another ENC" link, user able to add another ENC number', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await encSelectionPageObjects.addSingleENC("AU210130");
     await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
     await encSelectionPageObjects.addAnotherENC("AU220150");
@@ -102,7 +115,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   // // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
   test('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENC', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
-
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/250ENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
@@ -159,6 +173,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   test('Verify that selecting/deselecting individual ENCs does not affect select all/deselect all link', async ({ page }) => {
 
     await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/100ENCs.txt');
     await esslandingPageObjects.proceedButtonSelectorClick();

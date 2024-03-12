@@ -4,22 +4,25 @@ import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.
 import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
+import { ExchangeSetSelectionPageObjects } from '../../PageObjects/essui-exchangesetselectionpageObjects';
 
 test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      let esslandingPageObjects: EssLandingPageObjects;
      let encSelectionPageObjects: EncSelectionPageObjects;
+     let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
      
      test.beforeEach(async ({ page }) => {
-
           esslandingPageObjects = new EssLandingPageObjects(page);
           encSelectionPageObjects = new EncSelectionPageObjects(page);
+          exchangeSetSelectionPageObjects = new ExchangeSetSelectionPageObjects(page);
           await page.goto(autoTestConfig.url);
           await page.waitForLoadState('load');
           await AcceptCookies(page);
           await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
           await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
-
+          await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+          await exchangeSetSelectionPageObjects.clickOnProceedButton();
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
@@ -143,6 +146,8 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.DragDropFile(page, './Tests/TestData/ValidAndInvalidENCs.csv', "ValidAndInvalidENCs.csv", 'text/csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.startAgainLinkSelectorClick();
+          await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+          await exchangeSetSelectionPageObjects.clickOnProceedButton();
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.DragDropFile(page, './Tests/TestData/ValidAndInvalidENCs.txt', 'ValidAndInvalidENCs.txt', 'text/plain');
           await esslandingPageObjects.expect.verifyDraggedFile("ValidAndInvalidENCs.txt");

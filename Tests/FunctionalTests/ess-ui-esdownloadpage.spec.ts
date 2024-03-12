@@ -6,23 +6,28 @@ import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObject
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
 import { EsDownloadPageObjects } from '../../PageObjects/essui-esdownloadpageObjects';
 import { apiRoute400, apiRoute403, apiRoute500, apiRoute200, apiRoute200WithExcludedENCs } from '../../PageObjects/ess-api-mock';
+import { ExchangeSetSelectionPageObjects } from '../../PageObjects/essui-exchangesetselectionpageObjects';
 
 test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
 
     let esslandingPageObjects: EssLandingPageObjects;
     let encSelectionPageObjects: EncSelectionPageObjects;
     let esDownloadPageObjects: EsDownloadPageObjects;
+    let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
 
     test.beforeEach(async ({ page }) => {
 
         esslandingPageObjects = new EssLandingPageObjects(page);
         encSelectionPageObjects = new EncSelectionPageObjects(page);
         esDownloadPageObjects = new EsDownloadPageObjects(page);
+        exchangeSetSelectionPageObjects = new ExchangeSetSelectionPageObjects(page);
         await page.goto(autoTestConfig.url);
         await page.waitForLoadState('load');
         await AcceptCookies(page);
         await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
         await page.locator(fssHomePageObjectsConfig.essLinkSelector).getByText(fssHomePageObjectsConfig.essLinkText).click();
+        await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+        await exchangeSetSelectionPageObjects.clickOnProceedButton();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
@@ -91,6 +96,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     test('Verify 200 scenario using playwright mock when all selected ENCs are included in ES', async ({ page }) => {
 
         await encSelectionPageObjects.startAgainLinkSelectorClick();
+        await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+        await exchangeSetSelectionPageObjects.clickOnProceedButton();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
