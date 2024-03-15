@@ -1,19 +1,20 @@
 <div class="container">
-    <h1 id="main" tabindex="-1">Exchange sets</h1>
-    <div class="exchangeset-form-container">
-        <admiralty-radio-group class="radio-option-group" display-vertical [value]="selectedOption">
-            <admiralty-radio class="radio-option" id="baseRadio" name="options" [value]="baseOptionValue" (click)="onRadioClick(baseOptionValue)">Base Download</admiralty-radio>
-            <span id="baseLabel" class="radio-description" (click)="onDescriptionClick(baseOptionValue)">Select Base Download for a full download file from base data.</span><br />
-            <admiralty-radio class="radio-option" id="deltaRadio" name="options" [value]="deltaOptionValue" (click)="onRadioClick(deltaOptionValue)" checked>Delta Download</admiralty-radio>
-            <span id="deltaLabel" class="radio-description" (click)="onDescriptionClick(deltaOptionValue)">Select Delta Download for updates required prior to 27 days from today's date.</span>
+    <div class="exchangesetcontainer"><h1 id="main" tabindex="-1">Exchange sets</h1>
+      <div class="exchangeset-form-container">
+        <admiralty-radio-group  display-vertical [value]="selectedOption">
+            <admiralty-radio  id="baseRadio" name="options" [value]="baseOptionValue" (click)="onRadioClick(baseOptionValue)">Base Download</admiralty-radio>
+            <span id="baseLabel" class="radio-description" (click)="onDescriptionClick(baseOptionValue)">Select Base Download for an exchange set that includes all data for selected ENCs.</span><br />
+            <admiralty-radio id="deltaRadio" name="options" [value]="deltaOptionValue" (click)="onRadioClick(deltaOptionValue)" checked>Delta Download</admiralty-radio>
+            <span id="deltaLabel" class="radio-description" (click)="onDescriptionClick(deltaOptionValue)">Select Delta Download to receive just the updates from a specific date in the last 27 days for selected ENCs.</span>
         </admiralty-radio-group>
-    </div>
-    <div class="date-input-container" *ngIf="isDeltaOption">
-        <admiralty-input label="Date Last Updated" type="Date" class="date-input" id="dateInput" (change)="onDateChange($event)"></admiralty-input>
-    </div>
-    <div class="button-container">
-        <admiralty-button (click)="onProceedClicked()" class="proceed-button" id="proceedButton" [disabled]="!isRadioSelected">
-            Proceed
-        </admiralty-button>
-    </div>
+        <div class="enc-datetime-container" *ngIf="isDeltaOption">
+             <admiralty-input label="Date Last Updated" type="Date"  id="dateInput" (change)="onDateChange($event)"></admiralty-input>
+        </div>
+        <div class="button-container">
+             <admiralty-button (click)="onProceedClicked()"  id="proceedButton" [disabled]="!isRadioSelected">
+                Proceed
+             </admiralty-button>
+        </div>
+     </div>
+   </div>
 </div>
