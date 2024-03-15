@@ -7,9 +7,9 @@ export class ExchangeSetSelectionPageObjects{
     readonly datePicker: Locator;
     readonly proceed: Locator;
     readonly baseRadioButtonText: Locator;
-    readonly baseText: Locator;
+    readonly baseDownloadDescription: Locator;
     readonly deltaRadioButtonText: Locator;
-    readonly deltaText: Locator;
+    readonly deltaDownloadDesription: Locator;
 
     constructor(readonly page: Page) {
         this.expect = new ExchangeSetSelectionAssertion(this);
@@ -18,9 +18,9 @@ export class ExchangeSetSelectionPageObjects{
         this.datePicker = page.locator("input[type='Date']");
         this.proceed = page.locator("button[type='submit']");
         this.baseRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(1) div label");
-        this.baseText = page.locator("div[role='radiogroup'] > :nth-child(2)");
-        this.deltaRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(3) div label");
-        this.deltaText = page.locator("div[role='radiogroup'] > :nth-child(4)");
+        this.baseDownloadDescription = page.locator("div[role='radiogroup'] > :nth-child(2)");
+        this.deltaRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(4) div label");
+        this.deltaDownloadDesription = page.locator("div[role='radiogroup'] > :nth-child(5)");
     }
 
     async selectBaseDownloadRadioButton(){
@@ -64,7 +64,7 @@ export class ExchangeSetSelectionAssertion{
     }
 
     async validateBaseDownloadDescription(){
-        expect(await this.selection.baseText.innerText() =='Select Base Download for a full download file from base data.').toBeTruthy();
+        expect(await this.selection.baseDownloadDescription.innerText() =='Select Base Download for a full download file from base data.').toBeTruthy();
     }
 
     async validateDeltaRadioButtonText(){
@@ -72,7 +72,7 @@ export class ExchangeSetSelectionAssertion{
     }
 
     async validateDeltaDownloadDescription(){
-        expect(await this.selection.deltaText.innerText() =="Select Delta Download for updates required prior to 27 days from today's date.").toBeTruthy();
+        expect(await this.selection.deltaDownloadDesription.innerText() =="Select Delta Download for updates required prior to 27 days from today's date.").toBeTruthy();
     }
 
     async validateDefaultSelection(){

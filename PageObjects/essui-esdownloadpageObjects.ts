@@ -36,7 +36,7 @@ export class EsDownloadPageObjects {
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
         this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
         this.errorMessageSelector = this.page.getByText("There has been an error");
-        this.selectedENCsSelector = this.page.locator('p').filter({ hasText: ' ENCs selected' });
+        this.selectedENCsSelector = this.page.locator('strong').filter({ hasText: ' ENCs selected' });
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
         this.downloadLinkSelector = this.page.getByTestId('download-exs');
         this.createLinkSelector = this.page.getByTestId('create-exs')
