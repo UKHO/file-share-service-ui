@@ -33,7 +33,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await essExchangeSetSelectionPageObjects.expect.validateProceedButton();
   });
 
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146707
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149007
   test('Verify the Exchange sets page for Delta selection', async ({ page }) => {
     let date: Date = new Date();
     await essExchangeSetSelectionPageObjects.enterDate(date);
@@ -41,7 +41,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
   });
 
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149007
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146707
   test('Verify the Exchange sets page for Base selection.', async ({ page }) => {
     await essExchangeSetSelectionPageObjects.expect.validateProceedButton();
     await essExchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
