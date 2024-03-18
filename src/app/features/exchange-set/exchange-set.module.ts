@@ -4,7 +4,7 @@ import { TableModule } from '../../shared/components/ukho-table/table.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExchangeSetRoutingModule } from './exchange-set-routing.module';
-import { ExchangeSetComponent } from './exchange-set.component';
+import { ExchangeSetComponent } from './ess-input-types/exchange-set.component';
 import { EssUploadFileComponent } from './ess-upload-file/ess-upload-file.component';
 import { EssAddSingleEncsComponent } from './ess-add-single-encs/ess-add-single-encs.component';
 import { EssListEncsComponent } from './ess-list-encs/ess-list-encs.component';
@@ -12,6 +12,7 @@ import { EssDownloadExchangesetComponent } from './ess-download-exchangeset/ess-
 import { EssInfoErrorMessageComponent } from './ess-info-error-message/ess-info-error-message.component';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { EssTypesComponent } from './ess-types/ess-types.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
     EssAddSingleEncsComponent,
     EssListEncsComponent,
     EssDownloadExchangesetComponent,
-    EssInfoErrorMessageComponent
+    EssInfoErrorMessageComponent,
+    EssTypesComponent
   ],
   imports: [
     CommonModule,

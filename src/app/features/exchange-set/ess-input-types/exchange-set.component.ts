@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EssInfoErrorMessageService } from '../../../app/core/services/ess-info-error-message.service';
-import { AppConfigService } from '../../../app/core/services/app-config.service';
+import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
+import { AppConfigService } from '../../../core/services/app-config.service';
 
 @Component({
   selector: 'app-exchange-set',
