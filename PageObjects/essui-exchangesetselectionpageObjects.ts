@@ -16,7 +16,7 @@ export class ExchangeSetSelectionPageObjects{
         this.baseRadioButton = page.locator("#baseRadio");
         this.deltaRadioButton = page.locator("#deltaRadio");
         this.datePicker = page.locator("input[type='Date']");
-        this.proceed = page.locator("button[type='submit']");
+        this.proceed = page.locator("button:has-text('Proceed')");
         this.baseRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(1) div label");
         this.baseDownloadDescription = page.locator("div[role='radiogroup'] > :nth-child(2)");
         this.deltaRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(4) div label");
@@ -36,7 +36,6 @@ export class ExchangeSetSelectionPageObjects{
     }
 
     async enterDate(date:Date){
-        await this.datePicker.click();
         let formattedDate: string = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
         await this.datePicker.type(formattedDate);
     }
@@ -64,7 +63,7 @@ export class ExchangeSetSelectionAssertion{
     }
 
     async validateBaseDownloadDescription(){
-        expect(await this.selection.baseDownloadDescription.innerText() =='Select Base Download for a full download file from base data.').toBeTruthy();
+        expect(await this.selection.baseDownloadDescription.innerText() =='Select Base Download for an exchange set that includes all data for selected ENCs.').toBeTruthy();
     }
 
     async validateDeltaRadioButtonText(){
@@ -72,7 +71,7 @@ export class ExchangeSetSelectionAssertion{
     }
 
     async validateDeltaDownloadDescription(){
-        expect(await this.selection.deltaDownloadDesription.innerText() =="Select Delta Download for updates required prior to 27 days from today's date.").toBeTruthy();
+        expect(await this.selection.deltaDownloadDesription.innerText() =="Select Delta Download to receive updates from a specific date in the last 27 days for selected ENCs.").toBeTruthy();
     }
 
     async validateDefaultSelection(){
