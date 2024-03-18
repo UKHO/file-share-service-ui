@@ -4,21 +4,28 @@ import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { autoTestConfig } from '../../appSetting.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
+import { ExchangeSetSelectionPageObjects } from '../../PageObjects/essui-exchangesetselectionpageObjects';
+
 
 test.describe('ESS UI ENC download Page Accessibility Test Scenarios', () => {
 
     let esslandingPageObjects: EssLandingPageObjects;
     let encSelectionPageObjects: EncSelectionPageObjects;
+    let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
 
     test.beforeEach(async ({ page }) => {
         esslandingPageObjects = new EssLandingPageObjects(page);
         encSelectionPageObjects = new EncSelectionPageObjects(page);
+        exchangeSetSelectionPageObjects = new ExchangeSetSelectionPageObjects(page);
+
 
         await page.goto(autoTestConfig.url)
         await AcceptCookies(page);
         await injectAxe(page)
         await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
         await page.locator('admiralty-header').getByText('Exchange sets').click();
+        await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+        await exchangeSetSelectionPageObjects.clickOnProceedButton();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/ENCs_Sorting.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
