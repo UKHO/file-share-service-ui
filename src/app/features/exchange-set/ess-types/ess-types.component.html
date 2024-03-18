@@ -5,7 +5,7 @@
             <admiralty-radio  id="baseRadio" name="options" [value]="baseOptionValue" (click)="onRadioClick(baseOptionValue)">Base Download</admiralty-radio>
             <span id="baseLabel" class="radio-description" (click)="onDescriptionClick(baseOptionValue)">Select Base Download for an exchange set that includes all data for selected ENCs.</span><br />
             <admiralty-radio id="deltaRadio" name="options" [value]="deltaOptionValue" (click)="onRadioClick(deltaOptionValue)" checked>Delta Download</admiralty-radio>
-            <span id="deltaLabel" class="radio-description" (click)="onDescriptionClick(deltaOptionValue)">Select Delta Download to receive just the updates from a specific date in the last 27 days for selected ENCs.</span>
+            <span id="deltaLabel" class="radio-description" (click)="onDescriptionClick(deltaOptionValue)">Select Delta Download to receive updates from a specific date in the last 27 days for selected ENCs.</span>
         </admiralty-radio-group>
         <div class="enc-datetime-container" *ngIf="isDeltaOption">
              <admiralty-input label="Date Last Updated" type="Date"  id="dateInput" (change)="onDateChange($event)"></admiralty-input>
