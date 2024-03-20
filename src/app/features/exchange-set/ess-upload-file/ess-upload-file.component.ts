@@ -4,6 +4,9 @@ import { Component, OnInit, ElementRef, AfterViewInit} from '@angular/core';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { AppConfigService } from './../../../core/services/app-config.service';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
+import { ScsProductInformationService } from './../../../core/services/scs-product-information-api.service';
+import { MsalService } from '@azure/msal-angular';
+import { SilentRequest } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -15,11 +18,20 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
   encFile: File;
   maxEncsLimit: number;
   maxEncSelectionLimit: number;
+  essTokenScope: any = [];
+  essSilentTokenRequest: SilentRequest;
 
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, private _elementRef?: ElementRef) {
+    private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, 
+    private scsProductInformationService: ScsProductInformationService, private msalService: MsalService,
+    private _elementRef?: ElementRef,
+    ) {
     this.maxEncsLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
     this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
+    this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
+    this.essSilentTokenRequest = {
+      scopes: [this.essTokenScope]
+    };
   }
 
   ngOnInit(): void {
@@ -60,6 +72,15 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
       this.processEncFile(e.target.result);
     };
     reader.readAsText(this.encFile);
+    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+      this.productUpdatesByIdentifiersResponse(this.validEncList);
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.essSilentTokenRequest)
+        .then(response => {
+          this.productUpdatesByIdentifiersResponse(this.validEncList);
+        });
+    });
   }
 
   processEncFile(encFileData: string): void {
@@ -119,4 +140,16 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
   isInvalidEncFile(encFile: File) {
     return encFile && encFile.type !== 'text/plain' && encFile.type !== 'text/csv' && encFile.type !== 'application/vnd.ms-excel';
   }
+
+  productUpdatesByIdentifiersResponse(selectedEncList: any[]) {
+    if (selectedEncList != null) {
+        this.scsProductInformationService.productUpdatesByIdentifiersResponse(selectedEncList).subscribe((result) => {
+           
+        },
+          (error) => {
+            this.triggerInfoErrorMessage(true,'error', 'There has been an error');
+          }
+        );
+     }
+    }
 }

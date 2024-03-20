@@ -2,6 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
+import { ScsProductInformationService } from './../../../core/services/scs-product-information-api.service';
+import { MsalService } from '@azure/msal-angular';
+import { AppConfigService } from '../../../core/services/app-config.service';
+import { SilentRequest } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-ess-add-single-encs',
@@ -15,8 +19,16 @@ export class EssAddSingleEncsComponent implements OnInit {
   validEnc: Array<string> = [];
   txtSingleEnc = '';
   addValidEncAlert: string;
+  essTokenScope: any = [];
+  essSilentTokenRequest: SilentRequest;
+
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router , private essInfoErrorMessageService: EssInfoErrorMessageService) { }
+    private route: Router , private essInfoErrorMessageService: EssInfoErrorMessageService,
+    private scsProductInformationService: ScsProductInformationService,
+    private msalService: MsalService) { this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
+    this.essSilentTokenRequest = {
+      scopes: [this.essTokenScope]
+    }; }
 
   ngOnInit(): void {
     this.validEnc = this.essUploadFileService.getValidEncs();
@@ -26,9 +38,27 @@ export class EssAddSingleEncsComponent implements OnInit {
   validateAndAddENC() {
     if (this.renderedFrom === 'encList') {
       this.addEncInList();
+      this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+        this.productUpdatesByIdentifiersResponse(this.validEnc);
+      }, error => {
+        this.msalService.instance
+          .loginPopup(this.essSilentTokenRequest)
+          .then(response => {
+            this.productUpdatesByIdentifiersResponse(this.validEnc);
+          });
+      });
     }
     else if ((this.renderedFrom === 'essHome')) {
       this.addSingleEncToList();
+      this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+        this.productUpdatesByIdentifiersResponse(this.validEnc);
+      }, error => {
+        this.msalService.instance
+          .loginPopup(this.essSilentTokenRequest)
+          .then(response => {
+            this.productUpdatesByIdentifiersResponse(this.validEnc);
+          });
+      });
     }
   }
 
@@ -100,5 +130,17 @@ export class EssAddSingleEncsComponent implements OnInit {
       messageType,
       messageDesc,
     };
+  }
+
+  productUpdatesByIdentifiersResponse(selectedEncList: any[]) {
+  if (selectedEncList != null) {
+      this.scsProductInformationService.productUpdatesByIdentifiersResponse(selectedEncList).subscribe((result) => {
+         
+      },
+        (error) => {
+          this.triggerInfoErrorMessage(true,'error', 'There has been an error');
+        }
+      );
+   }
   }
 }
