@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject,of } from 'rxjs';
 import { ExchangeSetDetails } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 
@@ -19,6 +19,8 @@ export class EssUploadFileService {
   private defaultEstimatedSizeinMB:number;
   private configAioEncList : string[];
   public aioEncFound : boolean;
+  private _exchangeSetDownloadType: 'Base' | 'Delta';
+  private _exchangeSetDeltaDate:Date | undefined;
 
   constructor() {
     this.selectedEncs = [];
@@ -163,4 +165,23 @@ export class EssUploadFileService {
     this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
       return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
    }
+   get exchangeSetDownloadType() : 'Base' | 'Delta' {
+    return this._exchangeSetDownloadType;
+ }
+
+ set exchangeSetDownloadType(type: 'Base' | 'Delta') {
+  this._exchangeSetDownloadType = type;
+  console.log('Service type is ', type);
+
+ }
+
+get exchangeSetDeltaDate() : Date | undefined {
+  return this._exchangeSetDeltaDate;
 }
+
+set exchangeSetDeltaDate(date: Date | undefined) {
+  this._exchangeSetDeltaDate = date;
+  console.log('Service date is ', date);
+}
+}
+
