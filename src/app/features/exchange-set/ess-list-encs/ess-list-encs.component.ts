@@ -224,7 +224,8 @@ export class EssListEncsComponent implements OnInit {
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.exchangeSetCreationResponse(this.selectedEncList);
+      const selectedEncList: string[] = this.selectedEncList.map(product => product.productName);
+      this.exchangeSetCreationResponse(selectedEncList);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
