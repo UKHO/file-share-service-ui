@@ -152,8 +152,8 @@ export class EssListEncsComponent implements OnInit {
     this.encList = [
       ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
-          ? a[sortState.column].localeCompare(b[sortState.column])
-          : b[sortState.column].localeCompare(a[sortState.column])
+          ? a[sortState.column].productName.localeCompare(b[sortState.column].productName)
+          : b[sortState.column].productName.localeCompare(a[sortState.column].productName)
       ),
     ];
   }
