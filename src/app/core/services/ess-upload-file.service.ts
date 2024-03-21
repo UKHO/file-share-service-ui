@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ExchangeSetDetails } from '../models/ess-response-types';
+import { ExchangeSetDetails, Product, ProductCatalog } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EssUploadFileService {
+  private _scsProductResponse: ProductCatalog;
+  private _scsProducts: Product[];
   private validEncs: string[];
-  private selectedEncs: string[];
+  private selectedEncs: Product[];
   private maxEncLimit: number;
   private maxEncSelectionLimit: number;
   private showInfoMessage = false;
@@ -101,16 +103,16 @@ export class EssUploadFileService {
     this.showInfoMessage = visibility;
   }
 
-  getSelectedENCs(): string[] {
+  getSelectedENCs(): Product[] {
     return this.selectedEncs;
   }
 
-  addSelectedEnc(enc: string): void {
+  addSelectedEnc(enc: Product): void {
     this.selectedEncs = [...this.selectedEncs, enc];
   }
 
   removeSelectedEncs(enc: string): void {
-    this.selectedEncs = this.selectedEncs.filter((item) => item !== enc);
+    this.selectedEncs = this.selectedEncs.filter((item: Product) => item.productName !== enc);
   }
 
   clearSelectedEncs() {
@@ -156,11 +158,27 @@ export class EssUploadFileService {
 
   addAllSelectedEncs(){
     const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
-    this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
+    this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
   }
   
   getEstimatedTotalSize(encCount:number):string {  
     this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
       return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
+   }
+
+   get scsProductResponse() : ProductCatalog{
+    return this._scsProductResponse;
+   }
+
+   set scsProductResponse(scsProductResponse: ProductCatalog){
+     this._scsProductResponse = scsProductResponse;
+   } 
+
+   get scsProducts() : Product[]{
+    return this._scsProducts;
+   }
+
+   set scsProducts(products: Product[]){
+      this._scsProducts = products;
    }
 }

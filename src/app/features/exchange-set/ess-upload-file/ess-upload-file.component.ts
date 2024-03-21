@@ -7,6 +7,7 @@ import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
 import { ScsProductInformationService } from './../../../core/services/scs-product-information-api.service';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
+import { ProductCatalog } from 'src/app/core/models/ess-response-types';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -72,15 +73,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
       this.processEncFile(e.target.result);
     };
     reader.readAsText(this.encFile);
-    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.productUpdatesByIdentifiersResponse(this.validEncList);
-    }, error => {
-      this.msalService.instance
-        .loginPopup(this.essSilentTokenRequest)
-        .then(response => {
-          this.productUpdatesByIdentifiersResponse(this.validEncList);
-        });
-    });
+    
   }
 
   processEncFile(encFileData: string): void {
@@ -111,7 +104,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
           this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
         }
       }
-      this.route.navigate(['exchangesets', 'enc-list']);
+      this.fetchScsTokenReponse();
     }
     else {
       this.triggerInfoErrorMessage(true, 'error', 'Please upload valid ENC file.');
@@ -141,15 +134,31 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
     return encFile && encFile.type !== 'text/plain' && encFile.type !== 'text/csv' && encFile.type !== 'application/vnd.ms-excel';
   }
 
-  productUpdatesByIdentifiersResponse(selectedEncList: any[]) {
-    if (selectedEncList != null) {
-        this.scsProductInformationService.productUpdatesByIdentifiersResponse(selectedEncList).subscribe((result) => {
-           
-        },
-          (error) => {
+  productUpdatesByIdentifiersResponse(encs: any[]) {
+    if (encs != null) {
+        this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+        .subscribe({
+          next: (data: ProductCatalog) => {
+            this.essUploadFileService.scsProductResponse = data;
+            this.route.navigate(['exchangesets', 'enc-list']);
+          },
+          error:(error) => {
+            console.log(error);
             this.triggerInfoErrorMessage(true,'error', 'There has been an error');
           }
-        );
+        });
      }
+    }
+
+    fetchScsTokenReponse() {
+      this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+        this.productUpdatesByIdentifiersResponse(this.validEncList);
+      }, error => {
+        this.msalService.instance
+          .loginPopup(this.essSilentTokenRequest)
+          .then(response => {
+          this.productUpdatesByIdentifiersResponse(this.validEncList);
+          });
+      });
     }
 }
