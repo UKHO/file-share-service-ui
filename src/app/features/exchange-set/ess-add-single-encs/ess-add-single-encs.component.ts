@@ -26,7 +26,6 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   products:Product[];
   scsResponse :ProductCatalog;
   private productIdentifierSubscriber: Subscription;
-  private deltaPoductIdentifierSubscriber: Subscription;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router , private essInfoErrorMessageService: EssInfoErrorMessageService,
@@ -114,7 +113,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[] , screen: string) {
     if (encs != null) {
-        this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+      this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             console.log(data);
@@ -129,7 +128,6 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
               this.essUploadFileService.scsProductResponse.products.push(data.products[0]);
             }
 
-            
             if(screen === 'essHome'){
               this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
               this.essUploadFileService.infoMessage = false;
@@ -152,7 +150,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
       .subscribe({
         next: (productIdentifiersResponse: ProductCatalog) => {
-          this.deltaPoductIdentifierSubscriber = this.scsProductInformationService.productInformationSinceDateTime()
+             this.scsProductInformationService.productInformationSinceDateTime()
             .subscribe({
               next: (data: ProductCatalog) => {
                 this.scsResponse = productIdentifiersResponse;
@@ -216,7 +214,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy() {
-    this.deltaPoductIdentifierSubscriber.unsubscribe();
     this.productIdentifierSubscriber.unsubscribe();
   }
+
 }

@@ -170,7 +170,6 @@ export class EssUploadFileService {
     }
   }
 
-
   addAllSelectedEncs(){
     const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
     this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
@@ -212,4 +211,5 @@ export class EssUploadFileService {
   set exchangeSetDeltaDate(date: any) {
     this._exchangeSetDeltaDate = date;
   }
+  
 }

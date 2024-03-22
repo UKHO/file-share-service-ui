@@ -2,7 +2,7 @@ import { ExchangeSetApiService } from './../../../core/services/exchange-set-api
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
@@ -23,7 +23,7 @@ enum SelectDeselect {
   templateUrl: './ess-list-encs.component.html',
   styleUrls: ['./ess-list-encs.component.scss']
 })
-export class EssListEncsComponent implements OnInit {
+export class EssListEncsComponent implements OnInit , OnDestroy {
   displayLoader: boolean = false;
   addSingleEncRenderFrom: string = 'encList';
   addSingleEncBtnText: string = 'Add ENC';
@@ -196,16 +196,19 @@ export class EssListEncsComponent implements OnInit {
       return '0MB';
     }
   }
+  
   getSelectDeselectText() {
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
     return selectDeselectText;
   }
+
   checkMaxEncSelectionAndSelectedEncLength() {
     const listLength = this.encList.length;
     const maxEncSelectionLimit = this.maxEncSelectionLimit > listLength ? listLength : this.maxEncSelectionLimit;
     return maxEncSelectionLimit === this.selectedEncList.length;
 
   }
+
   selectDeselectAll() {
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
       this.selectDeselectAlert = 'Selected All ENC\'s' ;
@@ -221,6 +224,7 @@ export class EssListEncsComponent implements OnInit {
   getSelectDeselectVisibility() {
     return this.encList.length <= this.maxEncSelectionLimit;
   }
+
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
@@ -233,4 +237,9 @@ export class EssListEncsComponent implements OnInit {
         });
     });
   }
+
+  ngOnDestroy(): void {
+    this.triggerInfoErrorMessage(false, 'info', '');
+  }
+
 }

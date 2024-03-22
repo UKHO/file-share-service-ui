@@ -25,8 +25,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
   products: Product[];
   scsResponse:ProductCatalog;
   private productIdentifierSubscriber: Subscription;
-  private deltaPoductIdentifierSubscriber: Subscription;
-
+  
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, 
     private scsProductInformationService: ScsProductInformationService, private msalService: MsalService,
@@ -64,9 +63,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
       return;
     }
   }
-
-
-
 
   loadFileReader() { // called on click of proceed button
     if (this.isInvalidEncFile(this.encFile)) {
@@ -131,7 +127,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[]) {
     if (encs != null) {
-        this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+      this.productIdentifierSubscriber=this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.essUploadFileService.scsProductResponse = data;
@@ -139,7 +135,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
               this.essUploadFileService.infoMessage = true;
               this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
             }
-            else if (this.essUploadFileService.scsProductResponse.productCounts.requestedProductsNotReturned != null) {
+            else if (this.essUploadFileService.scsProductResponse.productCounts.requestedProductsNotReturned.length != 0) {
               this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
             }
             this.route.navigate(['exchangesets', 'enc-list']);
@@ -157,7 +153,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
       this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (roductIdentifiersResponse: ProductCatalog) => {
-            this.deltaPoductIdentifierSubscriber = this.scsProductInformationService.productInformationSinceDateTime()
+                   this.scsProductInformationService.productInformationSinceDateTime()
               .subscribe({
                 next: (result: ProductCatalog) => {
                   this.scsResponse = roductIdentifiersResponse;
@@ -170,7 +166,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                       this.essUploadFileService.infoMessage = true;
                       this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
                     }
-                    else if (this.scsResponse.productCounts.requestedProductsNotReturned != null) {
+                    else if (this.scsResponse.productCounts.requestedProductsNotReturned.length != 0) {
                       this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
                     }
 
@@ -195,7 +191,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
     }
   }
 
-
   scsProductCatalogResponse(encs: any[]) {
     if (this.essUploadFileService.exchangeSetDownloadType == 'Delta') {
       this.productUpdatesByDeltaResponse(encs);
@@ -217,7 +212,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
   }
 
   ngOnDestroy() {
-    this.deltaPoductIdentifierSubscriber.unsubscribe();
     this.productIdentifierSubscriber.unsubscribe();
   }
+
 }
