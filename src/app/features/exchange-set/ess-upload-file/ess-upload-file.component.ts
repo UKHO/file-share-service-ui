@@ -21,7 +21,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
   maxEncSelectionLimit: number;
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
-
+  displayLoader: boolean = false;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, 
     private scsProductInformationService: ScsProductInformationService, private msalService: MsalService,
@@ -139,11 +139,13 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
         this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
+            this.displayLoader  = false;
             this.essUploadFileService.scsProductResponse = data;
             this.route.navigate(['exchangesets', 'enc-list']);
           },
           error:(error) => {
             console.log(error);
+            this.displayLoader  = false;
             this.triggerInfoErrorMessage(true,'error', 'There has been an error');
           }
         });
@@ -151,6 +153,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
     }
 
     fetchScsTokenReponse() {
+      this.displayLoader = true;
       this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
         this.productUpdatesByIdentifiersResponse(this.validEncList);
       }, error => {
