@@ -22,7 +22,7 @@ export class EssAddSingleEncsComponent implements OnInit {
   addValidEncAlert: string;
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
-
+  displayLoader: Boolean = false;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router , private essInfoErrorMessageService: EssInfoErrorMessageService,
     private scsProductInformationService: ScsProductInformationService,
@@ -37,6 +37,7 @@ export class EssAddSingleEncsComponent implements OnInit {
   }
 
   validateAndAddENC() {
+    this.displayLoader = true;
     if (this.renderedFrom === 'encList') {
       this.addEncInList();
     }
@@ -113,6 +114,7 @@ export class EssAddSingleEncsComponent implements OnInit {
         .subscribe({
           next: (data: ProductCatalog) => {
             console.log(data);
+            this.displayLoader = false;
             this.triggerInfoErrorMessage(false,'info', '');
             if(data.products.length === 0){
               this.triggerInfoErrorMessage(true,'error', 'Invalid ENC');
@@ -135,6 +137,7 @@ export class EssAddSingleEncsComponent implements OnInit {
           },
           error:(error) => {
             console.log(error);
+            this.displayLoader = false;
             this.triggerInfoErrorMessage(true,'error', 'There has been an error');
           }
         });
