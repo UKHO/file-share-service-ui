@@ -34,38 +34,39 @@ export class EssTypesComponent implements OnInit, OnDestroy {
     if (option === this.baseOptionValue) {
       this.selectedOption = option;
       this.isDeltaOption = false;
-      this.isDateSelected = false; 
-      this.isRadioSelected = true; 
+      this.isDateSelected = false;
+      this.isRadioSelected = true;
+      this.resetDate();
     } else if (option === this.deltaOptionValue) {
       this.selectedOption = option;
       this.isDeltaOption = true;
       this.isRadioSelected = false;
-      this.isDateValid = true; 
+      this.isDateValid = true;
+      this.essUploadFileService.exchangeSetDownloadType = 'Delta';
       this.checkProceedButtonState();
     }
   }
 
   onDateChange(event: Event) {
     const selectedDate = (event.target as HTMLInputElement).valueAsDate;
-  
+
     if (!selectedDate) {
       this.isDateSelected = false;
-      this.isRadioSelected = false; 
-      this.isDateValid = false; 
-      this.triggerInfoErrorMessage(true, 'info', 'Please select a valid date')
+      this.isRadioSelected = false;
+      this.isDateValid = false;
       return;
     }
-  
+
     this.isDateSelected = true;
-  
+
     if (this.isDeltaOption) {
       if (!this.isValidDeltaDateSelected(selectedDate)) {
         const errorMessage =
           selectedDate > new Date()
             ? 'Please choose a date from today or up to 27 days in the past. Future dates are not permitted.'
             : "Please select Base Download for duration greater than 27 days from today's date.";
-        this.isRadioSelected = false; 
-        this.isDateValid = false; 
+        this.isRadioSelected = false;
+        this.isDateValid = false;
         this.triggerInfoErrorMessage(true, 'info', errorMessage);
         return;
       } else {
@@ -73,19 +74,16 @@ export class EssTypesComponent implements OnInit, OnDestroy {
         this.isDateValid = true;
         this.triggerInfoErrorMessage(false, 'info');
         const selectedDeltaDate = this._selectedDeltaDownloadDate;
-        selectedDeltaDate.setHours(selectedDeltaDate.getHours() - 23);
+        selectedDeltaDate.setHours(0, 0, 0, 0);
         this.essUploadFileService.exchangeSetDeltaDate = selectedDeltaDate;
-        console.log(selectedDeltaDate +"Date is");
-
       }
     }
-  
-    this.checkProceedButtonState(); 
+
+    this.checkProceedButtonState();
   }
-  
+
   onProceedClicked() {
     this.triggerInfoErrorMessage(false, 'info', '');
-    console.log(this.essUploadFileService.exchangeSetDeltaDate);
     this.router.navigate(['exchangesets', 'exchange-set']);
   }
 
@@ -96,9 +94,8 @@ export class EssTypesComponent implements OnInit, OnDestroy {
     targetDate.setMinutes(currentDate.getMinutes());
     targetDate.setSeconds(currentDate.getSeconds());
     targetDate.setMilliseconds(currentDate.getMilliseconds());
-
+    
     const differenceMs = Math.abs(targetDate - currentDate);
-
     const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
 
     if (differenceDays > 27 || targetDate > currentDate) {
@@ -108,6 +105,7 @@ export class EssTypesComponent implements OnInit, OnDestroy {
     this._selectedDeltaDownloadDate = targetDate;
     return true;
   }
+
   private resetDate() {
     const dateInput = document.getElementById('dateInput') as HTMLInputElement;
     if (dateInput) {
@@ -115,6 +113,7 @@ export class EssTypesComponent implements OnInit, OnDestroy {
       this.isDateSelected = false;
     }
   }
+
   checkProceedButtonState() {
     if (this.selectedOption === this.baseOptionValue) {
       this.isRadioSelected = true;
@@ -132,13 +131,15 @@ export class EssTypesComponent implements OnInit, OnDestroy {
       this.isRadioSelected = false;
     }
   }
+
   onRadioClick(option: string) {
     this.onOptionChange(option);
-    this.triggerInfoErrorMessage(false,'info', '');
+    this.triggerInfoErrorMessage(false, 'info', '');
     this.essUploadFileService.exchangeSetDeltaDate = undefined;
-    this.essUploadFileService.exchangeSetDownloadType = option === 'base'? 'Base' :'Delta';
-    console.log(this.essUploadFileService.exchangeSetDownloadType+"Type");
+    this.essUploadFileService.exchangeSetDownloadType =
+      option === 'base' ? 'Base' : 'Delta';
   }
+
   onDescriptionClick(option: string) {
     const radioOption =
       option === this.baseOptionValue ? 'baseRadio' : 'deltaRadio';
