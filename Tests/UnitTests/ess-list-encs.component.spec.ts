@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
+import { BundleInfo, DateInfo, Product, ProductCatalog, ProductCounts, NotReturnedProduct } from '../../src/app/core/models/ess-response-types';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -23,6 +24,24 @@ describe('EssListEncsComponent', () => {
   let exchangeSetApiService: ExchangeSetApiService;
   let fixture: ComponentFixture<EssListEncsComponent>;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
+  let bundleInfo: BundleInfo[] = [];
+  let updateNumber: number[] = [];
+  let product: Product[] = [];
+  let dateInfo: DateInfo[] = [];
+  bundleInfo.push({bundleType: 'ABC', location: 'XYZ'});
+  dateInfo.push({updateNumber:1, updateApplicationDate: '01/02/2024', issueDate: '02/03/2024'});
+  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 2, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 3, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210180', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210470', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'DU314128', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
+  let productCounts: ProductCounts;
+  let notReturnedProduct: NotReturnedProduct[] = [];
+  notReturnedProduct.push({ productName: 'ASA', reason: 'sd'})
+  productCounts = { requestedProductCount: 6, returnedProductCount: 6, requestedProductsAlreadyUpToDateCount: 0, requestedProductsNotReturned: notReturnedProduct };
+  let productCatalog: ProductCatalog;
+  productCatalog = { products: product, productCounts: productCounts };
   const router = {
     navigate: jest.fn()
   };
@@ -36,7 +55,9 @@ describe('EssListEncsComponent', () => {
     getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
     addAllSelectedEncs : jest.fn(),
-    getEstimatedTotalSize:jest.fn()
+    getEstimatedTotalSize:jest.fn(),
+    scsProductResponse: jest.fn().mockReturnValue(scsProductUpdatesByIdentifiersMockData),
+    scsProducts: jest.fn().mockReturnValue(product)
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -103,17 +124,17 @@ describe('EssListEncsComponent', () => {
   });
   it('handleChange should call service.removeSelectedEncs if enc is already present', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
-    component.handleChange('AU210130');
+    component.handleChange(product[0]);
     expect(service.removeSelectedEncs).toHaveBeenCalled();
   });
   it('handleChange should call service.addSelectedEnc if enc is not present', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
-    component.handleChange('AU210180');
+    component.handleChange(product[3]);
     expect(service.addSelectedEnc).toHaveBeenCalled();
   });
   it('handleChange should not call service.addSelectedEnc if selected enc"s are greater than MaxEncSelectionLimit', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130', 'AU220830']);
-    component.handleChange('AU210470');
+    component.handleChange(product[4]);
     expect(service.addSelectedEnc).not.toHaveBeenCalled();
   });
   it('syncEncsBetweenTables should set encList and selectedEncList', () => {
@@ -131,7 +152,7 @@ describe('EssListEncsComponent', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130' , 'AU220830']);
-    component.handleChange('AU210470');
+    component.handleChange(product[4]);
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'error',
@@ -234,7 +255,7 @@ describe('EssListEncsComponent', () => {
 
   it('handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'CU314128']);
-    component.handleChange('DU314128');
+    component.handleChange(product[5]);
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'error',
@@ -379,4 +400,219 @@ export const exchangeSetDetailsMockData: any = {
       "reason": "invalidProduct"
     }
   ]
+}
+
+export const scsProductUpdatesByIdentifiersMockData: any = {
+  "products": [
+      {
+          "productName": "AU210130",
+          "editionNumber": 1,
+          "updateNumbers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2015-02-25T00:00:00Z",
+                  "issueDate": "2015-02-25T00:00:00Z"
+              },
+              {
+                  "updateNumber": 1,
+                  "updateApplicationDate": null,
+                  "issueDate": "2016-04-27T00:00:00Z"
+              },
+              {
+                  "updateNumber": 2,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-01-09T00:00:00Z"
+              },
+              {
+                  "updateNumber": 3,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-03-20T00:00:00Z"
+              },
+              {
+                  "updateNumber": 4,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-11-14T00:00:00Z"
+              },
+              {
+                  "updateNumber": 5,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-12-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 6,
+                  "updateApplicationDate": null,
+                  "issueDate": "2018-12-19T00:00:00Z"
+              },
+              {
+                  "updateNumber": 7,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-06-28T00:00:00Z"
+              },
+              {
+                  "updateNumber": 8,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-10-24T00:00:00Z"
+              },
+              {
+                  "updateNumber": 9,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-05-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 10,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-10-08T00:00:00Z"
+              },
+              {
+                  "updateNumber": 11,
+                  "updateApplicationDate": null,
+                  "issueDate": "2022-11-16T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 343128,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      },
+      {
+          "productName": "AU210230",
+          "editionNumber": 13,
+          "updateNumbers": [
+              0
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2021-03-26T00:00:00Z",
+                  "issueDate": "2021-03-26T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 7215,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      },
+      {
+          "productName": "AU210330",
+          "editionNumber": 2,
+          "updateNumbers": [
+              0
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2023-05-09T00:00:00Z",
+                  "issueDate": "2023-05-09T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 637942,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B2"
+              }
+          ]
+      },
+      {
+        "productName": "AU210180",
+        "editionNumber": 2,
+        "updateNumbers": [
+            0
+        ],
+        "dates": [
+            {
+                "updateNumber": 0,
+                "updateApplicationDate": "2023-05-09T00:00:00Z",
+                "issueDate": "2023-05-09T00:00:00Z"
+            }
+        ],
+        "cancellation": null,
+        "fileSize": 637942,
+        "ignoreCache": false,
+        "bundle": [
+            {
+                "bundleType": "DVD",
+                "location": "M1;B2"
+            }
+        ]
+      },
+      {
+        "productName": "AU210470",
+        "editionNumber": 2,
+        "updateNumbers": [
+            0
+        ],
+        "dates": [
+            {
+                "updateNumber": 0,
+                "updateApplicationDate": "2023-05-09T00:00:00Z",
+                "issueDate": "2023-05-09T00:00:00Z"
+            }
+        ],
+        "cancellation": null,
+        "fileSize": 637942,
+        "ignoreCache": false,
+        "bundle": [
+            {
+                "bundleType": "DVD",
+                "location": "M1;B2"
+            }
+        ]
+      },
+      {
+        "productName": "DU314128",
+        "editionNumber": 2,
+        "updateNumbers": [
+            0
+        ],
+        "dates": [
+            {
+                "updateNumber": 0,
+                "updateApplicationDate": "2023-05-09T00:00:00Z",
+                "issueDate": "2023-05-09T00:00:00Z"
+            }
+        ],
+        "cancellation": null,
+        "fileSize": 637942,
+        "ignoreCache": false,
+        "bundle": [
+            {
+                "bundleType": "DVD",
+                "location": "M1;B2"
+            }
+        ]
+      }
+  ],
+  "productCounts": {
+      "requestedProductCount": 3,
+      "returnedProductCount": 3,
+      "requestedProductsAlreadyUpToDateCount": 0,
+      "requestedProductsNotReturned": []
+  }
 }
