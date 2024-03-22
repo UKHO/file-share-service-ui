@@ -107,7 +107,7 @@ export class EssAddSingleEncsComponent implements OnInit {
     };
   }
 
-  productUpdatesByIdentifiersResponse(encs: any[] , screen: string) {
+  productUpdatesByIdentifiersResponse(encs: any[] , renderedFrom: string) {
     if (encs != null) {
         this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
@@ -123,13 +123,11 @@ export class EssAddSingleEncsComponent implements OnInit {
             }else{
               this.essUploadFileService.scsProductResponse.products.push(data.products[0]);
             }
-
-            
-            if(screen === 'essHome'){
+            if(renderedFrom === 'essHome'){
               this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
               this.essUploadFileService.infoMessage = false;
               this.route.navigate(['exchangesets', 'enc-list']);
-            }else if(screen === 'encList'){
+            }else if(renderedFrom === 'encList'){
               this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
               this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
               this.txtSingleEnc = '';
@@ -143,15 +141,15 @@ export class EssAddSingleEncsComponent implements OnInit {
      }
     }
 
-  fetchScsTokenReponse(screen:string) {
+  fetchScsTokenReponse(renderedFrom:string) {
     const payload: string[] = [this.txtSingleEnc];
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.productUpdatesByIdentifiersResponse(payload , screen);
+      this.productUpdatesByIdentifiersResponse(payload , renderedFrom);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-        this.productUpdatesByIdentifiersResponse(payload,screen);
+        this.productUpdatesByIdentifiersResponse(payload,renderedFrom);
         });
     });
   }
