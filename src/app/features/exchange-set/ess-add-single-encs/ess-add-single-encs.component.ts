@@ -122,18 +122,15 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
               this.triggerInfoErrorMessage(true,'error', 'Invalid ENC');
               return;
             }
-            if(!this.essUploadFileService.scsProductResponse){
-              this.essUploadFileService.scsProductResponse = data;
-            }else{
-              this.essUploadFileService.scsProductResponse.products.push(data.products[0]);
-            }
-
+           
             if(screen === 'essHome'){
               this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
+              this.essUploadFileService.setValidSingleEncProduct(data);
               this.essUploadFileService.infoMessage = false;
               this.route.navigate(['exchangesets', 'enc-list']);
             }else if(screen === 'encList'){
               this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
+              this.essUploadFileService.addSingleEncProduct(data);
               this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
               this.txtSingleEnc = '';
             }
@@ -158,19 +155,15 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                 if (this.products.length != 0) {
                   this.scsResponse.products = this.products;
 
-                  if (!this.essUploadFileService.scsProductResponse) {
-                    this.essUploadFileService.scsProductResponse = this.scsResponse;
-                  } else {
-                    this.essUploadFileService.scsProductResponse.products.push(this.products[0]);
-                  }
-
-                  if (screen === 'essHome') {
+                  if(screen === 'essHome'){
                     this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
+                    this.essUploadFileService.setValidSingleEncProduct(this.scsResponse);
                     this.essUploadFileService.infoMessage = false;
                     this.route.navigate(['exchangesets', 'enc-list']);
-                  } else if (screen === 'encList') {
+                  }else if(screen === 'encList'){
                     this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
-                    this.addValidEncAlert = this.txtSingleEnc + '  Added to List';
+                    this.essUploadFileService.addSingleEncProduct(this.scsResponse);
+                    this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
                     this.txtSingleEnc = '';
                   }
                 }
