@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
@@ -6,14 +6,15 @@ import { ScsProductInformationService } from './../../../core/services/scs-produ
 import { MsalService } from '@azure/msal-angular';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SilentRequest } from '@azure/msal-browser';
-import { ProductCatalog } from 'src/app/core/models/ess-response-types';
+import { Product, ProductCatalog } from 'src/app/core/models/ess-response-types';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ess-add-single-encs',
   templateUrl: './ess-add-single-encs.component.html',
   styleUrls: ['./ess-add-single-encs.component.scss']
 })
-export class EssAddSingleEncsComponent implements OnInit {
+export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   @Input() renderedFrom: string;
   @Input() btnText: string;
   validEncList: string[];
@@ -22,6 +23,10 @@ export class EssAddSingleEncsComponent implements OnInit {
   addValidEncAlert: string;
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
+  products:Product[];
+  scsResponse :ProductCatalog;
+  private productIdentifierSubscriber: Subscription;
+  private deltaPoductIdentifierSubscriber: Subscription;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router , private essInfoErrorMessageService: EssInfoErrorMessageService,
@@ -143,16 +148,75 @@ export class EssAddSingleEncsComponent implements OnInit {
      }
     }
 
-  fetchScsTokenReponse(screen:string) {
+  productUpdatesByDeltaResponse(encs: any[], screen: string) {
+    this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+      .subscribe({
+        next: (productIdentifiersResponse: ProductCatalog) => {
+          this.deltaPoductIdentifierSubscriber = this.scsProductInformationService.productInformationSinceDateTime()
+            .subscribe({
+              next: (data: ProductCatalog) => {
+                this.scsResponse = productIdentifiersResponse;
+                this.products = data.products.filter((v) => this.scsResponse.products.some((vd) => v.productName == vd.productName));
+                if (this.products.length != 0) {
+                  this.scsResponse.products = this.products;
+
+                  if (!this.essUploadFileService.scsProductResponse) {
+                    this.essUploadFileService.scsProductResponse = this.scsResponse;
+                  } else {
+                    this.essUploadFileService.scsProductResponse.products.push(this.products[0]);
+                  }
+
+                  if (screen === 'essHome') {
+                    this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
+                    this.essUploadFileService.infoMessage = false;
+                    this.route.navigate(['exchangesets', 'enc-list']);
+                  } else if (screen === 'encList') {
+                    this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
+                    this.addValidEncAlert = this.txtSingleEnc + '  Added to List';
+                    this.txtSingleEnc = '';
+                  }
+                }
+                else {
+                  this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
+                  return;
+                }
+              },
+              error: (error) => {
+                console.log(error);
+                this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
+              }
+            });
+        },
+        error: (error) => {
+          console.log(error);
+          this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
+        }
+      })
+  }
+
+  scsProductCatalogResponse(encs: any[], screen: string) {
+    if (this.essUploadFileService.exchangeSetDownloadType == 'Delta') {
+      this.productUpdatesByDeltaResponse(encs, screen);
+    } else {
+      this.productUpdatesByIdentifiersResponse(encs, screen);
+    }
+  }
+
+  fetchScsTokenReponse(screen: string) {
     const payload: string[] = [this.txtSingleEnc];
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.productUpdatesByIdentifiersResponse(payload , screen);
+      this.scsProductCatalogResponse(payload, screen);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-        this.productUpdatesByIdentifiersResponse(payload,screen);
+          this.scsProductCatalogResponse(payload, screen);
         });
     });
+  }
+
+  ngOnDestroy() {
+    this.deltaPoductIdentifierSubscriber.unsubscribe();
+    this.productIdentifierSubscriber.unsubscribe();
   }
 }

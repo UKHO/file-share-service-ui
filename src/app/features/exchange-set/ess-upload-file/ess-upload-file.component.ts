@@ -1,26 +1,31 @@
 import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, OnDestroy} from '@angular/core';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { AppConfigService } from './../../../core/services/app-config.service';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
 import { ScsProductInformationService } from './../../../core/services/scs-product-information-api.service';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
-import { ProductCatalog } from 'src/app/core/models/ess-response-types';
+import { Product, ProductCatalog } from 'src/app/core/models/ess-response-types';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ess-upload-file',
   templateUrl: './ess-upload-file.component.html',
   styleUrls: ['./ess-upload-file.component.scss'],
 })
-export class EssUploadFileComponent implements OnInit, AfterViewInit {
+export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
   validEncList: string[];
   encFile: File;
   maxEncsLimit: number;
   maxEncSelectionLimit: number;
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
+  products: Product[];
+  scsResponse:ProductCatalog;
+  private productIdentifierSubscriber: Subscription;
+  private deltaPoductIdentifierSubscriber: Subscription;
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, 
@@ -94,16 +99,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
         this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
         return;
       }
-      else if (encList.length > this.validEncList.length) {
-        if(this.essUploadFileService.aioEncFound) {
-          this.essUploadFileService.infoMessage = true;
-          this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
-        }
-        else {
-          this.essUploadFileService.infoMessage = true;
-          this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
-        }
-      }
       this.fetchScsTokenReponse();
     }
     else {
@@ -140,6 +135,13 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
         .subscribe({
           next: (data: ProductCatalog) => {
             this.essUploadFileService.scsProductResponse = data;
+            if (this.essUploadFileService.aioEncFound) {
+              this.essUploadFileService.infoMessage = true;
+              this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
+            }
+            else if (this.essUploadFileService.scsProductResponse.productCounts.requestedProductsNotReturned != null) {
+              this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
+            }
             this.route.navigate(['exchangesets', 'enc-list']);
           },
           error:(error) => {
@@ -150,15 +152,72 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
      }
     }
 
-    fetchScsTokenReponse() {
-      this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-        this.productUpdatesByIdentifiersResponse(this.validEncList);
-      }, error => {
-        this.msalService.instance
-          .loginPopup(this.essSilentTokenRequest)
-          .then(response => {
-          this.productUpdatesByIdentifiersResponse(this.validEncList);
-          });
-      });
+  productUpdatesByDeltaResponse(encs: any[]) {
+    if (encs != null) {
+      this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+        .subscribe({
+          next: (roductIdentifiersResponse: ProductCatalog) => {
+            this.deltaPoductIdentifierSubscriber = this.scsProductInformationService.productInformationSinceDateTime()
+              .subscribe({
+                next: (result: ProductCatalog) => {
+                  this.scsResponse = roductIdentifiersResponse;
+                  this.products = result.products.filter((v) => this.scsResponse.products.some((vd) => v.productName == vd.productName));
+                  if (this.products.length != 0) {
+                    this.scsResponse.products = this.products;
+                    this.essUploadFileService.scsProductResponse = this.scsResponse;
+
+                    if (this.essUploadFileService.aioEncFound) {
+                      this.essUploadFileService.infoMessage = true;
+                      this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
+                    }
+                    else if (this.scsResponse.productCounts.requestedProductsNotReturned != null) {
+                      this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
+                    }
+
+                    this.route.navigate(['exchangesets', 'enc-list']);
+                  }
+                  else {
+                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
+                    return;
+                  }
+                },
+                error: (error: any) => {
+                  console.log(error);
+                  this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
+                }
+              });
+          },
+          error: (error: any) => {
+            console.log(error);
+            this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
+          }
+        });
     }
+  }
+
+
+  scsProductCatalogResponse(encs: any[]) {
+    if (this.essUploadFileService.exchangeSetDownloadType == 'Delta') {
+      this.productUpdatesByDeltaResponse(encs);
+    } else {
+      this.productUpdatesByIdentifiersResponse(encs);
+    }
+  }
+
+  fetchScsTokenReponse() {
+    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+      this.scsProductCatalogResponse(this.validEncList);
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.essSilentTokenRequest)
+        .then(response => {
+          this.scsProductCatalogResponse(this.validEncList);
+        });
+    });
+  }
+
+  ngOnDestroy() {
+    this.deltaPoductIdentifierSubscriber.unsubscribe();
+    this.productIdentifierSubscriber.unsubscribe();
+  }
 }

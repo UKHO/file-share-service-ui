@@ -22,7 +22,7 @@ export class EssUploadFileService {
   private configAioEncList: string[];
   public aioEncFound: boolean;
   private _exchangeSetDownloadType: 'Base' | 'Delta';
-  private _exchangeSetDeltaDate: Date | undefined;
+  private _exchangeSetDeltaDate: any;
 
   constructor() {
     this.selectedEncs = [];
@@ -205,11 +205,11 @@ export class EssUploadFileService {
     this._exchangeSetDownloadType = type;
   }
 
-  get exchangeSetDeltaDate(): Date | undefined {
+  get exchangeSetDeltaDate(): any {
     return this._exchangeSetDeltaDate;
   }
 
-  set exchangeSetDeltaDate(date: Date | undefined) {
+  set exchangeSetDeltaDate(date: any) {
     this._exchangeSetDeltaDate = date;
   }
 }
