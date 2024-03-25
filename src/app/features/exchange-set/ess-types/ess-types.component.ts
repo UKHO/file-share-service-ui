@@ -27,6 +27,7 @@ export class EssTypesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.triggerInfoErrorMessage(false, 'info', '');
     this.onOptionChange(this.deltaOptionValue);
   }
 

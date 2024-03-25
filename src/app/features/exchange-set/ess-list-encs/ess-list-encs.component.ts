@@ -241,6 +241,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
 
   ngOnDestroy(): void {
     this.triggerInfoErrorMessage(false, 'info', '');
+    this.triggerInfoErrorMessage(false, 'error', '');
+    this.triggerInfoErrorMessage(false, 'warning', '');
   }
-
 }

@@ -53,16 +53,19 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
   addSingleEncToList() {
     if(!this.txtSingleEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Please enter ENC number');
       return;
     }
 
     if(!this.essUploadFileService.validateENCFormat(this.txtSingleEnc)){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
       return;
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
@@ -75,26 +78,31 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     const isValidEnc = this.essUploadFileService.validateENCFormat(this.txtSingleEnc);
 
     if(!this.txtSingleEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Please enter ENC number');
       return;
     }
 
     if(!isValidEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
       return;
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
 
     if(this.validEnc.includes(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'ENC already in list.');
       return;
     }
 
     if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'Max ENC limit reached.');
       return;
     }
@@ -155,39 +163,54 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
       .subscribe({
         next: (productIdentifiersResponse: ProductCatalog) => {
-             this.scsProductInformationService.productInformationSinceDateTime()
-            .subscribe({
-              next: (data: ProductCatalog) => {
-                this.scsResponse = productIdentifiersResponse;
-                this.products = data.products.filter((v) => this.scsResponse.products.some((vd) => v.productName == vd.productName));
-                if (this.products.length != 0) {
-                  this.scsResponse.products = this.products;
+          if (productIdentifiersResponse.products.length != 0) {
+            this.scsProductInformationService.productInformationSinceDateTime()
+              .subscribe({
+                next: (data: ProductCatalog) => {
+                  this.displayLoader = false;
+                  this.scsResponse = productIdentifiersResponse;
+                  this.products = data.products.filter((v) => this.scsResponse.products.some((vd) => v.productName == vd.productName));
+                  if (this.products.length != 0) {
+                    this.scsResponse.products = this.products;
 
-                  if(renderedFrom === 'essHome'){
-                    this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
-                    this.essUploadFileService.setValidSingleEncProduct(this.scsResponse);
-                    this.essUploadFileService.infoMessage = false;
-                    this.route.navigate(['exchangesets', 'enc-list']);
-                  }else if(renderedFrom === 'encList'){
-                    this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
-                    this.essUploadFileService.addSingleEncProduct(this.scsResponse);
-                    this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
-                    this.txtSingleEnc = '';
+                    if (renderedFrom === 'essHome') {
+                      this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
+                      this.essUploadFileService.setValidSingleEncProduct(this.scsResponse);
+                      this.essUploadFileService.infoMessage = false;
+                      this.route.navigate(['exchangesets', 'enc-list']);
+                    } else if (renderedFrom === 'encList') {
+                      this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
+                      this.essUploadFileService.addSingleEncProduct(this.scsResponse);
+                      this.addValidEncAlert = this.txtSingleEnc + '  Added to List';
+                      this.txtSingleEnc = '';
+                    }
                   }
+                  else {
+                    this.displayLoader = false;
+                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
+                    return;
+                  }
+                },
+                error: (error) => {
+                  console.log(error);
+                  this.displayLoader = false;
+                  if (error.status == 304) {
+                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
+                    return;
+                  }
+                  this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
                 }
-                else {
-                  this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
-                  return;
-                }
-              },
-              error: (error) => {
-                console.log(error);
-                this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
-              }
-            });
+              });
+          }
+          else {
+            this.displayLoader = false;
+            this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
+            return;
+          }
         },
         error: (error) => {
           console.log(error);
+          this.displayLoader = false;
           this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
         }
       })
@@ -215,7 +238,9 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy() {
-    this.productIdentifierSubscriber.unsubscribe();
+    if (this.productIdentifierSubscriber) {
+      this.productIdentifierSubscriber.unsubscribe();
+    }
   }
 
 }
