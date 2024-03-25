@@ -2,7 +2,7 @@ import { ExchangeSetApiService } from './../../../core/services/exchange-set-api
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
@@ -64,6 +64,10 @@ export class EssListEncsComponent implements OnInit {
     }
 }
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState() {
+    this.essUploadFileService.clearData();
+  }
   ngOnInit(): void {
     this.maxEncSelectionLimit = Number.parseInt(
       AppConfigService.settings['essConfig'].MaxEncSelectionLimit,

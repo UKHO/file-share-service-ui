@@ -496,15 +496,26 @@ describe('EssListEncsComponent', () => {
     let selectedEncList = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
     component.exchangeSetCreationResponse([selectedEncList]);
     exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe(() => {} , (error: any) => {
-     const errObj = {
-      showInfoErrorMessage : false,
-      messageType : 'error',
-      messageDesc : 'There has been an error'
-    };
-    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+      const errObj = {
+        showInfoErrorMessage : false,
+        messageType : 'error',
+        messageDesc : 'There has been an error'
+      };
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
   });
 
+  it('ngOnInIt should return valid and inValid cells', () => {
+    component.ngOnInit;
+    expect(component.scsInvalidProduct.length).toBe(1);
+    expect(component.selectedEncList.length).toBe(5);
+    const warnObj = {
+      showInfoErrorMessage: true,
+      messageType: 'warning',
+      messageDesc: 'Invalid cells - US5CN13M'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(warnObj);
+  });
 });
 
 export const exchangeSetDetailsMockData: any = {
