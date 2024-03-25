@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ExchangeSetDetails, Product, ProductCatalog } from '../models/ess-response-types';
+import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCatalog } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EssUploadFileService {
-  private _scsProductResponse: ProductCatalog;
+  private _scsProductResponse: ProductCatalog | undefined;
   private _scsProducts: Product[];
+  private _scsInvalidProducts: NotReturnedProduct[];
   private validEncs: string[];
   private selectedEncs: Product[];
   private maxEncLimit: number;
@@ -164,20 +165,35 @@ export class EssUploadFileService {
     return (ConvertBytesToMegabytes(this.estimatedTotalSize)).toFixed(2) + ' MB';
   }
 
-  get scsProductResponse(): ProductCatalog {
+   get scsProductResponse() : ProductCatalog | undefined{
     return this._scsProductResponse;
   }
 
-  set scsProductResponse(scsProductResponse: ProductCatalog) {
-    this._scsProductResponse = scsProductResponse;
-  }
+   set scsProductResponse(scsProductResponse: ProductCatalog | undefined){
+     this._scsProductResponse = scsProductResponse;
+   } 
 
   get scsProducts(): Product[] {
     return this._scsProducts;
   }
 
-  set scsProducts(products: Product[]) {
-    this._scsProducts = products;
+   set scsProducts(products: Product[]){
+      this._scsProducts = products;
+   }
+
+   get scsInvalidProducts() : NotReturnedProduct[]{
+    return this._scsInvalidProducts;
+   }
+
+   set scsInvalidProducts(NotReturnedProduct: NotReturnedProduct[]){
+      this._scsInvalidProducts = NotReturnedProduct;
+   }
+
+  clearData() {
+    this.validEncs = [];
+    this.scsInvalidProducts = [];
+    this.scsProductResponse = undefined;
+    this.clearSelectedEncs();
   }
 }
 function ConvertBytesToMegabytes(estimatedTotalSize: number) {

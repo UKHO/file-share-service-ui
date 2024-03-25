@@ -1,5 +1,4 @@
 import { Page, Locator, expect } from "@playwright/test";
-import { assert } from "console";
 import {essConfig} from '../src/assets/config/appconfig.json';
 
 export class EssLandingPageObjects {
@@ -198,5 +197,9 @@ class EssLandingPageAssertions {
     async VerifyMaxSelectedENCLimit(): Promise<void> {
         let MaxSelectedLimit = ((await (this.esslandingPageObjects.MaxSelectedENCs).innerText()).split(' '))[17];
         expect(MaxSelectedLimit).toEqual(essConfig.MaxEncSelectionLimit);
+    }
+
+    async IsEmpty(text: string): Promise<void> {
+        expect(text.length != 0).toBeTruthy();
     }
 }

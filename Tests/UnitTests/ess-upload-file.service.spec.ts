@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
+import { BundleInfo, DateInfo, Product } from '../../src/app/core/models/ess-response-types';
 
 describe('EssUploadFileService', () => {
   const getTempData = () => {
@@ -53,6 +54,15 @@ describe('EssUploadFileService', () => {
   let permitJson: string[];
   let csvEncLists: string[];
   let service: EssUploadFileService;
+  let bundleInfo: BundleInfo[] = [];
+  let updateNumber: number[] = [];
+  let product: Product[] = [];
+  let dateInfo: DateInfo[] = [];
+  bundleInfo.push({bundleType: 'ABC', location: 'XYZ'});
+  dateInfo.push({updateNumber:1, updateApplicationDate: '', issueDate: ''});
+  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 2, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 3, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
@@ -184,25 +194,25 @@ describe('EssUploadFileService', () => {
   });
   it('addSelectedEnc adds enc into selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
-    service.addSelectedEnc('AU210130');
-    service.addSelectedEnc('AU210230');
-    service.addSelectedEnc('AU210330');
+    service.addSelectedEnc(product[0]);
+    service.addSelectedEnc(product[1]);
+    service.addSelectedEnc(product[2]);
     expect(service.getSelectedENCs().length).toEqual(3);
   });
   it('removeSelectedEncs removes enc from selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
-    service.addSelectedEnc('AU210130');
-    service.addSelectedEnc('AU210230');
-    service.addSelectedEnc('AU210330');
+    service.addSelectedEnc(product[0]);
+    service.addSelectedEnc(product[1]);
+    service.addSelectedEnc(product[2]);
     expect(service.getSelectedENCs().length).toEqual(3);
     service.removeSelectedEncs('AU210230');
     expect(service.getSelectedENCs().length).toEqual(2);
   });
   it('clearSelectedEncs clears enc from selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
-    service.addSelectedEnc('AU210130');
-    service.addSelectedEnc('AU210230');
-    service.addSelectedEnc('AU210330');
+    service.addSelectedEnc(product[0]);
+    service.addSelectedEnc(product[1]);
+    service.addSelectedEnc(product[2]);
     expect(service.getSelectedENCs().length).toEqual(3);
     service.clearSelectedEncs();
     expect(service.getSelectedENCs().length).toEqual(0);
@@ -260,7 +270,7 @@ describe('EssUploadFileService', () => {
   `('getEstimatedTotalSize should return valid string',
   ({  encCount, expectedResult }: {  encCount: number; expectedResult: string }) => {
     jest.clearAllMocks();
-    expect(service.getEstimatedTotalSize(encCount)).toEqual(expectedResult);
+    expect(service.getEstimatedTotalSize()).toEqual(expectedResult);
   });
   
 });

@@ -9,12 +9,18 @@ import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-se
 import { By } from '@angular/platform-browser';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
+import { HttpClientModule } from '@angular/common/http';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
+import { ScsProductInformationService } from '../../src/app/core/services/scs-product-information-api.service';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
   let fixture: ComponentFixture<EssUploadFileComponent>;
   let essUploadFileService: EssUploadFileService;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
+  let msalService: MsalService;
+  let scsProductInformationService: ScsProductInformationService;
   const getEncData_csv = () => {
     let data = 'Au2fg150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
@@ -116,15 +122,29 @@ describe('EssUploadFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, DesignSystemModule],
+      imports: [CommonModule, DesignSystemModule, HttpClientModule],
       declarations: [EssUploadFileComponent, EssInfoErrorMessageComponent],
       providers: [
         {
           provide: Router,
           useValue: router
         },
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        {
+          provide : ScsProductInformationService,
+          useValue : scsProductInformationService
+        },
+        {
+          provide : MsalService,
+          useValue : msalService
+        },
         EssUploadFileService,
-        EssInfoErrorMessageService
+        EssInfoErrorMessageService,
+        MsalService,
+        ScsProductInformationService
       ]
     })
       .compileComponents();
@@ -143,6 +163,8 @@ describe('EssUploadFileComponent', () => {
     component = fixture.componentInstance;
     essUploadFileService = TestBed.inject(EssUploadFileService);
     essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
+    msalService = TestBed.inject(MsalService);
+    scsProductInformationService = TestBed.inject(ScsProductInformationService);
     fixture.detectChanges();
   });
 
@@ -396,4 +418,158 @@ describe('EssUploadFileComponent', () => {
     }
   });
 
+  it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', () => {
+    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+    component.fetchScsTokenReponse();
+    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+    expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
+   });
+ });
+
 });
+
+export const scsProductUpdatesByIdentifiersMockData: any = {
+  "products": [
+      {
+          "productName": "FR570300",
+          "editionNumber": 1,
+          "updateNumbers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2015-02-25T00:00:00Z",
+                  "issueDate": "2015-02-25T00:00:00Z"
+              },
+              {
+                  "updateNumber": 1,
+                  "updateApplicationDate": null,
+                  "issueDate": "2016-04-27T00:00:00Z"
+              },
+              {
+                  "updateNumber": 2,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-01-09T00:00:00Z"
+              },
+              {
+                  "updateNumber": 3,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-03-20T00:00:00Z"
+              },
+              {
+                  "updateNumber": 4,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-11-14T00:00:00Z"
+              },
+              {
+                  "updateNumber": 5,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-12-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 6,
+                  "updateApplicationDate": null,
+                  "issueDate": "2018-12-19T00:00:00Z"
+              },
+              {
+                  "updateNumber": 7,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-06-28T00:00:00Z"
+              },
+              {
+                  "updateNumber": 8,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-10-24T00:00:00Z"
+              },
+              {
+                  "updateNumber": 9,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-05-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 10,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-10-08T00:00:00Z"
+              },
+              {
+                  "updateNumber": 11,
+                  "updateApplicationDate": null,
+                  "issueDate": "2022-11-16T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 343128,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      },
+      {
+          "productName": "SE6IIFE1",
+          "editionNumber": 13,
+          "updateNumbers": [
+              0
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2021-03-26T00:00:00Z",
+                  "issueDate": "2021-03-26T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 7215,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      },
+      {
+          "productName": "NO3B2020",
+          "editionNumber": 2,
+          "updateNumbers": [
+              0
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2023-05-09T00:00:00Z",
+                  "issueDate": "2023-05-09T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 637942,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B2"
+              }
+          ]
+      }
+  ],
+  "productCounts": {
+      "requestedProductCount": 3,
+      "returnedProductCount": 3,
+      "requestedProductsAlreadyUpToDateCount": 0,
+      "requestedProductsNotReturned": []
+  }
+}

@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
-import { ExchangeSetDetails, Product } from '../../../core/models/ess-response-types';
+import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCounts } from '../../../core/models/ess-response-types';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 
 interface MappedEnc {
@@ -45,6 +45,7 @@ export class EssListEncsComponent implements OnInit {
   sortGraphicUp: string = "fa-chevron-up";
   sortGraphicDown: string = "fa-chevron-down";
   sortGraphic: string = this.sortGraphicUp;
+  scsInvalidProduct: NotReturnedProduct[];
 
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
@@ -57,8 +58,11 @@ export class EssListEncsComponent implements OnInit {
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope],
     };
-    this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
-  }
+    if (this.essUploadFileService.scsProductResponse) {
+      this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
+      this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
+    }
+}
 
   ngOnInit(): void {
     this.maxEncSelectionLimit = Number.parseInt(
@@ -76,6 +80,12 @@ export class EssListEncsComponent implements OnInit {
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
+   
+    if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
+      let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+
+      this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}`);
+    }
   }
 
   setEncList() {
@@ -160,6 +170,7 @@ export class EssListEncsComponent implements OnInit {
 
   switchToESSLandingPage() {
     this.route.navigate(['exchangesets']);
+    this.essUploadFileService.clearData();
   }
 
   displaySingleEnc() {
