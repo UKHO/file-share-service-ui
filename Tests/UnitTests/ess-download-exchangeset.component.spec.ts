@@ -145,6 +145,7 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(service.getEstimatedTotalSize).toHaveBeenCalled();
     expect(component.avgEstimatedSize).toBe(expectedResultForKB);
   });
+  
   test('should return exchangeSetTotalCount', () => {
    component.ngOnInit();
     expect(service.getExchangeSetDetails).toHaveBeenCalled();

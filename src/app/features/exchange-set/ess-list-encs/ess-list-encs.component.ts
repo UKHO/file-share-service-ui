@@ -190,7 +190,7 @@ export class EssListEncsComponent implements OnInit {
 
   getEstimatedTotalSize() {
     if(this.selectedEncList && this.selectedEncList.length > 0){
-      return this.essUploadFileService.getEstimatedTotalSize(this.essUploadFileService.scsProducts);
+      return this.essUploadFileService.getEstimatedTotalSize();
     }
     else{
       return '0MB';

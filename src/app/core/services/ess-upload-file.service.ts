@@ -16,20 +16,15 @@ export class EssUploadFileService {
   private showInfoMessage = false;
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
   private exchangeSetDetails: ExchangeSetDetails;
-  private avgSizeofENC: number;
   private estimatedTotalSize: number;
-  private defaultEstimatedSizeinMB:number;
-  private configAioEncList : string[];
-  public aioEncFound : boolean;
+  private configAioEncList: string[];
+  public aioEncFound: boolean;
 
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
-    this.avgSizeofENC = Number.parseFloat(AppConfigService.settings["essConfig"].avgSizeofENCinMB);
-    this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
-    this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
+    this.maxEncSelectionLimit = Number.parseInt(AppConfigService.settings['essConfig'].MaxEncSelectionLimit, 10);
     this.configAioEncList = AppConfigService.settings["essConfig"].aioExcludeEncs;
-
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -48,7 +43,7 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  excludeAioEnc(encName: string){
+  excludeAioEnc(encName: string) {
     return !this.configAioEncList.includes(encName);
   }
 
@@ -73,17 +68,17 @@ export class EssUploadFileService {
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
 
 
-       let validEncsExAio = this.validEncs
+    let validEncsExAio = this.validEncs
       .filter((enc) => this.excludeAioEnc(enc)); //exclude AIO list
 
-      if(validEncsExAio.length < this.validEncs.length){
-        this.aioEncFound = true;
-      }
+    if (validEncsExAio.length < this.validEncs.length) {
+      this.aioEncFound = true;
+    }
 
-      this.validEncs = validEncsExAio
+    this.validEncs = validEncsExAio
       .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit   
   }
-  
+
   getValidEncs(): string[] {
     return this.validEncs;
   }
@@ -130,7 +125,7 @@ export class EssUploadFileService {
 
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
     this.exchangeSetDetails = exchangeSetDetails;
-    
+
   }
 
   getExchangeSetDetails(): ExchangeSetDetails {
@@ -156,36 +151,36 @@ export class EssUploadFileService {
   }
 
 
-  addAllSelectedEncs(){
-    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
-    this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
+  addAllSelectedEncs() {
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.scsProducts.slice(0, maxEncSelectionLimit)];
   }
-  
-  getEstimatedTotalSize(scsProducts:Product[]):string
-   {
-    this.estimatedTotalSize=0;
-    for( let selectedEncs of  this.selectedEncs){
-      let matchEnc = scsProducts.find((k) => k.productName == selectedEncs.productName);
-      if(matchEnc){
-        this.estimatedTotalSize = this.estimatedTotalSize + matchEnc.fileSize;
-      }
+
+  getEstimatedTotalSize(): string {
+    this.estimatedTotalSize = 0;
+    for (let selectedEnc of this.selectedEncs) {
+      this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
     }
-    return (this.estimatedTotalSize/1048576).toFixed(2)+' MB';
-   }
+    return (ConvertBytesToMegabytes(this.estimatedTotalSize)).toFixed(2) + ' MB';
+  }
 
-   get scsProductResponse() : ProductCatalog{
+  get scsProductResponse(): ProductCatalog {
     return this._scsProductResponse;
-   }
+  }
 
-   set scsProductResponse(scsProductResponse: ProductCatalog){
-     this._scsProductResponse = scsProductResponse;
-   } 
+  set scsProductResponse(scsProductResponse: ProductCatalog) {
+    this._scsProductResponse = scsProductResponse;
+  }
 
-   get scsProducts() : Product[]{
+  get scsProducts(): Product[] {
     return this._scsProducts;
-   }
+  }
 
-   set scsProducts(products: Product[]){
-      this._scsProducts = products;
-   }
+  set scsProducts(products: Product[]) {
+    this._scsProducts = products;
+  }
+}
+function ConvertBytesToMegabytes(estimatedTotalSize: number) {
+  let byteSize = 1024;
+  return (estimatedTotalSize / byteSize) / byteSize;
 }
