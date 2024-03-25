@@ -512,7 +512,7 @@ describe('EssListEncsComponent', () => {
     const warnObj = {
       showInfoErrorMessage: true,
       messageType: 'warning',
-      messageDesc: 'Invalid cells - US5CN13M'
+      messageDesc: 'Invalid cells -  US5CN13M'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(warnObj);
   });
