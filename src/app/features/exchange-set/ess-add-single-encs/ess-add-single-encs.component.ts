@@ -23,6 +23,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   addValidEncAlert: string;
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
+  displayLoader: Boolean = false; 
   products:Product[];
   scsResponse :ProductCatalog;
   private productIdentifierSubscriber: Subscription;
@@ -41,6 +42,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   }
 
   validateAndAddENC() {
+    this.displayLoader = true;
     if (this.renderedFrom === 'encList') {
       this.addEncInList();
     }
@@ -111,24 +113,29 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     };
   }
 
-  productUpdatesByIdentifiersResponse(encs: any[] , screen: string) {
+  productUpdatesByIdentifiersResponse(encs: any[] , renderedFrom: string) {
     if (encs != null) {
       this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             console.log(data);
+            this.displayLoader = false;
             this.triggerInfoErrorMessage(false,'info', '');
             if(data.products.length === 0){
               this.triggerInfoErrorMessage(true,'error', 'Invalid ENC');
               return;
             }
-           
-            if(screen === 'essHome'){
+            if(!this.essUploadFileService.scsProductResponse){
+              this.essUploadFileService.scsProductResponse = data;
+            }else{
+              this.essUploadFileService.scsProductResponse.products.push(data.products[0]);
+            }
+            if(renderedFrom === 'essHome'){
               this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
               this.essUploadFileService.setValidSingleEncProduct(data);
               this.essUploadFileService.infoMessage = false;
               this.route.navigate(['exchangesets', 'enc-list']);
-            }else if(screen === 'encList'){
+            }else if(renderedFrom === 'encList'){
               this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
               this.essUploadFileService.addSingleEncProduct(data);
               this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
@@ -137,13 +144,14 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
           },
           error:(error) => {
             console.log(error);
+            this.displayLoader = false;
             this.triggerInfoErrorMessage(true,'error', 'There has been an error');
           }
         });
      }
     }
 
-  productUpdatesByDeltaResponse(encs: any[], screen: string) {
+  productUpdatesByDeltaResponse(encs: any[], renderedFrom: string) {
     this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
       .subscribe({
         next: (productIdentifiersResponse: ProductCatalog) => {
@@ -155,12 +163,12 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                 if (this.products.length != 0) {
                   this.scsResponse.products = this.products;
 
-                  if(screen === 'essHome'){
+                  if(renderedFrom === 'essHome'){
                     this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
                     this.essUploadFileService.setValidSingleEncProduct(this.scsResponse);
                     this.essUploadFileService.infoMessage = false;
                     this.route.navigate(['exchangesets', 'enc-list']);
-                  }else if(screen === 'encList'){
+                  }else if(renderedFrom === 'encList'){
                     this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
                     this.essUploadFileService.addSingleEncProduct(this.scsResponse);
                     this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
@@ -185,23 +193,23 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
       })
   }
 
-  scsProductCatalogResponse(encs: any[], screen: string) {
+  scsProductCatalogResponse(encs: any[], renderedFrom: string) {
     if (this.essUploadFileService.exchangeSetDownloadType == 'Delta') {
-      this.productUpdatesByDeltaResponse(encs, screen);
+      this.productUpdatesByDeltaResponse(encs, renderedFrom);
     } else {
-      this.productUpdatesByIdentifiersResponse(encs, screen);
+      this.productUpdatesByIdentifiersResponse(encs, renderedFrom);
     }
   }
 
-  fetchScsTokenReponse(screen: string) {
+  fetchScsTokenReponse(renderedFrom: string) {
     const payload: string[] = [this.txtSingleEnc];
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.scsProductCatalogResponse(payload, screen);
+      this.scsProductCatalogResponse(payload, renderedFrom);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-          this.scsProductCatalogResponse(payload, screen);
+          this.scsProductCatalogResponse(payload, renderedFrom);
         });
     });
   }

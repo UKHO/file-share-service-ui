@@ -152,8 +152,8 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.encList = [
       ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
-          ? a[sortState.column].localeCompare(b[sortState.column])
-          : b[sortState.column].localeCompare(a[sortState.column])
+          ? a[sortState.column].productName.localeCompare(b[sortState.column].productName)
+          : b[sortState.column].productName.localeCompare(a[sortState.column].productName)
       ),
     ];
   }
@@ -228,7 +228,8 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.exchangeSetCreationResponse(this.selectedEncList);
+      const selectedEncList: string[] = this.selectedEncList.map(product => product.productName);
+      this.exchangeSetCreationResponse(selectedEncList);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)

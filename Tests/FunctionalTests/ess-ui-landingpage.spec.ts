@@ -193,7 +193,14 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found.')
      })
+
+     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149496
+     test('Verify Base Exchange Set with Valid ENCs', async ({ page }) => {
+          await esslandingPageObjects.addencradiobtnSelectorClick();
+          await esslandingPageObjects.setaddSingleENCTextboxSelector("AU220150");
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          const requestPromise = await esslandingPageObjects.page.waitForRequest(request =>
+               request.url().includes('productInformation/productIdentifiers') && request.method() === 'POST')
+          await esslandingPageObjects.expect.IsEmpty(requestPromise.url());
+     });
 })
-
-
-

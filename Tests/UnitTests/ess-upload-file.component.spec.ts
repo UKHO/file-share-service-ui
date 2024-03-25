@@ -9,12 +9,18 @@ import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-se
 import { By } from '@angular/platform-browser';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
+import { HttpClientModule } from '@angular/common/http';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
+import { ScsProductInformationService } from '../../src/app/core/services/scs-product-information-api.service';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
   let fixture: ComponentFixture<EssUploadFileComponent>;
   let essUploadFileService: EssUploadFileService;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
+  let msalService: MsalService;
+  let scsProductInformationService: ScsProductInformationService;
   const getEncData_csv = () => {
     let data = 'Au2fg150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
@@ -116,15 +122,29 @@ describe('EssUploadFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, DesignSystemModule],
+      imports: [CommonModule, DesignSystemModule, HttpClientModule],
       declarations: [EssUploadFileComponent, EssInfoErrorMessageComponent],
       providers: [
         {
           provide: Router,
           useValue: router
         },
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        {
+          provide : ScsProductInformationService,
+          useValue : scsProductInformationService
+        },
+        {
+          provide : MsalService,
+          useValue : msalService
+        },
         EssUploadFileService,
-        EssInfoErrorMessageService
+        EssInfoErrorMessageService,
+        MsalService,
+        ScsProductInformationService
       ]
     })
       .compileComponents();
@@ -143,6 +163,8 @@ describe('EssUploadFileComponent', () => {
     component = fixture.componentInstance;
     essUploadFileService = TestBed.inject(EssUploadFileService);
     essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
+    msalService = TestBed.inject(MsalService);
+    scsProductInformationService = TestBed.inject(ScsProductInformationService);
     fixture.detectChanges();
   });
 
