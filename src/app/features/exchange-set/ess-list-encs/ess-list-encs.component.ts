@@ -60,7 +60,7 @@ export class EssListEncsComponent implements OnInit {
     };
     if (this.essUploadFileService.scsProductResponse) {
       this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
-      this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
+      this.scsInvalidProduct = this.essUploadFileService.scsProductResponse.productCounts.requestedProductsNotReturned;
     }
 }
 
