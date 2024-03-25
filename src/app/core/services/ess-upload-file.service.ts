@@ -161,11 +161,6 @@ export class EssUploadFileService {
     this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
   }
   
-  // getEstimatedTotalSize(encCount:number) {  
-  //   this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
-  //     return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
-  //  }
-
   getEstimatedTotalSize(scsProducts:Product[]):string
    {
     this.estimatedTotalSize=0;
