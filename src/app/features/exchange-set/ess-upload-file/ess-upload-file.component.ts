@@ -182,6 +182,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                 },
                 error: (error: any) => {
                   console.log(error);
+                  if (error.status == 304) {
+                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs 304');
+                    return;
+                  }  
                   this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
                 }
               });
