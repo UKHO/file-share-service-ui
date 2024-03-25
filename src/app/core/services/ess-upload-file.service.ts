@@ -161,9 +161,21 @@ export class EssUploadFileService {
     this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
   }
   
-  getEstimatedTotalSize(encCount:number):string {  
-    this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
-      return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
+  // getEstimatedTotalSize(encCount:number) {  
+  //   this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
+  //     return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
+  //  }
+
+  getEstimatedTotalSize(scsProducts:Product[]):string
+   {
+    this.estimatedTotalSize=0;
+    for( let selectedEncs of  this.selectedEncs){
+      let matchEnc = scsProducts.find((k) => k.productName == selectedEncs.productName);
+      if(matchEnc){
+        this.estimatedTotalSize = this.estimatedTotalSize + matchEnc.fileSize;
+      }
+    }
+    return (this.estimatedTotalSize/1048576).toFixed(2)+' MB';
    }
 
    get scsProductResponse() : ProductCatalog{

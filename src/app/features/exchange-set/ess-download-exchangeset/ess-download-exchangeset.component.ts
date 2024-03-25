@@ -56,7 +56,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
     this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
     this.requestedProductCount = this.exchangeSetDetails.requestedProductCount;
-    this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSize(this.exchangeSetCellCount);
+    //this.avgEstimatedSize = this.essUploadFileService.getEstimatedTotalSizeSelectENC();
     this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
 
     if(this.requestedProductsNotInExchangeSet && this.requestedProductsNotInExchangeSet.length > 0){

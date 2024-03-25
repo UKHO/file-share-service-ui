@@ -130,7 +130,7 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
-    this.estimatedTotalSize = this.getEstimatedTotalSize();
+    this.estimatedTotalSize = this.getEstimatedTotalSize().toString();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     if (this.selectedEncList.length === 0) {
       this.selectDeselectText = SelectDeselect.select;
@@ -188,14 +188,24 @@ export class EssListEncsComponent implements OnInit {
    }
   }
 
+  // getEstimatedTotalSize() {
+  //   if(this.selectedEncList && this.selectedEncList.length > 0){
+  //   return '0MB';
+  //   }
+  //   else{
+  //     return '0MB';
+  //   }
+  // }
+
   getEstimatedTotalSize() {
     if(this.selectedEncList && this.selectedEncList.length > 0){
-    return this.essUploadFileService.getEstimatedTotalSize(this.selectedEncList.length);
+      return this.essUploadFileService.getEstimatedTotalSize(this.essUploadFileService.scsProducts);
     }
     else{
       return '0MB';
     }
   }
+  
   getSelectDeselectText() {
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
     return selectDeselectText;
