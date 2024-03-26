@@ -83,7 +83,6 @@ export class EssListEncsComponent implements OnInit {
    
     if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
       let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-
       this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}`);
     }
   }
