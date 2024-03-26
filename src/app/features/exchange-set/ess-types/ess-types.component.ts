@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { EssInfoErrorMessageService } from 'src/app/core/services/ess-info-error-message.service';
-import { EssUploadFileService } from 'src/app/core/services/ess-upload-file.service';
+import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
+import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 
 @Component({
   selector: 'app-ess-types',
@@ -154,13 +154,12 @@ export class EssTypesComponent implements OnInit, OnDestroy {
     showInfoErrorMessage: boolean,
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
     messageDesc: string = '',
-    messageTitle?: string
   ) {
     this.essInfoErrorMessageService.showInfoErrorMessage = {
       showInfoErrorMessage,
       messageType,
       messageDesc,
-      messageTitle,
+      
     };
   }
 
