@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
-import { BundleInfo, DateInfo, Product } from '../../src/app/core/models/ess-response-types';
+import { BundleInfo, DateInfo, NotReturnedProduct, Product } from '../../src/app/core/models/ess-response-types';
 
 describe('EssUploadFileService', () => {
   const getTempData = () => {
@@ -272,5 +272,19 @@ describe('EssUploadFileService', () => {
     jest.clearAllMocks();
     expect(service.getEstimatedTotalSize(encCount)).toEqual(expectedResult);
   });
-  
+
+  it('checkMaxEncLimit should return false as per configuration settings', () => {
+    let notReturnedProduct: NotReturnedProduct[] = [{
+      "productName": "US5CN13M",
+      "reason": "noDataAvailableForCancelledProduct"
+    },
+    {
+      "productName": "DE521900",
+      "reason": "invalidProduct"
+    }
+    ];
+
+    service.scsInvalidProducts = notReturnedProduct;
+    expect(service.scsInvalidProducts.length).toEqual(2);
+  });
 });
