@@ -174,8 +174,6 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
-      - name: essConfig.apiUiUrl
-        value: $(essConfig-apiUiUrl)
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
@@ -510,9 +508,7 @@ stages:
       - name: "ServiceDnsUrl"
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
-        value: $(essConfig-aioExcludeEncs)
-      - name: essConfig.apiUiUrl
-        value: $(essConfig-apiUiUrl)        
+        value: $(essConfig-aioExcludeEncs)      
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
