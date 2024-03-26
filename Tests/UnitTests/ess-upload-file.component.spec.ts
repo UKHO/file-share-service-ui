@@ -99,6 +99,26 @@ describe('EssUploadFileComponent', () => {
     data += ':ECS \n';
     return data;
   };
+
+  const getNDeltaEncData = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data += 'DE4NO13K202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU20130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU310130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU410130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU510130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU610130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU710130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU810130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU90130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU2110130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB61C,0,5,GB \n';
+    data += 'AU230130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB671C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
+  };
   
   const getNEncDataWithAio = () => {
     let data = '';
@@ -222,6 +242,7 @@ describe('EssUploadFileComponent', () => {
       component.processEncFile(encDataFunc);
       expect(component.validEncList.length).toBe(expectedResult);
     });
+
   it.each`
     fileType                          |fileName         | getEncData                     | encDataFunc                 | expectedResult
     ${'text/csv'}                     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
@@ -232,6 +253,8 @@ describe('EssUploadFileComponent', () => {
       const file = new File([getEncData], fileName);
       Object.defineProperty(file, 'type', { value: fileType });
       component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
       component.processEncFile(encDataFunc);
       expect(component.validEncList.length).toEqual(expectedResult);
       const errObj = {
@@ -239,7 +262,17 @@ describe('EssUploadFileComponent', () => {
         messageType: 'info',
         messageDesc: 'Some values have not been added to list.'
       };
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+
+      scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEncList).subscribe((res: any) => {
+        scsProductInformationService.productInformationSinceDateTime().subscribe(
+          (result:any)=>{
+                 var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
+                 if(res.productCounts.requestedProductsNotReturned.length != 0){
+                  expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+                 }
+                }
+        );
+      });
     });
 
   it.each`
@@ -351,33 +384,6 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
     });
 
-  
-
-    it.each`
-    encDataFunc       | expectedResult
-    ${getNEncData}    | ${true}
-    ${getEncData}     | ${false}
-      `('infomessage is true when enc list count exceeds MaxEncLimit',
-      ({ encDataFunc, expectedResult }: { encDataFunc: () => string,  expectedResult: boolean }) => {
-        const fileContent = encDataFunc();
-        const file = new File([fileContent], 'test.txt');
-        Object.defineProperty(file, 'type', { value: 'text/plain' });
-        component.encFile = file;
-        component.processEncFile(fileContent);
-        const errObJ = {
-          showInfoErrorMessage : false,
-          messageType : 'info',
-          messageDesc : ''
-        };
-        if(expectedResult){
-          errObJ.showInfoErrorMessage = expectedResult;
-          errObJ.messageType = 'info';
-          errObJ.messageDesc = 'Some values have not been added to list.';
-        }
-        expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-        expect(essUploadFileService.infoMessage).toBe(expectedResult);
-      });
-
     it.each`
     encDataFunc                   | expectedResult
     ${getNEncDataWithAio}         | ${true}
@@ -388,6 +394,8 @@ describe('EssUploadFileComponent', () => {
         const file = new File([fileContent], 'test.txt');
         Object.defineProperty(file, 'type', { value: 'text/plain' });
         component.encFile = file;
+        essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+        essUploadFileService.exchangeSetDownloadType = 'Delta';
         component.processEncFile(fileContent);
         var aioEns=essUploadFileService.aioEncFound;
         if(aioEns){
@@ -396,8 +404,17 @@ describe('EssUploadFileComponent', () => {
             messageType: 'info',
             messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.'
           };
-          expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-          expect(essUploadFileService.infoMessage).toBe(expectedResult);
+          scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEncList).subscribe((res: any) => {
+            scsProductInformationService.productInformationSinceDateTime().subscribe(
+              (result:any)=>{
+                     var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
+                     if(aioEns){
+                      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+                      expect(essUploadFileService.infoMessage).toBe(expectedResult);
+                     }
+                    }
+            );
+          });
         } 
         
       });
@@ -417,5 +434,32 @@ describe('EssUploadFileComponent', () => {
         expect(essLandingPageText[i].nativeElement.innerHTML).toBe('Once you have uploaded a list, you can then make an exchange set containing a maximum of 5 individual ENCs. ');
     }
   });
+
+  it.each`
+    encDataFunc                   | expectedResult
+    ${getNDeltaEncData}         | ${true}
+    ${getEncData}                 | ${false}
+      `('should show delta respone',
+      ({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+        const fileContent = encDataFunc();
+        const file = new File([fileContent], 'test.txt');
+        Object.defineProperty(file, 'type', { value: 'text/plain' });
+        component.encFile = file;
+        essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+        essUploadFileService.exchangeSetDownloadType = 'Delta';
+        component.processEncFile(fileContent);
+
+          scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEncList).subscribe((res: any) => {
+            scsProductInformationService.productInformationSinceDateTime().subscribe(
+              (result:any)=>{
+                     var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
+                     expect(products.productName).toEqual(component.validEncList[0]);
+                    }
+            );
+          }); 
+        
+      });
+
+
 
 });

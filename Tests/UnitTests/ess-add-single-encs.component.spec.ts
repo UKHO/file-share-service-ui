@@ -186,11 +186,66 @@ describe('EssAddSingleEncsComponent', () => {
 
   it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', () => {
      let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+     service.exchangeSetDownloadType = 'Base';
      component.fetchScsTokenReponse("essHome");
      scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
      expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
     });
   });
+
+  it('should return sales catalogue Response on productUpdatesByDeltaResponse', () => {
+    let addedEncList = ['DE4NO13K', 'SE6IIFE1', 'NO3B2020'];
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.exchangeSetDownloadType = 'Delta';
+    component.fetchScsTokenReponse("essHome");
+    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+      scsProductInformationService.productInformationSinceDateTime().subscribe(
+        (result:any)=>{
+               var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
+               expect(products).toEqual(scsProductUpdatesByIdentifiersMockData.products[0]);
+              }
+      );
+    });
+  });
+
+
+  it('validateAndAddENC should   raise "Invalid ENCs."error', () => {
+    let addedEncList = ['TP4NO13K', 'AT6IIFE1'];
+    service.exchangeSetDownloadType = 'Delta';
+    component.fetchScsTokenReponse("essHome");
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'info',
+      messageDesc : 'Invalid ENCs'
+    };
+    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+    });
+  });
+
+
+  it('validation should   raise "We dont have any latest update for this ENCs."error', () => {
+    let addedEncList = ['DE4NO13K', 'SE6IIFE1', 'NO3B2020'];
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.exchangeSetDownloadType = 'Delta';
+    component.fetchScsTokenReponse("essHome");
+    const errObj = {
+      showInfoErrorMessage : true,
+      messageType : 'info',
+      messageDesc : 'We dont have any latest update for this ENCs'
+    };
+    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+      scsProductInformationService.productInformationSinceDateTime().subscribe(
+        (result:any)=>{
+               var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
+               if(products.length == 0){
+                expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+               }
+              }
+      );
+    });
+  });
+
 });
 
 export const scsProductUpdatesByIdentifiersMockData: any = {
