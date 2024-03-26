@@ -126,27 +126,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
       this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
-            console.log(data);
-            this.displayLoader = false;
-            this.triggerInfoErrorMessage(false,'info', '');
-            if(data.products.length === 0){
-              this.triggerInfoErrorMessage(true,'error', 'Invalid ENC');
-              return;
-            }
-            if(!this.essUploadFileService.scsProductResponse){
-              this.essUploadFileService.scsProductResponse = data;
-            }else{
-              this.essUploadFileService.scsProductResponse.products.push(data.products[0]);
-            }
-            if(renderedFrom === 'essHome'){
-              this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
-              this.essUploadFileService.infoMessage = false;
-              this.route.navigate(['exchangesets', 'enc-list']);
-            }else if(renderedFrom === 'encList'){
-              this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
-              this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
-              this.txtSingleEnc = '';
-            }
+            this.processProductUpdatesByIdentifiers(data, renderedFrom);
           },
           error:(error) => {
             console.log(error);
@@ -233,6 +213,29 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
           this.scsProductCatalogResponse(payload, renderedFrom);
         });
     });
+  }
+
+  processProductUpdatesByIdentifiers(productCatalog:ProductCatalog, renderedFrom:string){
+    this.displayLoader = false;
+    this.triggerInfoErrorMessage(false,'info', '');
+    if(productCatalog.products.length === 0){
+      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC');
+      return;
+    }
+    if(!this.essUploadFileService.scsProductResponse){
+      this.essUploadFileService.scsProductResponse = productCatalog;
+    }else{
+      this.essUploadFileService.scsProductResponse.products.push(productCatalog.products[0]);
+    }
+    if(renderedFrom === 'essHome'){
+      this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
+      this.essUploadFileService.infoMessage = false;
+      this.route.navigate(['exchangesets', 'enc-list']);
+    }else if(renderedFrom === 'encList'){
+      this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
+      this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
+      this.txtSingleEnc = '';
+    }
   }
 
   ngOnDestroy() {
