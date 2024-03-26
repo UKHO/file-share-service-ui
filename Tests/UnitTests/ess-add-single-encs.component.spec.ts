@@ -398,14 +398,27 @@ describe('EssAddSingleEncsComponent', () => {
     component.txtSingleEnc = 'US4FL18M';
     component.renderedFrom = 'encList';
     service.setValidENCs(component.validEnc);
-    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
     component.fetchScsTokenReponse("encList");
-    component.productUpdatesByIdentifiersResponse(addedEncList,"encList");
+    component.productUpdatesByIdentifiersResponse(component.validEnc,"encList");
     component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"encList");
-    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+    scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEnc).subscribe((res: any) => {
     expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
    });
  });
+
+ it('productUpdatesByIdentifiersResponse should set Error message on error', () => {
+   component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+   component.renderedFrom = 'essHome';
+   component.productUpdatesByIdentifiersResponse(component.validEnc,"essHome");
+   scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEnc).subscribe(() => {} , (error: any) => {
+   const errObj = {
+    showInfoErrorMessage : false,
+    messageType : 'error',
+    messageDesc : 'There has been an error'
+  };
+  expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+  });
+});
 
   it('should return sales catalogue Response on productUpdatesByDeltaResponse', () => {
     let addedEncList = ['DE4NO13K', 'SE6IIFE1', 'NO3B2020'];

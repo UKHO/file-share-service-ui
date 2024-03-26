@@ -471,6 +471,20 @@ describe('EssUploadFileComponent', () => {
    });
  });
 
+ it('productUpdatesByIdentifiersResponse should set Error message on error', () => {
+   let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+   component.fetchScsTokenReponse();
+   component.productUpdatesByIdentifiersResponse(addedEncList);
+   scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe(() => {} , (error: any) => {
+   const errObj = {
+   showInfoErrorMessage : false,
+   messageType : 'error',
+   messageDesc : 'There has been an error'
+ };
+ expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+ });
+});
+
 });
 
 export const scsProductUpdatesByIdentifiersMockData: any = {
