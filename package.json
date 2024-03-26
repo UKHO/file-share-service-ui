@@ -37,7 +37,7 @@
     "tar": "^6.2.1",
     "ts-jest": "^29.1.1",
     "tslib": "^2.6.2",
-    "webpack-dev-middleware": "^6.1.1",
+    "webpack-dev-middleware": "^7.1.0",
     "webpack-dev-server": "^5.0.4",
     "zone.js": "^0.13.1"
   },
