@@ -48,16 +48,19 @@ export class EssAddSingleEncsComponent implements OnInit {
 
   addSingleEncToList() {
     if(!this.txtSingleEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Please enter ENC number');
       return;
     }
 
     if(!this.essUploadFileService.validateENCFormat(this.txtSingleEnc)){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
       return;
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
@@ -70,26 +73,31 @@ export class EssAddSingleEncsComponent implements OnInit {
     const isValidEnc = this.essUploadFileService.validateENCFormat(this.txtSingleEnc);
 
     if(!this.txtSingleEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Please enter ENC number');
       return;
     }
 
     if(!isValidEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
       return;
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
 
     if(this.validEnc.includes(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'ENC already in list.');
       return;
     }
 
     if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'Max ENC limit reached.');
       return;
     }
