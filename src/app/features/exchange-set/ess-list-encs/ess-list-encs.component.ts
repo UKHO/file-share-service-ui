@@ -64,10 +64,6 @@ export class EssListEncsComponent implements OnInit {
     }
 }
 
-  @HostListener('window:popstate', ['$event'])
-  onPopState() {
-    this.essUploadFileService.clearData();
-  }
   ngOnInit(): void {
     this.maxEncSelectionLimit = Number.parseInt(
       AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
@@ -174,7 +170,6 @@ export class EssListEncsComponent implements OnInit {
 
   switchToESSLandingPage() {
     this.route.navigate(['exchangesets']);
-    this.essUploadFileService.clearData();
   }
 
   displaySingleEnc() {
