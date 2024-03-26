@@ -421,6 +421,7 @@ describe('EssUploadFileComponent', () => {
   it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', () => {
     let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
     component.fetchScsTokenReponse();
+    component.productUpdatesByIdentifiersResponse(addedEncList);
     scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
     expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
    });

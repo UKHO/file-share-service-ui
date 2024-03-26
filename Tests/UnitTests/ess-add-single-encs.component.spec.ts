@@ -12,6 +12,7 @@ import { ScsProductInformationService } from '../../src/app/core/services/scs-pr
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { HttpClientModule } from '@angular/common/http';
+import { ProductCatalog } from 'src/app/core/models/ess-response-types';
 
 describe('EssAddSingleEncsComponent', () => {
   let component: EssAddSingleEncsComponent;
@@ -20,6 +21,203 @@ describe('EssAddSingleEncsComponent', () => {
   let essInfoErrorMessageService: EssInfoErrorMessageService;
   let scsProductInformationService: ScsProductInformationService;
   let msalService: MsalService;
+  let scsProductUpdatesByIdentifiersMockData: ProductCatalog = 
+  {
+    "products": [
+        {
+            "productName": "AU210130",
+            "editionNumber": 5,
+            "updateNumbers": [
+                0
+            ],
+            "dates": [
+                {
+                    "updateNumber": 0,
+                    "updateApplicationDate": "2023-03-10T00:00:00Z",
+                    "issueDate": "2023-03-10T00:00:00Z"
+                }
+            ],
+            "cancellation": null,
+            "fileSize": 26140,
+            "ignoreCache": false,
+            "bundle": [
+                {
+                    "bundleType": "DVD",
+                    "location": "M1;B3"
+                }
+            ]
+        },
+        {
+            "productName": "AU210230",
+            "editionNumber": 1,
+            "updateNumbers": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+            ],
+            "dates": [
+                {
+                    "updateNumber": 0,
+                    "updateApplicationDate": "2015-02-25T00:00:00Z",
+                    "issueDate": "2015-02-25T00:00:00Z"
+                },
+                {
+                    "updateNumber": 1,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2016-04-27T00:00:00Z"
+                },
+                {
+                    "updateNumber": 2,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2017-01-09T00:00:00Z"
+                },
+                {
+                    "updateNumber": 3,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2017-03-20T00:00:00Z"
+                },
+                {
+                    "updateNumber": 4,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2017-11-14T00:00:00Z"
+                },
+                {
+                    "updateNumber": 5,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2017-12-11T00:00:00Z"
+                },
+                {
+                    "updateNumber": 6,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2018-12-19T00:00:00Z"
+                },
+                {
+                    "updateNumber": 7,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2019-06-28T00:00:00Z"
+                },
+                {
+                    "updateNumber": 8,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2019-10-24T00:00:00Z"
+                },
+                {
+                    "updateNumber": 9,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2021-05-11T00:00:00Z"
+                },
+                {
+                    "updateNumber": 10,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2021-10-08T00:00:00Z"
+                },
+                {
+                    "updateNumber": 11,
+                    "updateApplicationDate": "2016-04-27T00:00:00Z",
+                    "issueDate": "2022-11-16T00:00:00Z"
+                }
+            ],
+            "cancellation": null,
+            "fileSize": 343128,
+            "ignoreCache": false,
+            "bundle": [
+                {
+                    "bundleType": "DVD",
+                    "location": "M1;B1"
+                }
+            ]
+        },
+        {
+            "productName": "AU210330",
+            "editionNumber": 3,
+            "updateNumbers": [
+                0
+            ],
+            "dates": [
+                {
+                    "updateNumber": 0,
+                    "updateApplicationDate": "2022-12-21T00:00:00Z",
+                    "issueDate": "2022-12-21T00:00:00Z"
+                }
+            ],
+            "cancellation": null,
+            "fileSize": 123074,
+            "ignoreCache": false,
+            "bundle": [
+                {
+                    "bundleType": "DVD",
+                    "location": "M1;B4"
+                }
+            ]
+        },
+        {
+            "productName": "AU210180",
+            "editionNumber": 13,
+            "updateNumbers": [
+                0
+            ],
+            "dates": [
+                {
+                    "updateNumber": 0,
+                    "updateApplicationDate": "2021-03-26T00:00:00Z",
+                    "issueDate": "2021-03-26T00:00:00Z"
+                }
+            ],
+            "cancellation": null,
+            "fileSize": 7215,
+            "ignoreCache": false,
+            "bundle": [
+                {
+                    "bundleType": "DVD",
+                    "location": "M1;B1"
+                }
+            ]
+        },
+        {
+            "productName": "AU210470",
+            "editionNumber": 2,
+            "updateNumbers": [
+                0
+            ],
+            "dates": [
+                {
+                    "updateNumber": 0,
+                    "updateApplicationDate": "2023-05-09T00:00:00Z",
+                    "issueDate": "2023-05-09T00:00:00Z"
+                }
+            ],
+            "cancellation": null,
+            "fileSize": 637942,
+            "ignoreCache": false,
+            "bundle": [
+                {
+                    "bundleType": "DVD",
+                    "location": "M1;B2"
+                }
+            ]
+        }
+    ],
+    "productCounts": {
+        "requestedProductCount": 6,
+        "returnedProductCount": 5,
+        "requestedProductsAlreadyUpToDateCount": 0,
+        "requestedProductsNotReturned": [
+            {
+                "productName": "US5CN13M",
+                "reason": "noDataAvailableForCancelledProduct"
+            }
+        ]
+    }
+}
   const router = {
     navigate: jest.fn()
   };
@@ -184,13 +382,29 @@ describe('EssAddSingleEncsComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
-  it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', () => {
+  it('should return sales catalogue Response when user is in essHome screen', () => {
      let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
      component.fetchScsTokenReponse("essHome");
+     component.productUpdatesByIdentifiersResponse(addedEncList,"essHome");
+     component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"essHome");
      scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
      expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
     });
   });
+
+  it('should return sales catalogue Response when user is in encList screen', () => {
+    component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];
+    component.txtSingleEnc = 'US4FL18M';
+    component.renderedFrom = 'encList';
+    service.setValidENCs(component.validEnc);
+    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+    component.fetchScsTokenReponse("encList");
+    component.productUpdatesByIdentifiersResponse(addedEncList,"encList");
+    component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"encList");
+    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+    expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
+   });
+ });
 });
 
 export const scsProductUpdatesByIdentifiersMockData: any = {
