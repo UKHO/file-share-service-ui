@@ -128,18 +128,11 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[]) {
     if (encs != null) {
-      this.productIdentifierSubscriber=this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+      this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.displayLoader  = false;
             this.essUploadFileService.scsProductResponse = data;
-            if (this.essUploadFileService.aioEncFound) {
-              this.essUploadFileService.infoMessage = true;
-              this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
-            }
-            else if (this.essUploadFileService.scsProductResponse.productCounts.requestedProductsNotReturned.length != 0) {
-              this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
-            }
             this.route.navigate(['exchangesets', 'enc-list']);
           },
           error:(error) => {
@@ -171,15 +164,11 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                         this.essUploadFileService.infoMessage = true;
                         this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
                       }
-                      else if (this.scsResponse.productCounts.requestedProductsNotReturned.length != 0) {
-                        this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
-                      }
-
                       this.route.navigate(['exchangesets', 'enc-list']);
                     }
                     else {
                       this.displayLoader = false;
-                      this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
+                      this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded ENCs');
                       return;
                     }
                   },
@@ -187,7 +176,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                     console.log(error);
                     this.displayLoader = false;
                     if (error.status == 304) {
-                      this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
+                      this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded ENCs');
                       return;
                     }
                     this.triggerInfoErrorMessage(true, 'error', 'There has been an error');

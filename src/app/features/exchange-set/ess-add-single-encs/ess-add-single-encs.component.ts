@@ -123,7 +123,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[] , renderedFrom: string) {
     if (encs != null) {
-      this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+      this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             console.log(data);
@@ -140,12 +140,10 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
             }
             if(renderedFrom === 'essHome'){
               this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
-              this.essUploadFileService.setValidSingleEncProduct(data);
               this.essUploadFileService.infoMessage = false;
               this.route.navigate(['exchangesets', 'enc-list']);
             }else if(renderedFrom === 'encList'){
               this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
-              this.essUploadFileService.addSingleEncProduct(data);
               this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
               this.txtSingleEnc = '';
             }
@@ -187,7 +185,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   }
                   else {
                     this.displayLoader = false;
-                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
+                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded ENCs');
                     return;
                   }
                 },
@@ -195,7 +193,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   console.log(error);
                   this.displayLoader = false;
                   if (error.status == 304) {
-                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded Encs');
+                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded ENCs');
                     return;
                   }
                   this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
