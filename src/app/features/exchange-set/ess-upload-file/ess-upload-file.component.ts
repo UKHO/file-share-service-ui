@@ -159,11 +159,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                     if (this.products.length != 0) {
                       this.scsResponse.products = this.products;
                       this.essUploadFileService.scsProductResponse = this.scsResponse;
-
-                      if (this.essUploadFileService.aioEncFound) {
-                        this.essUploadFileService.infoMessage = true;
-                        this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
-                      }
                       this.route.navigate(['exchangesets', 'enc-list']);
                     }
                     else {
