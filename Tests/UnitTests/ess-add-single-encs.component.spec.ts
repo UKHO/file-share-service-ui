@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component';
 import { NO_ERRORS_SCHEMA, DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
@@ -13,6 +13,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductCatalog } from 'src/app/core/models/ess-response-types';
+import { of } from 'rxjs';
 
 describe('EssAddSingleEncsComponent', () => {
   let component: EssAddSingleEncsComponent;
@@ -405,19 +406,19 @@ describe('EssAddSingleEncsComponent', () => {
    });
  });
 
- it('productUpdatesByIdentifiersResponse should set Error message on error', () => {
-   component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
-   component.renderedFrom = 'essHome';
-   component.productUpdatesByIdentifiersResponse(component.validEnc,"essHome");
-   scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEnc).subscribe(() => {} , (error: any) => {
-   const errObj = {
-    showInfoErrorMessage : false,
-    messageType : 'error',
-    messageDesc : 'There has been an error'
-  };
-  expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-  });
-});
+ it('should return Invalid ENC Response when user is added invalid enc', fakeAsync(() => {
+    component.validEnc = ['TP4NO13K', 'AT6IIFE1'];
+    component.txtSingleEnc = 'US4F8M';
+    component.renderedFrom = 'essHome';
+    service.setValidENCs(component.validEnc);
+    scsProductUpdatesByIdentifiersMockData.products = [];
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.triggerInfoErrorMessage=jest.fn();
+    component.productUpdatesByIdentifiersResponse(component.validEnc,'essHome')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC');
+  }));
 });
 
 export const scsProductUpdatesByIdentifiersMockData: any = {
