@@ -81,10 +81,21 @@ export class EssListEncsComponent implements OnInit {
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
    
-    if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
-      let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-      this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}`);
-    }
+    if(this.essUploadFileService.aioEncFound){
+      if(this.scsInvalidProduct.length > 0){
+        let invalidProd1 = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+        this.essUploadFileService.infoMessage = true;
+        this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProd1}`);
+      }
+      else{
+        this.essUploadFileService.infoMessage = true;
+        this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      }
+     }
+      else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
+        let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}`);
+      }
   }
 
   setEncList() {
