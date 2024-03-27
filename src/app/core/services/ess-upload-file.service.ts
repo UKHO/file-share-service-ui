@@ -196,5 +196,6 @@ export class EssUploadFileService {
     this.scsInvalidProducts = [];
     this.scsProductResponse = undefined;
     this.clearSelectedEncs();
+    this.aioEncFound = false;
   }
 }
