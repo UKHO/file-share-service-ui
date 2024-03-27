@@ -422,7 +422,7 @@ describe('EssAddSingleEncsComponent', () => {
   });
 });
 
-  it('should return sales catalogue Response on productUpdatesByDeltaResponse for encList', fakeAsync(() => {
+  it('should return sales catalogue Response on productUpdatesByDeltaResponse when user is on encList screen', fakeAsync(() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];
     component.txtSingleEnc = 'US4FL18M';
     component.renderedFrom = 'encList';
@@ -442,7 +442,7 @@ describe('EssAddSingleEncsComponent', () => {
   }));
 
 
-  it('should return sales catalogue Response on productUpdatesByDeltaResponse for esshome', fakeAsync(() => {
+  it('should return sales catalogue Response on productUpdatesByDeltaResponse when user is on esshome screen ', fakeAsync(() => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];
     component.txtSingleEnc = 'US4FL18M';
     component.renderedFrom = 'essHome';
@@ -461,7 +461,7 @@ describe('EssAddSingleEncsComponent', () => {
     expect(routeService).toHaveBeenCalledWith(['exchangesets', 'enc-list']);
   }));
 
-  it('validateAndAddENC should   raise "Invalid ENC number" error', fakeAsync(() => {
+  it('validateAndAddENC should raise "Invalid ENC number" error', fakeAsync(() => {
     component.validEnc = ['TP4NO13K', 'AT6IIFE1'];
     component.txtSingleEnc = 'US4F8M';
     component.renderedFrom = 'essHome';
@@ -508,7 +508,7 @@ describe('EssAddSingleEncsComponent', () => {
     expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
  }));
 
- it('validation should   raise "We dont have any latest update for this ENCs."error', fakeAsync(() => {
+ it('validation should raise "There has been no updates for the ENCs in the date range selected."info', fakeAsync(() => {
   component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
   component.renderedFrom = 'essHome';
   service.exchangeSetDownloadType = 'Delta';
@@ -521,7 +521,7 @@ describe('EssAddSingleEncsComponent', () => {
   component.scsProductCatalogResponse(component.validEnc,'essHome')
   tick();
   expect(component.displayLoader).toEqual(false);
-  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'We dont have any latest update for uploaded ENCs');
+  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There has been no updates for the ENCs in the date range selected');
 }));
 
 });

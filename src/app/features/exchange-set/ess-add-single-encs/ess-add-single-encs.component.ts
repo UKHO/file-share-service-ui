@@ -154,7 +154,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   }
                   else {
                     this.displayLoader = false;
-                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded ENCs');
+                    this.triggerInfoErrorMessage(true, 'info', 'There has been no updates for the ENCs in the date range selected');
                     return;
                   }
                 },
@@ -162,7 +162,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   console.log(error);
                   this.displayLoader = false;
                   if (error.status == 304) {
-                    this.triggerInfoErrorMessage(true, 'info', 'We dont have any latest update for uploaded ENCs');
+                    this.triggerInfoErrorMessage(true, 'info', 'There has been no updates for the ENCs in the date range selected');
                     return;
                   }
                   this.triggerInfoErrorMessage(true, 'error', 'There has been an error');

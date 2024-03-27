@@ -398,7 +398,7 @@ it.each`
 encDataFunc                   | expectedResult
 ${getNDeltaEncData}         | ${true}
 ${getEncData}                 | ${false}
-  `('should show delta respone',
+  `('should return sales catalogue Response for Delta',
   fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
     const fileContent = encDataFunc();
     const file = new File([fileContent], 'test.txt');
@@ -466,7 +466,7 @@ ${getEncData}                 | ${false}
     encDataFunc                   | expectedResult
     ${getNDeltaEncData}         | ${true}
     ${getEncData}                 | ${false}
-      `('validatation should raise "No valid ENCs found" error',
+      `('validatation should raise "No valid ENCs found" info',
       fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
         const fileContent = encDataFunc();
         const file = new File([fileContent], 'test.txt');
@@ -490,7 +490,7 @@ ${getEncData}                 | ${false}
     encDataFunc                   | expectedResult
     ${getNDeltaEncData}         | ${true}
     ${getEncData}                 | ${false}
-      `('validation should   raise "We dont have any latest update for this ENCs."error',
+      `('validation should raise "There has been no updates for the ENCs in the date range selected"info',
       fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
         const fileContent = encDataFunc();
         const file = new File([fileContent], 'test.txt');
@@ -506,7 +506,7 @@ ${getEncData}                 | ${false}
         component.scsProductCatalogResponse(component.validEncList);
         tick();
         expect(component.displayLoader).toEqual(false);
-        expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'We dont have any latest update for uploaded ENCs');
+        expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There has been no updates for the ENCs in the date range selected');
       }));
 });
 
