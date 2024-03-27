@@ -140,7 +140,7 @@ export class EssListEncsComponent implements OnInit {
       enc: item.enc,
       selected: this.selectedEncList.includes(item.enc) ? true : false,
     }));
-    this.estimatedTotalSize = this.getEstimatedTotalSize().toString();
+    this.estimatedTotalSize = this.getEstimatedTotalSize();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     if (this.selectedEncList.length === 0) {
       this.selectDeselectText = SelectDeselect.select;

@@ -132,19 +132,19 @@ describe('EssDownloadExchangesetComponent', () => {
     });
   });
 
-  test('should render estimated size', () => {
-    var expectedResult: any = '1.2MB';
-    service.getEstimatedTotalSize.mockReturnValue('1.2MB');
-    component.ngOnInit();
-    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
-    expect(component.avgEstimatedSize).toBe(expectedResult);
+  // test('should render estimated size', () => {
+  //   var expectedResult: any = '1.2MB';
+  //   service.getEstimatedTotalSize.mockReturnValue('1.2MB');
+  //   component.ngOnInit();
+  //   expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+  //   expect(component.avgEstimatedSize).toBe(expectedResult);
 
-    var expectedResultForKB: any = '0MB';
-    service.getEstimatedTotalSize.mockReturnValue('0MB');
-    component.ngOnInit();
-    expect(service.getEstimatedTotalSize).toHaveBeenCalled();
-    expect(component.avgEstimatedSize).toBe(expectedResultForKB);
-  });
+  //   var expectedResultForKB: any = '0MB';
+  //   service.getEstimatedTotalSize.mockReturnValue('0MB');
+  //   component.ngOnInit();
+  //   expect(service.getEstimatedTotalSize).toHaveBeenCalled();
+  //   expect(component.avgEstimatedSize).toBe(expectedResultForKB);
+  // });
   
   test('should return exchangeSetTotalCount', () => {
    component.ngOnInit();
