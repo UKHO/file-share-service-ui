@@ -144,11 +144,7 @@ export class EssUploadFileService {
     this.validEncs = [];
     this.validEncs.push(signleValidEnc.toUpperCase());
   }
-
-  setValidSingleEncProduct(signleValidEnc: ProductCatalog) {
-    this.scsProductResponse =signleValidEnc;
-  }
-
+  
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
     this.exchangeSetDetails = exchangeSetDetails;
   }
@@ -159,15 +155,6 @@ export class EssUploadFileService {
 
   addSingleEnc(signleValidEnc: string) {
     this.validEncs.push(signleValidEnc.toUpperCase());
-    this.notifySingleEnc.next(true);
-  }
-
-  addSingleEncProduct(signleValidEnc: ProductCatalog) {
-    if(!this.scsProductResponse){
-      this.scsProductResponse = signleValidEnc;
-    }else{
-      this.scsProductResponse.products.push(signleValidEnc.products[0]);
-    }
     this.notifySingleEnc.next(true);
   }
 
