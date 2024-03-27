@@ -13,7 +13,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductCatalog } from 'src/app/core/models/ess-response-types';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('EssAddSingleEncsComponent', () => {
   let component: EssAddSingleEncsComponent;
@@ -393,18 +393,29 @@ describe('EssAddSingleEncsComponent', () => {
     });
   });
 
-  it('should return sales catalogue Response when user is in encList screen', () => {
-    component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];
-    component.txtSingleEnc = 'US4FL18M';
+ it('should return sales catalogue Response when user is in essHome screen', fakeAsync(() => {
+    component.validEnc = ['AU210130', 'AU210230', 'AU210330', 'AU210180'];
+    component.txtSingleEnc = 'AU210470';
+    component.renderedFrom = 'essHome';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.productUpdatesByIdentifiersResponse(component.validEnc,component.renderedFrom)
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(5).toEqual(scsProductUpdatesByIdentifiersMockData.productCounts.returnedProductCount);
+  }));
+
+  it('should return sales catalogue Response when user is in encList screen', fakeAsync(() => {
+    component.validEnc = ['AU210130', 'AU210230', 'AU210330', 'AU210180'];
+    component.txtSingleEnc = 'AU210470';
     component.renderedFrom = 'encList';
     service.setValidENCs(component.validEnc);
-    component.fetchScsTokenReponse("encList");
-    component.productUpdatesByIdentifiersResponse(component.validEnc,"encList");
-    component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"encList");
-    scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEnc).subscribe((res: any) => {
-    expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
-   });
- });
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.productUpdatesByIdentifiersResponse(component.validEnc,component.renderedFrom)
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(5).toEqual(scsProductUpdatesByIdentifiersMockData.productCounts.returnedProductCount);
+  }));
 
  it('should return Invalid ENC Response when user is added invalid enc', fakeAsync(() => {
     component.validEnc = ['TP4NO13K', 'AT6IIFE1'];
@@ -418,6 +429,17 @@ describe('EssAddSingleEncsComponent', () => {
     tick();
     expect(component.displayLoader).toEqual(false);
     expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC');
+  }));
+
+  it('should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
+    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+    component.triggerInfoErrorMessage=jest.fn();
+    component.fetchScsTokenReponse("encList");
+    component.productUpdatesByIdentifiersResponse(addedEncList,"encList");
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
   }));
 });
 

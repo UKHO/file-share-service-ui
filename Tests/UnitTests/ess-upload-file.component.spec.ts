@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { ScsProductInformationService } from '../../src/app/core/services/scs-product-information-api.service';
+import { of, throwError } from 'rxjs';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
@@ -418,14 +419,25 @@ describe('EssUploadFileComponent', () => {
     }
   });
 
-  it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', () => {
-    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
-    component.fetchScsTokenReponse();
-    component.productUpdatesByIdentifiersResponse(addedEncList);
-    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
-    expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
-   });
- });
+ it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', fakeAsync(() => {
+  let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+  jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+  component.productUpdatesByIdentifiersResponse(addedEncList)
+  tick();
+  expect(component.displayLoader).toEqual(false);
+  expect(3).toEqual(scsProductUpdatesByIdentifiersMockData.productCounts.returnedProductCount);
+}));
+
+ it('should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
+  let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+  jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+  component.triggerInfoErrorMessage=jest.fn();
+  component.fetchScsTokenReponse();
+  component.productUpdatesByIdentifiersResponse(addedEncList);
+  tick();
+  expect(component.displayLoader).toEqual(false);
+  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+}));
 });
 
 export const scsProductUpdatesByIdentifiersMockData: any = {
