@@ -222,25 +222,6 @@ describe('EssUploadFileComponent', () => {
       component.processEncFile(encDataFunc);
       expect(component.validEncList.length).toBe(expectedResult);
     });
-  it.each`
-    fileType                          |fileName         | getEncData                     | encDataFunc                 | expectedResult
-    ${'text/csv'}                     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
-    ${'application/vnd.ms-excel'}     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
-    ${'text/plain'}    |${'test.txt'} | ${getInvalidEncData()}         | ${getInvalidEncData()}      |  ${1}
-    `('processEncFile should set raise "Some values have not been added to list." info',
-    ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
-      const file = new File([getEncData], fileName);
-      Object.defineProperty(file, 'type', { value: fileType });
-      component.encFile = file;
-      component.processEncFile(encDataFunc);
-      expect(component.validEncList.length).toEqual(expectedResult);
-      const errObj = {
-        showInfoErrorMessage: true,
-        messageType: 'info',
-        messageDesc: 'Some values have not been added to list.'
-      };
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-    });
 
   it.each`
      encDataFunc
@@ -280,8 +261,6 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
-
-
     it.each`
     fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getAioEncData_csv()}      |  ${3}
@@ -301,7 +280,6 @@ describe('EssUploadFileComponent', () => {
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
-
 
     it('onFileInputChange{ event.srcElement} should raise error for unsupported file type', () => {
       const file = new File([getEncData_csv()], 'test.jpeg');
@@ -350,33 +328,6 @@ describe('EssUploadFileComponent', () => {
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
     });
-
-  
-
-    it.each`
-    encDataFunc       | expectedResult
-    ${getNEncData}    | ${true}
-    ${getEncData}     | ${false}
-      `('infomessage is true when enc list count exceeds MaxEncLimit',
-      ({ encDataFunc, expectedResult }: { encDataFunc: () => string,  expectedResult: boolean }) => {
-        const fileContent = encDataFunc();
-        const file = new File([fileContent], 'test.txt');
-        Object.defineProperty(file, 'type', { value: 'text/plain' });
-        component.encFile = file;
-        component.processEncFile(fileContent);
-        const errObJ = {
-          showInfoErrorMessage : false,
-          messageType : 'info',
-          messageDesc : ''
-        };
-        if(expectedResult){
-          errObJ.showInfoErrorMessage = expectedResult;
-          errObJ.messageType = 'info';
-          errObJ.messageDesc = 'Some values have not been added to list.';
-        }
-        expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-        expect(essUploadFileService.infoMessage).toBe(expectedResult);
-      });
 
     it.each`
     encDataFunc                   | expectedResult

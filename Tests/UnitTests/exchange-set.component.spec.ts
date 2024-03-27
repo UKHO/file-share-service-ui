@@ -53,7 +53,7 @@ describe('ExchangeSetComponent', () => {
       messageDesc : ''
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-    expect(essUploadFileService.scsProductResponse).toBeUndefined;
+    
   });
 
   test('should show the sub heading in exchange set', () => {

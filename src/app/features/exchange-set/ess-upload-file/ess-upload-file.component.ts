@@ -99,10 +99,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
           this.essUploadFileService.infoMessage = true;
           this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
         }
-        else {
-          this.essUploadFileService.infoMessage = true;
-          this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
-        }
       }
       this.fetchScsTokenReponse();
     }
