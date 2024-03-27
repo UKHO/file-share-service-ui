@@ -12,11 +12,11 @@ export class ScsProductInformationService {
 
     constructor(private http: HttpClient, private essUploadFileService:EssUploadFileService) { }
 
-    productUpdatesByIdentifiersResponse(requestedEncList: string[]): Observable<any>{
+    productInformationByIdentifiersResponse(requestedEncList: string[]): Observable<any>{
         return this.http.post<ProductCatalog>(this.baseUrl + '/productInformation/productIdentifiers', requestedEncList);
     }
 
-    productInformationSinceDateTime(): Observable<ProductCatalog>{
+    getProductsFromSpecificDateByScsResponse(): Observable<ProductCatalog>{
         const requestedDate = new Date(this.essUploadFileService.exchangeSetDeltaDate);
         const currentDate = new Date();
         requestedDate.setHours(currentDate.getHours());

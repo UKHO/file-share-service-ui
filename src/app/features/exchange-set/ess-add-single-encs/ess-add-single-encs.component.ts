@@ -123,7 +123,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[] , renderedFrom: string) {
     if (encs != null) {
-      this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+      this.scsProductInformationService.productInformationByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.processProductUpdatesByIdentifiers(data, renderedFrom);
@@ -138,11 +138,11 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     }
 
   productUpdatesByDeltaResponse(encs: any[], renderedFrom: string) {
-    this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+    this.productIdentifierSubscriber = this.scsProductInformationService.productInformationByIdentifiersResponse(encs)
       .subscribe({
         next: (productIdentifiersResponse: ProductCatalog) => {
           if (productIdentifiersResponse.products.length != 0) {
-            this.scsProductInformationService.productInformationSinceDateTime()
+            this.scsProductInformationService.getProductsFromSpecificDateByScsResponse()
               .subscribe({
                 next: (data: ProductCatalog) => {
                   this.displayLoader = false;
@@ -150,18 +150,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   this.products = data.products.filter((v) => this.scsResponse.products.some((vd) => v.productName == vd.productName));
                   if (this.products.length != 0) {
                     this.scsResponse.products = this.products;
-
-                    if (renderedFrom === 'essHome') {
-                      this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
-                      this.essUploadFileService.setValidSingleEncProduct(this.scsResponse);
-                      this.essUploadFileService.infoMessage = false;
-                      this.route.navigate(['exchangesets', 'enc-list']);
-                    } else if (renderedFrom === 'encList') {
-                      this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
-                      this.essUploadFileService.addSingleEncProduct(this.scsResponse);
-                      this.addValidEncAlert = this.txtSingleEnc + '  Added to List';
-                      this.txtSingleEnc = '';
-                    }
+                    this.processProductUpdatesByIdentifiers(this.scsResponse,renderedFrom);
                   }
                   else {
                     this.displayLoader = false;

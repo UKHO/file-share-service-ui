@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
@@ -9,10 +9,11 @@ import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-se
 import { By } from '@angular/platform-browser';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { ScsProductInformationService } from '../../src/app/core/services/scs-product-information-api.service';
+import { of, throwError } from 'rxjs';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
@@ -243,37 +244,6 @@ describe('EssUploadFileComponent', () => {
       expect(component.validEncList.length).toBe(expectedResult);
     });
 
-  it.each`
-    fileType                          |fileName         | getEncData                     | encDataFunc                 | expectedResult
-    ${'text/csv'}                     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
-    ${'application/vnd.ms-excel'}     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
-    ${'text/plain'}    |${'test.txt'} | ${getInvalidEncData()}         | ${getInvalidEncData()}      |  ${1}
-    `('processEncFile should set raise "Some values have not been added to list." info',
-    ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
-      const file = new File([getEncData], fileName);
-      Object.defineProperty(file, 'type', { value: fileType });
-      component.encFile = file;
-      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
-      essUploadFileService.exchangeSetDownloadType = 'Delta';
-      component.processEncFile(encDataFunc);
-      expect(component.validEncList.length).toEqual(expectedResult);
-      const errObj = {
-        showInfoErrorMessage: true,
-        messageType: 'info',
-        messageDesc: 'Some values have not been added to list.'
-      };
-
-      scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEncList).subscribe((res: any) => {
-        scsProductInformationService.productInformationSinceDateTime().subscribe(
-          (result:any)=>{
-                 var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
-                 if(res.productCounts.requestedProductsNotReturned.length != 0){
-                  expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-                 }
-                }
-        );
-      });
-    });
 
   it.each`
      encDataFunc
@@ -384,41 +354,6 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
     });
 
-    it.each`
-    encDataFunc                   | expectedResult
-    ${getNEncDataWithAio}         | ${true}
-    ${getEncData}                 | ${false}
-      `('infomessage should show message AIO is not available when AIO Enc is found in the ENC list',
-      ({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
-        const fileContent = encDataFunc();
-        const file = new File([fileContent], 'test.txt');
-        Object.defineProperty(file, 'type', { value: 'text/plain' });
-        component.encFile = file;
-        essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
-        essUploadFileService.exchangeSetDownloadType = 'Delta';
-        component.processEncFile(fileContent);
-        var aioEns=essUploadFileService.aioEncFound;
-        if(aioEns){
-          const errObJ = {
-            showInfoErrorMessage: expectedResult,
-            messageType: 'info',
-            messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.'
-          };
-          scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEncList).subscribe((res: any) => {
-            scsProductInformationService.productInformationSinceDateTime().subscribe(
-              (result:any)=>{
-                     var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
-                     if(aioEns){
-                      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-                      expect(essUploadFileService.infoMessage).toBe(expectedResult);
-                     }
-                    }
-            );
-          });
-        } 
-        
-      });
-
   test('should show the explaination text in ess upload file component with max enc limit from config', () => {
     const fixture = TestBed.createComponent(EssUploadFileComponent);
     fixture.detectChanges();
@@ -435,38 +370,12 @@ describe('EssUploadFileComponent', () => {
     }
   });
 
-  it.each`
-    encDataFunc                   | expectedResult
-    ${getNDeltaEncData}         | ${true}
-    ${getEncData}                 | ${false}
-      `('should show delta respone',
-      ({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
-        const fileContent = encDataFunc();
-        const file = new File([fileContent], 'test.txt');
-        Object.defineProperty(file, 'type', { value: 'text/plain' });
-        component.encFile = file;
-        essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
-        essUploadFileService.exchangeSetDownloadType = 'Delta';
-        component.processEncFile(fileContent);
-
-          scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEncList).subscribe((res: any) => {
-            scsProductInformationService.productInformationSinceDateTime().subscribe(
-              (result:any)=>{
-                     var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
-                     expect(products.productName).toEqual(component.validEncList[0]);
-                    }
-            );
-          }); 
-        
-      });
-
-
 
   it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', () => {
     let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
     component.fetchScsTokenReponse();
     component.productUpdatesByIdentifiersResponse(addedEncList);
-    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+    scsProductInformationService.productInformationByIdentifiersResponse(addedEncList).subscribe((res: any) => {
     expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
    });
  });
@@ -475,7 +384,7 @@ describe('EssUploadFileComponent', () => {
    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
    component.fetchScsTokenReponse();
    component.productUpdatesByIdentifiersResponse(addedEncList);
-   scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe(() => {} , (error: any) => {
+   scsProductInformationService.productInformationByIdentifiersResponse(addedEncList).subscribe(() => {} , (error: any) => {
    const errObj = {
    showInfoErrorMessage : false,
    messageType : 'error',
@@ -485,7 +394,148 @@ describe('EssUploadFileComponent', () => {
  });
 });
 
+it.each`
+encDataFunc                   | expectedResult
+${getNDeltaEncData}         | ${true}
+${getEncData}                 | ${false}
+  `('should show delta respone',
+  fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+    const fileContent = encDataFunc();
+    const file = new File([fileContent], 'test.txt');
+    Object.defineProperty(file, 'type', { value: 'text/plain' });
+    component.encFile = file;
+    essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    essUploadFileService.exchangeSetDownloadType = 'Delta';
+    component.processEncFile(fileContent);
+    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.fetchScsTokenReponse();
+    component.scsProductCatalogResponse(component.validEncList)
+    const routeService =jest.spyOn(router,'navigate');
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.scsResponse).toEqual(scsProductUpdatesByIdentifiersMockData);
+    expect(routeService).toHaveBeenCalledWith(['exchangesets', 'enc-list']);
+  }));
+
+  it.each`
+  encDataFunc                   | expectedResult
+  ${getNEncDataWithAio}         | ${true}
+  ${getEncData}                 | ${false}
+    `('infomessage should show message AIO is not available when AIO Enc is found in the ENC list',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+    essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    essUploadFileService.exchangeSetDownloadType = 'Delta';
+    const aio =essUploadFileService.aioEncFound;
+    component.processEncFile(fileContent);
+    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.triggerInfoErrorMessage=jest.fn();
+    component.fetchScsTokenReponse();
+    component.scsProductCatalogResponse(component.validEncList);
+    tick();
+    if(aio){
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
+    }
+  }));
+
+  it.each`
+  encDataFunc                   | expectedResult
+  ${getNDeltaEncData}         | ${true}
+  ${getEncData}                 | ${false}
+    `('productUpdatesByDeltaResponse should return Error message for productUpdatesByIdentifiersResponse',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+      component.triggerInfoErrorMessage=jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+    }));
+
+  it.each`
+  encDataFunc                   | expectedResult
+  ${getNDeltaEncData}         | ${true}
+  ${getEncData}                 | ${false}
+    `('productUpdatesByDeltaResponse should return Error message for productInformationSinceDateTime',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+      jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+      component.triggerInfoErrorMessage=jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+    }));
+
+    it.each`
+    encDataFunc                   | expectedResult
+    ${getNDeltaEncData}         | ${true}
+    ${getEncData}                 | ${false}
+      `('validatation should raise "No valid ENCs found" error',
+      fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+        const fileContent = encDataFunc();
+        const file = new File([fileContent], 'test.txt');
+        Object.defineProperty(file, 'type', { value: 'text/plain' });
+        component.encFile = file;
+        essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+        essUploadFileService.exchangeSetDownloadType = 'Delta';
+        essUploadFileService.aioEncFound;
+        component.processEncFile(fileContent);
+        jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+        jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+        component.triggerInfoErrorMessage=jest.fn();
+        component.fetchScsTokenReponse();
+        component.scsProductCatalogResponse(component.validEncList);
+        tick();
+        expect(component.displayLoader).toEqual(false);
+        expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'No valid ENCs found.');
+      }));
+
+    it.each`
+    encDataFunc                   | expectedResult
+    ${getNDeltaEncData}         | ${true}
+    ${getEncData}                 | ${false}
+      `('validation should   raise "We dont have any latest update for this ENCs."error',
+      fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+        const fileContent = encDataFunc();
+        const file = new File([fileContent], 'test.txt');
+        Object.defineProperty(file, 'type', { value: 'text/plain' });
+        component.encFile = file;
+        essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+        essUploadFileService.exchangeSetDownloadType = 'Delta';
+        component.processEncFile(fileContent);
+        jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+        jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+        component.triggerInfoErrorMessage=jest.fn();
+        component.fetchScsTokenReponse();
+        component.scsProductCatalogResponse(component.validEncList);
+        tick();
+        expect(component.displayLoader).toEqual(false);
+        expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'We dont have any latest update for uploaded ENCs');
+      }));
 });
+
 
 export const scsProductUpdatesByIdentifiersMockData: any = {
   "products": [
@@ -632,3 +682,15 @@ export const scsProductUpdatesByIdentifiersMockData: any = {
       "requestedProductsNotReturned": []
   }
 }
+
+export const scsProductResponseWithEmptyProductMockData: any = {
+  "products": [
+  ],
+  "productCounts": {
+      "requestedProductCount": 0,
+      "returnedProductCount": 0,
+      "requestedProductsAlreadyUpToDateCount": 0,
+      "requestedProductsNotReturned": []
+  }
+}
+

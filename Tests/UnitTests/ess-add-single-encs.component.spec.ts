@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component';
-import { NO_ERRORS_SCHEMA, DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
@@ -13,6 +13,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductCatalog } from 'src/app/core/models/ess-response-types';
+import { of, throwError } from 'rxjs';
 
 describe('EssAddSingleEncsComponent', () => {
   let component: EssAddSingleEncsComponent;
@@ -218,6 +219,7 @@ describe('EssAddSingleEncsComponent', () => {
         ]
     }
 }
+
   const router = {
     navigate: jest.fn()
   };
@@ -388,7 +390,7 @@ describe('EssAddSingleEncsComponent', () => {
      component.fetchScsTokenReponse("essHome");
      component.productUpdatesByIdentifiersResponse(addedEncList,"essHome");
      component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"essHome");
-     scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+     scsProductInformationService.productInformationByIdentifiersResponse(addedEncList).subscribe((res: any) => {
      expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
     });
   });
@@ -401,7 +403,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.fetchScsTokenReponse("encList");
     component.productUpdatesByIdentifiersResponse(component.validEnc,"encList");
     component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"encList");
-    scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEnc).subscribe((res: any) => {
+    scsProductInformationService.productInformationByIdentifiersResponse(component.validEnc).subscribe((res: any) => {
     expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
    });
  });
@@ -410,7 +412,7 @@ describe('EssAddSingleEncsComponent', () => {
    component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
    component.renderedFrom = 'essHome';
    component.productUpdatesByIdentifiersResponse(component.validEnc,"essHome");
-   scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEnc).subscribe(() => {} , (error: any) => {
+   scsProductInformationService.productInformationByIdentifiersResponse(component.validEnc).subscribe(() => {} , (error: any) => {
    const errObj = {
     showInfoErrorMessage : false,
     messageType : 'error',
@@ -420,204 +422,117 @@ describe('EssAddSingleEncsComponent', () => {
   });
 });
 
-  it('should return sales catalogue Response on productUpdatesByDeltaResponse', () => {
-    let addedEncList = ['DE4NO13K', 'SE6IIFE1', 'NO3B2020'];
+  it('should return sales catalogue Response on productUpdatesByDeltaResponse for encList', fakeAsync(() => {
+    component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];
+    component.txtSingleEnc = 'US4FL18M';
+    component.renderedFrom = 'encList';
+    service.exchangeSetDownloadType = 'Delta';
     service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.scsProductCatalogResponse(component.validEnc,'encList')
+    component.fetchScsTokenReponse('encList');
+    component.productUpdatesByDeltaResponse(component.validEnc,'encList')
+    component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"encList");
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.scsResponse).toEqual(scsProductUpdatesByIdentifiersMockData);
+    expect(component.products).toEqual(scsProductUpdatesByIdentifiersMockData.products);
+  }));
+
+
+  it('should return sales catalogue Response on productUpdatesByDeltaResponse for esshome', fakeAsync(() => {
+    component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];
+    component.txtSingleEnc = 'US4FL18M';
+    component.renderedFrom = 'essHome';
     service.exchangeSetDownloadType = 'Delta';
-    component.fetchScsTokenReponse("essHome");
-    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
-      scsProductInformationService.productInformationSinceDateTime().subscribe(
-        (result:any)=>{
-               var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
-               expect(products).toEqual(scsProductUpdatesByIdentifiersMockData.products[0]);
-              }
-      );
-    });
-  });
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.scsProductCatalogResponse(component.validEnc,'essHome')
+    component.fetchScsTokenReponse('essHome');
+    component.productUpdatesByDeltaResponse(component.validEnc,'essHome')
+    component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,'essHome');
+    const routeService =jest.spyOn(router,'navigate');
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.scsResponse).toEqual(scsProductUpdatesByIdentifiersMockData);
+    expect(routeService).toHaveBeenCalledWith(['exchangesets', 'enc-list']);
+  }));
 
-
-  it('validateAndAddENC should   raise "Invalid ENCs."error', () => {
-    let addedEncList = ['TP4NO13K', 'AT6IIFE1'];
+  it('validateAndAddENC should   raise "Invalid ENC number" error', fakeAsync(() => {
+    component.validEnc = ['TP4NO13K', 'AT6IIFE1'];
+    component.txtSingleEnc = 'US4F8M';
+    component.renderedFrom = 'essHome';
     service.exchangeSetDownloadType = 'Delta';
-    component.fetchScsTokenReponse("essHome");
-    const errObj = {
-      showInfoErrorMessage : true,
-      messageType : 'info',
-      messageDesc : 'Invalid ENCs'
-    };
-    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-    });
-  });
-
-
-  it('validation should   raise "We dont have any latest update for this ENCs."error', () => {
-    let addedEncList = ['DE4NO13K', 'SE6IIFE1', 'NO3B2020'];
     service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+    jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+    component.triggerInfoErrorMessage=jest.fn();
+    component.scsProductCatalogResponse(component.validEnc,'essHome')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC number.');
+  }));
+
+  it('productUpdatesByDeltaResponse should return Error message for productInformationSinceDateTime', fakeAsync(() => {
+    component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+    component.renderedFrom = 'essHome';
     service.exchangeSetDownloadType = 'Delta';
-    component.fetchScsTokenReponse("essHome");
-    const errObj = {
-      showInfoErrorMessage : true,
-      messageType : 'info',
-      messageDesc : 'We dont have any latest update for this ENCs'
-    };
-    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
-      scsProductInformationService.productInformationSinceDateTime().subscribe(
-        (result:any)=>{
-               var products =  result.products.filter((v: { productName: any; }) => res.products.some((vd: { productName: any; }) => v.productName == vd.productName));
-               if(products.length == 0){
-                expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-               }
-              }
-      );
-    });
-  });
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+    component.triggerInfoErrorMessage=jest.fn();
+    component.fetchScsTokenReponse('essHome');
+    component.scsProductCatalogResponse(component.validEnc,'essHome')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+  }));
+
+  it('productUpdatesByDeltaResponse should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
+    component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+    component.renderedFrom = 'essHome';
+    service.exchangeSetDownloadType = 'Delta';
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+    component.triggerInfoErrorMessage=jest.fn();
+    component.fetchScsTokenReponse('essHome');
+    component.scsProductCatalogResponse(component.validEnc,'essHome')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+ }));
+
+ it('validation should   raise "We dont have any latest update for this ENCs."error', fakeAsync(() => {
+  component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+  component.renderedFrom = 'essHome';
+  service.exchangeSetDownloadType = 'Delta';
+  service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+  service.setValidENCs(component.validEnc);
+  jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+  jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+  component.triggerInfoErrorMessage=jest.fn();
+  component.fetchScsTokenReponse('essHome');
+  component.scsProductCatalogResponse(component.validEnc,'essHome')
+  tick();
+  expect(component.displayLoader).toEqual(false);
+  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'We dont have any latest update for uploaded ENCs');
+}));
 
 });
 
-export const scsProductUpdatesByIdentifiersMockData: any = {
+export const scsProductResponseWithEmptyProductMockData: any = {
   "products": [
-      {
-          "productName": "FR570300",
-          "editionNumber": 1,
-          "updateNumbers": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2015-02-25T00:00:00Z",
-                  "issueDate": "2015-02-25T00:00:00Z"
-              },
-              {
-                  "updateNumber": 1,
-                  "updateApplicationDate": null,
-                  "issueDate": "2016-04-27T00:00:00Z"
-              },
-              {
-                  "updateNumber": 2,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-01-09T00:00:00Z"
-              },
-              {
-                  "updateNumber": 3,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-03-20T00:00:00Z"
-              },
-              {
-                  "updateNumber": 4,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-11-14T00:00:00Z"
-              },
-              {
-                  "updateNumber": 5,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-12-11T00:00:00Z"
-              },
-              {
-                  "updateNumber": 6,
-                  "updateApplicationDate": null,
-                  "issueDate": "2018-12-19T00:00:00Z"
-              },
-              {
-                  "updateNumber": 7,
-                  "updateApplicationDate": null,
-                  "issueDate": "2019-06-28T00:00:00Z"
-              },
-              {
-                  "updateNumber": 8,
-                  "updateApplicationDate": null,
-                  "issueDate": "2019-10-24T00:00:00Z"
-              },
-              {
-                  "updateNumber": 9,
-                  "updateApplicationDate": null,
-                  "issueDate": "2021-05-11T00:00:00Z"
-              },
-              {
-                  "updateNumber": 10,
-                  "updateApplicationDate": null,
-                  "issueDate": "2021-10-08T00:00:00Z"
-              },
-              {
-                  "updateNumber": 11,
-                  "updateApplicationDate": null,
-                  "issueDate": "2022-11-16T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 343128,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B1"
-              }
-          ]
-      },
-      {
-          "productName": "SE6IIFE1",
-          "editionNumber": 13,
-          "updateNumbers": [
-              0
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2021-03-26T00:00:00Z",
-                  "issueDate": "2021-03-26T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 7215,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B1"
-              }
-          ]
-      },
-      {
-          "productName": "NO3B2020",
-          "editionNumber": 2,
-          "updateNumbers": [
-              0
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2023-05-09T00:00:00Z",
-                  "issueDate": "2023-05-09T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 637942,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B2"
-              }
-          ]
-      }
   ],
   "productCounts": {
-      "requestedProductCount": 3,
-      "returnedProductCount": 3,
+      "requestedProductCount": 0,
+      "returnedProductCount": 0,
       "requestedProductsAlreadyUpToDateCount": 0,
       "requestedProductsNotReturned": []
   }
 }
-
