@@ -101,6 +101,10 @@ export class EssUploadFileService {
     ); // limit records by MaxEncLimit
   }
 
+  setValidEncsByApi(encList: string[]): void {
+    this.validEncs = encList;
+  }
+
   getValidEncs(): string[] {
     return this.validEncs;
   }
