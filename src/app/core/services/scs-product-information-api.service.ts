@@ -12,7 +12,7 @@ export class ScsProductInformationService {
 
     constructor(private http: HttpClient, private essUploadFileService:EssUploadFileService) { }
 
-    productInformationByIdentifiersResponse(requestedEncList: string[]): Observable<any>{
+    productUpdatesByIdentifiersResponse(requestedEncList: string[]): Observable<any>{
         return this.http.post<ProductCatalog>(this.baseUrl + '/productInformation/productIdentifiers', requestedEncList);
     }
 

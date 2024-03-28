@@ -123,7 +123,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[] , renderedFrom: string) {
     if (encs != null) {
-      this.scsProductInformationService.productInformationByIdentifiersResponse(encs)
+      this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.processProductUpdatesByIdentifiers(data, renderedFrom);
@@ -138,7 +138,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     }
 
   productUpdatesByDeltaResponse(encs: any[], renderedFrom: string) {
-    this.productIdentifierSubscriber = this.scsProductInformationService.productInformationByIdentifiersResponse(encs)
+    this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
       .subscribe({
         next: (productIdentifiersResponse: ProductCatalog) => {
           if (productIdentifiersResponse.products.length != 0) {

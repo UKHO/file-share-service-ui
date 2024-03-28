@@ -390,7 +390,7 @@ describe('EssAddSingleEncsComponent', () => {
      component.fetchScsTokenReponse("essHome");
      component.productUpdatesByIdentifiersResponse(addedEncList,"essHome");
      component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"essHome");
-     scsProductInformationService.productInformationByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+     scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
      expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
     });
   });
@@ -403,7 +403,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.fetchScsTokenReponse("encList");
     component.productUpdatesByIdentifiersResponse(component.validEnc,"encList");
     component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"encList");
-    scsProductInformationService.productInformationByIdentifiersResponse(component.validEnc).subscribe((res: any) => {
+    scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEnc).subscribe((res: any) => {
     expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
    });
  });
@@ -412,7 +412,7 @@ describe('EssAddSingleEncsComponent', () => {
    component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
    component.renderedFrom = 'essHome';
    component.productUpdatesByIdentifiersResponse(component.validEnc,"essHome");
-   scsProductInformationService.productInformationByIdentifiersResponse(component.validEnc).subscribe(() => {} , (error: any) => {
+   scsProductInformationService.productUpdatesByIdentifiersResponse(component.validEnc).subscribe(() => {} , (error: any) => {
    const errObj = {
     showInfoErrorMessage : false,
     messageType : 'error',
@@ -429,7 +429,7 @@ describe('EssAddSingleEncsComponent', () => {
     service.exchangeSetDownloadType = 'Delta';
     service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
     service.setValidENCs(component.validEnc);
-    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
     jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
     component.scsProductCatalogResponse(component.validEnc,'encList')
     component.fetchScsTokenReponse('encList');
@@ -448,7 +448,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.renderedFrom = 'essHome';
     service.exchangeSetDownloadType = 'Delta';
     service.setValidENCs(component.validEnc);
-    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
     jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
     component.scsProductCatalogResponse(component.validEnc,'essHome')
     component.fetchScsTokenReponse('essHome');
@@ -468,7 +468,7 @@ describe('EssAddSingleEncsComponent', () => {
     service.exchangeSetDownloadType = 'Delta';
     service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
     service.setValidENCs(component.validEnc);
-    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
     jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
     component.triggerInfoErrorMessage=jest.fn();
     component.scsProductCatalogResponse(component.validEnc,'essHome')
@@ -483,7 +483,7 @@ describe('EssAddSingleEncsComponent', () => {
     service.exchangeSetDownloadType = 'Delta';
     service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
     service.setValidENCs(component.validEnc);
-    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
     jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
     component.triggerInfoErrorMessage=jest.fn();
     component.fetchScsTokenReponse('essHome');
@@ -499,7 +499,7 @@ describe('EssAddSingleEncsComponent', () => {
     service.exchangeSetDownloadType = 'Delta';
     service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
     service.setValidENCs(component.validEnc);
-    jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
     component.triggerInfoErrorMessage=jest.fn();
     component.fetchScsTokenReponse('essHome');
     component.scsProductCatalogResponse(component.validEnc,'essHome')
@@ -514,7 +514,7 @@ describe('EssAddSingleEncsComponent', () => {
   service.exchangeSetDownloadType = 'Delta';
   service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
   service.setValidENCs(component.validEnc);
-  jest.spyOn(scsProductInformationService,'productInformationByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+  jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
   jest.spyOn(scsProductInformationService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
   component.triggerInfoErrorMessage=jest.fn();
   component.fetchScsTokenReponse('essHome');

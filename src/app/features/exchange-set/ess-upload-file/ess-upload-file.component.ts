@@ -128,7 +128,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[]) {
     if (encs != null) {
-      this.scsProductInformationService.productInformationByIdentifiersResponse(encs)
+      this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.displayLoader  = false;
@@ -146,7 +146,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
 
   productUpdatesByDeltaResponse(encs: any[]) {
     if (encs != null) {
-      this.productIdentifierSubscriber = this.scsProductInformationService.productInformationByIdentifiersResponse(encs)
+      this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
         .subscribe({
           next: (productIdentifiersResponse: ProductCatalog) => {
             if (productIdentifiersResponse.products.length != 0) {
