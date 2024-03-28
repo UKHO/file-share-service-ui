@@ -4,7 +4,7 @@ import { Component, OnInit, ElementRef, AfterViewInit} from '@angular/core';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { AppConfigService } from './../../../core/services/app-config.service';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
-import { ScsProductInformationService } from './../../../core/services/scs-product-information-api.service';
+import { ScsProductInformationApiService } from './../../../core/services/scs-product-information-api.service';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { ProductCatalog } from 'src/app/core/models/ess-response-types';
@@ -24,7 +24,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
   displayLoader: boolean = false;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, 
-    private scsProductInformationService: ScsProductInformationService, private msalService: MsalService,
+    private scsProductInformationApiService: ScsProductInformationApiService, private msalService: MsalService,
     private _elementRef?: ElementRef,
     ) {
     this.maxEncsLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
@@ -59,9 +59,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
       return;
     }
   }
-
-
-
 
   loadFileReader() { // called on click of proceed button
     if (this.isInvalidEncFile(this.encFile)) {
@@ -126,11 +123,13 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
 
   productUpdatesByIdentifiersResponse(encs: any[]) {
     if (encs != null) {
-        this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+        this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.displayLoader  = false;
             this.essUploadFileService.scsProductResponse = data;
+            let validEncList = this.essUploadFileService.scsProductResponse.products.map(p=>p.productName);
+            this.essUploadFileService.setValidEncsByApi(validEncList);
             this.route.navigate(['exchangesets', 'enc-list']);
           },
           error:(error) => {

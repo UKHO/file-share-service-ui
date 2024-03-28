@@ -191,6 +191,10 @@ export class EssUploadFileService {
       this._scsInvalidProducts = NotReturnedProduct;
    }
 
+   setValidEncsByApi(encList: string[]): void {
+    this.validEncs = encList;
+   }
+
   clearData() {
     this.validEncs = [];
     this.scsInvalidProducts = [];
