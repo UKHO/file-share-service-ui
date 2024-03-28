@@ -2,15 +2,15 @@ import { ExchangeSetApiService } from './../../../core/services/exchange-set-api
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
-import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
+import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCounts } from '../../../core/models/ess-response-types';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 
 interface MappedEnc {
-  enc: string;
+  enc: Product;
   selected: boolean;
 }
 enum SelectDeselect {
@@ -31,7 +31,7 @@ export class EssListEncsComponent implements OnInit {
   public displayedColumns = ['enc', 'Choose'];
   maxEncSelectionLimit: number;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
-  selectedEncList: string[];
+  selectedEncList: Product[];
   displaySingleEncVal: boolean = false;
   public displaySelectedTableColumns = ['enc', 'X'];
   exchangeSetDetails: ExchangeSetDetails;
@@ -45,6 +45,7 @@ export class EssListEncsComponent implements OnInit {
   sortGraphicUp: string = "fa-chevron-up";
   sortGraphicDown: string = "fa-chevron-down";
   sortGraphic: string = this.sortGraphicUp;
+  scsInvalidProduct: NotReturnedProduct[];
 
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
@@ -57,7 +58,11 @@ export class EssListEncsComponent implements OnInit {
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope],
     };
-  }
+    if (this.essUploadFileService.scsProductResponse) {
+      this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
+      this.scsInvalidProduct = this.essUploadFileService.scsProductResponse.productCounts.requestedProductsNotReturned;
+    }
+}
 
   ngOnInit(): void {
     this.maxEncSelectionLimit = Number.parseInt(
@@ -75,10 +80,28 @@ export class EssListEncsComponent implements OnInit {
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
+   
+    if(this.essUploadFileService.aioEncFound){
+      if(this.scsInvalidProduct.length > 0){
+        let invalidProd1 = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+        this.essUploadFileService.infoMessage = true;
+        this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProd1}`);
+      }
+      else{
+        this.essUploadFileService.infoMessage = true;
+        this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      }
+     }
+      else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
+        let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}`);
+      }
   }
 
   setEncList() {
-    this.encList = this.essUploadFileService.getValidEncs().map((enc) => ({
+    console.log(this.essUploadFileService.scsProducts);
+    
+    this.encList = this.essUploadFileService.scsProducts.map((enc) => ({
       enc,
       selected: false
     }));
@@ -95,17 +118,17 @@ export class EssListEncsComponent implements OnInit {
       messageDesc,
     };
   }
-  handleChange(enc: string, event?: Event | null) {
-    const seletedEncs: string[] = this.essUploadFileService.getSelectedENCs();
+  handleChange(enc: Product, event?: Event | null) {
+    const seletedEncs: Product[] = this.essUploadFileService.getSelectedENCs();
     this.triggerInfoErrorMessage(false,'info', '');
-    if (seletedEncs.includes(enc)) {
-      this.essUploadFileService.removeSelectedEncs(enc);
+    if (seletedEncs.some((product) => product.productName === enc.productName)) {
+      this.essUploadFileService.removeSelectedEncs(enc.productName);
       this.selectDeselectEncAlert= enc + ' Remove From Selected List';
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
       this.selectDeselectEncAlert= enc + ' Added From Selected List';
     } else {
-      const currCheckedElement = (document.querySelector(`ukho-checkbox[aria-label=${enc}] input`) as HTMLElement);
+      const currCheckedElement = (document.querySelector(`ukho-checkbox[aria-label=${enc.productName}] input`) as HTMLElement);
       if(currCheckedElement){
         currCheckedElement.click(); // will uncheck the selected checkbox
       }
@@ -114,7 +137,7 @@ export class EssListEncsComponent implements OnInit {
     }
     this.syncEncsBetweenTables();
     setTimeout(() => {
-      const element = document.querySelector(`admiralty-checkbox[aria-label=${enc}] input`) as HTMLElement;
+      const element = document.querySelector(`admiralty-checkbox[aria-label=${enc.productName}] input`) as HTMLElement;
       if(element && event){
          element.focus();
       }
@@ -149,8 +172,8 @@ export class EssListEncsComponent implements OnInit {
     this.encList = [
       ...this.encList.sort((a: any, b: any) =>
         sortState.direction === 'asc'
-          ? a[sortState.column].localeCompare(b[sortState.column])
-          : b[sortState.column].localeCompare(a[sortState.column])
+          ? a[sortState.column].productName.localeCompare(b[sortState.column].productName)
+          : b[sortState.column].productName.localeCompare(a[sortState.column].productName)
       ),
     ];
   }
@@ -221,7 +244,8 @@ export class EssListEncsComponent implements OnInit {
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      this.exchangeSetCreationResponse(this.selectedEncList);
+      const selectedEncList: string[] = this.selectedEncList.map(product => product.productName);
+      this.exchangeSetCreationResponse(selectedEncList);
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
