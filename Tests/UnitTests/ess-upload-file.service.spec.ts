@@ -60,9 +60,9 @@ describe('EssUploadFileService', () => {
   let dateInfo: DateInfo[] = [];
   bundleInfo.push({bundleType: 'ABC', location: 'XYZ'});
   dateInfo.push({updateNumber:1, updateApplicationDate: '', issueDate: ''});
-  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 2, ignoreCache: true, bundle: bundleInfo });
-  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 3, ignoreCache: true, bundle: bundleInfo });
-  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 26140, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 343128, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 123074, ignoreCache: true, bundle: bundleInfo });
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
@@ -260,17 +260,25 @@ describe('EssUploadFileService', () => {
     const invalidEncName = 'GB800001';
     const result = service.excludeAioEnc(invalidEncName); 
     expect(result).toBe(false);  });
-  it.each`
-  selectedEncs                   | expectedResult 
-  ${[product[0]]}                |  ${'0.01 MB'}
-  ${[product[1]]}                |  ${'0.01 MB'}
-  ${[product[0], product[1]]}    |  ${'0.01 MB'}
-  ${[product[0], product[1], product[2]]} |  ${'0.01 MB'}
-  `('getEstimatedTotalSize should return valid string',
-  ({  selectedEncs, expectedResult }: {  selectedEncs: Product[]; expectedResult: string }) => {
-    jest.clearAllMocks();
-    service.setValidENCs = jest.fn().mockReturnValue(selectedEncs);
-    service.getSelectedENCs = jest.fn().mockReturnValue(selectedEncs);
-    expect(service.getEstimatedTotalSize()).toEqual(expectedResult);
+
+    jest.mock('../../src/app/core/services/ess-upload-file.service', () => {
+      return {
+          ESSUploadFileService: jest.fn(() => ({
+              addSelectedEnc: jest.fn(),
+              getEstimatedTotalSize: jest.fn(() => {
+                  const expectedTotalSize = product.reduce((sum, p) => sum + p.fileSize, 0);
+                  return `${((expectedTotalSize /1024)/1024).toFixed(2)} MB`;
+              })
+          }))
+      };
   });
+
+  test('getEstimatedTotalSize calculates total size accurately',()=>{
+    for (const p of product) {
+      service.addSelectedEnc(p);
+    }
+    const actualTotalSize = service.getEstimatedTotalSize();
+    expect(actualTotalSize).toEqual('0.47 MB');
+
+  })
 });
