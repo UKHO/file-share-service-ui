@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
-import { ScsProductInformationService } from '../../src/app/core/services/scs-product-information-api.service';
+import { ScsProductInformationApiService } from '../../src/app/core/services/scs-product-information-api.service';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,7 +20,7 @@ describe('EssAddSingleEncsComponent', () => {
   let fixture: ComponentFixture<EssAddSingleEncsComponent>;
   let service: EssUploadFileService;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
-  let scsProductInformationService: ScsProductInformationService;
+  let scsProductInformationApiService: ScsProductInformationApiService;
   let msalService: MsalService;
   let scsProductUpdatesByIdentifiersMockData: ProductCatalog = 
   {
@@ -242,10 +242,10 @@ describe('EssAddSingleEncsComponent', () => {
           useFactory: MockMSALInstanceFactory
         },
         {
-          provide : ScsProductInformationService,
-          useValue : scsProductInformationService
+          provide : ScsProductInformationApiService,
+          useValue : scsProductInformationApiService
         },
-        MsalService, ScsProductInformationService
+        MsalService, ScsProductInformationApiService
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -264,7 +264,7 @@ describe('EssAddSingleEncsComponent', () => {
     service = TestBed.inject(EssUploadFileService);
     essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
     msalService = TestBed.inject(MsalService);
-    scsProductInformationService = TestBed.inject(ScsProductInformationService);
+    scsProductInformationApiService = TestBed.inject(ScsProductInformationApiService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -388,7 +388,7 @@ describe('EssAddSingleEncsComponent', () => {
      component.fetchScsTokenReponse("essHome");
      component.productUpdatesByIdentifiersResponse(addedEncList,"essHome");
      component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"essHome");
-     scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+     scsProductInformationApiService.scsProductIdentifiersResponse(addedEncList).subscribe((res: any) => {
      expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
     });
   });
@@ -398,7 +398,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.txtSingleEnc = 'AU210470';
     component.renderedFrom = 'essHome';
     service.setValidENCs(component.validEnc);
-    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
     component.productUpdatesByIdentifiersResponse(component.validEnc,component.renderedFrom)
     tick();
     expect(component.displayLoader).toEqual(false);
@@ -410,7 +410,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.txtSingleEnc = 'AU210470';
     component.renderedFrom = 'encList';
     service.setValidENCs(component.validEnc);
-    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
     component.productUpdatesByIdentifiersResponse(component.validEnc,component.renderedFrom)
     tick();
     expect(component.displayLoader).toEqual(false);
@@ -423,7 +423,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.renderedFrom = 'essHome';
     service.setValidENCs(component.validEnc);
     scsProductUpdatesByIdentifiersMockData.products = [];
-    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
     component.triggerInfoErrorMessage=jest.fn();
     component.productUpdatesByIdentifiersResponse(component.validEnc,'essHome')
     tick();
@@ -433,7 +433,7 @@ describe('EssAddSingleEncsComponent', () => {
 
   it('should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
     let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
-    jest.spyOn(scsProductInformationService,'productUpdatesByIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
     component.triggerInfoErrorMessage=jest.fn();
     component.fetchScsTokenReponse("encList");
     component.productUpdatesByIdentifiersResponse(addedEncList,"encList");
@@ -442,150 +442,4 @@ describe('EssAddSingleEncsComponent', () => {
     expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
   }));
 });
-
-export const scsProductUpdatesByIdentifiersMockData: any = {
-  "products": [
-      {
-          "productName": "FR570300",
-          "editionNumber": 1,
-          "updateNumbers": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2015-02-25T00:00:00Z",
-                  "issueDate": "2015-02-25T00:00:00Z"
-              },
-              {
-                  "updateNumber": 1,
-                  "updateApplicationDate": null,
-                  "issueDate": "2016-04-27T00:00:00Z"
-              },
-              {
-                  "updateNumber": 2,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-01-09T00:00:00Z"
-              },
-              {
-                  "updateNumber": 3,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-03-20T00:00:00Z"
-              },
-              {
-                  "updateNumber": 4,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-11-14T00:00:00Z"
-              },
-              {
-                  "updateNumber": 5,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-12-11T00:00:00Z"
-              },
-              {
-                  "updateNumber": 6,
-                  "updateApplicationDate": null,
-                  "issueDate": "2018-12-19T00:00:00Z"
-              },
-              {
-                  "updateNumber": 7,
-                  "updateApplicationDate": null,
-                  "issueDate": "2019-06-28T00:00:00Z"
-              },
-              {
-                  "updateNumber": 8,
-                  "updateApplicationDate": null,
-                  "issueDate": "2019-10-24T00:00:00Z"
-              },
-              {
-                  "updateNumber": 9,
-                  "updateApplicationDate": null,
-                  "issueDate": "2021-05-11T00:00:00Z"
-              },
-              {
-                  "updateNumber": 10,
-                  "updateApplicationDate": null,
-                  "issueDate": "2021-10-08T00:00:00Z"
-              },
-              {
-                  "updateNumber": 11,
-                  "updateApplicationDate": null,
-                  "issueDate": "2022-11-16T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 343128,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B1"
-              }
-          ]
-      },
-      {
-          "productName": "SE6IIFE1",
-          "editionNumber": 13,
-          "updateNumbers": [
-              0
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2021-03-26T00:00:00Z",
-                  "issueDate": "2021-03-26T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 7215,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B1"
-              }
-          ]
-      },
-      {
-          "productName": "NO3B2020",
-          "editionNumber": 2,
-          "updateNumbers": [
-              0
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2023-05-09T00:00:00Z",
-                  "issueDate": "2023-05-09T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 637942,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B2"
-              }
-          ]
-      }
-  ],
-  "productCounts": {
-      "requestedProductCount": 3,
-      "returnedProductCount": 3,
-      "requestedProductsAlreadyUpToDateCount": 0,
-      "requestedProductsNotReturned": []
-  }
-}
 

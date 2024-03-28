@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { ScsProductInformationService } from './../../../core/services/scs-product-information-api.service';
+import { ScsProductInformationApiService } from './../../../core/services/scs-product-information-api.service';
 import { MsalService } from '@azure/msal-angular';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SilentRequest } from '@azure/msal-browser';
@@ -25,7 +25,7 @@ export class EssAddSingleEncsComponent implements OnInit {
   displayLoader: Boolean = false;
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router , private essInfoErrorMessageService: EssInfoErrorMessageService,
-    private scsProductInformationService: ScsProductInformationService,
+    private scsProductInformationApiService: ScsProductInformationApiService,
     private msalService: MsalService) { this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope]
@@ -48,16 +48,19 @@ export class EssAddSingleEncsComponent implements OnInit {
 
   addSingleEncToList() {
     if(!this.txtSingleEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Please enter ENC number');
       return;
     }
 
     if(!this.essUploadFileService.validateENCFormat(this.txtSingleEnc)){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
       return;
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
@@ -70,26 +73,31 @@ export class EssAddSingleEncsComponent implements OnInit {
     const isValidEnc = this.essUploadFileService.validateENCFormat(this.txtSingleEnc);
 
     if(!this.txtSingleEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Please enter ENC number');
       return;
     }
 
     if(!isValidEnc){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
       return;
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
       return;
     }
 
     if(this.validEnc.includes(this.txtSingleEnc.toUpperCase())){
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'ENC already in list.');
       return;
     }
 
     if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
+      this.displayLoader = false;
       this.triggerInfoErrorMessage(true,'info', 'Max ENC limit reached.');
       return;
     }
@@ -110,7 +118,7 @@ export class EssAddSingleEncsComponent implements OnInit {
 
   productUpdatesByIdentifiersResponse(encs: any[] , renderedFrom: string) {
     if (encs != null) {
-        this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+        this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.processProductUpdatesByIdentifiers(data, renderedFrom);
@@ -125,7 +133,7 @@ export class EssAddSingleEncsComponent implements OnInit {
     }
 
   fetchScsTokenReponse(renderedFrom:string) {
-    const payload: string[] = [this.txtSingleEnc];
+    const payload: string[] = [this.txtSingleEnc.toUpperCase()];
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
       this.productUpdatesByIdentifiersResponse(payload , renderedFrom);
     }, error => {

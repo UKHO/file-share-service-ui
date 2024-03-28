@@ -7,7 +7,7 @@ import { AppConfigService } from './app-config.service';
   providedIn: 'root',
 })
 export class EssUploadFileService {
-  private _scsProductResponse: ProductCatalog;
+  private _scsProductResponse: ProductCatalog | undefined;
   private _scsProducts: Product[];
   private validEncs: string[];
   private selectedEncs: Product[];
@@ -166,11 +166,11 @@ export class EssUploadFileService {
       return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
    }
 
-   get scsProductResponse() : ProductCatalog{
+   get scsProductResponse() : ProductCatalog | undefined{
     return this._scsProductResponse;
    }
 
-   set scsProductResponse(scsProductResponse: ProductCatalog){
+   set scsProductResponse(scsProductResponse: ProductCatalog | undefined){
      this._scsProductResponse = scsProductResponse;
    } 
 
@@ -181,4 +181,13 @@ export class EssUploadFileService {
    set scsProducts(products: Product[]){
       this._scsProducts = products;
    }
+
+   setValidEncsByApi(encList: string[]): void {
+    this.validEncs = encList;
+   }
+
+   clearData() {
+    this.scsProductResponse = undefined;
+    this.aioEncFound = false;
+  }
 }
