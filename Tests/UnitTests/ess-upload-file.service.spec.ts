@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
+import { BundleInfo, DateInfo, Product } from '../../src/app/core/models/ess-response-types';
 
 describe('EssUploadFileService', () => {
   const getTempData = () => {
@@ -53,13 +54,20 @@ describe('EssUploadFileService', () => {
   let permitJson: string[];
   let csvEncLists: string[];
   let service: EssUploadFileService;
+  let bundleInfo: BundleInfo[] = [];
+  let updateNumber: number[] = [];
+  let product: Product[] = [];
+  let dateInfo: DateInfo[] = [];
+  bundleInfo.push({bundleType: 'ABC', location: 'XYZ'});
+  dateInfo.push({updateNumber:1, updateApplicationDate: '', issueDate: ''});
+  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 26140, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 343128, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 123074, ignoreCache: true, bundle: bundleInfo });
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
         MaxEncSelectionLimit: 5,
-        avgSizeofENCinMB:0.3,
-        defaultEstimatedSizeinMB:0.5,
         aioExcludeEncs :["GB800001","FR800001"]
       },
     };
@@ -184,25 +192,25 @@ describe('EssUploadFileService', () => {
   });
   it('addSelectedEnc adds enc into selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
-    service.addSelectedEnc('AU210130');
-    service.addSelectedEnc('AU210230');
-    service.addSelectedEnc('AU210330');
+    service.addSelectedEnc(product[0]);
+    service.addSelectedEnc(product[1]);
+    service.addSelectedEnc(product[2]);
     expect(service.getSelectedENCs().length).toEqual(3);
   });
   it('removeSelectedEncs removes enc from selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
-    service.addSelectedEnc('AU210130');
-    service.addSelectedEnc('AU210230');
-    service.addSelectedEnc('AU210330');
+    service.addSelectedEnc(product[0]);
+    service.addSelectedEnc(product[1]);
+    service.addSelectedEnc(product[2]);
     expect(service.getSelectedENCs().length).toEqual(3);
     service.removeSelectedEncs('AU210230');
     expect(service.getSelectedENCs().length).toEqual(2);
   });
   it('clearSelectedEncs clears enc from selectedEncs', () => {
     expect(service.getSelectedENCs().length).toEqual(0);
-    service.addSelectedEnc('AU210130');
-    service.addSelectedEnc('AU210230');
-    service.addSelectedEnc('AU210330');
+    service.addSelectedEnc(product[0]);
+    service.addSelectedEnc(product[1]);
+    service.addSelectedEnc(product[2]);
     expect(service.getSelectedENCs().length).toEqual(3);
     service.clearSelectedEncs();
     expect(service.getSelectedENCs().length).toEqual(0);
@@ -252,15 +260,25 @@ describe('EssUploadFileService', () => {
     const invalidEncName = 'GB800001';
     const result = service.excludeAioEnc(invalidEncName); 
     expect(result).toBe(false);  });
-  it.each`
-  encCount                       | expectedResult
-  ${0}                           |  ${'0.5MB'}
-  ${1}                           |  ${'0.8MB'}
-  ${6}                           |  ${'2.3MB'}
-  `('getEstimatedTotalSize should return valid string',
-  ({  encCount, expectedResult }: {  encCount: number; expectedResult: string }) => {
-    jest.clearAllMocks();
-    expect(service.getEstimatedTotalSize(encCount)).toEqual(expectedResult);
+
+  jest.mock('../../src/app/core/services/ess-upload-file.service', () => {
+    return {
+      ESSUploadFileService: jest.fn(() => ({
+        addSelectedEnc: jest.fn(),
+        getEstimatedTotalSize: jest.fn(() => {
+          const expectedTotalSize = product.reduce((sum, p) => sum + p.fileSize, 0);
+          return `${((expectedTotalSize / 1024) / 1024).toFixed(2)} MB`;
+        })
+      }))
+    };
   });
-  
+
+  test('getEstimatedTotalSize calculates total size accurately', () => {
+    for (const p of product) {
+      service.addSelectedEnc(p);
+    }
+    const actualTotalSize = service.getEstimatedTotalSize();
+    expect(actualTotalSize).toEqual('0.47 MB');
+
+  })
 });

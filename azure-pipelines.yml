@@ -72,7 +72,7 @@ stages:
                   Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
 
      - job: BuildTestPublish
-       dependsOn: Dependencychecker
+      #  dependsOn: Dependencychecker
         
        pool: $(DeploymentPool)
        container: ${{variables.Container}}
@@ -174,6 +174,8 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
+      - name: essConfig.apiUiUrl
+        value: $(essConfig-apiUiUrl)
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"

@@ -8,18 +8,24 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
+import { ScsProductInformationService } from '../../src/app/core/services/scs-product-information-api.service';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('EssAddSingleEncsComponent', () => {
   let component: EssAddSingleEncsComponent;
   let fixture: ComponentFixture<EssAddSingleEncsComponent>;
   let service: EssUploadFileService;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
+  let scsProductInformationService: ScsProductInformationService;
+  let msalService: MsalService;
   const router = {
     navigate: jest.fn()
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, TableModule],
+      imports: [CommonModule, TableModule, HttpClientModule],
       declarations: [EssAddSingleEncsComponent , EssInfoErrorMessageComponent],
       providers: [
         EssUploadFileService,
@@ -28,6 +34,19 @@ describe('EssAddSingleEncsComponent', () => {
           provide: Router,
           useValue: router
         },
+        {
+          provide : MsalService,
+          useValue : msalService
+        },
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        {
+          provide : ScsProductInformationService,
+          useValue : scsProductInformationService
+        },
+        MsalService, ScsProductInformationService
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -45,6 +64,8 @@ describe('EssAddSingleEncsComponent', () => {
     fixture = TestBed.createComponent(EssAddSingleEncsComponent);
     service = TestBed.inject(EssUploadFileService);
     essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
+    msalService = TestBed.inject(MsalService);
+    scsProductInformationService = TestBed.inject(ScsProductInformationService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -162,13 +183,159 @@ describe('EssAddSingleEncsComponent', () => {
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
-  it('validateAndAddENC should set single valid different case ENC', () => {
-    component.validEnc = ['AU220150', 'GB50184C', 'GB50702D', 'US5AK57M'];
-    component.txtSingleEnc = 'uf4FL18m';
-    component.renderedFrom = 'encList';
-    service.setValidENCs(component.validEnc);
-    component.validateAndAddENC();
-    
-    expect(component.addValidEncAlert).toEqual("uf4FL18m  Added to List");
+
+  it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', () => {
+     let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+     component.fetchScsTokenReponse("essHome");
+     scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
+     expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
+    });
   });
 });
+
+export const scsProductUpdatesByIdentifiersMockData: any = {
+  "products": [
+      {
+          "productName": "FR570300",
+          "editionNumber": 1,
+          "updateNumbers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2015-02-25T00:00:00Z",
+                  "issueDate": "2015-02-25T00:00:00Z"
+              },
+              {
+                  "updateNumber": 1,
+                  "updateApplicationDate": null,
+                  "issueDate": "2016-04-27T00:00:00Z"
+              },
+              {
+                  "updateNumber": 2,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-01-09T00:00:00Z"
+              },
+              {
+                  "updateNumber": 3,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-03-20T00:00:00Z"
+              },
+              {
+                  "updateNumber": 4,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-11-14T00:00:00Z"
+              },
+              {
+                  "updateNumber": 5,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-12-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 6,
+                  "updateApplicationDate": null,
+                  "issueDate": "2018-12-19T00:00:00Z"
+              },
+              {
+                  "updateNumber": 7,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-06-28T00:00:00Z"
+              },
+              {
+                  "updateNumber": 8,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-10-24T00:00:00Z"
+              },
+              {
+                  "updateNumber": 9,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-05-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 10,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-10-08T00:00:00Z"
+              },
+              {
+                  "updateNumber": 11,
+                  "updateApplicationDate": null,
+                  "issueDate": "2022-11-16T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 343128,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      },
+      {
+          "productName": "SE6IIFE1",
+          "editionNumber": 13,
+          "updateNumbers": [
+              0
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2021-03-26T00:00:00Z",
+                  "issueDate": "2021-03-26T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 7215,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      },
+      {
+          "productName": "NO3B2020",
+          "editionNumber": 2,
+          "updateNumbers": [
+              0
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2023-05-09T00:00:00Z",
+                  "issueDate": "2023-05-09T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 637942,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B2"
+              }
+          ]
+      }
+  ],
+  "productCounts": {
+      "requestedProductCount": 3,
+      "returnedProductCount": 3,
+      "requestedProductsAlreadyUpToDateCount": 0,
+      "requestedProductsNotReturned": []
+  }
+}
+

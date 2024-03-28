@@ -1,33 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ExchangeSetDetails } from '../models/ess-response-types';
+import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCatalog } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EssUploadFileService {
+  private _scsProductResponse: ProductCatalog | undefined;
+  private _scsProducts: Product[];
+  private _scsInvalidProducts: NotReturnedProduct[];
   private validEncs: string[];
-  private selectedEncs: string[];
+  private selectedEncs: Product[];
   private maxEncLimit: number;
   private maxEncSelectionLimit: number;
   private showInfoMessage = false;
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
   private exchangeSetDetails: ExchangeSetDetails;
-  private avgSizeofENC: number;
   private estimatedTotalSize: number;
-  private defaultEstimatedSizeinMB:number;
-  private configAioEncList : string[];
-  public aioEncFound : boolean;
+  private configAioEncList: string[];
+  public aioEncFound: boolean;
 
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
-    this.avgSizeofENC = Number.parseFloat(AppConfigService.settings["essConfig"].avgSizeofENCinMB);
-    this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
-    this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
+    this.maxEncSelectionLimit = Number.parseInt(AppConfigService.settings['essConfig'].MaxEncSelectionLimit, 10);
     this.configAioEncList = AppConfigService.settings["essConfig"].aioExcludeEncs;
-
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -46,7 +44,7 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  excludeAioEnc(encName: string){
+  excludeAioEnc(encName: string) {
     return !this.configAioEncList.includes(encName);
   }
 
@@ -71,17 +69,17 @@ export class EssUploadFileService {
       .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
 
 
-       let validEncsExAio = this.validEncs
+    let validEncsExAio = this.validEncs
       .filter((enc) => this.excludeAioEnc(enc)); //exclude AIO list
 
-      if(validEncsExAio.length < this.validEncs.length){
-        this.aioEncFound = true;
-      }
+    if (validEncsExAio.length < this.validEncs.length) {
+      this.aioEncFound = true;
+    }
 
-      this.validEncs = validEncsExAio
+    this.validEncs = validEncsExAio
       .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit   
   }
-  
+
   getValidEncs(): string[] {
     return this.validEncs;
   }
@@ -101,16 +99,16 @@ export class EssUploadFileService {
     this.showInfoMessage = visibility;
   }
 
-  getSelectedENCs(): string[] {
+  getSelectedENCs(): Product[] {
     return this.selectedEncs;
   }
 
-  addSelectedEnc(enc: string): void {
+  addSelectedEnc(enc: Product): void {
     this.selectedEncs = [...this.selectedEncs, enc];
   }
 
   removeSelectedEncs(enc: string): void {
-    this.selectedEncs = this.selectedEncs.filter((item) => item !== enc);
+    this.selectedEncs = this.selectedEncs.filter((item: Product) => item.productName !== enc);
   }
 
   clearSelectedEncs() {
@@ -128,7 +126,7 @@ export class EssUploadFileService {
 
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
     this.exchangeSetDetails = exchangeSetDetails;
-    
+
   }
 
   getExchangeSetDetails(): ExchangeSetDetails {
@@ -154,13 +152,53 @@ export class EssUploadFileService {
   }
 
 
-  addAllSelectedEncs(){
-    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
-    this.selectedEncs = [...this.validEncs.slice(0,maxEncSelectionLimit)];
+  addAllSelectedEncs() {
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.scsProducts.slice(0, maxEncSelectionLimit)];
   }
-  
-  getEstimatedTotalSize(encCount:number):string {  
-    this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
-      return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
+
+  getEstimatedTotalSize(): string {
+    this.estimatedTotalSize = 0;
+    for (let selectedEnc of this.selectedEncs) {
+      this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
+    }
+    let estimatedSizeInMB = ConvertBytesToMegabytes(this.estimatedTotalSize);
+    return (estimatedSizeInMB >= 0.01) ? estimatedSizeInMB.toFixed(2) + ' MB' : '0.01 MB';
+  }
+
+   get scsProductResponse() : ProductCatalog | undefined{
+    return this._scsProductResponse;
+  }
+
+   set scsProductResponse(scsProductResponse: ProductCatalog | undefined){
+     this._scsProductResponse = scsProductResponse;
+   } 
+
+  get scsProducts(): Product[] {
+    return this._scsProducts;
+  }
+
+   set scsProducts(products: Product[]){
+      this._scsProducts = products;
    }
+
+   get scsInvalidProducts() : NotReturnedProduct[]{
+    return this._scsInvalidProducts;
+   }
+
+   set scsInvalidProducts(NotReturnedProduct: NotReturnedProduct[]){
+      this._scsInvalidProducts = NotReturnedProduct;
+   }
+
+  clearData() {
+    this.validEncs = [];
+    this.scsInvalidProducts = [];
+    this.scsProductResponse = undefined;
+    this.clearSelectedEncs();
+  }
+}
+
+function ConvertBytesToMegabytes(estimatedTotalSize: number) {
+  let byteSize = 1024;
+  return (estimatedTotalSize / byteSize) / byteSize;
 }
