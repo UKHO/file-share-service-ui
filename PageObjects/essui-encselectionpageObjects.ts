@@ -59,7 +59,7 @@ export class EncSelectionPageObjects {
     this.selectionTextSelector = this.page.locator("text='Your selection '");
     this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
     this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]'); 
-    this.selectAllSelector = this.page.locator("//a[text()=' Select all ']")
+    this.selectAllSelector = this.page.locator("a[class='selectDeselctBtn']")
     this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
 
     this.firstCheckBoxSelector = this.page.getByRole('row').filter({ has: this.page.getByRole("checkbox") }).getByRole('checkbox').first();
@@ -116,7 +116,6 @@ export class EncSelectionPageObjects {
   }
 
   async selectAllSelectorClick(): Promise<void> {
-
     await this.selectAllSelector.click();
 
   }
@@ -131,7 +130,6 @@ export class EncSelectionPageObjects {
   }
 
   async SelectedENCsCount(): Promise<void> {
-
     SelectedENCs = parseInt(((await this.rightTableDisplaySelector.innerHTML()).split(' '))[1])
   }
 
@@ -258,6 +256,7 @@ class EncSelectionPageAssertions {
   }
 
   async firstEncSelectorToEqual(expected: string): Promise<void> {
+    await this.encSelectionPageObjects.page.waitForTimeout(1000);
     const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
     expect(uploadedEncs[0]).toEqual(expected);
