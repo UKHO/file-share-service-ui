@@ -68,8 +68,6 @@ describe('EssUploadFileService', () => {
       essConfig: {
         MaxEncLimit: 10,
         MaxEncSelectionLimit: 5,
-        avgSizeofENCinMB:0.3,
-        defaultEstimatedSizeinMB:0.5,
         aioExcludeEncs :["GB800001","FR800001"]
       },
     };
@@ -263,14 +261,16 @@ describe('EssUploadFileService', () => {
     const result = service.excludeAioEnc(invalidEncName); 
     expect(result).toBe(false);  });
   it.each`
-  encCount                       | expectedResult
-  ${0}                           |  ${'0.5MB'}
-  ${1}                           |  ${'0.8MB'}
-  ${6}                           |  ${'2.3MB'}
+  selectedEncs                   | expectedResult 
+  ${[product[0]]}                |  ${'0.01 MB'}
+  ${[product[1]]}                |  ${'0.01 MB'}
+  ${[product[0], product[1]]}    |  ${'0.01 MB'}
+  ${[product[0], product[1], product[2]]} |  ${'0.01 MB'}
   `('getEstimatedTotalSize should return valid string',
-  ({  encCount, expectedResult }: {  encCount: number; expectedResult: string }) => {
+  ({  selectedEncs, expectedResult }: {  selectedEncs: Product[]; expectedResult: string }) => {
     jest.clearAllMocks();
+    service.setValidENCs = jest.fn().mockReturnValue(selectedEncs);
+    service.getSelectedENCs = jest.fn().mockReturnValue(selectedEncs);
     expect(service.getEstimatedTotalSize()).toEqual(expectedResult);
   });
-  
 });

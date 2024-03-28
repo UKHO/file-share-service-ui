@@ -162,7 +162,8 @@ export class EssUploadFileService {
     for (let selectedEnc of this.selectedEncs) {
       this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
     }
-    return (ConvertBytesToMegabytes(this.estimatedTotalSize)).toFixed(2) + ' MB';
+    let estimatedSizeInMB = ConvertBytesToMegabytes(this.estimatedTotalSize);
+    return (estimatedSizeInMB >= 0.01) ? estimatedSizeInMB.toFixed(2) + ' MB' : '0.01 MB';
   }
 
    get scsProductResponse() : ProductCatalog | undefined{

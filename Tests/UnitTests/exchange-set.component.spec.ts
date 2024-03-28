@@ -6,11 +6,13 @@ import { By } from '@angular/platform-browser';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
+import { EssUploadFileService } from 'src/app/core/services/ess-upload-file.service';
 
 describe('ExchangeSetComponent', () => {
   let component: ExchangeSetComponent;
   let fixture: ComponentFixture<ExchangeSetComponent>;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
+  let essUploadFileService : EssUploadFileService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -33,6 +35,7 @@ describe('ExchangeSetComponent', () => {
     fixture = TestBed.createComponent(ExchangeSetComponent);
     component = fixture.componentInstance;
     essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
+    essUploadFileService = TestBed.inject(EssUploadFileService);
     fixture.detectChanges();
   });
 
