@@ -179,7 +179,7 @@ class EncSelectionPageAssertions {
 
     if (selectCount) {
       for (var i = 0; i < selectCount; i++) {
-
+        
         await testPage.getByRole('row').filter({ has: testPage.getByRole("checkbox") }).getByLabel('', { exact: true }).nth(i).check();
 
       }

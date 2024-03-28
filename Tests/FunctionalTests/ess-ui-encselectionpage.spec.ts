@@ -103,6 +103,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.addSingleENC("AU210130");
     await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
     await encSelectionPageObjects.addAnotherENC("AU220150");
+    await encSelectionPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() == 'POST');
     await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220150");
     await encSelectionPageObjects.expect.anotherCheckBoxSelectorChecked();
 
