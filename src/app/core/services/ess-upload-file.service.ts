@@ -197,6 +197,7 @@ export class EssUploadFileService {
     this.clearSelectedEncs();
   }
 }
+
 function ConvertBytesToMegabytes(estimatedTotalSize: number) {
   let byteSize = 1024;
   return (estimatedTotalSize / byteSize) / byteSize;
