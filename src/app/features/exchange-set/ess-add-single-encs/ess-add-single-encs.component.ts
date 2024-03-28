@@ -154,15 +154,14 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   }
                   else {
                     this.displayLoader = false;
-                    this.triggerInfoErrorMessage(true, 'info', 'There has been no updates for the ENCs in the date range selected');
+                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
                     return;
                   }
                 },
                 error: (error) => {
-                  console.log(error);
                   this.displayLoader = false;
                   if (error.status == 304) {
-                    this.triggerInfoErrorMessage(true, 'info', 'There has been no updates for the ENCs in the date range selected');
+                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
                     return;
                   }
                   this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
@@ -176,7 +175,6 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
           }
         },
         error: (error) => {
-          console.log(error);
           this.displayLoader = false;
           this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
         }

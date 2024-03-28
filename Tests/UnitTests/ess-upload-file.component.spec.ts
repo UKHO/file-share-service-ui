@@ -506,7 +506,7 @@ ${getEncData}                 | ${false}
         component.scsProductCatalogResponse(component.validEncList);
         tick();
         expect(component.displayLoader).toEqual(false);
-        expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There has been no updates for the ENCs in the date range selected');
+        expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
       }));
 });
 

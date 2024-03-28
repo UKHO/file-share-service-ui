@@ -25,7 +25,6 @@ export class ScsProductInformationService {
         requestedDate.setMilliseconds(currentDate.getMilliseconds());
         requestedDate.setHours(requestedDate.getHours() - 23);
         requestedDate.setMinutes(requestedDate.getSeconds() + 20);
-        console.log(requestedDate.toUTCString());
         return this.http.get<ProductCatalog>(this.baseUrl + '/ProductInformation?sinceDateTime='+ requestedDate.toUTCString());
     }
 }

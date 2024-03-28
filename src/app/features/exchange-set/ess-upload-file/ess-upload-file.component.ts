@@ -165,15 +165,14 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                     }
                     else {
                       this.displayLoader = false;
-                      this.triggerInfoErrorMessage(true, 'info', 'There has been no updates for the ENCs in the date range selected');
+                      this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
                       return;
                     }
                   },
                   error: (error: any) => {
-                    console.log(error);
                     this.displayLoader = false;
                     if (error.status == 304) {
-                      this.triggerInfoErrorMessage(true, 'info', 'There has been no updates for the ENCs in the date range selected');
+                      this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
                       return;
                     }
                     this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
@@ -187,7 +186,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
             }
           },
           error: (error: any) => {
-            console.log(error);
             this.displayLoader = false;
             this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
           }
