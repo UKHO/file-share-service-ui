@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { AppConfigService } from '../../../core/services/app-config.service';
-import { EssUploadFileService } from 'src/app/core/services/ess-upload-file.service';
+import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 
 @Component({
   selector: 'app-exchange-set',

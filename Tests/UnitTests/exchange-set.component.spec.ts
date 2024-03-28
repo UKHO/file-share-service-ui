@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
-import { EssUploadFileService } from 'src/app/core/services/ess-upload-file.service';
+import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 
 describe('ExchangeSetComponent', () => {
   let component: ExchangeSetComponent;
