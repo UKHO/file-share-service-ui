@@ -7,7 +7,7 @@ import { EssTypesComponent } from '../../src/app/features/exchange-set/ess-types
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 
 describe('EssTypesComponent', () => {
   let component: EssTypesComponent;
@@ -24,6 +24,9 @@ describe('EssTypesComponent', () => {
       providers: [EssUploadFileService, EssInfoErrorMessageService,{
         provide: Router,
         useValue: router
+      },{
+        provide: ViewportScroller,
+        useClass: MockViewportScroller
       },
     ],
     schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
@@ -118,5 +121,17 @@ describe('EssTypesComponent', () => {
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
 });
-
+class MockViewportScroller implements ViewportScroller {
+  setOffset(offset: [number, number] | (() => [number, number])): void {
+  }
+  getScrollPosition(): [number, number] {
+    return [0, 0];
+  }
+  scrollToPosition(position: [number, number]): void {
+  }
+  scrollToAnchor(anchor: string): void {
+  }
+  setHistoryScrollRestoration(scrollRestoration: 'auto' | 'manual'): void {
+  }
+}
 });
