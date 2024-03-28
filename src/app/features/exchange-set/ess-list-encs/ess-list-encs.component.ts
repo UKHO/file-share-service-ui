@@ -57,6 +57,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope],
     };
+    if(this.essUploadFileService.scsProductResponse)
     this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
   }
 

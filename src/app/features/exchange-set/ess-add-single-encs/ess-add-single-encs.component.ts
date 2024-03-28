@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { ScsProductInformationService } from './../../../core/services/scs-product-information-api.service';
+import { ScsProductInformationApiService } from './../../../core/services/scs-product-information-api.service';
 import { MsalService } from '@azure/msal-angular';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SilentRequest } from '@azure/msal-browser';
@@ -30,7 +30,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router , private essInfoErrorMessageService: EssInfoErrorMessageService,
-    private scsProductInformationService: ScsProductInformationService,
+    private scsProductInformationApiService: ScsProductInformationApiService,
     private msalService: MsalService) { this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope]
@@ -123,7 +123,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[] , renderedFrom: string) {
     if (encs != null) {
-      this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+        this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.processProductUpdatesByIdentifiers(data, renderedFrom);
@@ -138,11 +138,11 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     }
 
   productUpdatesByDeltaResponse(encs: any[], renderedFrom: string) {
-    this.productIdentifierSubscriber = this.scsProductInformationService.productUpdatesByIdentifiersResponse(encs)
+    this.productIdentifierSubscriber = this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
       .subscribe({
         next: (productIdentifiersResponse: ProductCatalog) => {
           if (productIdentifiersResponse.products.length != 0) {
-            this.scsProductInformationService.getProductsFromSpecificDateByScsResponse()
+            this.scsProductInformationApiService.getProductsFromSpecificDateByScsResponse()
               .subscribe({
                 next: (data: ProductCatalog) => {
                   this.displayLoader = false;
@@ -190,7 +190,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   }
 
   fetchScsTokenReponse(renderedFrom: string) {
-    const payload: string[] = [this.txtSingleEnc];
+    const payload: string[] = [this.txtSingleEnc.toUpperCase()];
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
       this.scsProductCatalogResponse(payload, renderedFrom);
     }, error => {
