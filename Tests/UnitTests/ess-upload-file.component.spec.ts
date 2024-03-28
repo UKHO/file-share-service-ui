@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
@@ -9,12 +9,19 @@ import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-se
 import { By } from '@angular/platform-browser';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
+import { HttpClientModule } from '@angular/common/http';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
+import { ScsProductInformationApiService } from '../../src/app/core/services/scs-product-information-api.service';
+import { of, throwError } from 'rxjs';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
   let fixture: ComponentFixture<EssUploadFileComponent>;
   let essUploadFileService: EssUploadFileService;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
+  let msalService: MsalService;
+  let scsProductInformationApiService: ScsProductInformationApiService;
   const getEncData_csv = () => {
     let data = 'Au2fg150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
@@ -116,15 +123,29 @@ describe('EssUploadFileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, DesignSystemModule],
+      imports: [CommonModule, DesignSystemModule, HttpClientModule],
       declarations: [EssUploadFileComponent, EssInfoErrorMessageComponent],
       providers: [
         {
           provide: Router,
           useValue: router
         },
+        {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
+        },
+        {
+          provide : ScsProductInformationApiService,
+          useValue : scsProductInformationApiService
+        },
+        {
+          provide : MsalService,
+          useValue : msalService
+        },
         EssUploadFileService,
-        EssInfoErrorMessageService
+        EssInfoErrorMessageService,
+        MsalService,
+        ScsProductInformationApiService
       ]
     })
       .compileComponents();
@@ -143,6 +164,8 @@ describe('EssUploadFileComponent', () => {
     component = fixture.componentInstance;
     essUploadFileService = TestBed.inject(EssUploadFileService);
     essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
+    msalService = TestBed.inject(MsalService);
+    scsProductInformationApiService = TestBed.inject(ScsProductInformationApiService);
     fixture.detectChanges();
   });
 
@@ -396,4 +419,169 @@ describe('EssUploadFileComponent', () => {
     }
   });
 
+ it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', fakeAsync(() => {
+  let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+  jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+  component.productUpdatesByIdentifiersResponse(addedEncList)
+  tick();
+  expect(component.displayLoader).toEqual(false);
+  expect(3).toEqual(scsProductIdentifiersResponseMockData.productCounts.returnedProductCount);
+}));
+
+ it('should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
+  let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+  jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductIdentifiersResponseMockData));
+  component.triggerInfoErrorMessage=jest.fn();
+  component.fetchScsTokenReponse();
+  component.productUpdatesByIdentifiersResponse(addedEncList);
+  tick();
+  expect(component.displayLoader).toEqual(false);
+  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+}));
 });
+
+export const scsProductIdentifiersResponseMockData: any = {
+  "products": [
+      {
+          "productName": "FR570300",
+          "editionNumber": 1,
+          "updateNumbers": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2015-02-25T00:00:00Z",
+                  "issueDate": "2015-02-25T00:00:00Z"
+              },
+              {
+                  "updateNumber": 1,
+                  "updateApplicationDate": null,
+                  "issueDate": "2016-04-27T00:00:00Z"
+              },
+              {
+                  "updateNumber": 2,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-01-09T00:00:00Z"
+              },
+              {
+                  "updateNumber": 3,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-03-20T00:00:00Z"
+              },
+              {
+                  "updateNumber": 4,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-11-14T00:00:00Z"
+              },
+              {
+                  "updateNumber": 5,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-12-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 6,
+                  "updateApplicationDate": null,
+                  "issueDate": "2018-12-19T00:00:00Z"
+              },
+              {
+                  "updateNumber": 7,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-06-28T00:00:00Z"
+              },
+              {
+                  "updateNumber": 8,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-10-24T00:00:00Z"
+              },
+              {
+                  "updateNumber": 9,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-05-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 10,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-10-08T00:00:00Z"
+              },
+              {
+                  "updateNumber": 11,
+                  "updateApplicationDate": null,
+                  "issueDate": "2022-11-16T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 343128,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      },
+      {
+          "productName": "SE6IIFE1",
+          "editionNumber": 13,
+          "updateNumbers": [
+              0
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2021-03-26T00:00:00Z",
+                  "issueDate": "2021-03-26T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 7215,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      },
+      {
+          "productName": "NO3B2020",
+          "editionNumber": 2,
+          "updateNumbers": [
+              0
+          ],
+          "dates": [
+              {
+                  "updateNumber": 0,
+                  "updateApplicationDate": "2023-05-09T00:00:00Z",
+                  "issueDate": "2023-05-09T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 637942,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B2"
+              }
+          ]
+      }
+  ],
+  "productCounts": {
+      "requestedProductCount": 3,
+      "returnedProductCount": 3,
+      "requestedProductsAlreadyUpToDateCount": 0,
+      "requestedProductsNotReturned": []
+  }
+}

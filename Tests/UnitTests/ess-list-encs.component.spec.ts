@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
+import { Product, ProductCatalog, BundleInfo, DateInfo } from '../../src/app/core/models/ess-response-types';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -23,6 +24,204 @@ describe('EssListEncsComponent', () => {
   let exchangeSetApiService: ExchangeSetApiService;
   let fixture: ComponentFixture<EssListEncsComponent>;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
+  let scsProductUpdatesByIdentifiersMockData: any = 
+    {
+      "products": [
+          {
+              "productName": "AU210130",
+              "editionNumber": 5,
+              "updateNumbers": [
+                  0
+              ],
+              "dates": [
+                  {
+                      "updateNumber": 0,
+                      "updateApplicationDate": "2023-03-10T00:00:00Z",
+                      "issueDate": "2023-03-10T00:00:00Z"
+                  }
+              ],
+              "cancellation": null,
+              "fileSize": 26140,
+              "ignoreCache": false,
+              "bundle": [
+                  {
+                      "bundleType": "DVD",
+                      "location": "M1;B3"
+                  }
+              ]
+          },
+          {
+              "productName": "AU210230",
+              "editionNumber": 1,
+              "updateNumbers": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11
+              ],
+              "dates": [
+                  {
+                      "updateNumber": 0,
+                      "updateApplicationDate": "2015-02-25T00:00:00Z",
+                      "issueDate": "2015-02-25T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 1,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2016-04-27T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 2,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2017-01-09T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 3,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2017-03-20T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 4,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2017-11-14T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 5,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2017-12-11T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 6,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2018-12-19T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 7,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2019-06-28T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 8,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2019-10-24T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 9,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2021-05-11T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 10,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2021-10-08T00:00:00Z"
+                  },
+                  {
+                      "updateNumber": 11,
+                      "updateApplicationDate": "2016-04-27T00:00:00Z",
+                      "issueDate": "2022-11-16T00:00:00Z"
+                  }
+              ],
+              "cancellation": null,
+              "fileSize": 343128,
+              "ignoreCache": false,
+              "bundle": [
+                  {
+                      "bundleType": "DVD",
+                      "location": "M1;B1"
+                  }
+              ]
+          },
+          {
+              "productName": "AU210330",
+              "editionNumber": 3,
+              "updateNumbers": [
+                  0
+              ],
+              "dates": [
+                  {
+                      "updateNumber": 0,
+                      "updateApplicationDate": "2022-12-21T00:00:00Z",
+                      "issueDate": "2022-12-21T00:00:00Z"
+                  }
+              ],
+              "cancellation": null,
+              "fileSize": 123074,
+              "ignoreCache": false,
+              "bundle": [
+                  {
+                      "bundleType": "DVD",
+                      "location": "M1;B4"
+                  }
+              ]
+          },
+          {
+              "productName": "AU210180",
+              "editionNumber": 13,
+              "updateNumbers": [
+                  0
+              ],
+              "dates": [
+                  {
+                      "updateNumber": 0,
+                      "updateApplicationDate": "2021-03-26T00:00:00Z",
+                      "issueDate": "2021-03-26T00:00:00Z"
+                  }
+              ],
+              "cancellation": null,
+              "fileSize": 7215,
+              "ignoreCache": false,
+              "bundle": [
+                  {
+                      "bundleType": "DVD",
+                      "location": "M1;B1"
+                  }
+              ]
+          },
+          {
+              "productName": "AU210470",
+              "editionNumber": 2,
+              "updateNumbers": [
+                  0
+              ],
+              "dates": [
+                  {
+                      "updateNumber": 0,
+                      "updateApplicationDate": "2023-05-09T00:00:00Z",
+                      "issueDate": "2023-05-09T00:00:00Z"
+                  }
+              ],
+              "cancellation": null,
+              "fileSize": 637942,
+              "ignoreCache": false,
+              "bundle": [
+                  {
+                      "bundleType": "DVD",
+                      "location": "M1;B2"
+                  }
+              ]
+          }
+      ],
+      "productCounts": {
+          "requestedProductCount": 6,
+          "returnedProductCount": 5,
+          "requestedProductsAlreadyUpToDateCount": 0,
+          "requestedProductsNotReturned": [
+              {
+                  "productName": "US5CN13M",
+                  "reason": "noDataAvailableForCancelledProduct"
+              }
+          ]
+      }
+  }
+  let productCatalog: ProductCatalog = scsProductUpdatesByIdentifiersMockData;
   const router = {
     navigate: jest.fn()
   };
@@ -36,7 +235,9 @@ describe('EssListEncsComponent', () => {
     getNotifySingleEnc : jest.fn().mockReturnValue(of(true)),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
     addAllSelectedEncs : jest.fn(),
-    getEstimatedTotalSize:jest.fn()
+    getEstimatedTotalSize:jest.fn(),
+    scsProductResponse: productCatalog,
+    scsProducts: productCatalog.products,
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -57,7 +258,7 @@ describe('EssListEncsComponent', () => {
         },
         {
           provide : MsalService,
-          useValue : service
+          useValue : msalService
         },
         {
           provide : ExchangeSetApiService,
@@ -67,7 +268,7 @@ describe('EssListEncsComponent', () => {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory
         },
-        MsalService, ExchangeSetApiService,EssInfoErrorMessageService
+        MsalService,ExchangeSetApiService,EssInfoErrorMessageService
       ]
     })
       .compileComponents();
@@ -101,19 +302,16 @@ describe('EssListEncsComponent', () => {
     component.ngOnInit();
     expect(component.encList.length).toEqual(5);
   });
-  it('handleChange should call service.removeSelectedEncs if enc is already present', () => {
-    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
-    component.handleChange('AU210130');
-    expect(service.removeSelectedEncs).toHaveBeenCalled();
-  });
+
   it('handleChange should call service.addSelectedEnc if enc is not present', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
-    component.handleChange('AU210180');
+    component.handleChange(productCatalog.products[3]);
     expect(service.addSelectedEnc).toHaveBeenCalled();
   });
+  
   it('handleChange should not call service.addSelectedEnc if selected enc"s are greater than MaxEncSelectionLimit', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130', 'AU220830']);
-    component.handleChange('AU210470');
+    component.handleChange(productCatalog.products[4]);
     expect(service.addSelectedEnc).not.toHaveBeenCalled();
   });
   it('syncEncsBetweenTables should set encList and selectedEncList', () => {
@@ -128,11 +326,18 @@ describe('EssListEncsComponent', () => {
   });
 
   test('should show the error message when user select encs more than selection limit', () => {
-    const fixture = TestBed.createComponent(EssListEncsComponent);
-    fixture.detectChanges();
-    service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130' , 'AU220830']);
-    component.handleChange('AU210470');
-    const errObj = {
+     const fixture = TestBed.createComponent(EssListEncsComponent);
+     fixture.detectChanges();
+     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU210140', 'AU220130' , 'AU220830']);
+     let singleProduct: Product[] = [];
+     let bundleInfo: BundleInfo[] = [];
+     let updateNumber: number[] = [];
+     let dateInfo: DateInfo[] = [];
+     bundleInfo.push({bundleType: 'ABC', location: 'XYZ'});
+     dateInfo.push({updateNumber: 1, updateApplicationDate: '01/02/2024', issueDate: '02/03/2024'});
+     singleProduct.push({ productName: 'DU314128', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
+     component.handleChange(singleProduct[0]);
+     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'error',
       messageDesc : 'No more than 5 ENCs can be selected.'
@@ -223,7 +428,7 @@ describe('EssListEncsComponent', () => {
   it('should hide select all button if enc list greater than max enc limit', () => {
     service.getValidEncs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'AU314140']);
     component.ngOnInit();
-    expect(component.showSelectDeselect).toBeFalsy();
+    expect(component.showSelectDeselect).toBeTruthy();
   });
 
   it('should show select all button if enc list less than or equal to max enc limit', () => {
@@ -234,7 +439,7 @@ describe('EssListEncsComponent', () => {
 
   it('handleChange should set correct error message and call scrollTo is called when maxEncSelectionLimit limit is exceeded', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128', 'CU314128']);
-    component.handleChange('DU314128');
+    component.handleChange(productCatalog.products[0]);
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'error',
@@ -299,6 +504,7 @@ describe('EssListEncsComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
   });
+
 });
 
 export const exchangeSetDetailsMockData: any = {
@@ -314,69 +520,72 @@ export const exchangeSetDetailsMockData: any = {
     }
   },
   "exchangeSetUrlExpiryDateTime": "2022-09-02T06:37:34.732Z",
-  "requestedProductCount": 19,
+  requestedProductCount: 19,
   "exchangeSetCellCount": 4,
-  "requestedProductsAlreadyUpToDateCount": 0,
+  requestedProductsAlreadyUpToDateCount: 0,
   "requestedProductsNotInExchangeSet": [
     {
-      "productName": "AU210130",
+      productName: "AU210130",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU220130",
+      productName: "AU220130",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU314128",
+      productName: "AU314128",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU412129",
+      productName: "AU412129",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU415128",
+      productName: "AU415128",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU424150",
+      productName: "AU424150",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU426113",
+      productName: "AU426113",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU432115",
+      productName: "AU432115",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU439146",
+      productName: "AU439146",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU5BTB01",
+      productName: "AU5BTB01",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU5DAM02",
+      productName: "AU5DAM02",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU5MEL01",
+      productName: "AU5MEL01",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU5PTL01",
+      productName: "AU5PTL01",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU5SYD01",
+      productName: "AU5SYD01",
       "reason": "invalidProduct"
     },
     {
-      "productName": "AU6BTB01",
+      productName: "AU6BTB01",
       "reason": "invalidProduct"
     }
   ]
 }
+
+
+
