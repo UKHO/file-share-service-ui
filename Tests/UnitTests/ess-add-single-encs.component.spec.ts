@@ -414,8 +414,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.txtSingleEnc = 'US4F8M';
     component.renderedFrom = 'essHome';
     service.setValidENCs(component.validEnc);
-    scsProductUpdatesByIdentifiersMockData.products = [];
-    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
     component.triggerInfoErrorMessage=jest.fn();
     component.productUpdatesByIdentifiersResponse(component.validEnc,'essHome')
     tick();
