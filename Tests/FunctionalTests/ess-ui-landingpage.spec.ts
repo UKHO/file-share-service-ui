@@ -93,7 +93,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
-          await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
+          await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AR302160");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13817
@@ -106,14 +106,16 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
 
+     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149496
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13823
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in CSV File, upload only once.', async ({ page }) => {
-
           let enclist = ['AU220150', 'CN484220', 'CA271105', 'AU5PTL01'];
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+          const requestPromise = await esslandingPageObjects.page.waitForRequest(request =>
+               request.url().includes('productInformation/productIdentifiers') && request.method() === 'POST')
+          await esslandingPageObjects.expect.IsEmpty(requestPromise.url());
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })

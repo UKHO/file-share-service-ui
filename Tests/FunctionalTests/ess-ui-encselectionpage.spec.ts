@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
+import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
@@ -100,10 +100,15 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    let requestedCount = 0;
+    encSelectionPageObjects.page.on('request', request => {
+      if (request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
+        requestedCount++;
+    })
     await encSelectionPageObjects.addSingleENC("AU210130");
     await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
     await encSelectionPageObjects.addAnotherENC("AU220150");
-    await encSelectionPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() == 'POST');
+    await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 2);
     await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220150");
     await encSelectionPageObjects.expect.anotherCheckBoxSelectorChecked();
 

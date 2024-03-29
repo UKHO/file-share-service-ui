@@ -263,6 +263,7 @@ class EncSelectionPageAssertions {
   }
 
   async secondEncSelectorContainText(expected: string): Promise<void> {
+    await this.encSelectionPageObjects.page.waitForSelector('table tbody tr:nth-child(2) td', { state: 'visible', timeout: 5000 });
     const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
     expect(uploadedEncs[1]).toEqual(expected);
@@ -326,5 +327,8 @@ class EncSelectionPageAssertions {
     }
   }
 
+  async toBeTruthy(result: Boolean): Promise<void> {
+    expect(result).toBeTruthy();
+    }
 
 }

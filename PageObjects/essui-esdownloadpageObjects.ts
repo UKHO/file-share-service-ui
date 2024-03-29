@@ -176,7 +176,8 @@ class EsDownloadPageAssertions {
     }
 
     async SelectedENCs(): Promise<void> {
-        expect(await this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
+        await this.esDownloadPageObjects.page.waitForSelector("p[class='ShowEncList']", {state: 'visible', timeout: 3000});
+        expect(this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
 
     }
 }
