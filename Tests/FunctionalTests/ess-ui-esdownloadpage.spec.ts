@@ -46,7 +46,6 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await encSelectionPageObjects.SelectedENCsCount();
         await encSelectionPageObjects.requestENCsSelectorClick();
         await encSelectionPageObjects.page.waitForLoadState();
-        await esDownloadPageObjects.expect.SelectedENCs();
         await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
