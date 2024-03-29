@@ -9,6 +9,7 @@ import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { Product, ProductCatalog } from 'src/app/core/models/ess-response-types';
 import { Subscription } from 'rxjs';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-ess-upload-file',
@@ -173,7 +174,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                   },
                   error: (error: any) => {
                     this.displayLoader = false;
-                    if (error.status == 304) {
+                    if (error.status == HttpStatusCode.NotModified) {
                       this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
                       return;
                     }
