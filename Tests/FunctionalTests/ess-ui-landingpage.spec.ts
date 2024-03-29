@@ -57,12 +57,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14102
      //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807          
      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
-
-          let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', '3A6LTP10', 'B28LTP10', '221A1B2C']
+          let enclist = [ 'AU220150', 'CN484220', 'GB50184C', 'CA271105', 'AU5PTL01' ]
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await page.waitForLoadState();
+          await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -70,12 +69,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14103 
      //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807            
      test('Verify all the uploaded ENCs from .txt file, displayed on the screen', async ({ page }) => {
-
-          let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C', '908ABCDE', 'B28LTP10']
+          let enclist = ['AU220140', 'AU314128', 'AU411129', 'CN484220', 'GB50184C']
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await page.waitForLoadState();
+          await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
@@ -95,7 +93,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
-          await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
+          await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AR302160");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13817
@@ -108,24 +106,27 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.uploadedDataSelectorToBeEqual("AU210130");
      })
 
+     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149496
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13823
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in CSV File, upload only once.', async ({ page }) => {
-
-          let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220'];
+          let enclist = ['AU220150', 'CN484220', 'CA271105', 'AU5PTL01'];
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
+          const requestPromise = await esslandingPageObjects.page.waitForRequest(request =>
+               request.url().includes('productInformation/productIdentifiers') && request.method() === 'POST')
+          await esslandingPageObjects.expect.IsEmpty(requestPromise.url());
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13826
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in TXT File, upload only valid and once.', async ({ page }) => {
-
-          let enclist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220']
+          let enclist = [ 'AU220150', 'CN484220', 'CA271105', 'AU5PTL01' ]
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData//ValidAndDuplicateENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
+          await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
@@ -164,15 +165,15 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808  
      test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
 
-          let encAdded = ["KK123456","AA123456","AB123456","BC123456","KK12H456","3A6LTP10"]
+          let encAdded = ["GB6PL020","GB6PL010","GB6PL040","AU220150","AU5PTL01","CA271105"]
           await esslandingPageObjects.addencradiobtnSelectorClick();
-          await esslandingPageObjects.setaddSingleENCTextboxSelector("KK123456");
+          await esslandingPageObjects.setaddSingleENCTextboxSelector("GB6PL020");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await encSelectionPageObjects.addAnotherENC("aa123456");
-          await encSelectionPageObjects.addAnotherENC("Ab123456");
-          await encSelectionPageObjects.addAnotherENC("bC123456");
-          await encSelectionPageObjects.addAnotherENC("KK12h456");
-          await encSelectionPageObjects.addAnotherENC("3a6ltp10");
+          await encSelectionPageObjects.addAnotherENC("gb6PL010");
+          await encSelectionPageObjects.addAnotherENC("GB6pl040");
+          await encSelectionPageObjects.addAnotherENC("au220150");
+          await encSelectionPageObjects.addAnotherENC("Au5ptl01");
+          await encSelectionPageObjects.addAnotherENC("Ca271105");
           await esslandingPageObjects.expect.verifyUploadedENCs(encAdded);
      })
   
@@ -193,7 +194,14 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found.')
      })
+
+     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149496
+     test('Verify Base Exchange Set with Valid ENCs', async ({ page }) => {
+          await esslandingPageObjects.addencradiobtnSelectorClick();
+          await esslandingPageObjects.setaddSingleENCTextboxSelector("AU220150");
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          const requestPromise = await esslandingPageObjects.page.waitForRequest(request =>
+               request.url().includes('productInformation/productIdentifiers') && request.method() === 'POST')
+          await esslandingPageObjects.expect.IsEmpty(requestPromise.url());
+     });
 })
-
-
-

@@ -77,7 +77,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
         protectedResourceMap: new Map([
             [AppConfigService.settings["fssConfig"].stateManagementApiUrl+'/logout', null],
             [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].apiScope]],
-            [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].apiScope]],         
+            [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].apiScope]],
+            [AppConfigService.settings["essConfig"].apiUiUrl, [AppConfigService.settings["essConfig"].apiScope]],        
         ]),
     };
 }

@@ -75,7 +75,7 @@ class EsDownloadPageAssertions {
     }
 
     async downloadButtonSelectorHidden(): Promise<void> {
-
+        this.esDownloadPageObjects.page.waitForTimeout(3000);
       expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden).toBeTruthy();
     }
 
