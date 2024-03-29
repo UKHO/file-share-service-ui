@@ -137,7 +137,7 @@ export class EssUploadFileService {
     this.validEncs = [];
     this.validEncs.push(signleValidEnc.toUpperCase());
   }
-
+  
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
     this.exchangeSetDetails = exchangeSetDetails;
 
@@ -230,9 +230,9 @@ export class EssUploadFileService {
     this.clearSelectedEncs();
     this.aioEncFound = false;
   }
-}
 
 function ConvertBytesToMegabytes(estimatedTotalSize: number) {
   let byteSize = 1024;
   return (estimatedTotalSize / byteSize) / byteSize;
+}
 }
