@@ -78,13 +78,10 @@ export class EssUploadFileService {
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .map((enc) => enc.toUpperCase()) // applies Upper Case to ENC
       .filter((el, i, a) => i === a.indexOf(el)); // removes duplicate enc's
-
+  
     let validEncsExAio = this.validEncs.filter((enc) =>
       this.excludeAioEnc(enc)
     ); //exclude AIO list
-
-    let validEncsExAio = this.validEncs
-      .filter((enc) => this.excludeAioEnc(enc)); //exclude AIO list
 
     if (validEncsExAio.length < this.validEncs.length) {
       this.aioEncFound = true;
@@ -175,7 +172,7 @@ export class EssUploadFileService {
     for (let selectedEnc of this.selectedEncs) {
       this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
     }
-    let estimatedSizeInMB = ConvertBytesToMegabytes(this.estimatedTotalSize);
+    let estimatedSizeInMB = this.ConvertBytesToMegabytes(this.estimatedTotalSize);
     return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(1) + ' MB' ;
   }
 
@@ -231,8 +228,10 @@ export class EssUploadFileService {
     this.aioEncFound = false;
   }
 
-function ConvertBytesToMegabytes(estimatedTotalSize: number) {
-  let byteSize = 1024;
-  return (estimatedTotalSize / byteSize) / byteSize;
+  ConvertBytesToMegabytes(estimatedTotalSize: number) {
+    let byteSize = 1024;
+    return (estimatedTotalSize / byteSize) / byteSize;
+  }
 }
-}
+
+

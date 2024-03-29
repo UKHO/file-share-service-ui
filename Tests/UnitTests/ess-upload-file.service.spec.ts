@@ -261,16 +261,15 @@ describe('EssUploadFileService', () => {
     const invalidEncName = 'GB800001';
     const result = service.excludeAioEnc(invalidEncName); 
     expect(result).toBe(false);  });
-  it.each`
-  encCount                       | expectedResult
-  ${0}                           |  ${'0.5MB'}
-  ${1}                           |  ${'0.8MB'}
-  ${6}                           |  ${'2.3MB'}
-  `('getEstimatedTotalSize should return valid string',
-  ({  encCount, expectedResult }: {  encCount: number; expectedResult: string }) => {
-    jest.clearAllMocks();
-    expect(service.getEstimatedTotalSize(encCount)).toEqual(expectedResult);
-  });
+
+    test('getEstimatedTotalSize calculates total size accurately', () => {
+      for (const p of product) {
+        service.addSelectedEnc(p);
+      }
+      const actualTotalSize = service.getEstimatedTotalSize();
+      expect(actualTotalSize).toEqual('1.0 MB');
+    })
+    
   it('get exchangeSetDownloadType should return the correct download type', () => {
     service.exchangeSetDownloadType = 'Base';
     expect(service.exchangeSetDownloadType).toEqual('Base');
