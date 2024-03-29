@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ExchangeSetDetails, Product, ProductCatalog } from '../models/ess-response-types';
+import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCatalog } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
@@ -9,6 +9,7 @@ import { AppConfigService } from './app-config.service';
 export class EssUploadFileService {
   private _scsProductResponse: ProductCatalog | undefined;
   private _scsProducts: Product[];
+  private _scsInvalidProducts: NotReturnedProduct[];
   private validEncs: string[];
   private selectedEncs: Product[];
   private maxEncLimit: number;
@@ -197,6 +198,14 @@ export class EssUploadFileService {
       this._scsProducts = products;
    }
 
+   get scsInvalidProducts() : NotReturnedProduct[]{
+    return this._scsInvalidProducts;
+   }
+
+   set scsInvalidProducts(NotReturnedProduct: NotReturnedProduct[]){
+      this._scsInvalidProducts = NotReturnedProduct;
+   }
+
    setValidEncsByApi(encList: string[]): void {
     this.validEncs = encList;
    }
@@ -218,7 +227,10 @@ export class EssUploadFileService {
   }
   
   clearData() {
+    this.validEncs = [];
+    this.scsInvalidProducts = [];
     this.scsProductResponse = undefined;
+    this.clearSelectedEncs();
     this.aioEncFound = false;
   }
 }

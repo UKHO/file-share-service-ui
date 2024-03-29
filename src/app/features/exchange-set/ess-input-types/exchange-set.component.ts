@@ -17,7 +17,7 @@ export class ExchangeSetComponent implements OnInit {
   addSingleEncRenderFrom ='essHome';
   addSingleEncBtnText = 'Proceed';
 
-  constructor(private essInfoErrorMessageService: EssInfoErrorMessageService, private essUploadFileService: EssUploadFileService ) {
+  constructor(private essInfoErrorMessageService: EssInfoErrorMessageService,private essUploadFileService: EssUploadFileService) {
     this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
    }
 
