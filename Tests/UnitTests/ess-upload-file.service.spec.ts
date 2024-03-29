@@ -60,16 +60,15 @@ describe('EssUploadFileService', () => {
   let dateInfo: DateInfo[] = [];
   bundleInfo.push({bundleType: 'ABC', location: 'XYZ'});
   dateInfo.push({updateNumber:1, updateApplicationDate: '', issueDate: ''});
-  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 2, ignoreCache: true, bundle: bundleInfo });
-  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 3, ignoreCache: true, bundle: bundleInfo });
-  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 26140, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 343128, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 123074, ignoreCache: true, bundle: bundleInfo });
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
         MaxEncSelectionLimit: 5,
-        avgSizeofENCinMB:0.3,
-        defaultEstimatedSizeinMB:0.5,
+        defaultEstimatedSizeinMB: 0.5,
         aioExcludeEncs :["GB800001","FR800001"]
       },
     };

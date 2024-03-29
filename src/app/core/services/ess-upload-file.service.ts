@@ -17,7 +17,6 @@ export class EssUploadFileService {
   private showInfoMessage = false;
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
   private exchangeSetDetails: ExchangeSetDetails;
-  private avgSizeofENC: number;
   private estimatedTotalSize: number;
   private defaultEstimatedSizeinMB: number;
   private configAioEncList: string[];
@@ -28,18 +27,9 @@ export class EssUploadFileService {
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
-    this.avgSizeofENC = Number.parseFloat(
-      AppConfigService.settings['essConfig'].avgSizeofENCinMB
-    );
-    this.maxEncSelectionLimit = Number.parseInt(
-      AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
-      10
-    );
-    this.defaultEstimatedSizeinMB = Number.parseFloat(
-      AppConfigService.settings['essConfig'].defaultEstimatedSizeinMB
-    );
-    this.configAioEncList =
-      AppConfigService.settings['essConfig'].aioExcludeEncs;
+    this.maxEncSelectionLimit = Number.parseInt(AppConfigService.settings['essConfig'].MaxEncSelectionLimit, 10);
+    this.configAioEncList = AppConfigService.settings["essConfig"].aioExcludeEncs;
+    this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -93,13 +83,15 @@ export class EssUploadFileService {
       this.excludeAioEnc(enc)
     ); //exclude AIO list
 
+    let validEncsExAio = this.validEncs
+      .filter((enc) => this.excludeAioEnc(enc)); //exclude AIO list
+
     if (validEncsExAio.length < this.validEncs.length) {
       this.aioEncFound = true;
     }
 
-    this.validEncs = validEncsExAio.filter(
-      (enc, index) => index < this.maxEncLimit
-    ); // limit records by MaxEncLimit
+    this.validEncs = validEncsExAio
+      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit   
   }
 
   getValidEncs(): string[] {
@@ -148,6 +140,7 @@ export class EssUploadFileService {
 
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
     this.exchangeSetDetails = exchangeSetDetails;
+
   }
 
   getExchangeSetDetails(): ExchangeSetDetails {
@@ -172,27 +165,31 @@ export class EssUploadFileService {
   }
 
 
-  addAllSelectedEncs(){
-    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
-    this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
+  addAllSelectedEncs() {
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.scsProducts.slice(0, maxEncSelectionLimit)];
   }
-  
-  getEstimatedTotalSize(encCount:number):string {  
-    this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
-      return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
-   }
+
+  getEstimatedTotalSize(): string {
+    this.estimatedTotalSize = 0;
+    for (let selectedEnc of this.selectedEncs) {
+      this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
+    }
+    let estimatedSizeInMB = ConvertBytesToMegabytes(this.estimatedTotalSize);
+    return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(1) + ' MB' ;
+  }
 
    get scsProductResponse() : ProductCatalog | undefined{
     return this._scsProductResponse;
-   }
+  }
 
    set scsProductResponse(scsProductResponse: ProductCatalog | undefined){
      this._scsProductResponse = scsProductResponse;
    } 
 
-   get scsProducts() : Product[]{
+  get scsProducts(): Product[] {
     return this._scsProducts;
-   }
+  }
 
    set scsProducts(products: Product[]){
       this._scsProducts = products;
@@ -233,4 +230,9 @@ export class EssUploadFileService {
     this.clearSelectedEncs();
     this.aioEncFound = false;
   }
+}
+
+function ConvertBytesToMegabytes(estimatedTotalSize: number) {
+  let byteSize = 1024;
+  return (estimatedTotalSize / byteSize) / byteSize;
 }
