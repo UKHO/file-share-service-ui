@@ -18,6 +18,7 @@ export class EssUploadFileService {
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
   private exchangeSetDetails: ExchangeSetDetails;
   private estimatedTotalSize: number;
+  private defaultEstimatedSizeinMB : number;
   private configAioEncList: string[];
   public aioEncFound: boolean;
 
@@ -26,6 +27,7 @@ export class EssUploadFileService {
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
     this.maxEncSelectionLimit = Number.parseInt(AppConfigService.settings['essConfig'].MaxEncSelectionLimit, 10);
     this.configAioEncList = AppConfigService.settings["essConfig"].aioExcludeEncs;
+    this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -163,7 +165,7 @@ export class EssUploadFileService {
       this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
     }
     let estimatedSizeInMB = ConvertBytesToMegabytes(this.estimatedTotalSize);
-    return (estimatedSizeInMB >= 0.01) ? estimatedSizeInMB.toFixed(2) + ' MB' : '0.01 MB';
+    return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(1) + ' MB' ;
   }
 
    get scsProductResponse() : ProductCatalog | undefined{

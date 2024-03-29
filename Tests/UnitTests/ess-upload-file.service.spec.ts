@@ -68,6 +68,7 @@ describe('EssUploadFileService', () => {
       essConfig: {
         MaxEncLimit: 10,
         MaxEncSelectionLimit: 5,
+        defaultEstimatedSizeinMB: 0.5,
         aioExcludeEncs :["GB800001","FR800001"]
       },
     };
@@ -261,24 +262,11 @@ describe('EssUploadFileService', () => {
     const result = service.excludeAioEnc(invalidEncName); 
     expect(result).toBe(false);  });
 
-  jest.mock('../../src/app/core/services/ess-upload-file.service', () => {
-    return {
-      ESSUploadFileService: jest.fn(() => ({
-        addSelectedEnc: jest.fn(),
-        getEstimatedTotalSize: jest.fn(() => {
-          const expectedTotalSize = product.reduce((sum, p) => sum + p.fileSize, 0);
-          return `${((expectedTotalSize / 1024) / 1024).toFixed(2)} MB`;
-        })
-      }))
-    };
-  });
-
   test('getEstimatedTotalSize calculates total size accurately', () => {
     for (const p of product) {
       service.addSelectedEnc(p);
     }
     const actualTotalSize = service.getEstimatedTotalSize();
-    expect(actualTotalSize).toEqual('0.47 MB');
-
+    expect(actualTotalSize).toEqual('1.0 MB');
   })
 });
