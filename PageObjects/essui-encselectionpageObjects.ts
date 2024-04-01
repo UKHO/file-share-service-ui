@@ -39,6 +39,7 @@ export class EncSelectionPageObjects {
   readonly requestENCsSelector: Locator
   readonly encTableListCountDisplay: Locator
   readonly getDialogueSelector : Locator
+  readonly errorMessage : Locator
   readonly pageUnderTest: Page
 
 
@@ -70,6 +71,7 @@ export class EncSelectionPageObjects {
     this.rightTableDisplaySelector = this.page.locator("span[class='showListEncTotal']").nth(1)
     this.requestENCsSelector = page.getByRole('button', { name: 'Request ENCs' })
     this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
+    this.errorMessage = this.page.locator("h3[class='warningMsgTitle']");
     this.pageUnderTest = page;
 
   }
@@ -219,8 +221,8 @@ class EncSelectionPageAssertions {
 
   async errorMsgMaxLimitSelectorContainText(expected: string): Promise<void> {
     const testPage = this.encSelectionPageObjects.pageUnderTest;
-    expect(await this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
-    expect(await testPage.getByText(expected)).toBeTruthy();
+    expect(this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
+    expect(await this.encSelectionPageObjects.errorMessage.innerText() == expected).toBeTruthy();
   }
 
   async maxLimitEncmessageSelectorContainText(expected: string): Promise<void> {
@@ -241,8 +243,8 @@ class EncSelectionPageAssertions {
 
   async errorMessageForDuplicateNumberSelectorContainsText(expected: string): Promise<void> {
     const testPage = this.encSelectionPageObjects.pageUnderTest;
-    expect(await this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
-    expect(await testPage.getByText(expected)).toBeTruthy();
+    expect(this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
+    expect(await this.encSelectionPageObjects.errorMessage.innerText() == expected).toBeTruthy();
   }
 
   async anotherCheckBoxSelectorChecked(): Promise<void> {
