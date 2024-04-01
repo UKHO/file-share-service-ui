@@ -23,8 +23,7 @@ export class ScsProductInformationApiService {
         requestedDate.setMinutes(currentDate.getMinutes());
         requestedDate.setSeconds(currentDate.getSeconds());
         requestedDate.setMilliseconds(currentDate.getMilliseconds());
-        requestedDate.setHours(requestedDate.getHours() - 23);
-        requestedDate.setMinutes(requestedDate.getSeconds() + 20);
+        requestedDate.setHours(requestedDate.getHours() - 23);//By default system will use the date 23 hours earlier than the date set by the user.
         return this.http.get<ProductCatalog>(this.baseUrl + '/ProductInformation?sinceDateTime='+ requestedDate.toUTCString());
     }
 }

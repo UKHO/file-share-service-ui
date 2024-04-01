@@ -11,7 +11,7 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
   essBaseUrl = AppConfigService.settings['essConfig'].apiUrl;
   maxRetries = AppConfigService.settings['essConfig'].maxRetries;
   initialDelayMs = AppConfigService.settings['essConfig'].initialDelayMs;
-  essBaseUiUrl=AppConfigService.settings['essConfig'].apiUiUrl;
+  essBaseUiUrl = AppConfigService.settings['essConfig'].apiUiUrl;
   retryCount = 0;
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
@@ -26,12 +26,14 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
                 this.retryCount = index;
                 return true;
               }
-              else if(request.url.includes(this.essBaseUiUrl) && err.status===304){
-                const error = new HttpErrorResponse({ error:{
-                  message:'Not Modified: The server has not performed any action on the resource.',
-                  status:304,
-                  statusText: 'Not Modified'
-                }});
+              else if (request.url.includes(this.essBaseUiUrl) && err.status === 304) {
+                const error = new HttpErrorResponse({
+                  error: {
+                    message: 'Not Modified: The server has not performed any action on the resource.',
+                    status: 304,
+                    statusText: 'Not Modified'
+                  }
+                });
                 throw error;
               }
               else {
