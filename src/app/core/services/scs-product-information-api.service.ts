@@ -6,12 +6,12 @@ import { ProductCatalog } from '../models/ess-response-types';
 
 
 @Injectable({ providedIn: 'root' })
-export class ScsProductInformationService {
+export class ScsProductInformationApiService {
     baseUrl = AppConfigService.settings['essConfig'].apiUiUrl;
 
     constructor(private http: HttpClient) { }
 
-    productUpdatesByIdentifiersResponse(requestedEncList: string[]): Observable<any>{
+    scsProductIdentifiersResponse(requestedEncList: string[]): Observable<any>{
         return this.http.post<ProductCatalog>(this.baseUrl + '/productInformation/productIdentifiers', requestedEncList);
     }
 }

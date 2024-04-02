@@ -12,13 +12,13 @@ describe('ExchangeSetComponent', () => {
   let component: ExchangeSetComponent;
   let fixture: ComponentFixture<ExchangeSetComponent>;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
-  let essUploadFileService : EssUploadFileService;
+  let essUploadFileService: EssUploadFileService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [ ExchangeSetComponent,EssInfoErrorMessageComponent ],
-      providers:[EssInfoErrorMessageService],
+      providers:[EssInfoErrorMessageService, EssUploadFileService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -53,6 +53,7 @@ describe('ExchangeSetComponent', () => {
       messageDesc : ''
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+    
   });
 
   test('should show the sub heading in exchange set', () => {

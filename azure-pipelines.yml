@@ -374,6 +374,8 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
+      - name: essConfig.apiUiUrl
+        value: $(essConfig-apiUiUrl)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
     jobs:
       - deployment: vNextIatDeploy
@@ -443,6 +445,8 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
+      - name: essConfig.apiUiUrl
+        value: $(essConfig-apiUiUrl)
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
     jobs:
       - deployment: vNextE2eDeploy
@@ -511,6 +515,8 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
+      - name: essConfig.apiUiUrl
+        value: $(essConfig-apiUiUrl)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy

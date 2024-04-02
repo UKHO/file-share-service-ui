@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { EssUploadFileComponent } from '../../src/app/features/exchange-set/ess-upload-file/ess-upload-file.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
@@ -12,7 +12,8 @@ import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
 import { HttpClientModule } from '@angular/common/http';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
-import { ScsProductInformationService } from '../../src/app/core/services/scs-product-information-api.service';
+import { ScsProductInformationApiService } from '../../src/app/core/services/scs-product-information-api.service';
+import { of, throwError } from 'rxjs';
 
 describe('EssUploadFileComponent', () => {
   let component: EssUploadFileComponent;
@@ -20,7 +21,7 @@ describe('EssUploadFileComponent', () => {
   let essUploadFileService: EssUploadFileService;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
   let msalService: MsalService;
-  let scsProductInformationService: ScsProductInformationService;
+  let scsProductInformationApiService: ScsProductInformationApiService;
   const getEncData_csv = () => {
     let data = 'Au2fg150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
@@ -134,8 +135,8 @@ describe('EssUploadFileComponent', () => {
           useFactory: MockMSALInstanceFactory
         },
         {
-          provide : ScsProductInformationService,
-          useValue : scsProductInformationService
+          provide : ScsProductInformationApiService,
+          useValue : scsProductInformationApiService
         },
         {
           provide : MsalService,
@@ -144,7 +145,7 @@ describe('EssUploadFileComponent', () => {
         EssUploadFileService,
         EssInfoErrorMessageService,
         MsalService,
-        ScsProductInformationService
+        ScsProductInformationApiService
       ]
     })
       .compileComponents();
@@ -164,7 +165,7 @@ describe('EssUploadFileComponent', () => {
     essUploadFileService = TestBed.inject(EssUploadFileService);
     essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
     msalService = TestBed.inject(MsalService);
-    scsProductInformationService = TestBed.inject(ScsProductInformationService);
+    scsProductInformationApiService = TestBed.inject(ScsProductInformationApiService);
     fixture.detectChanges();
   });
 
@@ -222,25 +223,6 @@ describe('EssUploadFileComponent', () => {
       component.processEncFile(encDataFunc);
       expect(component.validEncList.length).toBe(expectedResult);
     });
-  it.each`
-    fileType                          |fileName         | getEncData                     | encDataFunc                 | expectedResult
-    ${'text/csv'}                     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
-    ${'application/vnd.ms-excel'}     |${'test.csv'}    | ${getInvalidEncData_csv()}     | ${getInvalidEncData_csv()}  |  ${3}
-    ${'text/plain'}    |${'test.txt'} | ${getInvalidEncData()}         | ${getInvalidEncData()}      |  ${1}
-    `('processEncFile should set raise "Some values have not been added to list." info',
-    ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
-      const file = new File([getEncData], fileName);
-      Object.defineProperty(file, 'type', { value: fileType });
-      component.encFile = file;
-      component.processEncFile(encDataFunc);
-      expect(component.validEncList.length).toEqual(expectedResult);
-      const errObj = {
-        showInfoErrorMessage: true,
-        messageType: 'info',
-        messageDesc: 'Some values have not been added to list.'
-      };
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-    });
 
   it.each`
      encDataFunc
@@ -280,8 +262,6 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
-
-
     it.each`
     fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getAioEncData_csv()}      |  ${3}
@@ -301,7 +281,6 @@ describe('EssUploadFileComponent', () => {
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
-
 
     it('onFileInputChange{ event.srcElement} should raise error for unsupported file type', () => {
       const file = new File([getEncData_csv()], 'test.jpeg');
@@ -351,57 +330,6 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
     });
 
-  
-
-    it.each`
-    encDataFunc       | expectedResult
-    ${getNEncData}    | ${true}
-    ${getEncData}     | ${false}
-      `('infomessage is true when enc list count exceeds MaxEncLimit',
-      ({ encDataFunc, expectedResult }: { encDataFunc: () => string,  expectedResult: boolean }) => {
-        const fileContent = encDataFunc();
-        const file = new File([fileContent], 'test.txt');
-        Object.defineProperty(file, 'type', { value: 'text/plain' });
-        component.encFile = file;
-        component.processEncFile(fileContent);
-        const errObJ = {
-          showInfoErrorMessage : false,
-          messageType : 'info',
-          messageDesc : ''
-        };
-        if(expectedResult){
-          errObJ.showInfoErrorMessage = expectedResult;
-          errObJ.messageType = 'info';
-          errObJ.messageDesc = 'Some values have not been added to list.';
-        }
-        expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-        expect(essUploadFileService.infoMessage).toBe(expectedResult);
-      });
-
-    it.each`
-    encDataFunc                   | expectedResult
-    ${getNEncDataWithAio}         | ${true}
-    ${getEncData}                 | ${false}
-      `('infomessage should show message AIO is not available when AIO Enc is found in the ENC list',
-      ({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
-        const fileContent = encDataFunc();
-        const file = new File([fileContent], 'test.txt');
-        Object.defineProperty(file, 'type', { value: 'text/plain' });
-        component.encFile = file;
-        component.processEncFile(fileContent);
-        var aioEns=essUploadFileService.aioEncFound;
-        if(aioEns){
-          const errObJ = {
-            showInfoErrorMessage: expectedResult,
-            messageType: 'info',
-            messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.'
-          };
-          expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-          expect(essUploadFileService.infoMessage).toBe(expectedResult);
-        } 
-        
-      });
-
   test('should show the explaination text in ess upload file component with max enc limit from config', () => {
     const fixture = TestBed.createComponent(EssUploadFileComponent);
     fixture.detectChanges();
@@ -418,17 +346,28 @@ describe('EssUploadFileComponent', () => {
     }
   });
 
-  it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', () => {
-    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
-    component.fetchScsTokenReponse();
-    scsProductInformationService.productUpdatesByIdentifiersResponse(addedEncList).subscribe((res: any) => {
-    expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
-   });
- });
+ it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', fakeAsync(() => {
+  let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+  jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+  component.productUpdatesByIdentifiersResponse(addedEncList)
+  tick();
+  expect(component.displayLoader).toEqual(false);
+  expect(3).toEqual(scsProductIdentifiersResponseMockData.productCounts.returnedProductCount);
+}));
 
+ it('should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
+  let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+  jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductIdentifiersResponseMockData));
+  component.triggerInfoErrorMessage=jest.fn();
+  component.fetchScsTokenReponse();
+  component.productUpdatesByIdentifiersResponse(addedEncList);
+  tick();
+  expect(component.displayLoader).toEqual(false);
+  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+}));
 });
 
-export const scsProductUpdatesByIdentifiersMockData: any = {
+export const scsProductIdentifiersResponseMockData: any = {
   "products": [
       {
           "productName": "FR570300",
