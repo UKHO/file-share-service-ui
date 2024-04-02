@@ -2,7 +2,7 @@ import { ExchangeSetApiService } from './../../../core/services/exchange-set-api
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
@@ -83,9 +83,9 @@ export class EssListEncsComponent implements OnInit {
    
     if(this.essUploadFileService.aioEncFound){
       if(this.scsInvalidProduct.length > 0){
-        let invalidProd1 = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+        let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
         this.essUploadFileService.infoMessage = true;
-        this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProd1}`);
+        this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProducts}`);
       }
       else{
         this.essUploadFileService.infoMessage = true;
@@ -93,8 +93,8 @@ export class EssListEncsComponent implements OnInit {
       }
      }
       else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
-        let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}`);
+        let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProducts}`);
       }
   }
 
