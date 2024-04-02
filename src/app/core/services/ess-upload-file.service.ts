@@ -164,7 +164,7 @@ export class EssUploadFileService {
     for (let selectedEnc of this.selectedEncs) {
       this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
     }
-    let estimatedSizeInMB = ConvertBytesToMegabytes(this.estimatedTotalSize);
+    let estimatedSizeInMB = this.convertBytesToMegabytes(this.estimatedTotalSize);
     return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(1) + ' MB' ;
   }
 
@@ -198,9 +198,9 @@ export class EssUploadFileService {
     this.scsProductResponse = undefined;
     this.clearSelectedEncs();
   }
-}
 
-function ConvertBytesToMegabytes(estimatedTotalSize: number) {
-  let byteSize = 1024;
-  return (estimatedTotalSize / byteSize) / byteSize;
+  convertBytesToMegabytes(estimatedTotalSize: number) {
+    let byteSize = 1024;
+    return (estimatedTotalSize / byteSize) / byteSize;
+  }
 }
