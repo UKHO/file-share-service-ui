@@ -1,5 +1,4 @@
 import { Page, Locator, expect } from "@playwright/test";
-import { assert } from "console";
 import {essConfig} from '../src/assets/config/appconfig.json';
 
 export class EssLandingPageObjects {
@@ -113,7 +112,7 @@ class EssLandingPageAssertions {
     }
 
     async verifyUploadedENCs(expectedENCs: string[]): Promise<void> {
-
+        await this.esslandingPageObjects.page.waitForSelector(`table tbody tr:nth-child(${expectedENCs.length}) td`, {state: 'visible', timeout: 5000});
         let uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
 
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
@@ -177,7 +176,7 @@ class EssLandingPageAssertions {
     }
 
     async uploadedDataSelectorToBeEqual(expected: string): Promise<void> {
-
+        await this.esslandingPageObjects.page.waitForSelector('table tbody tr td:nth-child(1)', { state: 'visible', timeout: 5000 });
         const uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
         expect(uploadedEncs[0]).toEqual(expected);
     }
@@ -198,5 +197,9 @@ class EssLandingPageAssertions {
     async VerifyMaxSelectedENCLimit(): Promise<void> {
         let MaxSelectedLimit = ((await (this.esslandingPageObjects.MaxSelectedENCs).innerText()).split(' '))[17];
         expect(MaxSelectedLimit).toEqual(essConfig.MaxEncSelectionLimit);
+    }
+
+    async IsEmpty(text: string): Promise<void> {
+        expect(text.length != 0).toBeTruthy();
     }
 }

@@ -75,7 +75,7 @@ class EsDownloadPageAssertions {
     }
 
     async downloadButtonSelectorHidden(): Promise<void> {
-
+        this.esDownloadPageObjects.page.waitForTimeout(3000);
       expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden).toBeTruthy();
     }
 
@@ -176,7 +176,8 @@ class EsDownloadPageAssertions {
     }
 
     async SelectedENCs(): Promise<void> {
-        expect(await this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
+        await this.esDownloadPageObjects.page.waitForSelector("div[class='showSelectedEncSize'] strong", {state: 'visible', timeout: 5000});
+        expect(this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
 
     }
 }
