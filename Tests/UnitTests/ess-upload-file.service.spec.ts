@@ -266,7 +266,12 @@ describe('EssUploadFileService', () => {
     for (const p of product) {
       service.addSelectedEnc(p);
     }
+    const convertBytesToMegabytesSpy = jest.spyOn(service, 'convertBytesToMegabytes');
     const actualTotalSize = service.getEstimatedTotalSize();
+    const estimatedSizeInMB = convertBytesToMegabytesSpy.mock.results[0].value;
+    
+    expect(convertBytesToMegabytesSpy).toHaveBeenCalled();
+    expect(typeof estimatedSizeInMB).toBe('number');
     expect(actualTotalSize).toEqual('1.0 MB');
   })
 });
