@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ExchangeSetDetails } from '../models/ess-response-types';
+import { ExchangeSetDetails, Product, ProductCatalog } from '../models/ess-response-types';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EssUploadFileService {
+  private _scsProductResponse: ProductCatalog | undefined;
+  private _scsProducts: Product[];
   private validEncs: string[];
-  private selectedEncs: string[];
+  private selectedEncs: Product[];
   private maxEncLimit: number;
   private maxEncSelectionLimit: number;
   private showInfoMessage = false;
@@ -118,16 +120,16 @@ export class EssUploadFileService {
     this.showInfoMessage = visibility;
   }
 
-  getSelectedENCs(): string[] {
+  getSelectedENCs(): Product[] {
     return this.selectedEncs;
   }
 
-  addSelectedEnc(enc: string): void {
+  addSelectedEnc(enc: Product): void {
     this.selectedEncs = [...this.selectedEncs, enc];
   }
 
   removeSelectedEncs(enc: string): void {
-    this.selectedEncs = this.selectedEncs.filter((item) => item !== enc);
+    this.selectedEncs = this.selectedEncs.filter((item: Product) => item.productName !== enc);
   }
 
   clearSelectedEncs() {
@@ -173,7 +175,7 @@ export class EssUploadFileService {
       this.maxEncSelectionLimit > this.validEncs.length
         ? this.validEncs.length
         : this.maxEncSelectionLimit;
-    this.selectedEncs = [...this.validEncs.slice(0, maxEncSelectionLimit)];
+    this.selectedEncs = [...this.scsProducts.slice(0, maxEncSelectionLimit)];
   }
 
   getEstimatedTotalSize(encCount: number): string {
@@ -195,5 +197,29 @@ export class EssUploadFileService {
 
   set exchangeSetDeltaDate(date: any) {
     this._exchangeSetDeltaDate = date;
+  }
+  get scsProductResponse() : ProductCatalog | undefined{
+    return this._scsProductResponse;
+   }
+
+   set scsProductResponse(scsProductResponse: ProductCatalog | undefined){
+     this._scsProductResponse = scsProductResponse;
+   } 
+
+   get scsProducts() : Product[]{
+    return this._scsProducts;
+   }
+
+   set scsProducts(products: Product[]){
+      this._scsProducts = products;
+   }
+
+   setValidEncsByApi(encList: string[]): void {
+    this.validEncs = encList;
+   }
+
+   clearData() {
+    this.scsProductResponse = undefined;
+    this.aioEncFound = false;
   }
 }

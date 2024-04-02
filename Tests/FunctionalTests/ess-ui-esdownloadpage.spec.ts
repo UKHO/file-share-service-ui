@@ -31,6 +31,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
+        await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
         await encSelectionPageObjects.selectAllSelectorClick();
     })
 
@@ -44,6 +45,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         
         await encSelectionPageObjects.SelectedENCsCount();
         await encSelectionPageObjects.requestENCsSelectorClick();
+        await encSelectionPageObjects.page.waitForLoadState();
         await esDownloadPageObjects.expect.SelectedENCs();
         await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
