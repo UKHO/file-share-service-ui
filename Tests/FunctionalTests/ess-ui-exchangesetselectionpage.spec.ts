@@ -33,6 +33,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await exchangeSetSelectionPageObjects.expect.validateProceedButton();
   });
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149497
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146707
   test('Verify the Exchange sets page for Delta selection', async ({ page }) => {
     let date: Date = new Date();
@@ -48,5 +49,39 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await exchangeSetSelectionPageObjects.expect.validateDatePicker();
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149506
+  test('Verify start date selection from current date to 27 days in the past', async ({ page }) => {
+    let date: Date = new Date();
+    date.setDate(date.getDate() - 27);
+    await exchangeSetSelectionPageObjects.enterDate(date);
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149509
+  test('Verify start date selection from date picker when start date is selected as 20 days in the past', async ({ page }) => {
+    let date: Date = new Date();
+    date.setDate(date.getDate() - 20);
+    await exchangeSetSelectionPageObjects.enterDate(date);
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149507
+  test('Verify warning message when selecting date as 28 days in the past from current date', async ({ page }) => {
+    let date: Date = new Date();
+    date.setDate(date.getDate() - 28);
+    await exchangeSetSelectionPageObjects.enterDate(date);
+    await exchangeSetSelectionPageObjects.expect.validateMessageForPastDate();
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149508
+  test('Verify warning message when user selects future date', async ({ page }) => {
+    let date: Date = new Date();
+    date.setDate(date.getDate() + 1);
+    await exchangeSetSelectionPageObjects.enterDate(date);
+    await exchangeSetSelectionPageObjects.expect.validateMessageForFutureDate();
   });
 })

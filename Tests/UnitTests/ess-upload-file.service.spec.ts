@@ -261,7 +261,33 @@ describe('EssUploadFileService', () => {
     const invalidEncName = 'GB800001';
     const result = service.excludeAioEnc(invalidEncName); 
     expect(result).toBe(false);  });
+      it('get exchangeSetDownloadType should return the correct download type', () => {
+    service.exchangeSetDownloadType = 'Base';
+    expect(service.exchangeSetDownloadType).toEqual('Base');
     
+    service.exchangeSetDownloadType = 'Delta';
+    expect(service.exchangeSetDownloadType).toEqual('Delta');
+  });
+
+  it('set exchangeSetDownloadType should set the correct download type', () => {
+    service.exchangeSetDownloadType = 'Base';
+    expect(service.exchangeSetDownloadType).toEqual('Base');
+    
+    service.exchangeSetDownloadType = 'Delta';
+    expect(service.exchangeSetDownloadType).toEqual('Delta');
+  });
+  it('get exchangeSetDeltaDate should return the correct date', () => {
+    const date = new Date('2024-01-30');
+    service.exchangeSetDeltaDate = date;
+    expect(service.exchangeSetDeltaDate).toEqual(date);
+  });
+
+  it('set exchangeSetDeltaDate should set the correct date', () => {
+    const date = new Date('2024-01-30');
+    service.exchangeSetDeltaDate = date;
+    expect(service.exchangeSetDeltaDate).toEqual(date);
+  });
+
     it('checkMaxEncLimit should return false as per configuration settings', () => {
       let notReturnedProduct: NotReturnedProduct[] = [{
         "productName": "US5CN13M",

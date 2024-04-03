@@ -221,9 +221,7 @@ class EncSelectionPageAssertions {
     }
   }
 
-
   async errorMsgMaxLimitSelectorContainText(expected: string): Promise<void> {
-    const testPage = this.encSelectionPageObjects.pageUnderTest;
     expect(this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
     expect(await this.encSelectionPageObjects.errorMessage.innerText() == expected).toBeTruthy();
   }
@@ -243,10 +241,9 @@ class EncSelectionPageAssertions {
     expect(this.encSelectionPageObjects.selectionTextSelector).toBeVisible();
   }
 
-
   async errorMessageForDuplicateNumberSelectorContainsText(expected: string): Promise<void> {
-    const testPage = this.encSelectionPageObjects.pageUnderTest;
     expect(this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
+    await this.encSelectionPageObjects.errorMessage.click();
     expect(await this.encSelectionPageObjects.errorMessage.innerText() == expected).toBeTruthy();
   }
 
@@ -305,10 +302,6 @@ class EncSelectionPageAssertions {
 
   }
 
-
-
-
-
   async selectAllSelectorIsVisible(): Promise<void> {
 
     expect(this.encSelectionPageObjects.selectAllSelector.isVisible).toBeTruthy();
@@ -334,6 +327,6 @@ class EncSelectionPageAssertions {
 
   async toBeTruthy(result: Boolean): Promise<void> {
     expect(result).toBeTruthy();
-    }
+  }
 
 }
