@@ -35,11 +35,21 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149497
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146707
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149499
   test('Verify the Exchange sets page for Delta selection', async ({ page }) => {
     let date: Date = new Date();
     await exchangeSetSelectionPageObjects.enterDate(date);
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
+    await esslandingPageObjects.addencradiobtnSelectorClick();
+    await esslandingPageObjects.setaddSingleENCTextboxSelector("DE260001");
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    const requestPromise = await esslandingPageObjects.page.waitForRequest(request =>
+      request.url().includes('/productInformation/productIdentifiers') && request.method() === 'POST')
+    await esslandingPageObjects.expect.IsEmpty(requestPromise.url());
+    const requestPromise1 = await esslandingPageObjects.page.waitForRequest(request =>
+      request.url().includes('/ProductInformation?sinceDateTime=**') && request.method() === 'GET')
+    await esslandingPageObjects.expect.IsEmpty(requestPromise1.url());
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149007
@@ -85,3 +95,4 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await exchangeSetSelectionPageObjects.expect.validateMessageForFutureDate();
   });
 })
+
