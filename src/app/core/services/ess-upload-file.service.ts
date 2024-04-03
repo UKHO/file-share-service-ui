@@ -174,13 +174,28 @@ export class EssUploadFileService {
     const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
     this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
   }
-  
-  getEstimatedTotalSize(encCount:number):string {  
-    this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
-      return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
-   }
 
-   get scsProductResponse() : ProductCatalog | undefined{
+  getEstimatedTotalSize(encCount: number): string {
+    this.estimatedTotalSize =
+      this.avgSizeofENC * encCount + this.defaultEstimatedSizeinMB;
+    return this.estimatedTotalSize.toFixed(1).toString() + 'MB';
+  }
+  get exchangeSetDownloadType(): 'Base' | 'Delta' {
+    return this._exchangeSetDownloadType;
+  }
+
+  set exchangeSetDownloadType(type: 'Base' | 'Delta') {
+    this._exchangeSetDownloadType = type;
+  }
+
+  get exchangeSetDeltaDate(): any {
+    return this._exchangeSetDeltaDate;
+  }
+
+  set exchangeSetDeltaDate(date: any) {
+    this._exchangeSetDeltaDate = date;
+  }
+  get scsProductResponse() : ProductCatalog | undefined{
     return this._scsProductResponse;
    }
 
@@ -196,22 +211,6 @@ export class EssUploadFileService {
       this._scsProducts = products;
    }
 
-   get exchangeSetDownloadType(): 'Base' | 'Delta' {
-    return this._exchangeSetDownloadType;
-  }
-
-  set exchangeSetDownloadType(type: 'Base' | 'Delta') {
-    this._exchangeSetDownloadType = type;
-  }
-
-  get exchangeSetDeltaDate(): any {
-    return this._exchangeSetDeltaDate;
-  }
-
-  set exchangeSetDeltaDate(date: any) {
-    this._exchangeSetDeltaDate = date;
-  }
-
    setValidEncsByApi(encList: string[]): void {
     this.validEncs = encList;
    }
@@ -220,5 +219,4 @@ export class EssUploadFileService {
     this.scsProductResponse = undefined;
     this.aioEncFound = false;
   }
-
 }

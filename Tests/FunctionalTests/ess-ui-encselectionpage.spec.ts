@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
-import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
+import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
@@ -85,8 +85,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    await encSelectionPageObjects.addSingleENC("AU210130");
-    await encSelectionPageObjects.expect.firstEncSelectorToEqual("AU210130");
+    await encSelectionPageObjects.addSingleENC("DE260001");
+    await encSelectionPageObjects.expect.firstEncSelectorToEqual("DE260001");
     await encSelectionPageObjects.expect.selectionTextSelectorVisible();
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
@@ -100,14 +100,20 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    await encSelectionPageObjects.addSingleENC("AU210130");
+    let requestedCount = 0;
+    encSelectionPageObjects.page.on('request', request => {
+      if (request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
+        requestedCount++;
+    })
+    await encSelectionPageObjects.addSingleENC("DE260001");
     await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
-    await encSelectionPageObjects.addAnotherENC("AU220150");
-    await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220150");
+    await encSelectionPageObjects.addAnotherENC("DE290001");
+    await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 2);
+    await encSelectionPageObjects.expect.secondEncSelectorContainText("DE290001");
     await encSelectionPageObjects.expect.anotherCheckBoxSelectorChecked();
 
     //13956 - Add another ENC2 - Duplicate No.
-    await encSelectionPageObjects.addAnotherENC("AU220150");
+    await encSelectionPageObjects.addAnotherENC("DE290001");
     await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list.")
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
@@ -122,7 +128,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.proceedButtonSelectorClick();
 
     //Adding ENC manually
-    await encSelectionPageObjects.addAnotherENC("IN210101");
+    await encSelectionPageObjects.addAnotherENC("DE290001");
 
     await encSelectionPageObjects.expect.errorMsgMaxLimitSelectorContainText("Max ENC limit reached.");
   })
