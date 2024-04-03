@@ -272,5 +272,30 @@ describe('EssUploadFileService', () => {
     jest.clearAllMocks();
     expect(service.getEstimatedTotalSize(encCount)).toEqual(expectedResult);
   });
-  
+  it('get exchangeSetDownloadType should return the correct download type', () => {
+    service.exchangeSetDownloadType = 'Base';
+    expect(service.exchangeSetDownloadType).toEqual('Base');
+    
+    service.exchangeSetDownloadType = 'Delta';
+    expect(service.exchangeSetDownloadType).toEqual('Delta');
+  });
+
+  it('set exchangeSetDownloadType should set the correct download type', () => {
+    service.exchangeSetDownloadType = 'Base';
+    expect(service.exchangeSetDownloadType).toEqual('Base');
+    
+    service.exchangeSetDownloadType = 'Delta';
+    expect(service.exchangeSetDownloadType).toEqual('Delta');
+  });
+  it('get exchangeSetDeltaDate should return the correct date', () => {
+    const date = new Date('2024-01-30');
+    service.exchangeSetDeltaDate = date;
+    expect(service.exchangeSetDeltaDate).toEqual(date);
+  });
+
+  it('set exchangeSetDeltaDate should set the correct date', () => {
+    const date = new Date('2024-01-30');
+    service.exchangeSetDeltaDate = date;
+    expect(service.exchangeSetDeltaDate).toEqual(date);
+  });
 });
