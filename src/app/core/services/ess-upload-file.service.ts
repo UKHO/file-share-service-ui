@@ -178,6 +178,10 @@ export class EssUploadFileService {
     return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(1) + ' MB' ;
   }
 
+  get exchangeSetDownloadType(): 'Base' | 'Delta' {
+    return this._exchangeSetDownloadType;
+  }
+
   set exchangeSetDownloadType(type: 'Base' | 'Delta') {
     this._exchangeSetDownloadType = type;
   }
@@ -193,29 +197,29 @@ export class EssUploadFileService {
     return this._scsProductResponse;
   }
 
-   set scsProductResponse(scsProductResponse: ProductCatalog | undefined){
-     this._scsProductResponse = scsProductResponse;
-   } 
+  set scsProductResponse(scsProductResponse: ProductCatalog | undefined) {
+    this._scsProductResponse = scsProductResponse;
+  } 
 
   get scsProducts(): Product[] {
     return this._scsProducts;
   }
 
-   set scsProducts(products: Product[]){
-      this._scsProducts = products;
-   }
+  set scsProducts(products: Product[]) {
+    this._scsProducts = products;
+  }
 
-   get scsInvalidProducts() : NotReturnedProduct[]{
+  get scsInvalidProducts(): NotReturnedProduct[] {
     return this._scsInvalidProducts;
-   }
+  }
 
-   set scsInvalidProducts(NotReturnedProduct: NotReturnedProduct[]){
-      this._scsInvalidProducts = NotReturnedProduct;
-   }
+  set scsInvalidProducts(NotReturnedProduct: NotReturnedProduct[]) {
+    this._scsInvalidProducts = NotReturnedProduct;
+  }
 
-   setValidEncsByApi(encList: string[]): void {
+  setValidEncsByApi(encList: string[]): void {
     this.validEncs = encList;
-   }
+  }
 
   clearData() {
     this.validEncs = [];
