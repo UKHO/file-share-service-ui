@@ -38,6 +38,7 @@ export class ExchangeSetSelectionPageObjects{
     }
 
     async enterDate(date:Date){
+        await this.datePicker.isEditable();
         let formattedDate: string = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')}`;
         await this.page.fill("[class='sc-admiralty-input']", formattedDate);
     }
@@ -82,10 +83,12 @@ export class ExchangeSetSelectionAssertion{
     }
 
     async validateMessageForFutureDate(){
+        await this.selection.warningMessage.click();
         expect(await this.selection.warningMessage.innerText() == 'Please choose a date from today or up to 27 days in the past. Future dates are not permitted.').toBeTruthy();
     }
 
-    async validateMessageForPastDate(){
+    async validateMessageForPastDate(){   
+        await this.selection.warningMessage.click();
         expect(await this.selection.warningMessage.innerText() == "Please select Base Download for duration greater than 27 days from today's date.").toBeTruthy();
     }
 }

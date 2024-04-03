@@ -39,6 +39,7 @@ export class EncSelectionPageObjects {
   readonly requestENCsSelector: Locator
   readonly encTableListCountDisplay: Locator
   readonly getDialogueSelector : Locator
+  readonly errorMessage : Locator
   readonly pageUnderTest: Page
 
 
@@ -70,6 +71,7 @@ export class EncSelectionPageObjects {
     this.rightTableDisplaySelector = this.page.locator("span[class='showListEncTotal']").nth(1)
     this.requestENCsSelector = page.getByRole('button', { name: 'Request ENCs' })
     this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
+    this.errorMessage = this.page.locator("h3[class='warningMsgTitle']");
     this.pageUnderTest = page;
 
   }
@@ -81,6 +83,7 @@ export class EncSelectionPageObjects {
   }
 
   async addAnotherENC(data: string): Promise<void> {
+    await this.page.waitForLoadState();
     await this.addAnotherENCSelector.click();
     await this.typeENCTextBoxSelector.fill(data);
     await this.esslandingPageObjects.addsingleencSelector.click();
@@ -95,6 +98,7 @@ export class EncSelectionPageObjects {
   }
 
   async startAgainLinkSelectorClick(): Promise<void> {
+    await this.page.waitForSelector("a.linkStartAgain", { state:'visible', timeout:3000});
     await this.startAgainLinkSelector.click();
   }
 
@@ -116,6 +120,7 @@ export class EncSelectionPageObjects {
   }
 
   async selectAllSelectorClick(): Promise<void> {
+    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible', timeout: 3000});
     await this.selectAllSelector.click();
 
   }
@@ -216,11 +221,9 @@ class EncSelectionPageAssertions {
     }
   }
 
-
   async errorMsgMaxLimitSelectorContainText(expected: string): Promise<void> {
-    const testPage = this.encSelectionPageObjects.pageUnderTest;
-    expect(await this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
-    expect(await testPage.getByText(expected)).toBeTruthy();
+    expect(this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
+    expect(await this.encSelectionPageObjects.errorMessage.innerText() == expected).toBeTruthy();
   }
 
   async maxLimitEncmessageSelectorContainText(expected: string): Promise<void> {
@@ -238,11 +241,10 @@ class EncSelectionPageAssertions {
     expect(this.encSelectionPageObjects.selectionTextSelector).toBeVisible();
   }
 
-
   async errorMessageForDuplicateNumberSelectorContainsText(expected: string): Promise<void> {
-    const testPage = this.encSelectionPageObjects.pageUnderTest;
-    expect(await this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
-    expect(await testPage.getByText(expected)).toBeTruthy();
+    expect(this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
+    await this.encSelectionPageObjects.errorMessage.click();
+    expect(await this.encSelectionPageObjects.errorMessage.innerText() == expected).toBeTruthy();
   }
 
   async anotherCheckBoxSelectorChecked(): Promise<void> {
@@ -300,10 +302,6 @@ class EncSelectionPageAssertions {
 
   }
 
-
-
-
-
   async selectAllSelectorIsVisible(): Promise<void> {
 
     expect(this.encSelectionPageObjects.selectAllSelector.isVisible).toBeTruthy();
@@ -329,6 +327,6 @@ class EncSelectionPageAssertions {
 
   async toBeTruthy(result: Boolean): Promise<void> {
     expect(result).toBeTruthy();
-    }
+  }
 
 }
