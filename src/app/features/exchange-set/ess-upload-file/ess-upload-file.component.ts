@@ -91,16 +91,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
         this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
         return;
       }
-      else if (encList.length > this.validEncList.length) {
-        if(this.essUploadFileService.aioEncFound) {
-          this.essUploadFileService.infoMessage = true;
-          this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Some values have not been added to list.');
-        }
-        else {
-          this.essUploadFileService.infoMessage = true;
-          this.triggerInfoErrorMessage(true, 'info', 'Some values have not been added to list.');
-        }
-      }
       this.fetchScsTokenReponse();
     }
     else {
