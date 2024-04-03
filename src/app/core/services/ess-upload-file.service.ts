@@ -19,26 +19,37 @@ export class EssUploadFileService {
   private exchangeSetDetails: ExchangeSetDetails;
   private avgSizeofENC: number;
   private estimatedTotalSize: number;
-  private defaultEstimatedSizeinMB:number;
-  private configAioEncList : string[];
-  public aioEncFound : boolean;
+  private defaultEstimatedSizeinMB: number;
+  private configAioEncList: string[];
+  public aioEncFound: boolean;
+  private _exchangeSetDownloadType: 'Base' | 'Delta';
+  private _exchangeSetDeltaDate: any;
 
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
-    this.avgSizeofENC = Number.parseFloat(AppConfigService.settings["essConfig"].avgSizeofENCinMB);
-    this.maxEncSelectionLimit = Number.parseInt( AppConfigService.settings['essConfig'].MaxEncSelectionLimit , 10);
-    this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
-    this.configAioEncList = AppConfigService.settings["essConfig"].aioExcludeEncs;
-
+    this.avgSizeofENC = Number.parseFloat(
+      AppConfigService.settings['essConfig'].avgSizeofENCinMB
+    );
+    this.maxEncSelectionLimit = Number.parseInt(
+      AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
+      10
+    );
+    this.defaultEstimatedSizeinMB = Number.parseFloat(
+      AppConfigService.settings['essConfig'].defaultEstimatedSizeinMB
+    );
+    this.configAioEncList =
+      AppConfigService.settings['essConfig'].aioExcludeEncs;
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
-    if ((encFileType === 'text/csv') ||
+    if (
+      encFileType === 'text/csv' ||
       (encFileType === 'text/plain' &&
         encList[2] === ':ENC' &&
-        encList[encList.length - 1] === ':ECS'
-      ) || encFileType === 'application/vnd.ms-excel') {
+        encList[encList.length - 1] === ':ECS') ||
+      encFileType === 'application/vnd.ms-excel'
+    ) {
       return true;
     }
     return false;
@@ -49,7 +60,7 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  excludeAioEnc(encName: string){
+  excludeAioEnc(encName: string) {
     return !this.configAioEncList.includes(encName);
   }
 
@@ -57,11 +68,16 @@ export class EssUploadFileService {
     if (encFileType === 'text/plain') {
       // valid for txt files only
       return processedData
-        .slice(3, processedData.length - 1).filter(x => x !== "")
+        .slice(3, processedData.length - 1)
+        .filter((x) => x !== '')
         .map((encItem: string) => encItem.substring(0, 8));
-    }
-    else if (encFileType === 'text/csv' || encFileType === 'application/vnd.ms-excel') {
-      return processedData.map(e => e.split(',')[0].trim()).filter(x => x !== "");
+    } else if (
+      encFileType === 'text/csv' ||
+      encFileType === 'application/vnd.ms-excel'
+    ) {
+      return processedData
+        .map((e) => e.split(',')[0].trim())
+        .filter((x) => x !== '');
     }
     return processedData;
   }
@@ -70,21 +86,22 @@ export class EssUploadFileService {
     this.aioEncFound = false;
     this.validEncs = encList
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
-      .map((enc) => enc.toUpperCase())// applies Upper Case to ENC
-      .filter((el, i, a) => i === a.indexOf(el)) // removes duplicate enc's
+      .map((enc) => enc.toUpperCase()) // applies Upper Case to ENC
+      .filter((el, i, a) => i === a.indexOf(el)); // removes duplicate enc's
 
+    let validEncsExAio = this.validEncs.filter((enc) =>
+      this.excludeAioEnc(enc)
+    ); //exclude AIO list
 
-       let validEncsExAio = this.validEncs
-      .filter((enc) => this.excludeAioEnc(enc)); //exclude AIO list
+    if (validEncsExAio.length < this.validEncs.length) {
+      this.aioEncFound = true;
+    }
 
-      if(validEncsExAio.length < this.validEncs.length){
-        this.aioEncFound = true;
-      }
-
-      this.validEncs = validEncsExAio
-      .filter((enc, index) => index < this.maxEncLimit); // limit records by MaxEncLimit   
+    this.validEncs = validEncsExAio.filter(
+      (enc, index) => index < this.maxEncLimit
+    ); // limit records by MaxEncLimit
   }
-  
+
   getValidEncs(): string[] {
     return this.validEncs;
   }
@@ -131,7 +148,6 @@ export class EssUploadFileService {
 
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
     this.exchangeSetDetails = exchangeSetDetails;
-    
   }
 
   getExchangeSetDetails(): ExchangeSetDetails {
@@ -150,24 +166,40 @@ export class EssUploadFileService {
   checkMaxEncLimit(encList: string[]): boolean {
     if (encList.length < this.maxEncLimit) {
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }
 
-
-  addAllSelectedEncs(){
-    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
-    this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
+  addAllSelectedEncs() {
+    const maxEncSelectionLimit =
+      this.maxEncSelectionLimit > this.validEncs.length
+        ? this.validEncs.length
+        : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.scsProducts.slice(0, maxEncSelectionLimit)];
   }
-  
-  getEstimatedTotalSize(encCount:number):string {  
-    this.estimatedTotalSize= (this.avgSizeofENC * encCount)+this.defaultEstimatedSizeinMB;
-      return (this.estimatedTotalSize.toFixed(1)).toString()+"MB";
-   }
 
-   get scsProductResponse() : ProductCatalog | undefined{
+  getEstimatedTotalSize(encCount: number): string {
+    this.estimatedTotalSize =
+      this.avgSizeofENC * encCount + this.defaultEstimatedSizeinMB;
+    return this.estimatedTotalSize.toFixed(1).toString() + 'MB';
+  }
+  get exchangeSetDownloadType(): 'Base' | 'Delta' {
+    return this._exchangeSetDownloadType;
+  }
+
+  set exchangeSetDownloadType(type: 'Base' | 'Delta') {
+    this._exchangeSetDownloadType = type;
+  }
+
+  get exchangeSetDeltaDate(): any {
+    return this._exchangeSetDeltaDate;
+  }
+
+  set exchangeSetDeltaDate(date: any) {
+    this._exchangeSetDeltaDate = date;
+  }
+  get scsProductResponse() : ProductCatalog | undefined{
     return this._scsProductResponse;
    }
 
