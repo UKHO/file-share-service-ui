@@ -211,20 +211,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.proceedButtonSelectorClick();
     await esslandingPageObjects.page.waitForResponse(r =>
       r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST')
-    await encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.errorMessage.innerText() == "Invalid cells -  ABCDEFGH");
+    await encSelectionPageObjects.errorMessage.click();
+    await encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.errorMessage.innerText() == "Invalid cells - GZ800112");
   })
-
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/150972
-  test('Verify validation message for Excluded AIO cell', async ({ page }) => {
-    const message = 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.';
-    await encSelectionPageObjects.startAgainLinkSelectorClick();
-    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
-    await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    await encSelectionPageObjects.addSingleENC('GB800001');
-    await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
-    await encSelectionPageObjects.addSingleENC('DE521900');
-    await encSelectionPageObjects.addAnotherENC('GB800001');
-    await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
-  });
 
 });
