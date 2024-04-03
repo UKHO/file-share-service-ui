@@ -126,7 +126,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/250ENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-
     //Adding ENC manually
     await encSelectionPageObjects.addAnotherENC("DE290001");
 
@@ -137,12 +136,20 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14113
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149491
   test('Verify Count of uploaded & selected ENCs along with estimated size of Exchange set.', async ({ page }) => {
-    let numberofENCs = await encSelectionPageObjects.ENCTableENClistCol1.count();
+    let response = await esslandingPageObjects.page.waitForResponse(r =>
+      r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST')
+    let encNames = await encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
+    let responseBody = JSON.parse((await response.body()).toString());
+    await encSelectionPageObjects.expect.toBeTruthy(responseBody.productCounts.requestedProductCount == responseBody.productCounts.returnedProductCount); 
+    await encSelectionPageObjects.expect.toBeTruthy(encNames.length == responseBody.productCounts.returnedProductCount);
+    for (let product of responseBody.products)
+      await encSelectionPageObjects.expect.toBeTruthy(encNames.includes(product.productName)); 
     await encSelectionPageObjects.selectAllSelector.click();
     await encSelectionPageObjects.expect.verifyNumberofENCs();
-    await encSelectionPageObjects.expect.verifySizeofENCs(numberofENCs);
-
+    await encSelectionPageObjects.expect.verifySizeofENCs(encNames.length);
+    await encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.errorMessage.isVisible());
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14108
@@ -194,4 +201,30 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   })
 
-})
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149492
+  test('Verify Message when invalid ENCs found for Base Exchange Set type', async ({ page }) => {
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidAndInvalidENCs.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    await esslandingPageObjects.page.waitForResponse(r =>
+      r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST')
+    await encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.errorMessage.innerText() == "Invalid cells -  ABCDEFGH");
+  })
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/150972
+  test('Verify validation message for Excluded AIO cell', async ({ page }) => {
+    const message = 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.';
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await encSelectionPageObjects.addSingleENC('GB800001');
+    await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
+    await encSelectionPageObjects.addSingleENC('DE521900');
+    await encSelectionPageObjects.addAnotherENC('GB800001');
+    await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
+  });
+
+});
