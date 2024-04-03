@@ -129,7 +129,7 @@ stages:
   - stage: Devdeploy
     displayName: "Devdeploy (inc terraform, website deploy)"
     variables:
-      - group: "File-Share-Service-UI-Dev-Deploy-Variables"
+      - group: "File-Share-Service-UI-Dev-Deploy-Variables-v2"
       - name: "Environment"
         value: "dev"
       - name: b2cConfig.tenantName
