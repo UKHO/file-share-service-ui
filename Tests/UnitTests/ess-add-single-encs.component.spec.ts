@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssAddSingleEncsComponent } from '../../src/app/features/exchange-set/ess-add-single-encs/ess-add-single-encs.component';
-import { NO_ERRORS_SCHEMA, DebugElement, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
@@ -219,6 +219,7 @@ describe('EssAddSingleEncsComponent', () => {
         ]
     }
 }
+
   const router = {
     navigate: jest.fn()
   };
@@ -383,15 +384,6 @@ describe('EssAddSingleEncsComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
-  it('should return sales catalogue Response when user is in essHome screen', () => {
-     let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
-     component.fetchScsTokenReponse("essHome");
-     component.productUpdatesByIdentifiersResponse(addedEncList,"essHome");
-     component.processProductUpdatesByIdentifiers(scsProductUpdatesByIdentifiersMockData,"essHome");
-     scsProductInformationApiService.scsProductIdentifiersResponse(addedEncList).subscribe((res: any) => {
-     expect(res).toEqual(scsProductUpdatesByIdentifiersMockData);
-    });
-  });
 
  it('should return sales catalogue Response when user is in essHome screen', fakeAsync(() => {
     component.validEnc = ['AU210130', 'AU210230', 'AU210330', 'AU210180'];
@@ -422,8 +414,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.txtSingleEnc = 'US4F8M';
     component.renderedFrom = 'essHome';
     service.setValidENCs(component.validEnc);
-    scsProductUpdatesByIdentifiersMockData.products = [];
-    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
     component.triggerInfoErrorMessage=jest.fn();
     component.productUpdatesByIdentifiersResponse(component.validEnc,'essHome')
     tick();
@@ -431,15 +422,115 @@ describe('EssAddSingleEncsComponent', () => {
     expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC');
   }));
 
-  it('should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
-    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
-    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+
+  it('should return sales catalogue Response on productUpdatesByDeltaResponse when user is on encList screen', fakeAsync(() => {
+    component.validEnc = ['AU210130', 'AU210230', 'AU210330', 'AU210180'];
+    component.txtSingleEnc = 'AU210470';
+    component.renderedFrom = 'encList';
+    service.exchangeSetDownloadType = 'Delta';
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.fetchScsTokenReponse('encList');
+    component.scsProductCatalogResponse(component.validEnc,'encList')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.scsResponse).toEqual(scsProductUpdatesByIdentifiersMockData);
+    expect(component.products).toEqual(scsProductUpdatesByIdentifiersMockData.products);
+  }));
+
+
+  it('should return sales catalogue Response on productUpdatesByDeltaResponse when user is on esshome screen ', fakeAsync(() => {
+    component.validEnc = ['AU210130', 'AU210230', 'AU210330', 'AU210180'];
+    component.txtSingleEnc = 'AU210470';
+    component.renderedFrom = 'essHome';
+    service.exchangeSetDownloadType = 'Delta';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.fetchScsTokenReponse('essHome');
+    component.scsProductCatalogResponse(component.validEnc,'essHome')
+    const routeService =jest.spyOn(router,'navigate');
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.scsResponse).toEqual(scsProductUpdatesByIdentifiersMockData);
+    expect(routeService).toHaveBeenCalledWith(['exchangesets', 'enc-list']);
+  }));
+
+  it('validateAndAddENC should raise "Invalid ENC number" error', fakeAsync(() => {
+    component.validEnc = ['TP4NO13K', 'AT6IIFE1'];
+    component.txtSingleEnc = 'US4F8M';
+    component.renderedFrom = 'essHome';
+    service.exchangeSetDownloadType = 'Delta';
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+    jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
     component.triggerInfoErrorMessage=jest.fn();
-    component.fetchScsTokenReponse("encList");
-    component.productUpdatesByIdentifiersResponse(addedEncList,"encList");
+    component.fetchScsTokenReponse('essHome');
+    component.scsProductCatalogResponse(component.validEnc,'essHome')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC number.');
+  }));
+
+  it('productUpdatesByDeltaResponse should return Error message for productInformationSinceDateTime', fakeAsync(() => {
+    component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+    component.renderedFrom = 'essHome';
+    service.exchangeSetDownloadType = 'Delta';
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+    component.triggerInfoErrorMessage=jest.fn();
+    component.fetchScsTokenReponse('essHome');
+    component.scsProductCatalogResponse(component.validEnc,'essHome')
     tick();
     expect(component.displayLoader).toEqual(false);
     expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
   }));
+
+  it('productUpdatesByDeltaResponse should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
+    component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+    component.renderedFrom = 'essHome';
+    service.exchangeSetDownloadType = 'Delta';
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+    component.triggerInfoErrorMessage=jest.fn();
+    component.fetchScsTokenReponse('essHome');
+    component.scsProductCatalogResponse(component.validEnc,'essHome')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+ }));
+
+ it('validation should raise "There has been no updates for the ENCs in the date range selected."info', fakeAsync(() => {
+  component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+  component.renderedFrom = 'essHome';
+  service.exchangeSetDownloadType = 'Delta';
+  service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+  service.setValidENCs(component.validEnc);
+  jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+  jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+  component.triggerInfoErrorMessage=jest.fn();
+  component.fetchScsTokenReponse('essHome');
+  component.scsProductCatalogResponse(component.validEnc,'essHome')
+  tick();
+  expect(component.displayLoader).toEqual(false);
+  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+}));
+
 });
 
+export const scsProductResponseWithEmptyProductMockData: any = {
+  "products": [
+  ],
+  "productCounts": {
+      "requestedProductCount": 0,
+      "returnedProductCount": 0,
+      "requestedProductsAlreadyUpToDateCount": 0,
+      "requestedProductsNotReturned": []
+  }
+}

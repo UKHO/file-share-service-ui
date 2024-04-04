@@ -1,20 +1,22 @@
 import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, OnDestroy} from '@angular/core';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { AppConfigService } from './../../../core/services/app-config.service';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
 import { ScsProductInformationApiService } from './../../../core/services/scs-product-information-api.service';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
-import { ProductCatalog } from 'src/app/core/models/ess-response-types';
+import { Product, ProductCatalog } from 'src/app/core/models/ess-response-types';
+import { Subscription } from 'rxjs';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-ess-upload-file',
   templateUrl: './ess-upload-file.component.html',
   styleUrls: ['./ess-upload-file.component.scss'],
 })
-export class EssUploadFileComponent implements OnInit, AfterViewInit {
+export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
   validEncList: string[];
   encFile: File;
   maxEncsLimit: number;
@@ -22,6 +24,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
   displayLoader: boolean = false;
+  products: Product[];
+  scsResponse:ProductCatalog;
+  private productIdentifierSubscriber: Subscription;
+  
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, 
     private scsProductInformationApiService: ScsProductInformationApiService, private msalService: MsalService,
@@ -141,16 +147,79 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit {
      }
     }
 
-    fetchScsTokenReponse() {
-      this.displayLoader = true;
-      this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-        this.productUpdatesByIdentifiersResponse(this.validEncList);
-      }, error => {
-        this.msalService.instance
-          .loginPopup(this.essSilentTokenRequest)
-          .then(response => {
-          this.productUpdatesByIdentifiersResponse(this.validEncList);
-          });
-      });
+  productUpdatesByDeltaResponse(encs: any[]) {
+    if (encs != null) {
+      this.productIdentifierSubscriber = this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
+        .subscribe({
+          next: (productIdentifiersResponse: ProductCatalog) => {
+            if (productIdentifiersResponse.products.length != 0) {
+              this.scsProductInformationApiService.getProductsFromSpecificDateByScsResponse()
+                .subscribe({
+                  next: (result: ProductCatalog) => {
+                    this.displayLoader = false;
+                    this.scsResponse = productIdentifiersResponse;
+                    this.products = result.products.filter((v) => this.scsResponse.products.some((vd) => v.productName == vd.productName));
+                    if (this.products.length != 0) {
+                      this.scsResponse.products = this.products;
+                      let validEncList=this.products.map(p=>p.productName);
+                      this.essUploadFileService.setValidEncsByApi(validEncList);
+                      this.essUploadFileService.scsProductResponse = this.scsResponse;
+                      this.route.navigate(['exchangesets', 'enc-list']);
+                    }
+                    else {
+                      this.displayLoader = false;
+                      this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+                      return;
+                    }
+                  },
+                  error: (error: any) => {
+                    this.displayLoader = false;
+                    if (error.status == HttpStatusCode.NotModified) {
+                      this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+                      return;
+                    }
+                    this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
+                  }
+                });
+            }
+            else {
+              this.displayLoader = false;
+              this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
+              return;
+            }
+          },
+          error: (error: any) => {
+            this.displayLoader = false;
+            this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
+          }
+        });
     }
+  }
+
+  scsProductCatalogResponse(encs: any[]) {
+    if (this.essUploadFileService.exchangeSetDownloadType == 'Delta') {
+      this.productUpdatesByDeltaResponse(encs);
+    } else {
+      this.productUpdatesByIdentifiersResponse(encs);
+    }
+  }
+
+  fetchScsTokenReponse() {
+    this.displayLoader = true;
+    this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
+      this.scsProductCatalogResponse(this.validEncList);
+    }, error => {
+      this.msalService.instance
+        .loginPopup(this.essSilentTokenRequest)
+        .then(response => {
+          this.scsProductCatalogResponse(this.validEncList);
+        });
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.productIdentifierSubscriber) {
+      this.productIdentifierSubscriber.unsubscribe();
+    }
+  }
 }
