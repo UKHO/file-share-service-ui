@@ -12,7 +12,7 @@ import { ViewportScroller } from '@angular/common';
 export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
   messageTitle: string | undefined;
-  displayErrorMessage = true;
+  displayErrorMessage = false;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc: string | ProductsNotInExchangeSet[];
   essInfoErrorMessagesubscription: Subscription;

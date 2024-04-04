@@ -145,7 +145,7 @@ export class EssUploadFileService {
     this.validEncs = [];
     this.validEncs.push(signleValidEnc.toUpperCase());
   }
-
+  
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
     this.exchangeSetDetails = exchangeSetDetails;
   }
@@ -171,12 +171,9 @@ export class EssUploadFileService {
     }
   }
 
-  addAllSelectedEncs() {
-    const maxEncSelectionLimit =
-      this.maxEncSelectionLimit > this.validEncs.length
-        ? this.validEncs.length
-        : this.maxEncSelectionLimit;
-    this.selectedEncs = [...this.scsProducts.slice(0, maxEncSelectionLimit)];
+  addAllSelectedEncs(){
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
   }
 
   getEstimatedTotalSize(encCount: number): string {
