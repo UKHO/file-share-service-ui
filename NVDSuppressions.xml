@@ -14,14 +14,11 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: vite:4.4.7
+   file name: vite:4.5.2.  To fix we would need to update to  @angular-devkit/build-angular@17.3.3 which is a breaking change.
    ]]>
     </notes>
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
-    <cve>CVE-2024-23331</cve>
-    <vulnerabilityName>GHSA-c24v-8rfc-w8vw</vulnerabilityName>
-    <cve>CVE-2023-49293</cve>
-    <vulnerabilityName>GHSA-92r3-m2mg-pj97</vulnerabilityName>
+    <vulnerabilityName>GHSA-8jhw-289h-jh2g</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
@@ -32,5 +29,15 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
     <cve>CVE-2023-29827</cve>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: tar:6.2.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-28863</vulnerabilityName>
+    <cpe>cpe:/a:tar_project:tar</cpe>
   </suppress>
 </suppressions>
