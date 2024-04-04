@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
-import { ExchangeSetDetails, Product } from '../../../core/models/ess-response-types';
+import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCounts } from '../../../core/models/ess-response-types';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 
 interface MappedEnc {
@@ -45,6 +45,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   sortGraphicUp: string = "fa-chevron-up";
   sortGraphicDown: string = "fa-chevron-down";
   sortGraphic: string = this.sortGraphicUp;
+  scsInvalidProduct: NotReturnedProduct[];
 
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
@@ -57,9 +58,11 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope],
     };
-    if(this.essUploadFileService.scsProductResponse)
-    this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
-  }
+    if (this.essUploadFileService.scsProductResponse) {
+      this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
+      this.scsInvalidProduct = this.essUploadFileService.scsProductResponse.productCounts.requestedProductsNotReturned;
+    }
+}
 
   ngOnInit(): void {
     this.maxEncSelectionLimit = Number.parseInt(
@@ -77,6 +80,22 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
+   
+    if(this.essUploadFileService.aioEncFound){
+      if(this.scsInvalidProduct.length > 0){
+        let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+        this.essUploadFileService.infoMessage = true;
+        this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProducts}`);
+      }
+      else{
+        this.essUploadFileService.infoMessage = true;
+        this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      }
+     }
+      else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
+        let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProducts}`);
+      }
   }
 
   setEncList() {
