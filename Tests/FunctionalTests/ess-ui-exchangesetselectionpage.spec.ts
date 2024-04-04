@@ -39,10 +39,10 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
   test('Verify the Exchange sets page for Delta selection', async ({ page }) => {
     let date: Date = new Date();
     let requestedCount = 0;
-    exchangeSetSelectionPageObjects.page.on('request', request =>{
-      if( request.url().includes('/productInformation/productIdentifiers') && request.method() === 'POST')
+    encSelectionPageObjects.page.on('request', request =>{
+      if( request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
         requestedCount++;
-      if( request.url().includes('/ProductInformation?sinceDateTime=') && request.method() === 'GET')
+      if (request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
         requestedCount++;
     })
     await exchangeSetSelectionPageObjects.enterDate(date);
@@ -52,12 +52,14 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await esslandingPageObjects.setaddSingleENCTextboxSelector("DE260001");
     await esslandingPageObjects.proceedButtonSelectorClick();
     const productIdentifierResponse = await esslandingPageObjects.page.waitForRequest(request =>
-      request.url().includes('/productInformation/productIdentifiers') && request.method() === 'POST')
+      request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
     await esslandingPageObjects.expect.IsEmpty(productIdentifierResponse.url());
     const productInfResponse = await esslandingPageObjects.page.waitForRequest(request =>
-      request.url().includes('/ProductInformation?sinceDateTime=') && request.method() === 'GET')
+      request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
     await esslandingPageObjects.expect.IsEmpty(productInfResponse.url());
     await encSelectionPageObjects.addAnotherENC('DE516510');
+    await esslandingPageObjects.page.waitForRequest(request =>
+      request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
     await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 4);
   });
 
