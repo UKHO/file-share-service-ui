@@ -14,6 +14,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     let encSelectionPageObjects: EncSelectionPageObjects;
     let esDownloadPageObjects: EsDownloadPageObjects;
     let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
+    let fileSize: number;
 
     test.beforeEach(async ({ page }) => {
 
@@ -31,7 +32,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
-        await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+        fileSize = await encSelectionPageObjects.getFileSize();
         await encSelectionPageObjects.selectAllSelectorClick();
     })
 
@@ -42,8 +43,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
     test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
-        
         await encSelectionPageObjects.SelectedENCsCount();
+        let estimatedString = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
         await encSelectionPageObjects.requestENCsSelectorClick();
         await encSelectionPageObjects.page.waitForLoadState();
         await esDownloadPageObjects.expect.SelectedENCs();
@@ -53,11 +54,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         //=========================================
-        let estimatedString = await page.locator('p').filter({ hasText: 'Estimated size' }).textContent() as string;
-        let includedDisplay = await page.locator('strong').filter({ hasText: 'ENCs included' }).textContent();
-        let valueString: string = includedDisplay?.split(' ')[0] as string;
-        let ENCsIncludedValue = parseInt(valueString);
-        esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, ENCsIncludedValue)
+        
+        //let includedDisplay = await page.locator('strong').filter({ hasText: 'ENCs included' }).textContent();
+        esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, fileSize);
         await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
         await esDownloadPageObjects.expect.createLinkSelectorHidden();
 
@@ -67,7 +66,6 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
         await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
         await esDownloadPageObjects.expect.createLinkSelectorEnabled();
-
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101

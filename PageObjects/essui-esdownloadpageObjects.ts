@@ -123,11 +123,11 @@ class EsDownloadPageAssertions {
     }
 
 
-    VerifyExchangeSetSizeIsValid(estimated: string, included: number): void {
+    VerifyExchangeSetSizeIsValid(estimated: string, estimatedSize: number): void {
     //new for Admiralty
-      let estimatedSize = included * (0.3);
-      let defaultSize = Number.parseFloat(autoTestConfig.encSizeConfig);
-      let literal: string = 'Estimated size ' + (estimatedSize + defaultSize).toFixed(1) + 'MB';
+    console.log('Estimated size:- '+estimatedSize);
+    console.log('Estimated:- '+estimated);
+      let literal: string = 'Estimated size ' + estimatedSize + 'MB';
       expect(estimated).toEqual(literal);
     }
 
