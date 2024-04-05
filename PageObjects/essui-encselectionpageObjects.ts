@@ -99,7 +99,7 @@ export class EncSelectionPageObjects {
   }
 
   async startAgainLinkSelectorClick(): Promise<void> {
-    await this.page.waitForSelector("a.linkStartAgain", { state:'visible', timeout:3000});
+    await this.page.waitForSelector("a.linkStartAgain", { state:'visible' });
     await this.startAgainLinkSelector.click();
   }
 
@@ -121,7 +121,7 @@ export class EncSelectionPageObjects {
   }
 
   async selectAllSelectorClick(): Promise<void> {
-    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible', timeout: 3000});
+    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible' });
     await this.selectAllSelector.click();
 
   }
@@ -139,9 +139,8 @@ export class EncSelectionPageObjects {
     SelectedENCs = parseInt(((await this.rightTableDisplaySelector.innerHTML()).split(' '))[1])
   }
 
-  async getFileSize(){
-    var response = await this.esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
-    var responseBody = JSON.parse((await response.text()).toString());
+  async getFileSize(response: string){
+    var responseBody = JSON.parse(response);      
     let numberOfENCs = await responseBody.products.length;
     let fileSize = 0;
     for (var i = 0; i < numberOfENCs; i++) 
@@ -275,7 +274,7 @@ class EncSelectionPageAssertions {
   }
 
   async secondEncSelectorContainText(expected: string): Promise<void> {
-    await this.encSelectionPageObjects.page.waitForSelector('table tbody tr:nth-child(2) td', { state: 'visible', timeout: 5000 });
+    await this.encSelectionPageObjects.page.waitForSelector('table tbody tr:nth-child(2) td', { state: 'visible' });
     const uploadedEncs = await this.encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
 
     expect(uploadedEncs[1]).toEqual(expected);
@@ -292,8 +291,8 @@ class EncSelectionPageAssertions {
   }
 
   async verifyNumberofENCs(): Promise<void> {
-    let rightTableRowsCount = await this.encSelectionPageObjects.encTableButtonList.count();
-    let leftTableRowsCount = await this.encSelectionPageObjects.encTableCheckboxList.count();
+    let rightTableRowsCount = await this.encSelectionPageObjects.encTableButtonList.count(); 
+    let leftTableRowsCount = await this.encSelectionPageObjects.encTableCheckboxList.count();     
     expect(leftTableRowsCount).toEqual(rightTableRowsCount);
     expect(await this.encSelectionPageObjects.leftTableDisplaySelector.innerText()).toEqual("Showing " + leftTableRowsCount + " ENCs");
     expect(await this.encSelectionPageObjects.rightTableDisplaySelector.innerText()).toEqual("" + rightTableRowsCount + " ENCs selected");
