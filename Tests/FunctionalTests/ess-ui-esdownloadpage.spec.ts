@@ -40,7 +40,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
-    test.only('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
+    test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
         
         var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
         fileSize = await encSelectionPageObjects.getFileSize(await response.text());
