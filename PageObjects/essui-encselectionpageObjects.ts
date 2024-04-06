@@ -145,9 +145,8 @@ export class EncSelectionPageObjects {
     let fileSize = 0;
     for (var i = 0; i < numberOfENCs; i++) 
       fileSize += responseBody.products[i].fileSize;
-    return parseInt((fileSize/1048576).toFixed(1))+0.5;
+    return parseFloat((fileSize/1048576).toFixed(1))+0.5;
   }
-
 }
 
 class EncSelectionPageAssertions {

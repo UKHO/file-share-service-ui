@@ -5,7 +5,6 @@ const fs = require('fs');
 let filefound;
 let filedeleted;
 
-
 export class EsDownloadPageObjects {
 
     encselectionPageObjects: EncSelectionPageObjects;
@@ -122,19 +121,14 @@ class EsDownloadPageAssertions {
 
     }
 
-
     VerifyExchangeSetSizeIsValid(estimated: string, estimatedSize: number): void {
-    //new for Admiralty
-    console.log('Estimated size:- '+estimatedSize);
-    console.log('Estimated:- '+estimated);
-      let literal: string = 'Estimated size ' + estimatedSize + 'MB';
-      expect(estimated).toEqual(literal);
+
+        let literal: string = estimatedSize + ' MB';
+        expect(estimated).toEqual(literal);
     }
 
-  
-
-
   async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
+    
        const testPage = this.esDownloadPageObjects.pageUnderTest;
        expect(await this.esDownloadPageObjects.getDialogueSelector).toBeTruthy();
        expect(await testPage.getByText(InValidENCs[0] + ' - invalidProduct')).toBeTruthy();
