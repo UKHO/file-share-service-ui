@@ -6,7 +6,6 @@ import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObject
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
 import { ExchangeSetSelectionPageObjects } from '../../PageObjects/essui-exchangesetselectionpageObjects';
 
-
 test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   let esslandingPageObjects: EssLandingPageObjects;
@@ -137,18 +136,17 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14114 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149491
-  test('Verify Count of uploaded & selected ENCs along with estimated size of Exchange set.', async ({ page }) => {
+  test('Verify Count of uploaded & selected ENCs.', async ({ page }) => {
     let response = await esslandingPageObjects.page.waitForResponse(r =>
-      r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST')
+      r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST');
     let encNames = await encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
     let responseBody = JSON.parse((await response.body()).toString());
     await encSelectionPageObjects.expect.toBeTruthy(responseBody.productCounts.requestedProductCount == responseBody.productCounts.returnedProductCount); 
     await encSelectionPageObjects.expect.toBeTruthy(encNames.length == responseBody.productCounts.returnedProductCount);
     for (let product of responseBody.products)
-      await encSelectionPageObjects.expect.toBeTruthy(encNames.includes(product.productName)); 
+      await encSelectionPageObjects.expect.toBeTruthy(encNames.includes(product.productName));
     await encSelectionPageObjects.selectAllSelector.click();
     await encSelectionPageObjects.expect.verifyNumberofENCs();
-    await encSelectionPageObjects.expect.verifySizeofENCs(encNames.length);
     await encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.errorMessage.isVisible());
   })
 
@@ -229,6 +227,22 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.addAnotherENC("GB800002");
     await encSelectionPageObjects.errorMessage.click();
     await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
+  })
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149494
+  test('Verify estimated file size of selected ENC cells for Base Exchange Set type', async ({ page }) => {
+    var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+    var responseBody = JSON.parse(await response.text());
+    let fileSize = await encSelectionPageObjects.getFileSize(await response.text());
+    const selectENCsFromTable = encSelectionPageObjects.encTableCheckboxList;
+    await encSelectionPageObjects.selectAllSelectorClick();
+    await encSelectionPageObjects.deselectAllSelector.isVisible();
+    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await selectENCsFromTable.nth(0).click();
+    fileSize -= parseFloat((responseBody.products[0].fileSize/1048576).toFixed(1));
+    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
   })
 
 });

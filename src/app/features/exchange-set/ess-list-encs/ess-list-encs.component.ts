@@ -209,11 +209,11 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   }
 
   getEstimatedTotalSize() {
-    if(this.selectedEncList && this.selectedEncList.length > 0){
-    return this.essUploadFileService.getEstimatedTotalSize(this.selectedEncList.length);
+    if (this.selectedEncList && this.selectedEncList.length > 0) {
+      return this.essUploadFileService.getEstimatedTotalSize();
     }
-    else{
-      return '0MB';
+    else {
+      return '0 MB';
     }
   }
   
