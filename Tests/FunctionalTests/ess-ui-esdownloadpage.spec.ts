@@ -14,6 +14,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     let encSelectionPageObjects: EncSelectionPageObjects;
     let esDownloadPageObjects: EsDownloadPageObjects;
     let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
+    let fileSize: number;
 
     test.beforeEach(async ({ page }) => {
 
@@ -30,9 +31,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await exchangeSetSelectionPageObjects.clickOnProceedButton();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
         await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
-        await esslandingPageObjects.proceedButtonSelectorClick();
-        await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
-        await encSelectionPageObjects.selectAllSelectorClick();
+        await esslandingPageObjects.proceedButtonSelectorClick();        
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14092
@@ -43,7 +42,11 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
     test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
         
+        var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+        fileSize = await encSelectionPageObjects.getFileSize(await response.text());
+        await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.SelectedENCsCount();
+        let estimatedString = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
         await encSelectionPageObjects.requestENCsSelectorClick();
         await encSelectionPageObjects.page.waitForLoadState();
         await esDownloadPageObjects.expect.SelectedENCs();
@@ -53,11 +56,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.spinnerSelectorHidden();       
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         //=========================================
-        let estimatedString = await page.locator('p').filter({ hasText: 'Estimated size' }).textContent() as string;
-        let includedDisplay = await page.locator('strong').filter({ hasText: 'ENCs included' }).textContent();
-        let valueString: string = includedDisplay?.split(' ')[0] as string;
-        let ENCsIncludedValue = parseInt(valueString);
-        esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, ENCsIncludedValue)
+        
+        esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, fileSize);
         await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
         await esDownloadPageObjects.expect.createLinkSelectorHidden();
 
@@ -67,12 +67,12 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
         await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
         await esDownloadPageObjects.expect.createLinkSelectorEnabled();
-
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
     test('Verify 400 scenario using playwright mock', async ({ page }) => {
 
+        await encSelectionPageObjects.selectAllSelectorClick();
         await apiRoute400(page);
         await encSelectionPageObjects.requestENCsSelectorClick();
         await esDownloadPageObjects.expect.errorMessageSelectorDisplayed();
@@ -81,6 +81,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101 
     test('Verify 403 scenario using playwright mock', async ({ page }) => {
 
+        await encSelectionPageObjects.selectAllSelectorClick();
         await apiRoute403(page);
         await encSelectionPageObjects.requestENCsSelectorClick();
         await esDownloadPageObjects.expect.errorMessageSelectorDisplayed();
@@ -89,6 +90,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
     test('Verify 500 scenario using playwright mock', async ({ page }) => {
 
+        await encSelectionPageObjects.selectAllSelectorClick();
         await apiRoute500(page);
         await encSelectionPageObjects.requestENCsSelectorClick();
         await esDownloadPageObjects.expect.errorMessageSelectorDisplayed();
@@ -114,6 +116,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14130 
     test('Verify 200 scenario using playwright mock when all selected ENCs are not included in ES', async ({ page }) => {
 
+        await encSelectionPageObjects.selectAllSelectorClick();
         let invalidENCs = ['AU220150', 'AU5PTL01', 'GB123456']
         await apiRoute200WithExcludedENCs(page);
         await encSelectionPageObjects.requestENCsSelectorClick();        
@@ -126,7 +129,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
      test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
 
-       const selectedEncs = await encSelectionPageObjects.encTableButtonList.allInnerTexts();
+        await encSelectionPageObjects.selectAllSelectorClick();
+        const selectedEncs = await encSelectionPageObjects.encTableButtonList.allInnerTexts();
         await encSelectionPageObjects.requestENCsSelectorClick()
         await page.on('request', req => {
             let requestPayload = req.postDataJSON();

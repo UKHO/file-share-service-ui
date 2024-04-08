@@ -17,7 +17,6 @@ export class EssUploadFileService {
   private showInfoMessage = false;
   private notifySingleEnc: Subject<boolean> = new Subject<boolean>();
   private exchangeSetDetails: ExchangeSetDetails;
-  private avgSizeofENC: number;
   private estimatedTotalSize: number;
   private defaultEstimatedSizeinMB: number;
   private configAioEncList: string[];
@@ -28,18 +27,9 @@ export class EssUploadFileService {
   constructor() {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
-    this.avgSizeofENC = Number.parseFloat(
-      AppConfigService.settings['essConfig'].avgSizeofENCinMB
-    );
-    this.maxEncSelectionLimit = Number.parseInt(
-      AppConfigService.settings['essConfig'].MaxEncSelectionLimit,
-      10
-    );
-    this.defaultEstimatedSizeinMB = Number.parseFloat(
-      AppConfigService.settings['essConfig'].defaultEstimatedSizeinMB
-    );
-    this.configAioEncList =
-      AppConfigService.settings['essConfig'].aioExcludeEncs;
+    this.maxEncSelectionLimit = Number.parseInt(AppConfigService.settings['essConfig'].MaxEncSelectionLimit, 10);
+    this.configAioEncList = AppConfigService.settings["essConfig"].aioExcludeEncs;
+    this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
   }
 
   isValidEncFile(encFileType: string, encList: string[]): boolean {
@@ -176,11 +166,15 @@ export class EssUploadFileService {
     this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
   }
 
-  getEstimatedTotalSize(encCount: number): string {
-    this.estimatedTotalSize =
-      this.avgSizeofENC * encCount + this.defaultEstimatedSizeinMB;
-    return this.estimatedTotalSize.toFixed(1).toString() + 'MB';
+  getEstimatedTotalSize(): string {
+    this.estimatedTotalSize = 0;
+    for (let selectedEnc of this.selectedEncs) {
+      this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
+    }
+    let estimatedSizeInMB = this.convertBytesToMegabytes(this.estimatedTotalSize);
+    return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(1) + ' MB' ;
   }
+
   get exchangeSetDownloadType(): 'Base' | 'Delta' {
     return this._exchangeSetDownloadType;
   }
@@ -198,31 +192,31 @@ export class EssUploadFileService {
   }
   get scsProductResponse() : ProductCatalog | undefined{
     return this._scsProductResponse;
-   }
+  }
 
-   set scsProductResponse(scsProductResponse: ProductCatalog | undefined){
-     this._scsProductResponse = scsProductResponse;
-   } 
+  set scsProductResponse(scsProductResponse: ProductCatalog | undefined) {
+    this._scsProductResponse = scsProductResponse;
+  } 
 
-   get scsProducts() : Product[]{
+  get scsProducts(): Product[] {
     return this._scsProducts;
-   }
+  }
 
-   set scsProducts(products: Product[]){
-      this._scsProducts = products;
-   }
+  set scsProducts(products: Product[]) {
+    this._scsProducts = products;
+  }
 
-   get scsInvalidProducts() : NotReturnedProduct[]{
+  get scsInvalidProducts(): NotReturnedProduct[] {
     return this._scsInvalidProducts;
-   }
+  }
 
-   set scsInvalidProducts(NotReturnedProduct: NotReturnedProduct[]){
-      this._scsInvalidProducts = NotReturnedProduct;
-   }
+  set scsInvalidProducts(NotReturnedProduct: NotReturnedProduct[]) {
+    this._scsInvalidProducts = NotReturnedProduct;
+  }
 
-   setValidEncsByApi(encList: string[]): void {
+  setValidEncsByApi(encList: string[]): void {
     this.validEncs = encList;
-   }
+  }
 
   clearData() {
     this.validEncs = [];
@@ -230,5 +224,10 @@ export class EssUploadFileService {
     this.scsProductResponse = undefined;
     this.clearSelectedEncs();
     this.aioEncFound = false;
+  }
+
+  convertBytesToMegabytes(estimatedTotalSize: number) {
+    let byteSize = 1024;
+    return (estimatedTotalSize / byteSize) / byteSize;
   }
 }
