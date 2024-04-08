@@ -60,16 +60,15 @@ describe('EssUploadFileService', () => {
   let dateInfo: DateInfo[] = [];
   bundleInfo.push({bundleType: 'ABC', location: 'XYZ'});
   dateInfo.push({updateNumber:1, updateApplicationDate: '', issueDate: ''});
-  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 2, ignoreCache: true, bundle: bundleInfo });
-  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 3, ignoreCache: true, bundle: bundleInfo });
-  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 4, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210130', editionNumber: 1, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 26140, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210230', editionNumber: 2, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 343128, ignoreCache: true, bundle: bundleInfo });
+  product.push({ productName: 'AU210330', editionNumber: 3, updateNumbers: updateNumber, dates: dateInfo, cancellation: null, fileSize: 123074, ignoreCache: true, bundle: bundleInfo });
   beforeEach(() => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
         MaxEncSelectionLimit: 5,
-        avgSizeofENCinMB:0.3,
-        defaultEstimatedSizeinMB:0.5,
+        defaultEstimatedSizeinMB: 0.5,
         aioExcludeEncs :["GB800001","FR800001"]
       },
     };
@@ -262,17 +261,7 @@ describe('EssUploadFileService', () => {
     const invalidEncName = 'GB800001';
     const result = service.excludeAioEnc(invalidEncName); 
     expect(result).toBe(false);  });
-  it.each`
-  encCount                       | expectedResult
-  ${0}                           |  ${'0.5MB'}
-  ${1}                           |  ${'0.8MB'}
-  ${6}                           |  ${'2.3MB'}
-  `('getEstimatedTotalSize should return valid string',
-  ({  encCount, expectedResult }: {  encCount: number; expectedResult: string }) => {
-    jest.clearAllMocks();
-    expect(service.getEstimatedTotalSize(encCount)).toEqual(expectedResult);
-  });
-  it('get exchangeSetDownloadType should return the correct download type', () => {
+      it('get exchangeSetDownloadType should return the correct download type', () => {
     service.exchangeSetDownloadType = 'Base';
     expect(service.exchangeSetDownloadType).toEqual('Base');
     
@@ -299,18 +288,31 @@ describe('EssUploadFileService', () => {
     expect(service.exchangeSetDeltaDate).toEqual(date);
   });
 
-  it('checkMaxEncLimit should return false as per configuration settings', () => {
-    let notReturnedProduct: NotReturnedProduct[] = [{
-      "productName": "US5CN13M",
-      "reason": "noDataAvailableForCancelledProduct"
-    },
-    {
-      "productName": "DE521900",
-      "reason": "invalidProduct"
-    }
-    ];
+    it('checkMaxEncLimit should return false as per configuration settings', () => {
+      let notReturnedProduct: NotReturnedProduct[] = [{
+        "productName": "US5CN13M",
+        "reason": "noDataAvailableForCancelledProduct"
+      },
+      {
+        "productName": "DE521900",
+        "reason": "invalidProduct"
+      }
+      ];
+  
+      service.scsInvalidProducts = notReturnedProduct;
+      expect(service.scsInvalidProducts.length).toEqual(2);
+    });
 
-    service.scsInvalidProducts = notReturnedProduct;
-    expect(service.scsInvalidProducts.length).toEqual(2);
-  });
+  test('getEstimatedTotalSize calculates total size accurately', () => {
+    for (const p of product) {
+      service.addSelectedEnc(p);
+    }
+    const convertBytesToMegabytesSpy = jest.spyOn(service, 'convertBytesToMegabytes');
+    const actualTotalSize = service.getEstimatedTotalSize();
+    const estimatedSizeInMB = convertBytesToMegabytesSpy.mock.results[0].value;
+    
+    expect(convertBytesToMegabytesSpy).toHaveBeenCalled();
+    expect(typeof estimatedSizeInMB).toBe('number');
+    expect(actualTotalSize).toEqual('1.0 MB');
+  })
 });
