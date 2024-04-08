@@ -299,7 +299,7 @@ describe('EssUploadFileService', () => {
     expect(service.exchangeSetDeltaDate).toEqual(date);
   });
 
-  it('checkMaxEncLimit should return false as per configuration settings', () => {
+  it('scsInvalidProducts should return invalid product', () => {
     let notReturnedProduct: NotReturnedProduct[] = [{
       "productName": "US5CN13M",
       "reason": "noDataAvailableForCancelledProduct"
