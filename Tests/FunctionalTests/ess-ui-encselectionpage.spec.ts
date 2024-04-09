@@ -245,4 +245,25 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
   })
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151271
+  test('Verify estimated file size of selected ENC cells for Delta Exchange Set type', async ({ page }) => {
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.enterDate(new Date());
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+    var responseBody = JSON.parse(await response.text());
+    let fileSize = await encSelectionPageObjects.getFileSize(await response.text());
+    const selectENCsFromTable = encSelectionPageObjects.encTableCheckboxList;
+    await encSelectionPageObjects.selectAllSelectorClick();
+    await encSelectionPageObjects.deselectAllSelector.isVisible(); 
+    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await selectENCsFromTable.nth(0).click();
+    fileSize -= parseFloat((responseBody.products[0].fileSize/1048576).toFixed(1));
+    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+  })
+
 });
