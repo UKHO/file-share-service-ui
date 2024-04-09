@@ -599,7 +599,7 @@ describe('EssListEncsComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(warnObj);
   });
   
-  it('exchangeSetCreationForDeltaResponse should return updateNumber - 1 when updateNumber greater then 0', fakeAsync(() => {
+  it('exchangeSetCreationForDeltaResponse should return DeltaExchangeSetResponse for updateNumber - 1 when updateNumber greater then 0', fakeAsync(() => {
     component.selectedEncList = selectedEncListForDeltaMockData.products;
     essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
     essUploadFileService.exchangeSetDownloadType = 'Delta';
@@ -609,7 +609,7 @@ describe('EssListEncsComponent', () => {
     expect(4).toEqual(component.updateNumber);
   }));
 
-  it('exchangeSetCreationForDeltaResponse should return editionNumber - 1 when updateNumber is 0', fakeAsync(() => {
+  it('exchangeSetCreationForDeltaResponse should return DeltaExchangeSetResponse for editionNumber - 1 when updateNumber is 0', fakeAsync(() => {
     component.selectedEncList = selectedEncListMockData.products;
     essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
     essUploadFileService.exchangeSetDownloadType = 'Delta';

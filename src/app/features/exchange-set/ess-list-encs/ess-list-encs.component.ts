@@ -102,8 +102,6 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   }
 
   setEncList() {
-    console.log(this.essUploadFileService.scsProducts);
-    
     this.encList = this.essUploadFileService.scsProducts.map((enc) => ({
       enc,
       selected: false
