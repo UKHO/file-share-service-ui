@@ -467,7 +467,7 @@ stages:
   #                   AzureSubscription: "File-Share-Service-vNext-E2E-A.011.08"
     
   - stage: QAdeploy
-    dependsOn: Devdeploy
+    dependsOn: Perfrom_Build_Test_Publish
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
       - group: "File-Share-Service-UI-QA-Deploy-Variables"
