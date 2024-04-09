@@ -288,7 +288,7 @@ describe('EssUploadFileService', () => {
     expect(service.exchangeSetDeltaDate).toEqual(date);
   });
 
-    it('checkMaxEncLimit should return false as per configuration settings', () => {
+  it('scsInvalidProducts should return invalid product', () => {
       let notReturnedProduct: NotReturnedProduct[] = [{
         "productName": "US5CN13M",
         "reason": "noDataAvailableForCancelledProduct"
@@ -301,7 +301,7 @@ describe('EssUploadFileService', () => {
   
       service.scsInvalidProducts = notReturnedProduct;
       expect(service.scsInvalidProducts.length).toEqual(2);
-    });
+   });
 
   test('getEstimatedTotalSize calculates total size accurately', () => {
     for (const p of product) {
