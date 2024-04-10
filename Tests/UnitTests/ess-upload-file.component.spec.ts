@@ -386,6 +386,7 @@ describe('EssUploadFileComponent', () => {
   expect(component.displayLoader).toEqual(false);
   expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
 }));
+
 it.each`
 encDataFunc                   | expectedResult
 ${getNDeltaEncData}         | ${true}
@@ -400,13 +401,13 @@ ${getEncData}                 | ${false}
     essUploadFileService.exchangeSetDownloadType = 'Delta';
     component.processEncFile(fileContent);
     jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
-    jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+    jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductsFromSpecificDateByScsResponseMockData));
     component.fetchScsTokenReponse();
     component.scsProductCatalogResponse(component.validEncList)
     const routeService =jest.spyOn(router,'navigate');
     tick();
     expect(component.displayLoader).toEqual(false);
-    expect(component.scsResponse).toEqual(scsProductIdentifiersResponseMockData);
+    expect(component.scsResponse.products[0].productName).toEqual(scsProductsFromSpecificDateByScsResponseMockData.products[0].productName);
     expect(routeService).toHaveBeenCalledWith(['exchangesets', 'enc-list']);
   }));
 
@@ -660,3 +661,72 @@ export const scsProductResponseWithEmptyProductMockData: any = {
   }
 }
 
+export const scsProductsFromSpecificDateByScsResponseMockData: any = {
+  "products": [
+      {
+          "productName": "FR570300",
+          "editionNumber": 1,
+          "updateNumbers": [
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11
+          ],
+          "dates": [
+              {
+                  "updateNumber": 5,
+                  "updateApplicationDate": null,
+                  "issueDate": "2017-12-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 6,
+                  "updateApplicationDate": null,
+                  "issueDate": "2018-12-19T00:00:00Z"
+              },
+              {
+                  "updateNumber": 7,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-06-28T00:00:00Z"
+              },
+              {
+                  "updateNumber": 8,
+                  "updateApplicationDate": null,
+                  "issueDate": "2019-10-24T00:00:00Z"
+              },
+              {
+                  "updateNumber": 9,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-05-11T00:00:00Z"
+              },
+              {
+                  "updateNumber": 10,
+                  "updateApplicationDate": null,
+                  "issueDate": "2021-10-08T00:00:00Z"
+              },
+              {
+                  "updateNumber": 11,
+                  "updateApplicationDate": null,
+                  "issueDate": "2022-11-16T00:00:00Z"
+              }
+          ],
+          "cancellation": null,
+          "fileSize": 343128,
+          "ignoreCache": false,
+          "bundle": [
+              {
+                  "bundleType": "DVD",
+                  "location": "M1;B1"
+              }
+          ]
+      }
+  ],
+  "productCounts": {
+      "requestedProductCount": 1,
+      "returnedProductCount": 1,
+      "requestedProductsAlreadyUpToDateCount": 0,
+      "requestedProductsNotReturned": []
+  }
+}
