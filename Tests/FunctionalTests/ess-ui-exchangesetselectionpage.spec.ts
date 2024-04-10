@@ -36,11 +36,12 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149497
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146707
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149499
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151753
   test('Verify the Exchange sets page for Delta selection', async ({ page }) => {
     let date: Date = new Date();
     let requestedCount = 0;
-    encSelectionPageObjects.page.on('request', request =>{
-      if( request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
+    encSelectionPageObjects.page.on('request', request => {
+      if (request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
         requestedCount++;
       if (request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
         requestedCount++;

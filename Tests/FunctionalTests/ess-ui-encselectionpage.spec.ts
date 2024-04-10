@@ -141,7 +141,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
       r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST');
     let encNames = await encSelectionPageObjects.ENCTableENClistCol1.allInnerTexts();
     let responseBody = JSON.parse((await response.body()).toString());
-    await encSelectionPageObjects.expect.toBeTruthy(responseBody.productCounts.requestedProductCount == responseBody.productCounts.returnedProductCount); 
+    await encSelectionPageObjects.expect.toBeTruthy(responseBody.productCounts.requestedProductCount == responseBody.productCounts.returnedProductCount);
     await encSelectionPageObjects.expect.toBeTruthy(encNames.length == responseBody.productCounts.returnedProductCount);
     for (let product of responseBody.products)
       await encSelectionPageObjects.expect.toBeTruthy(encNames.includes(product.productName));
@@ -238,11 +238,11 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.selectAllSelectorClick();
     await encSelectionPageObjects.deselectAllSelector.isVisible();
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
     await selectENCsFromTable.nth(0).click();
-    fileSize -= parseFloat((responseBody.products[0].fileSize/1048576).toFixed(1));
+    fileSize -= parseFloat((responseBody.products[0].fileSize / 1048576).toFixed(1));
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151757
@@ -271,4 +271,18 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.expect.IsEmpty(productVersionResponse.url());
   })
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151339
+  test('Verify Valid ENC cells that have an update must be listed on the ENC List', async ({ page }) => {
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.enterDate(new Date());
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    var productIdentifierResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() == 'POST');
+    var sinceDateResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
+    var expectedEncs = await encSelectionPageObjects.getCommonEncs(await productIdentifierResponse.text(), await sinceDateResponse.text());
+    const actualEncs = new Set(await encSelectionPageObjects.encNames.allInnerTexts());
+    await encSelectionPageObjects.expect.toBeTruthy(expectedEncs.every(r => actualEncs.has(r)));
+  });
 });

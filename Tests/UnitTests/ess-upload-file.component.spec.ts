@@ -9,7 +9,7 @@ import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-se
 import { By } from '@angular/platform-browser';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { MockMSALInstanceFactory } from './fss-advanced-search.component.spec';
 import { ScsProductInformationApiService } from '../../src/app/core/services/scs-product-information-api.service';
@@ -26,22 +26,18 @@ describe('EssUploadFileComponent', () => {
     let data = 'Au2fg150\r\nAU5PTL01\r\nCA271105\r\nCN484220';
     return data;
   };
-
   const getInvalidEncData_csv = () => {
     let data = 'AU220150004\r\naU5PTLn1\r\ncA27Y105\r\nCN48tk20';
     return data;
   };
-
   const getNoEncData_csv = () => {
     let data = '';
     return data;
   };
-
   const getAioEncData_csv = () => {
     let data = 'GB800001';
     return data;
   };
-
   const getEncData = () => {
     let data = '';
     data += ':DATE 20220630 03:11 \n';
@@ -78,6 +74,28 @@ describe('EssUploadFileComponent', () => {
     data += ':ECS \n';
     return data;
   };
+  const validAndInvalidEncData = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data += 'GB20486A202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'FR570300202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'GB800001202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'DE521900202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
+  };
+  const ValidAndAioEncData = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data += 'GB800001202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'CA172005202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
+  };
   const router = {
     navigate: jest.fn()
   };
@@ -100,7 +118,6 @@ describe('EssUploadFileComponent', () => {
     data += ':ECS \n';
     return data;
   };
-
   const getNDeltaEncData = () => {
     let data = '';
     data += ':DATE 20220630 03:11 \n';
@@ -120,7 +137,26 @@ describe('EssUploadFileComponent', () => {
     data += ':ECS \n';
     return data;
   };
-  
+  const getNDeltaEncDatawithAIO = () => {
+    let data = '';
+    data += ':DATE 20220630 03:11 \n';
+    data += ':VERSION 2 \n';
+    data += ':ENC \n';
+    data += 'DE4NO13K202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU20130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU310130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU410130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU510130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU610130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU710130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU810130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU90130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += 'AU2110130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB61C,0,5,GB \n';
+    data += 'AU230130202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB671C,0,5,GB \n';
+    data += 'GB800001202209307FF74DB298E043887FF74DB298E04388F160D61C8BBB618C,0,5,GB \n';
+    data += ':ECS \n';
+    return data;
+  };
   const getNEncDataWithAio = () => {
     let data = '';
     data += ':DATE 20220630 03:11 \n';
@@ -155,12 +191,12 @@ describe('EssUploadFileComponent', () => {
           useFactory: MockMSALInstanceFactory
         },
         {
-          provide : ScsProductInformationApiService,
-          useValue : scsProductInformationApiService
+          provide: ScsProductInformationApiService,
+          useValue: scsProductInformationApiService
         },
         {
-          provide : MsalService,
-          useValue : msalService
+          provide: MsalService,
+          useValue: msalService
         },
         EssUploadFileService,
         EssInfoErrorMessageService,
@@ -263,7 +299,7 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
-    it.each`
+  it.each`
     fileType           |fileName         | getEncData              | encDataFunc            | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getNoEncData_csv()}  |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getNoEncData()}      |  ${1}
@@ -282,7 +318,7 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
-    it.each`
+  it.each`
     fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getAioEncData_csv()}      |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getInvalidAndAioEncData()}|  ${1}
@@ -302,53 +338,53 @@ describe('EssUploadFileComponent', () => {
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
 
-    it('onFileInputChange{ event.srcElement} should raise error for unsupported file type', () => {
-      const file = new File([getEncData_csv()], 'test.jpeg');
-      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
-      Object.defineProperty(file, 'type', { value: 'image/jpeg' });
-      const event: CustomEvent<FileInputChangeEventDetail> = new CustomEvent<FileInputChangeEventDetail>(
-        "fileInputChange",
-        { detail: { files: [file] } });
+  it('onFileInputChange{ event.srcElement} should raise error for unsupported file type', () => {
+    const file = new File([getEncData_csv()], 'test.jpeg');
+    Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+    Object.defineProperty(file, 'type', { value: 'image/jpeg' });
+    const event: CustomEvent<FileInputChangeEventDetail> = new CustomEvent<FileInputChangeEventDetail>(
+      "fileInputChange",
+      { detail: { files: [file] } });
 
-      const errObj = {
-        showInfoErrorMessage: false,
-        messageType: 'info',
-        messageDesc: ''
-      };
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-      component.onFileInputChange(event as unknown as Event);
-      expect(component.validEncList.length).toEqual(0);
-      const errObJ = {
-        showInfoErrorMessage: true,
-        messageType: 'error',
-        messageDesc: 'Please select a .csv or .txt file'
-      };
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-    });
+    const errObj = {
+      showInfoErrorMessage: false,
+      messageType: 'info',
+      messageDesc: ''
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+    component.onFileInputChange(event as unknown as Event);
+    expect(component.validEncList.length).toEqual(0);
+    const errObJ = {
+      showInfoErrorMessage: true,
+      messageType: 'error',
+      messageDesc: 'Please select a .csv or .txt file'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+  });
 
-    it('onFileInputChange{ event.srcElement} should raise error if more than one file submitted', () => {
-      const file = new File([getEncData_csv()], 'test.jpeg');
-      Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
-      Object.defineProperty(file, 'type', { value: 'image/jpeg' });
-      const event: CustomEvent<FileInputChangeEventDetail> = new CustomEvent<FileInputChangeEventDetail>(
-        "fileInputChange",
-        { detail: { files: [file, file] } });
-      
-      const errObj = {
-        showInfoErrorMessage: false,
-        messageType: 'info',
-        messageDesc: ''
-      };
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-      component.onFileInputChange(event as unknown as Event);
-      expect(component.validEncList.length).toEqual(0);
-      const errObJ = {
-        showInfoErrorMessage: true,
-        messageType: 'error',
-        messageDesc: 'Only one file can be processed at a time.'
-      };
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
-    });
+  it('onFileInputChange{ event.srcElement} should raise error if more than one file submitted', () => {
+    const file = new File([getEncData_csv()], 'test.jpeg');
+    Object.defineProperty(file, 'size', { value: 1024 * 1024 + 1 });
+    Object.defineProperty(file, 'type', { value: 'image/jpeg' });
+    const event: CustomEvent<FileInputChangeEventDetail> = new CustomEvent<FileInputChangeEventDetail>(
+      "fileInputChange",
+      { detail: { files: [file, file] } });
+
+    const errObj = {
+      showInfoErrorMessage: false,
+      messageType: 'info',
+      messageDesc: ''
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+    component.onFileInputChange(event as unknown as Event);
+    expect(component.validEncList.length).toEqual(0);
+    const errObJ = {
+      showInfoErrorMessage: true,
+      messageType: 'error',
+      messageDesc: 'Only one file can be processed at a time.'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+  });
 
   test('should show the explaination text in ess upload file component with max enc limit from config', () => {
     const fixture = TestBed.createComponent(EssUploadFileComponent);
@@ -366,30 +402,29 @@ describe('EssUploadFileComponent', () => {
     }
   });
 
+  it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', fakeAsync(() => {
+    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+    jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+    component.productUpdatesByIdentifiersResponse(addedEncList)
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(3).toEqual(scsProductIdentifiersResponseMockData.productCounts.returnedProductCount);
+  }));
 
- it('should return sales catalogue Response on productUpdatesByIdentifiersResponse', fakeAsync(() => {
-  let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
-  jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
-  component.productUpdatesByIdentifiersResponse(addedEncList)
-  tick();
-  expect(component.displayLoader).toEqual(false);
-  expect(3).toEqual(scsProductIdentifiersResponseMockData.productCounts.returnedProductCount);
-}));
-
- it('should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
-  let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
-  jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductIdentifiersResponseMockData));
-  component.triggerInfoErrorMessage=jest.fn();
-  component.fetchScsTokenReponse();
-  component.productUpdatesByIdentifiersResponse(addedEncList);
-  tick();
-  expect(component.displayLoader).toEqual(false);
-  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
-}));
+  it('should return Error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
+    let addedEncList = ['FR570300', 'SE6IIFE1', 'NO3B2020'];
+    jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductIdentifiersResponseMockData));
+    component.triggerInfoErrorMessage = jest.fn();
+    component.fetchScsTokenReponse();
+    component.productUpdatesByIdentifiersResponse(addedEncList);
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+  }));
 
 it.each`
 encDataFunc                   | expectedResult
-${getNDeltaEncData}         | ${true}
+${getNDeltaEncData}           | ${true}
 ${getEncData}                 | ${false}
   `('should return sales catalogue Response for Delta',
   fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
@@ -412,10 +447,10 @@ ${getEncData}                 | ${false}
   }));
 
   it.each`
-  encDataFunc                   | expectedResult
-  ${getNDeltaEncData}         | ${true}
-  ${getEncData}                 | ${false}
-    `('productUpdatesByDeltaResponse should return Error message for productUpdatesByIdentifiersResponse',
+encDataFunc                   | expectedResult
+${getNDeltaEncData}           | ${true}
+${getEncData}                 | ${false}
+  `('productUpdatesByDeltaResponse should return Error message for productUpdatesByIdentifiersResponse',
     fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
       const fileContent = encDataFunc();
       const file = new File([fileContent], 'test.txt');
@@ -423,8 +458,8 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDownloadType = 'Delta';
       component.processEncFile(fileContent);
-      jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductIdentifiersResponseMockData));
-      component.triggerInfoErrorMessage=jest.fn();
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductIdentifiersResponseMockData));
+      component.triggerInfoErrorMessage = jest.fn();
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
@@ -433,10 +468,10 @@ ${getEncData}                 | ${false}
     }));
 
   it.each`
-  encDataFunc                   | expectedResult
-  ${getNDeltaEncData}         | ${true}
-  ${getEncData}                 | ${false}
-    `('productUpdatesByDeltaResponse should return Error message for productInformationSinceDateTime',
+encDataFunc                   | expectedResult
+${getNDeltaEncData}           | ${true}
+${getEncData}                 | ${false}
+  `('productUpdatesByDeltaResponse should return Error message for productInformationSinceDateTime',
     fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
       const fileContent = encDataFunc();
       const file = new File([fileContent], 'test.txt');
@@ -445,9 +480,9 @@ ${getEncData}                 | ${false}
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
       component.processEncFile(fileContent);
-      jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
-      jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError(scsProductIdentifiersResponseMockData));
-      component.triggerInfoErrorMessage=jest.fn();
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError(scsProductIdentifiersResponseMockData));
+      component.triggerInfoErrorMessage = jest.fn();
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
@@ -455,198 +490,454 @@ ${getEncData}                 | ${false}
       expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
     }));
 
-    it.each`
-    encDataFunc                   | expectedResult
-    ${getNDeltaEncData}         | ${true}
-    ${getEncData}                 | ${false}
-      `('validatation should raise "No valid ENCs found" info',
-      fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
-        const fileContent = encDataFunc();
-        const file = new File([fileContent], 'test.txt');
-        Object.defineProperty(file, 'type', { value: 'text/plain' });
-        component.encFile = file;
-        essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
-        essUploadFileService.exchangeSetDownloadType = 'Delta';
-        essUploadFileService.aioEncFound;
-        component.processEncFile(fileContent);
-        jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
-        jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
-        component.triggerInfoErrorMessage=jest.fn();
-        component.fetchScsTokenReponse();
-        component.scsProductCatalogResponse(component.validEncList);
-        tick();
-        expect(component.displayLoader).toEqual(false);
-        expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'No valid ENCs found.');
-      }));
+  it.each`
+encDataFunc                   | expectedResult
+${getNDeltaEncData}           | ${true}
+${getEncData}                 | ${false}
+  `('validatation should raise "No valid ENCs found" info',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      essUploadFileService.aioEncFound;
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'No valid ENCs found.');
+    }));
 
-    it.each`
-    encDataFunc                   | expectedResult
-    ${getNDeltaEncData}         | ${true}
-    ${getEncData}                 | ${false}
-      `('validation should raise "There has been no updates for the ENCs in the date range selected"info',
-      fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
-        const fileContent = encDataFunc();
-        const file = new File([fileContent], 'test.txt');
-        Object.defineProperty(file, 'type', { value: 'text/plain' });
-        component.encFile = file;
-        essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
-        essUploadFileService.exchangeSetDownloadType = 'Delta';
-        component.processEncFile(fileContent);
-        jest.spyOn(scsProductInformationApiService,'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
-        jest.spyOn(scsProductInformationApiService,'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
-        component.triggerInfoErrorMessage=jest.fn();
-        component.fetchScsTokenReponse();
-        component.scsProductCatalogResponse(component.validEncList);
-        tick();
-        expect(component.displayLoader).toEqual(false);
-        expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
-      }));
+  it.each`
+encDataFunc                   | expectedResult
+${getNDeltaEncData}           | ${true}
+${getEncData}                 | ${false}
+  `('validation should raise "There has been no updates for the ENCs in the date range selected"info',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+    }));
+
+  it.each`
+encDataFunc                   | expectedResult
+${ValidAndAioEncData}         | ${true}
+`('validation should raise for AIO cell when product updates are not available',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(aioCellProductMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+    }));
+
+  it.each`
+encDataFunc                   | expectedResult
+${ValidAndAioEncData}         | ${true}
+`('validation should raise for AIO cell and invalid cell when product updates are not available',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(aioCellWithInvalidProductMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+    }));
+
+  it.each`
+encDataFunc                   | expectedResult
+${getNDeltaEncData}           | ${true}
+${getEncData}                 | ${false}
+`('validation should raise "There has been no updates for the ENCs in the date range selected"info when product updates not available',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      essUploadFileService.aioEncFound = false;
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+    }));
+
+  it.each`
+encDataFunc                   | expectedResult
+${getNDeltaEncData}           | ${true}
+${getEncData}                 | ${false}
+`('validation should raise invalid cell when product updates are not available',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      essUploadFileService.aioEncFound = false;
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
+    }));
+
+  it.each`
+encDataFunc                   | expectedResult
+${ValidAndAioEncData}         | ${true}
+`('validation should raise for AIO cell when product updates are not available (304 not modified response)',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(aioCellProductMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+    }));
+
+  it.each`
+encDataFunc                   | expectedResult
+${ValidAndAioEncData}         | ${true}
+`('validation should raise aio and invalid cell when product updates are not available (304 not modified response)',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(aioCellWithInvalidProductMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+    }));
+
+  it.each`
+encDataFunc                   | expectedResult
+${getNDeltaEncData}           | ${true}
+${getEncData}                 | ${false}
+`('validation should raise "There has been no updates for the ENCs in the date range selected"info when product updates not available (304 not modified response)',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      essUploadFileService.aioEncFound = false;
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+    }));
+
+  it.each`
+encDataFunc                   | expectedResult
+${getNDeltaEncData}           | ${true}
+${getEncData}                 | ${false}
+`('validation should raise invalid cell when product updates are not available (304 not modified response)',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      essUploadFileService.aioEncFound = false;
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
+    }));
 });
 
 
 export const scsProductIdentifiersResponseMockData: any = {
   "products": [
-      {
-          "productName": "FR570300",
-          "editionNumber": 1,
-          "updateNumbers": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              6,
-              7,
-              8,
-              9,
-              10,
-              11
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2015-02-25T00:00:00Z",
-                  "issueDate": "2015-02-25T00:00:00Z"
-              },
-              {
-                  "updateNumber": 1,
-                  "updateApplicationDate": null,
-                  "issueDate": "2016-04-27T00:00:00Z"
-              },
-              {
-                  "updateNumber": 2,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-01-09T00:00:00Z"
-              },
-              {
-                  "updateNumber": 3,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-03-20T00:00:00Z"
-              },
-              {
-                  "updateNumber": 4,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-11-14T00:00:00Z"
-              },
-              {
-                  "updateNumber": 5,
-                  "updateApplicationDate": null,
-                  "issueDate": "2017-12-11T00:00:00Z"
-              },
-              {
-                  "updateNumber": 6,
-                  "updateApplicationDate": null,
-                  "issueDate": "2018-12-19T00:00:00Z"
-              },
-              {
-                  "updateNumber": 7,
-                  "updateApplicationDate": null,
-                  "issueDate": "2019-06-28T00:00:00Z"
-              },
-              {
-                  "updateNumber": 8,
-                  "updateApplicationDate": null,
-                  "issueDate": "2019-10-24T00:00:00Z"
-              },
-              {
-                  "updateNumber": 9,
-                  "updateApplicationDate": null,
-                  "issueDate": "2021-05-11T00:00:00Z"
-              },
-              {
-                  "updateNumber": 10,
-                  "updateApplicationDate": null,
-                  "issueDate": "2021-10-08T00:00:00Z"
-              },
-              {
-                  "updateNumber": 11,
-                  "updateApplicationDate": null,
-                  "issueDate": "2022-11-16T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 343128,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B1"
-              }
-          ]
-      },
-      {
-          "productName": "SE6IIFE1",
-          "editionNumber": 13,
-          "updateNumbers": [
-              0
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2021-03-26T00:00:00Z",
-                  "issueDate": "2021-03-26T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 7215,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B1"
-              }
-          ]
-      },
-      {
-          "productName": "NO3B2020",
-          "editionNumber": 2,
-          "updateNumbers": [
-              0
-          ],
-          "dates": [
-              {
-                  "updateNumber": 0,
-                  "updateApplicationDate": "2023-05-09T00:00:00Z",
-                  "issueDate": "2023-05-09T00:00:00Z"
-              }
-          ],
-          "cancellation": null,
-          "fileSize": 637942,
-          "ignoreCache": false,
-          "bundle": [
-              {
-                  "bundleType": "DVD",
-                  "location": "M1;B2"
-              }
-          ]
-      }
+    {
+      "productName": "FR570300",
+      "editionNumber": 1,
+      "updateNumbers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "dates": [
+        {
+          "updateNumber": 0,
+          "updateApplicationDate": "2015-02-25T00:00:00Z",
+          "issueDate": "2015-02-25T00:00:00Z"
+        },
+        {
+          "updateNumber": 1,
+          "updateApplicationDate": null,
+          "issueDate": "2016-04-27T00:00:00Z"
+        },
+        {
+          "updateNumber": 2,
+          "updateApplicationDate": null,
+          "issueDate": "2017-01-09T00:00:00Z"
+        },
+        {
+          "updateNumber": 3,
+          "updateApplicationDate": null,
+          "issueDate": "2017-03-20T00:00:00Z"
+        },
+        {
+          "updateNumber": 4,
+          "updateApplicationDate": null,
+          "issueDate": "2017-11-14T00:00:00Z"
+        },
+        {
+          "updateNumber": 5,
+          "updateApplicationDate": null,
+          "issueDate": "2017-12-11T00:00:00Z"
+        },
+        {
+          "updateNumber": 6,
+          "updateApplicationDate": null,
+          "issueDate": "2018-12-19T00:00:00Z"
+        },
+        {
+          "updateNumber": 7,
+          "updateApplicationDate": null,
+          "issueDate": "2019-06-28T00:00:00Z"
+        },
+        {
+          "updateNumber": 8,
+          "updateApplicationDate": null,
+          "issueDate": "2019-10-24T00:00:00Z"
+        },
+        {
+          "updateNumber": 9,
+          "updateApplicationDate": null,
+          "issueDate": "2021-05-11T00:00:00Z"
+        },
+        {
+          "updateNumber": 10,
+          "updateApplicationDate": null,
+          "issueDate": "2021-10-08T00:00:00Z"
+        },
+        {
+          "updateNumber": 11,
+          "updateApplicationDate": null,
+          "issueDate": "2022-11-16T00:00:00Z"
+        }
+      ],
+      "cancellation": null,
+      "fileSize": 343128,
+      "ignoreCache": false,
+      "bundle": [
+        {
+          "bundleType": "DVD",
+          "location": "M1;B1"
+        }
+      ]
+    },
+    {
+      "productName": "SE6IIFE1",
+      "editionNumber": 13,
+      "updateNumbers": [
+        0
+      ],
+      "dates": [
+        {
+          "updateNumber": 0,
+          "updateApplicationDate": "2021-03-26T00:00:00Z",
+          "issueDate": "2021-03-26T00:00:00Z"
+        }
+      ],
+      "cancellation": null,
+      "fileSize": 7215,
+      "ignoreCache": false,
+      "bundle": [
+        {
+          "bundleType": "DVD",
+          "location": "M1;B1"
+        }
+      ]
+    },
+    {
+      "productName": "NO3B2020",
+      "editionNumber": 2,
+      "updateNumbers": [
+        0
+      ],
+      "dates": [
+        {
+          "updateNumber": 0,
+          "updateApplicationDate": "2023-05-09T00:00:00Z",
+          "issueDate": "2023-05-09T00:00:00Z"
+        }
+      ],
+      "cancellation": null,
+      "fileSize": 637942,
+      "ignoreCache": false,
+      "bundle": [
+        {
+          "bundleType": "DVD",
+          "location": "M1;B2"
+        }
+      ]
+    }
   ],
   "productCounts": {
-      "requestedProductCount": 3,
-      "returnedProductCount": 3,
-      "requestedProductsAlreadyUpToDateCount": 0,
-      "requestedProductsNotReturned": []
+    "requestedProductCount": 3,
+    "returnedProductCount": 3,
+    "requestedProductsAlreadyUpToDateCount": 0,
+    "requestedProductsNotReturned": []
+  }
+}
+
+export const aioCellProductMockData: any = {
+  "products": [
+    {
+      "productName": "GB800001",
+      "editionNumber": 13,
+      "updateNumbers": [
+        0
+      ],
+      "dates": [
+        {
+          "updateNumber": 0,
+          "updateApplicationDate": "2021-03-26T00:00:00Z",
+          "issueDate": "2021-03-26T00:00:00Z"
+        }
+      ],
+      "cancellation": null,
+      "fileSize": 7215,
+      "ignoreCache": false,
+      "bundle": [
+        {
+          "bundleType": "DVD",
+          "location": "M1;B1"
+        }
+      ]
+    },
+  ],
+  "productCounts": {
+    "requestedProductCount": 1,
+    "returnedProductCount": 1,
+    "requestedProductsAlreadyUpToDateCount": 0,
+    "requestedProductsNotReturned": []
+  }
+}
+
+export const aioCellWithInvalidProductMockData: any = {
+  "products": [
+    {
+      "productName": "GB800001",
+      "editionNumber": 13,
+      "updateNumbers": [
+        0
+      ],
+      "dates": [
+        {
+          "updateNumber": 0,
+          "updateApplicationDate": "2021-03-26T00:00:00Z",
+          "issueDate": "2021-03-26T00:00:00Z"
+        }
+      ],
+      "cancellation": null,
+      "fileSize": 7215,
+      "ignoreCache": false,
+      "bundle": [
+        {
+          "bundleType": "DVD",
+          "location": "M1;B1"
+        }
+      ]
+    },
+  ],
+  "productCounts": {
+    "requestedProductCount": 1,
+    "returnedProductCount": 1,
+    "requestedProductsAlreadyUpToDateCount": 0,
+    "requestedProductsNotReturned": [{
+      "productName": "US5CN13M",
+      "reason": "noDataAvailableForCancelledProduct"
+    },
+    {
+      "productName": "DE521900",
+      "reason": "invalidProduct"
+    }
+    ]
   }
 }
 
@@ -654,10 +945,52 @@ export const scsProductResponseWithEmptyProductMockData: any = {
   "products": [
   ],
   "productCounts": {
-      "requestedProductCount": 0,
-      "returnedProductCount": 0,
-      "requestedProductsAlreadyUpToDateCount": 0,
-      "requestedProductsNotReturned": []
+    "requestedProductCount": 0,
+    "returnedProductCount": 0,
+    "requestedProductsAlreadyUpToDateCount": 0,
+    "requestedProductsNotReturned": []
+  }
+}
+
+export const scsInvalidProductsResponseMockData: any = {
+  "products": [
+    {
+      "productName": "CA172005",
+      "editionNumber": 13,
+      "updateNumbers": [
+        0
+      ],
+      "dates": [
+        {
+          "updateNumber": 0,
+          "updateApplicationDate": "2021-03-26T00:00:00Z",
+          "issueDate": "2021-03-26T00:00:00Z"
+        }
+      ],
+      "cancellation": null,
+      "fileSize": 7215,
+      "ignoreCache": false,
+      "bundle": [
+        {
+          "bundleType": "DVD",
+          "location": "M1;B1"
+        }
+      ]
+    }
+  ],
+  "productCounts": {
+    "requestedProductCount": 0,
+    "returnedProductCount": 0,
+    "requestedProductsAlreadyUpToDateCount": 0,
+    "requestedProductsNotReturned": [{
+      "productName": "US5CN13M",
+      "reason": "noDataAvailableForCancelledProduct"
+    },
+    {
+      "productName": "DE521900",
+      "reason": "invalidProduct"
+    }
+    ]
   }
 }
 
