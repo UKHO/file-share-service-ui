@@ -517,14 +517,14 @@ describe('EssListEncsComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(warnObj);
   });
 
-  test('getEstimatedTotalSize should return esimatedTotalSize when selectedEncList length is 0', () => {
+  test('getEstimatedTotalSize should return estimatedTotalSize when selectedEncList length is 0', () => {
     component.selectedEncList = [];
     component.getEstimatedTotalSize();
     expect(component.selectedEncList.length).toBe(0);
     expect(component.getEstimatedTotalSize()).toBe('0 MB');
   });
 
-  test('getEstimatedTotalSize should return esimatedTotalSize when selectedEncList length is greater than 0', () => {
+  test('getEstimatedTotalSize should return estimatedTotalSize when selectedEncList length is greater than 0', () => {
     service.getSelectedENCs.mockReturnValue(['AU210130', 'AU210140', 'AU220130']);
     component.selectedEncList = service.getSelectedENCs();
     service.getEstimatedTotalSize.mockReturnValue('2.6MB');
