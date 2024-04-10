@@ -11,7 +11,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      let esslandingPageObjects: EssLandingPageObjects;
      let encSelectionPageObjects: EncSelectionPageObjects;
      let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
-     
+
      test.beforeEach(async ({ page }) => {
           esslandingPageObjects = new EssLandingPageObjects(page);
           encSelectionPageObjects = new EncSelectionPageObjects(page);
@@ -28,12 +28,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
      test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
-         const headLabel = page.locator("h1#main");
-         const radio1 = page.getByRole('radio', { name: "Upload a list in a file" });
-         const radio2 = page.getByRole('radio', { name: "Add ENC" });
-         await expect(radio1).toBeTruthy();
-         await expect(radio2).toBeTruthy();
-       
+          const headLabel = page.locator("h1#main");
+          const radio1 = page.getByRole('radio', { name: "Upload a list in a file" });
+          const radio2 = page.getByRole('radio', { name: "Add ENC" });
+          await expect(radio1).toBeTruthy();
+          await expect(radio2).toBeTruthy();
+
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
@@ -41,7 +41,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify clicking on First Radio Button, "click to choose a file" control and "Proceed" button available And also verify Max ENC upload limit & Max Selected ENC limit', async ({ page }) => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.expect.chooseuploadfileoptionSelectorIsVisible();
-          await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible(); 
+          await esslandingPageObjects.expect.chooseuploadfileproceedSelectorIsVisible();
           await esslandingPageObjects.expect.VerifyMaxENCLimit();
           await esslandingPageObjects.expect.VerifyMaxSelectedENCLimit();
      })
@@ -57,7 +57,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14102
      //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807          
      test('Verify all the uploaded ENCs from .csv file, displayed on the screen', async ({ page }) => {
-          let enclist = [ 'AU220150', 'CN484220', 'GB50184C', 'CA271105', 'AU5PTL01' ]
+          let enclist = ['AU220150', 'CN484220', 'GB50184C', 'CA271105', 'AU5PTL01']
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
@@ -69,7 +69,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14103 
      //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61807            
      test('Verify all the uploaded ENCs from .txt file, displayed on the screen', async ({ page }) => {
-          let enclist = ["AU220150" , "CN484220", "GB50184C", "CA271105" , "AU5PTL01"];
+          let enclist = ["AU220150", "CN484220", "GB50184C", "CA271105", "AU5PTL01"];
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
@@ -122,7 +122,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13826
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in TXT File, upload only valid and once.', async ({ page }) => {
-          let enclist = [ 'AU220150', 'CN484220', 'CA271105', 'AU5PTL01' ]
+          let enclist = ['AU220150', 'CN484220', 'CA271105', 'AU5PTL01']
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData//ValidAndDuplicateENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
@@ -166,7 +166,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808  
      test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
 
-          let encAdded = ["DE260001","DE290001","US5CN13M","NZ300661","RU3P0ZM0","DE521900"]
+          let encAdded = ["DE260001", "DE290001", "US5CN13M", "NZ300661", "RU3P0ZM0", "DE521900"]
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("DE260001");
           await esslandingPageObjects.proceedButtonSelectorClick();
@@ -177,10 +177,10 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.addAnotherENC("de521900");
           await esslandingPageObjects.expect.verifyUploadedENCs(encAdded);
      })
-  
+
      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071
-      test('Upload TXT file with all invalid non AIO ENCs and verify information message', async ({ page}) => {
-          
+     test('Upload TXT file with all invalid non AIO ENCs and verify information message', async ({ page }) => {
+
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
@@ -188,8 +188,8 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      // https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/75071
-      test('Upload CSV file with all invalid non AIO ENCs and verify information message', async ({ page}) => {
-          
+     test('Upload CSV file with all invalid non AIO ENCs and verify information message', async ({ page }) => {
+
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
@@ -204,5 +204,51 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           const requestPromise = await esslandingPageObjects.page.waitForRequest(request =>
                request.url().includes('productInformation/productIdentifiers') && request.method() === 'POST')
           await esslandingPageObjects.expect.IsEmpty(requestPromise.url());
+     });
+
+     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151340
+     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151344
+     test('Verify Message When Valid ENCs not have an update and Invalid ENCs found for Delta Exchange Set type', async ({ page }) => {
+
+          await page.goBack();
+          await exchangeSetSelectionPageObjects.enterDate(new Date());
+          await exchangeSetSelectionPageObjects.clickOnProceedButton()
+          await esslandingPageObjects.uploadradiobtnSelectorClick();
+          await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidAndInvalidENCs.csv');
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+          await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() === 'GET');
+          await encSelectionPageObjects.errorMessage.click();
+          let message = await encSelectionPageObjects.errorMessage.innerText();
+          await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[0].trim() == "Invalid cells - GZ800112");
+          await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[1].trim() == "There have been no updates for the ENCs in the date range selected");
+     });
+
+     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151345
+     test('Verify Warning Message when file contain only invalid ENCs for delta Exchange Set type', async ({ page }) => {
+
+          page.goBack()
+          await exchangeSetSelectionPageObjects.enterDate(new Date());
+          await exchangeSetSelectionPageObjects.clickOnProceedButton()
+          await esslandingPageObjects.uploadradiobtnSelectorClick();
+          await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.csv');
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await encSelectionPageObjects.errorMessage.click();
+          await encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.errorMessage.innerText() == "No valid ENCs found.");
+     });
+
+     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151356
+     test('Verify message for AIO Delta selection', async ({ page }) => {
+
+          var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.";
+          await page.goBack();
+          await exchangeSetSelectionPageObjects.enterDate(new Date());
+          await exchangeSetSelectionPageObjects.clickOnProceedButton()
+          await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
+          await esslandingPageObjects.addencradiobtnSelectorClick();
+          await esslandingPageObjects.setaddSingleENCTextboxSelector("FR800001");
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await encSelectionPageObjects.errorMessage.click();
+          await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
      });
 })
