@@ -517,7 +517,7 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+    #condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
         displayName: "QA - deploy terraform and website"
