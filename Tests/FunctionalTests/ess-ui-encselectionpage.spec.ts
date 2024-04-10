@@ -253,9 +253,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    var responseIden = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() == 'POST');
-    var responseSinceDate = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
-    var expectedEncs = await encSelectionPageObjects.getCommonEncs(await responseIden.text(), await responseSinceDate.text());
+    var productIdentifierResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() == 'POST');
+    var sinceDateResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
+    var expectedEncs = await encSelectionPageObjects.getCommonEncs(await productIdentifierResponse.text(), await sinceDateResponse.text());
     const actualEncs = new Set(await encSelectionPageObjects.encNames.allInnerTexts());
     await encSelectionPageObjects.expect.toBeTruthy(expectedEncs.every(r => actualEncs.has(r)));
   });

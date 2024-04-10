@@ -239,14 +239,13 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151356
      test('Verify message for AIO Delta selection', async ({ page }) => {
-
           var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.";
           await page.goBack();
           await exchangeSetSelectionPageObjects.enterDate(new Date());
           await exchangeSetSelectionPageObjects.clickOnProceedButton()
           await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
           await esslandingPageObjects.addencradiobtnSelectorClick();
-          await esslandingPageObjects.setaddSingleENCTextboxSelector("FR800001");
+          await esslandingPageObjects.setaddSingleENCTextboxSelector("FR800002");
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.errorMessage.click();
           await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
