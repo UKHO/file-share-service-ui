@@ -147,6 +147,28 @@ export class EncSelectionPageObjects {
       fileSize += responseBody.products[i].fileSize;
     return parseFloat((fileSize/1048576).toFixed(1))+0.5;
   }
+
+  async getFileSizeForDelta(response: string, encNames: string[]){
+    var responseBody = JSON.parse(response);  
+    let numberOfENCs = await responseBody.products.length;
+    let fileSize = 0;
+    for (var i = 0; i < numberOfENCs; i++){
+      if(encNames.includes(responseBody.products[i].productName))
+        fileSize += responseBody.products[i].fileSize;
+    }
+    return parseFloat((fileSize/1048576).toFixed(1))+0.5;
+  }
+
+  async getCommonEncs(responseIdentifier: string, responseSinceDate: string){
+    var responseBodyIden = JSON.parse(responseIdentifier);  
+    let numberOfENCs = await responseBodyIden.products.length;
+    let encNames: string[] = [];
+    for (var i = 0; i < numberOfENCs; i++){
+      if(responseSinceDate.includes(responseBodyIden.products[i].productName))
+        encNames.push(responseBodyIden.products[i].productName);
+  }
+    return encNames;
+  }
 }
 
 class EncSelectionPageAssertions {
