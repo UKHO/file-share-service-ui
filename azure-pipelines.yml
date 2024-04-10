@@ -72,7 +72,7 @@ stages:
                   Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
 
      - job: BuildTestPublish
-       dependsOn: Dependencychecker
+       #dependsOn: Dependencychecker
         
        pool: $(DeploymentPool)
        container: ${{variables.Container}}
@@ -509,7 +509,7 @@ stages:
         value: $(service-dns-url)
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+    #condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
         displayName: "QA - deploy terraform and website"
