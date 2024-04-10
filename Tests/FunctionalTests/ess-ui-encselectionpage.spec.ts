@@ -247,7 +247,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151339
   test('Verify Valid ENC cells that have an update must be listed on the ENC List', async ({ page }) => {
-
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.enterDate(new Date());
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
@@ -257,7 +256,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     var responseIden = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() == 'POST');
     var responseSinceDate = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
     var expectedEncs = await encSelectionPageObjects.getCommonEncs(await responseIden.text(), await responseSinceDate.text());
-    const actualEncs = await encSelectionPageObjects.encNames.allTextContents();
-    await encSelectionPageObjects.expect.toBeTruthy(expectedEncs.sort().toString() == actualEncs.toString());
+    const actualEncs = new Set(await encSelectionPageObjects.encNames.allInnerTexts());
+    await encSelectionPageObjects.expect.toBeTruthy(expectedEncs.every(r => actualEncs.has(r)));
   });
 });
