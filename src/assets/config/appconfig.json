@@ -54,7 +54,6 @@
     "initialDelayMs": "1000",
     "apiUrl": "",
     "apiScope": "",
-    "avgSizeofENCinMB": "0.3",
     "defaultEstimatedSizeinMB": "0.5",
     "aioExcludeEncs": [ "GB800002", "FR800002" ],
     "apiUiUrl": ""
