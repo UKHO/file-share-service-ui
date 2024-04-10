@@ -245,6 +245,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
   })
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151757
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151271
   test('Verify estimated file size of selected ENC cells for Delta Exchange Set type', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
@@ -265,6 +266,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), encNames.filter(r => r != firstEncName));
     estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.requestENCsSelectorClick();
+    var productVersionResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('productData/productVersions') && r.request().method() == 'POST');
+    await esslandingPageObjects.expect.IsEmpty(productVersionResponse.url());
   })
 
 });
