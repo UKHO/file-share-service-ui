@@ -253,16 +253,16 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    var responseIden = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
-    var responseSinceDate = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
-    var encNamnes = await encSelectionPageObjects.getCommonEncs(await responseIden.text(), await responseSinceDate.text());
-    let fileSize = await encSelectionPageObjects.getFileSizeForDelta(await responseSinceDate.text(), encNamnes);
+    var productIdentifierResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+    var sinceDateResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
+    var encNames = await encSelectionPageObjects.getCommonEncs(await productIdentifierResponse.text(), await sinceDateResponse.text());
+    let fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), encNames);
     await encSelectionPageObjects.selectAllSelectorClick();
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
     await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
     var firstEncName = (await encSelectionPageObjects.encNames.first().innerText());
-    fileSize = await encSelectionPageObjects.getFileSizeForDelta(await responseSinceDate.text(), encNamnes.filter(r => r != firstEncName));
+    fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), encNames.filter(r => r != firstEncName));
     estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
   })

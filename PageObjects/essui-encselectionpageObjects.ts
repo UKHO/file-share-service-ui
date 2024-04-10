@@ -159,13 +159,13 @@ export class EncSelectionPageObjects {
     return parseFloat((fileSize/1048576).toFixed(1))+0.5;
   }
 
-  async getCommonEncs(responseIdentifier: string, responseSinceDate: string){
-    var responseBodyIden = JSON.parse(responseIdentifier);  
-    let numberOfENCs = await responseBodyIden.products.length;
+  async getCommonEncs(productIdentifier: string, sinceDateResponse: string){
+    var productIdentifierResponse = JSON.parse(productIdentifier);  
+    let numberOfENCs = await productIdentifierResponse.products.length;
     let encNames: string[] = [];
     for (var i = 0; i < numberOfENCs; i++){
-      if(responseSinceDate.includes(responseBodyIden.products[i].productName))
-        encNames.push(responseBodyIden.products[i].productName);
+      if(sinceDateResponse.includes(productIdentifierResponse.products[i].productName))
+        encNames.push(productIdentifierResponse.products[i].productName);
   }
     return encNames;
   }
