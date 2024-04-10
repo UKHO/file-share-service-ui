@@ -150,8 +150,6 @@ stages:
         value: $(essConfig-apiUrl)
       - name: essConfig.apiScope
         value: $(essConfig-apiScope)
-      - name: essConfig.avgSizeofENCinMB
-        value: $(essConfig-avgSizeofENCinMB)
       - name: essConfig.defaultEstimatedSizeinMB
         value: $(essConfig-defaultEstimatedSizeinMB)
       - name: essConfig.MaxEncLimit
@@ -350,8 +348,6 @@ stages:
         value: $(essConfig-apiUrl)
       - name: essConfig.apiScope
         value: $(essConfig-apiScope)
-      - name: essConfig.avgSizeofENCinMB
-        value: $(essConfig-avgSizeofENCinMB)
       - name: essConfig.defaultEstimatedSizeinMB
         value: $(essConfig-defaultEstimatedSizeinMB)
       - name: essConfig.MaxEncLimit
@@ -421,8 +417,6 @@ stages:
         value: $(essConfig-apiUrl)
       - name: essConfig.apiScope
         value: $(essConfig-apiScope)
-      - name: essConfig.avgSizeofENCinMB
-        value: $(essConfig-avgSizeofENCinMB)
       - name: essConfig.defaultEstimatedSizeinMB
         value: $(essConfig-defaultEstimatedSizeinMB)
       - name: essConfig.MaxEncLimit
@@ -491,8 +485,6 @@ stages:
         value: $(essConfig-apiUrl)
       - name: essConfig.apiScope
         value: $(essConfig-apiScope)
-      - name: essConfig.avgSizeofENCinMB
-        value: $(essConfig-avgSizeofENCinMB)
       - name: essConfig.defaultEstimatedSizeinMB
         value: $(essConfig-defaultEstimatedSizeinMB)
       - name: essConfig.MaxEncLimit

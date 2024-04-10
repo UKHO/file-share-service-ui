@@ -245,6 +245,28 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
   })
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151271
+  test('Verify estimated file size of selected ENC cells for Delta Exchange Set type', async ({ page }) => {
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.enterDate(new Date());
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    var productIdentifierResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+    var sinceDateResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
+    var encNames = await encSelectionPageObjects.getCommonEncs(await productIdentifierResponse.text(), await sinceDateResponse.text());
+    let fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), encNames);
+    await encSelectionPageObjects.selectAllSelectorClick();
+    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
+    var firstEncName = (await encSelectionPageObjects.encNames.first().innerText());
+    fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), encNames.filter(r => r != firstEncName));
+    estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+  })
+
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151339
   test('Verify Valid ENC cells that have an update must be listed on the ENC List', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
