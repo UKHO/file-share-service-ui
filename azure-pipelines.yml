@@ -464,7 +464,7 @@ stages:
     #dependsOn: Devdeploy
     displayName: "QAdeploy (inc terraform, website deploy)"
     variables:
-      - group: "File-Share-Service-UI-QA-Deploy-Variables"
+      - group: "File-Share-Service-UI-QA-Deploy-Variables-v2"
       - name: "Environment"
         value: "QA"
       - name: b2cConfig.tenantName
