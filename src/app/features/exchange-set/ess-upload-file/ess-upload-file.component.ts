@@ -163,7 +163,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                     this.products = result.products.filter((v) => this.scsResponse.products.some((vd) => v.productName == vd.productName));
                     if (this.products.length != 0) {
                       this.scsResponse.products = this.products;
-                      let validEncList=this.products.map(p=>p.productName);
+                      let validEncList = this.products.map(p => p.productName);
                       this.essUploadFileService.setValidEncsByApi(validEncList);
                       this.essUploadFileService.scsProductResponse = this.scsResponse;
                       this.route.navigate(['exchangesets', 'enc-list']);

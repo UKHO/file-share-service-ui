@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
-import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCounts } from '../../../core/models/ess-response-types';
+import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCounts, ProductVersionRequest } from '../../../core/models/ess-response-types';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 
 interface MappedEnc {
@@ -46,7 +46,10 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   sortGraphicDown: string = "fa-chevron-down";
   sortGraphic: string = this.sortGraphicUp;
   scsInvalidProduct: NotReturnedProduct[];
-
+  productVersionRequest : ProductVersionRequest[] = [];
+  updateNumber:number;
+  editionNumber:number;
+  
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
     private route: Router,
@@ -99,8 +102,6 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   }
 
   setEncList() {
-    console.log(this.essUploadFileService.scsProducts);
-    
     this.encList = this.essUploadFileService.scsProducts.map((enc) => ({
       enc,
       selected: false
@@ -249,14 +250,56 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
       const selectedEncList: string[] = this.selectedEncList.map(product => product.productName);
-      this.exchangeSetCreationResponse(selectedEncList);
+      this.scsExchangeSetResponse();
     }, error => {
       this.msalService.instance
         .loginPopup(this.essSilentTokenRequest)
         .then(response => {
-          this.exchangeSetCreationResponse(this.selectedEncList);
+          this.scsExchangeSetResponse();
         });
     });
+  }
+
+  scsExchangeSetResponse() {
+    if (this.essUploadFileService.exchangeSetDownloadType == 'Delta') {
+      for (let selectedEnc of this.selectedEncList) {
+        this.editionNumber = selectedEnc.editionNumber;
+        this.updateNumber = Math.min(...selectedEnc.updateNumbers);
+        if (this.updateNumber == 0) {
+          this.editionNumber = this.editionNumber != 0 ? this.editionNumber - 1 : this.editionNumber;
+        } else {
+          this.updateNumber = this.updateNumber - 1;
+        }
+        var productVersion: ProductVersionRequest = {
+          productName: selectedEnc.productName,
+          editionNumber: this.editionNumber,
+          updateNumber: this.updateNumber
+        };
+        this.productVersionRequest.push(productVersion);
+      }
+      this.exchangeSetCreationForDeltaResponse(this.productVersionRequest);
+    }
+    else {
+      const selectedEncList: string[] = this.selectedEncList.map(product => product.productName);
+      this.exchangeSetCreationResponse(selectedEncList);
+    }
+  }
+
+  exchangeSetCreationForDeltaResponse(selectedEncList: ProductVersionRequest[]) {
+    this.displayLoader = true;
+    if (selectedEncList != null) {
+      this.exchangeSetApiService.exchangeSetCreationForDeltaResponse(selectedEncList).subscribe((result) => {
+        this.displayLoader = false;
+        this.exchangeSetDetails = result;
+        this.essUploadFileService.setExchangeSetDetails(this.exchangeSetDetails);
+        this.route.navigate(['exchangesets', 'enc-download']);
+      },
+        (error) => {
+          this.displayLoader = false;
+          this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
+        }
+      );
+    }
   }
 
   ngOnDestroy(): void {

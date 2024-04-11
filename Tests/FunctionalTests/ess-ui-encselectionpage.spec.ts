@@ -245,7 +245,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
   })
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151757
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151271
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151339
   test('Verify estimated file size of selected ENC cells for Delta Exchange Set type', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.enterDate(new Date());
@@ -255,30 +257,23 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.proceedButtonSelectorClick();
     var productIdentifierResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
     var sinceDateResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
-    var encNames = await encSelectionPageObjects.getCommonEncs(await productIdentifierResponse.text(), await sinceDateResponse.text());
-    let fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), encNames);
+    var expectedEncs = await encSelectionPageObjects.getCommonEncs(await productIdentifierResponse.text(), await sinceDateResponse.text());
+    let fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), expectedEncs);
+    const actualEncs = new Set(await encSelectionPageObjects.encNames.allInnerTexts());
+    await encSelectionPageObjects.expect.toBeTruthy(expectedEncs.every(r => actualEncs.has(r)));
     await encSelectionPageObjects.selectAllSelectorClick();
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
     await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
     var firstEncName = (await encSelectionPageObjects.encNames.first().innerText());
-    fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), encNames.filter(r => r != firstEncName));
+    fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), expectedEncs.filter(r => r != firstEncName));
     estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
+    await encSelectionPageObjects.requestENCsSelectorClick();
+    var productVersionResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('productData/productVersions') && r.request().method() == 'POST');
+    await esslandingPageObjects.expect.IsEmpty(productVersionResponse.url());
+    await encSelectionPageObjects.expect.ValidateProductVersionPayload(await sinceDateResponse.text(), productVersionResponse.request().postData());
   })
 
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151339
-  test('Verify Valid ENC cells that have an update must be listed on the ENC List', async ({ page }) => {
-    await encSelectionPageObjects.startAgainLinkSelectorClick();
-    await exchangeSetSelectionPageObjects.enterDate(new Date());
-    await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    await esslandingPageObjects.uploadradiobtnSelectorClick();
-    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
-    await esslandingPageObjects.proceedButtonSelectorClick();
-    var productIdentifierResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() == 'POST');
-    var sinceDateResponse = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() == 'GET');
-    var expectedEncs = await encSelectionPageObjects.getCommonEncs(await productIdentifierResponse.text(), await sinceDateResponse.text());
-    const actualEncs = new Set(await encSelectionPageObjects.encNames.allInnerTexts());
-    await encSelectionPageObjects.expect.toBeTruthy(expectedEncs.every(r => actualEncs.has(r)));
-  });
 });
