@@ -360,7 +360,7 @@ class EncSelectionPageAssertions {
   }
 
   async ValidateProductVersionPayload(sinceDate: string, productVersion: string | null) {
-    var result = false;
+    var result: boolean;
     var sinceDateResponse = JSON.parse(sinceDate);
     var productVersionBody = JSON.parse(productVersion ?? "");
     for (let i = 0; i < productVersionBody.length; i++) {
@@ -368,8 +368,7 @@ class EncSelectionPageAssertions {
       result = product.updateNumbers[0] == 0 ?
       productVersionBody[i].editionNumber == product.editionNumber - 1 && productVersionBody[i].updateNumber == 0 :
       productVersionBody[i].updateNumber == product.updateNumbers[0] - 1 && productVersionBody[i].editionNumber == product.editionNumber;
-      if (!result)
-        expect(result).toBeTruthy();
+      expect(result).toBeTruthy();
     }
   }
 
