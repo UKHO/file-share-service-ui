@@ -126,55 +126,55 @@ stages:
               PathtoPublish: '$(Build.SourcesDirectory)/Deployment'
               ArtifactName: terraformartifact
 
-  - stage: Devdeploy
-    displayName: "Devdeploy (inc terraform, website deploy)"
-    variables:
-      - group: "File-Share-Service-UI-Dev-Deploy-Variables"
-      - name: "Environment"
-        value: "dev"
-      - name: b2cConfig.tenantName
-        value: $(b2cConfig-tenantName)
-      - name: b2cConfig.clientId
-        value: $(b2cConfig-clientId)
-      - name: fssConfig.apiUrl
-        value: $(fssConfig-apiUrl)
-      - name: fssConfig.apiScope
-        value: $(fssConfig-apiScope)
-      - name: fssConfig.stateManagementApiUrl
-        value: $(fssConfig-stateManagementApiUrl)
-      - name: fssConfig.displayPopularSearch
-        value: $(fssConfig-displayPopularSearch)
-      - name: fssConfig.displaySimplifiedSearchLink
-        value: $(fssConfig-displaySimplifiedSearchLink)
-      - name: essConfig.apiUrl
-        value: $(essConfig-apiUrl)
-      - name: essConfig.apiScope
-        value: $(essConfig-apiScope)
-      - name: essConfig.avgSizeofENCinMB
-        value: $(essConfig-avgSizeofENCinMB)
-      - name: essConfig.defaultEstimatedSizeinMB
-        value: $(essConfig-defaultEstimatedSizeinMB)
-      - name: essConfig.MaxEncLimit
-        value: $(essConfig-MaxEncLimit)
-      - name: essConfig.MaxEncSelectionLimit
-        value: $(essConfig-MaxEncSelectionLimit)
-      - name: autoTestConfig.url
-        value: $(autoTestConfig-url)
-      - name: autoTestConfig.user
-        value: $(autoTestConfig-user)
-      - name: autoTestConfig.password
-        value: $(autoTestConfig-password)
-      - name: autoTestConfig.userFullName
-        value: $(autoTestConfig-userFullName)
-      - name: autoTestConfig.apiurl
-        value: $(autoTestConfig-apiurl)
-      - name: autoTestConfig.encSizeConfig
-        value: $(autoTestConfig-encSizeConfig)
-      - name: "ServiceDnsUrl"
-        value: $(service-dns-url)
-      - name: essConfig.aioExcludeEncs
-        value: $(essConfig-aioExcludeEncs)
-    jobs:
+  # - stage: Devdeploy
+  #   displayName: "Devdeploy (inc terraform, website deploy)"
+  #   variables:
+  #     - group: "File-Share-Service-UI-Dev-Deploy-Variables"
+  #     - name: "Environment"
+  #       value: "dev"
+  #     - name: b2cConfig.tenantName
+  #       value: $(b2cConfig-tenantName)
+  #     - name: b2cConfig.clientId
+  #       value: $(b2cConfig-clientId)
+  #     - name: fssConfig.apiUrl
+  #       value: $(fssConfig-apiUrl)
+  #     - name: fssConfig.apiScope
+  #       value: $(fssConfig-apiScope)
+  #     - name: fssConfig.stateManagementApiUrl
+  #       value: $(fssConfig-stateManagementApiUrl)
+  #     - name: fssConfig.displayPopularSearch
+  #       value: $(fssConfig-displayPopularSearch)
+  #     - name: fssConfig.displaySimplifiedSearchLink
+  #       value: $(fssConfig-displaySimplifiedSearchLink)
+  #     - name: essConfig.apiUrl
+  #       value: $(essConfig-apiUrl)
+  #     - name: essConfig.apiScope
+  #       value: $(essConfig-apiScope)
+  #     - name: essConfig.avgSizeofENCinMB
+  #       value: $(essConfig-avgSizeofENCinMB)
+  #     - name: essConfig.defaultEstimatedSizeinMB
+  #       value: $(essConfig-defaultEstimatedSizeinMB)
+  #     - name: essConfig.MaxEncLimit
+  #       value: $(essConfig-MaxEncLimit)
+  #     - name: essConfig.MaxEncSelectionLimit
+  #       value: $(essConfig-MaxEncSelectionLimit)
+  #     - name: autoTestConfig.url
+  #       value: $(autoTestConfig-url)
+  #     - name: autoTestConfig.user
+  #       value: $(autoTestConfig-user)
+  #     - name: autoTestConfig.password
+  #       value: $(autoTestConfig-password)
+  #     - name: autoTestConfig.userFullName
+  #       value: $(autoTestConfig-userFullName)
+  #     - name: autoTestConfig.apiurl
+  #       value: $(autoTestConfig-apiurl)
+  #     - name: autoTestConfig.encSizeConfig
+  #       value: $(autoTestConfig-encSizeConfig)
+  #     - name: "ServiceDnsUrl"
+  #       value: $(service-dns-url)
+  #     - name: essConfig.aioExcludeEncs
+  #       value: $(essConfig-aioExcludeEncs)
+  #   jobs:
   #     - deployment: DevDeploy
   #       displayName: "Dev - deploy terraform and website"
   #       environment: "FSS-Dev"
