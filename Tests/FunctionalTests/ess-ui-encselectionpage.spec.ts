@@ -266,9 +266,11 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), encNames.filter(r => r != firstEncName));
     estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
     await encSelectionPageObjects.requestENCsSelectorClick();
     var productVersionResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('productData/productVersions') && r.request().method() == 'POST');
     await esslandingPageObjects.expect.IsEmpty(productVersionResponse.url());
+    await encSelectionPageObjects.expect.ValidateProductVersionPayload(await sinceDateResponse.text(), productVersionResponse.request().postData());
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151339
