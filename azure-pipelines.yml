@@ -175,290 +175,290 @@ stages:
       - name: essConfig.aioExcludeEncs
         value: $(essConfig-aioExcludeEncs)
     jobs:
-      - deployment: DevDeploy
-        displayName: "Dev - deploy terraform and website"
-        environment: "FSS-Dev"
-        container: ${{variables.Container}}
-        workspace:
-          clean: all
-        variables:
-          - group: "File share service terraform Dev"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: Deployment/templates/continous-deployment.yml
-                  parameters:
-                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-                    AzureSubscription: "File-Share-Service-Dev-P4052"
+  #     - deployment: DevDeploy
+  #       displayName: "Dev - deploy terraform and website"
+  #       environment: "FSS-Dev"
+  #       container: ${{variables.Container}}
+  #       workspace:
+  #         clean: all
+  #       variables:
+  #         - group: "File share service terraform Dev"
+  #       strategy:
+  #         runOnce:
+  #           deploy:
+  #             steps:
+  #               - template: Deployment/templates/continous-deployment.yml
+  #                 parameters:
+  #                   ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+  #                   AzureSubscription: "File-Share-Service-Dev-P4052"
 
-      - job: FunctionalTests
-        dependsOn: DevDeploy
-        pool: 
-          name: $(WindowPool)
-          demands: FM-Perms
-        displayName: "Functional Tests"
-        workspace:
-         clean: all
-        steps:
-           - checkout: self
-           - script: 
-              echo "$(autoTestConfig.url)"
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
+  #     - job: FunctionalTests
+  #       dependsOn: DevDeploy
+  #       pool: 
+  #         name: $(WindowPool)
+  #         demands: FM-Perms
+  #       displayName: "Functional Tests"
+  #       workspace:
+  #        clean: all
+  #       steps:
+  #          - checkout: self
+  #          - script: 
+  #             echo "$(autoTestConfig.url)"
+  #          - task: NodeTool@0
+  #            inputs:
+  #             versionSpec: '14.x'
+  #            displayName: 'Install Node.js'
 
-           - script: |
-              npm ci
-             displayName: 'npm restore'
+  #          - script: |
+  #             npm ci
+  #            displayName: 'npm restore'
 
-           - task: FileTransform@2
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
+  #          - task: FileTransform@2
+  #            inputs:
+  #             folderPath: '$(Build.SourcesDirectory)\'
+  #             xmlTransformationRules:
+  #             jsonTargetFiles: 'appSetting.json'
               
-           - task: CmdLine@2
-             inputs:
-              script: 'npx playwright install'
-             displayName: install browsers for playwright test
+  #          - task: CmdLine@2
+  #            inputs:
+  #             script: 'npx playwright install'
+  #            displayName: install browsers for playwright test
 
-           - script: |
-              npm run test:auto
-             displayName: 'Run Functional Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+  #          - script: |
+  #             npm run test:auto
+  #            displayName: 'Run Functional Tests'
+  #            workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Functional Test Results
-             displayName: 'Publish Functional Test Results'
+  #          - task: PublishTestResults@2
+  #            condition: succeededOrFailed()
+  #            inputs:
+  #              testRunner: 'JUnit'
+  #              testResultsFiles: 'junit.xml'
+  #              mergeTestResults: true
+  #              searchFolder:  '$(System.DefaultWorkingDirectory)/'
+  #              testRunTitle: Functional Test Results
+  #            displayName: 'Publish Functional Test Results'
 
-      - job: E2ETests
-        dependsOn: FunctionalTests
-        pool: 
-          name: $(WindowPool)
-          demands: FM-Perms
-        displayName: "End-To-End Tests"
-        steps:
-           - checkout: self
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
+  #     - job: E2ETests
+  #       dependsOn: FunctionalTests
+  #       pool: 
+  #         name: $(WindowPool)
+  #         demands: FM-Perms
+  #       displayName: "End-To-End Tests"
+  #       steps:
+  #          - checkout: self
+  #          - task: NodeTool@0
+  #            inputs:
+  #             versionSpec: '14.x'
+  #            displayName: 'Install Node.js'
 
-           - script: |
-              npm ci
-             displayName: 'npm restore'
+  #          - script: |
+  #             npm ci
+  #            displayName: 'npm restore'
 
-           - script: |
-              npx playwright install 
-             displayName: 'npx playwright install'
+  #          - script: |
+  #             npx playwright install 
+  #            displayName: 'npx playwright install'
   
 
-           - task: FileTransform@2
-             displayName: 'AppSettings Json transform for E2E Tests Run'
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
+  #          - task: FileTransform@2
+  #            displayName: 'AppSettings Json transform for E2E Tests Run'
+  #            inputs:
+  #             folderPath: '$(Build.SourcesDirectory)\'
+  #             xmlTransformationRules:
+  #             jsonTargetFiles: 'appSetting.json'
                 
-           - script: |
-              npm run test:e2e
-             displayName: 'Run E2E Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
+  #          - script: |
+  #             npm run test:e2e
+  #            displayName: 'Run E2E Tests'
+  #            workingDirectory: '$(Build.SourcesDirectory)/Tests/E2ETests'
 
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: E2E Test Results
-             displayName: 'Publish End-To-End Test Results'
+  #          - task: PublishTestResults@2
+  #            condition: succeededOrFailed()
+  #            inputs:
+  #              testRunner: 'JUnit'
+  #              testResultsFiles: 'junit.xml'
+  #              mergeTestResults: true
+  #              searchFolder:  '$(System.DefaultWorkingDirectory)/'
+  #              testRunTitle: E2E Test Results
+  #            displayName: 'Publish End-To-End Test Results'
 
-      - job: AccessibilityTests
-        dependsOn: E2ETests
-        pool: 
-          name: $(WindowPool)
-          demands: FM-Perms
-        displayName: "Accessibility Tests"
-        steps:
-           - checkout: self
-           - task: NodeTool@0
-             inputs:
-              versionSpec: '14.x'
-             displayName: 'Install Node.js'
+  #     - job: AccessibilityTests
+  #       dependsOn: E2ETests
+  #       pool: 
+  #         name: $(WindowPool)
+  #         demands: FM-Perms
+  #       displayName: "Accessibility Tests"
+  #       steps:
+  #          - checkout: self
+  #          - task: NodeTool@0
+  #            inputs:
+  #             versionSpec: '14.x'
+  #            displayName: 'Install Node.js'
 
-           - script: |
-              npm ci
-             displayName: 'npm restore'
+  #          - script: |
+  #             npm ci
+  #            displayName: 'npm restore'
 
-           - task: FileTransform@2
-             displayName: AppSettings Json transform for Accessibility Test Run
-             inputs:
-              folderPath: '$(Build.SourcesDirectory)\'
-              xmlTransformationRules:
-              jsonTargetFiles: 'appSetting.json'
+  #          - task: FileTransform@2
+  #            displayName: AppSettings Json transform for Accessibility Test Run
+  #            inputs:
+  #             folderPath: '$(Build.SourcesDirectory)\'
+  #             xmlTransformationRules:
+  #             jsonTargetFiles: 'appSetting.json'
       
-           - script: |
-              npm run test:a11y
-             displayName: 'Run Accessibility Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
+  #          - script: |
+  #             npm run test:a11y
+  #            displayName: 'Run Accessibility Tests'
+  #            workingDirectory: '$(Build.SourcesDirectory)/Tests/AccessibilityTests'
 
-           - task: PublishTestResults@2
-             condition: succeededOrFailed()
-             inputs:
-               testRunner: 'JUnit'
-               testResultsFiles: 'junit.xml'
-               mergeTestResults: true
-               searchFolder:  '$(System.DefaultWorkingDirectory)/'
-               testRunTitle: Accessibility Test Results
-             displayName: 'Publish Accessibility Test Results'
+  #          - task: PublishTestResults@2
+  #            condition: succeededOrFailed()
+  #            inputs:
+  #              testRunner: 'JUnit'
+  #              testResultsFiles: 'junit.xml'
+  #              mergeTestResults: true
+  #              searchFolder:  '$(System.DefaultWorkingDirectory)/'
+  #              testRunTitle: Accessibility Test Results
+  #            displayName: 'Publish Accessibility Test Results'
 
-  - stage: vNextIatDeploy
-    dependsOn:
-      - Devdeploy
-    displayName: "vNext IAT Deploy (inc terraform, website deploy)"
-    variables:
-      - group: "File-Share-Service-UI-vNext-IAT-Deploy-Variables"
-      - name: "Environment"
-        value: "vNextIat"
-      - name: b2cConfig.tenantName
-        value: $(b2cConfig-tenantName)
-      - name: b2cConfig.clientId
-        value: $(b2cConfig-clientId)
-      - name: fssConfig.apiUrl
-        value: $(fssConfig-apiUrl)
-      - name: fssConfig.apiScope
-        value: $(fssConfig-apiScope)
-      - name: fssConfig.stateManagementApiUrl
-        value: $(fssConfig-stateManagementApiUrl)
-      - name: fssConfig.displayPopularSearch
-        value: $(fssConfig-displayPopularSearch)
-      - name: fssConfig.displaySimplifiedSearchLink
-        value: $(fssConfig-displaySimplifiedSearchLink)
-      - name: essConfig.apiUrl
-        value: $(essConfig-apiUrl)
-      - name: essConfig.apiScope
-        value: $(essConfig-apiScope)
-      - name: essConfig.avgSizeofENCinMB
-        value: $(essConfig-avgSizeofENCinMB)
-      - name: essConfig.defaultEstimatedSizeinMB
-        value: $(essConfig-defaultEstimatedSizeinMB)
-      - name: essConfig.MaxEncLimit
-        value: $(essConfig-MaxEncLimit)
-      - name: essConfig.MaxEncSelectionLimit
-        value: $(essConfig-MaxEncSelectionLimit)
-      - name: autoTestConfig.url
-        value: $(autoTestConfig-url)
-      - name: autoTestConfig.user
-        value: $(autoTestConfig-user)
-      - name: autoTestConfig.password
-        value: $(autoTestConfig-password)
-      - name: autoTestConfig.userFullName
-        value: $(autoTestConfig-userFullName)
-      - name: autoTestConfig.apiurl
-        value: $(autoTestConfig-apiurl)
-      - name: autoTestConfig.encSizeConfig
-        value: $(autoTestConfig-encSizeConfig)
-      - name: "ServiceDnsUrl"
-        value: $(service-dns-url)
-      - name: essConfig.aioExcludeEncs
-        value: $(essConfig-aioExcludeEncs)
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
-    jobs:
-      - deployment: vNextIatDeploy
-        displayName: "vNext IAT - deploy terraform and website"
-        environment: "FSS-vNext-IAT"
-        container: ${{variables.Container}}
-        workspace:
-          clean: all
-        variables:
-          - group: "File share service terraform vNext IAT"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: Deployment/templates/continous-deployment.yml
-                  parameters:
-                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-                    AzureSubscription: "File-Share-Service-vNext-IAT-A.011.08"
+  # - stage: vNextIatDeploy
+  #   dependsOn:
+  #     - Devdeploy
+  #   displayName: "vNext IAT Deploy (inc terraform, website deploy)"
+  #   variables:
+  #     - group: "File-Share-Service-UI-vNext-IAT-Deploy-Variables"
+  #     - name: "Environment"
+  #       value: "vNextIat"
+  #     - name: b2cConfig.tenantName
+  #       value: $(b2cConfig-tenantName)
+  #     - name: b2cConfig.clientId
+  #       value: $(b2cConfig-clientId)
+  #     - name: fssConfig.apiUrl
+  #       value: $(fssConfig-apiUrl)
+  #     - name: fssConfig.apiScope
+  #       value: $(fssConfig-apiScope)
+  #     - name: fssConfig.stateManagementApiUrl
+  #       value: $(fssConfig-stateManagementApiUrl)
+  #     - name: fssConfig.displayPopularSearch
+  #       value: $(fssConfig-displayPopularSearch)
+  #     - name: fssConfig.displaySimplifiedSearchLink
+  #       value: $(fssConfig-displaySimplifiedSearchLink)
+  #     - name: essConfig.apiUrl
+  #       value: $(essConfig-apiUrl)
+  #     - name: essConfig.apiScope
+  #       value: $(essConfig-apiScope)
+  #     - name: essConfig.avgSizeofENCinMB
+  #       value: $(essConfig-avgSizeofENCinMB)
+  #     - name: essConfig.defaultEstimatedSizeinMB
+  #       value: $(essConfig-defaultEstimatedSizeinMB)
+  #     - name: essConfig.MaxEncLimit
+  #       value: $(essConfig-MaxEncLimit)
+  #     - name: essConfig.MaxEncSelectionLimit
+  #       value: $(essConfig-MaxEncSelectionLimit)
+  #     - name: autoTestConfig.url
+  #       value: $(autoTestConfig-url)
+  #     - name: autoTestConfig.user
+  #       value: $(autoTestConfig-user)
+  #     - name: autoTestConfig.password
+  #       value: $(autoTestConfig-password)
+  #     - name: autoTestConfig.userFullName
+  #       value: $(autoTestConfig-userFullName)
+  #     - name: autoTestConfig.apiurl
+  #       value: $(autoTestConfig-apiurl)
+  #     - name: autoTestConfig.encSizeConfig
+  #       value: $(autoTestConfig-encSizeConfig)
+  #     - name: "ServiceDnsUrl"
+  #       value: $(service-dns-url)
+  #     - name: essConfig.aioExcludeEncs
+  #       value: $(essConfig-aioExcludeEncs)
+  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
+  #   jobs:
+  #     - deployment: vNextIatDeploy
+  #       displayName: "vNext IAT - deploy terraform and website"
+  #       environment: "FSS-vNext-IAT"
+  #       container: ${{variables.Container}}
+  #       workspace:
+  #         clean: all
+  #       variables:
+  #         - group: "File share service terraform vNext IAT"
+  #       strategy:
+  #         runOnce:
+  #           deploy:
+  #             steps:
+  #               - template: Deployment/templates/continous-deployment.yml
+  #                 parameters:
+  #                   ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+  #                   AzureSubscription: "File-Share-Service-vNext-IAT-A.011.08"
     
-  - stage: vNextE2eDeploy
-    dependsOn:
-      - vNextIatDeploy
-    displayName: "vNext E2E Deploy (inc terraform, website deploy)"
-    variables:
-      - group: "File-Share-Service-UI-vNext-E2E-Deploy-Variables"
-      - name: "Environment"
-        value: "vNextE2e"
-      - name: b2cConfig.tenantName
-        value: $(b2cConfig-tenantName)
-      - name: b2cConfig.clientId
-        value: $(b2cConfig-clientId)
-      - name: fssConfig.apiUrl
-        value: $(fssConfig-apiUrl)
-      - name: fssConfig.apiScope
-        value: $(fssConfig-apiScope)
-      - name: fssConfig.stateManagementApiUrl
-        value: $(fssConfig-stateManagementApiUrl)
-      - name: fssConfig.displayPopularSearch
-        value: $(fssConfig-displayPopularSearch)
-      - name: fssConfig.displaySimplifiedSearchLink
-        value: $(fssConfig-displaySimplifiedSearchLink)
-      - name: essConfig.apiUrl
-        value: $(essConfig-apiUrl)
-      - name: essConfig.apiScope
-        value: $(essConfig-apiScope)
-      - name: essConfig.avgSizeofENCinMB
-        value: $(essConfig-avgSizeofENCinMB)
-      - name: essConfig.defaultEstimatedSizeinMB
-        value: $(essConfig-defaultEstimatedSizeinMB)
-      - name: essConfig.MaxEncLimit
-        value: $(essConfig-MaxEncLimit)
-      - name: essConfig.MaxEncSelectionLimit
-        value: $(essConfig-MaxEncSelectionLimit)
-      - name: autoTestConfig.url
-        value: $(autoTestConfig-url)
-      - name: autoTestConfig.user
-        value: $(autoTestConfig-user)
-      - name: autoTestConfig.password
-        value: $(autoTestConfig-password)
-      - name: autoTestConfig.userFullName
-        value: $(autoTestConfig-userFullName)
-      - name: autoTestConfig.apiurl
-        value: $(autoTestConfig-apiurl)
-      - name: autoTestConfig.encSizeConfig
-        value: $(autoTestConfig-encSizeConfig)
-      - name: "ServiceDnsUrl"
-        value: $(service-dns-url)
-      - name: essConfig.aioExcludeEncs
-        value: $(essConfig-aioExcludeEncs)
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
-    jobs:
-      - deployment: vNextE2eDeploy
-        displayName: "vNext E2E - deploy terraform and website"
-        environment: "FSS-vNext-E2E"
-        container: ${{variables.Container}}
-        workspace:
-          clean: all
-        variables:
-          - group: "File share service terraform vNext E2E"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: Deployment/templates/continous-deployment.yml
-                  parameters:
-                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-                    AzureSubscription: "File-Share-Service-vNext-E2E-A.011.08"
+  # - stage: vNextE2eDeploy
+  #   dependsOn:
+  #     - vNextIatDeploy
+  #   displayName: "vNext E2E Deploy (inc terraform, website deploy)"
+  #   variables:
+  #     - group: "File-Share-Service-UI-vNext-E2E-Deploy-Variables"
+  #     - name: "Environment"
+  #       value: "vNextE2e"
+  #     - name: b2cConfig.tenantName
+  #       value: $(b2cConfig-tenantName)
+  #     - name: b2cConfig.clientId
+  #       value: $(b2cConfig-clientId)
+  #     - name: fssConfig.apiUrl
+  #       value: $(fssConfig-apiUrl)
+  #     - name: fssConfig.apiScope
+  #       value: $(fssConfig-apiScope)
+  #     - name: fssConfig.stateManagementApiUrl
+  #       value: $(fssConfig-stateManagementApiUrl)
+  #     - name: fssConfig.displayPopularSearch
+  #       value: $(fssConfig-displayPopularSearch)
+  #     - name: fssConfig.displaySimplifiedSearchLink
+  #       value: $(fssConfig-displaySimplifiedSearchLink)
+  #     - name: essConfig.apiUrl
+  #       value: $(essConfig-apiUrl)
+  #     - name: essConfig.apiScope
+  #       value: $(essConfig-apiScope)
+  #     - name: essConfig.avgSizeofENCinMB
+  #       value: $(essConfig-avgSizeofENCinMB)
+  #     - name: essConfig.defaultEstimatedSizeinMB
+  #       value: $(essConfig-defaultEstimatedSizeinMB)
+  #     - name: essConfig.MaxEncLimit
+  #       value: $(essConfig-MaxEncLimit)
+  #     - name: essConfig.MaxEncSelectionLimit
+  #       value: $(essConfig-MaxEncSelectionLimit)
+  #     - name: autoTestConfig.url
+  #       value: $(autoTestConfig-url)
+  #     - name: autoTestConfig.user
+  #       value: $(autoTestConfig-user)
+  #     - name: autoTestConfig.password
+  #       value: $(autoTestConfig-password)
+  #     - name: autoTestConfig.userFullName
+  #       value: $(autoTestConfig-userFullName)
+  #     - name: autoTestConfig.apiurl
+  #       value: $(autoTestConfig-apiurl)
+  #     - name: autoTestConfig.encSizeConfig
+  #       value: $(autoTestConfig-encSizeConfig)
+  #     - name: "ServiceDnsUrl"
+  #       value: $(service-dns-url)
+  #     - name: essConfig.aioExcludeEncs
+  #       value: $(essConfig-aioExcludeEncs)
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  #   jobs:
+  #     - deployment: vNextE2eDeploy
+  #       displayName: "vNext E2E - deploy terraform and website"
+  #       environment: "FSS-vNext-E2E"
+  #       container: ${{variables.Container}}
+  #       workspace:
+  #         clean: all
+  #       variables:
+  #         - group: "File share service terraform vNext E2E"
+  #       strategy:
+  #         runOnce:
+  #           deploy:
+  #             steps:
+  #               - template: Deployment/templates/continous-deployment.yml
+  #                 parameters:
+  #                   ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+  #                   AzureSubscription: "File-Share-Service-vNext-E2E-A.011.08"
     
   - stage: QAdeploy
     dependsOn: Devdeploy
