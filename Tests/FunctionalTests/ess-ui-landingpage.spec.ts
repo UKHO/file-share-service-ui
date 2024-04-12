@@ -115,7 +115,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           const requestPromise = await esslandingPageObjects.page.waitForResponse(r =>
                r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST')
-          await esslandingPageObjects.expect.IsEmpty(requestPromise.url());
+          await esslandingPageObjects.expect.IsNotEmpty(requestPromise.url());
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
           await esslandingPageObjects.expect.verifyUploadedENCs(enclist);
      })
@@ -203,7 +203,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           const requestPromise = await esslandingPageObjects.page.waitForRequest(request =>
                request.url().includes('productInformation/productIdentifiers') && request.method() === 'POST')
-          await esslandingPageObjects.expect.IsEmpty(requestPromise.url());
+          await esslandingPageObjects.expect.IsNotEmpty(requestPromise.url());
      });
 
      //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151340

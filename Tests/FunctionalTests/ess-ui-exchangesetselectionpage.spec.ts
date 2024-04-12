@@ -54,10 +54,10 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await esslandingPageObjects.proceedButtonSelectorClick();
     const productIdentifierResponse = await esslandingPageObjects.page.waitForRequest(request =>
       request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
-    await esslandingPageObjects.expect.IsEmpty(productIdentifierResponse.url());
+    await esslandingPageObjects.expect.IsNotEmpty(productIdentifierResponse.url());
     const productInfResponse = await esslandingPageObjects.page.waitForRequest(request =>
       request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
-    await esslandingPageObjects.expect.IsEmpty(productInfResponse.url());
+    await esslandingPageObjects.expect.IsNotEmpty(productInfResponse.url());
     await encSelectionPageObjects.addAnotherENC('DE516510');
     await esslandingPageObjects.page.waitForRequest(request =>
       request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')

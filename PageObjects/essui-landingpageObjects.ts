@@ -199,7 +199,7 @@ class EssLandingPageAssertions {
         expect(MaxSelectedLimit).toEqual(essConfig.MaxEncSelectionLimit);
     }
 
-    async IsEmpty(text: string): Promise<void> {
+    async IsNotEmpty(text: string): Promise<void> {
         expect(text.length != 0).toBeTruthy();
     }
 }
