@@ -270,7 +270,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), expectedEncs.filter(r => r != firstEncName));
     estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
-    await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
+    await encSelectionPageObjects.deselectAllSelectorClick();
+    await encSelectionPageObjects.selectAllSelectorClick();
     await encSelectionPageObjects.requestENCsSelectorClick();
     var productVersionResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('productData/productVersions') && r.request().method() == 'POST');
     await esslandingPageObjects.expect.IsNotEmpty(productVersionResponse.url());
