@@ -46,7 +46,6 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   sortGraphicDown: string = "fa-chevron-down";
   sortGraphic: string = this.sortGraphicUp;
   scsInvalidProduct: NotReturnedProduct[];
-  productVersionRequest : ProductVersionRequest[] = [];
   updateNumber:number;
   editionNumber:number;
   
@@ -231,6 +230,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   }
 
   selectDeselectAll() {
+    this.triggerInfoErrorMessage(false, 'error', '');
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
       this.selectDeselectAlert = 'Selected All ENC\'s' ;
       this.essUploadFileService.addAllSelectedEncs();
@@ -262,6 +262,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
 
   scsExchangeSetResponse() {
     if (this.essUploadFileService.exchangeSetDownloadType == 'Delta') {
+      var productVersionRequest : ProductVersionRequest[] = [];
       for (let selectedEnc of this.selectedEncList) {
         this.editionNumber = selectedEnc.editionNumber;
         this.updateNumber = Math.min(...selectedEnc.updateNumbers);
@@ -275,9 +276,9 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
           editionNumber: this.editionNumber,
           updateNumber: this.updateNumber
         };
-        this.productVersionRequest.push(productVersion);
+        productVersionRequest.push(productVersion);
       }
-      this.exchangeSetCreationForDeltaResponse(this.productVersionRequest);
+      this.exchangeSetCreationForDeltaResponse(productVersionRequest);
     }
     else {
       const selectedEncList: string[] = this.selectedEncList.map(product => product.productName);
