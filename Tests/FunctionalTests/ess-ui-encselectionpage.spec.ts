@@ -273,9 +273,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
     await encSelectionPageObjects.requestENCsSelectorClick();
     var productVersionResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('productData/productVersions') && r.request().method() == 'POST');
-    await esslandingPageObjects.expect.IsEmpty(productVersionResponse.url());
+    await esslandingPageObjects.expect.IsNotEmpty(productVersionResponse.url());
     var batchResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('api/batch') && r.url().includes('/status') && r.request().method() == 'GET');
-    await esslandingPageObjects.expect.IsEmpty(batchResponse.url());
+    await esslandingPageObjects.expect.IsNotEmpty(batchResponse.url());
     await encSelectionPageObjects.expect.ValidateProductVersionPayload(await sinceDateResponse.text(), productVersionResponse.request().postData());
   })
 
