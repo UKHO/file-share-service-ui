@@ -248,6 +248,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151757
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151271
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151339
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151474
   test('Verify estimated file size of selected ENC cells for Delta Exchange Set type', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.enterDate(new Date());
@@ -273,6 +274,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.requestENCsSelectorClick();
     var productVersionResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('productData/productVersions') && r.request().method() == 'POST');
     await esslandingPageObjects.expect.IsEmpty(productVersionResponse.url());
+    var batchResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('api/batch') && r.url().includes('/status') && r.request().method() == 'GET');
+    await esslandingPageObjects.expect.IsEmpty(batchResponse.url());
     await encSelectionPageObjects.expect.ValidateProductVersionPayload(await sinceDateResponse.text(), productVersionResponse.request().postData());
   })
 
