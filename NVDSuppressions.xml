@@ -40,4 +40,14 @@
     <vulnerabilityName>CVE-2024-28863</vulnerabilityName>
     <cpe>cpe:/a:tar_project:tar</cpe>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: vite@4.5.2
+   problem file: @angular-devkit/build-angular which references vite@4.5.2
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
+  </suppress>
 </suppressions>
