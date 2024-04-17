@@ -474,7 +474,7 @@ describe('EssListEncsComponent', () => {
 
   it.each`
   estimatedSize              | expectedResult
-  ${'0.00MB'}                       |  ${'0MB'}
+  ${'0.00MB'}                       |  ${'0.00MB'}
   ${'2.60MB'}                       |  ${'2.60MB'}
   `('getEstimatedTotalSize called from syncEncsBetweenTables and should return string',
     ({ estimatedSize, expectedResult }: { estimatedSize: string; expectedResult: string }) => {
