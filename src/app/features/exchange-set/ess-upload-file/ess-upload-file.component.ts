@@ -130,23 +130,35 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
 
   productUpdatesByIdentifiersResponse(encs: any[]) {
     if (encs != null) {
-        this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
+      this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
         .subscribe({
-          next: (data: ProductCatalog) => {
-            this.displayLoader  = false;
-            this.essUploadFileService.scsProductResponse = data;
-            let validEncList = this.essUploadFileService.scsProductResponse.products.map(p=>p.productName);
-            this.essUploadFileService.setValidEncsByApi(validEncList);
-            this.route.navigate(['exchangesets', 'enc-list']);
+          next: (productIdentifiersResponse: ProductCatalog) => {
+            if (productIdentifiersResponse.products.length != 0) {
+              this.displayLoader = false;
+              this.essUploadFileService.scsProductResponse = productIdentifiersResponse;
+              let validEncList = this.essUploadFileService.scsProductResponse.products.map(p => p.productName);
+              this.essUploadFileService.setValidEncsByApi(validEncList);
+              this.route.navigate(['exchangesets', 'enc-list']);
+            }
+            else {
+              this.displayLoader = false;
+              if (this.essUploadFileService.aioEncFound) {
+                this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+                return;
+              } else {
+                this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
+                return;
+              }
+            }
           },
-          error:(error) => {
+          error: (error) => {
             console.log(error);
-            this.displayLoader  = false;
-            this.triggerInfoErrorMessage(true,'error', 'There has been an error');
+            this.displayLoader = false;
+            this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
           }
         });
-     }
     }
+  }
 
   productUpdatesByDeltaResponse(encs: any[]) {
     if (encs != null) {
