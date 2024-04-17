@@ -156,7 +156,7 @@ export class EncSelectionPageObjects {
       if(encNames.includes(responseBody.products[i].productName))
         fileSize += responseBody.products[i].fileSize;
     }
-    return parseFloat((fileSize/1048576).toFixed(1))+0.5;
+    return parseFloat((fileSize/1048576).toFixed(2))+0.5;
   }
 
   async getCommonEncs(productIdentifier: string, sinceDateResponse: string){
