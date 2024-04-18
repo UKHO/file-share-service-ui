@@ -145,7 +145,7 @@ export class EncSelectionPageObjects {
     let fileSize = 0;
     for (var i = 0; i < numberOfENCs; i++) 
       fileSize += responseBody.products[i].fileSize;
-    return parseFloat((fileSize/1048576).toFixed(1))+0.5;
+    return parseFloat(((fileSize/1048576)+0.5).toFixed(2));
   }
 
   async getFileSizeForDelta(response: string, encNames: string[]){
@@ -156,7 +156,7 @@ export class EncSelectionPageObjects {
       if(encNames.includes(responseBody.products[i].productName))
         fileSize += responseBody.products[i].fileSize;
     }
-    return parseFloat((fileSize/1048576).toFixed(2))+0.5;
+    return parseFloat(((fileSize/1048576)+0.5).toFixed(2));
   }
 
   async getCommonEncs(productIdentifier: string, sinceDateResponse: string){

@@ -240,7 +240,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
     await selectENCsFromTable.nth(0).click();
-    fileSize -= parseFloat((responseBody.products[0].fileSize / 1048576).toFixed(1));
+    fileSize -= parseFloat((responseBody.products[0].fileSize / 1048576).toFixed(2));
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
   })
