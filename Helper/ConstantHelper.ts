@@ -37,7 +37,8 @@ type BatchAttribute = {
 
 export const attributeBusinessUnit: BatchAttribute = { key: 'BusinessUnit', value: 'ADDS' };
 export const attributeProductType: BatchAttribute = { key: 'Product Type', value: 'AVCS' };
-export const attributeFileName: BatchAttribute = { key: 'File Name', value: 'test' };
+export const attributeWeekYear: BatchAttribute = { key: 'Year / Week', value: 'AVCS' };
+export const attributeFileName: BatchAttribute = { key: 'File Name', value: 'V01X01' };
 export const attributeFileSize: BatchAttribute = {key: 'FileSize', value: '1000'};
 export const attributeMimeType: BatchAttribute = {key: 'MimeType', value: 'text/plain'};
 export const attributeMediaType: BatchAttribute = {key: 'Media Type', value: 'DVD'};

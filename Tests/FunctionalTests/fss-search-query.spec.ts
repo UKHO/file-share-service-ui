@@ -7,10 +7,10 @@ import {SearchAttribute, SearchAttributeSecondRow,
   ExpectAllResultsContainBatchUserAttValue,
   GetTotalResultCount, AdmiraltyExpectAllResultsHaveFileAttributeValue,
   GetCountOfBatchRows,AdmiraltyGetFileSizeCount} from '../../Helper/SearchPageHelper';
-import { attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize} from '../../Helper/ConstantHelper';
+import { attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize, attributeWeekYear} from '../../Helper/ConstantHelper';
 
 const searchQuerySqlInjection = "adds''; drop table BatchAttribute";
-const batchAttributeSpecialChar = '$£';
+const batchAttributeSpecialChar = '/';
 
 test.describe('Test Search Query Scenario On Search Page', () => {
 
@@ -35,7 +35,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
 
   test('Batch Attribute table returns correct product on special characters search', async ({ page }) => {
     await page.waitForTimeout(2000);
-    await SearchAttribute(page, attributeProductType.key);
+    await SearchAttribute(page, attributeWeekYear.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "contains");     
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, batchAttributeSpecialChar);
 
