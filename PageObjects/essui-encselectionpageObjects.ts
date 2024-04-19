@@ -84,7 +84,7 @@ export class EncSelectionPageObjects {
   }
 
   async addAnotherENC(data: string): Promise<void> {
-    await this.page.waitForLoadState();
+    await this.page.waitForSelector("a.lnkAddAnotherEnc", {state:'visible', timeout: 3000});
     await this.addAnotherENCSelector.click();
     await this.typeENCTextBoxSelector.fill(data);
     await this.esslandingPageObjects.addsingleencSelector.click();
@@ -99,7 +99,7 @@ export class EncSelectionPageObjects {
   }
 
   async startAgainLinkSelectorClick(): Promise<void> {
-    await this.page.waitForSelector("a.linkStartAgain", { state:'visible' });
+    await this.page.waitForSelector("a.linkStartAgain", { state:'visible', timeout: 3000 });
     await this.startAgainLinkSelector.click();
   }
 
