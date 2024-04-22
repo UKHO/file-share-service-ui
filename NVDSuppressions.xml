@@ -50,4 +50,11 @@
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
     <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
   </suppress>
+  <suppress>
+      <notes><![CDATA[
+      file name: axios.js
+      ]]></notes>
+      <packageUrl regex="true">^pkg:javascript/axios@.*$</packageUrl>
+      <vulnerabilityName>Versions before 1.6.8 depends on follow-redirects before 1.15.6 which could leak the proxy authentication credentials</vulnerabilityName>
+   </suppress>
 </suppressions>
