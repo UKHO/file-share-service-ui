@@ -35,7 +35,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
 
   test('Batch Attribute table returns correct product on special characters search', async ({ page }) => {
     await page.waitForTimeout(2000);
-    await SearchAttribute(page, attributeWeekYear.key);
+    await SearchAttribute(page, attributeWeekYear);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, "contains");     
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, batchAttributeSpecialChar);
 
