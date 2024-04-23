@@ -1,6 +1,6 @@
 import { test } from '@playwright/test';
-import { injectAxe, checkA11y} from 'axe-playwright'
-import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
+import { injectAxe, checkA11y } from 'axe-playwright'
+import { AcceptCookies } from '../../Helper/CommonHelper';
 import { autoTestConfig } from '../../appSetting.json';
 
 test.describe('FSS UI Home Page Accessibility Test Scenarios', () => {
