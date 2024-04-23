@@ -249,7 +249,6 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   requestEncClicked() {
     this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.essSilentTokenRequest).then(response => {
-      const selectedEncList: string[] = this.selectedEncList.map(product => product.productName);
       this.scsExchangeSetResponse();
     }, error => {
       this.msalService.instance

@@ -313,6 +313,6 @@ describe('EssUploadFileService', () => {
     
     expect(convertBytesToMegabytesSpy).toHaveBeenCalled();
     expect(typeof estimatedSizeInMB).toBe('number');
-    expect(actualTotalSize).toEqual('1.0 MB');
+    expect(actualTotalSize).toEqual('0.97 MB');
   })
 });
