@@ -7,9 +7,7 @@ export class ExchangeSetSelectionPageObjects{
     readonly datePicker: Locator;
     readonly proceed: Locator;
     readonly baseRadioButtonText: Locator;
-    readonly baseDownloadDescription: Locator;
     readonly deltaRadioButtonText: Locator;
-    readonly deltaDownloadDesription: Locator;
     readonly warningMessage: Locator;
 
     constructor(readonly page: Page) {
@@ -19,9 +17,7 @@ export class ExchangeSetSelectionPageObjects{
         this.datePicker = page.locator("input[type='date']");
         this.proceed = page.locator("button:has-text('Proceed')");
         this.baseRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(1) div label");
-        this.baseDownloadDescription = page.locator("div[role='radiogroup'] > :nth-child(2)");
-        this.deltaRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(4) div label");
-        this.deltaDownloadDesription = page.locator("div[role='radiogroup'] > :nth-child(5)");
+        this.deltaRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(2) div label");
         this.warningMessage = page.locator(".warningMsgTitle");
     }
 
@@ -62,19 +58,19 @@ export class ExchangeSetSelectionAssertion{
     }
 
     async validateBaseRadioButtonText(){
-        expect((await this.selection.baseRadioButtonText.innerText()).trim() =='Base Download').toBeTruthy();
+        expect(((await this.selection.baseRadioButtonText.innerText())).split('\n')[0].trim() =='Base Download').toBeTruthy();
     }
 
     async validateBaseDownloadDescription(){
-        expect(await this.selection.baseDownloadDescription.innerText() =='Select Base Download for an exchange set that includes all data for selected ENCs.').toBeTruthy();
+        expect((await this.selection.baseRadioButtonText.innerText()).split('\n')[1].trim() =='Select Base Download for an exchange set that includes all data for selected ENCs.').toBeTruthy();
     }
 
     async validateDeltaRadioButtonText(){
-        expect((await this.selection.deltaRadioButtonText.innerText()).trim() =='Delta Download').toBeTruthy();
+        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[0].trim() =='Delta Download').toBeTruthy();
     }
 
     async validateDeltaDownloadDescription(){
-        expect(await this.selection.deltaDownloadDesription.innerText() =="Select Delta Download to receive updates from a specific date in the last 27 days for selected ENCs.").toBeTruthy();
+        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[1].trim() =="Select Delta Download to receive updates from a specific date in the last 27 days for selected ENCs.").toBeTruthy();
     }
 
     async validateDefaultSelection(){
