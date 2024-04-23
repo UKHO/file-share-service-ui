@@ -1,6 +1,8 @@
 
  .radio-description{
-   padding-left: 3.5%;
+   display: block;
+   padding-top: 0.5em;
+   padding-left: 2.6em;
    margin-bottom: 0%;
  }
 .exchangeset-form-container{
@@ -11,8 +13,11 @@
    margin-bottom: 30px;
  }
 .enc-datetime-container{
-  margin-left: 3.5%;
+  margin-left: 2.6em;
   width: 20%;
   margin-top: -20px;
+}
+#baseLabel{
+  margin-bottom: 25px;
 }
 

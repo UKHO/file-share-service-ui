@@ -123,10 +123,10 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.triggerInfoErrorMessage(false,'info', '');
     if (seletedEncs.some((product) => product.productName === enc.productName)) {
       this.essUploadFileService.removeSelectedEncs(enc.productName);
-      this.selectDeselectEncAlert= enc + ' Remove From Selected List';
+      this.selectDeselectEncAlert= enc.productName + ' Remove From Selected List';
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
-      this.selectDeselectEncAlert= enc + ' Added From Selected List';
+      this.selectDeselectEncAlert= enc.productName + ' Added From Selected List';
     } else {
       const currCheckedElement = (document.querySelector(`ukho-checkbox[aria-label=${enc.productName}] input`) as HTMLElement);
       if(currCheckedElement){
