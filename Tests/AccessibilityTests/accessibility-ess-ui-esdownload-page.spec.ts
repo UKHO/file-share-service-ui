@@ -27,7 +27,7 @@ test.describe('ESS UI ENC download Page Accessibility Test Scenarios', () => {
         await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
         await exchangeSetSelectionPageObjects.clickOnProceedButton();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
-        await esslandingPageObjects.uploadFile(page, './Tests/TestData/ENCs_Sorting.csv');
+        await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
         await esslandingPageObjects.proceedButtonSelectorClick();
         await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.requestENCsSelectorClick();
@@ -49,7 +49,6 @@ test.describe('ESS UI ENC download Page Accessibility Test Scenarios', () => {
 
         });
     })
-
 })
 
 
