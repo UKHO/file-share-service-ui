@@ -6,20 +6,15 @@
             <p class="light">You can upload a permit file or csv file with up to {{maxEncsLimit}} ENCs listed. If your list is longer,
                 please split them and load as separate files.
             </p>
-    
             <p class="light">Create your list in a spreadsheet and save it as a csv file. Each ENC must be on its own row
                 in a single column.
             </p>
-    
             <p class="light">Once you have uploaded a list, you can then make an exchange set containing a 
                 maximum of {{maxEncSelectionLimit}} individual ENCs.
             </p>
         </div>        
-
-        <admiralty-file-input class="UploadFileIput" id="file-upload" label="Click to choose a file" (fileInputChange)="onFileInputChange($event)"></admiralty-file-input>
+        <admiralty-file-input tabindex="0" class="UploadFileIput" id="file-upload" label="Click to choose a file" (fileInputChange)="onFileInputChange($event)"></admiralty-file-input>
         <admiralty-button  (click)="loadFileReader()">Proceed</admiralty-button>
-
    </div> 
    <br>
-   
 </div>
