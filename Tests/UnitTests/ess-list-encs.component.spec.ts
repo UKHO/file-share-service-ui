@@ -659,6 +659,45 @@ describe('EssListEncsComponent', () => {
     expect(component.displayLoader).toEqual(false);
     expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
   }));
+
+  it('exchangeSetCreationResponse should return exchangeSetCreationResponse', fakeAsync(() => {
+    component.selectedEncList = selectedEncListMockData.products;
+    essUploadFileService.exchangeSetDownloadType = 'Base';
+    jest.spyOn(exchangeSetApiService, 'exchangeSetCreationResponse').mockReturnValue(of(exchangeSetDetailsMockData));
+    component.scsExchangeSetResponse();
+    const routeService = jest.spyOn(router, 'navigate');
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(exchangeSetDetailsMockData).toEqual(exchangeSetDetailsMockData);
+    expect(routeService).toHaveBeenCalledWith(['exchangesets', 'enc-download']);
+  }));
+
+  it('exchangeSetCreationResponse should set Error message on error', fakeAsync(() => {
+    component.selectedEncList = selectedEncListMockData.products;
+    essUploadFileService.exchangeSetDownloadType = 'Base';
+    jest.spyOn(exchangeSetApiService,'exchangeSetCreationResponse').mockReturnValue(throwError(exchangeSetDetailsMockData));
+    component.triggerInfoErrorMessage = jest.fn();
+    component.scsExchangeSetResponse();
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+  }));
+
+  it('when user click on start again then it should navigate to ess landing page', fakeAsync(() => {
+    component.switchToESSLandingPage();
+    const routeService = jest.spyOn(router, 'navigate');
+    tick();
+    expect(routeService).toHaveBeenCalledWith(['exchangesets']);
+  }));
+
+  it('requestEncClicked should return exchangeSetResponse', fakeAsync(() => {
+    component.selectedEncList = selectedEncListMockData.products;
+    essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    essUploadFileService.exchangeSetDownloadType = 'Delta';
+    component.requestEncClicked();
+    tick();
+    expect(component.displayLoader).toEqual(true);
+  }));
 });
 
 export const exchangeSetDetailsMockData: any = {

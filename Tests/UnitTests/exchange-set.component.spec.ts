@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ExchangeSetComponent } from '../../src/app/features/exchange-set/ess-input-types/exchange-set.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA,DebugElement } from '@angular/core';
@@ -7,18 +7,25 @@ import { AppConfigService } from '../../src/app/core/services/app-config.service
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
+import { Router } from '@angular/router';
 
 describe('ExchangeSetComponent', () => {
   let component: ExchangeSetComponent;
   let fixture: ComponentFixture<ExchangeSetComponent>;
   let essInfoErrorMessageService: EssInfoErrorMessageService;
   let essUploadFileService: EssUploadFileService;
-
+  const router = {
+    navigate: jest.fn()
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       declarations: [ ExchangeSetComponent,EssInfoErrorMessageComponent ],
-      providers:[EssInfoErrorMessageService, EssUploadFileService],
+      providers:[
+        {
+          provide: Router,
+          useValue: router
+        },EssInfoErrorMessageService, EssUploadFileService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -85,4 +92,10 @@ describe('ExchangeSetComponent', () => {
       expect(essLandingPageText[i].nativeElement.innerHTML).toBe('You can add a single ENC or upload a list.');
     }
   });
+  it('when user click on start again then it should navigate to ess landing page', fakeAsync(() => {
+    component.switchToESSLandingPage();
+    const routeService = jest.spyOn(router, 'navigate');
+    tick();
+    expect(routeService).toHaveBeenCalledWith(['exchangesets']);
+  }));
 });
