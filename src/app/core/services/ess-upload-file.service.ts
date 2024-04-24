@@ -172,7 +172,7 @@ export class EssUploadFileService {
       this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
     }
     let estimatedSizeInMB = this.convertBytesToMegabytes(this.estimatedTotalSize);
-    return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(1) + ' MB' ;
+    return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(2) + ' MB' ;
   }
 
   get exchangeSetDownloadType(): 'Base' | 'Delta' {

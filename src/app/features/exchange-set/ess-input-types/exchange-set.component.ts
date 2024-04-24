@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-exchange-set',
@@ -17,7 +18,7 @@ export class ExchangeSetComponent implements OnInit {
   addSingleEncRenderFrom ='essHome';
   addSingleEncBtnText = 'Proceed';
 
-  constructor(private essInfoErrorMessageService: EssInfoErrorMessageService,private essUploadFileService: EssUploadFileService) {
+  constructor(private essInfoErrorMessageService: EssInfoErrorMessageService,private essUploadFileService: EssUploadFileService,private route: Router,) {
     this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
    }
 
@@ -26,6 +27,10 @@ export class ExchangeSetComponent implements OnInit {
     this.radioAddEncValue = 'AddSingleEnc';
     this.triggerInfoErrorMessage(false,'info', '');
     this.essUploadFileService.clearData();
+  }
+
+  switchToESSLandingPage() {
+    this.route.navigate(['exchangesets']);
   }
 
   triggerInfoErrorMessage(
