@@ -65,7 +65,7 @@ export class EssTypesComponent implements OnInit, OnDestroy {
         const errorMessage =
           selectedDate > new Date()
             ? 'Please choose a date from today or up to 27 days in the past. Future dates are not permitted.'
-            : "Please select Base Download for duration greater than 27 days from today's date.";
+            : 'Date selected not within 27 days, please choose a different date or select Download all data option.';
         this.isRadioSelected = false;
         this.isDateValid = false;
         this.triggerInfoErrorMessage(true, 'info', errorMessage);

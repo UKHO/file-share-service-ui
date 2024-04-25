@@ -85,6 +85,6 @@ export class ExchangeSetSelectionAssertion{
 
     async validateMessageForPastDate(){   
         await this.selection.warningMessage.click();
-        expect(await this.selection.warningMessage.innerText() == "Please select Base Download for duration greater than 27 days from today's date.").toBeTruthy();
+        expect(await this.selection.warningMessage.innerText() == 'Date selected not within 27 days, please choose a different date or select Download all data option.').toBeTruthy();
     }
 }
