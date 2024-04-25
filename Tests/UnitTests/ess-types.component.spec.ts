@@ -113,7 +113,7 @@ describe('EssTypesComponent', () => {
     component.isDateSelected = true; 
     component.onDateChange({ target: { valueAsDate: pastDate } } as any); 
 
-    const errorMessage = "Please select Base Download for duration greater than 27 days from today's date.";
+    const errorMessage = 'Date selected not within 27 days, please choose a different date or select Download all data option.';
     const errObj = {
       showInfoErrorMessage: true,
       messageType: 'info',
