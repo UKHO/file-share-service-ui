@@ -27,14 +27,12 @@ describe('EssDownloadExchangesetComponent', () => {
   const service = {
     getValidEncs: jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
     clearSelectedEncs: jest.fn(),
-    getSelectedENCs: jest.fn(),
     infoMessage: true,
     addSelectedEnc: jest.fn(),
     removeSelectedEncs: jest.fn(),
     getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
     getExchangeSetDetails: jest.fn().mockReturnValue(exchangeSetDetailsForDownloadMockData()),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
-    getEstimatedTotalSize: jest.fn(),
     getBatchStatus: jest.fn(),
     refreshToken: jest.fn()
   };

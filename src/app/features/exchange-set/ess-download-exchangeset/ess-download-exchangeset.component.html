@@ -27,8 +27,24 @@
         <admiralty-button class="btnDownload" (click)="download()">Download</admiralty-button>
       </div>
       <div *ngIf="downloadComplete">
-        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">Download complete</h4>
-        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px"><a data-testid="download-exs" href="javascript:void(0)" (click)="download()">Download</a> the file again or <a data-testid="create-exs" href="javascript:void(0)" (click)="switchToESSLandingPage()">create another exchange set.</a></p>
+        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">
+          Download complete
+        </h4>
+        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px">
+          <a
+            data-testid="download-exs"
+            href="javascript:void(0)"
+            (click)="download()"
+            >Download</a
+          >
+          the file again or
+          <a
+            data-testid="create-exs"
+            href="javascript:void(0)"
+            (click)="switchToESSLandingPage()"
+            >create another exchange set.</a
+          >
+        </p>
       </div>
     </div>
   </div>
