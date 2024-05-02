@@ -10,6 +10,7 @@ import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { Router } from '@angular/router';
 import { AnalyticsService } from '../../src/app/core/services/analytics.service';
 import { SignInClicked } from '../../src/app/core/services/signInClick.service';
+import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 
 describe('FssHeaderComponent', () => {
   let component: FssHeaderComponent;
@@ -19,6 +20,7 @@ describe('FssHeaderComponent', () => {
   let msalBroadcastServie: MsalBroadcastService;
   let analyticsService: AnalyticsService;
   let signInButtonService: SignInClicked;
+  let essUploadFileService: EssUploadFileService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -42,7 +44,8 @@ describe('FssHeaderComponent', () => {
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
     AppConfigService.settings = {
-      fssConfig: { fssTitle: 'File Share Service' }
+      fssConfig: { fssTitle: 'File Share Service' },
+      essConfig: {}
     };
     msalGuardConfiguration;
     msalService = TestBed.inject(MsalService);
@@ -69,31 +72,31 @@ describe('FssHeaderComponent', () => {
 
 
   test('should exist', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     component.ngOnInit();
     expect(component).toBeDefined();
   });
 
   test('should exist the title in header', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     component.ngOnInit();
     expect(component.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist Exchange set menu item in header', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     component.ngOnInit();
     
 
     expect(component.essTitle).toEqual("Exchange sets");
   });
   test('should not exist Exchange set search, menu item in header if not logged in', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     component.ngOnInit();
     
   });
   test('should exist Search menu item in header', () => {
-    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService);
+    component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     component.ngOnInit();
 
     expect(component.searchTitle).toEqual("Search");

@@ -48,7 +48,8 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   scsInvalidProduct: NotReturnedProduct[];
   updateNumber:number;
   editionNumber:number;
-  
+  isPrivilegedUser:boolean = false;
+
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
     private route: Router,
@@ -98,6 +99,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
         let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
         this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProducts}`);
       }
+      this.isPrivilegedUser = this.essUploadFileService.isPrivilegedUser;
   }
 
   setEncList() {

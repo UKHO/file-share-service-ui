@@ -7,6 +7,7 @@ import { filter } from 'rxjs/operators';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { SignInClicked } from '../../../core/services/signInClick.service';
 import { Subscription } from 'rxjs';
+import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 
 @Component({
   selector: 'app-fss-header',
@@ -22,7 +23,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   logoAltText: string = "Admiralty - Maritime Data Solutions Logo";
   logoLinkUrl: string = "https://www.admiralty.co.uk/";
   essTitle: string = "Exchange sets";
-  searchTitle : string = "Search"
+  searchTitle: string = "Search"
   userSignedIn: boolean = false;
   essActive: boolean = false;
   searchActive: boolean = true;
@@ -35,14 +36,17 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   isActive: boolean = false;
   fssSilentTokenRequest: SilentRequest;
   fssTokenScope: any = [];
+  configUkhoEmailDomains: string[];
   constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private msalService: MsalService,
     private route: Router,
     private msalBroadcastService: MsalBroadcastService,
     private analyticsService: AnalyticsService,
-    private signInButtonService: SignInClicked) {
+    private signInButtonService: SignInClicked,
+    private essUploadFileService: EssUploadFileService) {
 
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
+    this.configUkhoEmailDomains = AppConfigService.settings["essConfig"].ukhoEmailDomains;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
@@ -68,7 +72,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.monitorNavigation();
     this.setSkipToContent();
 
-      
+
 
     /**The msalBroadcastService runs whenever an msalService with a Intercation is executed in the web application. */
     this.msalBroadcastService.inProgress$
@@ -157,7 +161,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.msalService.logout();
   }
 
-  handleUserProfileClick()  {
+  handleUserProfileClick() {
     const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
     let editProfileFlowRequest = {
       scopes: ["openid", AppConfigService.settings["b2cConfig"].clientId],
@@ -184,9 +188,14 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.firstName = claims ? claims['given_name'] : null;
     this.lastName = claims ? claims['family_name'] : null;
     this.userName = this.firstName + ' ' + this.lastName;
-
     this.signedInName = this.userName;
     
+    const email = claims ? claims['email'] : null;
+    this.configUkhoEmailDomains.forEach(configUkhoEmailDomain => {
+      if (email && email.split('@')[1] === configUkhoEmailDomain) {
+        this.essUploadFileService.isPrivilegedUser = true;
+      }
+    })
   }
 
   /**Once signed in handles user redirects and also handle expiry if token expires.*/
