@@ -108,7 +108,7 @@ describe('EssDownloadExchangesetComponent', () => {
     const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Exchange sets');
+    expect(compiled.querySelector('h1').textContent).toContain(' Step 4 of 4  Exchange set creation ');
   });
 
   test('should render text inside an p tag', () => {
