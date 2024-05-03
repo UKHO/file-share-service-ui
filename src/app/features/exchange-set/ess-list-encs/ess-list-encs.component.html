@@ -66,8 +66,17 @@
 
       </div>     
        <p class="estimatedExchangeSetSize" aria-live="polite"> Estimated Exchange set size <span class="bottomText">{{estimatedTotalSize}} </span></p>
-      <div *ngIf="selectedEncList && selectedEncList.length > 0">
-      <admiralty-button class="requestEncBtn" (click)="requestEncClicked()">Request ENCs</admiralty-button>
+       <div id="radio-submit-container">
+         <div class="radio-group-container" *ngIf=" isPrivilegedUser && selectedEncList && selectedEncList.length > 0">
+          <span>Choose Preffered Format</span>
+          <admiralty-radio-group displayVertical>    
+            <admiralty-radio name="options" [value]="s57OptionValue">S57 Exchange Set</admiralty-radio>
+            <admiralty-radio name="options" [value]="s63OptionValue" [checked]="true">S63 Exchange Set</admiralty-radio>
+          </admiralty-radio-group>
+        </div>
+        <div *ngIf="selectedEncList && selectedEncList.length > 0">
+          <admiralty-button class="requestEncBtn" (click)="requestEncClicked()">Request ENCs</admiralty-button>
+        </div>
       </div>
     </div>
   </div>

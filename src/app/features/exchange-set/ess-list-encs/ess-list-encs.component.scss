@@ -48,9 +48,12 @@ table th:last-child {
 }
 
 .requestEncBtn{
-    display: flex;
-    justify-content: flex-end;
+    float: right;
+    clear: right;
+    margin-top: 12x;
+    margin-bottom: 30px;
 }
+
 .selectionContainer{
     position: relative;
     min-height: 50vh;
@@ -92,4 +95,20 @@ table th:last-child {
   p {
     margin-bottom: 5px;
   }
+}
+
+.radio-group-container{
+    position: relative;
+    float: right;
+    margin-top: 12px;    
+}
+
+.radio-submit-container{
+    display: flex;
+    flex-direction: column;
+}
+
+admiralty-radio{
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
