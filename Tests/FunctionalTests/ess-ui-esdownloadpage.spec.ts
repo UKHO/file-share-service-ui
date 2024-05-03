@@ -41,6 +41,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
+    // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156018
     // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156119
     test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
 
@@ -58,6 +59,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'visible' });
         await esDownloadPageObjects.expect.spinnerSelectorHidden();
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
+        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
         //=========================================
 
         esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, fileSize);
