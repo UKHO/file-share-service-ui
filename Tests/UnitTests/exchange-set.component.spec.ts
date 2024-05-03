@@ -66,7 +66,7 @@ describe('ExchangeSetComponent', () => {
   test('should show the sub heading in exchange set', () => {
     const fixture = TestBed.createComponent(ExchangeSetComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p').textContent).toBe('Update your ENCs for a vessel by making an exchange set');
+    expect(fixture.nativeElement.querySelector('p').textContent).toBe(' Select one of the below options to choose the ENCs that you would like to create an exchange set for. This can then be installed on your ECDIS. ');
   });
 
   it('should display addUploadEncComponents div when radioUploadEnc is checked ', () => {
