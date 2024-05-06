@@ -225,7 +225,7 @@ stages:
              displayName: install browsers for playwright test
 
            - script: |
-              npm run test:auto -- --tags "@SampleTag"
+              npm run test:auto -- --grep "@SampleTag"
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
@@ -555,7 +555,7 @@ stages:
               jsonTargetFiles: 'appSetting.json'
 
            - script: |
-              npm run test:auto -- --grep=@SampleTag 
+              npm run test:auto
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
