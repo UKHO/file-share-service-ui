@@ -303,7 +303,7 @@ describe('EssUploadFileComponent', () => {
     fileType           |fileName         | getEncData              | encDataFunc            | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getNoEncData_csv()}  |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getNoEncData()}      |  ${1}
-    `('processEncFile should set raise "No valid ENCs found. info',
+    `('processEncFile should set raise "No valid ENCs found. warning',
     ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([getEncData], fileName);
       Object.defineProperty(file, 'type', { value: fileType });
@@ -312,7 +312,7 @@ describe('EssUploadFileComponent', () => {
       expect(component.validEncList).toEqual([]);
       const errObj = {
         showInfoErrorMessage: true,
-        messageType: 'info',
+        messageType: 'warning',
         messageDesc: 'No valid ENCs found.'
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
@@ -322,7 +322,7 @@ describe('EssUploadFileComponent', () => {
     fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getAioEncData_csv()}      |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getInvalidAndAioEncData()}|  ${1}
-    `('processEncFile should set raise AIO is not available. info',
+    `('processEncFile should set raise AIO is not available. warning',
     ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([getEncData], fileName);
       Object.defineProperty(file, 'type', { value: fileType });
@@ -332,7 +332,7 @@ describe('EssUploadFileComponent', () => {
       expect(component.validEncList).toEqual([]);
       const errObj = {
         showInfoErrorMessage: true,
-        messageType: 'info',
+        messageType: 'warning',
         messageDesc: `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
@@ -439,7 +439,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'No valid ENCs found.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'No valid ENCs found.');
     }));
 
   it.each`
@@ -459,7 +459,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
     }));
 
   it.each`
@@ -551,7 +551,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'No valid ENCs found.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'No valid ENCs found.');
     }));
 
   it.each`
@@ -618,7 +618,7 @@ ${ValidAndAioEncData}         | ${true}
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "warning", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
     }));
 
   it.each`
@@ -666,7 +666,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
     }));
 
   it.each`
@@ -710,7 +710,7 @@ ${ValidAndAioEncData}         | ${true}
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "warning", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
     }));
 
   it.each`
@@ -758,7 +758,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
     }));
 });
 

@@ -286,13 +286,13 @@ describe('EssAddSingleEncsComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
-  it('validateAndAddENC should display error when ENC number is invalid', () => {
+  it('validateAndAddENC should display warning when ENC number is invalid', () => {
     component.txtSingleEnc = 'AS1212121';
     component.renderedFrom = 'essHome';
     component.validateAndAddENC();
     const errObj = {
       showInfoErrorMessage : true,
-      messageType : 'error',
+      messageType : 'warning',
       messageDesc : 'Invalid ENC number'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
@@ -321,13 +321,13 @@ describe('EssAddSingleEncsComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
-  it('validateAndAddENC should   raise "Invalid ENC number."error', () => {
+  it('validateAndAddENC should   raise "Invalid ENC number."warning', () => {
     component.txtSingleEnc = 'AU22015';
     component.renderedFrom = 'encList';
     component.validateAndAddENC();
     const errObj = {
       showInfoErrorMessage : true,
-      messageType : 'error',
+      messageType : 'warning',
       messageDesc : 'Invalid ENC number.'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
@@ -419,7 +419,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.productUpdatesByIdentifiersResponse(component.validEnc,'essHome')
     tick();
     expect(component.displayLoader).toEqual(false);
-    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC');
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'warning', 'Invalid ENC');
   }));
 
 
@@ -458,7 +458,7 @@ describe('EssAddSingleEncsComponent', () => {
     expect(routeService).toHaveBeenCalledWith(['exchangesets', 'enc-list']);
   }));
 
-  it('validateAndAddENC should raise "Invalid ENC number" error', fakeAsync(() => {
+  it('validateAndAddENC should raise "Invalid ENC number" warning', fakeAsync(() => {
     component.validEnc = ['TP4NO13K', 'AT6IIFE1'];
     component.txtSingleEnc = 'US4F8M';
     component.renderedFrom = 'essHome';
@@ -472,7 +472,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.scsProductCatalogResponse(component.validEnc,'essHome')
     tick();
     expect(component.displayLoader).toEqual(false);
-    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC number.');
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'warning', 'Invalid ENC number.');
   }));
 
   it('productUpdatesByDeltaResponse should return Error message for productInformationSinceDateTime', fakeAsync(() => {

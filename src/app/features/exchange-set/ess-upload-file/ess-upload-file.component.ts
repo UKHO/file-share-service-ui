@@ -92,10 +92,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
       this.validEncList = this.essUploadFileService.getValidEncs();
       if (this.validEncList.length === 0) {
         if(this.essUploadFileService.aioEncFound){
-          this.triggerInfoErrorMessage(true, 'info', `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
+          this.triggerInfoErrorMessage(true, 'warning', `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
           return;
         }
-        this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
+        this.triggerInfoErrorMessage(true, 'warning', 'No valid ENCs found.');
         return;
       }
       this.fetchScsTokenReponse();
@@ -143,10 +143,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
             else {
               this.displayLoader = false;
               if (this.essUploadFileService.aioEncFound) {
-                this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+                this.triggerInfoErrorMessage(true, 'warning', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
                 return;
               } else {
-                this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
+                this.triggerInfoErrorMessage(true, 'warning', 'No valid ENCs found.');
                 return;
               }
             }
@@ -182,11 +182,11 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                     } else if (this.essUploadFileService.aioEncFound && this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                       this.displayLoader = false;
                       let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                      this.triggerInfoErrorMessage(true, 'info', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
+                      this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
                       return;
                     } else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                       let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                      this.triggerInfoErrorMessage(true, 'info', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
+                      this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
                       return;
                     } else if (this.essUploadFileService.aioEncFound) {
                       this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
@@ -203,11 +203,11 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                     if (error.status == HttpStatusCode.NotModified) {
                       if (this.essUploadFileService.aioEncFound && this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                         let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                        this.triggerInfoErrorMessage(true, 'info', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
+                        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
                       }
                       else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                         let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                        this.triggerInfoErrorMessage(true, 'info', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
+                        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
                       } else if (this.essUploadFileService.aioEncFound) {
                         this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
                       } else {
@@ -221,7 +221,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
             }
             else {
               this.displayLoader = false;
-              this.triggerInfoErrorMessage(true, 'info', 'No valid ENCs found.');
+              this.triggerInfoErrorMessage(true, 'warning', 'No valid ENCs found.');
               return;
             }
           },

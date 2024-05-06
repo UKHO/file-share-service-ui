@@ -98,7 +98,7 @@ describe('EssTypesComponent', () => {
     component.isDateSelected = true; 
     component.onDateChange({ target: { valueAsDate: futureDate } } as any); 
 
-    const errorMessage = 'Please choose a date from today or up to 27 days in the past. Future dates are not permitted.';
+    const errorMessage = 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option.';
     const errObj={
       showInfoErrorMessage: true,
       messageType: 'info',
@@ -113,7 +113,7 @@ describe('EssTypesComponent', () => {
     component.isDateSelected = true; 
     component.onDateChange({ target: { valueAsDate: pastDate } } as any); 
 
-    const errorMessage = 'Date selected not within 27 days, please choose a different date or select Download all data option.';
+    const errorMessage = 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option.';
     const errObj = {
       showInfoErrorMessage: true,
       messageType: 'info',
