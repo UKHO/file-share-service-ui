@@ -45,7 +45,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13961
-  test('Check the functionality for Sorting of ENC numbers in ascending or descending order', async ({ page }) => {
+  test('Check the functionality for Sorting of ENC numbers in ascending or descending order @SampleTag', async ({ page }) => {
 
     let ascOrderlist = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C']
     let dscOrderlist = ['GB50184C', 'CN484220', 'CA271105', 'AU5PTL01', 'AU220150']
