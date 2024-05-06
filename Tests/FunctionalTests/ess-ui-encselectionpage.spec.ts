@@ -32,7 +32,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13960
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13940
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13941
-  test('Verify selecting and deselecting multiple checkboxes in left hand table, shows expected result in right hand table', async ({ page }) => {
+  test('Verify selecting and deselecting multiple checkboxes in left hand table, shows expected result in right hand table', {tag: '@SampleTag'}, async ({ page }) => {
 
     let encSelected = ['AU220150', 'CA271105', 'AU5PTL01']
 
