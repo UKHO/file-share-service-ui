@@ -47,9 +47,13 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   sortGraphicDown: string = "fa-chevron-down";
   sortGraphic: string = this.sortGraphicUp;
   scsInvalidProduct: NotReturnedProduct[];
-  updateNumber:number;
-  editionNumber:number;
-  
+  updateNumber: number;
+  editionNumber: number;
+  isPrivilegedUser: boolean = false;
+  selectedOption: string = 'S63';
+  s57OptionValue: string;
+  s63OptionValue: string;
+
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
     private route: Router,
@@ -83,6 +87,8 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
+    this.s57OptionValue = 'S57';
+    this.s63OptionValue = 'S63';
    
     if(this.essUploadFileService.aioEncFound){
       if(this.scsInvalidProduct.length > 0){
@@ -99,6 +105,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
         let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
         this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProducts}`);
       }
+      this.isPrivilegedUser = this.essUploadFileService.isPrivilegedUser;
   }
 
   setEncList() {
