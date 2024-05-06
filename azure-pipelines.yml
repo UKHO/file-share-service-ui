@@ -555,7 +555,7 @@ stages:
               jsonTargetFiles: 'appSetting.json'
 
            - script: |
-              npm run test:auto
+              npm run test:auto -- --grep=@SampleTag 
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
