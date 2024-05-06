@@ -57,6 +57,6 @@
     "defaultEstimatedSizeinMB": "0.5",
     "aioExcludeEncs": [ "GB800002", "FR800002" ],
     "apiUiUrl": "",
-    "ukhoEmailDomains":[]
+    "adminDomains":[]
   }
 }
