@@ -60,9 +60,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13959 (For verify Table as per ukho design)
   // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156375
   test('Verify Text on the top of ENC list.', async ({ page }) => {
-
     await encSelectionPageObjects.expect.startLinkSelectorVisible();
     await encSelectionPageObjects.expect.textAboveTableSelectorToEqual("Please confirm the ENCs that you would like to include in your exchange set.If you selected “Download updates” this list will only show ENCs that have had an update within the date range provided.");
+    await exchangeSetSelectionPageObjects.expect.validateText("Step 3 of 4\nConfirm exchange set content");
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
@@ -265,18 +265,18 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(expectedEncs.every(r => actualEncs.has(r)));
     await encSelectionPageObjects.selectAllSelectorClick();
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
     await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
     var firstEncName = (await encSelectionPageObjects.encNames.first().innerText());
     fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), expectedEncs.filter(r => r != firstEncName));
     estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
     await encSelectionPageObjects.deselectAllSelectorClick();
     await encSelectionPageObjects.selectAllSelectorClick();
     await encSelectionPageObjects.requestENCsSelectorClick();
-    var productVersionResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('productData/productVersions') && r.request().method() == 'POST');
+    var productVersionResponse = await encSelectionPageObjects.page.waitForResponse(r => r.url().includes('productData/productVersions') && r.request().method() == 'POST');
     await esslandingPageObjects.expect.IsNotEmpty(productVersionResponse.url());
-    var batchResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('api/batch') && r.url().includes('/status') && r.request().method() == 'GET');
+    var batchResponse = await encSelectionPageObjects.page.waitForResponse(r => r.url().includes('api/batch') && r.url().includes('/status') && r.request().method() == 'GET');
     await esslandingPageObjects.expect.IsNotEmpty(batchResponse.url());
     await encSelectionPageObjects.expect.ValidateProductVersionPayload(await sinceDateResponse.text(), productVersionResponse.request().postData());
   })
