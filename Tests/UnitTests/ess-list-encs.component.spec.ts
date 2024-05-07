@@ -710,6 +710,13 @@ describe('EssListEncsComponent', () => {
     expect(component.selectedOption).toBeTruthy();
   });
 
+  it('should display radio buttons when user is privileged', () => {
+    component.isPrivilegedUser = true;
+    fixture.detectChanges();
+    const radioButtons = fixture.debugElement.queryAll(By.css('admiralty-radio'));
+    expect(radioButtons.length).toBeGreaterThan(0);
+  });
+
   it('should not display radio buttons when user is not privileged', () => {
     component.isPrivilegedUser = false;
     fixture.detectChanges();
