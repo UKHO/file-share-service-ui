@@ -62,7 +62,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   test('Verify Text on the top of ENC list.', async ({ page }) => {
     await encSelectionPageObjects.expect.startLinkSelectorVisible();
     await encSelectionPageObjects.expect.textAboveTableSelectorToEqual("Please confirm the ENCs that you would like to include in your exchange set.If you selected “Download updates” this list will only show ENCs that have had an update within the date range provided.");
-    await exchangeSetSelectionPageObjects.expect.validateText("Step 3 of 4\nConfirm exchange set content");
+    await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 3 of 4\nConfirm exchange set content");
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
