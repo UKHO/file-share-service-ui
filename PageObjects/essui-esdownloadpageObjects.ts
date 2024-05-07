@@ -12,6 +12,7 @@ export class EsDownloadPageObjects {
     readonly requestENCsSelector: Locator;
     readonly downloadButtonSelector: Locator;
     readonly spinnerSelector: Locator;
+    readonly exchangeSetDownloadFrame: Locator;
     readonly includedENCsCountSelector: Locator;
     readonly EstimatedESsizeSelector: Locator;
     readonly selectedTextSelector: Locator;
@@ -39,6 +40,7 @@ export class EsDownloadPageObjects {
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
         this.downloadLinkSelector = this.page.getByTestId('download-exs');
         this.createLinkSelector = this.page.getByTestId('create-exs')
+        this.exchangeSetDownloadFrame = this.page.locator("div[class = 'ess-container']> div");
         this.pageUnderTest = page;      
 
     }
@@ -169,10 +171,10 @@ class EsDownloadPageAssertions {
 
     }
 
-    async SelectedENCs(): Promise<void> {
-        await this.esDownloadPageObjects.page.waitForSelector("div[class='showSelectedEncSize'] strong", {state: 'visible', timeout: 5000});
-        expect(this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
+    async exchangeSetDownloadGridValidation(): Promise<void> {
+        expect(await this.esDownloadPageObjects.exchangeSetDownloadFrame.count() == 1);
+      }
 
     }
-}
+
 

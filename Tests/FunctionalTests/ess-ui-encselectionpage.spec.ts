@@ -58,10 +58,11 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13962 (For verify Text)
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13959 (For verify Table as per ukho design)
+  // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156375
   test('Verify Text on the top of ENC list.', async ({ page }) => {
 
     await encSelectionPageObjects.expect.startLinkSelectorVisible();
-    await encSelectionPageObjects.expect.textAboveTableSelectorToEqual("Select up to 250 ENCs and make an exchange set. Please note, larger requests may take longer to process.");
+    await encSelectionPageObjects.expect.textAboveTableSelectorToEqual("Please confirm the ENCs that you would like to include in your exchange set.If you selected “Download updates” this list will only show ENCs that have had an update within the date range provided.");
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
@@ -117,7 +118,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
 
-  // // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
   test('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENC', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();

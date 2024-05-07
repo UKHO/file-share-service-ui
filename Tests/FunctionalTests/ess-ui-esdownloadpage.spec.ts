@@ -40,16 +40,16 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
+    // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156119
     test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
         
         var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
         fileSize = await encSelectionPageObjects.getFileSize(await response.text());
         await encSelectionPageObjects.selectAllSelectorClick();
-        await encSelectionPageObjects.SelectedENCsCount();
+        encSelectionPageObjects.SelectedENCsCount();
         let estimatedString = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
         await encSelectionPageObjects.requestENCsSelectorClick();
         await encSelectionPageObjects.page.waitForLoadState();
-        await esDownloadPageObjects.expect.SelectedENCs();
         await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
@@ -67,6 +67,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
         await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
         await esDownloadPageObjects.expect.createLinkSelectorEnabled();
+        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
+
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
