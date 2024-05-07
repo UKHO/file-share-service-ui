@@ -230,7 +230,7 @@ stages:
              inputs:
                scriptType: inlineScript
                inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(null)"
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains] Null"
 
            - script: |
               npm run test:auto -- --grep "SampleTag"
