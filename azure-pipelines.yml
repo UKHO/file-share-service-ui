@@ -230,7 +230,7 @@ stages:
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
              continueOnError: 'true'
 
-             - script: |
+           - script: |
               npm run test:auto -- --invert --grep "SampleTag"
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
