@@ -160,6 +160,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.estimatedTotalSize = this.getEstimatedTotalSize();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     if (this.selectedEncList.length === 0) {
+      this.selectedOption = this.s63OptionValue;
       this.selectDeselectText = SelectDeselect.select;
       return;
     }
