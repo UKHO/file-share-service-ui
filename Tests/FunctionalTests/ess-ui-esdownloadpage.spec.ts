@@ -68,7 +68,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
         await esDownloadPageObjects.expect.createLinkSelectorEnabled();
         await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
-        await exchangeSetSelectionPageObjects.expect.validateText("Step 4 of 4\nExchange set creation");
+        await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 4 of 4\nExchange set creation");
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
