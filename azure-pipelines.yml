@@ -175,22 +175,22 @@ stages:
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
     jobs:
-      - deployment: DevDeploy
-        displayName: "Dev - deploy terraform and website"
-        environment: "FSS-Dev"
-        container: ${{variables.Container}}
-        workspace:
-          clean: all
-        variables:
-          - group: "File share service terraform Dev"
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - template: Deployment/templates/continous-deployment.yml
-                  parameters:
-                    ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-                    AzureSubscription: "File-Share-Service-Dev-P4052"
+      # - deployment: DevDeploy
+      #   displayName: "Dev - deploy terraform and website"
+      #   environment: "FSS-Dev"
+      #   container: ${{variables.Container}}
+      #   workspace:
+      #     clean: all
+      #   variables:
+      #     - group: "File share service terraform Dev"
+      #   strategy:
+      #     runOnce:
+      #       deploy:
+      #         steps:
+      #           - template: Deployment/templates/continous-deployment.yml
+      #             parameters:
+      #               ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+      #               AzureSubscription: "File-Share-Service-Dev-P4052"
 
       - job: FunctionalTests
         dependsOn: DevDeploy
