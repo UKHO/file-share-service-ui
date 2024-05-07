@@ -193,7 +193,7 @@ stages:
       #               AzureSubscription: "File-Share-Service-Dev-P4052"
 
       - job: FunctionalTests
-        dependsOn: DevDeploy
+        # dependsOn: DevDeploy
         pool: 
           name: $(WindowPool)
           demands: FM-Perms
