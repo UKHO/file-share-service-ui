@@ -303,7 +303,7 @@ describe('EssUploadFileComponent', () => {
     fileType           |fileName         | getEncData              | encDataFunc            | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getNoEncData_csv()}  |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getNoEncData()}      |  ${1}
-    `('processEncFile should set raise "No valid ENCs found. warning',
+    `('processEncFile should set raise "No valid ENCs found. error',
     ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([getEncData], fileName);
       Object.defineProperty(file, 'type', { value: fileType });
@@ -312,7 +312,7 @@ describe('EssUploadFileComponent', () => {
       expect(component.validEncList).toEqual([]);
       const errObj = {
         showInfoErrorMessage: true,
-        messageType: 'warning',
+        messageType: 'error',
         messageDesc: 'No valid ENCs found.'
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
@@ -322,7 +322,7 @@ describe('EssUploadFileComponent', () => {
     fileType           |fileName         | getEncData              | encDataFunc                 | expectedResult
     ${'text/csv'}      |${'test.csv'}    | ${getEncData_csv()}     | ${getAioEncData_csv()}      |  ${3}
     ${'text/plain'}    |${'test.txt'}    | ${getEncData()}         | ${getInvalidAndAioEncData()}|  ${1}
-    `('processEncFile should set raise AIO is not available. warning',
+    `('processEncFile should set raise AIO is not available. error',
     ({ fileType, fileName, getEncData, encDataFunc, expectedResult }: { fileType: 'text/csv' | 'text/permit'; fileName: string; getEncData: string; encDataFunc: string; expectedResult: number }) => {
       const file = new File([getEncData], fileName);
       Object.defineProperty(file, 'type', { value: fileType });
@@ -332,7 +332,7 @@ describe('EssUploadFileComponent', () => {
       expect(component.validEncList).toEqual([]);
       const errObj = {
         showInfoErrorMessage: true,
-        messageType: 'warning',
+        messageType: 'error',
         messageDesc: `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
@@ -439,7 +439,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'No valid ENCs found.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found.');
     }));
 
   it.each`
@@ -459,7 +459,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
     }));
 
   it.each`
@@ -551,7 +551,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'No valid ENCs found.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found.');
     }));
 
   it.each`

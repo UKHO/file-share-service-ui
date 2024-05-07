@@ -92,10 +92,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
       this.validEncList = this.essUploadFileService.getValidEncs();
       if (this.validEncList.length === 0) {
         if(this.essUploadFileService.aioEncFound){
-          this.triggerInfoErrorMessage(true, 'warning', `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
+          this.triggerInfoErrorMessage(true, 'error', `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
           return;
         }
-        this.triggerInfoErrorMessage(true, 'warning', 'No valid ENCs found.');
+        this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found.');
         return;
       }
       this.fetchScsTokenReponse();
@@ -143,10 +143,10 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
             else {
               this.displayLoader = false;
               if (this.essUploadFileService.aioEncFound) {
-                this.triggerInfoErrorMessage(true, 'warning', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+                this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
                 return;
               } else {
-                this.triggerInfoErrorMessage(true, 'warning', 'No valid ENCs found.');
+                this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found.');
                 return;
               }
             }
@@ -221,7 +221,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
             }
             else {
               this.displayLoader = false;
-              this.triggerInfoErrorMessage(true, 'warning', 'No valid ENCs found.');
+              this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found.');
               return;
             }
           },
