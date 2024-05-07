@@ -51,8 +51,8 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   editionNumber: number;
   isPrivilegedUser: boolean = false;
   selectedOption: string = 'S63';
-  s57OptionValue: string;
-  s63OptionValue: string;
+  s57OptionValue: string = 'S57';
+  s63OptionValue: string = 'S63';
 
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
@@ -87,8 +87,6 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
-    this.s57OptionValue = 'S57';
-    this.s63OptionValue = 'S63';
    
     if(this.essUploadFileService.aioEncFound){
       if(this.scsInvalidProduct.length > 0){
@@ -161,6 +159,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.estimatedTotalSize = this.getEstimatedTotalSize();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     if (this.selectedEncList.length === 0) {
+      this.selectedOption = this.s63OptionValue;
       this.selectDeselectText = SelectDeselect.select;
       return;
     }
@@ -265,6 +264,10 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
           this.scsExchangeSetResponse();
         });
     });
+  }
+
+  onRadioClick(option: string) {
+    this.essUploadFileService.exchangeSetType = option === 'S57' ? 'S57' : 'S63';
   }
 
   scsExchangeSetResponse() {
