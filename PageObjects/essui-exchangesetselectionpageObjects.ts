@@ -90,7 +90,7 @@ export class ExchangeSetSelectionAssertion{
         expect(await this.selection.warningMessage.innerText() == 'Date selected not within 27 days, please choose a different date or select Download all data option.').toBeTruthy();
     }
 
-    async validateText(text:string){
+    async validateHeaderText(text:string){
        expect((await this.selection.header.innerText())==text).toBeTruthy();
     }
 }
