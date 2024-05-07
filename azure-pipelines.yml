@@ -230,6 +230,12 @@ stages:
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
              continueOnError: 'true'
 
+             - script: |
+              npm run test:auto -- --invert --grep "SampleTag"
+             displayName: 'Run Functional Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             continueOnError: 'true'
+
            - task: PublishTestResults@2
              condition: succeededOrFailed()
              inputs:
