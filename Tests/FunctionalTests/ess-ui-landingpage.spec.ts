@@ -27,13 +27,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13806
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
-     test('Verify Radio buttons text on ESS landing page', async ({ page }) => {
-          const headLabel = page.locator("h1#main");
-          const radio1 = page.getByRole('radio', { name: "Upload a list in a file" });
-          const radio2 = page.getByRole('radio', { name: "Add ENC" });
-          await expect(radio1).toBeTruthy();
-          await expect(radio2).toBeTruthy();
-
+     // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156118
+     test('Verify Radio buttons text and header on ESS landing page', async ({ page }) => {
+         await exchangeSetSelectionPageObjects.expect.validateText("Step 2 of 4\nSelecting ENCs");
+         encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.uploadbtntextSelector.innerText() == "Upload a list in a file");
+         encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.addenctextSelector.innerText() == "Add ENC individually");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799

@@ -23,6 +23,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146695
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156116
   test('Verify the Exchange sets page', async ({ page }) => {
     await exchangeSetSelectionPageObjects.expect.validateBaseRadioButtonText();
     await exchangeSetSelectionPageObjects.expect.validateBaseDownloadDescription();
@@ -31,6 +32,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await exchangeSetSelectionPageObjects.expect.validateDeltaDownloadDescription();
     await exchangeSetSelectionPageObjects.expect.validateDatePickerIsEmpty();
     await exchangeSetSelectionPageObjects.expect.validateProceedButton();
+    await exchangeSetSelectionPageObjects.expect.validateText("Step 1 of 4\nChoose Exchange set type");
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149497
