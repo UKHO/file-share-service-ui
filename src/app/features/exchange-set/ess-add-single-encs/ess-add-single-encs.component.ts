@@ -85,7 +85,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
     if(!isValidEnc){
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
+      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
       return;
     }
 
@@ -170,7 +170,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
           }
           else {
             this.displayLoader = false;
-            this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
+            this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
             return;
           }
         },
@@ -206,7 +206,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     this.displayLoader = false;
     this.triggerInfoErrorMessage(false,'info', '');
     if(productCatalog.products.length === 0){
-      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC');
+      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
       return;
     }
     if(!this.essUploadFileService.scsProductResponse){
