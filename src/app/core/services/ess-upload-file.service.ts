@@ -189,7 +189,7 @@ export class EssUploadFileService {
     return this._exchangeSetDownloadZipType;
   }
 
-  set exchangeSetType(type: 'S57' | 'S63') {
+  set exchangeSetDownloadZipType(type: 'S57' | 'S63') {
     this._exchangeSetDownloadZipType = type;
   }
 

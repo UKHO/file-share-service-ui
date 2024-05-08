@@ -87,6 +87,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
+    this.essUploadFileService.exchangeSetDownloadZipType = 'S63';
    
     if(this.essUploadFileService.aioEncFound){
       if(this.scsInvalidProduct.length > 0){
@@ -266,8 +267,8 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     });
   }
 
-  onRadioClick(option: string) {
-    this.essUploadFileService.exchangeSetType = option === 'S57' ? 'S57' : 'S63';
+  essDownloadZipType(option: string) {
+    this.essUploadFileService.exchangeSetDownloadZipType = option === 'S57' ? 'S57' : 'S63';
   }
 
   scsExchangeSetResponse() {

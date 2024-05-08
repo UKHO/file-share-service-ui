@@ -70,8 +70,8 @@
          <div class="radio-group-container" *ngIf=" isPrivilegedUser && selectedEncList && selectedEncList.length > 0">
           <span>Choose Preffered Format</span>
           <admiralty-radio-group [(ngModel)]="selectedOption" displayVertical>    
-            <admiralty-radio name="options" [value]="s57OptionValue" (click)="onRadioClick(s57OptionValue)">S57 Exchange Set</admiralty-radio>
-            <admiralty-radio name="options" [value]="s63OptionValue" (click)="onRadioClick(s63OptionValue)"[checked]="true">S63 Exchange Set</admiralty-radio>
+            <admiralty-radio name="options" [value]="s57OptionValue" (click)="essDownloadZipType(s57OptionValue)">S57 Exchange Set</admiralty-radio>
+            <admiralty-radio name="options" [value]="s63OptionValue" (click)="essDownloadZipType(s63OptionValue)"[checked]="true">S63 Exchange Set</admiralty-radio>
           </admiralty-radio-group>
         </div>
         <div *ngIf="selectedEncList && selectedEncList.length > 0">
