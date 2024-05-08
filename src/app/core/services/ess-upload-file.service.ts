@@ -24,7 +24,7 @@ export class EssUploadFileService {
   private _exchangeSetDownloadType: 'Base' | 'Delta';
   private _exchangeSetDeltaDate: any;
   public isPrivilegedUser: boolean = false;
-  private _exchangeSetDownloadZipType: 'S57'|'S63';
+  private _exchangeSetDownloadZipType: string;
 
   constructor() {
     this.selectedEncs = [];
@@ -185,11 +185,11 @@ export class EssUploadFileService {
     this._exchangeSetDownloadType = type;
   }
 
-  get exchangeSetDownloadZipType(): 'S57' | 'S63' {
+  get exchangeSetDownloadZipType(): string {
     return this._exchangeSetDownloadZipType;
   }
 
-  set exchangeSetDownloadZipType(type: 'S57' | 'S63') {
+  set exchangeSetDownloadZipType(type: string) {
     this._exchangeSetDownloadZipType = type;
   }
 

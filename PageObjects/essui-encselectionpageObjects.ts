@@ -41,6 +41,8 @@ export class EncSelectionPageObjects {
   readonly getDialogueSelector : Locator
   readonly errorMessage : Locator
   readonly encNames : Locator
+  readonly s63Radiobutton : Locator
+  readonly s57Radiobutton : Locator
   readonly pageUnderTest: Page
 
 
@@ -74,6 +76,8 @@ export class EncSelectionPageObjects {
     this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
     this.errorMessage = this.page.locator("h3[class='warningMsgTitle']");
     this.encNames = this.page.locator("table[class='cdk-table enc-list-table'] tbody tr td");
+    this.s57Radiobutton = this.page.locator("admiralty-radio[ng-reflect-value='S57'] div label");
+    this.s63Radiobutton = this.page.locator("admiralty-radio[ng-reflect-value='S63'] div label");
     this.pageUnderTest = page;
   }
 

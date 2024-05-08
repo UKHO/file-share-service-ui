@@ -280,4 +280,50 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.ValidateProductVersionPayload(await sinceDateResponse.text(), productVersionResponse.request().postData());
   })
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156059
+  test("check UKHO user is able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for base exchange set.",async ({ page}) =>{
+    await encSelectionPageObjects.selectAllSelectorClick();
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 Exchange Set");
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 Exchange Set");
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156061
+  test("check UKHO user is not able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for base exchange set @NonUKHOUser",async ({ page}) =>{
+    await encSelectionPageObjects.selectAllSelectorClick();
+    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s63Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s57Radiobutton.isVisible());
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156211
+  test("check UKHO user is able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for Delta exchange set.",async ({ page}) =>{
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.enterDate(new Date());
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick(); 
+    await encSelectionPageObjects.selectAllSelectorClick();
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 Exchange Set");
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 Exchange Set");
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156212
+  test("check other than UKHO user is not able to see options to choose preferred exchange set format on 'Confirm exchange set content' screen for Delta exchange set @NonUKHOUser",async ({ page}) =>{
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.enterDate(new Date());
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick(); 
+    await encSelectionPageObjects.selectAllSelectorClick();
+    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s63Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s57Radiobutton.isVisible());
+    });
+
 });
