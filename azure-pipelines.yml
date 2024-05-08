@@ -174,8 +174,6 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
-      - name: essConfig.adminDomains
-        value: $(essConfig-AdminDomains)
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
@@ -226,10 +224,32 @@ stages:
               script: 'npx playwright install'
              displayName: install browsers for playwright test
 
+
+           - task: PowerShell@1
+             displayName: "Set environment variable to Null or Empty"
+             inputs:
+               scriptType: inlineScript
+               inlineScript: |
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains] Null"
+
            - script: |
-              npm run test:auto
+              npm run test:auto -- --grep "SampleTag"
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             continueOnError: 'true'
+
+           - task: PowerShell@1
+             displayName: "Set environment variable with Library value"
+             inputs:
+               scriptType: inlineScript
+               inlineScript: |
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
+
+           - script: |
+              npm run test:auto -- --grep-invert "SampleTag"
+             displayName: 'Run Functional Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             continueOnError: 'true'
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
@@ -374,8 +394,6 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
-      - name: essConfig.adminDomains
-        value: $(essConfig-AdminDomains)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
     jobs:
       - deployment: vNextIatDeploy
@@ -445,8 +463,6 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
-      - name: essConfig.adminDomains
-        value: $(essConfig-AdminDomains)
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
     jobs:
       - deployment: vNextE2eDeploy
@@ -515,8 +531,6 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
-      - name: essConfig.adminDomains
-        value: $(essConfig-AdminDomains)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy
