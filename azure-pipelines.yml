@@ -233,7 +233,7 @@ stages:
                   Write-Host "##vso[task.setvariable variable=essConfig.adminDomains] Null"
 
            - script: |
-              npm run test:auto -- --grep "SampleTag"
+              npm run test:auto -- --grep "NonUKHOUser"
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
              continueOnError: 'true'
@@ -246,7 +246,7 @@ stages:
                   Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
 
            - script: |
-              npm run test:auto -- --grep-invert "SampleTag"
+              npm run test:auto -- --grep-invert "NonUKHOUser"
              displayName: 'Run Functional Tests'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
              continueOnError: 'true'
