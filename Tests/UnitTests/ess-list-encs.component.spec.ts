@@ -702,14 +702,7 @@ describe('EssListEncsComponent', () => {
   it('should have "S63 Exchange Set" selected by default',()=>{
     expect(component.selectedOption).toEqual('S63');
   });
-
-  it('when "Request ENCs" button is clicked, at least one radio button must be selected',()=>{
-    let requestENCs = fixture.debugElement.nativeElement.querySelector('admiralty-button');
-    requestENCs.click();
-
-    expect(component.selectedOption).toBeTruthy();
-  });
-
+  
   it('should display radio buttons when user is privileged', () => {
     component.isPrivilegedUser = true;
     fixture.detectChanges();
@@ -722,6 +715,28 @@ describe('EssListEncsComponent', () => {
     fixture.detectChanges();
     const radioButtons = fixture.debugElement.queryAll(By.css('admiralty-radio'));
     expect(radioButtons.length).toBe(0);
+  });
+
+  it('should set exchangeSetDownloadZipType to S57 when essDownloadZipType is called with S57', () => {
+    component.essDownloadZipType('S57');
+    expect(essUploadFileService.exchangeSetDownloadZipType).toBe('S57');
+  });
+
+  it('should set exchangeSetDownloadZipType to S63 when essDownloadZipType is called with S63', () => {
+    component.essDownloadZipType('S63');
+    expect(essUploadFileService.exchangeSetDownloadZipType).toBe('S63');
+  });
+
+  it('should set exchangeSetDownloadZipType to S63 when essDownloadZipType is called with any other value', () => {
+    component.essDownloadZipType('other');
+    expect(essUploadFileService.exchangeSetDownloadZipType).toBe('S63');
+  });
+
+  it('when "Request ENCs" button is clicked, at least one radio button must be selected',()=>{
+    let requestENCs = fixture.debugElement.nativeElement.querySelector('admiralty-button');
+    requestENCs.click();
+
+    expect(component.selectedOption).toBeTruthy();
   });
 });
 
