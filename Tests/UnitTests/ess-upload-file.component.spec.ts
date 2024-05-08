@@ -760,6 +760,29 @@ ${getEncData}                 | ${false}
       expect(component.displayLoader).toEqual(false);
       expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
     }));
+
+    it.each`
+encDataFunc                         | expectedResult
+${getInvalidAndAioEncData}          | ${false}
+  `('validatation should raise "No valid ENCs found" and AIO message info',
+    fakeAsync(({ encDataFunc, expectedResult }: { encDataFunc: () => string, expectedResult: boolean }) => {
+      const fileContent = encDataFunc();
+      const file = new File([fileContent], 'test.txt');
+      Object.defineProperty(file, 'type', { value: 'text/plain' });
+      component.encFile = file;
+      essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+      essUploadFileService.exchangeSetDownloadType = 'Delta';
+      essUploadFileService.aioEncFound = true;
+      component.processEncFile(fileContent);
+      jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+      jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
+      component.triggerInfoErrorMessage = jest.fn();
+      component.fetchScsTokenReponse();
+      component.scsProductCatalogResponse(component.validEncList);
+      tick();
+      expect(component.displayLoader).toEqual(false);
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+    }));
 });
 
 
