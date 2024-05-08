@@ -738,6 +738,20 @@ describe('EssListEncsComponent', () => {
 
     expect(component.selectedOption).toBeTruthy();
   });
+
+  it('should render "estimated Exchange Set Size" when "S63 Exchange Set"radio button is selected', () => {
+    component.selectedOption = component.s63OptionValue;
+    fixture.detectChanges();
+    const paragraph = fixture.debugElement.query(By.css('.estimatedExchangeSetSize'));
+    expect(paragraph).toBeTruthy();
+  });
+
+  it('should not render paragraph when selectedOption is not equal to s63OptionValue', () => {
+    component.selectedOption = component.s57OptionValue;
+    fixture.detectChanges();
+    const paragraph = fixture.debugElement.query(By.css('.estimatedExchangeSetSize'));
+    expect(paragraph).toBeNull();
+  });
 });
 
 export const exchangeSetDetailsMockData: any = {
