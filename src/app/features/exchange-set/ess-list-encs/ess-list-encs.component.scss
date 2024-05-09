@@ -50,7 +50,6 @@ table th:last-child {
 .requestEncBtn{
     float: right;
     clear: right;
-    margin-top: 12x;
     margin-bottom: 30px;
 }
 
@@ -100,12 +99,15 @@ table th:last-child {
 .radio-group-container{
     position: relative;
     float: right;
-    margin-top: 12px;    
+    margin-top: 12px;
+    margin-right: -15px;    
 }
 
-.radio-submit-container{
+#radio-submit-container{
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
+  justify-content: flex-start;
 }
 
 admiralty-radio{
