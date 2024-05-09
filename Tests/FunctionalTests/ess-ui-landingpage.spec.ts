@@ -197,7 +197,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found.')
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found')
      })
 
      // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156779
@@ -208,7 +208,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found.');
+          await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found');
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      })
@@ -253,14 +253,14 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.errorMessage.click();
           await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          await encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.errorMessage.innerText() == "No valid ENCs found.");
+          await encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.errorMessage.innerText() == "No valid ENCs found");
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });
 
      //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151356
      test('Verify message for AIO Delta selection', async ({ page }) => {
-          var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.";
+          var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site";
           await encSelectionPageObjects.startAgainLinkSelectorClick();
           await exchangeSetSelectionPageObjects.enterDate(new Date());
           await exchangeSetSelectionPageObjects.clickOnProceedButton()
