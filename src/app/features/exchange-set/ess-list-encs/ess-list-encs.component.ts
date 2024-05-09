@@ -91,7 +91,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
       }
       else{
         this.essUploadFileService.infoMessage = true;
-        this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+        this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
       }
      }
       else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {

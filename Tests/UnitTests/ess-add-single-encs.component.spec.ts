@@ -339,7 +339,7 @@ describe('EssAddSingleEncsComponent', () => {
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'info',
-      messageDesc : 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.'
+      messageDesc : 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });

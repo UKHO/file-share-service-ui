@@ -66,7 +66,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
       return;
     }
     this.fetchScsTokenReponse('essHome');
@@ -91,7 +91,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
       return;
     }
 
