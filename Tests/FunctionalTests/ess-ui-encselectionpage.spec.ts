@@ -264,18 +264,18 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(expectedEncs.every(r => actualEncs.has(r)));
     await encSelectionPageObjects.selectAllSelectorClick();
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
     await encSelectionPageObjects.encTableCheckboxList.nth(0).click();
     var firstEncName = (await encSelectionPageObjects.encNames.first().innerText());
     fileSize = await encSelectionPageObjects.getFileSizeForDelta(await sinceDateResponse.text(), expectedEncs.filter(r => r != firstEncName));
     estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize+' MB' == estimatedSize);
+    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
     await encSelectionPageObjects.deselectAllSelectorClick();
     await encSelectionPageObjects.selectAllSelectorClick();
     await encSelectionPageObjects.requestENCsSelectorClick();
-    var productVersionResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('productData/productVersions') && r.request().method() == 'POST');
+    var productVersionResponse = await encSelectionPageObjects.page.waitForResponse(r => r.url().includes('productData/productVersions') && r.request().method() == 'POST');
     await esslandingPageObjects.expect.IsNotEmpty(productVersionResponse.url());
-    var batchResponse  = await encSelectionPageObjects.page.waitForResponse(r => r. url().includes('api/batch') && r.url().includes('/status') && r.request().method() == 'GET');
+    var batchResponse = await encSelectionPageObjects.page.waitForResponse(r => r.url().includes('api/batch') && r.url().includes('/status') && r.request().method() == 'GET');
     await esslandingPageObjects.expect.IsNotEmpty(batchResponse.url());
     await encSelectionPageObjects.expect.ValidateProductVersionPayload(await sinceDateResponse.text(), productVersionResponse.request().postData());
   })
@@ -325,5 +325,22 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s63Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s57Radiobutton.isVisible());
     });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156231
+  test("Check Estimated size is visible for S63 exchange set when user select base exchange set type", async ({ page }) => {
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/250ENCs.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    await page.waitForSelector("input[type='checkbox']:nth-child(1)", { state: "visible", timeout: 3000});
+    const selectENCsFromTable = encSelectionPageObjects.encTableCheckboxList;
+    await selectENCsFromTable.nth(0).click();
+    for (var i=1; !await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight); i++) {
+      await selectENCsFromTable.nth(i).click();
+    }
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight));
+  });
 
 });
