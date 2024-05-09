@@ -68,10 +68,10 @@
        <p class="estimatedExchangeSetSize" *ngIf="selectedOption === s63OptionValue" aria-live="polite"> Estimated Exchange set size <span class="bottomText">{{estimatedTotalSize}} </span></p>
        <div id="radio-submit-container">
          <div class="radio-group-container" *ngIf=" isPrivilegedUser && selectedEncList && selectedEncList.length > 0">
-          <span>Choose Preffered Format</span>
+          <span>Choose preferred format</span>
           <admiralty-radio-group [(ngModel)]="selectedOption" displayVertical>    
-            <admiralty-radio name="options" [value]="s57OptionValue" (click)="essDownloadZipType(s57OptionValue)">S57 Exchange Set</admiralty-radio>
-            <admiralty-radio name="options" [value]="s63OptionValue" (click)="essDownloadZipType(s63OptionValue)"[checked]="true">S63 Exchange Set</admiralty-radio>
+            <admiralty-radio name="options" [value]="s57OptionValue" (click)="essDownloadZipType(s57OptionValue)">S57 exchange set</admiralty-radio>
+            <admiralty-radio name="options" [value]="s63OptionValue" (click)="essDownloadZipType(s63OptionValue)"[checked]="true">S63 exchange set</admiralty-radio>
           </admiralty-radio-group>
         </div>
         <div *ngIf="selectedEncList && selectedEncList.length > 0">
