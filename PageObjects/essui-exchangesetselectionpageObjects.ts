@@ -80,11 +80,11 @@ export class ExchangeSetSelectionAssertion{
 
     async validateMessageForFutureDate(){
         await this.selection.warningMessage.click();
-        expect(await this.selection.warningMessage.innerText() == 'Please choose a date from today or up to 27 days in the past. Future dates are not permitted.').toBeTruthy();
+        expect(await this.selection.warningMessage.innerText() == 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option.').toBeTruthy();
     }
 
     async validateMessageForPastDate(){   
         await this.selection.warningMessage.click();
-        expect(await this.selection.warningMessage.innerText() == 'Date selected not within 27 days, please choose a different date or select Download all data option.').toBeTruthy();
+        expect(await this.selection.warningMessage.innerText() == 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option.').toBeTruthy();
     }
 }
