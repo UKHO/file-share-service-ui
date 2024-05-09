@@ -113,7 +113,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
     //13956 - Add another ENC2 - Duplicate No.
     await encSelectionPageObjects.addAnotherENC("DE290001");
-    await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list.")
+    await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list")
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
 
@@ -128,7 +128,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     //Adding ENC manually
     await encSelectionPageObjects.addAnotherENC("DE290001");
 
-    await encSelectionPageObjects.expect.errorMsgMaxLimitSelectorContainText("Max ENC limit reached.");
+    await encSelectionPageObjects.expect.errorMsgMaxLimitSelectorContainText("Max ENC limit reached");
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
@@ -215,7 +215,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/150972
   test('Verify validation message for Excluded AIO cell', async ({ page }) => {
-    var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.";
+    var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site";
     await encSelectionPageObjects.page.waitForLoadState();
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
