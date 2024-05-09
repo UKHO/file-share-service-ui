@@ -97,13 +97,13 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
     if(this.validEnc.includes(this.txtSingleEnc.toUpperCase())){
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'ENC already in list.');
+      this.triggerInfoErrorMessage(true,'info', 'ENC already in list');
       return;
     }
 
     if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'Max ENC limit reached.');
+      this.triggerInfoErrorMessage(true,'info', 'Max ENC limit reached');
       return;
     }
     this.fetchScsTokenReponse('encList');
@@ -154,14 +154,14 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   }
                   else {
                     this.displayLoader = false;
-                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected');
                     return;
                   }
                 },
                 error: (error) => {
                   this.displayLoader = false;
                   if (error.status == 304) {
-                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected');
                     return;
                   }
                   this.triggerInfoErrorMessage(true, 'error', 'There has been an error');

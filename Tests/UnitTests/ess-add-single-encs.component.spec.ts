@@ -352,7 +352,7 @@ describe('EssAddSingleEncsComponent', () => {
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'info',
-      messageDesc : 'ENC already in list.'
+      messageDesc : 'ENC already in list'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
@@ -365,7 +365,7 @@ describe('EssAddSingleEncsComponent', () => {
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'info',
-      messageDesc : 'Max ENC limit reached.'
+      messageDesc : 'Max ENC limit reached'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
@@ -519,7 +519,7 @@ describe('EssAddSingleEncsComponent', () => {
   component.scsProductCatalogResponse(component.validEnc,'essHome')
   tick();
   expect(component.displayLoader).toEqual(false);
-  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected');
 }));
 
 });

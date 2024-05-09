@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
-import { ExchangeSetDetails, NotReturnedProduct, Product, ProductCounts, ProductVersionRequest } from '../../../core/models/ess-response-types';
+import { ExchangeSetDetails, NotReturnedProduct, Product, ProductVersionRequest } from '../../../core/models/ess-response-types';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 
 interface MappedEnc {
@@ -87,7 +87,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
       if(this.scsInvalidProduct.length > 0){
         let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
         this.essUploadFileService.infoMessage = true;
-        this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProducts}`);
+        this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProducts}.`);
       }
       else{
         this.essUploadFileService.infoMessage = true;
@@ -132,7 +132,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
       if(currCheckedElement){
         currCheckedElement.click(); // will uncheck the selected checkbox
       }
-      this.triggerInfoErrorMessage(true,'error', 'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected.');
+      this.triggerInfoErrorMessage(true,'error', 'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected');
       return;
     }
     this.syncEncsBetweenTables();

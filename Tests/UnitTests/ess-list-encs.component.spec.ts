@@ -422,7 +422,7 @@ describe('EssListEncsComponent', () => {
     const errObj = {
       showInfoErrorMessage: true,
       messageType: 'error',
-      messageDesc: 'No more than 5 ENCs can be selected.'
+      messageDesc: 'No more than 5 ENCs can be selected'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
@@ -525,7 +525,7 @@ describe('EssListEncsComponent', () => {
     const errObj = {
       showInfoErrorMessage: true,
       messageType: 'error',
-      messageDesc: 'No more than 5 ENCs can be selected.'
+      messageDesc: 'No more than 5 ENCs can be selected'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     expect(window.scrollTo).toHaveBeenCalled();
