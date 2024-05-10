@@ -64,7 +64,7 @@ export class ExchangeSetSelectionAssertion{
     }
 
     async validateBaseDownloadDescription(){
-        expect((await this.selection.baseRadioButtonText.innerText()).split('\n')[1].trim() =='Select download data if you are installing base and all updates for specific ENCs.').toBeTruthy();
+        expect((await this.selection.baseRadioButtonText.innerText()).split('\n')[1].trim() =='Select Download all data if you are installing base and all updates for specific ENCs.').toBeTruthy();
     }
 
     async validateDeltaRadioButtonText(){
