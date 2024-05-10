@@ -226,9 +226,28 @@ stages:
               script: 'npx playwright install'
              displayName: install browsers for playwright test
 
+           - task: PowerShell@1
+             displayName: "Set environment variable to Null or Empty"
+             inputs:
+               scriptType: inlineScript
+               inlineScript: |
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains] Null"
+
            - script: |
-              npm run test:auto
-             displayName: 'Run Functional Tests'
+              npm run test:auto -- --grep "NonUKHOUser"
+             displayName: 'Run Functional Tests for Non Admin Domain Tags'
+           
+
+           - task: PowerShell@1
+             displayName: "Set environment variable with for Admin Domain specific Tests"
+             inputs:
+               scriptType: inlineScript
+               inlineScript: |
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
+
+           - script: |
+              npm run test:auto -- --grep-invert "NonUKHOUser"
+             displayName: 'Run Functional Tests with Admin Domain Tag'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
            - task: PublishTestResults@2
