@@ -293,8 +293,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156061
   test("check UKHO user is not able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for base exchange set @NonUKHOUser",async ({ page}) =>{
     await encSelectionPageObjects.selectAllSelectorClick();
-    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s63Radiobutton.isVisible());
-    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s57Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isHidden());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isHidden());
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156211
@@ -322,8 +322,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
     await esslandingPageObjects.proceedButtonSelectorClick(); 
     await encSelectionPageObjects.selectAllSelectorClick();
-    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s63Radiobutton.isVisible());
-    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s57Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isHidden());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isHidden());
     });
 
 });
