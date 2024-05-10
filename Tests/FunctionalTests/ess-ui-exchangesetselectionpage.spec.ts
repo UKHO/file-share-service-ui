@@ -32,7 +32,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await exchangeSetSelectionPageObjects.expect.validateDeltaDownloadDescription();
     await exchangeSetSelectionPageObjects.expect.validateDatePickerIsEmpty();
     await exchangeSetSelectionPageObjects.expect.validateProceedButton();
-    await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 1 of 4\nChoose Exchange set type");
+    await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 1 of 4\nChoose exchange set type");
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149497
