@@ -783,6 +783,18 @@ ${getInvalidAndAioEncData}          | ${false}
       expect(component.displayLoader).toEqual(false);
       expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
     }));
+
+  it('loadFileReader should raise error for unsupported file type', () => {
+    const file = new File([getEncData_csv()], 'test.jpeg');
+    component.encFile = file;
+    component.loadFileReader();
+    const errObJ = {
+      showInfoErrorMessage: true,
+      messageType: 'error',
+      messageDesc: 'Please select a .csv or .txt file'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+  });
 });
 
 

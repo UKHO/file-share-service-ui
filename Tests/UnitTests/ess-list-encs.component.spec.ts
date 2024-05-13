@@ -16,7 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-set/ess-info-error-message/ess-info-error-message.component';
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
-import { Product, ProductCatalog, BundleInfo, DateInfo } from '../../src/app/core/models/ess-response-types';
+import { Product, ProductCatalog, BundleInfo, DateInfo, NotReturnedProduct, ProductVersionRequest } from '../../src/app/core/models/ess-response-types';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -318,7 +318,8 @@ describe('EssListEncsComponent', () => {
     getEstimatedTotalSize: jest.fn(),
     scsProductResponse: productCatalog,
     scsProducts: productCatalog.products,
-    setExchangeSetDetails: jest.fn()
+    setExchangeSetDetails: jest.fn(),
+    exchangeSetCreationForDeltaResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData))
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -362,7 +363,8 @@ describe('EssListEncsComponent', () => {
       },
       essConfig: {
         MaxEncLimit: 100,
-        MaxEncSelectionLimit: 5
+        MaxEncSelectionLimit: 5,
+        aioExcludeEncs :["GB800001","FR800001"]
       },
     };
     window.scrollTo = jest.fn();
@@ -564,7 +566,6 @@ describe('EssListEncsComponent', () => {
     let selectedEncList = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
     component.exchangeSetCreationResponse([selectedEncList]);
     exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((res: any) => {
-      // expect(component.displayErrorMessage).toBe(false);
       const errObj = {
         showInfoErrorMessage: false,
         messageType: 'info',
@@ -698,6 +699,42 @@ describe('EssListEncsComponent', () => {
     tick();
     expect(component.displayLoader).toEqual(true);
   }));
+
+  test('should return exchangeSet response for delta', () => {
+    let selectedEncList: ProductVersionRequest[] = [{ productName: 'AU210130', editionNumber: 1, updateNumber: 3 }];
+    component.exchangeSetCreationForDeltaResponse(selectedEncList);
+    service.exchangeSetCreationForDeltaResponse(selectedEncList).subscribe((res: any) => {
+      expect(res).toEqual(exchangeSetDetailsMockData);
+    });
+  });
+
+  it('should raise info message for aio enc cell', () => {
+    var notReturnedProduct: NotReturnedProduct[] = [];
+    component.scsInvalidProduct = notReturnedProduct;
+    essUploadFileService.aioEncFound = true;
+    component.ngOnInit();
+    expect(component.scsInvalidProduct.length).toEqual(0);
+    const errObj = {
+      showInfoErrorMessage: true,
+      messageType: 'info',
+      messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+  });
+
+  it('should raise warning message for aio enc cell with invalid enc cells', () => {
+    var notReturnedProduct: NotReturnedProduct[] = [{ productName: 'AU210130', reason: 'check aio' }];
+    component.scsInvalidProduct = notReturnedProduct;
+    essUploadFileService.aioEncFound = true;
+    component.ngOnInit();
+    expect(component.scsInvalidProduct.length).toEqual(1);
+    const errObj = {
+      showInfoErrorMessage: true,
+      messageType: 'warning',
+      messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  AU210130.'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+  });
 });
 
 export const exchangeSetDetailsMockData: any = {
