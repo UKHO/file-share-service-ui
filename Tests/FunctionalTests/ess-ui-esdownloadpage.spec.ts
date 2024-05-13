@@ -74,6 +74,11 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
 
     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156097
     test('check user is able to download S57 exchange set for base exchange set', async ({ page }) => {
+        await encSelectionPageObjects.startAgainLinkSelectorClick();
+        await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+        await exchangeSetSelectionPageObjects.clickOnProceedButton();
+        await encSelectionPageObjects.addSingleENC("DE260001");
+        await esslandingPageObjects.proceedButtonSelectorClick();
         await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.s57Radiobutton.click();
         await encSelectionPageObjects.requestENCsSelectorClick();
@@ -135,8 +140,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await encSelectionPageObjects.startAgainLinkSelectorClick();
         await exchangeSetSelectionPageObjects.enterDate(new Date());
         await exchangeSetSelectionPageObjects.clickOnProceedButton();
-        await esslandingPageObjects.uploadradiobtnSelectorClick();
-        await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
+        await encSelectionPageObjects.addSingleENC("DE260001");
         await esslandingPageObjects.proceedButtonSelectorClick();
         await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.s57Radiobutton.click();
