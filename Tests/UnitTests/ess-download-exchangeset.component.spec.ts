@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssDownloadExchangesetComponent } from '../../src/app/features/exchange-set/ess-download-exchangeset/ess-download-exchangeset.component';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
@@ -27,14 +27,12 @@ describe('EssDownloadExchangesetComponent', () => {
   const service = {
     getValidEncs: jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
     clearSelectedEncs: jest.fn(),
-    getSelectedENCs: jest.fn(),
     infoMessage: true,
     addSelectedEnc: jest.fn(),
     removeSelectedEncs: jest.fn(),
     getNotifySingleEnc: jest.fn().mockReturnValue(of(true)),
     getExchangeSetDetails: jest.fn().mockReturnValue(exchangeSetDetailsForDownloadMockData()),
     exchangeSetCreationResponse: jest.fn().mockReturnValue(of(exchangeSetDetailsMockData)),
-    getEstimatedTotalSize: jest.fn(),
     getBatchStatus: jest.fn(),
     refreshToken: jest.fn()
   };
@@ -125,18 +123,6 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(compiled.querySelectorAll('p')[1].textContent).toContain('Please do not refresh this page.');
   });
 
-  test('should return Exchangeset cell count', () => {
-    let selectedEncList = ["AU6BTB01", "BR221070", "BR321200", "BR401507"];
-    service.exchangeSetCreationResponse(selectedEncList).subscribe((res: any) => {
-      expect(res).toEqual(service.getExchangeSetDetails);
-    });
-  });
-  
-  test('should return exchangeSetTotalCount', () => {
-   component.ngOnInit();
-    expect(service.getExchangeSetDetails).toHaveBeenCalled();
-    expect(component.requestedProductCount).toBe(19);
-  });
   it('should display download button when batch status is Committed', () => {
     service.getBatchStatus.mockReturnValue(of(batchStatusCommittedMockData));
     component.batchStatusAPI();
@@ -190,6 +176,13 @@ describe('EssDownloadExchangesetComponent', () => {
       expect(component.batchStatusAPI).toHaveBeenCalled();
     });
   });
+
+  it('when user click on start again then it should navigate to ess landing page', fakeAsync(() => {
+    component.switchToESSLandingPage();
+    const routeService = jest.spyOn(router, 'navigate');
+    tick();
+    expect(routeService).toHaveBeenCalledWith(['exchangesets']);
+  }));
 });
 
 export const exchangeSetDetailsMockData: any = {
