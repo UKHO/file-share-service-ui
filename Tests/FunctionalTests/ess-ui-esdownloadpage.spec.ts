@@ -134,7 +134,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     })
 
     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156352
-    test.only("check user is able to download S57 exchange set for Delta exchange set", async ({ page }) =>{
+    test("check user is able to download S57 exchange set for Delta exchange set", async ({ page }) =>{
         await encSelectionPageObjects.startAgainLinkSelectorClick();
         await exchangeSetSelectionPageObjects.enterDate(new Date());
         await exchangeSetSelectionPageObjects.clickOnProceedButton();
