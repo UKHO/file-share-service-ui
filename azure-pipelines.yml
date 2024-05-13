@@ -254,6 +254,7 @@ stages:
 
            - task: PowerShell@1
              displayName: "Set environment variable for Admin Domain specific Tests"
+             condition: Always()
              inputs:
                scriptType: inlineScript
                inlineScript: |
