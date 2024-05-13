@@ -77,8 +77,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.s57Radiobutton.click();
         await encSelectionPageObjects.requestENCsSelectorClick();
-        var request = await page.waitForResponse(response => response.url().includes("/productData/productIdentifiers") && response.request().method() == "POST");
-        await encSelectionPageObjects.expect.toBeTruthy(request.url().includes("exchangeSetStandard=S57"));
+        var response = await page.waitForResponse(response => response.url().includes("/productData/productIdentifiers") && response.request().method() == "POST");
+        await encSelectionPageObjects.expect.toBeTruthy(response.url().includes("exchangeSetStandard=S57"));
         await encSelectionPageObjects.page.waitForLoadState();
         await esDownloadPageObjects.expect.SelectedENCs();
         await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
@@ -109,8 +109,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esslandingPageObjects.proceedButtonSelectorClick();
         await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.requestENCsSelectorClick();
-        var request = await page.waitForResponse(response => response.url().includes("/productData/productIdentifiers") && response.request().method() == "POST");
-        await encSelectionPageObjects.expect.toBeTruthy(request.url().includes("exchangeSetStandard=S63"));
+        var response = await page.waitForResponse(response => response.url().includes("/productData/productVersions") && response.request().method() == "POST");
+        await encSelectionPageObjects.expect.toBeTruthy(response.url().includes("exchangeSetStandard=S63"));
         await encSelectionPageObjects.page.waitForLoadState();
         await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
@@ -141,8 +141,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.s57Radiobutton.click();
         await encSelectionPageObjects.requestENCsSelectorClick();
-        var request = await page.waitForResponse(request => request.url().includes("/productData/productIdentifiers") && request.request().method() == "POST");
-        await encSelectionPageObjects.expect.toBeTruthy(request.url().includes("exchangeSetStandard=S57"));
+        var response = await page.waitForResponse(request => request.url().includes("/productData/productVersions") && request.request().method() == "POST");
+        await encSelectionPageObjects.expect.toBeTruthy(response.url().includes("exchangeSetStandard=S57"));
         await encSelectionPageObjects.page.waitForLoadState();
         await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();

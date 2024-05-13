@@ -286,8 +286,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 Exchange Set");
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 Exchange Set");
+    encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s63Radiobutton.innerText()).trim() == "S63 exchange set");
+    encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s57Radiobutton.innerText()).trim() == "S57 exchange set");
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156061
@@ -309,8 +309,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 Exchange Set");
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 Exchange Set");
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 exchange set");
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 exchange set");
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156212
