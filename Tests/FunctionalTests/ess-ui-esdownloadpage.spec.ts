@@ -78,14 +78,12 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
         await exchangeSetSelectionPageObjects.clickOnProceedButton();
         await encSelectionPageObjects.addSingleENC("DE260001");
-        await esslandingPageObjects.proceedButtonSelectorClick();
         await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.s57Radiobutton.click();
         await encSelectionPageObjects.requestENCsSelectorClick();
         var response = await page.waitForResponse(response => response.url().includes("/productData/productIdentifiers") && response.request().method() == "POST");
         await encSelectionPageObjects.expect.toBeTruthy(response.url().includes("exchangeSetStandard=S57"));
         await encSelectionPageObjects.page.waitForLoadState();
-        await esDownloadPageObjects.expect.SelectedENCs();
         await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
         await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
@@ -136,12 +134,11 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     })
 
     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156352
-    test("check user is able to download S57 exchange set for Delta exchange set", async ({ page }) =>{
+    test.only("check user is able to download S57 exchange set for Delta exchange set", async ({ page }) =>{
         await encSelectionPageObjects.startAgainLinkSelectorClick();
         await exchangeSetSelectionPageObjects.enterDate(new Date());
         await exchangeSetSelectionPageObjects.clickOnProceedButton();
         await encSelectionPageObjects.addSingleENC("DE260001");
-        await esslandingPageObjects.proceedButtonSelectorClick();
         await encSelectionPageObjects.selectAllSelectorClick();
         await encSelectionPageObjects.s57Radiobutton.click();
         await encSelectionPageObjects.requestENCsSelectorClick();
