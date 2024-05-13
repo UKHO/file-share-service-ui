@@ -9,6 +9,7 @@ export class ExchangeSetSelectionPageObjects{
     readonly baseRadioButtonText: Locator;
     readonly deltaRadioButtonText: Locator;
     readonly warningMessage: Locator;
+    readonly header: Locator;
 
     constructor(readonly page: Page) {
         this.expect = new ExchangeSetSelectionAssertion(this);
@@ -19,6 +20,7 @@ export class ExchangeSetSelectionPageObjects{
         this.baseRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(1) div label");
         this.deltaRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(2) div label");
         this.warningMessage = page.locator(".warningMsgTitle");
+        this.header = page.locator("h1#main");
     }
 
     async selectBaseDownloadRadioButton(){
@@ -58,19 +60,19 @@ export class ExchangeSetSelectionAssertion{
     }
 
     async validateBaseRadioButtonText(){
-        expect(((await this.selection.baseRadioButtonText.innerText())).split('\n')[0].trim() =='Base Download').toBeTruthy();
+        expect(((await this.selection.baseRadioButtonText.innerText())).split('\n')[0].trim() == 'Download all data').toBeTruthy();
     }
 
     async validateBaseDownloadDescription(){
-        expect((await this.selection.baseRadioButtonText.innerText()).split('\n')[1].trim() =='Select Base Download for an exchange set that includes all data for selected ENCs.').toBeTruthy();
+        expect((await this.selection.baseRadioButtonText.innerText()).split('\n')[1].trim() =='Select Download all data if you are installing base and all updates for specific ENCs.').toBeTruthy();
     }
 
     async validateDeltaRadioButtonText(){
-        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[0].trim() =='Delta Download').toBeTruthy();
+        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[0].trim() =='Download updates').toBeTruthy();
     }
 
     async validateDeltaDownloadDescription(){
-        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[1].trim() =="Select Delta Download to receive updates from a specific date in the last 27 days for selected ENCs.").toBeTruthy();
+        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[1].trim() =="Select Download updates to only receive updates for ENCs since your last update. This must be a date within the last 27 days.").toBeTruthy();
     }
 
     async validateDefaultSelection(){
@@ -86,5 +88,9 @@ export class ExchangeSetSelectionAssertion{
     async validateMessageForPastDate(){   
         await this.selection.warningMessage.click();
         expect(await this.selection.warningMessage.innerText() == 'Date selected not within 27 days, please choose a different date or select Download all data option.').toBeTruthy();
+    }
+
+    async validateHeaderText(text:string){
+       expect((await this.selection.header.innerText())==text).toBeTruthy();
     }
 }

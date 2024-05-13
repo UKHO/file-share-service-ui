@@ -13,6 +13,7 @@ export class EsDownloadPageObjects {
     readonly downloadButtonSelector: Locator;
     readonly exchangeSetDownloadFrame: Locator;
     readonly spinnerSelector: Locator;
+    readonly exchangeSetDownloadFrame: Locator;
     readonly includedENCsCountSelector: Locator;
     readonly EstimatedESsizeSelector: Locator;
     readonly selectedTextSelector: Locator;
@@ -172,7 +173,9 @@ class EsDownloadPageAssertions {
     }
 
     async exchangeSetDownloadGridValidation(): Promise<void> {
-        expect(this.esDownloadPageObjects.exchangeSetDownloadFrame.count() == 1);
+        expect(await this.esDownloadPageObjects.exchangeSetDownloadFrame.count() == 1);
       }
-}
+
+    }
+
 
