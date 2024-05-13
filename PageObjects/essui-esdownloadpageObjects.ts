@@ -11,6 +11,7 @@ export class EsDownloadPageObjects {
     readonly expect: EsDownloadPageAssertions;
     readonly requestENCsSelector: Locator;
     readonly downloadButtonSelector: Locator;
+    readonly exchangeSetDownloadFrame: Locator;
     readonly spinnerSelector: Locator;
     readonly exchangeSetDownloadFrame: Locator;
     readonly includedENCsCountSelector: Locator;
@@ -39,7 +40,7 @@ export class EsDownloadPageObjects {
         this.selectedENCsSelector = this.page.locator('strong').filter({ hasText: ' ENCs selected' });
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
         this.downloadLinkSelector = this.page.getByTestId('download-exs');
-        this.createLinkSelector = this.page.getByTestId('create-exs')
+        this.createLinkSelector = this.page.getByTestId('create-exs');
         this.exchangeSetDownloadFrame = this.page.locator("div[class = 'ess-container']> div");
         this.pageUnderTest = page;      
 
