@@ -23,6 +23,7 @@ export class EssUploadFileService {
   public aioEncFound: boolean;
   private _exchangeSetDownloadType: 'Base' | 'Delta';
   private _exchangeSetDeltaDate: any;
+  public isPrivilegedUser: boolean = false;
 
   constructor() {
     this.selectedEncs = [];
