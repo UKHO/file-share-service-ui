@@ -228,7 +228,6 @@ stages:
              displayName: install browsers for playwright test
 
 
-
           #  - task: PowerShell@1
           #    displayName: "Set environment variable for Admin Domain specific Tests"
           #    inputs:
@@ -246,7 +245,14 @@ stages:
              inputs:
                scriptType: inlineScript
                inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains][""]"
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-NonAdminDomains)"
+
+           - task: FileTransform@2
+             displayName: "File Transform: website config"
+             inputs:
+               folderPath: "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
+               xmlTransformationRules:
+               jsonTargetFiles: '**/appconfig.json'
 
            - script: |
               npm run test:auto -- --grep "NonUKHOUser"
