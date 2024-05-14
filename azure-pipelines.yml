@@ -160,6 +160,8 @@ stages:
         value: $(autoTestConfig-url)
       - name: autoTestConfig.user
         value: $(autoTestConfig-user)
+      - name: autoTestConfig.nonAdminUser
+        value: $(autoTestConfig-nonAdminUser)
       - name: autoTestConfig.password
         value: $(autoTestConfig-password)
       - name: autoTestConfig.userFullName
@@ -176,8 +178,6 @@ stages:
         value: $(essConfig-apiUiUrl)
       - name: essConfig.adminDomains
         value: $(essConfig-AdminDomains)
-      - name: essConfig.adminDomains
-        value: $(essConfig-NonAdminDomains)
 
     jobs:
       - deployment: DevDeploy
@@ -229,40 +229,10 @@ stages:
               script: 'npx playwright install'
              displayName: install browsers for playwright test
 
-
-
-           - task: PowerShell@1
-             displayName: "Set environment variable for Admin Domain specific Tests"
-             inputs:
-               scriptType: inlineScript
-               inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
-
            - script: |
-              npm run test:auto -- --grep-invert "NonUKHOUser"
-             displayName: 'Run Functional Tests with Admin Domain Tag'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-
-           - task: PowerShell@1
-             displayName: "Set environment variable to Null or Empty"
-             inputs:
-               scriptType: inlineScript
-               inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-NonAdminDomains)"
-
-           - script: |
-              npm run test:auto -- --grep "NonUKHOUser"
-             displayName: 'Run Functional Tests for Non Admin Domain Tags'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
-
-           - task: PowerShell@1
-             displayName: "Set environment variable for Admin Domain specific Tests"
-             condition: Always()
-             inputs:
-               scriptType: inlineScript
-               inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
-           
+              npm run test:auto
+             displayName: 'Run Functional Tests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'      
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
