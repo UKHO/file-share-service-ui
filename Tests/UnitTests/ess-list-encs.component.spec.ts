@@ -438,7 +438,7 @@ describe('EssListEncsComponent', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Exchange sets');
+    expect(compiled.querySelector('h1').textContent).toContain(' Step 3 of 4  Confirm exchange set content ');
   });
 
   test('should render text inside an p tag', () => {
@@ -446,7 +446,7 @@ describe('EssListEncsComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('p').textContent).toContain(
-      `Select up to 5 ENCs and make an exchange set. Please note, larger requests may take longer to process.`
+      `Please confirm the ENCs that you would like to include in your exchange set.`
     );
   });
 
