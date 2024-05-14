@@ -246,7 +246,7 @@ stages:
              inputs:
                scriptType: inlineScript
                inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains][""]"
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-NonAdminDomains)"
 
            - script: |
               npm run test:auto -- --grep "NonUKHOUser"
