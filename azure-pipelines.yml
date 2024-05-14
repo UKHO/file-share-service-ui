@@ -253,13 +253,13 @@ stages:
              displayName: 'Run Functional Tests for Non Admin Domain Tags'
              workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
-           - task: PowerShell@1
-             displayName: "Set environment variable for Admin Domain specific Tests"
-             condition: Always()
-             inputs:
-               scriptType: inlineScript
-               inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
+          #  - task: PowerShell@1
+          #    displayName: "Set environment variable for Admin Domain specific Tests"
+          #    condition: Always()
+          #    inputs:
+          #      scriptType: inlineScript
+          #      inlineScript: |
+          #         Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
            
 
            - task: PublishTestResults@2
