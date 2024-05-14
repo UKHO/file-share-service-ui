@@ -6,7 +6,7 @@ import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObject
 import { EncSelectionPageObjects } from '../../PageObjects/essui-encselectionpageObjects';
 import { ExchangeSetSelectionPageObjects } from '../../PageObjects/essui-exchangesetselectionpageObjects';
 
-test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
+test.describe('ESS UI ENCs Selection Page Functional Test Scenarios for Non Admin users', () => {
 
   let esslandingPageObjects: EssLandingPageObjects;
   let encSelectionPageObjects: EncSelectionPageObjects;
