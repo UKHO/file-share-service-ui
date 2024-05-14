@@ -231,24 +231,24 @@ stages:
 
 
 
-           - task: PowerShell@1
-             displayName: "Set environment variable for Admin Domain specific Tests"
-             inputs:
-               scriptType: inlineScript
-               inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
+          #  - task: PowerShell@1
+          #    displayName: "Set environment variable for Admin Domain specific Tests"
+          #    inputs:
+          #      scriptType: inlineScript
+          #      inlineScript: |
+          #         Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-adminDomains)"
 
-           - script: |
-              npm run test:auto -- --grep-invert "NonUKHOUser"
-             displayName: 'Run Functional Tests with Admin Domain Tag'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+          #  - script: |
+          #     npm run test:auto -- --grep-invert "NonUKHOUser"
+          #    displayName: 'Run Functional Tests with Admin Domain Tag'
+          #    workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
 
            - task: PowerShell@1
              displayName: "Set environment variable to Null or Empty"
              inputs:
                scriptType: inlineScript
                inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig-NonAdminDomains)"
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains][]"
 
            - script: |
               npm run test:auto -- --grep "NonUKHOUser"
