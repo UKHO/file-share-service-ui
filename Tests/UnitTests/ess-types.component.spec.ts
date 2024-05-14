@@ -98,7 +98,7 @@ describe('EssTypesComponent', () => {
     component.isDateSelected = true; 
     component.onDateChange({ target: { valueAsDate: futureDate } } as any); 
 
-    const errorMessage = 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option.';
+    const errorMessage = 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option';
     const errObj={
       showInfoErrorMessage: true,
       messageType: 'info',
@@ -113,7 +113,7 @@ describe('EssTypesComponent', () => {
     component.isDateSelected = true; 
     component.onDateChange({ target: { valueAsDate: pastDate } } as any); 
 
-    const errorMessage = 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option.';
+    const errorMessage = 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option';
     const errObj = {
       showInfoErrorMessage: true,
       messageType: 'info',
@@ -121,6 +121,26 @@ describe('EssTypesComponent', () => {
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
 });
+
+  it('should set onDescriptionClick to baseRadio button on onDescriptionClick clicked', () => {
+    component.onDescriptionClick('baseRadio');
+    expect(component.baseOptionValue).toEqual('base');
+  });
+
+  it('should set onDateChange for delta response', () => {
+    component.onOptionChange('delta');
+    const event: any = { target: { valueAsDate: null } };
+    component.onDateChange(event);
+    expect(component.isDateSelected).toEqual(false);
+    expect(component.isRadioSelected).toEqual(false);
+    expect(component.isDateValid).toEqual(false);
+  });
+
+  it('should set onRadioClick to baseRadio button', () => {
+    component.onRadioClick('Delta');
+    expect(service.exchangeSetDownloadType).toEqual('Delta');
+  });
+
 class MockViewportScroller implements ViewportScroller {
   setOffset(offset: [number, number] | (() => [number, number])): void {
   }

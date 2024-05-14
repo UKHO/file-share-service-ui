@@ -284,7 +284,7 @@ describe('EssUploadFileComponent', () => {
      encDataFunc
                ${getEncData_csv()}  
      ${getEncData()}      
-    `('processEncFile should set raise "Please upload valid ENC file." error',
+    `('processEncFile should set raise "Please upload valid ENC file" error',
     ({ encDataFunc }: { encDataFunc: string }) => {
       const file = new File([encDataFunc], 'test.jpeg');
       Object.defineProperty(file, 'type', { value: 'image/jpeg' });
@@ -294,7 +294,7 @@ describe('EssUploadFileComponent', () => {
       const errObj = {
         showInfoErrorMessage: true,
         messageType: 'error',
-        messageDesc: 'Please upload valid ENC file.'
+        messageDesc: 'Please upload valid ENC file'
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
@@ -313,7 +313,7 @@ describe('EssUploadFileComponent', () => {
       const errObj = {
         showInfoErrorMessage: true,
         messageType: 'error',
-        messageDesc: 'No valid ENCs found.'
+        messageDesc: 'No valid ENCs found'
       };
       expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
     });
@@ -381,7 +381,7 @@ describe('EssUploadFileComponent', () => {
     const errObJ = {
       showInfoErrorMessage: true,
       messageType: 'error',
-      messageDesc: 'Only one file can be processed at a time.'
+      messageDesc: 'Only one file can be processed at a time'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
   });
@@ -439,7 +439,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found');
     }));
 
   it.each`
@@ -551,7 +551,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found');
     }));
 
   it.each`
@@ -574,7 +574,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected');
     }));
 
   it.each`
@@ -642,7 +642,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected');
     }));
 
   it.each`
@@ -734,7 +734,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected');
     }));
 
   it.each`
@@ -783,6 +783,18 @@ ${getInvalidAndAioEncData}          | ${false}
       expect(component.displayLoader).toEqual(false);
       expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
     }));
+
+  it('loadFileReader should raise error for unsupported file type', () => {
+    const file = new File([getEncData_csv()], 'test.jpeg');
+    component.encFile = file;
+    component.loadFileReader();
+    const errObJ = {
+      showInfoErrorMessage: true,
+      messageType: 'error',
+      messageDesc: 'Please select a .csv or .txt file'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObJ);
+  });
 });
 
 
