@@ -41,6 +41,8 @@ export class EncSelectionPageObjects {
   readonly getDialogueSelector : Locator
   readonly errorMessage : Locator
   readonly encNames : Locator
+  readonly s63Radiobutton : Locator
+  readonly s57Radiobutton : Locator
   readonly pageUnderTest: Page
 
 
@@ -74,6 +76,8 @@ export class EncSelectionPageObjects {
     this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
     this.errorMessage = this.page.locator("h3[class='warningMsgTitle']");
     this.encNames = this.page.locator("table[class='cdk-table enc-list-table'] tbody tr td");
+    this.s57Radiobutton = this.page.locator("input[value = 'S57'] + label");
+    this.s63Radiobutton = this.page.locator("input[value = 'S63'] + label");
     this.pageUnderTest = page;
   }
 
@@ -121,7 +125,7 @@ export class EncSelectionPageObjects {
   }
 
   async selectAllSelectorClick(): Promise<void> {
-    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible' });
+    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible', timeout: 3000});
     await this.selectAllSelector.click();
 
   }
