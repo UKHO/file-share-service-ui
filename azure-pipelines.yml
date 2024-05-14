@@ -176,8 +176,6 @@ stages:
         value: $(essConfig-apiUiUrl)
       - name: essConfig.adminDomains
         value: $(essConfig-AdminDomains)
-      - name: essConfig.adminDomains
-        value: $(essConfig-NonAdminDomains)
 
     jobs:
       - deployment: DevDeploy
