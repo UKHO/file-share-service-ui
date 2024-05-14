@@ -3,27 +3,27 @@
     <div>
       <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i style="padding-right: 6px;font-size: 14px;" class="fas fa-less-than"></i> Start again</a>
     </div>
-    <h1 id="main" tabindex="-1">Exchange sets</h1>
+    <h1 id="main" tabindex="-1">
+      Step 2 of 4
+    <span class="headerEssSteps">
+      Selecting ENCs
+    </span>
+    </h1> 
     <app-ess-info-error-message></app-ess-info-error-message>
-    <p class="ess-subheading">Update your ENCs for a vessel by making an exchange set</p>
     <p class="light">
-      Your AVCS exchange set will contain the latest editions and all the updates available for
-      your requested ENCs. Some may be more up to date than those available in the AVCS
-      Weekly service.
+      Select one of the below options to choose the ENCs that you would like to create 
+      an exchange set for. This can then be installed on your ECDIS.
     </p>
     <p>
-      Please note - Users may experience longer waiting times when creating exchange sets during times of high demand.
-      High demand currently occurs Thursday early evenings or Friday mornings. This causes small exchanges sets to take 4 minutes plus to create.
-      Future improvements are in progress to resolve this issue.
+      Please note - Users may experience longer waiting times when creating exchange sets during times 
+      of high demand. High demand currently occurs Thursday early evenings or Friday mornings. This causes 
+      small exchanges sets to take 4 minutes plus to create. Future improvements are in progress to resolve this issue.
       <br />
-      <br />
-      We apologise for any inconvenience caused.
     </p>
     <p class="light">You can add a single ENC or upload a list.</p>
-
     <admiralty-radio-group id="radioGroup" name="AddUploadENC" [(ngModel)]="rgAddUploadENC" display-vertical>
       <admiralty-radio name="radio1" id="radioUploadEnc" [value]="radioUploadEncValue">Upload a list in a file</admiralty-radio>
-      <admiralty-radio name="radio1" id="radioAddEnc" [value]="radioAddEncValue">Add ENC</admiralty-radio>
+      <admiralty-radio name="radio1" id="radioAddEnc" [value]="radioAddEncValue">Add ENC individually</admiralty-radio>
     </admiralty-radio-group>
   </div>
 </div>

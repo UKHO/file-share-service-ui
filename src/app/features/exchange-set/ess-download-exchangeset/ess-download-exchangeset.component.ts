@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
 import { FileShareApiService } from '../../../core/services/file-share-api.service';
-import { ExchangeSetDetails, ProductsNotInExchangeSet } from '../../../core/models/ess-response-types';
+import { ExchangeSetDetails } from '../../../core/models/ess-response-types';
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { Router } from '@angular/router';
-import { EssInfoErrorMessageService, RequestedProductsNotInExchangeSet } from '../../../core/services/ess-info-error-message.service';
+import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 
 @Component({
   selector: 'app-ess-download-exchangeset',
@@ -24,11 +24,6 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   baseUrl: string;
   downloadPath: string;
   downloadUrl: string;
-  exchangeSetCellCount: number;
-  requestedProductCount: number;
-  avgEstimatedSize: any;
-  requestedProductsNotInExchangeSet: ProductsNotInExchangeSet[];
-  messageTitle: string = '';
   displayErrorMessage = false;
   displayMessage = false;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
@@ -54,16 +49,6 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
 
   ngOnInit(): void {
     this.exchangeSetDetails = this.essUploadFileService.getExchangeSetDetails();
-    this.exchangeSetCellCount = this.exchangeSetDetails.exchangeSetCellCount;
-    this.requestedProductCount = this.exchangeSetDetails.requestedProductCount;
-    this.requestedProductsNotInExchangeSet = this.exchangeSetDetails.requestedProductsNotInExchangeSet;
-
-    if(this.requestedProductsNotInExchangeSet && this.requestedProductsNotInExchangeSet.length > 0){
-      this.displayMessage = true;
-      this.messageTitle = 'The following ENCs are not included in the Exchange Set:';
-      this.triggerInfoErrorMessage(true,'warning', this.requestedProductsNotInExchangeSet , this.messageTitle);
-    }
-
     this.batchDetailsUrl = this.exchangeSetDetails._links.exchangeSetBatchDetailsUri.href;
     this.batchId = this.batchDetailsUrl.substring(this.batchDetailsUrl.indexOf('batch/')).split('/')[1];
     this.checkBatchStatus();
@@ -129,19 +114,17 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   triggerInfoErrorMessage(
     showInfoErrorMessage: boolean,
     messageType: 'info' | 'warning' | 'success' | 'error' = 'info',
-    messageDesc: string | ProductsNotInExchangeSet[] = '',
-    messageTitle: string = '',
+    messageDesc: string = ''
   ) {
     this.essInfoErrorMessageService.showInfoErrorMessage = {
       showInfoErrorMessage,
       messageType,
-      messageDesc,
-      messageTitle,
+      messageDesc
     };
   }
 
   ngOnDestroy(): void {
-    this.triggerInfoErrorMessage(false , 'info','');
+    this.triggerInfoErrorMessage(false , 'warning','');
   }
 
   showProgressMessage(showLoading: boolean, showReady: boolean, showComplete: boolean): void {
