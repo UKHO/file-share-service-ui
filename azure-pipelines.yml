@@ -176,8 +176,6 @@ stages:
         value: $(essConfig-apiUiUrl)
       - name: essConfig.adminDomains
         value: $(essConfig-AdminDomains)
-      - name: essConfig.nonAdminDomains
-        value: $(essConfig-NonAdminDomains)
 
     jobs:
       - deployment: DevDeploy
@@ -248,7 +246,7 @@ stages:
              inputs:
                scriptType: inlineScript
                inlineScript: |
-                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains]$(essConfig.nonAdminDomains)"
+                  Write-Host "##vso[task.setvariable variable=essConfig.adminDomains][]"
 
            - script: |
               npm run test:auto -- --grep "NonUKHOUser"
