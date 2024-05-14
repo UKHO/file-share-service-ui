@@ -41,8 +41,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14095
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14239 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
-    // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156119
     // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156018
+    // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156119
     test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
 
         var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
@@ -59,7 +59,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'visible' });
         await esDownloadPageObjects.expect.spinnerSelectorHidden();
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
+        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
         //=========================================
+
 
         esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, fileSize);
         await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
@@ -165,6 +167,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
         await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
         await esDownloadPageObjects.expect.createLinkSelectorEnabled();
+        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
+        await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 4 of 4\nExchange set creation");
     })
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
