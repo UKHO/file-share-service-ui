@@ -776,7 +776,7 @@ describe('EssListEncsComponent', () => {
     expect(component.selectedOption).toBeTruthy();
   });
 
-  it('should render "estimated Exchange Set Size" when "S63 Exchange Set"radio button is selected', () => {
+  it('should render "Estimated exchange set size" when "S63 Exchange Set"radio button is selected', () => {
     component.selectedOption = component.s63OptionValue;
     fixture.detectChanges();
     const paragraph = fixture.debugElement.query(By.css('.estimatedExchangeSetSize'));
