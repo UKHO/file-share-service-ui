@@ -23,7 +23,8 @@ export class EssLandingPageObjects {
     readonly ENClistTableCol1: Locator;
     readonly MaxENCValue:Locator;
     readonly MaxSelectedENCs: Locator;
-    readonly getDialogueSelector: Locator
+    readonly getDialogueSelector: Locator;
+    readonly messageType: Locator;
     readonly pageUnderTest: Page
 
     constructor(readonly page: Page) {
@@ -49,6 +50,7 @@ export class EssLandingPageObjects {
         this.MaxENCValue = this.page.locator("//p[contains(text(),'You can upload')]");
         this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]');
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
+        this.messageType = this.page.locator("div[class='dialogue-title sc-admiralty-dialogue'] admiralty-icon");
         this.pageUnderTest = page;
     }
 

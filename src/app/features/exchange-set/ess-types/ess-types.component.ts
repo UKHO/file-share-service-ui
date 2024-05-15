@@ -62,10 +62,7 @@ export class EssTypesComponent implements OnInit, OnDestroy {
 
     if (this.isDeltaOption) {
       if (!this.isValidDeltaDateSelected(selectedDate)) {
-        const errorMessage =
-          selectedDate > new Date()
-            ? 'Please choose a date from today or up to 27 days in the past. Future dates are not permitted.'
-            : 'Date selected not within 27 days, please choose a different date or select Download all data option.';
+        const errorMessage ='Date selected not within last 27 days, please choose a different date or select the “Download all data” option';
         this.isRadioSelected = false;
         this.isDateValid = false;
         this.triggerInfoErrorMessage(true, 'info', errorMessage);

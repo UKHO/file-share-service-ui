@@ -220,6 +220,46 @@ describe('EssAddSingleEncsComponent', () => {
     }
 }
 
+  let scsProductUpdatesByIdentifiersResponse: ProductCatalog =
+  {
+    "products": [
+      {
+        "productName": "AU210130",
+        "editionNumber": 5,
+        "updateNumbers": [
+          0
+        ],
+        "dates": [
+          {
+            "updateNumber": 0,
+            "updateApplicationDate": "2023-03-10T00:00:00Z",
+            "issueDate": "2023-03-10T00:00:00Z"
+          }
+        ],
+        "cancellation": null,
+        "fileSize": 26140,
+        "ignoreCache": false,
+        "bundle": [
+          {
+            "bundleType": "DVD",
+            "location": "M1;B3"
+          }
+        ]
+      }
+    ],
+    "productCounts": {
+      "requestedProductCount": 1,
+      "returnedProductCount": 1,
+      "requestedProductsAlreadyUpToDateCount": 0,
+      "requestedProductsNotReturned": [
+        {
+          "productName": "US5CN13M",
+          "reason": "noDataAvailableForCancelledProduct"
+        }
+      ]
+    }
+  };
+
   const router = {
     navigate: jest.fn()
   };
@@ -321,14 +361,14 @@ describe('EssAddSingleEncsComponent', () => {
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
 
-  it('validateAndAddENC should   raise "Invalid ENC number."error', () => {
+  it('validateAndAddENC should   raise "Invalid ENC number"error', () => {
     component.txtSingleEnc = 'AU22015';
     component.renderedFrom = 'encList';
     component.validateAndAddENC();
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'error',
-      messageDesc : 'Invalid ENC number.'
+      messageDesc : 'Invalid ENC number'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
@@ -339,7 +379,7 @@ describe('EssAddSingleEncsComponent', () => {
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'info',
-      messageDesc : 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.'
+      messageDesc : 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
@@ -352,7 +392,7 @@ describe('EssAddSingleEncsComponent', () => {
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'info',
-      messageDesc : 'ENC already in list.'
+      messageDesc : 'ENC already in list'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
@@ -365,7 +405,7 @@ describe('EssAddSingleEncsComponent', () => {
     const errObj = {
       showInfoErrorMessage : true,
       messageType : 'info',
-      messageDesc : 'Max ENC limit reached.'
+      messageDesc : 'Max ENC limit reached'
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
@@ -419,7 +459,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.productUpdatesByIdentifiersResponse(component.validEnc,'essHome')
     tick();
     expect(component.displayLoader).toEqual(false);
-    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC');
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC number');
   }));
 
 
@@ -472,7 +512,7 @@ describe('EssAddSingleEncsComponent', () => {
     component.scsProductCatalogResponse(component.validEnc,'essHome')
     tick();
     expect(component.displayLoader).toEqual(false);
-    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC number.');
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true,'error', 'Invalid ENC number');
   }));
 
   it('productUpdatesByDeltaResponse should return Error message for productInformationSinceDateTime', fakeAsync(() => {
@@ -519,8 +559,83 @@ describe('EssAddSingleEncsComponent', () => {
   component.scsProductCatalogResponse(component.validEnc,'essHome')
   tick();
   expect(component.displayLoader).toEqual(false);
-  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+  expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected');
 }));
+
+  it('validation should raise "There has been no updates for the ENCs in the date range selected." when product updates is not available (304 not modified response)', fakeAsync(() => {
+    component.validEnc = ['AU220150', 'AU5PTL01', 'DE5NOBRK'];
+    component.renderedFrom = 'essHome';
+    service.exchangeSetDownloadType = 'Delta';
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
+    component.triggerInfoErrorMessage = jest.fn();
+    component.fetchScsTokenReponse('essHome');
+    component.scsProductCatalogResponse(component.validEnc, 'essHome')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'info', 'There have been no updates for the ENCs in the date range selected');
+  }));
+
+  it('should return error message for productUpdatesByIdentifiersResponse', fakeAsync(() => {
+    component.validEnc = ['AU210130', 'AU210230', 'AU210330', 'AU210180'];
+    component.txtSingleEnc = 'AU210470';
+    component.renderedFrom = 'essHome';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(throwError(scsProductUpdatesByIdentifiersMockData));
+    component.triggerInfoErrorMessage = jest.fn();
+    component.fetchScsTokenReponse('essHome');
+    component.scsProductCatalogResponse(component.validEnc, 'essHome')
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'There has been an error');
+  }));
+
+  it('should return sales catalogue response when user is in essHome screen', fakeAsync(() => {
+    component.validEnc = ['AU210130', 'AU210230', 'AU210330', 'AU210180'];
+    component.txtSingleEnc = 'AU210470';
+    component.renderedFrom = 'essHome';
+    service.setValidENCs(component.validEnc);
+    jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductUpdatesByIdentifiersMockData));
+    component.addSingleEncToList();
+    component.fetchScsTokenReponse('essHome');
+    tick();
+    expect(component.displayLoader).toEqual(false);
+    expect(5).toEqual(scsProductUpdatesByIdentifiersMockData.productCounts.returnedProductCount);
+  }));
+
+
+  it('should raise info message for validateAndAddENC "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site."info', () => {
+    component.txtSingleEnc = 'GB800001';
+    component.renderedFrom = 'essHome';
+    component.validateAndAddENC();
+    const errObj = {
+      showInfoErrorMessage: true,
+      messageType: 'info',
+      messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
+    };
+    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+  });
+
+  test('should return scsProductIdentifiersResponse', () => {
+    var enc: any[] = ['AU210130'];
+    component.renderedFrom = 'essHome';
+    component.productUpdatesByIdentifiersResponse(enc, 'essHome');
+    scsProductInformationApiService.scsProductIdentifiersResponse(enc).subscribe((res: any) => {
+      expect(res).toEqual(scsProductUpdatesByIdentifiersResponse);
+    });
+  });
+
+  test('should return getProductsFromSpecificDateByScsResponse', () => {
+    var enc: any[] = ['AU210130'];
+    component.renderedFrom = 'essHome';
+    service.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
+    component.productUpdatesByDeltaResponse(enc, 'essHome');
+    scsProductInformationApiService.getProductsFromSpecificDateByScsResponse().subscribe((res: any) => {
+      expect(res).toEqual(scsProductUpdatesByIdentifiersResponse);
+    });
+  });
 
 });
 

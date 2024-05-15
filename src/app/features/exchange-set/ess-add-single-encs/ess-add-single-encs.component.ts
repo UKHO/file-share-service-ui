@@ -66,7 +66,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
       return;
     }
     this.fetchScsTokenReponse('essHome');
@@ -85,25 +85,25 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
 
     if(!isValidEnc){
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
+      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
       return;
     }
 
     if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
       return;
     }
 
     if(this.validEnc.includes(this.txtSingleEnc.toUpperCase())){
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'ENC already in list.');
+      this.triggerInfoErrorMessage(true,'info', 'ENC already in list');
       return;
     }
 
     if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'Max ENC limit reached.');
+      this.triggerInfoErrorMessage(true,'info', 'Max ENC limit reached');
       return;
     }
     this.fetchScsTokenReponse('encList');
@@ -154,14 +154,14 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   }
                   else {
                     this.displayLoader = false;
-                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected');
                     return;
                   }
                 },
                 error: (error) => {
                   this.displayLoader = false;
                   if (error.status == 304) {
-                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected.');
+                    this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected');
                     return;
                   }
                   this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
@@ -170,7 +170,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
           }
           else {
             this.displayLoader = false;
-            this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number.');
+            this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
             return;
           }
         },
@@ -206,7 +206,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     this.displayLoader = false;
     this.triggerInfoErrorMessage(false,'info', '');
     if(productCatalog.products.length === 0){
-      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC');
+      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
       return;
     }
     if(!this.essUploadFileService.scsProductResponse){

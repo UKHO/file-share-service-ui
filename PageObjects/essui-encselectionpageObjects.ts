@@ -41,6 +41,7 @@ export class EncSelectionPageObjects {
   readonly getDialogueSelector : Locator
   readonly errorMessage : Locator
   readonly encNames : Locator
+  readonly messageBackground: Locator;
   readonly s63Radiobutton : Locator
   readonly s57Radiobutton : Locator
   readonly selectedEncs : Locator
@@ -77,6 +78,7 @@ export class EncSelectionPageObjects {
     this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
     this.errorMessage = this.page.locator("h3[class='warningMsgTitle']");
     this.encNames = this.page.locator("table[class='cdk-table enc-list-table'] tbody tr td");
+    this.messageBackground = this.page.locator("admiralty-dialogue[class='sc-admiralty-dialogue-h sc-admiralty-dialogue-s hydrated'] section");
     this.s57Radiobutton = this.page.locator("input[value = 'S57'] + label");
     this.s63Radiobutton = this.page.locator("input[value = 'S63'] + label");
     this.selectedEncs = this.page.locator("table:nth-child(1) > tbody:nth-child(2)");
@@ -90,7 +92,7 @@ export class EncSelectionPageObjects {
   }
 
   async addAnotherENC(data: string): Promise<void> {
-    await this.page.waitForSelector("a.lnkAddAnotherEnc", {state:'visible', timeout: 3000});
+    await this.page.waitForSelector("a.lnkAddAnotherEnc", {state:'visible', timeout: 5000});
     await this.addAnotherENCSelector.click();
     await this.typeENCTextBoxSelector.fill(data);
     await this.esslandingPageObjects.addsingleencSelector.click();

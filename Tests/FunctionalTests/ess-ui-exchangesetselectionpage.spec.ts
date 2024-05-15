@@ -93,6 +93,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
   });
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156359
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149507
   test('Verify warning message when selecting date as 28 days in the past from current date', async ({ page }) => {
     let date: Date = new Date();
@@ -101,6 +102,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await exchangeSetSelectionPageObjects.expect.validateMessageForPastDate();
   });
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156360
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149508
   test('Verify warning message when user selects future date', async ({ page }) => {
     let date: Date = new Date();
