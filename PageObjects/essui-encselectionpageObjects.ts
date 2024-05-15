@@ -43,6 +43,7 @@ export class EncSelectionPageObjects {
   readonly encNames : Locator
   readonly s63Radiobutton : Locator
   readonly s57Radiobutton : Locator
+  readonly selectedEncs : Locator
   readonly pageUnderTest: Page
 
 
@@ -78,6 +79,7 @@ export class EncSelectionPageObjects {
     this.encNames = this.page.locator("table[class='cdk-table enc-list-table'] tbody tr td");
     this.s57Radiobutton = this.page.locator("input[value = 'S57'] + label");
     this.s63Radiobutton = this.page.locator("input[value = 'S63'] + label");
+    this.selectedEncs = this.page.locator("table:nth-child(1) > tbody:nth-child(2)");
     this.pageUnderTest = page;
   }
 

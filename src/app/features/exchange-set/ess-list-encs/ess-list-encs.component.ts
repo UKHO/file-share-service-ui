@@ -2,7 +2,7 @@ import { ExchangeSetApiService } from './../../../core/services/exchange-set-api
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
@@ -21,7 +21,8 @@ enum SelectDeselect {
 @Component({
   selector: 'app-ess-list-encs',
   templateUrl: './ess-list-encs.component.html',
-  styleUrls: ['./ess-list-encs.component.scss']
+  styleUrls: ['./ess-list-encs.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EssListEncsComponent implements OnInit , OnDestroy {
   displayLoader: boolean = false;

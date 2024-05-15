@@ -307,4 +307,20 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 exchange set");
   });
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156231
+  test("Check Estimated size is visible for S63 exchange set when user select base exchange set type", async ({ page }) => {
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/250ENCs.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    await page.waitForSelector("input[type='checkbox']:nth-child(1)", { state: "visible", timeout: 3000});
+    const selectENCsFromTable = encSelectionPageObjects.encTableCheckboxList;
+    await selectENCsFromTable.nth(0).click();
+    for (var i=1; !await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight); i++) {
+      await selectENCsFromTable.nth(i).click();
+    }
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight));
+  });
 });
