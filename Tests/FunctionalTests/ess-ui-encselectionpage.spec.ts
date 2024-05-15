@@ -281,4 +281,46 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.ValidateProductVersionPayload(await sinceDateResponse.text(), productVersionResponse.request().postData());
   })
 
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156059
+  test("check UKHO user is able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for base exchange set.",async ({ page}) =>{
+    await encSelectionPageObjects.selectAllSelectorClick();
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
+    encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s63Radiobutton.innerText()).trim() == "S63 exchange set");
+    encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s57Radiobutton.innerText()).trim() == "S57 exchange set");
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156211
+  test("check UKHO user is able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for Delta exchange set.",async ({ page}) =>{
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.enterDate(new Date());
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick(); 
+    await encSelectionPageObjects.selectAllSelectorClick();
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 exchange set");
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 exchange set");
+  });
+
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156231
+  test("Check Estimated size is visible for S63 exchange set when user select base exchange set type", async ({ page }) => {
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    await esslandingPageObjects.uploadradiobtnSelectorClick();
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/250ENCs.csv');
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    await page.waitForSelector("input[type='checkbox']:nth-child(1)", { state: "visible", timeout: 3000});
+    const selectENCsFromTable = encSelectionPageObjects.encTableCheckboxList;
+    await selectENCsFromTable.nth(0).click();
+    for (var i=1; !await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight); i++) {
+      await selectENCsFromTable.nth(i).click();
+    }
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight));
+  });
 });

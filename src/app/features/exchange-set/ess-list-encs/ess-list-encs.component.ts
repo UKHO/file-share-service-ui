@@ -2,7 +2,7 @@ import { ExchangeSetApiService } from './../../../core/services/exchange-set-api
 import { MsalService } from '@azure/msal-angular';
 import { SilentRequest } from '@azure/msal-browser';
 import { EssUploadFileService } from '../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { AppConfigService } from '../../../core/services/app-config.service';
 import { SortState } from '../../../shared/components/ukho-table/tables.types';
 import { Router } from '@angular/router';
@@ -21,7 +21,8 @@ enum SelectDeselect {
 @Component({
   selector: 'app-ess-list-encs',
   templateUrl: './ess-list-encs.component.html',
-  styleUrls: ['./ess-list-encs.component.scss']
+  styleUrls: ['./ess-list-encs.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EssListEncsComponent implements OnInit , OnDestroy {
   displayLoader: boolean = false;
@@ -46,9 +47,13 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   sortGraphicDown: string = "fa-chevron-down";
   sortGraphic: string = this.sortGraphicUp;
   scsInvalidProduct: NotReturnedProduct[];
-  updateNumber:number;
-  editionNumber:number;
-  
+  updateNumber: number;
+  editionNumber: number;
+  isPrivilegedUser: boolean = false;
+  selectedOption: string = 'S63';
+  s57OptionValue: string = 'S57';
+  s63OptionValue: string = 'S63';
+
   constructor(private essUploadFileService: EssUploadFileService,
     private elementRef: ElementRef,
     private route: Router,
@@ -82,6 +87,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.selectedEncList = this.essUploadFileService.getSelectedENCs();
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
+    this.essUploadFileService.exchangeSetDownloadZipType = this.s63OptionValue;
    
     if(this.essUploadFileService.aioEncFound){
       if(this.scsInvalidProduct.length > 0){
@@ -98,6 +104,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
         let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
         this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProducts}`);
       }
+      this.isPrivilegedUser = this.essUploadFileService.isPrivilegedUser;
   }
 
   setEncList() {
@@ -153,6 +160,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.estimatedTotalSize = this.getEstimatedTotalSize();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     if (this.selectedEncList.length === 0) {
+      this.selectedOption = this.s63OptionValue;
       this.selectDeselectText = SelectDeselect.select;
       return;
     }
@@ -257,6 +265,10 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
           this.scsExchangeSetResponse();
         });
     });
+  }
+
+  essDownloadZipType(option: string) {
+    this.essUploadFileService.exchangeSetDownloadZipType = option === this.s57OptionValue ? this.s57OptionValue : this.s63OptionValue;
   }
 
   scsExchangeSetResponse() {

@@ -3,6 +3,7 @@
     {
         "url":"",
         "user":"",
+        "nonAdminUser":"",
         "password":"",
         "userFullName" : "",
         "apiurl": "",

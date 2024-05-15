@@ -42,6 +42,9 @@ export class EncSelectionPageObjects {
   readonly errorMessage : Locator
   readonly encNames : Locator
   readonly messageBackground: Locator;
+  readonly s63Radiobutton : Locator
+  readonly s57Radiobutton : Locator
+  readonly selectedEncs : Locator
   readonly pageUnderTest: Page
 
 
@@ -76,6 +79,9 @@ export class EncSelectionPageObjects {
     this.errorMessage = this.page.locator("h3[class='warningMsgTitle']");
     this.encNames = this.page.locator("table[class='cdk-table enc-list-table'] tbody tr td");
     this.messageBackground = this.page.locator("admiralty-dialogue[class='sc-admiralty-dialogue-h sc-admiralty-dialogue-s hydrated'] section");
+    this.s57Radiobutton = this.page.locator("input[value = 'S57'] + label");
+    this.s63Radiobutton = this.page.locator("input[value = 'S63'] + label");
+    this.selectedEncs = this.page.locator("table:nth-child(1) > tbody:nth-child(2)");
     this.pageUnderTest = page;
   }
 
@@ -123,7 +129,7 @@ export class EncSelectionPageObjects {
   }
 
   async selectAllSelectorClick(): Promise<void> {
-    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible' });
+    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible', timeout: 3000});
     await this.selectAllSelector.click();
 
   }

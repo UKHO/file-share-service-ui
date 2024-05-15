@@ -160,6 +160,8 @@ stages:
         value: $(autoTestConfig-url)
       - name: autoTestConfig.user
         value: $(autoTestConfig-user)
+      - name: autoTestConfig.nonAdminUser
+        value: $(autoTestConfig-nonAdminUser)
       - name: autoTestConfig.password
         value: $(autoTestConfig-password)
       - name: autoTestConfig.userFullName
@@ -174,6 +176,9 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
+      - name: essConfig.adminDomains
+        value: $(essConfig-AdminDomains)
+
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
@@ -227,7 +232,7 @@ stages:
            - script: |
               npm run test:auto
              displayName: 'Run Functional Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'      
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()
@@ -372,6 +377,8 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
+      - name: essConfig.adminDomains
+        value: $(essConfig-AdminDomains)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
     jobs:
       - deployment: vNextIatDeploy
@@ -441,6 +448,8 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
+      - name: essConfig.adminDomains
+        value: $(essConfig-AdminDomains)
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
     jobs:
       - deployment: vNextE2eDeploy
@@ -509,6 +518,8 @@ stages:
         value: $(essConfig-aioExcludeEncs)
       - name: essConfig.apiUiUrl
         value: $(essConfig-apiUiUrl)
+      - name: essConfig.adminDomains
+        value: $(essConfig-AdminDomains)
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
     jobs:
       - deployment: QADeploy

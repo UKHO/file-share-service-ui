@@ -23,6 +23,8 @@ export class EssUploadFileService {
   public aioEncFound: boolean;
   private _exchangeSetDownloadType: 'Base' | 'Delta';
   private _exchangeSetDeltaDate: any;
+  public isPrivilegedUser: boolean = false;
+  private _exchangeSetDownloadZipType: string;
 
   constructor() {
     this.selectedEncs = [];
@@ -181,6 +183,14 @@ export class EssUploadFileService {
 
   set exchangeSetDownloadType(type: 'Base' | 'Delta') {
     this._exchangeSetDownloadType = type;
+  }
+
+  get exchangeSetDownloadZipType(): string {
+    return this._exchangeSetDownloadZipType;
+  }
+
+  set exchangeSetDownloadZipType(type: string) {
+    this._exchangeSetDownloadZipType = type;
   }
 
   get exchangeSetDeltaDate(): any {
