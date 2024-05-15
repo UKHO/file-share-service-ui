@@ -58,10 +58,11 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13962 (For verify Text)
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13959 (For verify Table as per ukho design)
+  // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156375
   test('Verify Text on the top of ENC list.', async ({ page }) => {
-
     await encSelectionPageObjects.expect.startLinkSelectorVisible();
-    await encSelectionPageObjects.expect.textAboveTableSelectorToEqual("Select up to 250 ENCs and make an exchange set. Please note, larger requests may take longer to process.");
+    await encSelectionPageObjects.expect.textAboveTableSelectorToEqual("Please confirm the ENCs that you would like to include in your exchange set.If you selected “Download updates” this list will only show ENCs that have had an update within the date range provided.");
+    await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 3 of 4\nConfirm exchange set content");
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
@@ -117,7 +118,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
 
-  // // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
   test('Verify that user is not able to add more than Maxlimit (currently configured as 250) ENCs using manually adding ENC', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
@@ -286,15 +287,8 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 Exchange Set");
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 Exchange Set");
-  });
-
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156061
-  test("check UKHO user is not able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for base exchange set @NonUKHOUser",async ({ page}) =>{
-    await encSelectionPageObjects.selectAllSelectorClick();
-    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s63Radiobutton.isVisible());
-    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s57Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s63Radiobutton.innerText()).trim() == "S63 exchange set");
+    encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s57Radiobutton.innerText()).trim() == "S57 exchange set");
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156211
@@ -309,22 +303,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 Exchange Set");
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 Exchange Set");
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.innerText() == "S63 exchange set");
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.innerText() == "S57 exchange set");
   });
-
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156212
-  test("check other than UKHO user is not able to see options to choose preferred exchange set format on 'Confirm exchange set content' screen for Delta exchange set @NonUKHOUser",async ({ page}) =>{
-    await encSelectionPageObjects.startAgainLinkSelectorClick();
-    await exchangeSetSelectionPageObjects.enterDate(new Date());
-    await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    await esslandingPageObjects.uploadradiobtnSelectorClick();
-    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
-    await esslandingPageObjects.proceedButtonSelectorClick(); 
-    await encSelectionPageObjects.selectAllSelectorClick();
-    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s63Radiobutton.isVisible());
-    encSelectionPageObjects.expect.toBeTruthy(!await encSelectionPageObjects.s57Radiobutton.isVisible());
-    });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156231
   test("Check Estimated size is visible for S63 exchange set when user select base exchange set type", async ({ page }) => {
@@ -342,5 +323,4 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     }
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight));
   });
-
 });

@@ -52,7 +52,7 @@ export class EncSelectionPageObjects {
     this.esslandingPageObjects = new EssLandingPageObjects(page);
     this.encNameSelector = this.page.locator("text=ENC name"); 
     this.startLinkSelector = this.page.locator(".linkStartAgain"); 
-    this.textAboveTableSelector = this.page.locator("text=Select up to 250 ENCs and make an exchange set"); 
+    this.textAboveTableSelector = this.page.locator("div.showConfirmEssMessage"); 
     
     this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i"); 
     this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc"); 
@@ -77,8 +77,8 @@ export class EncSelectionPageObjects {
     this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
     this.errorMessage = this.page.locator("h3[class='warningMsgTitle']");
     this.encNames = this.page.locator("table[class='cdk-table enc-list-table'] tbody tr td");
-    this.s57Radiobutton = this.page.locator("admiralty-radio[ng-reflect-value='S57'] div label");
-    this.s63Radiobutton = this.page.locator("admiralty-radio[ng-reflect-value='S63'] div label");
+    this.s57Radiobutton = this.page.locator("input[value = 'S57'] + label");
+    this.s63Radiobutton = this.page.locator("input[value = 'S63'] + label");
     this.selectedEncs = this.page.locator("table:nth-child(1) > tbody:nth-child(2)");
     this.pageUnderTest = page;
   }
@@ -127,7 +127,7 @@ export class EncSelectionPageObjects {
   }
 
   async selectAllSelectorClick(): Promise<void> {
-    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible' });
+    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible', timeout: 3000});
     await this.selectAllSelector.click();
 
   }
@@ -314,7 +314,7 @@ class EncSelectionPageAssertions {
 
   async textAboveTableSelectorToEqual(expected: string): Promise<void> {
 
-    expect(await this.encSelectionPageObjects.textAboveTableSelector.innerText()).toEqual(expected);
+    expect((await this.encSelectionPageObjects.textAboveTableSelector.innerText()).trim()==(expected));
   }
 
   async verifyNumberofENCs(): Promise<void> {

@@ -160,6 +160,8 @@ stages:
         value: $(autoTestConfig-url)
       - name: autoTestConfig.user
         value: $(autoTestConfig-user)
+      - name: autoTestConfig.nonAdminUser
+        value: $(autoTestConfig-nonAdminUser)
       - name: autoTestConfig.password
         value: $(autoTestConfig-password)
       - name: autoTestConfig.userFullName
@@ -176,6 +178,7 @@ stages:
         value: $(essConfig-apiUiUrl)
       - name: essConfig.adminDomains
         value: $(essConfig-AdminDomains)
+
     jobs:
       - deployment: DevDeploy
         displayName: "Dev - deploy terraform and website"
@@ -229,7 +232,7 @@ stages:
            - script: |
               npm run test:auto
              displayName: 'Run Functional Tests'
-             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'
+             workingDirectory: '$(Build.SourcesDirectory)/Tests/FunctionalTests'      
 
            - task: PublishTestResults@2
              condition: succeededOrFailed()

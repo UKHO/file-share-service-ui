@@ -58,11 +58,11 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13796
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14421
     test('Verify appending "/exchangesets/exchange-set" in  url after login, navigates to ESS landing page', async ({ page }) => {
-        await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
-        await page.goto(autoTestConfig.url+"/#/exchangesets/exchange-set");
+        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+        await page.goto(autoTestConfig.url + "/#/exchangesets/exchange-set");
         await page.waitForLoadState('load');
         await esslandingPageObjects.expect.verifyUploadRadioButtonName("Upload a list in a file");
-        
+
     });
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13795
@@ -72,7 +72,7 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
         expect(await page.isHidden(fssHomePageObjectsConfig.essLinkSelector)).toBeTruthy();
     });
 
-    
+
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13797   
     test('Verify appending "/search" in url before login, navigates to home page', async ({ page }) => {
@@ -92,12 +92,12 @@ test.describe('ESS UI Home Page Functional Test Scenarios', () => {
         await expect(page).toHaveTitle("Admiralty - File Share Service - Exchange Sets");
     });
 
-   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14225
-   test ('Verify clicking on "logout" button page redirect to home page and "login" button is enabled' , async ({ page }) => {
-    await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
-    await page.locator(commonObjectsConfig.profileLinkSelector).getByRole('button', { name: commonObjectsConfig.signoutLinkName }).click();
-    await page.waitForLoadState('load');
-    expect(await page.isEnabled(fssHomePageObjectsConfig.profileLinkSelector)).toBeTruthy();
-})
+    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14225
+    test('Verify clicking on "logout" button page redirect to home page and "login" button is enabled', async ({ page }) => {
+        await LoginPortal(page, autoTestConfig.user, autoTestConfig.password);
+        await page.locator(commonObjectsConfig.profileLinkSelector).getByRole('button', { name: commonObjectsConfig.signoutLinkName }).click();
+        await page.waitForLoadState('load');
+        expect(await page.isEnabled(fssHomePageObjectsConfig.profileLinkSelector)).toBeTruthy();
+    })
 
 });

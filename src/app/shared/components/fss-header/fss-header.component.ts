@@ -192,7 +192,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     
     const email = claims ? claims['email'] : null;
     this.configAdminDomains.forEach(configAdminDomain => {
-      if (email && email.split('@')[1] === configAdminDomain) {
+      if (email && (email.toLowerCase().endsWith(configAdminDomain.toLowerCase()))) {
         this.essUploadFileService.isPrivilegedUser = true;
       }
     })

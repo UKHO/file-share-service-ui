@@ -76,6 +76,7 @@ table th:last-child {
     margin-left: 38px;
     font-weight: 400;
 }
+
 .lnkAddAnotherEnc
 {
     display: block;
@@ -94,6 +95,19 @@ table th:last-child {
   p {
     margin-bottom: 5px;
   }
+}
+
+.showConfirmEssMessage{
+    margin-top: 5px;
+}
+
+.h1heading{
+    font-family: JohnstonITC, Helvetica, sans-serif;
+    color: #09315b;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 60px;
+    margin: 0 0 30px;
 }
 
 .selected-list-table{
