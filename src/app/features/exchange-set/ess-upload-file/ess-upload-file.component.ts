@@ -182,11 +182,11 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                     } else if (this.essUploadFileService.aioEncFound && this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                       this.displayLoader = false;
                       let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                      this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
+                      this.triggerInfoErrorMessage(true, 'error', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
                       return;
                     } else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                       let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                      this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
+                      this.triggerInfoErrorMessage(true, 'error', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
                       return;
                     } else if (this.essUploadFileService.aioEncFound) {
                       this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
@@ -203,11 +203,11 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                     if (error.status == HttpStatusCode.NotModified) {
                       if (this.essUploadFileService.aioEncFound && this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                         let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
+                        this.triggerInfoErrorMessage(true, 'error', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
                       }
                       else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                         let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
+                        this.triggerInfoErrorMessage(true, 'error', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
                       } else if (this.essUploadFileService.aioEncFound) {
                         this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
                       } else {
