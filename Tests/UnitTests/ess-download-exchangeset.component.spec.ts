@@ -102,11 +102,11 @@ describe('EssDownloadExchangesetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should render text inside an h1 tag', () => {
+  test('should render text inside an h2 tag', () => {
     const fixture = TestBed.createComponent(EssDownloadExchangesetComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain(' Step 4 of 4  Exchange set creation ');
+    expect(compiled.querySelector('h2').textContent).toContain(' Step 4 of 4  Exchange set creation ');
   });
 
   test('should render text inside an p tag', () => {

@@ -741,7 +741,8 @@ app-root {
     }
 }
 
-.headerEssSteps{
+.headerEssSteps,
+.headerEssSteps > span{
 	display: block;
 	font-family: JohnstonITC, Helvetica, sans-serif;
 	color: #09315b;

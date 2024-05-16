@@ -436,11 +436,11 @@ describe('EssListEncsComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  test('should render text inside an h1 tag', () => {
+  test('should render text inside an h2 tag', () => {
     const fixture = TestBed.createComponent(EssListEncsComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain(' Step 3 of 4  Confirm exchange set content ');
+    expect(compiled.querySelector('h2').textContent).toContain(' Step 3 of 4  Confirm exchange set content ');
   });
 
   test('should render text inside an p tag', () => {
