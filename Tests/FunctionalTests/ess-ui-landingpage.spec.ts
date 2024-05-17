@@ -278,11 +278,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "triangle-exclamation");
+          await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
           const message = "Invalid cells - GZ800112.\nThere have been no updates for the ENCs in the date range selected."
           await encSelectionPageObjects.expect.toBeTruthy(message == (await encSelectionPageObjects.errorMessage.innerText()).trim());
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
-          await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(248, 237, 227)");
+          await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });
 
      //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156372

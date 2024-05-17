@@ -100,6 +100,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     date.setDate(date.getDate() - 28);
     await exchangeSetSelectionPageObjects.enterDate(date);
     await exchangeSetSelectionPageObjects.expect.validateMessageForPastDate();
+    await encSelectionPageObjects.expect.toBeTruthy(await exchangeSetSelectionPageObjects.proceed.isDisabled());
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156360
@@ -109,6 +110,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     date.setDate(date.getDate() + 1);
     await exchangeSetSelectionPageObjects.enterDate(date);
     await exchangeSetSelectionPageObjects.expect.validateMessageForFutureDate();
+    await encSelectionPageObjects.expect.toBeTruthy(await exchangeSetSelectionPageObjects.proceed.isDisabled());
   });
 })
 
