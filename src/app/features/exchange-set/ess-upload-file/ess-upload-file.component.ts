@@ -68,7 +68,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
   }
 
   loadFileReader() { // called on click of proceed button
-    if (this.isInvalidEncFile(this.encFile) || !this.encFile) {
+    if (this.isInvalidEncFile(this.encFile)) {
       this.triggerInfoErrorMessage(true, 'error', 'Please select a .csv or .txt file');
       return;
     }
