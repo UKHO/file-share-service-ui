@@ -618,7 +618,7 @@ ${ValidAndAioEncData}         | ${true}
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "warning", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "error", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
     }));
 
   it.each`
@@ -666,7 +666,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
     }));
 
   it.each`
@@ -710,7 +710,7 @@ ${ValidAndAioEncData}         | ${true}
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "warning", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "error", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
     }));
 
   it.each`
@@ -758,7 +758,7 @@ ${getEncData}                 | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'warning', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
     }));
 
     it.each`
