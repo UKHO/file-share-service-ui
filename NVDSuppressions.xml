@@ -57,4 +57,18 @@
       <packageUrl regex="true">^pkg:javascript/axios@.*$</packageUrl>
       <vulnerabilityName>Versions before 1.6.8 depends on follow-redirects before 1.15.6 which could leak the proxy authentication credentials</vulnerabilityName>
    </suppress>
+   <suppress>
+      <notes><![CDATA[
+      file name: braces:3.0.2
+      ]]></notes>
+      <packageUrl regex="true">^pkg:npm/braces@.*$</packageUrl>
+      <vulnerabilityName>CVE-2024-4068</vulnerabilityName>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
+      file name: micromatch:4.0.5
+      ]]></notes>
+      <packageUrl regex="true">^pkg:npm/micromatch@.*$</packageUrl>
+      <vulnerabilityName>CVE-2024-4067</vulnerabilityName>
+  </suppress>
 </suppressions>

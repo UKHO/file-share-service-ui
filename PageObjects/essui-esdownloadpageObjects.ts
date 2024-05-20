@@ -13,7 +13,6 @@ export class EsDownloadPageObjects {
     readonly downloadButtonSelector: Locator;
     readonly exchangeSetDownloadFrame: Locator;
     readonly spinnerSelector: Locator;
-    readonly exchangeSetDownloadFrame: Locator;
     readonly includedENCsCountSelector: Locator;
     readonly EstimatedESsizeSelector: Locator;
     readonly selectedTextSelector: Locator;

@@ -20,7 +20,7 @@ export class ExchangeSetSelectionPageObjects{
         this.baseRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(1) div label");
         this.deltaRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(2) div label");
         this.warningMessage = page.locator(".warningMsgTitle");
-        this.header = page.locator("h1#main");
+        this.header = page.locator("h2#main");
     }
 
     async selectBaseDownloadRadioButton(){
