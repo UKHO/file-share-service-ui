@@ -33,10 +33,10 @@ stages:
 - stage: BuildTestPublish
   displayName: "Build, test and publish"
   dependsOn: []
-jobs:
-- template: Deployment/templates/build-test-publish.yml
-  parameters:
-    SkipDependencyCheck: ${{ parameters.SkipDependencyCheck }}
+  jobs:
+  - template: Deployment/templates/build-test-publish.yml
+    parameters:
+      SkipDependencyCheck: ${{ parameters.SkipDependencyCheck }}
 
   # - stage: Devdeploy
   #   displayName: "Devdeploy (inc terraform, website deploy)"
