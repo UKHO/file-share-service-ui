@@ -46,11 +46,11 @@ jobs:
         Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
 
 - job: BuildTestPublish
+  displayName: "Build test publish"
   pool: $(DeploymentPool)
-  #container: ${{ parameters.Container }}
+  container: ${{ parameters.Container }}
   workspace:
     clean: all
-  displayName: "Build test publish"
   steps:
   - checkout: self
 
