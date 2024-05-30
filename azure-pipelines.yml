@@ -37,6 +37,7 @@ stages:
   - template: Deployment/templates/build-test-publish.yml
     parameters:
       SkipDependencyCheck: ${{ parameters.SkipDependencyCheck }}
+      Container: ${{ variables.Container }}
 
   # - stage: Devdeploy
   #   displayName: "Devdeploy (inc terraform, website deploy)"

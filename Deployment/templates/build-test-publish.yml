@@ -3,6 +3,9 @@ parameters:
 - name: SkipDependencyCheck
   type: boolean
   default: false
+# The Terraform Azure PowerShell container.
+- name: Container
+  type: string
 
 jobs:
 - job: Dependencychecker
@@ -44,7 +47,7 @@ jobs:
 
 - job: BuildTestPublish
   pool: $(DeploymentPool)
-  container: ${{variables.Container}}
+  #container: ${{ parameters.Container }}
   workspace:
     clean: all
   displayName: "Build test publish"
