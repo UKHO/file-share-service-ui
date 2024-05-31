@@ -11,33 +11,33 @@ jobs:
 - job: Dependencychecker
   condition: ne('${{ parameters.SkipDependencyCheck }}', true)
   pool: $(WindowPool)
-  displayName: "Dependency checker"
+  displayName: Dependency checker
   workspace:
     clean: all
   steps:
   - task: NodeTool@0
+    displayName: Install Node.js
     inputs:
       versionSpec: $(NodeVersion)
-      displayName: 'Install Node.js'
 
   - script: |
       npm ci
-    displayName: 'npm restore'
+    displayName: npm restore
 
   - task: CmdLine@1
-    displayName: "Run OWASP Dependency Checker"
+    displayName: Run OWASP dependency-check
     inputs:
       filename: 'dependency-check.bat'
       arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate --disableYarnAudit'
 
   - task: PublishBuildArtifacts@1
-    displayName: "Publish Artifact: OWASP Dependency Checker Report"
+    displayName: Publish OWASP dependency-check report
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)\DCReport'
       ArtifactName: "OWASP Dependency Checker Report"
 
   - task: PowerShell@1
-    displayName: "Fail Build if Dependency Check Finds Any Vulnerabilities"
+    displayName: Fail build if OWASP dependency-check finds any vulnerabilities
     inputs:
       scriptType: inlineScript
       arguments: '-ReportLocation $(Build.ArtifactStagingDirectory)\DCReport\*'
@@ -46,7 +46,7 @@ jobs:
         Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
 
 - job: BuildTestPublish
-  displayName: "Build test publish"
+  displayName: Build, test and publish
   pool: $(DeploymentPool)
   container: ${{ parameters.Container }}
   workspace:
@@ -55,45 +55,46 @@ jobs:
   - checkout: self
 
   - task: NodeTool@0
+    displayName: Install Node.js
     inputs:
       versionSpec: $(NodeVersion)
-      displayName: 'Install Node.js'
 
   - script: |
       npm ci
-    displayName: 'npm restore'
+    displayName: npm restore
           
   - script: |
       npm run build
-    displayName: 'npm build'
+    displayName: npm build
           
   - script: |
       npm run test:unit
     continueOnError: false
-    displayName: 'Unit test with Jest'
+    displayName: Unit test with Jest
 
   - task: PublishTestResults@2
     condition: succeededOrFailed()
-    displayName: 'Publish Unit Test Results'
+    displayName: Publish unit test results
     inputs:
       testRunner: 'JUnit'
       testResultsFiles: 'junit.xml'
       testRunTitle: Unit Test Results
 
   - task: PublishCodeCoverageResults@1
+    displayName: Publish code coverage results
     inputs:
       codeCoverageTool: 'Cobertura'
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
       reportDirectory: 'coverage/'
 
   - task: PublishBuildArtifacts@1
-    displayName: "Publish angularapp artifacts"
+    displayName: Publish angular app artifacts
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)/dist'
       ArtifactName: AngularApp
 
   - task: PublishBuildArtifacts@1
-    displayName: "Publish terraform Artifacts"
+    displayName: Publish deployment artifact
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)/Deployment'
-      ArtifactName: terraformartifact
+      ArtifactName: DeploymentScripts
