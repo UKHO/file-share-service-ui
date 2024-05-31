@@ -103,7 +103,7 @@ jobs:
           displayName: File transform - website config
           inputs:
             folderPath: "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
-            #xmlTransformationRules:
+            xmlTransformationRules:
             jsonTargetFiles: '**/appconfig.json'
 
         - task: AzureCLI@2
