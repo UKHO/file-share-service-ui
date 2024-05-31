@@ -32,7 +32,7 @@ jobs:
 - deployment: ${{ parameters.ShortName }}Deploy
   displayName: ${{ upper(parameters.ShortName) }} - deploy terraform and website
   environment: ${{ parameters.AzureDevOpsEnvironment }}
-  container: ${{variables.Container}}
+  container: ${{ parameters.Container }}
   workspace:
     clean: all
   variables:
