@@ -7,7 +7,7 @@ $sleepTimeInSecond = 15
 $isServiceActive = 'false'
 
 $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
-$timeSpan = New-TimeSpan -Minutes $waitTimeInMinute
+$timeSpan = New-TimeSpan -Minutes $WaitTimeInMinutes
 $stopWatch.Start()
 
 do {
@@ -43,6 +43,6 @@ if ($httpResponse -ne $null) {
 if ($isServiceActive -eq 'true' ) {
     Write-Host "Website is up, returning from script..."
 } else { 
-    Write-Error "Website was not up in $WaitTimeInMinute, error in deployment."
+    Write-Error "Website was not up in $WaitTimeInMinutes, error in deployment."
     throw "Error"
 }

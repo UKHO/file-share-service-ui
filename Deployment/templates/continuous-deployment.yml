@@ -121,7 +121,7 @@ jobs:
           inputs:
             targetType: filePath
             filePath: '$(Pipeline.Workspace)/DeploymentScripts/CheckWebsiteHttpStatus.ps1'
-            arguments: '-FssUiWebUrl $(service-dns-url) -WaitTimeInMinute $(waitTimeInMinute)'
+            arguments: '-FssUiWebUrl $(service-dns-url) -WaitTimeInMinutes $(waitTimeInMinute)'
 
 - ${{ if eq(parameters.RunFunctionalTests, true) }}:
   - template: playwright-testing.yml
