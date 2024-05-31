@@ -12,6 +12,7 @@ parameters:
 - name: TestDirectory
   type: string
 
+jobs:
 - job: ${{ parameters.ShortName }}E2eTests
   displayName: ${{ upper(parameters.ShortName) }} - run ${{ parameters.TestDescription }} tests
   dependsOn:
