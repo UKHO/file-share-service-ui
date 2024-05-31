@@ -61,7 +61,6 @@ stages:
       RunFunctionalTests: true
       RunE2eTests: true
       RunAccessibilityTests: true
-      RetainPipeline: true
 
 - stage: vNextIatDeploy
   dependsOn:
