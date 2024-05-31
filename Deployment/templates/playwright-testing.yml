@@ -1,3 +1,4 @@
+parameters:
 # The name of the Terraform workspace to use. Will also be used to generate job names and, in lower case, used to select the correct var/x-deploy.yml variable file.
 - name: ShortName
   type: string
