@@ -120,7 +120,7 @@ jobs:
           displayName: Check the status of the service
           inputs:
             targetType: filePath
-            filePath: '$(Pipeline.Workspace)/DeploymentScripts/CheckWebsiteHttpStatus.ps1'
+            filePath: '$(Pipeline.Workspace)/DeploymentScripts/checkwebsitestatus.ps1'
             arguments: '-FssUiWebUrl $(service-dns-url) -WaitTimeInMinutes $(waitTimeInMinute)'
 
 - ${{ if eq(parameters.RunFunctionalTests, true) }}:
