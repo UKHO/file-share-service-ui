@@ -124,7 +124,7 @@ jobs:
             arguments: "-FssUiWebUrl $(service-dns-url) -WaitTimeInMinute $(waitTimeInMinute)"
 
 - ${{ if eq(parameters.RunFunctionalTests, true) }}:
-  - template: continuous-deployment.yml
+  - template: playwright-testing.yml
     parameters:
       ShortName: ${{ parameters.ShortName }}
       TestName: auto
@@ -132,7 +132,7 @@ jobs:
       TestDirectory: FunctionalTests
 
 - ${{ if eq(parameters.RunE2eTests, true) }}:
-  - template: continuous-deployment.yml
+  - template: playwright-testing.yml
     parameters:
       ShortName: ${{ parameters.ShortName }}
       TestName: e2e
@@ -140,7 +140,7 @@ jobs:
       TestDirectory: E2ETests
 
 - ${{ if eq(parameters.RunAccessibilityTests, true) }}:
-  - template: continuous-deployment.yml
+  - template: playwright-testing.yml
     parameters:
       ShortName: ${{ parameters.ShortName }}
       TestName: a11y
