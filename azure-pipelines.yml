@@ -99,7 +99,7 @@ stages:
     parameters:
       ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
       Container: ${{ variables.Container }}
-      AzureDevOpsEnvironment: FSS-vNext-QA
+      AzureDevOpsEnvironment: FSS-QA
       ShortName: QA
       RunFunctionalTests: true
       RunE2eTests: true

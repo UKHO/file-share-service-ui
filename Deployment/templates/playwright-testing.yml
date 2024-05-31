@@ -13,7 +13,7 @@ parameters:
   type: string
 
 jobs:
-- job: ${{ parameters.ShortName }}E2eTests
+- job: ${{ parameters.ShortName }}${{ parameters.TestDescription }}Tests
   displayName: ${{ upper(parameters.ShortName) }} - run ${{ parameters.TestDescription }} tests
   dependsOn:
   - ${{ parameters.ShortName }}Deploy
