@@ -64,6 +64,23 @@ jobs:
     displayName: Run ${{ parameters.TestDescription }} tests
     workingDirectory: '$(Build.SourcesDirectory)/Tests/${{ parameters.TestDirectory }}'
 
+  - task: ArchiveFiles@2
+    condition: succeededOrFailed()
+    displayName: Zip ${{ parameters.TestDescription }} screenshots and video
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/test-results/'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: '$(System.DefaultWorkingDirectory)/${{ parameters.TestDescription }} test media.zip'
+      replaceExistingArchive: true
+
+  - task: PublishBuildArtifacts@1
+    condition: succeededOrFailed()
+    displayName: Publish ${{ parameters.TestDescription }} test error media
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/${{ parameters.TestDescription }} test media.zip'
+      ArtifactName: '${{ parameters.TestDescription }} test output'
+
   - task: PublishTestResults@2
     displayName: Publish ${{ parameters.TestDescription }} test results
     condition: succeededOrFailed()
