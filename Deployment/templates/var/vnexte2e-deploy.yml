@@ -1,0 +1,6 @@
+variables:
+# Common across all environments.
+- group: File Share Service terraform vNext E2E
+- group: File-Share-Service-UI-vNext-E2e-Deploy-Variables
+- name: AzureSubscription
+  value: File-Share-Service-vNext-E2E-A.011.08

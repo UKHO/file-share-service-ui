@@ -1,0 +1,92 @@
+parameters:
+# The name of the Terraform workspace to use. Will also be used to generate job names and, in lower case, used to select the correct var/x-deploy.yml variable file.
+- name: ShortName
+  type: string
+# The name of the tests to run in the 'npm run test:xxx' statement.
+- name: TestName
+  type: string
+# The name of the tests to be displayed in the pipeline.
+- name: TestDescription
+  type: string
+# The name of the test directory to use, contained in the repo's 'Tests' folder.
+- name: TestDirectory
+  type: string
+
+jobs:
+- job: ${{ parameters.ShortName }}${{ parameters.TestDescription }}Tests
+  displayName: ${{ upper(parameters.ShortName) }} - run ${{ parameters.TestDescription }} tests
+  dependsOn:
+  - ${{ parameters.ShortName }}Deploy
+  pool: 
+    name: $(WindowPool)
+    demands: FM-Perms
+  workspace:
+    clean: all
+  variables:
+  - template: var/${{ lower(parameters.ShortName) }}-deploy.yml
+  - name: autoTestConfig.url
+    value: $(autoTestConfig-url)
+  - name: autoTestConfig.user
+    value: $(autoTestConfig-user)
+  - name: autoTestConfig.password
+    value: $(autoTestConfig-password)
+  - name: autoTestConfig.userFullName
+    value: $(autoTestConfig-userFullName)
+  - name: autoTestConfig.apiurl
+    value: $(autoTestConfig-apiurl)
+  - name: autoTestConfig.encSizeConfig
+    value: $(autoTestConfig-encSizeConfig)
+  steps:
+  - checkout: self
+  
+  - task: NodeTool@0
+    displayName: Install Node.js
+    inputs:
+      versionSpec: '14.x'
+
+  - script: |
+      npm ci
+    displayName: npm restore
+
+  - script: |
+      npx playwright install 
+    displayName: Install browsers for Playwright tests
+
+  - task: FileTransform@2
+    displayName: AppSetting transform for ${{ parameters.TestDescription }} tests
+    inputs:
+      folderPath: '$(Build.SourcesDirectory)\'
+      xmlTransformationRules:
+      jsonTargetFiles: appSetting.json
+                
+  - script: |
+      npm run test:${{ parameters.TestName }}
+    displayName: Run ${{ parameters.TestDescription }} tests
+    workingDirectory: '$(Build.SourcesDirectory)/Tests/${{ parameters.TestDirectory }}'
+
+  - task: ArchiveFiles@2
+    condition: succeededOrFailed()
+    displayName: Zip ${{ parameters.TestDescription }} screenshots and video
+    inputs:
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)/test-results/'
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: '$(System.DefaultWorkingDirectory)/${{ parameters.TestDescription }} test media.zip'
+      replaceExistingArchive: true
+
+  - task: PublishBuildArtifacts@1
+    condition: succeededOrFailed()
+    displayName: Publish ${{ parameters.TestDescription }} test error media
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/${{ parameters.TestDescription }} test media.zip'
+      ArtifactName: '${{ parameters.TestDescription }} test output'
+
+  - task: PublishTestResults@2
+    displayName: Publish ${{ parameters.TestDescription }} test results
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: junit.xml
+      mergeTestResults: true
+      searchFolder:  '$(System.DefaultWorkingDirectory)/'
+      testRunTitle: Results for ${{ parameters.TestDescription }} tests
