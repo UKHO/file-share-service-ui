@@ -53,17 +53,6 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: ejs:3.1.9
-   Dependabot has raised PR for this: https://github.com/UKHO/file-share-service-ui/pull/265
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-33883</vulnerabilityName>
-    <vulnerabilityName>GHSA-ghr5-ch3p-vcr6</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
    file name: micromatch:4.0.5
    PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159870
    ]]>
