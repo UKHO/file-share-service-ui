@@ -63,8 +63,6 @@ jobs:
     value: $(essConfig-MaxEncLimit)
   - name: essConfig.MaxEncSelectionLimit
     value: $(essConfig-MaxEncSelectionLimit)
-  #- name: "ServiceDnsUrl"
-  #  value: $(service-dns-url)
   - name: essConfig.aioExcludeEncs
     value: $(essConfig-aioExcludeEncs)
   strategy:
