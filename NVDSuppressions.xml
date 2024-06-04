@@ -3,25 +3,11 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: postcss:8.4.27
-   problem file: @angular-devkit/build-angular which references postcss:8.4.27
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/postcss@.*$</packageUrl>
-    <vulnerabilityName>CVE-2023-44270</vulnerabilityName>
-    <vulnerabilityName>GHSA-7fh5-64p2-3v2j</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: vite:4.4.7
+   file name: vite:4.5.2.  To fix we would need to update to  @angular-devkit/build-angular@17.3.3 which is a breaking change.
    ]]>
     </notes>
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
-    <cve>CVE-2024-23331</cve>
-    <vulnerabilityName>GHSA-c24v-8rfc-w8vw</vulnerabilityName>
-    <cve>CVE-2023-49293</cve>
-    <vulnerabilityName>GHSA-92r3-m2mg-pj97</vulnerabilityName>
+    <vulnerabilityName>GHSA-8jhw-289h-jh2g</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
@@ -32,5 +18,77 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
     <cve>CVE-2023-29827</cve>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: tar:6.2.0
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-28863</vulnerabilityName>
+    <cpe>cpe:/a:tar_project:tar</cpe>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: axios.js
+   file name: axios.min.js
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159861
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:javascript/axios@.*$</packageUrl>
+    <vulnerabilityName>Versions before 1.6.8 depends on follow-redirects before 1.15.6 which could leak the proxy authentication credentials</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: braces:3.0.2
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159868
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/braces@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-4068</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: ejs:3.1.9
+   Dependabot has raised PR for this: https://github.com/UKHO/file-share-service-ui/pull/265
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-33883</vulnerabilityName>
+    <vulnerabilityName>GHSA-ghr5-ch3p-vcr6</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: micromatch:4.0.5
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159870
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/micromatch@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-4067</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: tar:6.2.0
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159872
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
+    <vulnerabilityName>GHSA-f5x3-32g6-xq36</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: vite:4.5.2
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159873
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
   </suppress>
 </suppressions>
