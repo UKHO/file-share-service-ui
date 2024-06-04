@@ -32,6 +32,8 @@ jobs:
     value: $(autoTestConfig-password)
   - name: autoTestConfig.userFullName
     value: $(autoTestConfig-userFullName)
+  - name: autoTestConfig.nonAdminUser
+    value: $(autoTestConfig-nonAdminUser)
   - name: autoTestConfig.apiurl
     value: $(autoTestConfig-apiurl)
   - name: autoTestConfig.encSizeConfig
