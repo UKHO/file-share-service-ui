@@ -63,16 +63,6 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: tar:6.2.0
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159872
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
-    <vulnerabilityName>GHSA-f5x3-32g6-xq36</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
    file name: vite:4.5.2
    PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159873
    ]]>
