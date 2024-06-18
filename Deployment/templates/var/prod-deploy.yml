@@ -1,0 +1,6 @@
+variables:
+# Common across all environments.
+- group: File share service terraform Live
+- group: File-Share-Service-UI-Live-Deploy-Variables
+- name: AzureSubscription
+  value: File-Share-Service-Live-P4052

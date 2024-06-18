@@ -1,0 +1,6 @@
+variables:
+# Common across all environments.
+- group: File share service terraform QA
+- group: File-Share-Service-UI-QA-Deploy-Variables
+- name: AzureSubscription
+  value: File-Share-Service-QA-P4052

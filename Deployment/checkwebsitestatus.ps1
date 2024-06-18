@@ -1,53 +1,48 @@
-
-Param(
-	[Parameter(mandatory=$true)][string]$fssUIWebUrl,
-    [Parameter(mandatory=$true)][string]$waitTimeInMinute
+param(
+    [Parameter(mandatory=$true)][string]$FssUiWebUrl,
+    [Parameter(mandatory=$true)][string]$WaitTimeInMinutes
 )
 
 $sleepTimeInSecond = 15
 $isServiceActive = 'false'
 
 $stopWatch = New-Object -TypeName System.Diagnostics.Stopwatch
-$timeSpan = New-TimeSpan -Minutes $waitTimeInMinute
+$timeSpan = New-TimeSpan -Minutes $WaitTimeInMinutes
 $stopWatch.Start()
 
-do
-{
-    Write-Host "Polling url: $fssUIWebUrl ..."
-    try{
-        $HttpRequest  = [System.Net.WebRequest]::Create("$fssUIWebUrl")
-        $HttpResponse = $HttpRequest.GetResponse() 
-        $HttpStatus   = $HttpResponse.StatusCode
-        Write-Host "Status code of web is $HttpStatus ..."
+do {
+    Write-Host "Polling url: $FssUiWebUrl..."
+
+    try {
+        $httpRequest  = [System.Net.WebRequest]::Create("$FssUiWebUrl")
+        $httpResponse = $httpRequest.GetResponse() 
+        $httpStatus   = $httpResponse.StatusCode
+        Write-Host "Status code of web is $httpStatus..."
     
-        If ($HttpStatus -eq 200 ) {
+        if ($httpStatus -eq 200 ) {
             Write-Host "Website is up. Stopping Polling ..."
             $isServiceActive = 'true'
             break
-        }
-        Else {
-            Write-Host "Website not yet Up. Status code: $HttpStatus re-checking after $sleepTimeInSecond sec ..."
+        } else {
+            Write-Host "Website not yet up. Status code: $httpStatus, re-checking after $sleepTimeInSecond sec..."
         }
     }
     catch [System.Net.WebException]
     {
-        $HttpStatus = $_.Exception.Response.StatusCode
-        Write-Host "Website not yet Up.Status: $HttpStatus re-checking after $sleepTimeInSecond sec ..."
+        $httpStatus = $_.Exception.Response.StatusCode
+        Write-Host "Website not yet up. Status code: $httpStatus, re-checking after $sleepTimeInSecond sec..."
     }    
     
     Start-Sleep -Seconds $sleepTimeInSecond
-}
-until ($stopWatch.Elapsed -ge $timeSpan)
+} until ($stopWatch.Elapsed -ge $timeSpan)
 
-
-If ($HttpResponse -ne $null) { 
-    $HttpResponse.Close() 
+if ($httpResponse -ne $null) {
+    $httpResponse.Close() 
 }
 
 if ($isServiceActive -eq 'true' ) {
-    Write-Host "Website is up returning from script ..."
-}
-Else { 
-    Write-Error "Website was not up in $waitTimeInMinute, error while deployment ..."
+    Write-Host "Website is up, returning from script..."
+} else { 
+    Write-Error "Website was not up in $WaitTimeInMinutes, error in deployment."
     throw "Error"
 }
