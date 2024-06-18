@@ -70,4 +70,26 @@
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
     <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: braces:3.0.2
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/161629
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/braces@.*$</packageUrl>
+    <vulnerabilityName>GHSA-grv7-fg5c-xmjg</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: ws:7.5.9
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/161630
+   file name: ws:8.14.1
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/161631
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/ws@.*$</packageUrl>
+    <vulnerabilityName>GHSA-3h5v-q93c-6h6q</vulnerabilityName>
+  </suppress>
 </suppressions>
