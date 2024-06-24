@@ -112,9 +112,9 @@ export class EssLandingPageObjects {
 class EssLandingPageAssertions {
     constructor(readonly esslandingPageObjects: EssLandingPageObjects) {
     }
-    // rhz change timeout from 5000 to 100000
+    // rhz change timeout from 5000 to 50000
     async verifyUploadedENCs(expectedENCs: string[]): Promise<void> {
-        await this.esslandingPageObjects.page.waitForSelector(`table tbody tr:nth-child(${expectedENCs.length}) td`, {state: 'visible', timeout: 100000});
+        await this.esslandingPageObjects.page.waitForSelector(`table tbody tr:nth-child(${expectedENCs.length}) td`, {state: 'visible', timeout: 50000});
         let uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
 
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
