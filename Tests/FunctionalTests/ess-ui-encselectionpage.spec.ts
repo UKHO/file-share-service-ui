@@ -246,9 +246,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     let itemIndex = 0;
     await selectENCsFromTable.nth(itemIndex).click();
     //fileSize -= parseFloat((responseBody.products[0].fileSize / 1048576).toFixed(2)); rhz new method call on following line
-    let fileSizex = (await encSelectionPageObjects.getFileSizeItemRemoved(await response.text(),itemIndex));
+    let newFileSize = (await encSelectionPageObjects.getFileSizeItemRemoved(await response.text(),itemIndex));
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
+    await encSelectionPageObjects.expect.toBeTruthy(newFileSize + ' MB' == estimatedSize);
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151757
