@@ -156,6 +156,18 @@ export class EncSelectionPageObjects {
     return parseFloat(((fileSize/1048576)+0.5).toFixed(2));
   }
 
+  //rhz
+  async getFileSizeItemRemoved(response: string, idx: number){
+    
+    var responseBody = JSON.parse(response);      
+    let revisedList = responseBody.products.splice(idx,1);
+    let numberOfENCs = await responseBody.products.length;
+    let fileSize = 0;
+    for (var i = 0; i < numberOfENCs; i++) 
+      fileSize += responseBody.products[i].fileSize;
+    return ((fileSize/1048576)+0.5).toFixed(2);
+  }
+
   async getFileSizeForDelta(response: string, encNames: string[]){
     var responseBody = JSON.parse(response);  
     let numberOfENCs = await responseBody.products.length;

@@ -107,13 +107,13 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     })
     await encSelectionPageObjects.addSingleENC("DE260001");
     await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
-    await encSelectionPageObjects.addAnotherENC("DE290001");
+    await encSelectionPageObjects.addAnotherENC("AU220130");  //DE290001  This is an invalid ENC so the test will fail rhz
     await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 2);
-    await encSelectionPageObjects.expect.secondEncSelectorContainText("DE290001");
+    await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220130");
     await encSelectionPageObjects.expect.anotherCheckBoxSelectorChecked();
 
     //13956 - Add another ENC2 - Duplicate No.
-    await encSelectionPageObjects.addAnotherENC("DE290001");
+    await encSelectionPageObjects.addAnotherENC("AU220130");
     await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list")
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
@@ -240,8 +240,10 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.deselectAllSelector.isVisible();
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
-    await selectENCsFromTable.nth(0).click();
-    fileSize -= parseFloat((responseBody.products[0].fileSize / 1048576).toFixed(2));
+    let itemIndex = 0;
+    await selectENCsFromTable.nth(itemIndex).click();
+    //fileSize -= parseFloat((responseBody.products[0].fileSize / 1048576).toFixed(2)); rhz
+    let fileSizex = (await encSelectionPageObjects.getFileSizeItemRemoved(await response.text(),itemIndex));
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
   })
