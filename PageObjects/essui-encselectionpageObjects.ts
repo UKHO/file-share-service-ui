@@ -156,7 +156,7 @@ export class EncSelectionPageObjects {
     return parseFloat(((fileSize/1048576)+0.5).toFixed(2));
   }
 
-  //rhz
+  //rhz  new method
   async getFileSizeItemRemoved(response: string, idx: number){
     
     var responseBody = JSON.parse(response);      

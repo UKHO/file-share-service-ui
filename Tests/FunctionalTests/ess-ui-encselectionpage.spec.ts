@@ -109,11 +109,11 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
     await encSelectionPageObjects.addAnotherENC("AU220130");  //DE290001  This is an invalid ENC so the test will fail rhz
     await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 2);
-    await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220130");
+    await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220130"); //was DE290001
     await encSelectionPageObjects.expect.anotherCheckBoxSelectorChecked();
 
     //13956 - Add another ENC2 - Duplicate No.
-    await encSelectionPageObjects.addAnotherENC("AU220130");
+    await encSelectionPageObjects.addAnotherENC("AU220130"); //was DE290001
     await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list")
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
@@ -242,7 +242,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
     let itemIndex = 0;
     await selectENCsFromTable.nth(itemIndex).click();
-    //fileSize -= parseFloat((responseBody.products[0].fileSize / 1048576).toFixed(2)); rhz
+    //fileSize -= parseFloat((responseBody.products[0].fileSize / 1048576).toFixed(2)); rhz new method call on following line
     let fileSizex = (await encSelectionPageObjects.getFileSizeItemRemoved(await response.text(),itemIndex));
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
