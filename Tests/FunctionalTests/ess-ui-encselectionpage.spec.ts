@@ -67,7 +67,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13949
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13950
-  test('Verify limit for selecting ENCs (i.e.250) in left hand table', async ({ page }) => {
+  test('Verify limit for selecting ENCs (i.e.100) in left hand table', async ({ page }) => {
 
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
@@ -75,7 +75,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(250);
+    await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(100);  //rhz
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944 (For valid ENC no.)
@@ -124,10 +124,10 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
-    await esslandingPageObjects.uploadFile(page, './Tests/TestData/250ENCs.csv');
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');  //rhz
     await esslandingPageObjects.proceedButtonSelectorClick();
     //Adding ENC manually
-    await encSelectionPageObjects.addAnotherENC("DE290001");
+    await encSelectionPageObjects.addAnotherENC("GB301191");  //rhz
 
     await encSelectionPageObjects.expect.errorMsgMaxLimitSelectorContainText("Max ENC limit reached");
   })

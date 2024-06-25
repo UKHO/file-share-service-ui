@@ -175,17 +175,17 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808  
-     test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
-
-          let encAdded = ["DE260001", "DE290001", "US5CN13M", "NZ300661", "RU3P0ZM0", "DE521900"]
+  test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
+          // rhz
+          let encAdded = ["DE260001", "AU220130", "BR221070", "NZ300661", "RU3P0ZM0", "C35MACAU"]
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("DE260001");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await encSelectionPageObjects.addAnotherENC("de290001");
-          await encSelectionPageObjects.addAnotherENC("US5cn13M");
+          await encSelectionPageObjects.addAnotherENC("au220130");
+          await encSelectionPageObjects.addAnotherENC("bR221070");
           await encSelectionPageObjects.addAnotherENC("nz300661");
           await encSelectionPageObjects.addAnotherENC("Ru3p0zm0");
-          await encSelectionPageObjects.addAnotherENC("de521900");
+          await encSelectionPageObjects.addAnotherENC("c35mACaU");
           await esslandingPageObjects.expect.verifyUploadedENCs(encAdded);
      })
 
