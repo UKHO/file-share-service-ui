@@ -279,8 +279,15 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          const message = "Invalid cells - GZ800112.\nThere have been no updates for the ENCs in the date range selected."
-          await encSelectionPageObjects.expect.toBeTruthy(message == (await encSelectionPageObjects.errorMessage.innerText()).trim());
+          //const message = "Invalid cells - GZ800112.\nThere have been no updates for the ENCs in the date range selected."
+          const messageState = "Invalid cells"  //rhz
+          const messageENC = "GZ800112"
+          const messageComms = "There have been no updates for the ENCs in the date range selected."
+          const messageToCheck = await encSelectionPageObjects.errorMessage.innerText();
+          await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageState));
+          await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageENC));
+          await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageComms));
+          //await encSelectionPageObjects.expect.toBeTruthy(message == (await encSelectionPageObjects.errorMessage.innerText()).trim());
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });

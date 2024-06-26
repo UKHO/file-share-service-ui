@@ -215,6 +215,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     var actualErrorMessage = await encSelectionPageObjects.errorMessage.innerText();
     //await encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.errorMessage.innerText() == "Invalid cells - GZ800112");
     await encSelectionPageObjects.expect.toBeTruthy(actualErrorMessage.includes("Invalid cells"));
+    await encSelectionPageObjects.expect.toBeTruthy(actualErrorMessage.includes("GZ800112"));
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/150972
