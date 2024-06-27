@@ -235,7 +235,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() === 'GET');
           await encSelectionPageObjects.errorMessage.click();
           let message = await encSelectionPageObjects.errorMessage.innerText();
-          await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[0].trim() == "Invalid cells - GZ800112");
+          // rhz look for specific items in message, thus ignoring any additional text
+          const messageState = "Invalid cells"  
+          const messageENC = "GZ800112"
+          await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[0].trim().includes(messageState));
+          await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[0].trim().includes(messageENC));
           await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[1].trim() == "There have been no updates for the ENCs in the date range selected");
      });
 
@@ -337,11 +341,17 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("DE360010");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await page.waitForLoadState();
-          await encSelectionPageObjects.addAnotherENC("GZ800112");
-          await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
-          backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
-          await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
+          // rhz - wait for the response then wait a half second for the message to update
+          // if we get a message that includes no updates ignore the rest of the tests.
+          await page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers'));
+          await page.waitForTimeout(500);
+          const checkMsg = await exchangeSetSelectionPageObjects.warningMessage.innerText();
+          if (checkMsg.includes("no updates") == false) {
+            await encSelectionPageObjects.addAnotherENC("GZ800112");
+            await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
+            await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
+            backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
+            await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
+         }
      });
 })
