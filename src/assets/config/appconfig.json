@@ -48,8 +48,8 @@
     "maxAttributeValueCount": 25
   },
   "essConfig": {
-    "MaxEncLimit": "250",
-    "MaxEncSelectionLimit": "250",
+    "MaxEncLimit": "100",
+    "MaxEncSelectionLimit": "100",
     "maxRetries": "3",
     "initialDelayMs": "1000",
     "apiUrl": "",

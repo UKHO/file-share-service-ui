@@ -56,14 +56,18 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await esslandingPageObjects.proceedButtonSelectorClick();
     const productIdentifierResponse = await esslandingPageObjects.page.waitForRequest(request =>
       request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
+    const checkMsg = await exchangeSetSelectionPageObjects.warningMessage.innerText();
     await esslandingPageObjects.expect.IsNotEmpty(productIdentifierResponse.url());
-    const productInfResponse = await esslandingPageObjects.page.waitForRequest(request =>
-      request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
-    await esslandingPageObjects.expect.IsNotEmpty(productInfResponse.url());
-    await encSelectionPageObjects.addAnotherENC('DE516510');
-    await esslandingPageObjects.page.waitForRequest(request =>
-      request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
-    await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 4);
+    // rhz - if there are no updates, the following code will not be executed
+    if (checkMsg.includes("no updates") == false) {
+      const productInfResponse = await esslandingPageObjects.page.waitForRequest(request =>
+        request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
+      await esslandingPageObjects.expect.IsNotEmpty(productInfResponse.url());
+      await encSelectionPageObjects.addAnotherENC('DE516510');
+      await esslandingPageObjects.page.waitForRequest(request =>
+        request.url().includes('ProductInformation?sinceDateTime=') && request.method() == 'GET')
+      await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 4);
+    }
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149007
