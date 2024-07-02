@@ -222,8 +222,8 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("DE260001");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          const requestPromise = await esslandingPageObjects.page.waitForRequest(request =>
-               request.url().includes('productInformation/productIdentifiers') && request.method() === 'POST')
+          const requestPromise = await esslandingPageObjects.page.waitForResponse(response =>
+               response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
           await esslandingPageObjects.expect.IsNotEmpty(requestPromise.url());
      });
 
