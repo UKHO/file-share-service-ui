@@ -152,17 +152,23 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      })
 
-     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
-     test('Verify that the user is able to drag a .csv and .text file.', async ({ page }) => {
+      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
+     test('Verify that the user is able to drag a .csv file.', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.DragDropFile(page, './Tests/TestData/ValidAndInvalidENCs.csv', "ValidAndInvalidENCs.csv", 'text/csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await encSelectionPageObjects.startAgainLinkSelectorClick();
-          await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
-          await exchangeSetSelectionPageObjects.clickOnProceedButton();
+
+          await esslandingPageObjects.expect.verifyDraggedFile("ValidAndInvalidENCs.csv");
+     })
+
+      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
+     test('Verify that the user is able to drag a .text file.', async ({ page }) => {
+
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.DragDropFile(page, './Tests/TestData/ValidAndInvalidENCs.txt', 'ValidAndInvalidENCs.txt', 'text/plain');
+          await esslandingPageObjects.proceedButtonSelectorClick();
+
           await esslandingPageObjects.expect.verifyDraggedFile("ValidAndInvalidENCs.txt");
      })
 
