@@ -71,4 +71,35 @@
       <packageUrl regex="true">^pkg:npm/micromatch@.*$</packageUrl>
       <vulnerabilityName>CVE-2024-4067</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: ws:8.14.1
+   ws is an open source WebSocket client and server for Node.js. We do not use the server functionality.
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/ws@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-37890</vulnerabilityName>
+    <vulnerabilityName>GHSA-3h5v-q93c-6h6q</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: ws:8.16.0
+   ws is an open source WebSocket client and server for Node.js. We do not use the server functionality.
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/ws@.*$</packageUrl>
+    <cpe>cpe:/a:ws_project:ws</cpe>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: ws:8.16.0
+   ws is an open source WebSocket client and server for Node.js. We do not use the server functionality.
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/ws@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-37890</vulnerabilityName>
+  </suppress>
 </suppressions>
