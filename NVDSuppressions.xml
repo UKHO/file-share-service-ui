@@ -102,4 +102,15 @@
     <packageUrl regex="true">^pkg:npm/ws@.*$</packageUrl>
     <vulnerabilityName>CVE-2024-37890</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: braces:3.0.2
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/braces@.*$</packageUrl>
+    <cpe>cpe:/a:braces_project:braces</cpe>
+    <vulnerabilityName>GHSA-grv7-fg5c-xmjg</vulnerabilityName>
+  </suppress>
+  
 </suppressions>
