@@ -221,10 +221,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify Base Exchange Set with Valid ENCs', async ({ page }) => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("DE260001");
-          await esslandingPageObjects.proceedButtonSelectorClick();
-          const requestPromise = await esslandingPageObjects.page.waitForResponse(response =>
+          const requestPromise = esslandingPageObjects.page.waitForResponse(response =>
                response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
-          await esslandingPageObjects.expect.IsNotEmpty(requestPromise.url());
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          const response = await requestPromise;
+      
+          await esslandingPageObjects.expect.IsNotEmpty(response.url());
      });
 
      //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151340
