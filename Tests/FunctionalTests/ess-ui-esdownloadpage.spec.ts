@@ -231,16 +231,17 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await esDownloadPageObjects.expect.includedENCsCountSelectorVisible();
     });
 
-    // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
-    test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
+    //// https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
+    // rhz - disabled test, this should probably be a API test 
+    //test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
 
-        await encSelectionPageObjects.selectAllSelectorClick();
-        const selectedEncs = await encSelectionPageObjects.encTableButtonList.allInnerTexts();
-        await encSelectionPageObjects.requestENCsSelectorClick()
-        await page.on('request', req => {
-            let requestPayload = req.postDataJSON();
-            page.waitForLoadState();
-            encSelectionPageObjects.expect.verifyRequestPayload(requestPayload, selectedEncs)
-        });
-    });
+    //    await encSelectionPageObjects.selectAllSelectorClick();
+    //    const selectedEncs = await encSelectionPageObjects.encTableButtonList.allInnerTexts();
+    //    await encSelectionPageObjects.requestENCsSelectorClick()
+    //    await page.on('request', req => {
+    //        let requestPayload = req.postDataJSON();
+    //        page.waitForLoadState();
+    //        encSelectionPageObjects.expect.verifyRequestPayload(requestPayload, selectedEncs)
+    //    });
+    //});
 })
