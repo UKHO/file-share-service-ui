@@ -109,70 +109,10 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156248
-    // rhz - disabled test due to issue with the test data
-    //test("check user is able to download S63 exchange set for Delta exchange set.", async ({ page }) =>{
-    //    await encSelectionPageObjects.startAgainLinkSelectorClick();
-    //    await exchangeSetSelectionPageObjects.enterDate(new Date());
-    //    await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    //    await esslandingPageObjects.uploadradiobtnSelectorClick();
-    //    await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
-    //    await esslandingPageObjects.proceedButtonSelectorClick();
-    //    await encSelectionPageObjects.selectAllSelectorClick();
-    //    await encSelectionPageObjects.requestENCsSelectorClick();
-    //    var response = await page.waitForResponse(response => response.url().includes("/productData/productVersions") && response.request().method() == "POST");
-    //    await encSelectionPageObjects.expect.toBeTruthy(response.url().includes("exchangeSetStandard=S63"));
-    //    await encSelectionPageObjects.page.waitForLoadState();
-    //    await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
-    //    await esDownloadPageObjects.expect.spinnerSelectorVisible();
-    //    await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
-    //    await esDownloadPageObjects.expect.spinnerSelectorHidden();
-    //    await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
-    //    //=========================================
-
-    //    await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
-    //    await esDownloadPageObjects.expect.createLinkSelectorHidden();
-
-    //    //=========================================
-    //    await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
-    //    await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
-    //    await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
-    //    await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
-    //    await esDownloadPageObjects.expect.createLinkSelectorEnabled();
-    //})
+    
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156352
-     // rhz - disabled test due to issue with the test data
-    //test("check user is able to download S57 exchange set for Delta exchange set", async ({ page }) =>{
-    //    await encSelectionPageObjects.startAgainLinkSelectorClick();
-    //    await exchangeSetSelectionPageObjects.enterDate(new Date());
-    //    await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    //    await encSelectionPageObjects.addSingleENC("DE260001");
-    //    await encSelectionPageObjects.selectAllSelectorClick();
-    //    await encSelectionPageObjects.s57Radiobutton.click();
-    //    await encSelectionPageObjects.requestENCsSelectorClick();
-    //    var response = await page.waitForResponse(request => request.url().includes("/productData/productVersions") && request.request().method() == "POST");
-    //    await encSelectionPageObjects.expect.toBeTruthy(response.url().includes("exchangeSetStandard=S57"));
-    //    await encSelectionPageObjects.page.waitForLoadState();
-    //    await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
-    //    await esDownloadPageObjects.expect.spinnerSelectorVisible();
-    //    await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
-    //    await esDownloadPageObjects.expect.spinnerSelectorHidden();       
-    //    await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
-    //    await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
-    //    //=========================================
-        
-    //    await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
-    //    await esDownloadPageObjects.expect.createLinkSelectorHidden();
-
-    //    //=========================================
-    //    await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
-    //    await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
-    //    await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
-    //    await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
-    //    await esDownloadPageObjects.expect.createLinkSelectorEnabled();
-    //    await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
-    //    await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 4 of 4\nExchange set creation");
-    //})
+     
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
     test('Verify 400 scenario using playwright mock', async ({ page }) => {
@@ -232,16 +172,5 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     });
 
     //// https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
-    // rhz - disabled test, this should probably be a API test 
-    //test('Verify all selected ENCs included in payload in a request.', async ({ page }) => {
-
-    //    await encSelectionPageObjects.selectAllSelectorClick();
-    //    const selectedEncs = await encSelectionPageObjects.encTableButtonList.allInnerTexts();
-    //    await encSelectionPageObjects.requestENCsSelectorClick()
-    //    await page.on('request', req => {
-    //        let requestPayload = req.postDataJSON();
-    //        page.waitForLoadState();
-    //        encSelectionPageObjects.expect.verifyRequestPayload(requestPayload, selectedEncs)
-    //    });
-    //});
+    
 })

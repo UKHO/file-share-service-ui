@@ -128,36 +128,8 @@ test.describe('Test Search Query Scenario On Search Page', () => {
   });
 
   // rhz - disabled test due to issue with the test data
-  //test('Batch Attribute table returns records less than filesize search', async ({ page }) => {    
-  //  await SearchAttribute(page, attributeProductType.key);
-  //  await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');     
-  //  await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);      
-  //  await page.getByTestId('adv-search-button').click();
-  //  const countWithoutFileSizeFilter = await GetTotalResultCount(page);
-  //  expect(countWithoutFileSizeFilter).toBeTruthy();
-  //  await page.click(fssSearchPageObjectsConfig.buttonAddNewRow);
-  //  await SearchAttributeSecondRow(page, attributeFileSize.key);
-  //  await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelectorSecondRow, 'lt');
-  //  await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelectorSecondRow, attributeFileSize.value);
-
-  //  await page.getByTestId('adv-search-button').click();
-  //  let spin = page.getByTestId('search-spinner');
-  //  await spin.waitFor({ state: "visible" });
-  //  await spin.waitFor({ state: "hidden" });
-  //  const countWithFileSizeFilter = await GetTotalResultCount(page);
-  //  expect(countWithFileSizeFilter).toBeTruthy();
-  //  expect(countWithFileSizeFilter).toBeLessThan(countWithoutFileSizeFilter);
-
-  //  // get all the file attribute tables (one per batch)
-  //  const fileAttTables = await page.$$(`//admiralty-table`);
-  //  expect(fileAttTables.length).toBeTruthy();
-  //  const filterFileSize = parseInt(attributeFileSize.value, 10);
-
-  //  // each table must contain at least one file smaller than the filter
-  //  const fileCount = await AdmiraltyGetFileSizeCount(page, filterFileSize);
-  //  expect(fileCount).toBeTruthy();
-    
-  //});
+  // test('Batch Attribute table returns records less than filesize search', async ({ page }) => {    
+  
 
   test('Test to verify no result for search query', async ({ page }) => {
     await SearchAttribute(page, attributeProductType.key);

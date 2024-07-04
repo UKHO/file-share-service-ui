@@ -182,7 +182,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
 
      //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808  
   test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
-          // rhz
+          // rhz - replace invalid ENC names
           let encAdded = ["DE260001", "AU220130", "BR221070", "NZ300661", "RU3P0ZM0", "C35MACAU"]
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("DE260001");
@@ -291,15 +291,14 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          //const message = "Invalid cells - GZ800112.\nThere have been no updates for the ENCs in the date range selected."
-          const messageState = "Invalid cells"  //rhz
+          //rhz - look for specific phrases in the message
+          const messageState = "Invalid cells" 
           const messageENC = "GZ800112"
           const messageComms = "There have been no updates for the ENCs in the date range selected."
           const messageToCheck = await encSelectionPageObjects.errorMessage.innerText();
           await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageState));
           await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageENC));
           await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageComms));
-          //await encSelectionPageObjects.expect.toBeTruthy(message == (await encSelectionPageObjects.errorMessage.innerText()).trim());
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });

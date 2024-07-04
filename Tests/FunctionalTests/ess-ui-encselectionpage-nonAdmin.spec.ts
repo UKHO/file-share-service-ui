@@ -36,15 +36,5 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios for Non Admi
   });  
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156212
-  // rhz - disabled test due to issue with the test data
-  //test("check user is not able to see options to choose preferred exchange set format on 'Confirm exchange set content' screen for Delta exchange set @NonUKHOUser",async ({ page}) =>{
-  //  await exchangeSetSelectionPageObjects.enterDate(new Date());
-  //  await exchangeSetSelectionPageObjects.clickOnProceedButton();
-  //  await esslandingPageObjects.uploadradiobtnSelectorClick();
-  //  await esslandingPageObjects.uploadFile(page, './Tests/TestData/Delta.csv');
-  //  await esslandingPageObjects.proceedButtonSelectorClick(); 
-  //  await encSelectionPageObjects.selectAllSelectorClick();
-  //  encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isHidden());
-  //  encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isHidden());
-  //});
+  
 });
