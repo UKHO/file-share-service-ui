@@ -55,8 +55,10 @@ jobs:
     value: $(essConfig-apiUrl)
   - name: essConfig.apiScope
     value: $(essConfig-apiScope)
-  - name: essConfig.avgSizeofENCinMB
-    value: $(essConfig-avgSizeofENCinMB)
+# rhz - may not need this
+#  - name: essConfig.avgSizeofENCinMB
+#    value: $(essConfig-avgSizeofENCinMB)
+
   - name: essConfig.defaultEstimatedSizeinMB
     value: $(essConfig-defaultEstimatedSizeinMB)
   - name: essConfig.MaxEncLimit
@@ -65,6 +67,13 @@ jobs:
     value: $(essConfig-MaxEncSelectionLimit)
   - name: essConfig.aioExcludeEncs
     value: $(essConfig-aioExcludeEncs)
+  - name: essConfig.apiUiUrl
+    value: $(essConfig-apiUiUrl)
+  - name: essConfig.adminDomains
+    value: $(essConfig-AdminDomains)
+# rhz - not sure where this is used
+  - name: "ServiceDnsUrl"      
+    value: $(service-dns-url)
   strategy:
     runOnce:
       deploy:

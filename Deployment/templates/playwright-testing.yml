@@ -28,6 +28,8 @@ jobs:
     value: $(autoTestConfig-url)
   - name: autoTestConfig.user
     value: $(autoTestConfig-user)
+  - name: autoTestConfig.nonAdminUser
+    value: $(autoTestConfig-nonAdminUser)
   - name: autoTestConfig.password
     value: $(autoTestConfig-password)
   - name: autoTestConfig.userFullName
