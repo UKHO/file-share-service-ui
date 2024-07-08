@@ -112,5 +112,15 @@
     <cpe>cpe:/a:braces_project:braces</cpe>
     <vulnerabilityName>GHSA-grv7-fg5c-xmjg</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: async:3.2.4
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/async@.*$</packageUrl>
+    <cpe>cpe:/a:async_project:async</cpe>
+    <vulnerabilityName>CVE-2024-39249</vulnerabilityName>
+  </suppress>
   
 </suppressions>
