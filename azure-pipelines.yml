@@ -50,6 +50,13 @@ stages:
                 npm ci
               displayName: 'npm restore'
 
+            - task: UseDotNet@2
+              displayName: 'Use .NET 8.0.x sdk'
+              inputs:
+                packageType: sdk
+                version: '8.0.x'
+                workingDirectory: '$(Build.SourcesDirectory)'
+
             - task: CmdLine@1
               displayName: "Run OWASP Dependency Checker"
               inputs:
