@@ -79,7 +79,7 @@ jobs:
     displayName: Publish ${{ parameters.TestDescription }} test error media
     inputs:
       PathtoPublish: '$(System.DefaultWorkingDirectory)/${{ parameters.TestDescription }} test media.zip'
-      ArtifactName: '${{ parameters.TestDescription }} test output'
+      ArtifactName: '${{ parameters.TestDescription }} test output $(system.JobId)'
 
   - task: PublishTestResults@2
     displayName: Publish ${{ parameters.TestDescription }} test results
