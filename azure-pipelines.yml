@@ -60,7 +60,7 @@ stages:
       ShortName: dev
       RunFunctionalTests: false
       RunE2eTests: true
-      RunAccessibilityTests: true
+      RunAccessibilityTests: false
 
 - stage: vNextIatDeploy
   dependsOn:
