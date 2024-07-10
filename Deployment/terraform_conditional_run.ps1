@@ -1,14 +1,14 @@
-param (
-    [Parameter(Mandatory = $true)] [string] $deploymentResourceGroupName,
-    [Parameter(Mandatory = $true)] [string] $deploymentStorageAccountName,
-    [Parameter(Mandatory = $true)] [string] $workSpace,
-    [Parameter(Mandatory = $true)] [boolean] $continueEvenIfResourcesAreGettingDestroyed
+param(
+    [Parameter(Mandatory = $true)] [string] $DeploymentResourceGroupName,
+    [Parameter(Mandatory = $true)] [string] $DeploymentStorageAccountName,
+    [Parameter(Mandatory = $true)] [string] $WorkSpace,
+    [Parameter(Mandatory = $true)] [boolean] $ContinueEvenIfResourcesAreGettingDestroyed
 )
 
-cd $env:AGENT_BUILDDIRECTORY/terraformartifact/src
+cd $env:AGENT_BUILDDIRECTORY/DeploymentScripts/src
 
-Write-Output "Executing terraform scripts for deployment in $workSpace enviroment"
-terraform init -backend-config="resource_group_name=$deploymentResourceGroupName" -backend-config="storage_account_name=$deploymentStorageAccountName" -backend-config="key=terraform.deployment.tfplan"
+Write-Output "Executing terraform scripts for deployment in $WorkSpace enviroment"
+terraform init -backend-config="resource_group_name=$DeploymentResourceGroupName" -backend-config="storage_account_name=$DeploymentStorageAccountName" -backend-config="key=terraform.deployment.tfplan"
 if ( !$? ) { echo "Something went wrong during terraform initialization"; throw "Error" }
 
 Write-Output "Selecting workspace"
@@ -17,7 +17,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 terraform workspace new $WorkSpace 2>&1 > $null
 $ErrorActionPreference = 'Continue'
 
-terraform workspace select $workSpace
+terraform workspace select $WorkSpace
 if ( !$? ) { echo "Error while selecting workspace"; throw "Error" }
 
 Write-Output "Validating terraform"
