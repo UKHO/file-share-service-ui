@@ -58,7 +58,7 @@ stages:
       Container: ${{ variables.Container }}
       AzureDevOpsEnvironment: FSS-Dev
       ShortName: dev
-      RunFunctionalTests: false
+      RunFunctionalTests: true
       RunE2eTests: true
       RunAccessibilityTests: false
 
