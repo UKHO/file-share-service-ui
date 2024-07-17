@@ -10,8 +10,7 @@ variable "resource_group_name" {
 
 variable "allowed_ips" {
   type = list
-
-  }
+}
 
 variable "spoke_rg" {
   type = string
@@ -26,7 +25,7 @@ variable "spoke_subnet_name" {
 }
 
 locals {
-  env_name				= lower(terraform.workspace)
+  env_name			  	= lower(terraform.workspace)
   service_name			= "fss"
   tags = {
     SERVICE          = "File Share Service"
@@ -38,18 +37,6 @@ locals {
   }
 }
 
-variable "agent_rg" {
-  type = string
-}
-
-variable "agent_vnet_name" {
-  type = string
-}
-
-variable "agent_subnet_name" {
-  type = string
-}
-
-variable "agent_subscription_id" {
+variable "agent_prd_subnet" {
   type = string
 }
