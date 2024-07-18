@@ -24,6 +24,6 @@ variable "hub_n_spoke_subnet" {
   type = string
 }
 
-variable "agent_prd_subnet" {
+variable "agent_subnet" {
   type = string
 }

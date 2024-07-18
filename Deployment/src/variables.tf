@@ -37,6 +37,18 @@ locals {
   }
 }
 
-variable "agent_prd_subnet" {
+variable "agent_rg" {
+  type = string
+}
+
+variable "agent_vnet_name" {
+  type = string
+}
+
+variable "agent_subnet_name" {
+  type = string
+}
+
+variable "agent_subscription_id" {
   type = string
 }
