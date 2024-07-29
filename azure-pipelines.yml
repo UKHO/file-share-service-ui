@@ -23,7 +23,7 @@ variables:
 - name: Container
   value: "ukhydrographicoffice/terraform-azure-powershell:1.3.7"
 - name: DeploymentPool
-  value: "UKHO Ubuntu 1804"
+  value: "Mare Nectaris"
 - name: WindowPool
   value: "NautilusBuild"
 - name: NodeVersion
@@ -58,9 +58,9 @@ stages:
       Container: ${{ variables.Container }}
       AzureDevOpsEnvironment: FSS-Dev
       ShortName: dev
-      RunFunctionalTests: false
+      RunFunctionalTests: true
       RunE2eTests: true
-      RunAccessibilityTests: false
+      RunAccessibilityTests: true
 
 - stage: vNextIatDeploy
   dependsOn:

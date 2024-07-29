@@ -1,4 +1,3 @@
-
 variable "resource_group_name" {
   type = string
 }
@@ -19,9 +18,9 @@ variable "tags" {
 }
 
 variable "allowed_ips" {
-
 }
- variable "hub_n_spoke_subnet" {
+
+variable "hub_n_spoke_subnet" {
   type = string
 }
 
