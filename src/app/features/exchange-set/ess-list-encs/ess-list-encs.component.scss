@@ -48,9 +48,11 @@ table th:last-child {
 }
 
 .requestEncBtn{
-    display: flex;
-    justify-content: flex-end;
+    float: right;
+    clear: right;
+    margin-bottom: 30px;
 }
+
 .selectionContainer{
     position: relative;
     min-height: 50vh;
@@ -74,6 +76,7 @@ table th:last-child {
     margin-left: 38px;
     font-weight: 400;
 }
+
 .lnkAddAnotherEnc
 {
     display: block;
@@ -92,4 +95,128 @@ table th:last-child {
   p {
     margin-bottom: 5px;
   }
+}
+
+.showConfirmEssMessage{
+    margin-top: 5px;
+}
+
+.h1heading{
+    font-family: JohnstonITC, Helvetica, sans-serif;
+    color: #09315b;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 60px;
+    margin: 0 0 30px;
+}
+
+.selected-list-table{
+	display: block;
+	thead, tbody{
+		tr {
+			display: flex;
+			width: 100%;
+		}
+	}
+	thead{
+		display: block;
+		width: 100%;
+		tr {
+			th{
+				flex-basis: 100%;
+				&:last-child{
+					flex-basis: 10%;
+				}
+			}
+			
+		}
+	}
+    tbody{
+       max-height: 30vh;
+	   overflow-y: auto;
+	   display: block;
+	   padding-right: 2px;
+		&::-webkit-scrollbar {
+			width: 10px;
+			background-color: #595959; //forground dark color
+			border-radius: 50px;
+		}
+		&::-webkit-scrollbar-track {
+			background-color: #C4C4CA; //background light color
+			border-radius: 50px;
+		}
+		&::-webkit-scrollbar-thumb {
+			box-shadow: inset 0 0 30px rgb(89, 89, 89); //forground dark color
+			border-radius: 5px;
+		}
+		tr{
+			td{
+				flex-basis: 100%;
+				border-right:1px solid #d8d8d8;
+				display: flex;
+				&:last-child{
+					flex-basis: 10%;
+					align-items: center;
+					justify-content: center;
+				}
+				.checkbox-wrapper label{
+					padding-left: 30px !important;
+				}
+			}
+		}
+    }
+	
+	.dialog{
+		max-height: 31vh;
+		overflow-y: auto;
+		display: block;
+		padding-right: 2px;
+		 &::-webkit-scrollbar {
+			 width: 10px;
+			 background-color: #595959; //forground dark color
+			 border-radius: 50px;
+		 }
+		 &::-webkit-scrollbar-track {
+			 background-color: #C4C4CA; //background light color
+			 border-radius: 50px;
+		 }
+		 &::-webkit-scrollbar-thumb {
+			 box-shadow: inset 0 0 30px rgb(89, 89, 89); //forground dark color
+			 border-radius: 5px;
+		 }
+		 tr{
+			 td{
+				 flex-basis: 100%;
+				 border-right:1px solid #d8d8d8;
+				 display: flex;
+				 &:last-child{
+					 flex-basis: 10%;
+					 align-items: center;
+					 justify-content: center;
+				 }
+				 .checkbox-wrapper label{
+					 padding-left: 30px !important;
+				 }
+			 }
+		 }
+	 }
+}
+
+.radio-group-container {
+	position: relative;
+	float: right;
+	margin-top: 12px;
+    margin-right: -15px;
+}
+
+#radio-submit-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+admiralty-radio {
+	margin-top: 12px;
+	margin-bottom: 12px;
 }

@@ -3,13 +3,18 @@
     <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i class="fas fa-less-than"></i> Start again</a>
   </div>
   <div class="exchangesetcontainer">
-    <h1 id="main" tabindex="-1">Exchange sets</h1>
+    <h2 class="headerEssSteps" id="main" tabindex="-1">
+      Step 4 of 4
+    <span>
+      Exchange set creation
+    </span>
+    </h2>
     <app-ess-info-error-message></app-ess-info-error-message>
   </div>
   <div class="ess-container">
-    <div class="ess-download-wrapper">
+    <div class="ess-download-wrapper" aria-live="assertive">
       <div *ngIf="exchangeSetLoading">
-        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 3px">Exchange set loading</h4>
+        <h3 style="padding-left: 15px; margin-top: 15px; margin-bottom: 3px">Exchange set loading</h3>
         <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 1px">This can take a few minutes.</p>
         <p style="padding-left: 15px; margin-top: 1px; margin-bottom: 5px">Please do not refresh this page.</p>
         <div class="spinner-wrapper ess-spinner-wrapper" aria-live='polite' role="alert" aria-label="Results Loading">
@@ -17,26 +22,29 @@
         </div>
       </div>
       <div *ngIf="exchangeSetReady">
-        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">Exchange set ready</h4>
+        <h3 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">Exchange set ready</h3>
         <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px">Please click the "Download" button to download your exchange set.</p>
         <admiralty-button class="btnDownload" (click)="download()">Download</admiralty-button>
       </div>
       <div *ngIf="downloadComplete">
-        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">Download complete</h4>
-        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px"><a data-testid="download-exs" href="javascript:void(0)" (click)="download()">Download</a> the file again or <a data-testid="create-exs" href="javascript:void(0)" (click)="switchToESSLandingPage()">create another exchange set.</a></p>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div style="flex: 3">
-      <p class="essTitle">Exchange set</p>
-      <div class="showSelectedEncSize">
-        <strong class="f21"> {{requestedProductCount}} ENCs selected</strong>
-        <br>
-        <hr aria-hidden="true" style="border-bottom: 1px solid #d0d0d0;padding: 11px 0px;"><br>
-        <strong class="f21">{{exchangeSetCellCount}} ENCs included</strong>
-        <br>
-        <hr aria-hidden="true" style="border-bottom: 1px solid #d0d0d0;padding: 11px 0px;"><br>
-        <p class="f21">Estimated size <b class="f21">{{avgEstimatedSize}}</b> </p>  
+        <h4 style="padding-left: 15px; margin-top: 15px; margin-bottom: 2px">
+          Download complete
+        </h4>
+        <p style="padding-left: 15px; margin-top: 3px; margin-bottom: 5px">
+          <a
+            data-testid="download-exs"
+            href="javascript:void(0)"
+            (click)="download()"
+            >Download</a
+          >
+          the file again or
+          <a
+            data-testid="create-exs"
+            href="javascript:void(0)"
+            (click)="switchToESSLandingPage()"
+            >create another exchange set.</a
+          >
+        </p>
       </div>
     </div>
   </div>

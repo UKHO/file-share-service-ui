@@ -1,5 +1,4 @@
 import { Page, Locator, expect } from "@playwright/test";
-import { assert } from "console";
 import {essConfig} from '../src/assets/config/appconfig.json';
 
 export class EssLandingPageObjects {
@@ -24,13 +23,14 @@ export class EssLandingPageObjects {
     readonly ENClistTableCol1: Locator;
     readonly MaxENCValue:Locator;
     readonly MaxSelectedENCs: Locator;
-    readonly getDialogueSelector: Locator
+    readonly getDialogueSelector: Locator;
+    readonly messageType: Locator;
     readonly pageUnderTest: Page
 
     constructor(readonly page: Page) {
         this.expect = new EssLandingPageAssertions(this);
         this.radioButtonNameSelector = this.page.locator("//label[text()='Upload a list in a file']");
-        this.exchangesettextSelector = this.page.locator("h1#main");
+        this.exchangesettextSelector = this.page.locator("h2#main");
         this.uploadbtntextSelector = this.page.locator("#radioUploadEnc");
         this.addenctextSelector = this.page.locator("#radioAddEnc");
         this.uploadradiobtnSelector = this.page.locator("//input[@value='UploadEncFile']");
@@ -50,6 +50,7 @@ export class EssLandingPageObjects {
         this.MaxENCValue = this.page.locator("//p[contains(text(),'You can upload')]");
         this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]');
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
+        this.messageType = this.page.locator("div[class='dialogue-title sc-admiralty-dialogue'] admiralty-icon");
         this.pageUnderTest = page;
     }
 
@@ -111,9 +112,9 @@ export class EssLandingPageObjects {
 class EssLandingPageAssertions {
     constructor(readonly esslandingPageObjects: EssLandingPageObjects) {
     }
-
+    // rhz change timeout from 5000 to 15000
     async verifyUploadedENCs(expectedENCs: string[]): Promise<void> {
-
+        await this.esslandingPageObjects.page.waitForSelector(`table tbody tr:nth-child(${expectedENCs.length}) td`, {state: 'visible', timeout: 15000});
         let uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
 
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
@@ -177,7 +178,7 @@ class EssLandingPageAssertions {
     }
 
     async uploadedDataSelectorToBeEqual(expected: string): Promise<void> {
-
+        await this.esslandingPageObjects.page.waitForSelector('table tbody tr td:nth-child(1)', { state: 'visible', timeout: 5000 });
         const uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
         expect(uploadedEncs[0]).toEqual(expected);
     }
@@ -198,5 +199,9 @@ class EssLandingPageAssertions {
     async VerifyMaxSelectedENCLimit(): Promise<void> {
         let MaxSelectedLimit = ((await (this.esslandingPageObjects.MaxSelectedENCs).innerText()).split(' '))[17];
         expect(MaxSelectedLimit).toEqual(essConfig.MaxEncSelectionLimit);
+    }
+
+    async IsNotEmpty(text: string): Promise<void> {
+        expect(text.length != 0).toBeTruthy();
     }
 }

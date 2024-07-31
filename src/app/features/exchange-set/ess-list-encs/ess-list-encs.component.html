@@ -6,9 +6,17 @@
     <a href="javascript:void(0)" (click)="switchToESSLandingPage()" class="linkStartAgain"><i style="padding-right: 6px;font-size: 14px;" class="fas fa-less-than"></i> Start again</a>
   </div>
   <span class="sr-only" role="alert" aria-label="Enc File is Ready"></span>
-  <h1 id="main" tabindex="-1">Exchange sets</h1>
+  <h2 class="headerEssSteps" id="main" tabindex="-1">
+    Step 3 of 4 
+  <span>
+    Confirm exchange set content
+  </span>
+  </h2> 
   <app-ess-info-error-message></app-ess-info-error-message>
-  <p>Select up to {{maxEncSelectionLimit}} ENCs and make an exchange set. Please note, larger requests may take longer to process.</p>
+  <div class="showConfirmEssMessage">
+    <p>Please confirm the ENCs that you would like to include in your exchange set.</p>
+    <p>If you selected “Download updates” this list will only show ENCs that have had an update within the date range provided.</p>
+  </div>
   <div class="showEncListWrapper">
     <div style="flex: 5">
       <div *ngIf="encList && encList.length > 0" >
@@ -20,15 +28,15 @@
             <th ukhoSortHeader ukhoHeaderCell *ukhoHeaderCellDef>
               ENC name <i class="fa-solid {{sortGraphic}}"></i>
             </th>
-            <td ukho-cell *ukhoCellDef="let element">{{element.enc}}</td>
+            <td ukho-cell *ukhoCellDef="let element">{{element.enc.productName}}</td>
           </ng-container>
           <ng-container ukhoColumnDef="Choose">
             <th class="selectDeselectHeader" ukho-header-cell *ukhoHeaderCellDef>  <a *ngIf="showSelectDeselect" (click)="selectDeselectAll()" href="javascript:void(0);"  class="selectDeselctBtn"   > {{selectDeselectText}} <span aria-live="polite" class="sr-only">{{selectDeselectAlert}} </span></a> Choose</th>
             <td ukho-cell *ukhoCellDef="let element">
               <admiralty-checkbox [checked]="element.selected"
                                   (click)="handleChange(element.enc, $event)" class="selectEnc"
-                                  attr.aria-label="{{element.enc}}">
-                                      <span class="sr-only">{{element.enc}} </span>
+                                  attr.aria-label="{{element.enc.productName}}">
+                                      <span class="sr-only">{{element.enc.productName}} </span>
               </admiralty-checkbox>
             </td>
           </ng-container>
@@ -48,15 +56,15 @@
       </p>
       <div *ngIf="selectedEncList && selectedEncList.length > 0">
 
-        <table ukho-table [dataSource]="selectedEncList" class="enc-list-table">
+        <table ukho-table [dataSource]="selectedEncList" class="selected-list-table">
           <ng-container ukhoColumnDef="enc">
             <th ukho-header-cell *ukhoHeaderCellDef>ENC name</th>
-            <td ukho-cell *ukhoCellDef="let element">{{element}}</td>
+            <td ukho-cell *ukhoCellDef="let element">{{element.productName}}</td>
           </ng-container>
           <ng-container ukhoColumnDef="X">
             <th ukho-header-cell *ukhoHeaderCellDef></th>
             <td class="selectionClose" ukho-cell *ukhoCellDef="let element">
-              <button attr.data-testid = "{{element}}"  (click)="handleChange(element)" attr.aria-label="Remove {{element}} from selected ENC"><i class="fa-solid fa-x"></i> </button>
+              <button attr.data-testid = "{{element.productName}}"  (click)="handleChange(element)" attr.aria-label="Remove {{element.productName}} from selected ENC"><i class="fa-solid fa-x"></i> </button>
             </td>
           </ng-container>
           <tr ukho-header-row *ukhoHeaderRowDef="displaySelectedTableColumns"></tr>
@@ -65,9 +73,18 @@
 
 
       </div>     
-       <p class="estimatedExchangeSetSize" aria-live="polite"> Estimated Exchange set size <span class="bottomText">{{estimatedTotalSize}} </span></p>
-      <div *ngIf="selectedEncList && selectedEncList.length > 0">
-      <admiralty-button class="requestEncBtn" (click)="requestEncClicked()">Request ENCs</admiralty-button>
+       <p class="estimatedExchangeSetSize" *ngIf="selectedOption === s63OptionValue" aria-live="polite"> Estimated exchange set size <span class="bottomText">{{estimatedTotalSize}} </span></p>
+       <div id="radio-submit-container">
+         <div class="radio-group-container" *ngIf=" isPrivilegedUser && selectedEncList && selectedEncList.length > 0">
+          <span>Choose preferred format</span>
+          <admiralty-radio-group [(ngModel)]="selectedOption" displayVertical>    
+            <admiralty-radio name="options" [value]="s57OptionValue" (click)="essDownloadZipType(s57OptionValue)">S57 exchange set</admiralty-radio>
+            <admiralty-radio name="options" [value]="s63OptionValue" (click)="essDownloadZipType(s63OptionValue)"[checked]="true">S63 exchange set</admiralty-radio>
+          </admiralty-radio-group>
+        </div>
+        <div *ngIf="selectedEncList && selectedEncList.length > 0">
+          <admiralty-button class="requestEncBtn" (click)="requestEncClicked()">Request ENCs</admiralty-button>
+        </div>
       </div>
     </div>
   </div>

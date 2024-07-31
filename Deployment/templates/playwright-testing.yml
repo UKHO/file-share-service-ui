@@ -36,6 +36,8 @@ jobs:
     value: $(autoTestConfig-apiurl)
   - name: autoTestConfig.encSizeConfig
     value: $(autoTestConfig-encSizeConfig)
+  - name: autoTestConfig.nonAdminUser
+    value: $(autoTestConfig-nonAdminUser)
   steps:
   - checkout: self
   
@@ -79,7 +81,7 @@ jobs:
     displayName: Publish ${{ parameters.TestDescription }} test error media
     inputs:
       PathtoPublish: '$(System.DefaultWorkingDirectory)/${{ parameters.TestDescription }} test media.zip'
-      ArtifactName: '${{ parameters.TestDescription }} test output'
+      ArtifactName: '${{ parameters.TestDescription }} test output $(system.JobId)'
 
   - task: PublishTestResults@2
     displayName: Publish ${{ parameters.TestDescription }} test results

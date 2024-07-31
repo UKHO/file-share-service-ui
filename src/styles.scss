@@ -10,6 +10,7 @@
     transform: translateY(-100%);
     background: #15315b;
     padding: 10px;
+	z-index: 999;
     border: none;
     box-shadow: none;
     color: #fff;
@@ -17,7 +18,10 @@
 		transform: translateY(20%);
 	}
 }
-
+admiralty-header{
+	position: relative;
+	z-index: 1;
+	}
 p{
 	color: #333;
 	line-height: 1.5;
@@ -736,3 +740,15 @@ app-root {
         font-size: 14px;
     }
 }
+
+.headerEssSteps,
+.headerEssSteps > span{
+	display: block;
+	font-family: JohnstonITC, Helvetica, sans-serif;
+	color: #09315b;
+	font-weight: 400;
+	font-size: 48px;
+	line-height: 60px;
+	margin: 0 0 30px;
+  }
+

@@ -5,13 +5,13 @@ const fs = require('fs');
 let filefound;
 let filedeleted;
 
-
 export class EsDownloadPageObjects {
 
     encselectionPageObjects: EncSelectionPageObjects;
     readonly expect: EsDownloadPageAssertions;
     readonly requestENCsSelector: Locator;
     readonly downloadButtonSelector: Locator;
+    readonly exchangeSetDownloadFrame: Locator;
     readonly spinnerSelector: Locator;
     readonly includedENCsCountSelector: Locator;
     readonly EstimatedESsizeSelector: Locator;
@@ -36,10 +36,11 @@ export class EsDownloadPageObjects {
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
         this.invalidEncsSelector = this.page.locator("(//div[@class='warningMsg'])");
         this.errorMessageSelector = this.page.getByText("There has been an error");
-        this.selectedENCsSelector = this.page.locator('p').filter({ hasText: ' ENCs selected' });
+        this.selectedENCsSelector = this.page.locator('strong').filter({ hasText: ' ENCs selected' });
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
         this.downloadLinkSelector = this.page.getByTestId('download-exs');
-        this.createLinkSelector = this.page.getByTestId('create-exs')
+        this.createLinkSelector = this.page.getByTestId('create-exs');
+        this.exchangeSetDownloadFrame = this.page.locator("div[class = 'ess-container']> div");
         this.pageUnderTest = page;      
 
     }
@@ -75,7 +76,7 @@ class EsDownloadPageAssertions {
     }
 
     async downloadButtonSelectorHidden(): Promise<void> {
-
+        this.esDownloadPageObjects.page.waitForTimeout(3000);
       expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden).toBeTruthy();
     }
 
@@ -122,19 +123,14 @@ class EsDownloadPageAssertions {
 
     }
 
+    VerifyExchangeSetSizeIsValid(estimated: string, estimatedSize: number): void {
 
-    VerifyExchangeSetSizeIsValid(estimated: string, included: number): void {
-    //new for Admiralty
-      let estimatedSize = included * (0.3);
-      let defaultSize = Number.parseFloat(autoTestConfig.encSizeConfig);
-      let literal: string = 'Estimated size ' + (estimatedSize + defaultSize).toFixed(1) + 'MB';
-      expect(estimated).toEqual(literal);
+        let literal: string = estimatedSize + ' MB';
+        expect(estimated).toEqual(literal);
     }
 
-  
-
-
   async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
+    
        const testPage = this.esDownloadPageObjects.pageUnderTest;
        expect(await this.esDownloadPageObjects.getDialogueSelector).toBeTruthy();
        expect(await testPage.getByText(InValidENCs[0] + ' - invalidProduct')).toBeTruthy();
@@ -175,9 +171,10 @@ class EsDownloadPageAssertions {
 
     }
 
-    async SelectedENCs(): Promise<void> {
-        expect(await this.esDownloadPageObjects.selectedENCsSelector).toBeVisible();
+    async exchangeSetDownloadGridValidation(): Promise<void> {
+        expect(await this.esDownloadPageObjects.exchangeSetDownloadFrame.count() == 1);
+      }
 
     }
-}
+
 

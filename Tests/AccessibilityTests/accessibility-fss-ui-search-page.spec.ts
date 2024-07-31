@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { injectAxe, checkA11y} from 'axe-playwright'
+import { injectAxe, checkA11y } from 'axe-playwright'
 import { AcceptCookies,LoginPortal } from '../../Helper/CommonHelper';
 import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObjects.json';
 import { attributeProductType} from '../../Helper/ConstantHelper';
