@@ -88,6 +88,32 @@ stages:
       AzureDevOpsEnvironment: FSS-vNext-E2E
       ShortName: vNextE2e
 
+- stage: IatDeploy
+  dependsOn:
+  - DevDeploy
+  displayName: IAT deploy
+  #condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+  jobs:
+  - template: Deployment/templates/continuous-deployment.yml
+    parameters:
+      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+      Container: ${{ variables.Container }}
+      AzureDevOpsEnvironment: FSS-IAT
+      ShortName: Iat
+
+- stage: PreProdDeploy
+  dependsOn:
+  - IatDeploy
+  displayName: PreProd deploy
+  #condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+  jobs:
+  - template: Deployment/templates/continuous-deployment.yml
+    parameters:
+      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+      Container: ${{ variables.Container }}
+      AzureDevOpsEnvironment: FSS-PreProd
+      ShortName: PreProd
+
 - stage: QaDeploy
   dependsOn:
   - DevDeploy
