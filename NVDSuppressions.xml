@@ -43,32 +43,12 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: braces:3.0.2
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159868
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/braces@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-4068</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
    file name: micromatch:4.0.5
    PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159870
    ]]>
     </notes>
     <packageUrl regex="true">^pkg:npm/micromatch@.*$</packageUrl>
     <vulnerabilityName>CVE-2024-4067</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: tar:6.2.0
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159872
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
-    <vulnerabilityName>GHSA-f5x3-32g6-xq36</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
