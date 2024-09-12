@@ -28,22 +28,6 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
-  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328
-  test('Verify search results for single File name search', async ({ page }) => {
-    await InsertSearchText(page, attributeFileName.value);
-    await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
-    //======================================
-    await page.waitForTimeout(2000);
-    await expect(page.getByText(attributeFileName.value).first()).toBeVisible();
-
-    //=======================================
-    await AdmiraltyExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value);
-    // verify paginator links are available on the page
-    expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext })).toBeTruthy();
-    expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkPrevious })).toBeTruthy();
-
-  })
-
   //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14327
   test('Verify search results for single batch attribute search', async ({ page }) => {
     await InsertSearchText(page, attributeProductType.value);
@@ -196,5 +180,20 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   })
 
+  //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14328
+  test('Verify search results for single File name search', async ({ page }) => {
+    await InsertSearchText(page, attributeFileName.value);
+    await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
+    //======================================
+    await page.waitForTimeout(10000);
+    await expect(page.getByText(attributeFileName.value).first()).toBeVisible();
+
+    //=======================================
+    await AdmiraltyExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value);
+    // verify paginator links are available on the page
+    expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext })).toBeTruthy();
+    expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkPrevious })).toBeTruthy();
+
+  })
   
 })
