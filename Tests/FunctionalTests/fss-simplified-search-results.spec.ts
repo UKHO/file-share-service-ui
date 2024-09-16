@@ -185,7 +185,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await InsertSearchText(page, attributeFileName.value);
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
     //======================================
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(2000);
     await expect(page.getByText(attributeFileName.value).first()).toBeVisible();
 
     //=======================================
