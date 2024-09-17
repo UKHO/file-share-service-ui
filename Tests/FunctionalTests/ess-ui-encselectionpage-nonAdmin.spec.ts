@@ -24,16 +24,17 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios for Non Admi
   })  
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156061
-  test("check user is not able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for Base exchange set @NonUKHOUser",async ({ page}) =>{
-    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
-    await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    await esslandingPageObjects.uploadradiobtnSelectorClick();
-    await esslandingPageObjects.uploadFile(page, './Tests/TestData/ENCs_Sorting.csv');
-    await esslandingPageObjects.proceedButtonSelectorClick();
-    await encSelectionPageObjects.selectAllSelectorClick();
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isHidden());
-    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isHidden());
-  });  
+  // Disabled - this test relates to S57 which is not available at the moment Rhz
+  //test("check user is not able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for Base exchange set @NonUKHOUser",async ({ page}) =>{
+  //  await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+  //  await exchangeSetSelectionPageObjects.clickOnProceedButton();
+  //  await esslandingPageObjects.uploadradiobtnSelectorClick();
+  //  await esslandingPageObjects.uploadFile(page, './Tests/TestData/ENCs_Sorting.csv');
+  //  await esslandingPageObjects.proceedButtonSelectorClick();
+  //  await encSelectionPageObjects.selectAllSelectorClick();
+  //  encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isHidden());
+  //  encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isHidden());
+  //});  
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156212
   

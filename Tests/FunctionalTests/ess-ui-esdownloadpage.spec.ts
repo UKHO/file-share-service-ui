@@ -77,36 +77,37 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 4 of 4\nExchange set creation");
     })
 
-    //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156097
-    test('check user is able to download S57 exchange set for base exchange set', async ({ page }) => {
-        await encSelectionPageObjects.startAgainLinkSelectorClick();
-        await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
-        await exchangeSetSelectionPageObjects.clickOnProceedButton();
-        await encSelectionPageObjects.addSingleENC("DE260001");
-        await encSelectionPageObjects.selectAllSelectorClick();
-        await encSelectionPageObjects.s57Radiobutton.click();
-        await encSelectionPageObjects.requestENCsSelectorClick();
-        var response = await page.waitForResponse(response => response.url().includes("/productData/productIdentifiers") && response.request().method() == "POST");
-        await encSelectionPageObjects.expect.toBeTruthy(response.url().includes("exchangeSetStandard=S57"));
-        await encSelectionPageObjects.page.waitForLoadState();
-        await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
-        await esDownloadPageObjects.expect.spinnerSelectorVisible();
-        await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
-        await esDownloadPageObjects.expect.spinnerSelectorHidden();       
-        await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
-        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
-        //=========================================
+  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156097
+    // Disabled - S57 not available at the moment Rhz
+    //test('check user is able to download S57 exchange set for base exchange set', async ({ page }) => {
+    //    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    //    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    //    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    //    await encSelectionPageObjects.addSingleENC("DE260001");
+    //    await encSelectionPageObjects.selectAllSelectorClick();
+    //    await encSelectionPageObjects.s57Radiobutton.click();
+    //    await encSelectionPageObjects.requestENCsSelectorClick();
+    //    var response = await page.waitForResponse(response => response.url().includes("/productData/productIdentifiers") && response.request().method() == "POST");
+    //    await encSelectionPageObjects.expect.toBeTruthy(response.url().includes("exchangeSetStandard=S57"));
+    //    await encSelectionPageObjects.page.waitForLoadState();
+    //    await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
+    //    await esDownloadPageObjects.expect.spinnerSelectorVisible();
+    //    await esDownloadPageObjects.downloadButtonSelector.waitFor({state: 'visible'});
+    //    await esDownloadPageObjects.expect.spinnerSelectorHidden();       
+    //    await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
+    //    await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
+    //    //=========================================
         
-        await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
-        await esDownloadPageObjects.expect.createLinkSelectorHidden();
+    //    await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
+    //    await esDownloadPageObjects.expect.createLinkSelectorHidden();
 
-        //=========================================
-        await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
-        await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
-        await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
-        await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
-        await esDownloadPageObjects.expect.createLinkSelectorEnabled();
-    });
+    //    //=========================================
+    //    await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
+    //    await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
+    //    await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
+    //    await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
+    //    await esDownloadPageObjects.expect.createLinkSelectorEnabled();
+    //});
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156248
     
