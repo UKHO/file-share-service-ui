@@ -4,10 +4,14 @@
     <notes>
       <![CDATA[
    file name: vite:4.5.2.  To fix we would need to update to  @angular-devkit/build-angular@17.3.3 which is a breaking change.
+   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159873
    ]]>
     </notes>
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
     <vulnerabilityName>GHSA-8jhw-289h-jh2g</vulnerabilityName>
+    <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
+    <vulnerabilityName>GHSA-64vr-g452-qvp3</vulnerabilityName>
+    <vulnerabilityName>GHSA-9cwx-2883-4wfx</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
@@ -28,16 +32,6 @@
     <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
     <vulnerabilityName>CVE-2024-28863</vulnerabilityName>
     <cpe>cpe:/a:tar_project:tar</cpe>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: vite:4.5.2
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159873
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
