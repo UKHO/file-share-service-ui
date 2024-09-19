@@ -32,47 +32,6 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: axios.js
-   file name: axios.min.js
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159861
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:javascript/axios@.*$</packageUrl>
-    <vulnerabilityName>Versions before 1.6.8 depends on follow-redirects before 1.15.6 which could leak the proxy authentication credentials</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: braces:3.0.2
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159868
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/braces@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-4068</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: micromatch:4.0.5
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159870
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/micromatch@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-4067</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: tar:6.2.0
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159872
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
-    <vulnerabilityName>GHSA-f5x3-32g6-xq36</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
    file name: vite:4.5.2
    PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159873
    ]]>
@@ -93,12 +52,19 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: ws:various
-   ws is an open source WebSocket client and server for Node.js. We do not use the server functionality.
+   file name: webpack:5.88.2
    ]]>
     </notes>
-    <packageUrl regex="true">^pkg:npm/ws@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-37890</vulnerabilityName>
-    <vulnerabilityName>GHSA-3h5v-q93c-6h6q</vulnerabilityName>
+    <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
+    <vulnerabilityName>GHSA-4vvj-4cpr-p986</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: webpack:5.88.2
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
+    <cve>CVE-2024-43788</cve>
   </suppress>
 </suppressions>
