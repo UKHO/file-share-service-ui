@@ -189,10 +189,11 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await expect(page.getByText(attributeFileName.value).first()).toBeVisible();
 
     //=======================================
-    await AdmiraltyExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value); 
+    await AdmiraltyExpectAllResultsHaveFileAttributeValue(page, attributeFileName.value);
     // verify paginator links are available on the page
     expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkNext })).toBeTruthy();
     expect(await page.getByRole('button', { name: fssSearchPageObjectsConfig.paginatorLinkPrevious })).toBeTruthy();
 
   })
+  
 })
