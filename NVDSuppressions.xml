@@ -12,6 +12,8 @@
     <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
     <vulnerabilityName>GHSA-64vr-g452-qvp3</vulnerabilityName>
     <vulnerabilityName>GHSA-9cwx-2883-4wfx</vulnerabilityName>
+    <vulnerabilityName>CVE-2024-45812</vulnerabilityName>
+    <vulnerabilityName>CVE-2024-45811</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
