@@ -90,9 +90,9 @@ stages:
 
 - stage: IatDeploy
   dependsOn:
-  - BuildTestPublish
+  - DevDeploy
   displayName: IAT deploy
-  #condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
   jobs:
   - template: Deployment/templates/continuous-deployment.yml
     parameters:
@@ -103,9 +103,9 @@ stages:
 
 - stage: PreProdDeploy
   dependsOn:
-  - BuildTestPublish
+  - IatDeploy
   displayName: PreProd deploy
-  #condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
   jobs:
   - template: Deployment/templates/continuous-deployment.yml
     parameters:
