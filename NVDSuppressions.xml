@@ -18,16 +18,6 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: ejs:3.1.9
-   Server side vulnerability only. Not really a vulnerability either - see https://github.com/mde/ejs/issues/720#issuecomment-1587399501
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
-    <cve>CVE-2023-29827</cve>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
    file name: tar:6.2.0
    ]]>
     </notes>
@@ -62,16 +52,5 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
     <cve>CVE-2024-43788</cve>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: rollup:3.29.0
-   Suppressed as will be fixed in PR #290
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/rollup@.*$</packageUrl>
-    <vulnerabilityName>GHSA-gcx4-mw62-g8wm</vulnerabilityName>
-    <vulnerabilityName>CVE-2024-47068</vulnerabilityName>
   </suppress>
 </suppressions>
