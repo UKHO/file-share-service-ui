@@ -12,6 +12,8 @@
     <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
     <vulnerabilityName>GHSA-64vr-g452-qvp3</vulnerabilityName>
     <vulnerabilityName>GHSA-9cwx-2883-4wfx</vulnerabilityName>
+    <vulnerabilityName>CVE-2024-45812</vulnerabilityName>
+    <vulnerabilityName>CVE-2024-45811</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
@@ -60,5 +62,16 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
     <cve>CVE-2024-43788</cve>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: rollup:3.29.0
+   Suppressed as will be fixed in PR #290
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/rollup@.*$</packageUrl>
+    <vulnerabilityName>GHSA-gcx4-mw62-g8wm</vulnerabilityName>
+    <vulnerabilityName>CVE-2024-47068</vulnerabilityName>
   </suppress>
 </suppressions>
