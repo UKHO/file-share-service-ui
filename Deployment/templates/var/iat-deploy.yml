@@ -1,0 +1,6 @@
+variables:
+# Common across all environments.
+- group: File Share Service terraform IAT
+- group: File-Share-Service-UI-IAT-Deploy-Variables
+- name: AzureSubscription
+  value: File-Share-Service-IAT-A.011.08

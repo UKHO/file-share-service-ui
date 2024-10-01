@@ -13,16 +13,7 @@
     <vulnerabilityName>GHSA-64vr-g452-qvp3</vulnerabilityName>
     <vulnerabilityName>GHSA-9cwx-2883-4wfx</vulnerabilityName>
     <vulnerabilityName>CVE-2024-45812</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: ejs:3.1.9
-   Server side vulnerability only. Not really a vulnerability either - see https://github.com/mde/ejs/issues/720#issuecomment-1587399501
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/ejs@.*$</packageUrl>
-    <cve>CVE-2023-29827</cve>
+    <vulnerabilityName>CVE-2024-45811</vulnerabilityName>
   </suppress>
   <suppress>
     <notes>
