@@ -1,0 +1,6 @@
+variables:
+# Common across all environments.
+- group: File Share Service terraform Pre
+- group: File-Share-Service-UI-PreProd-Deploy-Variables
+- name: AzureSubscription
+  value: File-Share-Service-Pre-A.011.08
