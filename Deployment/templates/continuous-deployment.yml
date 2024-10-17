@@ -65,8 +65,8 @@ jobs:
     value: $(essConfig-aioExcludeEncs)
   - name: essConfig.apiUiUrl
     value: $(essConfig-apiUiUrl)
-  - name: essConfig.adminDomains
-    value: $(essConfig-AdminDomains)
+  - name: essConfig.privilegedUserDomains
+    value: $(essConfig-PrivilegedUserDomains)
   strategy:
     runOnce:
       deploy:
