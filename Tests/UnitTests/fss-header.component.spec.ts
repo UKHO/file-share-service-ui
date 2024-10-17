@@ -105,7 +105,7 @@ describe('FssHeaderComponent', () => {
 
   test('should set isPrivilegedUser to true for admin domains', () => {
     component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
-    component.configAdminDomains = ["test.com","abcd.com"];
+    component.configPrivilegedUserDomains = ["test.com","abcd.com"];
     const claims = {
       email: "admin@test.com"
     };
