@@ -36,7 +36,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   isActive: boolean = false;
   fssSilentTokenRequest: SilentRequest;
   fssTokenScope: any = [];
-  configAdminDomains: string[];
+  configPrivilegedUserDomains: string[];
   constructor(@Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private msalService: MsalService,
     private route: Router,
@@ -46,7 +46,7 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private essUploadFileService: EssUploadFileService) {
 
     this.fssTokenScope = AppConfigService.settings["fssConfig"].apiScope;
-    this.configAdminDomains = AppConfigService.settings["essConfig"].adminDomains;
+    this.configPrivilegedUserDomains = AppConfigService.settings["essConfig"].privilegedUserDomains;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
     };
@@ -191,8 +191,8 @@ export class FssHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.signedInName = this.userName;
     
     const email = claims ? claims['email'] : null;
-    this.configAdminDomains.forEach(configAdminDomain => {
-      if (email && (email.toLowerCase().endsWith(configAdminDomain.toLowerCase()))) {
+    this.configPrivilegedUserDomains.forEach(configPrivilegedUserDomain => {
+      if (email && (email.toLowerCase().endsWith(configPrivilegedUserDomain.toLowerCase()))) {
         this.essUploadFileService.isPrivilegedUser = true;
       }
     })
