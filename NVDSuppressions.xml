@@ -53,15 +53,4 @@
     <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
     <cve>CVE-2024-43788</cve>
   </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: cookie:0.6.0
-   Suppressed until angular upgrade.
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/cookie@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-47764</vulnerabilityName>
-    <vulnerabilityName>GHSA-pxg6-pf52-xh8x</vulnerabilityName>
-  </suppress>
 </suppressions>
