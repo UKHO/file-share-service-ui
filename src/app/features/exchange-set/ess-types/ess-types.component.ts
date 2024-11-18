@@ -96,6 +96,9 @@ export class EssTypesComponent implements OnInit, OnDestroy {
     const differenceMs = Math.abs(targetDate - currentDate);
     const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
 
+    alert(differenceDays);
+    alert(currentDate - 27);
+    
     if (differenceDays > 27 || targetDate > currentDate) {
       this.resetDate();
       return false;
