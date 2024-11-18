@@ -59,6 +59,7 @@ jobs:
     inputs:
       folderPath: '$(Build.SourcesDirectory)\'
       enableXmlTransform: false
+      xmlTransformationRules: ''
       jsonTargetFiles: appSetting.json
                 
   - script: |

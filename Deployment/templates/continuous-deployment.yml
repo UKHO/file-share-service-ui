@@ -104,6 +104,7 @@ jobs:
           inputs:
             folderPath: "$(Pipeline.Workspace)/AngularApp/ukho-fileshareservice-ui"
             enableXmlTransform: false
+            xmlTransformationRules: ''
             jsonTargetFiles: '**/appconfig.json'
 
         - task: AzureCLI@2
