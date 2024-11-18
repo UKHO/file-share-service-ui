@@ -53,4 +53,40 @@
     <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
     <cve>CVE-2024-43788</cve>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: cross-spawn:7.0.3
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/cross-spawn@.*$</packageUrl>
+    <cve>CVE-2024-21538</cve>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: http-proxy-middleware:2.0.6
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/http-proxy-middleware@.*$</packageUrl>
+    <cve>CVE-2024-21536</cve>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: source-map-support:0.5.13
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/source-map-support@.*$</packageUrl>
+    <cve>CVE-2024-21540</cve>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: source-map-support:0.5.21
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/source-map-support@.*$</packageUrl>
+    <cve>CVE-2024-21540</cve>
+  </suppress>
 </suppressions>
