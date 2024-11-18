@@ -98,4 +98,13 @@
     <packageUrl regex="true">^pkg:npm/http-proxy-middleware@.*$</packageUrl>
     <vulnerabilityName>GHSA-c7qv-q95q-8v27</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: cross-spawn:7.0.3
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/cross-spawn@.*$</packageUrl>
+    <vulnerabilityName>GHSA-3xgq-45jj-v275</vulnerabilityName>
+  </suppress>
 </suppressions>
