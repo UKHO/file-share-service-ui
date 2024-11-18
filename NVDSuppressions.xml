@@ -70,6 +70,7 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/http-proxy-middleware@.*$</packageUrl>
     <cve>CVE-2024-21536</cve>
+    <cve>GHSA-c7qv-q95q-8v27</cve>
   </suppress>
   <suppress>
     <notes>
