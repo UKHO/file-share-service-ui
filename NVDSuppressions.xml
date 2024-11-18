@@ -70,7 +70,6 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/http-proxy-middleware@.*$</packageUrl>
     <cve>CVE-2024-21536</cve>
-    <cve>GHSA-c7qv-q95q-8v27</cve>
   </suppress>
   <suppress>
     <notes>
@@ -89,5 +88,14 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/source-map-support@.*$</packageUrl>
     <cve>CVE-2024-21540</cve>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: http-proxy-middleware:2.0.6
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/http-proxy-middleware@.*$</packageUrl>
+    <vulnerabilityName>GHSA-c7qv-q95q-8v27</vulnerabilityName>
   </suppress>
 </suppressions>
