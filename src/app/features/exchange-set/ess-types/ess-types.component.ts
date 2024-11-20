@@ -97,14 +97,16 @@ export class EssTypesComponent implements OnInit, OnDestroy {
     targetDate.setSeconds(currentDate.getSeconds());
     targetDate.setMilliseconds(currentDate.getMilliseconds());
 
-    alert("Current Date" + currentDate);
-    alert("Selected Date" + targetDate);
+    alert("Current Date: " + currentDate);
+    alert("Selected Date: " + targetDate);
+
+    alert("Timezone Offset: " + targetDate.getTimezoneOffset());
 
     const differenceMs = Math.abs(targetDate - currentDate);
     const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
 
     
-    alert("Days" + differenceDays);
+    alert("Days: " + differenceDays);
 
     if (differenceDays > 27 || targetDate > currentDate) {
       this.resetDate();
