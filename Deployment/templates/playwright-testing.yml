@@ -58,7 +58,8 @@ jobs:
     displayName: AppSetting transform for ${{ parameters.TestDescription }} tests
     inputs:
       folderPath: '$(Build.SourcesDirectory)\'
-      xmlTransformationRules:
+      enableXmlTransform: false
+      xmlTransformationRules: ''
       jsonTargetFiles: appSetting.json
                 
   - script: |
