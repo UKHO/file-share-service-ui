@@ -87,9 +87,15 @@ export class EssTypesComponent implements OnInit, OnDestroy {
 
   private isValidDeltaDateSelected(selectedDate: any) {
     const currentDate: any = new Date();
-    const targetDate: any = new Date(selectedDate);
+    alert(selectedDate);
+        const selectedDateString = selectedDate.toISOString().split('T')[0];
+        alert(selectedDateString);
+        const targetDate: any = new Date(selectedDate);
 
     alert(targetDate);
+
+    // Adjust targetDate to ignore British Summer Time (BST) by setting the time to midnight
+    targetDate.setHours(0, 0, 0, 0);
 
     targetDate.setHours(currentDate.getHours());
     targetDate.setMinutes(currentDate.getMinutes());
