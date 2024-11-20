@@ -90,7 +90,7 @@ export class EssTypesComponent implements OnInit, OnDestroy {
     alert(selectedDate);
         const selectedDateString = selectedDate.toISOString().split('T')[0];
         alert(selectedDateString);
-        const targetDate: any = new Date(selectedDate);
+    const targetDate: any = new Date(selectedDateString);
 
     alert(targetDate);
 
