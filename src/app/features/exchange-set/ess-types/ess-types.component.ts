@@ -102,7 +102,7 @@ export class EssTypesComponent implements OnInit, OnDestroy {
 
     alert("Timezone Offset: " + targetDate.getTimezoneOffset());
 
-    const differenceMs = Math.abs(targetDate - currentDate);
+    const differenceMs = Math.abs(targetDate - currentDate) + (targetDate.getTimezoneOffset() * 60000);
     const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
 
     
