@@ -87,23 +87,23 @@ export class EssTypesComponent implements OnInit, OnDestroy {
   }
 
  private isValidDeltaDateSelected(selectedDate: Date): boolean {
-  const today = new Date();
+  const currentDate = new Date();
   const selectedYear = selectedDate.getUTCFullYear();
   const selectedMonth = selectedDate.getUTCMonth();
   const selectedDayOfMonth = selectedDate.getUTCDate();
 
-  const selectedDay = Date.UTC(
+  const selectedDayUtc = Date.UTC(
     selectedYear,
     selectedMonth,
     selectedDayOfMonth,
   );
-  const currentDay = Date.UTC(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
+  const currentDayUtc = Date.UTC(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
   );
 
-  const differenceDays = (currentDay - selectedDay) / 86_400_000;
+  const differenceDays = (currentDayUtc - selectedDayUtc) / 86_400_000;
 
   if (differenceDays < 0 || differenceDays > 27) {
     this.resetDate();
