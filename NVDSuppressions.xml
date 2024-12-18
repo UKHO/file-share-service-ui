@@ -53,4 +53,53 @@
     <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
     <cve>CVE-2024-43788</cve>
   </suppress>
+  <suppress>
+   <notes><![CDATA[
+   file name: cross-spawn:7.0.3
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/cross-spawn@.*$</packageUrl>
+   <vulnerabilityName>CVE-2024-21538</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: cross-spawn:7.0.3
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/cross-spawn@.*$</packageUrl>
+   <vulnerabilityName>GHSA-3xgq-45jj-v275</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: express:4.21.1
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/express@.*$</packageUrl>
+   <vulnerabilityName>CVE-2024-10491</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: http-proxy-middleware:2.0.6
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/http-proxy-middleware@.*$</packageUrl>
+   <cve>CVE-2024-21536</cve>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: http-proxy-middleware:2.0.6
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/http-proxy-middleware@.*$</packageUrl>
+   <vulnerabilityName>GHSA-c7qv-q95q-8v27</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: path-to-regexp:0.1.10
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/path-to-regexp@.*$</packageUrl>
+   <vulnerabilityName>CVE-2024-52798</vulnerabilityName>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: path-to-regexp:0.1.10
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/path-to-regexp@.*$</packageUrl>
+   <vulnerabilityName>GHSA-rhx6-c78j-4q9w</vulnerabilityName>
+</suppress>
 </suppressions>
