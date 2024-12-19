@@ -102,4 +102,11 @@
    <packageUrl regex="true">^pkg:npm/path-to-regexp@.*$</packageUrl>
    <vulnerabilityName>GHSA-rhx6-c78j-4q9w</vulnerabilityName>
 </suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: nanoid:3.3.6
+   ]]></notes>
+   <packageUrl regex="true">^pkg:npm/nanoid@.*$</packageUrl>
+   <vulnerabilityName>CVE-2024-55565</vulnerabilityName>
+</suppress>
 </suppressions>
