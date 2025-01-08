@@ -1,7 +1,7 @@
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
-import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
+import { TableModule, CdkTableModule } from '../../src/app/shared/components/ukho-table/table.module';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
@@ -323,7 +323,7 @@ describe('EssListEncsComponent', () => {
   };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, CommonModule,
+      imports: [FormsModule, CommonModule,CdkTableModule,
         TableModule, HttpClientModule, DesignSystemModule],
       declarations: [EssListEncsComponent,
         EssAddSingleEncsComponent,
