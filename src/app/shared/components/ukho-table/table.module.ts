@@ -25,6 +25,7 @@ import {
 export { TableComponent } from './table.component';
 export { SortDirective } from './sort.directive';
 export { SortHeaderDirective } from './sort-header.directive';
+export { CdkTableModule } from '@angular/cdk/table';
 
 const EXPORTED_DECLARATIONS = [
   // Table
