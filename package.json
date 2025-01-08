@@ -1,7 +1,7 @@
 {
   "name": "ukho-fileshareservice-ui",
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
