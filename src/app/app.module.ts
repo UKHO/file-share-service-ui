@@ -25,6 +25,7 @@ import {
   PublicClientApplication,
   InteractionType
 } from '@azure/msal-browser';
+import { CdkTableModule } from '@angular/cdk/table';
 
 export function initializerFactory(env: AppConfigService): any {
   const configUrl: string = 'assets/config/appconfig.json';
@@ -94,6 +95,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    CdkTableModule,
     AppRoutingModule,
     HttpClientModule,
     MsalModule
