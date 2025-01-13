@@ -17,6 +17,7 @@ import { EssInfoErrorMessageComponent } from '../../src/app/features/exchange-se
 import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info-error-message.service';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { Product, ProductCatalog, BundleInfo, DateInfo, NotReturnedProduct, ProductVersionRequest } from '../../src/app/core/models/ess-response-types';
+import { InjectionToken } from '@angular/core';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -350,6 +351,11 @@ describe('EssListEncsComponent', () => {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory
         },
+        {
+          provide: CDK_TABLE ,
+          useValue: {}
+        },
+
         MsalService, ExchangeSetApiService, EssInfoErrorMessageService
       ]
     })
