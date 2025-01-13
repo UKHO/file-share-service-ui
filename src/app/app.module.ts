@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from   './shared/app.shared.module';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppConfigService } from './core/services/app-config.service';
 import { AnalyticsService } from './core/services/analytics.service';
 import { HttpErrorInterceptorService } from './core/services/httperror-interceptor.service';
@@ -85,57 +85,50 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 }
 
 
-@NgModule({
-  declarations: [
-    AppComponent
-    
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MsalModule
-  ],
-  providers: [
-    AppConfigService,
-    AnalyticsService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializerFactory,
-      deps: [AppConfigService], multi: true
-    },
-    {
-        provide: MSAL_INSTANCE,
-        useFactory: MSALInstanceFactory
-    },
-    {
-        provide: MSAL_GUARD_CONFIG,
-        useFactory: MSALGuardConfigFactory
-    },
-    {
-        provide: MSAL_INTERCEPTOR_CONFIG,
-        useFactory: MSALInterceptorConfigFactory
-    },
-    MsalGuard,
-    MsalService,
-    MsalBroadcastService,
-    {
-        provide: HTTP_INTERCEPTORS,
-        useClass: MsalInterceptor,
-        multi: true
-    },
-    {
-        provide: HTTP_INTERCEPTORS,
-        useClass: HttpErrorInterceptorService,
-        multi: true
-    },
-    { provide: 'googleTagManagerId',
-      useFactory: GTMFactory
-    },
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        AppRoutingModule,
+        MsalModule], providers: [
+        AppConfigService,
+        AnalyticsService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializerFactory,
+            deps: [AppConfigService], multi: true
+        },
+        {
+            provide: MSAL_INSTANCE,
+            useFactory: MSALInstanceFactory
+        },
+        {
+            provide: MSAL_GUARD_CONFIG,
+            useFactory: MSALGuardConfigFactory
+        },
+        {
+            provide: MSAL_INTERCEPTOR_CONFIG,
+            useFactory: MSALInterceptorConfigFactory
+        },
+        MsalGuard,
+        MsalService,
+        MsalBroadcastService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MsalInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpErrorInterceptorService,
+            multi: true
+        },
+        { provide: 'googleTagManagerId',
+            useFactory: GTMFactory
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }
