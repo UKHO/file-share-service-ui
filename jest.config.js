@@ -15,7 +15,7 @@ module.exports = {
     
   }),
   globals: {
-    window.crypto: require('crypto')
+    crypto: require('crypto')
   },
   coveragePathIgnorePatterns: ['<rootDir>/src/app/core/services/app-config.service.ts','<rootDir>/src/app/core/services/file-share-api.service.ts']
 };
