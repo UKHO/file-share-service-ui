@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk/table';
 import { SortDirective } from './sort.directive';
 import { SortHeaderDirective } from './sort-header.directive';
+
 import {
   CellRefDirective,
   HeaderCellRefDirective,
@@ -25,7 +26,6 @@ import {
 export { TableComponent } from './table.component';
 export { SortDirective } from './sort.directive';
 export { SortHeaderDirective } from './sort-header.directive';
-export { CdkTableModule } from '@angular/cdk/table';
 
 const EXPORTED_DECLARATIONS = [
   // Table

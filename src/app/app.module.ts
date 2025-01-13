@@ -8,6 +8,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppConfigService } from './core/services/app-config.service';
 import { AnalyticsService } from './core/services/analytics.service';
 import { HttpErrorInterceptorService } from './core/services/httperror-interceptor.service';
+
 import {
   MsalModule,
   MsalGuard,
@@ -25,7 +26,6 @@ import {
   PublicClientApplication,
   InteractionType
 } from '@azure/msal-browser';
-import { CdkTableModule } from '@angular/cdk/table';
 
 export function initializerFactory(env: AppConfigService): any {
   const configUrl: string = 'assets/config/appconfig.json';
@@ -95,7 +95,6 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    CdkTableModule,
     AppRoutingModule,
     HttpClientModule,
     MsalModule
