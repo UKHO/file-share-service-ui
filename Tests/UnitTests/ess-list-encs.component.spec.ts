@@ -18,6 +18,7 @@ import { EssInfoErrorMessageService } from '../../src/app/core/services/ess-info
 import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { Product, ProductCatalog, BundleInfo, DateInfo, NotReturnedProduct, ProductVersionRequest } from '../../src/app/core/models/ess-response-types';
 import { InjectionToken } from '@angular/core';
+import { CdkTable } from '@angular/cdk/table';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -352,7 +353,7 @@ describe('EssListEncsComponent', () => {
           useFactory: MockMSALInstanceFactory
         },
         {
-          provide: CDKTABLE ,
+          provide: CdkTable,
           useValue: {}
         },
 
