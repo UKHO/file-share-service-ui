@@ -353,9 +353,10 @@ describe('EssListEncsComponent', () => {
           useFactory: MockMSALInstanceFactory
         },
         {
-          provide: cdk_table,
-          useValue: {}
+          provide: CDK_TABLE,
+          useClass: CdkTable
         },
+        
 
         MsalService, ExchangeSetApiService, EssInfoErrorMessageService
       ]
