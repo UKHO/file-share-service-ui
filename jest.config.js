@@ -1,5 +1,6 @@
 const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig');
+const {defaults} = require('jest-config');
 
 module.exports = {
   preset: 'jest-preset-angular',
@@ -15,7 +16,11 @@ module.exports = {
     
   }),
   globals: {
-    crypto: require('crypto').webcrypto
+    crypto: require('crypto')
   },
   coveragePathIgnorePatterns: ['<rootDir>/src/app/core/services/app-config.service.ts','<rootDir>/src/app/core/services/file-share-api.service.ts']
 };
+
+
+
+

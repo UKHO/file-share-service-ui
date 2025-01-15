@@ -25,3 +25,9 @@ Object.defineProperty(global.self, 'crypto', {
     randomUUID: (arr: any) => crypto.randomUUID()
   }
 });
+
+Object.defineProperty(globalThis, 'crypto', {
+  value: {
+    getRandomValues: (arr: any) => crypto.randomBytes(arr.length)
+  }
+});
