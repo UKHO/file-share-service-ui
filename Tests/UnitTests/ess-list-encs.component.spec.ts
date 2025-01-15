@@ -353,7 +353,7 @@ describe('EssListEncsComponent', () => {
           useFactory: MockMSALInstanceFactory
         },
         {
-          provide: CDKTABLE,
+          provide: cdk_table,
           useValue: {}
         },
 
