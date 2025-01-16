@@ -1,5 +1,5 @@
 import { _VIEW_REPEATER_STRATEGY, _DisposeViewRepeaterStrategy } from '@angular/cdk/collections';
-import { CdkTable, CDK_TABLE_TEMPLATE, _COALESCED_STYLE_SCHEDULER, _CoalescedStyleScheduler } from '@angular/cdk/table';
+import { CdkTable, CDK_TABLE, CDK_TABLE_TEMPLATE, _COALESCED_STYLE_SCHEDULER, _CoalescedStyleScheduler } from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -10,6 +10,10 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   providers: [
     {
       provide: CdkTable,
+      useExisting: TableComponent
+    },
+    {
+      provide: CDK_TABLE,
       useExisting: TableComponent
     },
     {
