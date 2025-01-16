@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
-import { CdkTableModule } from '@angular/cdk/table';
+import { CdkTable, CdkTableModule } from '@angular/cdk/table';
 import { SortDirective } from './sort.directive';
 import { SortHeaderDirective } from './sort-header.directive';
 
@@ -60,6 +60,6 @@ const EXPORTED_DECLARATIONS = [
 @NgModule({
   declarations: [EXPORTED_DECLARATIONS],
   exports: [EXPORTED_DECLARATIONS],
-  imports: [CommonModule, CdkTableModule],
+  imports: [CommonModule, CdkTableModule,CdkTable],
 })
 export class TableModule { }
