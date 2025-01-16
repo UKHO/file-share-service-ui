@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
-import { CdkTableModule } from '@angular/cdk/table';
+import { CDK_TABLE, CdkTableModule } from '@angular/cdk/table';
 import { SortDirective } from './sort.directive';
 import { SortHeaderDirective } from './sort-header.directive';
 
@@ -53,6 +53,8 @@ const EXPORTED_DECLARATIONS = [
   // Sort directives
   SortDirective,
   SortHeaderDirective,
+
+  CDK_TABLE
 ];
 
 @NgModule({

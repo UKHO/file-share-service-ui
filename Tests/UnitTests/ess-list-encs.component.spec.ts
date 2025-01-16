@@ -19,7 +19,7 @@ import { DesignSystemModule } from '@ukho/admiralty-angular';
 import { Product, ProductCatalog, BundleInfo, DateInfo, NotReturnedProduct, ProductVersionRequest } from '../../src/app/core/models/ess-response-types';
 //import { InjectionToken } from '@angular/core';
 //import { CDK_TABLE, CdkTable } from '@angular/cdk/table';
-import { CdkTableModule } from '@angular/cdk/table';
+//import { CdkTableModule } from '@angular/cdk/table';
 
 describe('EssListEncsComponent', () => {
   let component: EssListEncsComponent;
@@ -327,7 +327,7 @@ describe('EssListEncsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, CommonModule,
-        TableModule, HttpClientModule, DesignSystemModule, CdkTableModule],
+        TableModule, HttpClientModule, DesignSystemModule],
       declarations: [EssListEncsComponent,
         EssAddSingleEncsComponent,
         EssInfoErrorMessageComponent,
