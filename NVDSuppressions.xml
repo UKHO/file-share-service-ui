@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-  <suppress>
+  <!--<suppress>
     <notes>
       <![CDATA[
    file name: vite:4.5.2.  To fix we would need to update to  @angular-devkit/build-angular@17.3.3 which is a breaking change.
@@ -52,5 +52,5 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
     <cve>CVE-2024-43788</cve>
-  </suppress>
+  </suppress>-->
 </suppressions>
