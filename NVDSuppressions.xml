@@ -9,4 +9,13 @@
     <packageUrl regex="true">^pkg:npm/express@.*$</packageUrl>
     <vulnerabilityName>CVE-2024-10491</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: vite:5.4.6
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
+    <cpe>cpe:/a:vitejs:vite</cpe>
+  </suppress>
 </suppressions>
