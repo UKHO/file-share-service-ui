@@ -17,5 +17,7 @@
     </notes>
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
     <cpe>cpe:/a:vitejs:vite</cpe>
+    <vulnerabilityName>CVE-2025-24010</vulnerabilityName>
   </suppress>
+  
 </suppressions>
