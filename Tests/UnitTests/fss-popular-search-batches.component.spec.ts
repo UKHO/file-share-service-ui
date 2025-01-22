@@ -8,8 +8,8 @@ describe('FssPopularSearchBatchesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FssPopularSearchBatchesComponent ],
-      imports: [HttpClientModule]
+      // rhz declarations: [ FssPopularSearchBatchesComponent ],
+      imports: [HttpClientModule, FssPopularSearchBatchesComponent]
     })
     .compileComponents();
   });

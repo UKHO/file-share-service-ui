@@ -11,8 +11,8 @@ describe('FssPhaseBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [FssPhaseBannerComponent, AdmiraltyPhaseBanner],
+      imports: [RouterTestingModule, FssPhaseBannerComponent],  //rhz moved FssPhaseBannerComponent and AdmiraltyPhaseBanner  to imports
+      // declarations: [AdmiraltyPhaseBanner],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
     AppConfigService.settings = {

@@ -46,8 +46,8 @@ describe('EssDownloadExchangesetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommonModule, HttpClientModule, DesignSystemModule],
-      declarations: [EssDownloadExchangesetComponent,EssInfoErrorMessageComponent],
+      imports: [CommonModule, HttpClientModule, DesignSystemModule, EssDownloadExchangesetComponent, EssInfoErrorMessageComponent],
+      // rhz declarations: [EssDownloadExchangesetComponent,EssInfoErrorMessageComponent],
       providers: [
         {
           provide: EssUploadFileService,

@@ -10,8 +10,8 @@ describe('FssFooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [FssFooterComponent],
+      imports: [RouterTestingModule, FssFooterComponent],
+      // Rhz declarations: [FssFooterComponent],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
     AppConfigService.settings = {

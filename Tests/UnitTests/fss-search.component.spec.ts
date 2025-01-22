@@ -19,8 +19,8 @@ describe('FssSearchComponent', () => {
 
    beforeEach(async () => {
       await TestBed.configureTestingModule({
-         imports: [HttpClientModule, RouterTestingModule.withRoutes([])],
-         declarations: [FssSearchComponent],
+        imports: [HttpClientModule, FssSearchComponent, RouterTestingModule.withRoutes([])],
+         //rhz declarations: [FssSearchComponent],
          schemas: [NO_ERRORS_SCHEMA],
          providers: [
             {

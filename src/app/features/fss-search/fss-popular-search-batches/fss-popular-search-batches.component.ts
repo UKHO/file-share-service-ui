@@ -42,3 +42,5 @@ export class FssPopularSearchBatchesComponent implements AfterViewChecked {
   }
 
 }
+
+
