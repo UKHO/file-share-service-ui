@@ -15,7 +15,6 @@ export class FssSsoLogoutComponent implements OnInit {
     private analyticsService: AnalyticsService) { }
 
   ngOnInit(): void {
-    //Rhz This may impact something else, won't know till finished.
     //We are redirected here as a result of a call to MsalService.logout, not sure why
     localStorage.clear();
     this.analyticsService.logOut();

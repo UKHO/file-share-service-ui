@@ -108,7 +108,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   test('Verify batch attributes filter can select or deselect', async ({ page }) => {
     await InsertSearchText(page, attributeMultipleMediaType.value);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' ')); //RHZ 
+    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' ')); 
     const [attrCD, attrDVD] = attributeMultipleMediaType.value.split(' ');
 
     //select filter check box 
@@ -163,7 +163,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
 
     // Verify all rescords belongs to media type value CD
-    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueCD); //RHZ 
+    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueCD);
 
     //uncheck batch attributes CD checkbox
     await page.getByTestId(attributeValueCD).click();
@@ -176,7 +176,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
 
     // Verify all rescords belongs to media type value DVD
-    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueDVD); //RHZ 
+    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueDVD); 
 
   })
 

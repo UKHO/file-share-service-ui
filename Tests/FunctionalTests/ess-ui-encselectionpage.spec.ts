@@ -75,7 +75,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(100);  //rhz was 250
+    await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(100);  
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944 (For valid ENC no.)
@@ -96,6 +96,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13954 - Add Anther ENC
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13956 - Duplicate ENC
+  // NOTE: This test will fail if ENCs are invalid rhz
   test('Verify that after clicking on "Add another ENC" link, user able to add another ENC number', async ({ page }) => {
     await encSelectionPageObjects.startAgainLinkSelectorClick();
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
@@ -107,13 +108,13 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     })
     await encSelectionPageObjects.addSingleENC("DE260001");
     await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
-    await encSelectionPageObjects.addAnotherENC("AU220130");  //DE290001  This is an invalid ENC so the test will fail rhz
+    await encSelectionPageObjects.addAnotherENC("AU220130");  
     await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 2);
-    await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220130"); //was DE290001
+    await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220130"); 
     await encSelectionPageObjects.expect.anotherCheckBoxSelectorChecked();
 
     //13956 - Add another ENC2 - Duplicate No.
-    await encSelectionPageObjects.addAnotherENC("AU220130"); //was DE290001
+    await encSelectionPageObjects.addAnotherENC("AU220130"); 
     await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list")
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
@@ -124,10 +125,10 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
-    await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');  //rhz change file used
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');  
     await esslandingPageObjects.proceedButtonSelectorClick();
     //Adding ENC manually
-    await encSelectionPageObjects.addAnotherENC("GB301191");  //rhz replace invalid ENC name
+    await encSelectionPageObjects.addAnotherENC("GB301191"); 
 
     await encSelectionPageObjects.expect.errorMsgMaxLimitSelectorContainText("Max ENC limit reached");
   })
@@ -211,7 +212,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.page.waitForResponse(r =>
       r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST')
     await encSelectionPageObjects.errorMessage.click();
-    // rhz - instead of loocking for a literal "Invalid cells - GZ800112";
+    // rhz - instead of looking for a literal "Invalid cells - GZ800112";
     // look for what we expect to find in the string
     var actualErrorMessage = await encSelectionPageObjects.errorMessage.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(actualErrorMessage.includes("Invalid cells"));
@@ -246,7 +247,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
     let itemIndex = 0;
     await selectENCsFromTable.nth(itemIndex).click();
-    //rhz new method call on following line
+    
     let newFileSize = (await encSelectionPageObjects.getFileSizeItemRemoved(await response.text(),itemIndex));
     var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
     await encSelectionPageObjects.expect.toBeTruthy(newFileSize + ' MB' == estimatedSize);
