@@ -37,8 +37,8 @@
                                       id="fss-querytable-field-{{i+1}}"
                                       [value]="fssSearchRow.fieldValue"
                                       >
-                <AdmiraltyAutocompleteOption *ngFor="let item of fssSearchRow.fields"
-                                             [value]="item.text"></AdmiraltyAutocompleteOption>
+                <Admiralty-Autocomplete-Option *ngFor="let item of fssSearchRow.fields"
+                                             [value]="item.text"></Admiralty-Autocomplete-Option>
               </admiralty-autocomplete>
                 <!--Rhz Type ahead-->
                 <!--<admiralty-type-ahead resultsOnInitFocus="true" id="fss-querytable-field-{{i+1}}"
