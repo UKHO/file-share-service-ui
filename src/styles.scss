@@ -2,7 +2,9 @@
 @use '@fortawesome/fontawesome-free/scss/solid';
 @use '@fortawesome/fontawesome-free/scss/brands';
 
-@import '~@ukho/admiralty-core/styles/core.css';
+/*@import '~@ukho/admiralty-core/styles/core.css';*/
+@import "@ukho/admiralty-core/styles/admiralty.bundle.css";
+@import "@ukho/admiralty-core/themes/default.css";
 
 .skip-to-content-link {
 	left: 47%;
