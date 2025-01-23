@@ -3,54 +3,21 @@
   <suppress>
     <notes>
       <![CDATA[
-   file name: vite:4.5.2.  To fix we would need to update to  @angular-devkit/build-angular@17.3.3 which is a breaking change.
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/159873
+   file name: express:4.21.2
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/express@.*$</packageUrl>
+    <vulnerabilityName>CVE-2024-10491</vulnerabilityName>
+  </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: vite:5.4.6
    ]]>
     </notes>
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
-    <vulnerabilityName>GHSA-8jhw-289h-jh2g</vulnerabilityName>
-    <vulnerabilityName>CVE-2024-31207</vulnerabilityName>
-    <vulnerabilityName>GHSA-64vr-g452-qvp3</vulnerabilityName>
-    <vulnerabilityName>GHSA-9cwx-2883-4wfx</vulnerabilityName>
-    <vulnerabilityName>CVE-2024-45812</vulnerabilityName>
-    <vulnerabilityName>CVE-2024-45811</vulnerabilityName>
+    <cpe>cpe:/a:vitejs:vite</cpe>
+    <vulnerabilityName>CVE-2025-24010</vulnerabilityName>
   </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: tar:6.2.0
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-28863</vulnerabilityName>
-    <cpe>cpe:/a:tar_project:tar</cpe>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: async:3.2.4
-   PBI https://dev.azure.com/ukhydro/Abzu/_workitems/edit/164628
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/async@.*$</packageUrl>
-    <vulnerabilityName>CVE-2024-39249</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: webpack:5.88.2
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
-    <vulnerabilityName>GHSA-4vvj-4cpr-p986</vulnerabilityName>
-  </suppress>
-  <suppress>
-    <notes>
-      <![CDATA[
-   file name: webpack:5.88.2
-   ]]>
-    </notes>
-    <packageUrl regex="true">^pkg:npm/webpack@.*$</packageUrl>
-    <cve>CVE-2024-43788</cve>
-  </suppress>
+  
 </suppressions>

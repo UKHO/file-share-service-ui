@@ -27,7 +27,7 @@ variables:
 - name: WindowPool
   value: "NautilusBuild"
 - name: NodeVersion
-  value: 18.x
+  value: 22.x
 
 resources:
   repositories:

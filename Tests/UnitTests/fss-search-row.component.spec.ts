@@ -103,7 +103,7 @@ describe('FssSearchRowComponent', () => {
       expect(component.onGroupDeleted.emit).toHaveBeenCalledWith(deleteGrouping);
     });
 
-    // Test to check emit value when onFieldChanged Rhz
+    // Test to check emit value when onFieldChanged
     test('should emit when filed change in search row', () => {
       let changedFieldEvent: CustomEvent<string> = new CustomEvent<string>('fieldChange', { detail: '@FileSize (in bytes)' })
       let rowId: number = 2;
