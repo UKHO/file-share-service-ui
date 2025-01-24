@@ -32,11 +32,10 @@
                 </admiralty-select>
             </td>
             <td width="25%">
-              <admiralty-autocomplete name="test" label="Favourite Test"
-                                      hint="Please enter your favourite test"
+              <admiralty-autocomplete name="test"
                                       id="fss-querytable-field-{{i+1}}"
                                       [value]="fssSearchRow.fieldValue"
-                                      >
+                                      (selectionChanged)="onFieldChange($event, fssSearchRow.rowId)">
                 <admiralty-autocomplete-option *ngFor="let item of fssSearchRow.fields"
                                              [value]="item.text"></admiralty-autocomplete-option>
               </admiralty-autocomplete>
