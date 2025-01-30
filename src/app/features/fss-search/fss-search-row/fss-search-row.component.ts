@@ -38,6 +38,8 @@ export class FssSearchRowComponent implements OnChanges {
 
   onOperatorChange(operator: Event, rowId: number) {
     const customEventData = operator as CustomEvent<SelectChangeEventDetail>;
+    //rhz temp log; remove later
+    console.log("on operatorChange Handler: ", customEventData.detail);
     let operatorData: string = customEventData.detail.value as string;
     this.onOperatorChanged.emit({ operatorValue: operatorData, rowId: rowId });
   }
@@ -45,7 +47,7 @@ export class FssSearchRowComponent implements OnChanges {
   onFieldChange(eventData: Event, rowId: number) {
     const fieldData = eventData as CustomEvent<string>;
     //rhz temp log; remove later
-    console.log("fieldData.detail: ", fieldData.detail);
+    console.log("onFieldChange handler fieldData.detail: ", fieldData.detail);
     this.onFieldChanged.emit({ currentFieldValue: fieldData.detail, rowId: rowId });
   }
 

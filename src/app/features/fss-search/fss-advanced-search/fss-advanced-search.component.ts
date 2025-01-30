@@ -239,6 +239,8 @@ export class FssAdvancedSearchComponent implements OnInit {
   }
 
   onOperatorChanged(changedOperator: any) {
+    //rhz temp log; remove later
+    console.log("on operatorChange emitter Handler: ", changedOperator);
     var changedFieldRow = this.fssSearchHelperService.onOperatorChanged(changedOperator, this.operators, this.fssSearchRows);
   }
 
