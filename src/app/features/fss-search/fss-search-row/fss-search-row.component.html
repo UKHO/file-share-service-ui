@@ -35,7 +35,7 @@
               <admiralty-autocomplete name="test"
                                       id="fss-querytable-field-{{i+1}}"
                                       [value]="fssSearchRow.fieldValue"
-                                      (admiraltyChanged)="onFieldChange($event, fssSearchRow.rowId)">
+                                      (admiraltyChange)="onFieldChange($event, fssSearchRow.rowId)">
                 <admiralty-autocomplete-option *ngFor="let item of fssSearchRow.fields"
                                              [value]="item.text"></admiralty-autocomplete-option>
               </admiralty-autocomplete>
