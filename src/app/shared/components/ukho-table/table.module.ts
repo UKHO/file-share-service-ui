@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk/table';
 import { SortDirective } from './sort.directive';
 import { SortHeaderDirective } from './sort-header.directive';
+
 import {
   CellRefDirective,
   HeaderCellRefDirective,
@@ -30,6 +31,7 @@ const EXPORTED_DECLARATIONS = [
   // Table
   TableComponent,
 
+
   // Template defs
   CellRefDirective,
   HeaderCellRefDirective,
@@ -52,6 +54,8 @@ const EXPORTED_DECLARATIONS = [
   // Sort directives
   SortDirective,
   SortHeaderDirective,
+
+  
 ];
 
 @NgModule({
