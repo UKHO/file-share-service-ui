@@ -44,7 +44,7 @@ jobs:
   - task: NodeTool@0
     displayName: Install Node.js
     inputs:
-      versionSpec: '14.x'
+      versionSpec: '22.x'
 
   - script: |
       npm ci

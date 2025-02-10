@@ -180,9 +180,9 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.errorMessageSelectorContainText('Please select a .csv or .txt file');
      })
 
-     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808  
-  test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
-          // rhz - replace invalid ENC names
+     //https://dev.azure.com/ukhydro/ENC%20Publishing/_workitems/edit/61808
+     // NOTE: This test will fail if ENCs are invalid rhz
+     test('Verify that input of ENC name is not case sensitive ', async ({ page }) => {
           let encAdded = ["DE260001", "AU220130", "BR221070", "NZ300661", "RU3P0ZM0", "C35MACAU"]
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("DE260001");

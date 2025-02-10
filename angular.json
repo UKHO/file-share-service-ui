@@ -96,17 +96,17 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ukho-fileshareservice-ui:build"
+            "buildTarget": "ukho-fileshareservice-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ukho-fileshareservice-ui:build:production"
+              "buildTarget": "ukho-fileshareservice-ui:build:production"
             },
             "qa": {
-              "browserTarget": "ukho-fileshareservice-ui:build:qa"
+              "buildTarget": "ukho-fileshareservice-ui:build:qa"
             },
             "development": {
-              "browserTarget": "ukho-fileshareservice-ui:build:development"
+              "buildTarget": "ukho-fileshareservice-ui:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -114,7 +114,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ukho-fileshareservice-ui:build"
+            "buildTarget": "ukho-fileshareservice-ui:build"
           }
         },
         "lint": {

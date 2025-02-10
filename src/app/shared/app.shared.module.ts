@@ -1,26 +1,17 @@
 import { NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { DesignSystemModule } from '@ukho/admiralty-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent } from './components';
 import { ReactiveFormsModule } from '@angular/forms';
 
-@NgModule({
-  declarations: [
-    FssHeaderComponent,
-    FssPhaseBannerComponent,
-    FssFooterComponent
-  ],
-
-  imports: [
-    BrowserModule, HttpClientModule, ReactiveFormsModule, DesignSystemModule.forRoot(),
-    //MsalConfigDynamicModule.forRoot('assets/config/appconfig.json')
-  ],
-  providers:[],
-
-  exports: [
-    FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent
-  ]
-})
+@NgModule({ declarations: [
+        FssHeaderComponent,
+        FssPhaseBannerComponent,
+        FssFooterComponent
+    ],
+    exports: [
+        FssHeaderComponent, FssPhaseBannerComponent, FssFooterComponent
+    ], imports: [BrowserModule, ReactiveFormsModule, DesignSystemModule.forRoot()], providers: [provideHttpClient(withInterceptorsFromDi())] })
 
 export class SharedModule { }
