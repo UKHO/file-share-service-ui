@@ -5,10 +5,6 @@ parameters:
   displayName: "Continue even if resources will be destroyed"
   type: boolean
   default: false
-- name: SkipDependencyCheck
-  displayName: "Skip dependency check"
-  type: boolean
-  default: false
 
 trigger:
 - main
@@ -44,7 +40,6 @@ stages:
   jobs:
   - template: Deployment/templates/build-test-publish.yml
     parameters:
-      SkipDependencyCheck: ${{ parameters.SkipDependencyCheck }}
       Container: ${{ variables.Container }}
 
 - stage: DevDeploy
