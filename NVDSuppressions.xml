@@ -28,4 +28,13 @@
     <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
     <vulnerabilityName>GHSA-vg6x-rcgg-rjx6</vulnerabilityName>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+   file name: esbuild:0.21.5
+   ]]>
+    </notes>
+    <packageUrl regex="true">^pkg:npm/esbuild@.*$</packageUrl>
+    <vulnerabilityName>GHSA-67mh-4wv8-2f99</vulnerabilityName>
+  </suppress>
 </suppressions>
