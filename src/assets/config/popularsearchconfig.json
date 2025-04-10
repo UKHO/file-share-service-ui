@@ -144,13 +144,6 @@
     "isActive": true,
     "rows": [
       {
-        "field": "$batch(Product Type)",
-        "operator": "eq",
-        "isDynamicValue": false,
-        "value": "AVCS"
-      },
-      {
-        "andOr": "and",
         "field": "$batch(S63 Version)",
         "operator": "eq",
         "isDynamicValue": false,

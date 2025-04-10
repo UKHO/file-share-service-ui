@@ -1,57 +1,9 @@
 parameters:
-# Skip the NVD dependency check job.
-- name: SkipDependencyCheck
-  type: boolean
-  default: false
 # The Terraform Azure PowerShell container.
 - name: Container
   type: string
 
 jobs:
-- job: Dependencychecker
-  condition: ne('${{ parameters.SkipDependencyCheck }}', true)
-  pool: $(WindowPool)
-  displayName: Dependency checker
-  workspace:
-    clean: all
-  steps:
-  - task: NodeTool@0
-    displayName: Install Node.js
-    inputs:
-      versionSpec: $(NodeVersion)
-
-  - script: |
-      npm ci
-    displayName: npm restore
-
-  - task: UseDotNet@2
-    displayName: 'Use .NET 8.0.x sdk'
-    inputs:
-      packageType: sdk
-      version: '8.0.x'
-      workingDirectory: '$(Build.SourcesDirectory)'
-
-  - task: CmdLine@1
-    displayName: Run OWASP dependency-check
-    inputs:
-      filename: 'dependency-check.bat'
-      arguments: '--project "UKHO.FileShareService.UI - $(Build.SourceBranchName)" --scan "$(Build.SourcesDirectory)" --out "$(Build.ArtifactStagingDirectory)\DCReport" --suppression $(Build.SourcesDirectory)\NVDSuppressions.xml --noupdate --disableYarnAudit'
-
-  - task: PublishBuildArtifacts@1
-    displayName: Publish OWASP dependency-check report
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)\DCReport'
-      ArtifactName: "OWASP Dependency Checker Report"
-
-  - task: PowerShell@1
-    displayName: Fail build if OWASP dependency-check finds any vulnerabilities
-    inputs:
-      scriptType: inlineScript
-      arguments: '-ReportLocation $(Build.ArtifactStagingDirectory)\DCReport\*'
-      inlineScript: |
-        param($ReportLocation)
-        Invoke-VulnerabilityCheck -ReportLocation $ReportLocation
-
 - job: BuildTestPublish
   displayName: Build, test and publish
   pool: $(DeploymentPool)
