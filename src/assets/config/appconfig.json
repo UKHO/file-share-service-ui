@@ -18,8 +18,6 @@
     "fssTitle": "File Share Service",
     "displayPopularSearch": true,
     "displaySimplifiedSearchLink": true,
-    "phase": "beta",
-    "feedbackEmailId": "products.feedback@UKHO.gov.uk",
     "apiUrl": "",
     "apiScope": "",
     "stateManagementApiUrl": "",
@@ -55,7 +53,10 @@
     "apiUrl": "",
     "apiScope": "",
     "defaultEstimatedSizeinMB": "0.5",
-    "aioExcludeEncs": [ "GB800002", "FR800002" ],
+    "aioExcludeEncs": [
+      "GB800002",
+      "FR800002"
+    ],
     "apiUiUrl": "",
     "privilegedUserDomains": []
   }
