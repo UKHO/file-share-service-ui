@@ -1,6 +1,5 @@
 <a class="skip-to-content-link section" [routerLink]="[currentUrl]" [fragment]="'main'">Skip to Main Content </a>
-<app-fss-header (isPageOverlay) = "changeOverlay($event)"></app-fss-header>
-<app-fss-phase-banner role="banner"></app-fss-phase-banner>
+<app-fss-header (isPageOverlay)="changeOverlay($event)"></app-fss-header>
 <div id="contentArea" role="main"><router-outlet></router-outlet></div>
 <app-fss-footer></app-fss-footer>
 <div id="overlay" [class.pageOverlay]="isOverlay"></div>
