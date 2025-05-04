@@ -87,14 +87,26 @@ export class EssTypesComponent implements OnInit, OnDestroy {
 
   private isValidDeltaDateSelected(selectedDate: any) {
     const currentDate: any = new Date();
-    const targetDate: any = new Date(selectedDate);
+    const targetDate: any = new Date();
+
+    targetDate.setFullYear(selectedDate.getFullYear());
+    targetDate.setDate(selectedDate.getDate());
+    targetDate.setMonth(selectedDate.getMonth());
     targetDate.setHours(currentDate.getHours());
     targetDate.setMinutes(currentDate.getMinutes());
     targetDate.setSeconds(currentDate.getSeconds());
     targetDate.setMilliseconds(currentDate.getMilliseconds());
-    
-    const differenceMs = Math.abs(targetDate - currentDate);
+
+    alert("Current Date: " + currentDate);
+    alert("Selected Date: " + targetDate);
+
+    alert("Timezone Offset: " + targetDate.getTimezoneOffset());
+
+    const differenceMs = Math.abs(targetDate - currentDate) + (targetDate.getTimezoneOffset() * 60000);
     const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+
+    
+    alert("Days: " + differenceDays);
 
     if (differenceDays > 27 || targetDate > currentDate) {
       this.resetDate();
