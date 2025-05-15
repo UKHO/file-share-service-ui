@@ -55,108 +55,108 @@ stages:
       SnykOnlyFailIfFixable: ${{ parameters.SnykOnlyFailIfFixable }}
       SnykPassOnIssues: ${{ parameters.SnykPassOnIssues }}
 
-- stage: BuildTestPublish
-  displayName: "Build, test and publish"
-  dependsOn: []
-  jobs:
-  - template: Deployment/templates/build-test-publish.yml
-    parameters:
-      Container: ${{ variables.Container }}
+# - stage: BuildTestPublish
+#   displayName: "Build, test and publish"
+#   dependsOn: []
+#   jobs:
+#   - template: Deployment/templates/build-test-publish.yml
+#     parameters:
+#       Container: ${{ variables.Container }}
 
-- stage: DevDeploy
-  dependsOn:
-  - VulnerabilityChecks
-  - BuildTestPublish
-  displayName: Dev deploy
-  jobs:
-  - template: Deployment/templates/continuous-deployment.yml
-    parameters:
-      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-      Container: ${{ variables.Container }}
-      AzureDevOpsEnvironment: FSS-Dev
-      ShortName: dev
-      RunFunctionalTests: true
-      RunE2eTests: true
-      RunAccessibilityTests: true
+# - stage: DevDeploy
+#   dependsOn:
+#   - VulnerabilityChecks
+#   - BuildTestPublish
+#   displayName: Dev deploy
+#   jobs:
+#   - template: Deployment/templates/continuous-deployment.yml
+#     parameters:
+#       ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+#       Container: ${{ variables.Container }}
+#       AzureDevOpsEnvironment: FSS-Dev
+#       ShortName: dev
+#       RunFunctionalTests: true
+#       RunE2eTests: true
+#       RunAccessibilityTests: true
 
-- stage: vNextIatDeploy
-  dependsOn:
-  - DevDeploy
-  displayName: vNext IAT deploy
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
-  jobs:
-  - template: Deployment/templates/continuous-deployment.yml
-    parameters:
-      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-      Container: ${{ variables.Container }}
-      AzureDevOpsEnvironment: FSS-vNext-IAT
-      ShortName: vNextIat
+# - stage: vNextIatDeploy
+#   dependsOn:
+#   - DevDeploy
+#   displayName: vNext IAT deploy
+#   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev/')))
+#   jobs:
+#   - template: Deployment/templates/continuous-deployment.yml
+#     parameters:
+#       ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+#       Container: ${{ variables.Container }}
+#       AzureDevOpsEnvironment: FSS-vNext-IAT
+#       ShortName: vNextIat
 
-- stage: vNextE2eDeploy
-  dependsOn:
-  - vNextIatDeploy
-  displayName: vNext E2E deploy
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
-  jobs:
-  - template: Deployment/templates/continuous-deployment.yml
-    parameters:
-      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-      Container: ${{ variables.Container }}
-      AzureDevOpsEnvironment: FSS-vNext-E2E
-      ShortName: vNextE2e
+# - stage: vNextE2eDeploy
+#   dependsOn:
+#   - vNextIatDeploy
+#   displayName: vNext E2E deploy
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+#   jobs:
+#   - template: Deployment/templates/continuous-deployment.yml
+#     parameters:
+#       ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+#       Container: ${{ variables.Container }}
+#       AzureDevOpsEnvironment: FSS-vNext-E2E
+#       ShortName: vNextE2e
 
-- stage: IatDeploy
-  dependsOn:
-  - DevDeploy
-  displayName: IAT deploy
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
-  jobs:
-  - template: Deployment/templates/continuous-deployment.yml
-    parameters:
-      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-      Container: ${{ variables.Container }}
-      AzureDevOpsEnvironment: FSS-IAT
-      ShortName: Iat
+# - stage: IatDeploy
+#   dependsOn:
+#   - DevDeploy
+#   displayName: IAT deploy
+#   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+#   jobs:
+#   - template: Deployment/templates/continuous-deployment.yml
+#     parameters:
+#       ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+#       Container: ${{ variables.Container }}
+#       AzureDevOpsEnvironment: FSS-IAT
+#       ShortName: Iat
 
-- stage: PreProdDeploy
-  dependsOn:
-  - IatDeploy
-  displayName: PreProd deploy
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
-  jobs:
-  - template: Deployment/templates/continuous-deployment.yml
-    parameters:
-      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-      Container: ${{ variables.Container }}
-      AzureDevOpsEnvironment: FSS-PreProd
-      ShortName: PreProd
+# - stage: PreProdDeploy
+#   dependsOn:
+#   - IatDeploy
+#   displayName: PreProd deploy
+#   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+#   jobs:
+#   - template: Deployment/templates/continuous-deployment.yml
+#     parameters:
+#       ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+#       Container: ${{ variables.Container }}
+#       AzureDevOpsEnvironment: FSS-PreProd
+#       ShortName: PreProd
 
-- stage: QaDeploy
-  dependsOn:
-  - DevDeploy
-  displayName: QA deploy
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
-  jobs:
-  - template: Deployment/templates/continuous-deployment.yml
-    parameters:
-      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-      Container: ${{ variables.Container }}
-      AzureDevOpsEnvironment: FSS-QA
-      ShortName: QA
-      RunFunctionalTests: true
-      RunE2eTests: true
-      RunAccessibilityTests: true
+# - stage: QaDeploy
+#   dependsOn:
+#   - DevDeploy
+#   displayName: QA deploy
+#   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+#   jobs:
+#   - template: Deployment/templates/continuous-deployment.yml
+#     parameters:
+#       ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+#       Container: ${{ variables.Container }}
+#       AzureDevOpsEnvironment: FSS-QA
+#       ShortName: QA
+#       RunFunctionalTests: true
+#       RunE2eTests: true
+#       RunAccessibilityTests: true
 
-- stage: LiveDeploy
-  dependsOn:
-  - QaDeploy
-  displayName: Live deploy
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
-  jobs:
-  - template: Deployment/templates/continuous-deployment.yml
-    parameters:
-      ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
-      Container: ${{ variables.Container }}
-      AzureDevOpsEnvironment: FSS-Live
-      ShortName: prod
-      RetainPipeline: true
+# - stage: LiveDeploy
+#   dependsOn:
+#   - QaDeploy
+#   displayName: Live deploy
+#   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
+#   jobs:
+#   - template: Deployment/templates/continuous-deployment.yml
+#     parameters:
+#       ContinueEvenIfResourcesAreGettingDestroyed: ${{ parameters.ContinueEvenIfResourcesAreGettingDestroyed }}
+#       Container: ${{ variables.Container }}
+#       AzureDevOpsEnvironment: FSS-Live
+#       ShortName: prod
+#       RetainPipeline: true
