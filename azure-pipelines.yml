@@ -5,6 +5,14 @@ parameters:
   displayName: "Continue even if resources will be destroyed"
   type: boolean
   default: false
+- name: SnykOnlyFailIfFixable
+  displayName: "Snyk should only fail the pipeline if it knows of a fix for an issue"
+  type: boolean
+  default: false
+- name: SnykPassOnIssues
+  displayName: "Prevent Snyk from failing the pipeline"
+  type: boolean
+  default: false
 
 trigger:
 - main
@@ -22,8 +30,12 @@ variables:
   value: "Mare Nectaris"
 - name: WindowPool
   value: "NautilusBuild"
+- name: WindowsPool
+  value: "Mare Nubium"
 - name: NodeVersion
   value: 22.x
+- name: snykAbzuOrganizationId
+  value: aeb7543b-8394-457c-8334-a31493d8910d
 
 resources:
   repositories:
@@ -34,6 +46,15 @@ resources:
     ref: refs/heads/main
 
 stages:
+- stage: VulnerabilityChecks
+  displayName: Snyk checks
+  dependsOn: []
+  jobs:
+  - template: Deployment/templates/vulnerability-checks.yml
+    parameters:
+      SnykOnlyFailIfFixable: ${{ parameters.SnykOnlyFailIfFixable }}
+      SnykPassOnIssues: ${{ parameters.SnykPassOnIssues }}
+
 - stage: BuildTestPublish
   displayName: "Build, test and publish"
   dependsOn: []
@@ -44,6 +65,7 @@ stages:
 
 - stage: DevDeploy
   dependsOn:
+  - VulnerabilityChecks
   - BuildTestPublish
   displayName: Dev deploy
   jobs:
