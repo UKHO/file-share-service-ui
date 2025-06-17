@@ -28,9 +28,9 @@ variables:
   value: "ukhydrographicoffice/terraform-azure-powershell:1.3.7"
 - name: DeploymentPool
   value: "Mare Nectaris"
-- name: WindowPool
+- name: WindowsPool1
   value: "NautilusBuild"
-- name: WindowsPool
+- name: WindowsPool2
   value: "Mare Nubium"
 - name: NodeVersion
   value: 22.x
