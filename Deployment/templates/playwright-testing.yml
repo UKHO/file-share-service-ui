@@ -18,7 +18,7 @@ jobs:
   dependsOn:
   - ${{ parameters.ShortName }}Deploy
   pool: 
-    name: $(WindowPool)
+    name: $(WindowsPool1)
     demands: FM-Perms
   workspace:
     clean: all
