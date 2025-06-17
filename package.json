@@ -23,7 +23,7 @@
     "@angular/platform-browser": "^18.2.13",
     "@angular/platform-browser-dynamic": "^18.2.13",
     "@angular/router": "^18.2.13",
-    "@azure/msal-angular": "^3.0.23",
+    "@azure/msal-angular": "^3.1.0",
     "@azure/msal-browser": "^3.21.0",
     "@fortawesome/angular-fontawesome": "^0.15.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
