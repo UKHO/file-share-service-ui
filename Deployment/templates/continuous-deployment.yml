@@ -152,7 +152,7 @@ jobs:
     displayName: ${{ upper(parameters.ShortName) }} - retain pipeline
     dependsOn:
     - ${{ parameters.ShortName }}Deploy
-    pool: $(WindowPool)
+    pool: $(WindowsPool1)
     steps:  
     - checkout: UKHOTemplates
     - template: retain-pipelinerun/retain-pipelinerun.yml@UKHOTemplates
