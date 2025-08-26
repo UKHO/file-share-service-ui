@@ -57,6 +57,7 @@
       "GB800002",
       "FR800002"
     ],
+    "aioCell": "GB800001",
     "apiUiUrl": "",
     "privilegedUserDomains": []
   }

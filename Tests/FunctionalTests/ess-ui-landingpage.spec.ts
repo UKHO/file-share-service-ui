@@ -31,7 +31,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify Radio buttons text and header on ESS landing page', async ({ page }) => {
           await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 2 of 4\nSelecting ENCs");
           encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.uploadbtntextSelector.innerText() == "Upload a list in a file");
-          encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.addenctextSelector.innerText() == "Add ENC individually");
+          encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.addenctextSelector.innerText() == "Add single ENC or get AIO Data");
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799
@@ -152,7 +152,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      })
 
-      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
      test('Verify that the user is able to drag a .csv file.', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
@@ -162,7 +162,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.expect.verifyDraggedFile("ValidAndInvalidENCs.csv");
      })
 
-      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
+     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14332
      test('Verify that the user is able to drag a .text file.', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
@@ -225,7 +225,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
                response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
           await esslandingPageObjects.proceedButtonSelectorClick();
           const response = await requestPromise;
-      
+
           await esslandingPageObjects.expect.IsNotEmpty(response.url());
      });
 
@@ -244,7 +244,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.errorMessage.click();
           let message = await encSelectionPageObjects.errorMessage.innerText();
           // rhz look for specific items in message, thus ignoring any additional text
-          const messageState = "Invalid cells"  
+          const messageState = "Invalid cells"
           const messageENC = "GZ800112"
           await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[0].trim().includes(messageState));
           await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[0].trim().includes(messageENC));
@@ -292,7 +292,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
           //rhz - look for specific phrases in the message
-          const messageState = "Invalid cells" 
+          const messageState = "Invalid cells"
           const messageENC = "GZ800112"
           const messageComms = "There have been no updates for the ENCs in the date range selected."
           const messageToCheck = await encSelectionPageObjects.errorMessage.innerText();
@@ -354,11 +354,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await page.waitForTimeout(500);
           const checkMsg = await exchangeSetSelectionPageObjects.warningMessage.innerText();
           if (checkMsg.includes("no updates") == false) {
-            await encSelectionPageObjects.addAnotherENC("GZ800112");
-            await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-            await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
-            backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
-            await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
-         }
+               await encSelectionPageObjects.addAnotherENC("GZ800112");
+               await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
+               await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
+               backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
+               await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
+          }
      });
 })

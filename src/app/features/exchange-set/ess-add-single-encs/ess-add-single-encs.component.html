@@ -1,14 +1,17 @@
 <div class="spinner-wrapper" *ngIf="displayLoader" aria-live='polite' role="alert" aria-label="Results Loading"><i
-    class="fa-solid fa-spinner fa-pulse fa-3x fa-spin" aria-hidden="true"></i></div>
+        class="fa-solid fa-spinner fa-pulse fa-3x fa-spin" aria-hidden="true"></i></div>
 <div class="container">
     <div class="addSingleFileSection">
         <admiralty-input class="addSingleFileTextbox" label="Add a single ENC" placeholder="Type ENC cell name here"
-            [(ngModel)]="txtSingleEnc" (keyup.enter)="validateAndAddENC()"></admiralty-input>
+            [(ngModel)]="txtSingleEnc" [disabled]="isAioChecked" (keyup.enter)="validateAndAddENC()"></admiralty-input>
         <br />
         <span class="sr-only" role="alert" aria-live="polite">{{addValidEncAlert}}</span>
         <admiralty-button (click)="validateAndAddENC()">
-            {{this.btnText}} 
-           </admiralty-button>
+            {{this.btnText}}
+        </admiralty-button>
     </div>
 </div>
-
+<div class="container addAioCheckbox">
+    <admiralty-checkbox *ngIf="showAio" [checked]="isAioChecked" (click)="onClick()"
+        labelText="Add AIO Data ({{aioCell}})"></admiralty-checkbox>
+</div>
