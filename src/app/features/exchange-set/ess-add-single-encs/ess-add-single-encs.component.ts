@@ -39,7 +39,7 @@ export class EssAddSingleEncsComponent implements OnInit, OnDestroy {
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope]
     };
-    this.aioCell = AppConfigService.settings['essConfig'].aioCell;
+    this.aioCell = AppConfigService.settings['essConfig'].aioCell || '';
   }
 
   ngOnInit(): void {
@@ -244,13 +244,11 @@ export class EssAddSingleEncsComponent implements OnInit, OnDestroy {
   }
 
   onClick(): void {
-    this.isAioChecked = !this.isAioChecked; // Toggle the AIO checkbox state
-
+    this.isAioChecked = !this.isAioChecked;
     if (this.isAioChecked) {
-      this.txtSingleEnc = this.aioCell; // Default value for AIO
+      this.txtSingleEnc = this.aioCell;
     } else {
       this.txtSingleEnc = '';
-      this.addValidEncAlert = '';
     }
   }
 

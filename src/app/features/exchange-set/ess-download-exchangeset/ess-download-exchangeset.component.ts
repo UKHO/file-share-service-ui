@@ -121,7 +121,7 @@ export class EssDownloadExchangesetComponent implements OnInit, OnDestroy {
   downloadFile() {
     this.fileShareApiService.refreshToken().subscribe((res) => {
       this.displayLoader = false;
-      if (this.downloadUrl) {
+      if (this.downloadUrl) {        
         window.open(this.downloadUrl, '_blank');
       }
       if (this.aioDownloadUrl) {
