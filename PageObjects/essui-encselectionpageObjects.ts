@@ -38,33 +38,34 @@ export class EncSelectionPageObjects {
   readonly exchangeSetSizeSelector: Locator
   readonly requestENCsSelector: Locator
   readonly encTableListCountDisplay: Locator
-  readonly getDialogueSelector : Locator
-  readonly errorMessage : Locator
-  readonly encNames : Locator
+  readonly getDialogueSelector: Locator
+  readonly errorMessage: Locator
+  readonly encNames: Locator
   readonly messageBackground: Locator;
-  readonly s63Radiobutton : Locator
-  readonly s57Radiobutton : Locator
-  readonly selectedEncs : Locator
+  readonly s63Radiobutton: Locator
+  readonly s57Radiobutton: Locator
+  readonly selectedEncs: Locator
+  readonly aioCheckBoxSelector: Locator;
   readonly pageUnderTest: Page
 
 
   constructor(readonly page: Page) {
     this.expect = new EncSelectionPageAssertions(this);
     this.esslandingPageObjects = new EssLandingPageObjects(page);
-    this.encNameSelector = this.page.locator("text=ENC name"); 
-    this.startLinkSelector = this.page.locator(".linkStartAgain"); 
-    this.textAboveTableSelector = this.page.locator("div.showConfirmEssMessage"); 
-    
-    this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i"); 
-    this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc"); 
+    this.encNameSelector = this.page.locator("text=ENC name");
+    this.startLinkSelector = this.page.locator(".linkStartAgain");
+    this.textAboveTableSelector = this.page.locator("div.showConfirmEssMessage");
+
+    this.XButtonSelector = this.page.locator("//table/tbody/tr/td[2]/button/i");
+    this.addAnotherENCSelector = this.page.locator("a.lnkAddAnotherEnc");
     this.typeENCTextBoxSelector = this.page.locator("//input[@placeholder='Type ENC cell name here']");
     this.addENCButtonSelector = this.page.locator("//button[text()=' Add ENC ']");
     this.startAgainLinkSelector = this.page.locator("a.linkStartAgain");
-    this.EncSelectorAt250th = this.page.locator("//div/table/tbody/tr[250]/td[2]"); 
+    this.EncSelectorAt250th = this.page.locator("//div/table/tbody/tr[250]/td[2]");
     this.chooseBoxSelecetor = this.page.locator("input[id = 'ukho-form-field-5']");
     this.selectionTextSelector = this.page.locator("text='Your selection '");
     this.exchangeSetSizeSelector = this.page.locator('span.bottomText')
-    this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]'); 
+    this.ENCTableENClistCol1 = this.page.locator('(//table/tbody)[1]/tr/td[1]');
     this.selectAllSelector = this.page.locator("a[class='selectDeselctBtn']")
     this.deselectAllSelector = this.page.locator("//a[text()=' Deselect all ']")
 
@@ -82,6 +83,7 @@ export class EncSelectionPageObjects {
     this.s57Radiobutton = this.page.locator("input[value = 'S57'] + label");
     this.s63Radiobutton = this.page.locator("input[value = 'S63'] + label");
     this.selectedEncs = this.page.locator("table:nth-child(1) > tbody:nth-child(2)");
+    this.aioCheckBoxSelector = this.page.locator('admiralty-checkbox div').nth(1);
     this.pageUnderTest = page;
   }
 
@@ -92,7 +94,7 @@ export class EncSelectionPageObjects {
   }
 
   async addAnotherENC(data: string): Promise<void> {
-    await this.page.waitForSelector("a.lnkAddAnotherEnc", {state:'visible', timeout: 5000});
+    await this.page.waitForSelector("a.lnkAddAnotherEnc", { state: 'visible', timeout: 5000 });
     await this.addAnotherENCSelector.click();
     await this.typeENCTextBoxSelector.fill(data);
     await this.esslandingPageObjects.addsingleencSelector.click();
@@ -107,7 +109,7 @@ export class EncSelectionPageObjects {
   }
 
   async startAgainLinkSelectorClick(): Promise<void> {
-    await this.page.waitForSelector("a.linkStartAgain", { state:'visible', timeout: 3000 });
+    await this.page.waitForSelector("a.linkStartAgain", { state: 'visible', timeout: 3000 });
     await this.startAgainLinkSelector.click();
   }
 
@@ -129,7 +131,7 @@ export class EncSelectionPageObjects {
   }
 
   async selectAllSelectorClick(): Promise<void> {
-    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible', timeout: 3000});
+    await this.page.waitForSelector("a[class='selectDeselctBtn']", { state: 'visible', timeout: 3000 });
     await this.selectAllSelector.click();
 
   }
@@ -147,46 +149,54 @@ export class EncSelectionPageObjects {
     SelectedENCs = parseInt(((await this.rightTableDisplaySelector.innerHTML()).split(' '))[1])
   }
 
-  async getFileSize(response: string){
-    var responseBody = JSON.parse(response);      
+  async getFileSize(response: string) {
+    var responseBody = JSON.parse(response);
     let numberOfENCs = await responseBody.products.length;
     let fileSize = 0;
-    for (var i = 0; i < numberOfENCs; i++) 
+    for (var i = 0; i < numberOfENCs; i++)
       fileSize += responseBody.products[i].fileSize;
-    return parseFloat(((fileSize/1048576)+0.5).toFixed(2));
+    return parseFloat(((fileSize / 1048576) + 0.5).toFixed(2));
   }
 
-  async getFileSizeItemRemoved(response: string, idx: number){
-    
-    var responseBody = JSON.parse(response);      
-    let revisedList = responseBody.products.splice(idx,1);
+  async getFileSizeItemRemoved(response: string, idx: number) {
+
+    var responseBody = JSON.parse(response);
+    let revisedList = responseBody.products.splice(idx, 1);
     let numberOfENCs = await responseBody.products.length;
     let fileSize = 0;
-    for (var i = 0; i < numberOfENCs; i++) 
+    for (var i = 0; i < numberOfENCs; i++)
       fileSize += responseBody.products[i].fileSize;
-    return ((fileSize/1048576)+0.5).toFixed(2);
+    return ((fileSize / 1048576) + 0.5).toFixed(2);
   }
 
-  async getFileSizeForDelta(response: string, encNames: string[]){
-    var responseBody = JSON.parse(response);  
+  async getFileSizeForDelta(response: string, encNames: string[]) {
+    var responseBody = JSON.parse(response);
     let numberOfENCs = await responseBody.products.length;
     let fileSize = 0;
-    for (var i = 0; i < numberOfENCs; i++){
-      if(encNames.includes(responseBody.products[i].productName))
+    for (var i = 0; i < numberOfENCs; i++) {
+      if (encNames.includes(responseBody.products[i].productName))
         fileSize += responseBody.products[i].fileSize;
     }
-    return parseFloat(((fileSize/1048576)+0.5).toFixed(2));
+    return parseFloat(((fileSize / 1048576) + 0.5).toFixed(2));
   }
 
-  async getCommonEncs(productIdentifier: string, sinceDateResponse: string){
-    var productIdentifierResponse = JSON.parse(productIdentifier);  
+  async getCommonEncs(productIdentifier: string, sinceDateResponse: string) {
+    var productIdentifierResponse = JSON.parse(productIdentifier);
     let numberOfENCs = await productIdentifierResponse.products.length;
     let encNames: string[] = [];
-    for (var i = 0; i < numberOfENCs; i++){
-      if(sinceDateResponse.includes(productIdentifierResponse.products[i].productName))
+    for (var i = 0; i < numberOfENCs; i++) {
+      if (sinceDateResponse.includes(productIdentifierResponse.products[i].productName))
         encNames.push(productIdentifierResponse.products[i].productName);
-  }
+    }
     return encNames;
+  }
+
+  async aioCheckBoxSelectorClick(): Promise<void> {
+    await this.aioCheckBoxSelector.click();
+  }
+
+  async getAddedENC(): Promise<string> {
+    return await this.addSingleENCTextboxSelector.inputValue();
   }
 }
 
@@ -233,7 +243,7 @@ class EncSelectionPageAssertions {
 
     if (selectCount) {
       for (var i = 0; i < selectCount; i++) {
-        
+
         await testPage.getByRole('row').filter({ has: testPage.getByRole("checkbox") }).getByLabel('', { exact: true }).nth(i).check();
 
       }
@@ -327,12 +337,12 @@ class EncSelectionPageAssertions {
 
   async textAboveTableSelectorToEqual(expected: string): Promise<void> {
 
-    expect((await this.encSelectionPageObjects.textAboveTableSelector.innerText()).trim()==(expected));
+    expect((await this.encSelectionPageObjects.textAboveTableSelector.innerText()).trim() == (expected));
   }
 
   async verifyNumberofENCs(): Promise<void> {
-    let rightTableRowsCount = await this.encSelectionPageObjects.encTableButtonList.count(); 
-    let leftTableRowsCount = await this.encSelectionPageObjects.encTableCheckboxList.count();     
+    let rightTableRowsCount = await this.encSelectionPageObjects.encTableButtonList.count();
+    let leftTableRowsCount = await this.encSelectionPageObjects.encTableCheckboxList.count();
     expect(leftTableRowsCount).toEqual(rightTableRowsCount);
     expect(await this.encSelectionPageObjects.leftTableDisplaySelector.innerText()).toEqual("Showing " + leftTableRowsCount + " ENCs");
     expect(await this.encSelectionPageObjects.rightTableDisplaySelector.innerText()).toEqual("" + rightTableRowsCount + " ENCs selected");
@@ -385,10 +395,18 @@ class EncSelectionPageAssertions {
     for (let i = 0; i < productVersionBody.length; i++) {
       var product = sinceDateResponse.products.find(r => r.productName == productVersionBody[i].productName);
       result = product.updateNumbers[0] == 0 ?
-      productVersionBody[i].editionNumber == product.editionNumber - 1 && productVersionBody[i].updateNumber == 0 :
-      productVersionBody[i].updateNumber == product.updateNumbers[0] - 1 && productVersionBody[i].editionNumber == product.editionNumber;
+        productVersionBody[i].editionNumber == product.editionNumber - 1 && productVersionBody[i].updateNumber == 0 :
+        productVersionBody[i].updateNumber == product.updateNumbers[0] - 1 && productVersionBody[i].editionNumber == product.editionNumber;
       expect(result).toBeTruthy();
     }
+  }
+
+  async aioCheckBoxSelectorIsVisible(): Promise<void> {
+    expect(this.encSelectionPageObjects.aioCheckBoxSelector).toBeVisible;
+  }
+
+  async aioCheckBoxSelectorIsNotVisible(): Promise<void> {
+    expect(this.encSelectionPageObjects.aioCheckBoxSelector).not.toBeVisible;
   }
 
 }

@@ -77,7 +77,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 4 of 4\nExchange set creation");
     })
 
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156097
+    //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156097
     // Disabled - S57 not available at the moment Rhz
     //test('check user is able to download S57 exchange set for base exchange set', async ({ page }) => {
     //    await encSelectionPageObjects.startAgainLinkSelectorClick();
@@ -97,7 +97,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     //    await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
     //    await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
     //    //=========================================
-        
+
     //    await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
     //    await esDownloadPageObjects.expect.createLinkSelectorHidden();
 
@@ -109,11 +109,11 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     //    await esDownloadPageObjects.expect.createLinkSelectorEnabled();
     //});
 
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156248
-    
+    //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156248
 
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156352
-     
+
+    //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156352
+
 
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14101
     test('Verify 400 scenario using playwright mock', async ({ page }) => {
@@ -173,5 +173,5 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     });
 
     //// https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14316
-    
+
 })

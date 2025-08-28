@@ -45,10 +45,20 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      })
 
      // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13799 
-     test('Verify clicking on Second Radio Button, "Select single ENCs" control & "Proceed" button available', async ({ page }) => {
+     test('Verify clicking on Second Radio Button, "Select single ENCs" control & "Proceed" button available & AIO checkbox available', async ({ page }) => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
           await esslandingPageObjects.expect.proceedButtonSelectorIsVisible();
+          await esslandingPageObjects.expect.aioCheckBoxSelectorIsVisible();
+     })
+
+
+     test('Verify aio is added in the list when aio checkbox is selected and proceed button is clicked', async ({ page }) => {
+          await esslandingPageObjects.addencradiobtnSelectorClick();
+          await esslandingPageObjects.aioCheckBoxSelector.click();
+          const aio = await esslandingPageObjects.getAddedENC();
+          await esslandingPageObjects.proceedButtonSelectorClick();
+          await esslandingPageObjects.expect.verifyUploadedENCs([aio]);
      })
 
      //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13809

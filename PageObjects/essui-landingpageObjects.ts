@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
-import {essConfig} from '../src/assets/config/appconfig.json';
+import { essConfig } from '../src/assets/config/appconfig.json';
 
 export class EssLandingPageObjects {
     readonly expect: EssLandingPageAssertions;
@@ -21,10 +21,11 @@ export class EssLandingPageObjects {
     readonly startAgainLinkSelector: Locator;
     readonly addSingleENCTextboxSelector: Locator;
     readonly ENClistTableCol1: Locator;
-    readonly MaxENCValue:Locator;
+    readonly MaxENCValue: Locator;
     readonly MaxSelectedENCs: Locator;
     readonly getDialogueSelector: Locator;
     readonly messageType: Locator;
+    readonly aioCheckBoxSelector: Locator;
     readonly pageUnderTest: Page
 
     constructor(readonly page: Page) {
@@ -51,6 +52,8 @@ export class EssLandingPageObjects {
         this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]');
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
         this.messageType = this.page.locator("div[class='dialogue-title sc-admiralty-dialogue'] admiralty-icon");
+        this.aioCheckBoxSelector = this.page.locator('admiralty-checkbox div');
+
         this.pageUnderTest = page;
     }
 
@@ -107,13 +110,20 @@ export class EssLandingPageObjects {
         await this.addSingleENCTextboxSelector.fill(data);
     }
 
+    async aioCheckBoxSelectorClick(): Promise<void> {
+        await this.aioCheckBoxSelector.click();
+    }
+
+    async getAddedENC(): Promise<string> {
+        return await this.addSingleENCTextboxSelector.inputValue();
+    }
 }
 
 class EssLandingPageAssertions {
     constructor(readonly esslandingPageObjects: EssLandingPageObjects) {
     }
     async verifyUploadedENCs(expectedENCs: string[]): Promise<void> {
-        await this.esslandingPageObjects.page.waitForSelector(`table tbody tr:nth-child(${expectedENCs.length}) td`, {state: 'visible', timeout: 15000});
+        await this.esslandingPageObjects.page.waitForSelector(`table tbody tr:nth-child(${expectedENCs.length}) td`, { state: 'visible', timeout: 15000 });
         let uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
 
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
@@ -151,11 +161,11 @@ class EssLandingPageAssertions {
     }
 
     async uploadbtntextSelectorContainText(expected: string): Promise<void> {
-      await expect(this.esslandingPageObjects.page.getByRole('radio', { name: expected })).toBeVisible();
+        await expect(this.esslandingPageObjects.page.getByRole('radio', { name: expected })).toBeVisible();
     }
 
     async addenctextSelectorContainText(expected: string): Promise<void> {
-      await expect(this.esslandingPageObjects.page.getByRole('radio', { name: expected })).toBeVisible();
+        await expect(this.esslandingPageObjects.page.getByRole('radio', { name: expected })).toBeVisible();
     }
 
     async errorMessageSelectorContainText(expected: string): Promise<void> {
@@ -168,7 +178,7 @@ class EssLandingPageAssertions {
         expect(await this.esslandingPageObjects.errorMessageForInvalidENCSelector.innerText()).toEqual(expected);
     }
 
-  async VerifyExcludedENCsMessage(expected: string): Promise<void> {
+    async VerifyExcludedENCsMessage(expected: string): Promise<void> {
         const testPage = this.esslandingPageObjects.pageUnderTest;
         expect(await this.esslandingPageObjects.getDialogueSelector).toBeTruthy();
         expect(await testPage.getByText(expected)).toBeTruthy();
@@ -202,5 +212,10 @@ class EssLandingPageAssertions {
 
     async IsNotEmpty(text: string): Promise<void> {
         expect(text.length != 0).toBeTruthy();
+    }
+
+    async aioCheckBoxSelectorIsVisible(): Promise<void> {
+
+        expect(this.esslandingPageObjects.aioCheckBoxSelector).toBeVisible;
     }
 }

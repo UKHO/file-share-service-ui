@@ -41,7 +41,7 @@ export class EsDownloadPageObjects {
         this.downloadLinkSelector = this.page.getByTestId('download-exs');
         this.createLinkSelector = this.page.getByTestId('create-exs');
         this.exchangeSetDownloadFrame = this.page.locator("div[class = 'ess-container']> div");
-        this.pageUnderTest = page;      
+        this.pageUnderTest = page;
 
     }
 
@@ -77,7 +77,7 @@ class EsDownloadPageAssertions {
 
     async downloadButtonSelectorHidden(): Promise<void> {
         this.esDownloadPageObjects.page.waitForTimeout(3000);
-      expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden).toBeTruthy();
+        expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden).toBeTruthy();
     }
 
     async createLinkSelectorEnabled(): Promise<void> {
@@ -87,17 +87,17 @@ class EsDownloadPageAssertions {
 
     async createLinkSelectorHidden(): Promise<void> {
 
-      expect(await this.esDownloadPageObjects.createLinkSelector.isHidden).toBeTruthy();
+        expect(await this.esDownloadPageObjects.createLinkSelector.isHidden).toBeTruthy();
     }
 
     async downloadLinkSelectorEnabled(): Promise<void> {
 
-      expect(await this.esDownloadPageObjects.downloadLinkSelector.isVisible).toBeTruthy();
+        expect(await this.esDownloadPageObjects.downloadLinkSelector.isVisible).toBeTruthy();
     }
 
     async downloadLinkSelectorHidden(): Promise<void> {
 
-      expect(await this.esDownloadPageObjects.downloadLinkSelector.isHidden).toBeTruthy();
+        expect(await this.esDownloadPageObjects.downloadLinkSelector.isHidden).toBeTruthy();
     }
 
     async selectedTextSelectorVisible(): Promise<void> {
@@ -111,31 +111,31 @@ class EsDownloadPageAssertions {
     }
 
     async errorMessageSelectorDisplayed(): Promise<void> {
-      expect(this.esDownloadPageObjects.getDialogueSelector).toBeTruthy();
-      expect(this.esDownloadPageObjects.errorMessageSelector).toBeTruthy();
+        expect(this.esDownloadPageObjects.getDialogueSelector).toBeTruthy();
+        expect(this.esDownloadPageObjects.errorMessageSelector).toBeTruthy();
     }
 
     async VerifyExchangeSetSize(): Promise<void> {
 
         let ENCsIncluded = parseInt(((await this.esDownloadPageObjects.includedENCsCountSelector.innerHTML()).split(' '))[0]);
 
-        expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + ((ENCsIncluded *(0.3))+Number.parseFloat( autoTestConfig.encSizeConfig)).toFixed(1) + 'MB');
+        expect(await this.esDownloadPageObjects.EstimatedESsizeSelector.innerText()).toEqual('Estimated size ' + ((ENCsIncluded * (0.3)) + Number.parseFloat(autoTestConfig.encSizeConfig)).toFixed(1) + 'MB');
 
     }
 
     VerifyExchangeSetSizeIsValid(estimated: string, estimatedSize: number): void {
 
-        let literal: string = estimatedSize + ' MB';
+        let literal: string = estimatedSize.toFixed(2) + ' MB';
         expect(estimated).toEqual(literal);
     }
 
-  async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
-    
-       const testPage = this.esDownloadPageObjects.pageUnderTest;
-       expect(await this.esDownloadPageObjects.getDialogueSelector).toBeTruthy();
-       expect(await testPage.getByText(InValidENCs[0] + ' - invalidProduct')).toBeTruthy();
-       expect(await testPage.getByText(InValidENCs[1] + ' - invalidProduct')).toBeTruthy();
-       expect(await testPage.getByText(InValidENCs[2] + ' - productWithdrawn')).toBeTruthy();
+    async ValidateInvalidENCsAsPerCount(InValidENCs: string[]): Promise<void> {
+
+        const testPage = this.esDownloadPageObjects.pageUnderTest;
+        expect(await this.esDownloadPageObjects.getDialogueSelector).toBeTruthy();
+        expect(await testPage.getByText(InValidENCs[0] + ' - invalidProduct')).toBeTruthy();
+        expect(await testPage.getByText(InValidENCs[1] + ' - invalidProduct')).toBeTruthy();
+        expect(await testPage.getByText(InValidENCs[2] + ' - productWithdrawn')).toBeTruthy();
     }
 
     async ValidateFileDownloaded(path: string): Promise<void> {
@@ -173,8 +173,8 @@ class EsDownloadPageAssertions {
 
     async exchangeSetDownloadGridValidation(): Promise<void> {
         expect(await this.esDownloadPageObjects.exchangeSetDownloadFrame.count() == 1);
-      }
-
     }
+
+}
 
 

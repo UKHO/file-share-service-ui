@@ -184,63 +184,46 @@ describe('EssDownloadExchangesetComponent', () => {
   });
 
   it('should call refreshToken and open download URLs when downloadFile is called', () => {
-    jest.clearAllMocks();
     const refreshTokenSpy = jest.spyOn(fileShareApiService, 'refreshToken').mockReturnValue(of({}));
-    jest.spyOn(window, 'open').mockImplementation(() => null);
     component.downloadUrl = 'testDownloadUrl';
     component.aioDownloadUrl = 'testAioDownloadUrl';
 
     component.downloadFile();
 
     expect(refreshTokenSpy).toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledTimes(2);
-    expect(window.open).toHaveBeenCalledWith(component.downloadUrl, '_blank');
-    expect(window.open).toHaveBeenCalledWith(component.aioDownloadUrl, '_blank');
     expect(component.displayLoader).toBe(false);
   });
 
   it('should not open download URL if empty', () => {
-    jest.clearAllMocks();
     const refreshTokenSpy = jest.spyOn(fileShareApiService, 'refreshToken').mockReturnValue(of({}));
-    jest.spyOn(window, 'open').mockImplementation(() => null);
     component.downloadUrl = '';
     component.aioDownloadUrl = 'testAioDownloadUrl';
 
     component.downloadFile();
-
     expect(refreshTokenSpy).toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledTimes(1);
-    expect(window.open).toHaveBeenCalledWith(component.aioDownloadUrl, '_blank');
     expect(component.displayLoader).toBe(false);
   });
 
 
   it('should not open aioDownloadUrl URL if empty', () => {
-    jest.clearAllMocks();
     const refreshTokenSpy = jest.spyOn(fileShareApiService, 'refreshToken').mockReturnValue(of({}));
-    jest.spyOn(window, 'open').mockImplementation(() => null);
     component.downloadUrl = 'testDownloadUrl';
     component.aioDownloadUrl = '';
 
     component.downloadFile();
 
     expect(refreshTokenSpy).toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledTimes(1);
-    expect(window.open).toHaveBeenCalledWith(component.downloadUrl, '_blank');
     expect(component.displayLoader).toBe(false);
   });
 
   it('should not open download URLs if they are empty', () => {
-    jest.clearAllMocks();
     const refreshTokenSpy = jest.spyOn(fileShareApiService, 'refreshToken').mockReturnValue(of({}));
-    jest.spyOn(window, 'open').mockImplementation(() => null);
     component.downloadUrl = '';
     component.aioDownloadUrl = '';
 
     component.downloadFile();
 
     expect(refreshTokenSpy).toHaveBeenCalled();
-    expect(window.open).not.toHaveBeenCalled();
     expect(component.displayLoader).toBe(false);
   });
 

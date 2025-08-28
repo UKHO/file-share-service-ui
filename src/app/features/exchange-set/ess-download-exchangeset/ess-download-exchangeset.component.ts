@@ -119,15 +119,32 @@ export class EssDownloadExchangesetComponent implements OnInit, OnDestroy {
   }
 
   downloadFile() {
-    this.fileShareApiService.refreshToken().subscribe((res) => {
+    this.fileShareApiService.refreshToken().subscribe(async (res) => {
       this.displayLoader = false;
-      if (this.downloadUrl) {        
-        window.open(this.downloadUrl, '_blank');
+      const files: { url: string; name: string }[] = [
+        this.downloadUrl ? { url: this.downloadUrl, name: this.downloadUrl.split('/').pop()! } : null,
+        this.aioDownloadUrl ? { url: this.aioDownloadUrl, name: this.aioDownloadUrl.split('/').pop()! } : null
+      ].filter(Boolean) as { url: string; name: string }[];
+
+      if (files.length == 1) {
+        this.openFile(files[0].url, files[0].name);
       }
-      if (this.aioDownloadUrl) {
-        window.open(this.aioDownloadUrl, '_blank');
+      else if (files.length == 2) {
+        this.openFile(files[0].url, files[0].name);
+        setTimeout(async () => {
+          this.openFile(files[1].url, files[1].name);
+        }, 2000);
       }
     });
+  }
+
+  openFile(url: string, fileName: string) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   switchToESSLandingPage() {
