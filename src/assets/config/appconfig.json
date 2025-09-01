@@ -2,8 +2,8 @@
   "Environment": "",
   "GoogleTagManagerId": "Not-Needed-For-Running-Locally",
   "b2cConfig": {
-    "tenantName": "",
-    "clientId": "",
+    "tenantName": "mgiaidtestb2c",
+    "clientId": "d4ab354e-a3b2-480e-ad50-4e60f2ca0021",
     "redirectUri": "/",
     "postLogoutRedirectUri": "/logout.html",
     "navigateToLoginRequestUrl": true,
@@ -18,9 +18,9 @@
     "fssTitle": "File Share Service",
     "displayPopularSearch": true,
     "displaySimplifiedSearchLink": true,
-    "apiUrl": "",
-    "apiScope": "",
-    "stateManagementApiUrl": "",
+    "apiUrl": "https://fss-qa.admiralty.co.uk/api",
+    "apiScope": "https://MGIAIDTESTB2C.onmicrosoft.com/FileShareServiceAPIQA/Public",
+    "stateManagementApiUrl": "https://fss-qa.admiralty.co.uk/api/auth",
     "batchAttributes": [
       {
         "attributeSortType": "alphabetical",
@@ -46,19 +46,23 @@
     "maxAttributeValueCount": 25
   },
   "essConfig": {
-    "MaxEncLimit": "100",
-    "MaxEncSelectionLimit": "100",
+    "MaxEncLimit": "500",
+    "MaxEncSelectionLimit": "500",
     "maxRetries": "3",
     "initialDelayMs": "1000",
-    "apiUrl": "",
-    "apiScope": "",
+    "apiUrl": "https://nonlive-api.admiralty.co.uk/ess-qa",
+    "apiScope": "https://mgiaidtestb2c.onmicrosoft.com/ExchangeSetService/Request",
     "defaultEstimatedSizeinMB": "0.5",
     "aioExcludeEncs": [
       "GB800002",
       "FR800002"
     ],
     "aioCell": "GB800001",
-    "apiUiUrl": "",
-    "privilegedUserDomains": []
+    "apiUiUrl": "https://nonlive-api.admiralty.co.uk/ess-ui-qa",
+    "privilegedUserDomains": [
+      "mastek.com",
+      "ukho.gov.uk",
+      "outlook.com"
+    ]
   }
 }

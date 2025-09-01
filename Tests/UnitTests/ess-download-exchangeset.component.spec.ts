@@ -24,6 +24,11 @@ describe('EssDownloadExchangesetComponent', () => {
     navigate: jest.fn()
   };
 
+  const exsFiles = {
+    enc: { url: 'baseUrl/testDownloadUrl/enc.zip', name: 'enc.zip' },
+    aio: { url: 'baseUrl/testAioDownloadUrl/aio.zip', name: 'aio.zip' }
+  };
+
   const service = {
     getValidEncs: jest.fn().mockReturnValue(['AU210130', 'AU210140', 'AU220130', 'AU220150', 'AU314128']),
     clearSelectedEncs: jest.fn(),
@@ -164,67 +169,75 @@ describe('EssDownloadExchangesetComponent', () => {
 
   it('should not set downloadUrl when exchange set uri is empty in download()', () => {
     service.refreshToken.mockReturnValue(of());
-
     jest.spyOn(service, 'getExchangeSetDetails').mockReturnValue(exchangeSetDetailsForDownloadMockData());
-
+    jest.spyOn(component, 'downloadFile').mockImplementation(() => null);
     msal_service.instance.acquireTokenSilent.mockReturnValue(of());
     component.exchangeSetDetails._links.exchangeSetFileUri.href = '';
     component.download();
-
     expect(component.downloadPath).toBeUndefined();
   });
 
   it('should not set aio downloadUrl when exchange set aio uri is empty in download()', () => {
     service.refreshToken.mockReturnValue(of());
     msal_service.instance.acquireTokenSilent.mockReturnValue(of());
+    jest.spyOn(component, 'downloadFile').mockImplementation(() => null);
     component.exchangeSetDetails._links.aioExchangeSetFileUri.href = '';
     component.download();
-
     expect(component.aioDownloadUrl).toBeUndefined();
   });
 
   it('should call refreshToken and open download URLs when downloadFile is called', () => {
     const refreshTokenSpy = jest.spyOn(fileShareApiService, 'refreshToken').mockReturnValue(of({}));
-    component.downloadUrl = 'testDownloadUrl';
-    component.aioDownloadUrl = 'testAioDownloadUrl';
-
+    const openFileSpy = jest.spyOn(component, 'openFile').mockImplementation(() => null);
+    component.downloadUrl = exsFiles.enc.url;
+    component.aioDownloadUrl = exsFiles.aio.url;
     component.downloadFile();
-
     expect(refreshTokenSpy).toHaveBeenCalled();
+    expect(openFileSpy).toHaveBeenCalled();
     expect(component.displayLoader).toBe(false);
   });
 
   it('should not open download URL if empty', () => {
     const refreshTokenSpy = jest.spyOn(fileShareApiService, 'refreshToken').mockReturnValue(of({}));
+    const openFileSpy = jest.spyOn(component, 'openFile').mockImplementation(() => null);
     component.downloadUrl = '';
-    component.aioDownloadUrl = 'testAioDownloadUrl';
-
+    component.aioDownloadUrl = exsFiles.aio.url;
     component.downloadFile();
     expect(refreshTokenSpy).toHaveBeenCalled();
+    expect(openFileSpy).toHaveBeenLastCalledWith(exsFiles.aio.url, exsFiles.aio.name);
     expect(component.displayLoader).toBe(false);
   });
 
-
   it('should not open aioDownloadUrl URL if empty', () => {
     const refreshTokenSpy = jest.spyOn(fileShareApiService, 'refreshToken').mockReturnValue(of({}));
-    component.downloadUrl = 'testDownloadUrl';
+    const openFileSpy = jest.spyOn(component, 'openFile').mockImplementation(() => null);
+    component.downloadUrl = exsFiles.enc.url;
     component.aioDownloadUrl = '';
-
     component.downloadFile();
-
     expect(refreshTokenSpy).toHaveBeenCalled();
+    expect(openFileSpy).toHaveBeenLastCalledWith(exsFiles.enc.url, exsFiles.enc.name);
     expect(component.displayLoader).toBe(false);
   });
 
   it('should not open download URLs if they are empty', () => {
     const refreshTokenSpy = jest.spyOn(fileShareApiService, 'refreshToken').mockReturnValue(of({}));
+    const openFileSpy = jest.spyOn(component, 'openFile').mockImplementation(() => null);
     component.downloadUrl = '';
     component.aioDownloadUrl = '';
-
     component.downloadFile();
-
     expect(refreshTokenSpy).toHaveBeenCalled();
+    expect(openFileSpy).not.toHaveBeenCalled();
     expect(component.displayLoader).toBe(false);
+  });
+
+  it('should create an anchor element, set attributes, trigger click, and remove it', () => {
+    const createElementSpy = jest.spyOn(document, 'createElement');
+    const appendChildSpy = jest.spyOn(document.body, 'appendChild');
+    const removeChildSpy = jest.spyOn(document.body, 'removeChild');
+    component.openFile(exsFiles.enc.url, exsFiles.enc.name);
+    expect(createElementSpy).toHaveBeenCalledWith('a');
+    expect(appendChildSpy).toHaveBeenCalled();
+    expect(removeChildSpy).toHaveBeenCalled();
   });
 
   it('should call loginPopup() when error in acquireTokenSilent in checkBatchStatus', () => {

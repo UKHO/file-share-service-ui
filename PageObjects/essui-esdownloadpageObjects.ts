@@ -54,6 +54,18 @@ export class EsDownloadPageObjects {
 
         await download.saveAs(path)
     }
+
+    async downloadFiles(page: Page, encPath: string, aioPath: string): Promise<void> {
+
+        const [encDownload, aioDownload] = await Promise.all([
+            page.waitForEvent('download'),
+            page.waitForEvent('download'),
+            this.downloadButtonSelector.click()
+        ]);
+
+        await encDownload.saveAs(encPath);
+        await aioDownload.saveAs(aioPath);
+    }
 }
 
 class EsDownloadPageAssertions {

@@ -15,6 +15,9 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     let esDownloadPageObjects: EsDownloadPageObjects;
     let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
     let fileSize: number;
+    const encFilePath = './Tests/TestData/downloadValidENCs.csv';
+    const aioFilePath = './Tests/TestData/downloadAioENCs.csv';
+    const encAndAioFilePath = './Tests/TestData/downloadValidENCsAndAio.csv';
 
     test.beforeEach(async ({ page }) => {
 
@@ -30,9 +33,63 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
         await exchangeSetSelectionPageObjects.clickOnProceedButton();
         await esslandingPageObjects.uploadradiobtnSelectorClick();
-        await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadvalidENCs.csv');
-        await esslandingPageObjects.proceedButtonSelectorClick();
+        await uploadValidENCs(page, esslandingPageObjects);
     })
+
+    async function uploadValidENCs(page: any, esslandingPageObjects: EssLandingPageObjects, filePath: string = encFilePath) {
+        await esslandingPageObjects.uploadFile(page, filePath);
+        await esslandingPageObjects.proceedButtonSelectorClick();
+    }
+
+    async function validateDownload(page: any, esDownloadPageObjects: EsDownloadPageObjects, filePaths: string[]) {
+        for (let i = 0; i < filePaths.length; i++) {
+            await esDownloadPageObjects.expect.ValidateFileDownloaded(filePaths[i]);
+            await esDownloadPageObjects.expect.ValidateFiledeleted(filePaths[i]);
+        }
+        await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
+        await esDownloadPageObjects.expect.createLinkSelectorEnabled();
+        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
+        await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 4 of 4\nExchange set creation");
+    }
+
+    async function startAndUpload(page: any, esslandingPageObjects: EssLandingPageObjects, encAndAioFilePath: string) {
+        await encSelectionPageObjects.startAgainLinkSelectorClick();
+        await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+        await exchangeSetSelectionPageObjects.clickOnProceedButton();
+        await esslandingPageObjects.uploadradiobtnSelectorClick();
+        await uploadValidENCs(page, esslandingPageObjects, encAndAioFilePath);
+    }
+
+    async function createExchangeSet(page: any, validateFileSize: boolean = true) {
+        interface RequestResponse {
+            url: () => string;
+            request: () => { method: () => string };
+        }
+
+        var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
+        fileSize = await encSelectionPageObjects.getFileSize(await response.text());
+        await encSelectionPageObjects.selectAllSelectorClick();
+        encSelectionPageObjects.SelectedENCsCount();
+        let estimatedString = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
+        await encSelectionPageObjects.requestENCsSelectorClick();
+        var request: RequestResponse = await page.waitForResponse((r: RequestResponse) => r.url().includes("/productData/productIdentifiers") && r.request().method() === "POST");
+        await encSelectionPageObjects.expect.toBeTruthy(request.url().includes("exchangeSetStandard=S63"));
+        await encSelectionPageObjects.page.waitForLoadState();
+        await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
+        await esDownloadPageObjects.expect.spinnerSelectorVisible();
+        await esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'visible' });
+        await esDownloadPageObjects.expect.spinnerSelectorHidden();
+        await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
+        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
+
+        if (validateFileSize) {
+            esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, fileSize);
+        }
+
+        await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
+        await esDownloadPageObjects.expect.createLinkSelectorHidden();
+    }
+
 
     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156096
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14092
@@ -44,38 +101,30 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156018
     // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156119
     test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
+        await createExchangeSet(page);
 
-        var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
-        fileSize = await encSelectionPageObjects.getFileSize(await response.text());
-        await encSelectionPageObjects.selectAllSelectorClick();
-        encSelectionPageObjects.SelectedENCsCount();
-        let estimatedString = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-        await encSelectionPageObjects.requestENCsSelectorClick();
-        var request = await page.waitForResponse(response => response.url().includes("/productData/productIdentifiers") && response.request().method() == "POST");
-        await encSelectionPageObjects.expect.toBeTruthy(request.url().includes("exchangeSetStandard=S63"));
-        await encSelectionPageObjects.page.waitForLoadState();
-        await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
-        await esDownloadPageObjects.expect.spinnerSelectorVisible();
-        await esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'visible' });
-        await esDownloadPageObjects.expect.spinnerSelectorHidden();
-        await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
-        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
-        //=========================================
-
-
-        esDownloadPageObjects.expect.VerifyExchangeSetSizeIsValid(estimatedString, fileSize);
-        await esDownloadPageObjects.expect.downloadLinkSelectorHidden();
-        await esDownloadPageObjects.expect.createLinkSelectorHidden();
-
-        //=========================================
         await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
-        await esDownloadPageObjects.expect.ValidateFileDownloaded("./Tests/TestData/DownloadFile/ExchangeSet.zip");
-        await esDownloadPageObjects.expect.ValidateFiledeleted("./Tests/TestData/DownloadFile/ExchangeSet.zip");
-        await esDownloadPageObjects.expect.downloadLinkSelectorEnabled();
-        await esDownloadPageObjects.expect.createLinkSelectorEnabled();
-        await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
-        await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 4 of 4\nExchange set creation");
-    })
+
+        await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/ExchangeSet.zip"]);
+    });
+
+    test('Verify aio zip file is downloaded from Download page', async ({ page }) => {
+        await startAndUpload(page, esslandingPageObjects, aioFilePath);
+        await createExchangeSet(page, false);
+
+        await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/Aio.zip');
+
+        await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/Aio.zip"]);
+    });
+
+    test('Verify enc and aio zip files are downloaded from Download page', async ({ page }) => {
+        await startAndUpload(page, esslandingPageObjects, encAndAioFilePath);
+        await createExchangeSet(page, false);
+
+        await esDownloadPageObjects.downloadFiles(page, './Tests/TestData/DownloadFile/ExchangeSet.zip', './Tests/TestData/DownloadFile/Aio.zip');
+
+        await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/ExchangeSet.zip", "./Tests/TestData/DownloadFile/Aio.zip"]);
+    });
 
     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156097
     // Disabled - S57 not available at the moment Rhz
