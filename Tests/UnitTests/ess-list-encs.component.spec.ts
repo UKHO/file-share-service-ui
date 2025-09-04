@@ -1,7 +1,7 @@
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { EssListEncsComponent } from '../../src/app/features/exchange-set/ess-list-encs/ess-list-encs.component';
-import { TableModule} from '../../src/app/shared/components/ukho-table/table.module';
+import { TableModule } from '../../src/app/shared/components/ukho-table/table.module';
 import { EssUploadFileService } from '../../src/app/core/services/ess-upload-file.service';
 import { AppConfigService } from '../../src/app/core/services/app-config.service';
 import { CommonModule } from '@angular/common';
@@ -300,7 +300,7 @@ describe('EssListEncsComponent', () => {
       ]
     }
   }
-  
+
   let productCatalog: ProductCatalog = scsProductUpdatesByIdentifiersMockData;
   const router = {
     navigate: jest.fn()
@@ -350,8 +350,8 @@ describe('EssListEncsComponent', () => {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory
         },
-        
-        
+
+
 
         MsalService, ExchangeSetApiService, EssInfoErrorMessageService
       ]
@@ -366,8 +366,7 @@ describe('EssListEncsComponent', () => {
       },
       essConfig: {
         MaxEncLimit: 100,
-        MaxEncSelectionLimit: 5,
-        aioExcludeEncs :["GB800001","FR800001"]
+        MaxEncSelectionLimit: 5
       },
     };
     window.scrollTo = jest.fn();
@@ -618,7 +617,7 @@ describe('EssListEncsComponent', () => {
     expect(component.selectedEncList.length).toBeGreaterThan(0);
     expect(component.getEstimatedTotalSize()).toBe('2.6MB');
   });
-  
+
   it('exchangeSetCreationForDeltaResponse should return DeltaExchangeSetResponse for updateNumber - 1 when updateNumber greater then 0', fakeAsync(() => {
     component.selectedEncList = selectedEncListForDeltaMockData.products;
     essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
@@ -679,7 +678,7 @@ describe('EssListEncsComponent', () => {
   it('exchangeSetCreationResponse should set Error message on error', fakeAsync(() => {
     component.selectedEncList = selectedEncListMockData.products;
     essUploadFileService.exchangeSetDownloadType = 'Base';
-    jest.spyOn(exchangeSetApiService,'exchangeSetCreationResponse').mockReturnValue(throwError(exchangeSetDetailsMockData));
+    jest.spyOn(exchangeSetApiService, 'exchangeSetCreationResponse').mockReturnValue(throwError(exchangeSetDetailsMockData));
     component.triggerInfoErrorMessage = jest.fn();
     component.scsExchangeSetResponse();
     tick();
@@ -711,38 +710,38 @@ describe('EssListEncsComponent', () => {
     });
   });
 
-  it('should raise info message for aio enc cell', () => {
-    var notReturnedProduct: NotReturnedProduct[] = [];
-    component.scsInvalidProduct = notReturnedProduct;
-    essUploadFileService.aioEncFound = true;
-    component.ngOnInit();
-    expect(component.scsInvalidProduct.length).toEqual(0);
-    const errObj = {
-      showInfoErrorMessage: true,
-      messageType: 'info',
-      messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
-    };
-    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-  });
+  // it('should raise info message for aio enc cell', () => {
+  //   var notReturnedProduct: NotReturnedProduct[] = [];
+  //   component.scsInvalidProduct = notReturnedProduct;
+  //   essUploadFileService.aioEncFound = true;
+  //   component.ngOnInit();
+  //   expect(component.scsInvalidProduct.length).toEqual(0);
+  //   const errObj = {
+  //     showInfoErrorMessage: true,
+  //     messageType: 'info',
+  //     messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
+  //   };
+  //   expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+  // });
 
-  it('should raise warning message for aio enc cell with invalid enc cells', () => {
-    var notReturnedProduct: NotReturnedProduct[] = [{ productName: 'AU210130', reason: 'check aio' }];
-    component.scsInvalidProduct = notReturnedProduct;
-    essUploadFileService.aioEncFound = true;
-    component.ngOnInit();
-    expect(component.scsInvalidProduct.length).toEqual(1);
-    const errObj = {
-      showInfoErrorMessage: true,
-      messageType: 'warning',
-      messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  AU210130.'
-    };
-    expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-  });
+  // it('should raise warning message for aio enc cell with invalid enc cells', () => {
+  //   var notReturnedProduct: NotReturnedProduct[] = [{ productName: 'AU210130', reason: 'check aio' }];
+  //   component.scsInvalidProduct = notReturnedProduct;
+  //   essUploadFileService.aioEncFound = true;
+  //   component.ngOnInit();
+  //   expect(component.scsInvalidProduct.length).toEqual(1);
+  //   const errObj = {
+  //     showInfoErrorMessage: true,
+  //     messageType: 'warning',
+  //     messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  AU210130.'
+  //   };
+  //   expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+  // });
 
-  it('should have "S63 Exchange Set" selected by default',()=>{
+  it('should have "S63 Exchange Set" selected by default', () => {
     expect(component.selectedOption).toEqual('S63');
   });
-  
+
   it('should display radio buttons when user is privileged', () => {
     component.isPrivilegedUser = true;
     fixture.detectChanges();
@@ -772,7 +771,7 @@ describe('EssListEncsComponent', () => {
     expect(essUploadFileService.exchangeSetDownloadZipType).toBe('S63');
   });
 
-  it('when "Request ENCs" button is clicked, at least one radio button must be selected',()=>{
+  it('when "Request ENCs" button is clicked, at least one radio button must be selected', () => {
     let requestENCs = fixture.debugElement.nativeElement.querySelector('admiralty-button');
     requestENCs.click();
 

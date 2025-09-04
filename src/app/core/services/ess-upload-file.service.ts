@@ -19,8 +19,7 @@ export class EssUploadFileService {
   private exchangeSetDetails: ExchangeSetDetails;
   private estimatedTotalSize: number;
   private defaultEstimatedSizeinMB: number;
-  private configAioEncList: string[];
-  public aioEncFound: boolean;
+  // public aioEncFound: boolean;
   private _exchangeSetDownloadType: 'Base' | 'Delta';
   private _exchangeSetDeltaDate: any;
   public isPrivilegedUser: boolean = false;
@@ -30,7 +29,6 @@ export class EssUploadFileService {
     this.selectedEncs = [];
     this.maxEncLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
     this.maxEncSelectionLimit = Number.parseInt(AppConfigService.settings['essConfig'].MaxEncSelectionLimit, 10);
-    this.configAioEncList = AppConfigService.settings["essConfig"].aioExcludeEncs;
     this.defaultEstimatedSizeinMB = Number.parseFloat(AppConfigService.settings["essConfig"].defaultEstimatedSizeinMB);
   }
 
@@ -52,9 +50,9 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  excludeAioEnc(encName: string) {
-    return !this.configAioEncList.includes(encName);
-  }
+  // excludeAioEnc(encName: string) {
+  //   return !this.configAioEncList.includes(encName);
+  // }
 
   extractEncsFromFile(encFileType: string, processedData: string[]) {
     if (encFileType === 'text/plain') {
@@ -75,23 +73,24 @@ export class EssUploadFileService {
   }
 
   setValidENCs(encList: string[]): void {
-    this.aioEncFound = false;
+    //this.aioEncFound = false;
     this.validEncs = encList
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .map((enc) => enc.toUpperCase()) // applies Upper Case to ENC
-      .filter((el, i, a) => i === a.indexOf(el)); // removes duplicate enc's
+      .filter((el, i, a) => i === a.indexOf(el))
+      .filter((enc, index) => index < this.maxEncLimit); // removes duplicate enc's
 
-    let validEncsExAio = this.validEncs.filter((enc) =>
-      this.excludeAioEnc(enc)
-    ); //exclude AIO list
+    // let validEncsExAio = this.validEncs.filter((enc) =>
+    //   this.excludeAioEnc(enc)
+    // ); //exclude AIO list
 
-    if (validEncsExAio.length < this.validEncs.length) {
-      this.aioEncFound = true;
-    }
+    // if (validEncsExAio.length < this.validEncs.length) {
+    //   this.aioEncFound = true;
+    // }
 
-    this.validEncs = validEncsExAio.filter(
-      (enc, index) => index < this.maxEncLimit
-    ); // limit records by MaxEncLimit
+    // this.validEncs = validEncsExAio.filter(
+    //   (enc, index) => index < this.maxEncLimit
+    // ); // limit records by MaxEncLimit
   }
 
   getValidEncs(): string[] {
@@ -137,7 +136,7 @@ export class EssUploadFileService {
     this.validEncs = [];
     this.validEncs.push(signleValidEnc.toUpperCase());
   }
-  
+
   setExchangeSetDetails(exchangeSetDetails: ExchangeSetDetails) {
     this.exchangeSetDetails = exchangeSetDetails;
   }
@@ -163,9 +162,9 @@ export class EssUploadFileService {
     }
   }
 
-  addAllSelectedEncs(){
-    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length  : this.maxEncSelectionLimit;
-    this.selectedEncs = [...this.scsProducts.slice(0,maxEncSelectionLimit)];
+  addAllSelectedEncs() {
+    const maxEncSelectionLimit = this.maxEncSelectionLimit > this.validEncs.length ? this.validEncs.length : this.maxEncSelectionLimit;
+    this.selectedEncs = [...this.scsProducts.slice(0, maxEncSelectionLimit)];
   }
 
   getEstimatedTotalSize(): string {
@@ -174,7 +173,7 @@ export class EssUploadFileService {
       this.estimatedTotalSize = this.estimatedTotalSize + selectedEnc.fileSize;
     }
     let estimatedSizeInMB = this.convertBytesToMegabytes(this.estimatedTotalSize);
-    return  (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(2) + ' MB' ;
+    return (estimatedSizeInMB + this.defaultEstimatedSizeinMB).toFixed(2) + ' MB';
   }
 
   get exchangeSetDownloadType(): 'Base' | 'Delta' {
@@ -200,13 +199,13 @@ export class EssUploadFileService {
   set exchangeSetDeltaDate(date: any) {
     this._exchangeSetDeltaDate = date;
   }
-  get scsProductResponse() : ProductCatalog | undefined{
+  get scsProductResponse(): ProductCatalog | undefined {
     return this._scsProductResponse;
   }
 
   set scsProductResponse(scsProductResponse: ProductCatalog | undefined) {
     this._scsProductResponse = scsProductResponse;
-  } 
+  }
 
   get scsProducts(): Product[] {
     return this._scsProducts;
@@ -233,7 +232,7 @@ export class EssUploadFileService {
     this.scsInvalidProducts = [];
     this.scsProductResponse = undefined;
     this.clearSelectedEncs();
-    this.aioEncFound = false;
+    //this.aioEncFound = false;
   }
 
   convertBytesToMegabytes(estimatedTotalSize: number) {
