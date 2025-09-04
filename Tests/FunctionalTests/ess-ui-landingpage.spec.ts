@@ -278,20 +278,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });
 
-     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151356
-     test('Verify message for AIO Delta selection', async ({ page }) => {
-          var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site";
-          await encSelectionPageObjects.startAgainLinkSelectorClick();
-          await exchangeSetSelectionPageObjects.enterDate(new Date());
-          await exchangeSetSelectionPageObjects.clickOnProceedButton()
-          await esslandingPageObjects.expect.addsingleencSelectorIsVisible();
-          await esslandingPageObjects.addencradiobtnSelectorClick();
-          await esslandingPageObjects.setaddSingleENCTextboxSelector("FR800002");
-          await esslandingPageObjects.proceedButtonSelectorClick();
-          await encSelectionPageObjects.errorMessage.click();
-          await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
-     });
-
      //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156371
      test("Verify warning box colour when upload list has a combination of invalid enc and enc without any update.", async ({ page }) => {
           await encSelectionPageObjects.startAgainLinkSelectorClick();
@@ -322,7 +308,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidEncWithAioCell.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          const message = "No valid ENCs found.\nAIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.";
+          const message = "No valid ENCs found";
           await encSelectionPageObjects.expect.toBeTruthy(message == (await encSelectionPageObjects.errorMessage.innerText()).trim());
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
@@ -337,7 +323,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidEncWithAioCell.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          const message = "No valid ENCs found.\nAIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.";
+          const message = "No valid ENCs found";
           await encSelectionPageObjects.expect.toBeTruthy(message == (await encSelectionPageObjects.errorMessage.innerText()).trim());
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");

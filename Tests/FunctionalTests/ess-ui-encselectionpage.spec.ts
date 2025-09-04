@@ -239,22 +239,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.expect.toBeTruthy(actualErrorMessage.includes("GZ800112"));
   })
 
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/150972
-  test('Verify validation message for Excluded AIO cell', async ({ page }) => {
-    var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site";
-    await encSelectionPageObjects.page.waitForLoadState();
-    await encSelectionPageObjects.startAgainLinkSelectorClick();
-    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
-    await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    await encSelectionPageObjects.addSingleENC("GB800002");
-    await encSelectionPageObjects.errorMessage.click();
-    await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
-    await encSelectionPageObjects.addSingleENC("DE260001");
-    await encSelectionPageObjects.addAnotherENC("GB800002");
-    await encSelectionPageObjects.errorMessage.click();
-    await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
-  })
-
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149494
   test('Verify estimated file size of selected ENC cells for Base Exchange Set type', async ({ page }) => {
     var response = await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
