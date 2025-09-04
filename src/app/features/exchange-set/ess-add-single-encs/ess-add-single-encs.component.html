@@ -12,6 +12,6 @@
     </div>
 </div>
 <div class="container addAioCheckbox">
-    <admiralty-checkbox *ngIf="showAio" [checked]="isAioChecked" (click)="onClick()"
+    <admiralty-checkbox *ngIf="showAio" [checked]="isAioChecked" (click)="onClick()" (keyup.enter)="onClick()"
         labelText="Add AIO Data ({{aioCell}})"></admiralty-checkbox>
 </div>
