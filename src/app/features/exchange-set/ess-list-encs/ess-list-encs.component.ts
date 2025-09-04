@@ -89,18 +89,6 @@ export class EssListEncsComponent implements OnInit, OnDestroy {
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     this.essUploadFileService.exchangeSetDownloadZipType = this.s63OptionValue;
 
-    // if(this.essUploadFileService.aioEncFound){
-    //   // if(this.scsInvalidProduct.length > 0){
-    //   //   let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-    //   //   this.essUploadFileService.infoMessage = true;
-    //   //   this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProducts}.`);
-    //   // }
-    //   // else{
-    //   //   this.essUploadFileService.infoMessage = true;
-    //   //   this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
-    //   // }
-    //  }
-    //   else
     if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
       let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
       this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProducts}`);
