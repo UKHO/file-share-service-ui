@@ -710,34 +710,6 @@ describe('EssListEncsComponent', () => {
     });
   });
 
-  // it('should raise info message for aio enc cell', () => {
-  //   var notReturnedProduct: NotReturnedProduct[] = [];
-  //   component.scsInvalidProduct = notReturnedProduct;
-  //   essUploadFileService.aioEncFound = true;
-  //   component.ngOnInit();
-  //   expect(component.scsInvalidProduct.length).toEqual(0);
-  //   const errObj = {
-  //     showInfoErrorMessage: true,
-  //     messageType: 'info',
-  //     messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
-  //   };
-  //   expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-  // });
-
-  // it('should raise warning message for aio enc cell with invalid enc cells', () => {
-  //   var notReturnedProduct: NotReturnedProduct[] = [{ productName: 'AU210130', reason: 'check aio' }];
-  //   component.scsInvalidProduct = notReturnedProduct;
-  //   essUploadFileService.aioEncFound = true;
-  //   component.ngOnInit();
-  //   expect(component.scsInvalidProduct.length).toEqual(1);
-  //   const errObj = {
-  //     showInfoErrorMessage: true,
-  //     messageType: 'warning',
-  //     messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  AU210130.'
-  //   };
-  //   expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-  // });
-
   it('should have "S63 Exchange Set" selected by default', () => {
     expect(component.selectedOption).toEqual('S63');
   });

@@ -19,7 +19,6 @@ export class EssUploadFileService {
   private exchangeSetDetails: ExchangeSetDetails;
   private estimatedTotalSize: number;
   private defaultEstimatedSizeinMB: number;
-  // public aioEncFound: boolean;
   private _exchangeSetDownloadType: 'Base' | 'Delta';
   private _exchangeSetDeltaDate: any;
   public isPrivilegedUser: boolean = false;
@@ -50,10 +49,6 @@ export class EssUploadFileService {
     return encName.match(pattern);
   }
 
-  // excludeAioEnc(encName: string) {
-  //   return !this.configAioEncList.includes(encName);
-  // }
-
   extractEncsFromFile(encFileType: string, processedData: string[]) {
     if (encFileType === 'text/plain') {
       // valid for txt files only
@@ -73,24 +68,11 @@ export class EssUploadFileService {
   }
 
   setValidENCs(encList: string[]): void {
-    //this.aioEncFound = false;
     this.validEncs = encList
       .filter((enc) => this.validateENCFormat(enc)) // returns valid enc's
       .map((enc) => enc.toUpperCase()) // applies Upper Case to ENC
       .filter((el, i, a) => i === a.indexOf(el))
       .filter((enc, index) => index < this.maxEncLimit); // removes duplicate enc's
-
-    // let validEncsExAio = this.validEncs.filter((enc) =>
-    //   this.excludeAioEnc(enc)
-    // ); //exclude AIO list
-
-    // if (validEncsExAio.length < this.validEncs.length) {
-    //   this.aioEncFound = true;
-    // }
-
-    // this.validEncs = validEncsExAio.filter(
-    //   (enc, index) => index < this.maxEncLimit
-    // ); // limit records by MaxEncLimit
   }
 
   getValidEncs(): string[] {
@@ -232,7 +214,6 @@ export class EssUploadFileService {
     this.scsInvalidProducts = [];
     this.scsProductResponse = undefined;
     this.clearSelectedEncs();
-    //this.aioEncFound = false;
   }
 
   convertBytesToMegabytes(estimatedTotalSize: number) {

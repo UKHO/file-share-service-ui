@@ -407,17 +407,6 @@ describe('EssAddSingleEncsComponent', () => {
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
-  // it('validateAndAddENC should   raise "Invalid AIO ENC number."error', () => {
-  //   component.txtSingleEnc = 'GB800001';
-  //   component.renderedFrom = 'encList';
-  //   component.validateAndAddENC();
-  //   const errObj = {
-  //     showInfoErrorMessage: true,
-  //     messageType: 'info',
-  //     messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
-  //   };
-  //   expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-  // });
 
   it('validateAndAddENC should   raise "ENC already in list."info', () => {
     component.validEnc = ['AU220150', 'AU5PTL01', 'CA271105', 'CN484220', 'GB50184C', 'GB50702D', 'US5AK57M'];
@@ -645,18 +634,6 @@ describe('EssAddSingleEncsComponent', () => {
     expect(5).toEqual(scsProductUpdatesByIdentifiersMockData.productCounts.returnedProductCount);
   }));
 
-
-  // it('should raise info message for validateAndAddENC "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site."info', () => {
-  //   component.txtSingleEnc = 'GB800001';
-  //   component.renderedFrom = 'essHome';
-  //   component.validateAndAddENC();
-  //   const errObj = {
-  //     showInfoErrorMessage: true,
-  //     messageType: 'info',
-  //     messageDesc: 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site'
-  //   };
-  //   expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-  // });
 
   test('onClick should toggle isAioChecked', () => {
     component.isAioChecked = false;

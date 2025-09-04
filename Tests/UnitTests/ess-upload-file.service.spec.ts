@@ -252,16 +252,6 @@ describe('EssUploadFileService', () => {
     expect(service.getValidEncs().length).toEqual(6);
   });
 
-  // it('should return true for valid encName', () => {
-  //   const validEncName = 'AU220130';
-  //   const result = service.excludeAioEnc(validEncName);
-  //   expect(result).toBe(true);
-  // });
-  // it('should return false for invalid AIO encName', () => {
-  //   const invalidEncName = 'GB800001';
-  //   const result = service.excludeAioEnc(invalidEncName);
-  //   expect(result).toBe(false);
-  // });
   it('get exchangeSetDownloadType should return the correct download type', () => {
     service.exchangeSetDownloadType = 'Base';
     expect(service.exchangeSetDownloadType).toEqual('Base');

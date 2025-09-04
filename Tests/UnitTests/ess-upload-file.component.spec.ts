@@ -430,7 +430,6 @@ ${getEncData}                 | ${false}
       const file = new File([fileContent], 'test.txt');
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
-      //essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
       component.triggerInfoErrorMessage = jest.fn();
@@ -451,7 +450,6 @@ ${getEncData}                 | ${false}
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
       component.processEncFile(fileContent);
-      //essUploadFileService.aioEncFound = true;
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
       component.triggerInfoErrorMessage = jest.fn();
       component.fetchScsTokenReponse();
@@ -541,7 +539,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      //essUploadFileService.aioEncFound;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
@@ -587,7 +584,6 @@ ${ValidAndAioEncData}         | ${true}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      ///essUploadFileService.aioEncFound = true;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsResponseForSinceDateTimeMockData));
@@ -610,7 +606,6 @@ ${ValidAndAioEncData}         | ${true}
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
       component.processEncFile(fileContent);
-      //essUploadFileService.aioEncFound = true;
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       component.triggerInfoErrorMessage = jest.fn();
@@ -632,7 +627,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      //essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
@@ -656,7 +650,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      //essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
@@ -679,7 +672,6 @@ ${ValidAndAioEncData}         | ${true}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      //essUploadFileService.aioEncFound = true;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
@@ -701,7 +693,6 @@ ${ValidAndAioEncData}         | ${true}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      //essUploadFileService.aioEncFound = true;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
@@ -724,7 +715,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      //essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
@@ -748,7 +738,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      //essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
@@ -771,7 +760,6 @@ ${getInvalidAndAioEncData}          | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      //essUploadFileService.aioEncFound = true;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));

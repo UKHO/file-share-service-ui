@@ -26,8 +26,8 @@ export class EssAddSingleEncsComponent implements OnInit, OnDestroy {
   displayLoader: Boolean = false;
   products: Product[];
   scsResponse: ProductCatalog;
-  showAio: boolean = false; // Flag to show/hide AIO checkbox
-  isAioChecked: boolean = false; // Flag to track AIO checkbox state
+  showAio: boolean = false;
+  isAioChecked: boolean = false;
   aioCell: string;
   private productIdentifierSubscriber: Subscription;
 
@@ -79,12 +79,6 @@ export class EssAddSingleEncsComponent implements OnInit, OnDestroy {
       this.triggerInfoErrorMessage(true, 'error', 'Invalid ENC number');
       return;
     }
-
-    // if (!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())) {
-    //   this.displayLoader = false;
-    //   this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
-    //   return;
-    // }
     this.fetchScsTokenReponse('essHome');
   }
 
@@ -104,12 +98,6 @@ export class EssAddSingleEncsComponent implements OnInit, OnDestroy {
       this.triggerInfoErrorMessage(true, 'error', 'Invalid ENC number');
       return;
     }
-
-    // if (!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())) {
-    //   this.displayLoader = false;
-    //   this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
-    //   return;
-    // }
 
     if (this.validEnc.includes(this.txtSingleEnc.toUpperCase())) {
       this.displayLoader = false;
