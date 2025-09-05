@@ -88,13 +88,14 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 
 @NgModule({ declarations: [
         AppComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    ],   
+    bootstrap: [AppComponent], imports: [BrowserModule,        
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
         AppRoutingModule,
         MsalModule], providers: [
+        ApmService,    
         AppConfigService,
         AnalyticsService,
         {
@@ -136,17 +137,5 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
         },
         provideHttpClient(withInterceptorsFromDi()),
     ] })
-export class AppModule { 
-    constructor(service: ApmService) {
-        // Agent API is exposed through this apm instance
-        const apm = service.init({
-        serviceName:  AppConfigService.settings["elasticAPM"].ServiceName,
-        serverUrl: AppConfigService.settings["elasticAPM"].ServerURL
-        })
-
-        apm.setUserContext({
-        'username': AppConfigService.settings["elasticAPM"].Environment,
-        'id': AppConfigService.settings["elasticAPM"].ApiKey
-        })
-    }   
+export class AppModule {      
 }
