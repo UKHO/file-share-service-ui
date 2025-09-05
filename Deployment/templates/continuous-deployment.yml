@@ -61,8 +61,6 @@ jobs:
     value: $(essConfig-MaxEncLimit)
   - name: essConfig.MaxEncSelectionLimit
     value: $(essConfig-MaxEncSelectionLimit)
-  - name: essConfig.aioExcludeEncs
-    value: $(essConfig-aioExcludeEncs)
   - name: essConfig.apiUiUrl
     value: $(essConfig-apiUiUrl)
   - name: essConfig.privilegedUserDomains

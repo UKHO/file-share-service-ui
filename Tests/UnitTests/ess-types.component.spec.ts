@@ -17,37 +17,36 @@ describe('EssTypesComponent', () => {
   const router = {
     navigate: jest.fn()
   };
-  beforeEach(async() => {
+  beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,CommonModule],
+      imports: [RouterTestingModule, CommonModule],
       declarations: [EssTypesComponent, EssInfoErrorMessageComponent],
-      providers: [EssUploadFileService, EssInfoErrorMessageService,{
+      providers: [EssUploadFileService, EssInfoErrorMessageService, {
         provide: Router,
         useValue: router
-      },{
-        provide: ViewportScroller,
-        useClass: MockViewportScroller
-      },
-    ],
-    schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+      }, {
+          provide: ViewportScroller,
+          useClass: MockViewportScroller
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
-});
-    beforeEach(() => {
-      AppConfigService.settings = {
-        essConfig: {
-          MaxEncLimit: 10,
-          aioExcludeEncs :["GB800001","FR800001"]
-        }
-      };
-  
-      fixture = TestBed.createComponent(EssTypesComponent);
-      service = TestBed.inject(EssUploadFileService);
-      essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-  
-  
+  });
+  beforeEach(() => {
+    AppConfigService.settings = {
+      essConfig: {
+        MaxEncLimit: 10
+      }
+    };
+
+    fixture = TestBed.createComponent(EssTypesComponent);
+    service = TestBed.inject(EssUploadFileService);
+    essInfoErrorMessageService = TestBed.inject(EssInfoErrorMessageService);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -79,39 +78,40 @@ describe('EssTypesComponent', () => {
   it('should navigate to next page when delta download option is selected and date is valid', () => {
     const navigateSpy = jest.spyOn(router, 'navigate');
     const validDate = new Date();
-    validDate.setDate(validDate.getDate() - 10); 
-    component.selectedOption = 'delta'; 
-    component.isDateValid = true; 
+    validDate.setDate(validDate.getDate() - 10);
+    component.selectedOption = 'delta';
+    component.isDateValid = true;
     component.isDateSelected = true;
-    component.onDateChange({ target: { valueAsDate: validDate } } as any); 
+    component.onDateChange({ target: { valueAsDate: validDate } } as any);
 
-    component.onProceedClicked(); 
+    component.onProceedClicked();
 
     expect(navigateSpy).toHaveBeenCalledWith(['exchangesets', 'exchange-set']);
   });
 
   it('should show error message when delta option is selected but date is in the future', () => {
     const futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 1); 
+    futureDate.setDate(futureDate.getDate() + 1);
 
-    component.selectedOption = 'delta'; 
-    component.isDateSelected = true; 
-    component.onDateChange({ target: { valueAsDate: futureDate } } as any); 
+    component.selectedOption = 'delta';
+    component.isDateSelected = true;
+    component.onDateChange({ target: { valueAsDate: futureDate } } as any);
 
     const errorMessage = 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option';
-    const errObj={
+    const errObj = {
       showInfoErrorMessage: true,
       messageType: 'info',
-      messageDesc: errorMessage}
+      messageDesc: errorMessage
+    }
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
   });
   it('should show error message when delta option is selected but date is greater than 27 days in the past', () => {
     const pastDate = new Date();
-    pastDate.setDate(pastDate.getDate() - 28); 
+    pastDate.setDate(pastDate.getDate() - 28);
 
-    component.selectedOption = 'delta'; 
-    component.isDateSelected = true; 
-    component.onDateChange({ target: { valueAsDate: pastDate } } as any); 
+    component.selectedOption = 'delta';
+    component.isDateSelected = true;
+    component.onDateChange({ target: { valueAsDate: pastDate } } as any);
 
     const errorMessage = 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option';
     const errObj = {
@@ -120,7 +120,7 @@ describe('EssTypesComponent', () => {
       messageDesc: errorMessage
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
-});
+  });
 
   it('should set onDescriptionClick to baseRadio button on onDescriptionClick clicked', () => {
     component.onDescriptionClick('baseRadio');
@@ -141,17 +141,17 @@ describe('EssTypesComponent', () => {
     expect(service.exchangeSetDownloadType).toEqual('Delta');
   });
 
-class MockViewportScroller implements ViewportScroller {
-  setOffset(offset: [number, number] | (() => [number, number])): void {
+  class MockViewportScroller implements ViewportScroller {
+    setOffset(offset: [number, number] | (() => [number, number])): void {
+    }
+    getScrollPosition(): [number, number] {
+      return [0, 0];
+    }
+    scrollToPosition(position: [number, number]): void {
+    }
+    scrollToAnchor(anchor: string): void {
+    }
+    setHistoryScrollRestoration(scrollRestoration: 'auto' | 'manual'): void {
+    }
   }
-  getScrollPosition(): [number, number] {
-    return [0, 0];
-  }
-  scrollToPosition(position: [number, number]): void {
-  }
-  scrollToAnchor(anchor: string): void {
-  }
-  setHistoryScrollRestoration(scrollRestoration: 'auto' | 'manual'): void {
-  }
-}
 });

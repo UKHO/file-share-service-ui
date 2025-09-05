@@ -13,10 +13,10 @@ import { EssInfoErrorMessageService } from '../../../core/services/ess-info-erro
   templateUrl: './ess-download-exchangeset.component.html',
   styleUrls: ['./ess-download-exchangeset.component.scss']
 })
-export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
+export class EssDownloadExchangesetComponent implements OnInit, OnDestroy {
 
   exchangeSetDetails: ExchangeSetDetails;
-  displayLoader: boolean = false; 
+  displayLoader: boolean = false;
   batchDetailsUrl: string;
   batchId: string;
   fssTokenScope: any = [];
@@ -24,6 +24,8 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   baseUrl: string;
   downloadPath: string;
   downloadUrl: string;
+  aioDownloadPath: string;
+  aioDownloadUrl: string;
   displayErrorMessage = false;
   displayMessage = false;
   @ViewChild('ukhoTarget') ukhoDialog: ElementRef;
@@ -38,7 +40,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
     private msalService: MsalService,
     private route: Router,
     private essInfoErrorMessageService: EssInfoErrorMessageService
-    ) {
+  ) {
     this.fssTokenScope = AppConfigService.settings['fssConfig'].apiScope;
     this.fssSilentTokenRequest = {
       scopes: [this.fssTokenScope],
@@ -78,7 +80,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
         }, 5000);
       }
       else {
-        this.triggerInfoErrorMessage(true,'warning', 'Something went wrong');
+        this.triggerInfoErrorMessage(true, 'warning', 'Something went wrong');
         this.showProgressMessage(false, false, false);
       }
     });
@@ -87,24 +89,62 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   download() {
     this.displayLoader = true;
     this.baseUrl = AppConfigService.settings['fssConfig'].apiUrl;
-    this.downloadPath = this.exchangeSetDetails._links.exchangeSetFileUri.href;
-    this.downloadUrl = this.baseUrl + this.downloadPath.substring(this.downloadPath.indexOf('/batch'));
+
+    if (this.exchangeSetDetails._links.exchangeSetFileUri &&
+      this.exchangeSetDetails._links.exchangeSetFileUri.href) {
+      this.downloadPath = this.exchangeSetDetails._links.exchangeSetFileUri.href;
+      this.downloadUrl = this.baseUrl + this.downloadPath.substring(this.downloadPath.indexOf('/batch'));
+    }
+
+    if (this.exchangeSetDetails._links.aioExchangeSetFileUri &&
+      this.exchangeSetDetails._links.aioExchangeSetFileUri.href) {
+      this.aioDownloadPath = this.exchangeSetDetails._links.aioExchangeSetFileUri.href;
+      this.aioDownloadUrl = this.baseUrl + this.aioDownloadPath.substring(this.aioDownloadPath.indexOf('/batch'));
+    }
+
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       this.fileShareApiService.refreshToken().subscribe((res) => {
-        this.displayLoader = false;
-        window.open(this.downloadUrl, '_blank');        
+        this.downloadFile();
       });
     }, error => {
       this.msalService.instance
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
           this.fileShareApiService.refreshToken().subscribe((res) => {
-            this.displayLoader = false;
-            window.open(this.downloadUrl, '_blank');            
+            this.downloadFile();
           });
         });
     });
     this.showProgressMessage(false, false, true);
+  }
+
+  downloadFile() {
+    this.fileShareApiService.refreshToken().subscribe(async (res) => {
+      this.displayLoader = false;
+      const files: { url: string; name: string }[] = [
+        this.downloadUrl ? { url: this.downloadUrl, name: this.downloadUrl.split('/').pop()! } : null,
+        this.aioDownloadUrl ? { url: this.aioDownloadUrl, name: this.aioDownloadUrl.split('/').pop()! } : null
+      ].filter(Boolean) as { url: string; name: string }[];
+
+      if (files.length == 1) {
+        this.openFile(files[0].url, files[0].name);
+      }
+      else if (files.length == 2) {
+        this.openFile(files[0].url, files[0].name);
+        setTimeout(async () => {
+          this.openFile(files[1].url, files[1].name);
+        }, 2000);
+      }
+    });
+  }
+
+  openFile(url: string, fileName: string) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   switchToESSLandingPage() {
@@ -124,7 +164,7 @@ export class EssDownloadExchangesetComponent implements OnInit ,OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.triggerInfoErrorMessage(false , 'warning','');
+    this.triggerInfoErrorMessage(false, 'warning', '');
   }
 
   showProgressMessage(showLoading: boolean, showReady: boolean, showComplete: boolean): void {

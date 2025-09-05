@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { EssUploadFileService } from './../../../core/services/ess-upload-file.service';
-import { Component, OnInit, ElementRef, AfterViewInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { EssInfoErrorMessageService } from '../../../core/services/ess-info-error-message.service';
 import { AppConfigService } from './../../../core/services/app-config.service';
 import { FileInputChangeEventDetail } from '@ukho/admiralty-core';
@@ -16,7 +16,7 @@ import { HttpStatusCode } from '@angular/common/http';
   templateUrl: './ess-upload-file.component.html',
   styleUrls: ['./ess-upload-file.component.scss'],
 })
-export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
+export class EssUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
   validEncList: string[];
   encFile: File;
   maxEncsLimit: number;
@@ -25,15 +25,15 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
   essSilentTokenRequest: SilentRequest;
   displayLoader: boolean = false;
   products: Product[];
-  scsResponse:ProductCatalog;
+  scsResponse: ProductCatalog;
   private productIdentifierSubscriber: Subscription;
   scsInvalidProduct: NotReturnedProduct[];
-  
+
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService, 
+    private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService,
     private scsProductInformationApiService: ScsProductInformationApiService, private msalService: MsalService,
     private _elementRef?: ElementRef,
-    ) {
+  ) {
     this.maxEncsLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
     this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
     this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
@@ -77,7 +77,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
       this.processEncFile(e.target.result);
     };
     reader.readAsText(this.encFile);
-    
+
   }
 
   processEncFile(encFileData: string): void {
@@ -91,10 +91,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
       this.essUploadFileService.setValidENCs(encList);
       this.validEncList = this.essUploadFileService.getValidEncs();
       if (this.validEncList.length === 0) {
-        if(this.essUploadFileService.aioEncFound){
-          this.triggerInfoErrorMessage(true, 'error', `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
-          return;
-        }
         this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found');
         return;
       }
@@ -142,13 +138,8 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
             }
             else {
               this.displayLoader = false;
-              if (this.essUploadFileService.aioEncFound) {
-                this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
-                return;
-              } else {
-                this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found');
-                return;
-              }
+              this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found');
+              return;
             }
           },
           error: (error) => {
@@ -179,17 +170,9 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                       this.essUploadFileService.setValidEncsByApi(validEncList);
                       this.essUploadFileService.scsProductResponse = this.scsResponse;
                       this.route.navigate(['exchangesets', 'enc-list']);
-                    } else if (this.essUploadFileService.aioEncFound && this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
-                      this.displayLoader = false;
-                      let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                      this.triggerInfoErrorMessage(true, 'error', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
-                      return;
                     } else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                       let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
                       this.triggerInfoErrorMessage(true, 'error', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
-                      return;
-                    } else if (this.essUploadFileService.aioEncFound) {
-                      this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
                       return;
                     }
                     else {
@@ -201,15 +184,9 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
                   error: (error: any) => {
                     this.displayLoader = false;
                     if (error.status == HttpStatusCode.NotModified) {
-                      if (this.essUploadFileService.aioEncFound && this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
-                        let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-                        this.triggerInfoErrorMessage(true, 'error', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`);
-                      }
-                      else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
+                      if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
                         let invalidProd = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
                         this.triggerInfoErrorMessage(true, 'error', `Invalid cells -  ${invalidProd}. <br/> There have been no updates for the ENCs in the date range selected.`);
-                      } else if (this.essUploadFileService.aioEncFound) {
-                        this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
                       } else {
                         this.triggerInfoErrorMessage(true, 'info', 'There have been no updates for the ENCs in the date range selected');
                       }
@@ -221,13 +198,8 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit,OnDestroy {
             }
             else {
               this.displayLoader = false;
-              if (this.essUploadFileService.aioEncFound) {
-                this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
-                return;
-              } else {
-                this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found');
-                return;
-              }
+              this.triggerInfoErrorMessage(true, 'error', 'No valid ENCs found');
+              return;
             }
           },
           error: (error: any) => {

@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './ess-add-single-encs.component.html',
   styleUrls: ['./ess-add-single-encs.component.scss']
 })
-export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
+export class EssAddSingleEncsComponent implements OnInit, OnDestroy {
   @Input() renderedFrom: string;
   @Input() btnText: string;
   validEncList: string[];
@@ -23,22 +23,38 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   addValidEncAlert: string;
   essTokenScope: any = [];
   essSilentTokenRequest: SilentRequest;
-  displayLoader: Boolean = false; 
-  products:Product[];
-  scsResponse :ProductCatalog;
+  displayLoader: Boolean = false;
+  products: Product[];
+  scsResponse: ProductCatalog;
+  showAio: boolean = false;
+  isAioChecked: boolean = false;
+  aioCell: string;
   private productIdentifierSubscriber: Subscription;
 
   constructor(private essUploadFileService: EssUploadFileService,
-    private route: Router , private essInfoErrorMessageService: EssInfoErrorMessageService,
+    private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService,
     private scsProductInformationApiService: ScsProductInformationApiService,
-    private msalService: MsalService) { this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
+    private msalService: MsalService) {
+    this.essTokenScope = AppConfigService.settings['essConfig'].apiScope;
     this.essSilentTokenRequest = {
       scopes: [this.essTokenScope]
-    }; }
+    };
+    this.aioCell = AppConfigService.settings['essConfig'].aioCell || '';
+  }
 
   ngOnInit(): void {
     this.validEnc = this.essUploadFileService.getValidEncs();
-    this.triggerInfoErrorMessage(false,'info', '');
+    this.triggerInfoErrorMessage(false, 'info', '');
+
+    this.checkAioVisibility()
+  }
+
+  checkAioVisibility() {
+    if (this.aioCell && !this.validEnc.includes(this.aioCell)) {
+      this.showAio = true;
+    } else {
+      this.showAio = false;
+    }
   }
 
   validateAndAddENC() {
@@ -52,58 +68,46 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
   }
 
   addSingleEncToList() {
-    if(!this.txtSingleEnc){
+    if (!this.txtSingleEnc) {
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'error', 'Please enter ENC number');
+      this.triggerInfoErrorMessage(true, 'error', 'Please enter ENC number');
       return;
     }
 
-    if(!this.essUploadFileService.validateENCFormat(this.txtSingleEnc)){
+    if (!this.essUploadFileService.validateENCFormat(this.txtSingleEnc)) {
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
-      return;
-    }
-
-    if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
-      this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
+      this.triggerInfoErrorMessage(true, 'error', 'Invalid ENC number');
       return;
     }
     this.fetchScsTokenReponse('essHome');
   }
 
   addEncInList() {
-    this.triggerInfoErrorMessage(false,'info', '');
+    this.triggerInfoErrorMessage(false, 'info', '');
     this.txtSingleEnc = this.txtSingleEnc.trim();
     const isValidEnc = this.essUploadFileService.validateENCFormat(this.txtSingleEnc);
 
-    if(!this.txtSingleEnc){
+    if (!this.txtSingleEnc) {
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'error', 'Please enter ENC number');
+      this.triggerInfoErrorMessage(true, 'error', 'Please enter ENC number');
       return;
     }
 
-    if(!isValidEnc){
+    if (!isValidEnc) {
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
+      this.triggerInfoErrorMessage(true, 'error', 'Invalid ENC number');
       return;
     }
 
-    if(!this.essUploadFileService.excludeAioEnc(this.txtSingleEnc.toUpperCase())){
+    if (this.validEnc.includes(this.txtSingleEnc.toUpperCase())) {
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
-      return;
-    }
-
-    if(this.validEnc.includes(this.txtSingleEnc.toUpperCase())){
-      this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'ENC already in list');
+      this.triggerInfoErrorMessage(true, 'info', 'ENC already in list');
       return;
     }
 
     if (this.essUploadFileService.checkMaxEncLimit(this.validEnc)) {
       this.displayLoader = false;
-      this.triggerInfoErrorMessage(true,'info', 'Max ENC limit reached');
+      this.triggerInfoErrorMessage(true, 'info', 'Max ENC limit reached');
       return;
     }
     this.fetchScsTokenReponse('encList');
@@ -121,21 +125,21 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     };
   }
 
-  productUpdatesByIdentifiersResponse(encs: any[] , renderedFrom: string) {
+  productUpdatesByIdentifiersResponse(encs: any[], renderedFrom: string) {
     if (encs != null) {
-        this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
+      this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
         .subscribe({
           next: (data: ProductCatalog) => {
             this.processProductUpdatesByIdentifiers(data, renderedFrom);
           },
-          error:(error) => {
+          error: (error) => {
             console.log(error);
             this.displayLoader = false;
-            this.triggerInfoErrorMessage(true,'error', 'There has been an error');
+            this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
           }
         });
-     }
     }
+  }
 
   productUpdatesByDeltaResponse(encs: any[], renderedFrom: string) {
     this.productIdentifierSubscriber = this.scsProductInformationApiService.scsProductIdentifiersResponse(encs)
@@ -150,7 +154,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
                   this.products = data.products.filter((v) => this.scsResponse.products.some((vd) => v.productName == vd.productName));
                   if (this.products.length != 0) {
                     this.scsResponse.products = this.products;
-                    this.processProductUpdatesByIdentifiers(this.scsResponse,renderedFrom);
+                    this.processProductUpdatesByIdentifiers(this.scsResponse, renderedFrom);
                   }
                   else {
                     this.displayLoader = false;
@@ -170,7 +174,7 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
           }
           else {
             this.displayLoader = false;
-            this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
+            this.triggerInfoErrorMessage(true, 'error', 'Invalid ENC number');
             return;
           }
         },
@@ -202,25 +206,36 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
     });
   }
 
-  processProductUpdatesByIdentifiers(productCatalog:ProductCatalog, renderedFrom:string){
+  processProductUpdatesByIdentifiers(productCatalog: ProductCatalog, renderedFrom: string) {
     this.displayLoader = false;
-    this.triggerInfoErrorMessage(false,'info', '');
-    if(productCatalog.products.length === 0){
-      this.triggerInfoErrorMessage(true,'error', 'Invalid ENC number');
+    this.triggerInfoErrorMessage(false, 'info', '');
+    if (productCatalog.products.length === 0) {
+      this.triggerInfoErrorMessage(true, 'error', 'Invalid ENC number');
       return;
     }
-    if(!this.essUploadFileService.scsProductResponse){
+    if (!this.essUploadFileService.scsProductResponse) {
       this.essUploadFileService.scsProductResponse = productCatalog;
-    }else{
+    } else {
       this.essUploadFileService.scsProductResponse.products.push(productCatalog.products[0]);
     }
-    if(renderedFrom === 'essHome'){
+    if (renderedFrom === 'essHome') {
       this.essUploadFileService.setValidSingleEnc(this.txtSingleEnc);
       this.essUploadFileService.infoMessage = false;
       this.route.navigate(['exchangesets', 'enc-list']);
-    }else if(renderedFrom === 'encList'){
+    } else if (renderedFrom === 'encList') {
       this.essUploadFileService.addSingleEnc(this.txtSingleEnc);
-      this.addValidEncAlert= this.txtSingleEnc + '  Added to List';
+      this.addValidEncAlert = this.txtSingleEnc + '  Added to List';
+      this.txtSingleEnc = '';
+      this.checkAioVisibility();
+      this.isAioChecked = false;
+    }
+  }
+
+  onClick(): void {
+    this.isAioChecked = !this.isAioChecked;
+    if (this.isAioChecked) {
+      this.txtSingleEnc = this.aioCell;
+    } else {
       this.txtSingleEnc = '';
     }
   }
@@ -230,5 +245,4 @@ export class EssAddSingleEncsComponent implements OnInit,OnDestroy {
       this.productIdentifierSubscriber.unsubscribe();
     }
   }
-
 }

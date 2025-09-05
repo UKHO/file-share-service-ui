@@ -211,8 +211,7 @@ describe('EssUploadFileComponent', () => {
     AppConfigService.settings = {
       essConfig: {
         MaxEncLimit: 10,
-        MaxEncSelectionLimit: 5,
-        aioExcludeEncs: ["GB800001", "FR800001"]
+        MaxEncSelectionLimit: 5
       }
     };
 
@@ -329,13 +328,13 @@ describe('EssUploadFileComponent', () => {
       component.encFile = file;
       console.log(encDataFunc);
       component.processEncFile(encDataFunc);
-      expect(component.validEncList).toEqual([]);
-      const errObj = {
-        showInfoErrorMessage: true,
-        messageType: 'error',
-        messageDesc: `No valid ENCs found. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.`
+      expect(component.validEncList).toEqual(["GB800001"]);
+      const infoObj = {
+        showInfoErrorMessage: false,
+        messageType: 'info',
+        messageDesc: ``
       };
-      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(infoObj);
     });
 
   it('onFileInputChange{ event.srcElement} should raise error for unsupported file type', () => {
@@ -431,7 +430,6 @@ ${getEncData}                 | ${false}
       const file = new File([fileContent], 'test.txt');
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
-      essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
       component.triggerInfoErrorMessage = jest.fn();
@@ -452,14 +450,13 @@ ${getEncData}                 | ${false}
       Object.defineProperty(file, 'type', { value: 'text/plain' });
       component.encFile = file;
       component.processEncFile(fileContent);
-      essUploadFileService.aioEncFound = true;
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
       component.triggerInfoErrorMessage = jest.fn();
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found');
     }));
 
   it.each`
@@ -542,7 +539,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
@@ -588,7 +584,6 @@ ${ValidAndAioEncData}         | ${true}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound = true;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsResponseForSinceDateTimeMockData));
@@ -596,7 +591,7 @@ ${ValidAndAioEncData}         | ${true}
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "There have been no updates for the ENCs in the date range selected");
     }));
 
   it.each`
@@ -611,14 +606,13 @@ ${ValidAndAioEncData}         | ${true}
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
       component.processEncFile(fileContent);
-      essUploadFileService.aioEncFound = true;
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       component.triggerInfoErrorMessage = jest.fn();
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "error", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "error", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.");
     }));
 
   it.each`
@@ -633,7 +627,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
@@ -657,7 +650,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
@@ -680,7 +672,6 @@ ${ValidAndAioEncData}         | ${true}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound = true;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
@@ -688,7 +679,7 @@ ${ValidAndAioEncData}         | ${true}
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "info", "There have been no updates for the ENCs in the date range selected");
     }));
 
   it.each`
@@ -702,7 +693,6 @@ ${ValidAndAioEncData}         | ${true}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound = true;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
@@ -710,7 +700,7 @@ ${ValidAndAioEncData}         | ${true}
       component.fetchScsTokenReponse();
       component.scsProductCatalogResponse(component.validEncList);
       tick();
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "error", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected. <br/> AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.");
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, "error", "Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.");
     }));
 
   it.each`
@@ -725,7 +715,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductIdentifiersResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
@@ -749,7 +738,6 @@ ${getEncData}                 | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound = false;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsInvalidProductsResponseMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(throwError({ status: 304 }));
@@ -761,7 +749,7 @@ ${getEncData}                 | ${false}
       expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'Invalid cells -  US5CN13M, DE521900. <br/> There have been no updates for the ENCs in the date range selected.');
     }));
 
-    it.each`
+  it.each`
 encDataFunc                         | expectedResult
 ${getInvalidAndAioEncData}          | ${false}
   `('validatation should raise "No valid ENCs found" and AIO message info',
@@ -772,7 +760,6 @@ ${getInvalidAndAioEncData}          | ${false}
       component.encFile = file;
       essUploadFileService.exchangeSetDeltaDate = 'Thu, 07 Mar 2024 07:14:24 GMT';
       essUploadFileService.exchangeSetDownloadType = 'Delta';
-      essUploadFileService.aioEncFound = true;
       component.processEncFile(fileContent);
       jest.spyOn(scsProductInformationApiService, 'scsProductIdentifiersResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
       jest.spyOn(scsProductInformationApiService, 'getProductsFromSpecificDateByScsResponse').mockReturnValue(of(scsProductResponseWithEmptyProductMockData));
@@ -781,7 +768,7 @@ ${getInvalidAndAioEncData}          | ${false}
       component.scsProductCatalogResponse(component.validEncList);
       tick();
       expect(component.displayLoader).toEqual(false);
-      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found. <br/>AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.');
+      expect(component.triggerInfoErrorMessage).toHaveBeenCalledWith(true, 'error', 'No valid ENCs found');
     }));
 
   it('loadFileReader should raise error for unsupported file type', () => {
