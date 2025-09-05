@@ -1,4 +1,4 @@
-import { NgModule,APP_INITIALIZER } from '@angular/core';
+import { NgModule,APP_INITIALIZER, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -8,6 +8,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { AppConfigService } from './core/services/app-config.service';
 import { AnalyticsService } from './core/services/analytics.service';
 import { HttpErrorInterceptorService } from './core/services/httperror-interceptor.service';
+import { ApmErrorHandler, ApmModule, ApmService } from '@elastic/apm-rum-angular'
 
 import {
   MsalModule,
@@ -79,7 +80,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
             [AppConfigService.settings["fssConfig"].stateManagementApiUrl+'/logout', null],
             [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].apiScope]],
             [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].apiScope]],
-            [AppConfigService.settings["essConfig"].apiUiUrl, [AppConfigService.settings["essConfig"].apiScope]],        
+            [AppConfigService.settings["essConfig"].apiUiUrl, [AppConfigService.settings["essConfig"].apiScope]]     
         ]),
     };
 }
@@ -129,6 +130,23 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
         { provide: 'googleTagManagerId',
             useFactory: GTMFactory
         },
+        {
+            provide: ErrorHandler,
+            useClass: ApmErrorHandler
+        },
         provideHttpClient(withInterceptorsFromDi()),
     ] })
-export class AppModule { }
+export class AppModule { 
+    constructor(service: ApmService) {
+        // Agent API is exposed through this apm instance
+        const apm = service.init({
+        serviceName:  AppConfigService.settings["elasticAPM"].ServiceName,
+        serverUrl: AppConfigService.settings["elasticAPM"].ServerURL
+        })
+
+        apm.setUserContext({
+        'username': AppConfigService.settings["elasticAPM"].Environment,
+        'id': AppConfigService.settings["elasticAPM"].ApiKey
+        })
+    }   
+}

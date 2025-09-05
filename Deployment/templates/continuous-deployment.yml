@@ -67,6 +67,14 @@ jobs:
     value: $(essConfig-apiUiUrl)
   - name: essConfig.privilegedUserDomains
     value: $(essConfig-PrivilegedUserDomains)
+  - name: elasticAPM.ApiKey
+    value: $(elasticAPM-ApiKey)
+  - name: elasticAPM.Environment
+    value: $(elasticAPM-Environment)
+  - name: elasticAPM.ServerURL
+    value: $(elasticAPM-ServerURL)
+  - name: elasticAPM.ServiceName
+    value: $(elasticAPM-ServiceName)
   strategy:
     runOnce:
       deploy:
