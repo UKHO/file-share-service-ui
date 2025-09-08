@@ -53,7 +53,7 @@
     "apiUrl": "",
     "apiScope": "",
     "defaultEstimatedSizeinMB": "0.5",
-   "aioCell": "",
+    "aioCell": "GB800001",
     "apiUiUrl": "",
     "privilegedUserDomains": []
   },
