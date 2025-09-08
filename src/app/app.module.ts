@@ -9,6 +9,7 @@ import { AppConfigService } from './core/services/app-config.service';
 import { AnalyticsService } from './core/services/analytics.service';
 import { HttpErrorInterceptorService } from './core/services/httperror-interceptor.service';
 import { ApmErrorHandler, ApmModule, ApmService } from '@elastic/apm-rum-angular'
+import { init as initApm } from '@elastic/apm-rum'
 
 import {
   MsalModule,
@@ -37,6 +38,14 @@ export function initializerFactory(env: AppConfigService): any {
 export function GTMFactory(): any {
   const googleTagManagerId = AppConfigService.settings.GoogleTagManagerId;
   return googleTagManagerId;
+}
+
+export function ApmFactory(): any {
+  return initApm({
+    serviceName: AppConfigService.settings['elasticAPM'].ServiceName,
+    serverUrl: AppConfigService.settings['elasticAPM'].ServerURL,
+    environment: AppConfigService.settings['elasticAPM'].Environment
+  });
 }
 
 
@@ -94,8 +103,13 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
         ReactiveFormsModule,
         SharedModule,
         AppRoutingModule,
-        MsalModule], providers: [
-        ApmService,    
+        MsalModule,
+        ApmModule], providers: [
+        ApmService,
+        {
+            provide: 'APM_BASE_CLIENT',
+            useFactory: ApmFactory
+        },    
         AppConfigService,
         AnalyticsService,
         {
