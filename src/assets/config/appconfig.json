@@ -62,9 +62,9 @@
   },
   "elasticAPM":
     {
-      "ApiKey": "ApiKey_v",
-      "Environment": "Environment_v",
-      "ServerURL": "ServerURL_v",
-      "ServiceName":"ServiceName_v"
+      "ApiKey": "",
+      "Environment": "",
+      "ServerURL": "",
+      "ServiceName":""
     }
 }
