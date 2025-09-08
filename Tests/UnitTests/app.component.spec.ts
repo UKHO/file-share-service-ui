@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { ApmService } from '@elastic/apm-rum-angular';
+import { AppConfigService } from '../../src/app/core/services/app-config.service';
 
 
 describe('AppComponent', () => {
@@ -17,7 +18,31 @@ describe('AppComponent', () => {
   let msalService: MsalService;
   let apmservice: ApmService
 
+  // Mock ApmService
+  const mockApmService = {
+    init: jest.fn().mockReturnValue({
+      setUserContext: jest.fn(),
+      setCustomContext: jest.fn(),
+      addTags: jest.fn(),
+      captureError: jest.fn()
+    }),
+    setUserContext: jest.fn(),
+    setCustomContext: jest.fn(),
+    addTags: jest.fn(),
+    captureError: jest.fn()
+  };
+
   beforeEach(async () => {
+    // Mock AppConfigService.settings
+    (AppConfigService as any).settings = {
+      elasticAPM: {
+        ServiceName: 'test-service',
+        ServerURL: 'http://test-url',
+        Environment: 'test',
+        ApiKey: 'test-key'
+      }
+    };
+
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MsalModule],
       declarations: [AppComponent],
@@ -26,11 +51,16 @@ describe('AppComponent', () => {
           provide: MSAL_INSTANCE,
           useFactory: MockMSALInstanceFactory
         },
-        MsalService],
+        MsalService,
+        {
+          provide: ApmService,
+          useValue: mockApmService
+        }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
     titleService = TestBed.inject(Title);
     router = TestBed.inject(Router);
+    activatedRoute = TestBed.inject(ActivatedRoute);
     msalService = TestBed.inject(MsalService);
     apmservice = TestBed.inject(ApmService)
     });
