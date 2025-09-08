@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 
-export class ExchangeSetSelectionPageObjects{
+export class ExchangeSetSelectionPageObjects {
     readonly expect: ExchangeSetSelectionAssertion;
     readonly baseRadioButton: Locator;
     readonly deltaRadioButton: Locator;
@@ -23,74 +23,74 @@ export class ExchangeSetSelectionPageObjects{
         this.header = page.locator("h2#main");
     }
 
-    async selectBaseDownloadRadioButton(){
+    async selectBaseDownloadRadioButton() {
         await this.baseRadioButton.click();
     }
 
-    async selectDeltaDownloadRadioButton(){
+    async selectDeltaDownloadRadioButton() {
         await this.deltaRadioButton.click();
     }
 
-    async clickOnProceedButton(){
+    async clickOnProceedButton() {
         await this.proceed.click();
     }
 
-    async enterDate(date:Date){
+    async enterDate(date: Date) {
         await this.datePicker.isEditable();
-        let formattedDate: string = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')}`;
+        let formattedDate: string = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
         await this.page.fill("[class='sc-admiralty-input']", formattedDate);
     }
 }
 
-export class ExchangeSetSelectionAssertion{
+export class ExchangeSetSelectionAssertion {
     constructor(readonly selection: ExchangeSetSelectionPageObjects) {
     }
-    
-    async validateProceedButton(){
+
+    async validateProceedButton() {
         expect(await this.selection.proceed.isEnabled()).toBeFalsy();
     }
 
-    async validateDatePicker(){
+    async validateDatePicker() {
         expect(await this.selection.datePicker.isVisible()).toBeFalsy();
     }
 
-    async validateDatePickerIsEmpty(){
+    async validateDatePickerIsEmpty() {
         const date = await this.selection.datePicker.evaluate((element: HTMLInputElement) => element.value);
         expect(date == '').toBeTruthy();
     }
 
-    async validateBaseRadioButtonText(){
+    async validateBaseRadioButtonText() {
         expect(((await this.selection.baseRadioButtonText.innerText())).split('\n')[0].trim() == 'Download all data').toBeTruthy();
     }
 
-    async validateBaseDownloadDescription(){
-        expect((await this.selection.baseRadioButtonText.innerText()).split('\n')[1].trim() =='Select Download all data if you are installing base and all updates for specific ENCs.').toBeTruthy();
+    async validateBaseDownloadDescription() {
+        expect((await this.selection.baseRadioButtonText.innerText()).split('\n')[1].trim() == 'Select Download all data if you are installing base and all updates for specific ENCs or ADMIRALTY Information Overlay (AIO).').toBeTruthy();
     }
 
-    async validateDeltaRadioButtonText(){
-        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[0].trim() =='Download updates').toBeTruthy();
+    async validateDeltaRadioButtonText() {
+        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[0].trim() == 'Download updates').toBeTruthy();
     }
 
-    async validateDeltaDownloadDescription(){
-        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[1].trim() =="Select Download updates to only receive updates for ENCs since your last update. This must be a date within the last 27 days.").toBeTruthy();
+    async validateDeltaDownloadDescription() {
+        expect((await this.selection.deltaRadioButtonText.innerText()).split('\n')[1].trim() == "Select Download updates to only receive updates for ENCs or AIO since your last update. This must be a date within the last 27 days.").toBeTruthy();
     }
 
-    async validateDefaultSelection(){
+    async validateDefaultSelection() {
         const isSelected = await this.selection.deltaRadioButton.evaluate((element: HTMLInputElement) => element.checked);
         expect(isSelected).toBeTruthy();
     }
 
-    async validateMessageForFutureDate(){
+    async validateMessageForFutureDate() {
         await this.selection.warningMessage.click();
         expect(await this.selection.warningMessage.innerText() == 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option').toBeTruthy();
     }
 
-    async validateMessageForPastDate(){   
+    async validateMessageForPastDate() {
         await this.selection.warningMessage.click();
         expect(await this.selection.warningMessage.innerText() == 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option').toBeTruthy();
     }
 
-    async validateHeaderText(text:string){
-       expect((await this.selection.header.innerText())==text).toBeTruthy();
+    async validateHeaderText(text: string) {
+        expect((await this.selection.header.innerText()) == text).toBeTruthy();
     }
 }

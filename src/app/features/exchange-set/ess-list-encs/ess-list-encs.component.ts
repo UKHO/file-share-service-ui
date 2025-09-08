@@ -24,7 +24,7 @@ enum SelectDeselect {
   styleUrls: ['./ess-list-encs.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class EssListEncsComponent implements OnInit , OnDestroy {
+export class EssListEncsComponent implements OnInit, OnDestroy {
   displayLoader: boolean = false;
   addSingleEncRenderFrom: string = 'encList';
   addSingleEncBtnText: string = 'Add ENC';
@@ -69,7 +69,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
       this.essUploadFileService.scsProducts = this.essUploadFileService.scsProductResponse.products;
       this.scsInvalidProduct = this.essUploadFileService.scsProductResponse.productCounts.requestedProductsNotReturned;
     }
-}
+  }
 
   ngOnInit(): void {
     this.maxEncSelectionLimit = Number.parseInt(
@@ -88,23 +88,12 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
     this.selectDeselectText = this.getSelectDeselectText();
     this.showSelectDeselect = this.getSelectDeselectVisibility();
     this.essUploadFileService.exchangeSetDownloadZipType = this.s63OptionValue;
-   
-    if(this.essUploadFileService.aioEncFound){
-      if(this.scsInvalidProduct.length > 0){
-        let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-        this.essUploadFileService.infoMessage = true;
-        this.triggerInfoErrorMessage(true, 'warning', `AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site.<br/> Invalid cells -  ${invalidProducts}.`);
-      }
-      else{
-        this.essUploadFileService.infoMessage = true;
-        this.triggerInfoErrorMessage(true, 'info', 'AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site');
-      }
-     }
-      else if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
-        let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
-        this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProducts}`);
-      }
-      this.isPrivilegedUser = this.essUploadFileService.isPrivilegedUser;
+
+    if (this.scsInvalidProduct && this.scsInvalidProduct.length > 0) {
+      let invalidProducts = this.scsInvalidProduct.map(obj => obj.productName).join(', ');
+      this.triggerInfoErrorMessage(true, 'warning', `Invalid cells -  ${invalidProducts}`);
+    }
+    this.isPrivilegedUser = this.essUploadFileService.isPrivilegedUser;
   }
 
   setEncList() {
@@ -127,28 +116,28 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   }
   handleChange(enc: Product, event?: Event | null) {
     const seletedEncs: Product[] = this.essUploadFileService.getSelectedENCs();
-    this.triggerInfoErrorMessage(false,'info', '');
+    this.triggerInfoErrorMessage(false, 'info', '');
     if (seletedEncs.some((product) => product.productName === enc.productName)) {
       this.essUploadFileService.removeSelectedEncs(enc.productName);
-      this.selectDeselectEncAlert= enc.productName + ' Remove From Selected List';
+      this.selectDeselectEncAlert = enc.productName + ' Remove From Selected List';
     } else if (this.maxEncSelectionLimit > seletedEncs.length) {
       this.essUploadFileService.addSelectedEnc(enc);
-      this.selectDeselectEncAlert= enc.productName + ' Added From Selected List';
+      this.selectDeselectEncAlert = enc.productName + ' Added From Selected List';
     } else {
       const currCheckedElement = (document.querySelector(`ukho-checkbox[aria-label=${enc.productName}] input`) as HTMLElement);
-      if(currCheckedElement){
+      if (currCheckedElement) {
         currCheckedElement.click(); // will uncheck the selected checkbox
       }
-      this.triggerInfoErrorMessage(true,'error', 'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected');
+      this.triggerInfoErrorMessage(true, 'error', 'No more than ' + this.maxEncSelectionLimit + ' ENCs can be selected');
       return;
     }
     this.syncEncsBetweenTables();
     setTimeout(() => {
       const element = document.querySelector(`admiralty-checkbox[aria-label=${enc.productName}] input`) as HTMLElement;
-      if(element && event){
-         element.focus();
+      if (element && event) {
+        element.focus();
       }
-    },5);
+    }, 5);
   }
 
   syncEncsBetweenTables() {
@@ -192,7 +181,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
 
   displaySingleEnc() {
     this.displaySingleEncVal = true;
-    setTimeout(()=>{
+    setTimeout(() => {
       // eslint-disable-next-line max-len
       const encInput = this.elementRef.nativeElement.querySelectorAll('app-ess-add-single-encs .container .addSingleFileSection ukho-textinput input');
       encInput[0].focus();
@@ -201,7 +190,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
 
   exchangeSetCreationResponse(selectedEncList: any[]) {
     this.displayLoader = true;
-  if (selectedEncList != null) {
+    if (selectedEncList != null) {
       this.exchangeSetApiService.exchangeSetCreationResponse(selectedEncList).subscribe((result) => {
         this.displayLoader = false;
         this.exchangeSetDetails = result;
@@ -210,10 +199,10 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
       },
         (error) => {
           this.displayLoader = false;
-          this.triggerInfoErrorMessage(true,'error', 'There has been an error');
+          this.triggerInfoErrorMessage(true, 'error', 'There has been an error');
         }
       );
-   }
+    }
   }
 
   getEstimatedTotalSize() {
@@ -224,7 +213,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
       return '0 MB';
     }
   }
-  
+
   getSelectDeselectText() {
     const selectDeselectText = this.checkMaxEncSelectionAndSelectedEncLength() ? SelectDeselect.deselect : SelectDeselect.select;
     return selectDeselectText;
@@ -240,10 +229,10 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
   selectDeselectAll() {
     this.triggerInfoErrorMessage(false, 'error', '');
     if (!this.checkMaxEncSelectionAndSelectedEncLength() && this.selectDeselectText === SelectDeselect.select) {
-      this.selectDeselectAlert = 'Selected All ENC\'s' ;
+      this.selectDeselectAlert = 'Selected All ENC\'s';
       this.essUploadFileService.addAllSelectedEncs();
     } else {
-      this.selectDeselectAlert = 'DeSelected All ENC\'s' ;
+      this.selectDeselectAlert = 'DeSelected All ENC\'s';
       this.essUploadFileService.clearSelectedEncs();
     }
     this.syncEncsBetweenTables();
@@ -273,7 +262,7 @@ export class EssListEncsComponent implements OnInit , OnDestroy {
 
   scsExchangeSetResponse() {
     if (this.essUploadFileService.exchangeSetDownloadType == 'Delta') {
-      var productVersionRequest : ProductVersionRequest[] = [];
+      var productVersionRequest: ProductVersionRequest[] = [];
       for (let selectedEnc of this.selectedEncList) {
         this.editionNumber = selectedEnc.editionNumber;
         this.updateNumber = Math.min(...selectedEnc.updateNumbers);
