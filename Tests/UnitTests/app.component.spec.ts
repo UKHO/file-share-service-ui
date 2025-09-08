@@ -6,6 +6,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MsalModule, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
+import { ApmService } from '@elastic/apm-rum-angular';
 
 
 describe('AppComponent', () => {
@@ -14,6 +15,7 @@ describe('AppComponent', () => {
   let router: Router;
   let titleService: Title;
   let msalService: MsalService;
+  let apmservice: ApmService
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,10 +32,11 @@ describe('AppComponent', () => {
     titleService = TestBed.inject(Title);
     router = TestBed.inject(Router);
     msalService = TestBed.inject(MsalService);
+    apmservice = TestBed.inject(ApmService)
     });
 
   it('should exist', () => {
-    component = new AppComponent(activatedRoute, router, titleService, msalService);
+    component = new AppComponent(activatedRoute, router, titleService, msalService, apmservice);
     expect(component).toBeDefined();
   })
 

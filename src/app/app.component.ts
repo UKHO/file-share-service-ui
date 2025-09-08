@@ -22,10 +22,10 @@ export class AppComponent implements OnInit {
     private router: Router,
     private titleService: Title,
     private msalService: MsalService,
-    service: ApmService
+    apmservice: ApmService
   ) { 
       // Agent API is exposed through this apm instance
-      const apm = service.init({
+      const apm = apmservice.init({
       serviceName:  AppConfigService.settings['elasticAPM'].ServiceName,
       serverUrl: AppConfigService.settings['elasticAPM'].ServerURL
       })
