@@ -36,10 +36,10 @@ describe('AppComponent', () => {
     // Mock AppConfigService.settings
     (AppConfigService as any).settings = {
       elasticAPM: {
-        ServiceName: 'test-service',
-        ServerURL: 'http://test-url',
-        Environment: 'test',
-        ApiKey: 'test-key'
+        ServiceName: '',
+        ServerURL: '',
+        Environment: '',
+        ApiKey: ''
       }
     };
 
