@@ -56,5 +56,12 @@
     "aioCell": "GB800001",
     "apiUiUrl": "",
     "privilegedUserDomains": []
-  }
+  },
+  "elasticAPM":
+    {
+      "ApiKey": "",
+      "Environment": "",
+      "ServerURL": "",
+      "ServiceName":""
+    }
 }

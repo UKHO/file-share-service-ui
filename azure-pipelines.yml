@@ -149,7 +149,7 @@ stages:
 
 - stage: LiveDeploy
   dependsOn:
-  - QaDeploy
+  - PreProdDeploy
   displayName: Live deploy
   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
   jobs:
