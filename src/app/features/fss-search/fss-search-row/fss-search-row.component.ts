@@ -4,6 +4,7 @@ import { FssSearchRow, RowGrouping, UIGrouping, UIGroupingDetails } from './../.
 
 @Component({
   selector: 'app-fss-search-row',
+  standalone: false,
   templateUrl: './fss-search-row.component.html',
   styleUrls: ['./fss-search-row.component.scss']
 })

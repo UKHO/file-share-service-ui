@@ -11,6 +11,7 @@ import {
   
   @Directive({
     selector: '[ukhoHeaderRowDef]',
+    standalone: false,
     providers: [{ provide: CdkHeaderRowDef, useExisting: HeaderRowDefDirective }],
     inputs: ['columns: ukhoHeaderRowDef'],
   })
@@ -18,6 +19,7 @@ import {
   
   @Directive({
     selector: '[ukhoFooterRowDef]',
+    standalone: false,
     providers: [{ provide: CdkFooterRowDef, useExisting: FooterRowDefDirective }],
     inputs: ['columns: ukhoFooterRowDef'],
   })
@@ -25,6 +27,7 @@ import {
   
   @Directive({
     selector: '[ukhoRowDef]',
+    standalone: false,
     providers: [{ provide: CdkRowDef, useExisting: RowDefDirective }],
     inputs: ['columns: ukhoRowDefColumns'],
   })
@@ -32,6 +35,7 @@ import {
   
   @Component({
     selector: 'ukho-header-row, tr[ukho-header-row]',
+    standalone: false,
     template: CDK_ROW_TEMPLATE,
     // See note on CdkTable for explanation on why this uses the default change detection strategy.
     // tslint:disable-next-line:validate-decorators
@@ -47,6 +51,7 @@ import {
   
   @Component({
     selector: 'ukho-footer-row, tr[ukho-footer-row]',
+    standalone: false,
     template: CDK_ROW_TEMPLATE,
     // See note on CdkTable for explanation on why this uses the default change detection strategy.
     // tslint:disable-next-line:validate-decorators
@@ -62,6 +67,7 @@ import {
   
   @Component({
     selector: 'ukho-row, tr[ukho-row]',
+    standalone: false,
     template: CDK_ROW_TEMPLATE,
     // See note on CdkTable for explanation on why this uses the default change detection strategy.
     // tslint:disable-next-line:validate-decorators

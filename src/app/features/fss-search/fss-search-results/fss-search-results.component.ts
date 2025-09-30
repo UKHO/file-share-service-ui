@@ -9,6 +9,7 @@ import { SilentRequest } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-fss-search-results',
+  standalone: false,
   templateUrl: './fss-search-results.component.html',
   styleUrls: ['./fss-search-results.component.scss']
 })

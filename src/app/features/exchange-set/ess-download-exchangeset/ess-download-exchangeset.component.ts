@@ -10,6 +10,7 @@ import { EssInfoErrorMessageService } from '../../../core/services/ess-info-erro
 
 @Component({
   selector: 'app-ess-download-exchangeset',
+  standalone: false,
   templateUrl: './ess-download-exchangeset.component.html',
   styleUrls: ['./ess-download-exchangeset.component.scss']
 })

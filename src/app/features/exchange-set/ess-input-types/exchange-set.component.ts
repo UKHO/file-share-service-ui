@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-exchange-set',
+  standalone: false,
   templateUrl: './exchange-set.component.html',
   styleUrls: ['./exchange-set.component.scss'],
 })

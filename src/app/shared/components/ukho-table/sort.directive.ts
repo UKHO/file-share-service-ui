@@ -4,6 +4,7 @@ import { SortState } from './tables.types';
 
 @Directive({
   selector: '[ukhoSort]',
+  standalone: false,
 })
 export class SortDirective {
   @Output() readonly sortChange = new EventEmitter<SortState>();

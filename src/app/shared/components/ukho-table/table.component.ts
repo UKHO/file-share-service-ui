@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 
 @Component({
   selector: 'ukho-table, table[ukho-table]',
+  standalone: false,
   exportAs: 'ukhoTable',
   template: CDK_TABLE_TEMPLATE,
   styleUrls: ['./table.component.scss'],

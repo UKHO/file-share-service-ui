@@ -5,6 +5,7 @@ import { EssInfoErrorMessageService, InfoErrorMessage, RequestedProductsNotInExc
 import { ViewportScroller } from '@angular/common';
 @Component({
   selector: 'app-ess-info-error-message',
+  standalone: false,
   templateUrl: './ess-info-error-message.component.html',
   styleUrls: ['./ess-info-error-message.component.scss'],
   encapsulation: ViewEncapsulation.None

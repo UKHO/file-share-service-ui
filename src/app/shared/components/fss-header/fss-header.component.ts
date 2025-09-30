@@ -11,6 +11,7 @@ import { EssUploadFileService } from '../../../core/services/ess-upload-file.ser
 
 @Component({
   selector: 'app-fss-header',
+  standalone: false,
   templateUrl: './fss-header.component.html',
   styleUrls: ['./fss-header.component.scss']
 })

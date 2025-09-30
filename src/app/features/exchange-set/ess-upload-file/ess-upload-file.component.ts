@@ -13,6 +13,7 @@ import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-ess-upload-file',
+  standalone: false,
   templateUrl: './ess-upload-file.component.html',
   styleUrls: ['./ess-upload-file.component.scss'],
 })

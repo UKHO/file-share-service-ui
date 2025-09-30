@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-fss-footer',
+  standalone: false,
   templateUrl: './fss-footer.component.html',
   styleUrls: ['./fss-footer.component.scss']
 })
