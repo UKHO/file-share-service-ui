@@ -24,12 +24,13 @@ import { of } from 'rxjs';
 
 describe('FssAdvancedSearchComponent', () => {
   let component: FssAdvancedSearchComponent;
+  let fixture: any;  //Rhz new
   let fileShareApiService: FileShareApiService;  
   let searchService: FssSearchService;
   let msalService: MsalService;
   let fssSearchHelperService: FssSearchHelperService;
   let fssSearchValidatorService: FssSearchValidatorService;
-  let elementRef: ElementRef;
+  //Rhz let elementRef: ElementRef;
   let searchGroupingService: FssSearchGroupingService;
   let analyticsService: AnalyticsService;
   let popularSearchService: FssPopularSearchService;
@@ -72,17 +73,31 @@ describe('FssAdvancedSearchComponent', () => {
     searchGroupingService = TestBed.inject(FssSearchGroupingService);
     analyticsService = TestBed.inject(AnalyticsService);
     popularSearchService = TestBed.inject(FssPopularSearchService);
-      
-    component = new FssAdvancedSearchComponent(searchService, fileShareApiService, elementRef, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService, msalService);
+
+    //Rnz new
+    fixture = TestBed.createComponent(FssAdvancedSearchComponent);
+    component = fixture.componentInstance;
+    //Rhz new end
+    
+    // rhz component = new FssAdvancedSearchComponent(searchService, fileShareApiService, elementRef, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService, msalService);
     component.observablePopularSearch = of(null);
     component.observableAdvancedSearchTokenRefresh = of();
+
+    fixture.detectChanges(); //Rhz new
   });
 
+  //Rnz new
   it('should create', () => {
-    const fixture = TestBed.createComponent(FssAdvancedSearchComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
+  //Rhz new end
+
+  //Rhz replaced by above
+  //it('should create', () => {
+  //  const fixture = TestBed.createComponent(FssAdvancedSearchComponent);
+  //  const app = fixture.debugElement.componentInstance;
+  //  expect(app).toBeTruthy();
+  //});
 
   test('should return datatype as "attribute" when UserAttribute is passed', () => {
     component.ngOnInit();
