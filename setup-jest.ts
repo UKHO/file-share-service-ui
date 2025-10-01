@@ -1,5 +1,6 @@
 import 'jest-preset-angular/setup-jest.mjs';
 import crypto from 'crypto';
+import { webcrypto } from 'node:crypto';
 
 Object.defineProperty(window, 'CSS', { value: null });
 Object.defineProperty(window, 'getComputedStyle', {
@@ -26,8 +27,16 @@ Object.defineProperty(global.self, 'crypto', {
   }
 });
 
-Object.defineProperty(globalThis, 'crypto', {
-  value: {
-    getRandomValues: (arr: any) => crypto.randomBytes(arr.length)
-  }
-});
+//Rhz : replaced by webcrypto below, remove later
+//Object.defineProperty(globalThis, 'crypto', {
+//  value: {
+//    getRandomValues: (arr: any) => crypto.randomBytes(arr.length)
+//  }
+//});
+
+if (!(globalThis as any).crypto || !(globalThis as any).crypto.subtle) {
+  Object.defineProperty(globalThis, 'crypto', {
+    value: webcrypto,
+    configurable: true
+  });
+}
