@@ -47,12 +47,12 @@
               </admiralty-autocomplete>
             </td>
             <td width="20%">
-                <admiralty-select class="no-labels" id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
+                <select class="no-labels" id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (admiraltyChange)="onOperatorChange($event, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "
                      value="{{Operator.value}}">{{Operator.text}}</option>
                   
-                </admiralty-select>
+                </select>
             </td>
             <td class="admiralty-valueTD" width="35.5%">
                 <admiralty-input id="fss-querytable-value-{{i+1}}" [(ngModel)]="fssSearchRow.value" 
