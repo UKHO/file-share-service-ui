@@ -25,7 +25,7 @@
                             aria-label="UnGroup selected search rows"><i class='icon-group-color fa-solid fa-xmark fa-1x'></i></button>                                            
                 </td>
             </ng-container>
-            <td width="10%" class="select-adjust">
+            <td width="10%">
                 <admiralty-select class="no-labels" id="fss-querytable-joinoperator-{{i+1}}" *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
                         {{joinOperator.text}}</option>
@@ -39,7 +39,7 @@
                 <admiralty-type-ahead-item *ngFor="let item of fssSearchRow.fields"
                                            [value]="item.text"></admiralty-type-ahead-item>
               </admiralty-type-ahead>-->
-              <admiralty-autocomplete id="fss-querytable-field-{{i+1}}" class="dropdown-left"
+              <admiralty-autocomplete id="fss-querytable-field-{{i+1}}"
                                       [value] = "fssSearchRow.fieldValue"
                                       (admiraltyChange)="onFieldChange($event, fssSearchRow.rowId)">
                 <admiralty-autocomplete-option *ngFor="let item of fssSearchRow.fields"
@@ -48,10 +48,10 @@
             </td>
             <td width="20%">
                 <admiralty-select class="no-labels" id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
-                (admiraltyChange)="onOperatorChange($event, fssSearchRow.rowId)">
+                    (admiraltyChange)="onOperatorChange($event, fssSearchRow.rowId)">
+                    [attr.data-field]="fssSearchRow.fieldValue"
                     <option *ngFor="let Operator of fssSearchRow.operators "
-                     value="{{Operator.value}}">{{Operator.text}}</option>
-                  
+                      [value]="{{Operator.value}}">{{Operator.text}}</option>
                 </admiralty-select>
             </td>
             <td class="admiralty-valueTD" width="35.5%">
