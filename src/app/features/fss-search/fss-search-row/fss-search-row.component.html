@@ -46,7 +46,7 @@
                                            [value]="item.text"></admiralty-autocomplete-option>
               </admiralty-autocomplete>
             </td>
-            <td width="20%" class="select-adjust">
+            <td width="20%">
                 <admiralty-select class="no-labels" id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (admiraltyChange)="onOperatorChange($event, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "
