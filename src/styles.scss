@@ -2,7 +2,10 @@
 @use '@fortawesome/fontawesome-free/scss/solid';
 @use '@fortawesome/fontawesome-free/scss/brands';
 
-@import '~@ukho/admiralty-core/styles/core.css';
+//@import '~@ukho/admiralty-core/styles/core.css';
+/* styles.css */
+@import "@ukho/admiralty-core/styles/admiralty.bundle.css";
+@import "@ukho/admiralty-core/themes/default.css";
 
 .skip-to-content-link {
 	left: 47%;
@@ -727,13 +730,13 @@ app-root {
 }
 
 .headerEssSteps,
-.headerEssSteps > span{
-	display: block;
-	font-family: JohnstonITC, Helvetica, sans-serif;
-	color: #09315b;
-	font-weight: 400;
-	font-size: 48px;
-	line-height: 60px;
-	margin: 0 0 30px;
-  }
+.headerEssSteps > span {
+  display: block;
+  font-family: JohnstonITC, Helvetica, sans-serif;
+  color: #09315b;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 60px;
+  margin: 0 0 30px;
+}
 
