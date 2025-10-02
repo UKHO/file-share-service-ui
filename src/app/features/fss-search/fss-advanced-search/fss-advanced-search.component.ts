@@ -211,6 +211,7 @@ export class FssAdvancedSearchComponent implements OnInit {
         }
       }, 0);
     }
+    console.log('fssSearchRows: ', this.fssSearchRows);  //Rhz
 
     this.setupGrouping();
     this.analyticsService.SearchRowAdded();
@@ -363,7 +364,7 @@ export class FssAdvancedSearchComponent implements OnInit {
 
   onFieldChanged(changedField: any) {
     var changedFieldRow = this.fssSearchHelperService.onFieldChanged(changedField, this.fields, this.operators, this.fssSearchRows);
-    console.log('changedFieldRow operators: ', changedFieldRow?.operators);
+    console.log('changedFieldRow operators: ', changedFieldRow?.operators); //Rhz
   }
 
   goToSearchEditor() {

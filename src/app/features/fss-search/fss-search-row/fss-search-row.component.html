@@ -39,7 +39,7 @@
                 <admiralty-type-ahead-item *ngFor="let item of fssSearchRow.fields"
                                            [value]="item.text"></admiralty-type-ahead-item>
               </admiralty-type-ahead>-->
-              <admiralty-autocomplete id="fss-querytable-field-{{i+1}}"
+              <admiralty-autocomplete id="fss-querytable-field-{{i+1}}" class="dropdown-left"
                                       [value] = "fssSearchRow.fieldValue"
                                       (admiraltyChange)="onFieldChange($event, fssSearchRow.rowId)">
                 <admiralty-autocomplete-option *ngFor="let item of fssSearchRow.fields"
@@ -47,12 +47,12 @@
               </admiralty-autocomplete>
             </td>
             <td width="20%">
-                <select class="no-labels" id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
+                <admiralty-select class="no-labels" id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (admiraltyChange)="onOperatorChange($event, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "
                      value="{{Operator.value}}">{{Operator.text}}</option>
                   
-                </select>
+                </admiralty-select>
             </td>
             <td class="admiralty-valueTD" width="35.5%">
                 <admiralty-input id="fss-querytable-value-{{i+1}}" [(ngModel)]="fssSearchRow.value" 
