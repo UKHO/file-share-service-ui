@@ -363,6 +363,7 @@ export class FssAdvancedSearchComponent implements OnInit {
 
   onFieldChanged(changedField: any) {
     var changedFieldRow = this.fssSearchHelperService.onFieldChanged(changedField, this.fields, this.operators, this.fssSearchRows);
+    console.log('changedFieldRow operators: ', changedFieldRow?.operators);
   }
 
   goToSearchEditor() {

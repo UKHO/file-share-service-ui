@@ -45,7 +45,6 @@ export class FssSearchRowComponent implements OnChanges {
 
   onFieldChange(eventData: Event, rowId: number) {
     const fieldData = eventData as CustomEvent<string>;
-    console.log('Field changed to: ', fieldData.detail);
     this.onFieldChanged.emit({ currentFieldValue: fieldData.detail, rowId: rowId });
   }
 
