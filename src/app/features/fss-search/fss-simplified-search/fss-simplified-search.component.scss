@@ -29,9 +29,16 @@
 		margin-left: 70px;
     }
 }
+
+.simplifideSearchBtn button.primary {
+  margin-top: 28px;
+  height: 55px;
+}
+
 .advancedSearchLink {
   display: flex;
   justify-content: flex-end;
+  width:75%
 }
 
 .switchToESS{
