@@ -63,7 +63,9 @@ export class FssSearchHelperService {
   getFieldValue(fieldText: string, fields: Field[]) {
     console.log('Get Field Value'); //Rhz
     console.log('Field Text', fieldText); //Rhz
-    let testResult: any = fields.find(f => f.text === fieldText);
+    let objectVal: Field = fields[0];
+    let testResult: any = fields.find(f => f.text === objectVal.text);
+    console.log('Test object', objectVal); //Rhz
     console.log('Test Result', testResult); //Rhz
     const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
     //const selectedFieldValue: any = "FileName";
