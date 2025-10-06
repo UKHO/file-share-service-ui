@@ -64,14 +64,21 @@ export class FssSearchHelperService {
    
     console.log('Field Parameter', fieldText); //Rhz
     
-    let objectVal: Field = fields[0];
-    console.log('Test Field ', objectVal.text); //Rhz
+    const newField: Field = {
+        text: fieldText,
+        value: fieldText,
+        dataType: 'string',
+        type: ''
+    };
+   
+
+    console.log('Test Field ', newField.text); //Rhz
 
 
     //let testResult: any = fields.find(f => f.text === objectVal.text);
     //console.log('Test object', objectVal); //Rhz
     //console.log('Test Result', testResult); //Rhz
-    const selectedFieldValue: any = fields.find(f => f.text == fieldText)?.value!;
+    const selectedFieldValue: any = fields.find(f => f.text === newField.text)?.value!;
     console.log('Selected Field Value', selectedFieldValue); //Rhz
     return selectedFieldValue;
   }
