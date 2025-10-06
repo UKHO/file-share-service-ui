@@ -65,12 +65,13 @@ export class FssSearchHelperService {
     console.log('Field Parameter', fieldText); //Rhz
     
     const newField: Field = {
-        text: fieldText,
+        text: '',
         value: fieldText,
         dataType: 'string',
         type: ''
     };
-   
+
+    newField.text = fieldText;
 
     console.log('Test Field ', newField.text); //Rhz
 
