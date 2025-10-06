@@ -80,9 +80,10 @@ export class FssSearchHelperService {
 
   getFieldValue(field: string | Field, fields: Field[])  {
     const fieldText = typeof field === 'string' ? field : field.text;
-    //const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
-    const match = fields.find(f => f.text === fieldText);
-    return match?.value;
+    const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
+    return selectedFieldValue;
+    //const match = fields.find(f => f.text === fieldText);
+    //return match?.value;
   }
 
 
