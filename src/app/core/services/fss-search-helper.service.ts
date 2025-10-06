@@ -11,15 +11,18 @@ export class FssSearchHelperService {
 
   onFieldChanged(changedField:any, fields: Field[], operators: Operator[], fssSearchRows: FssSearchRow[]){
     // getFieldDataType
+    console.log('Helper onFieldChange'); //Rhz
+    console.log('Changed Field', changedField); //Rhz
+    console.log('Fields', fields); //Rhz
     var changedFieldRow = this.getSearchRow(changedField.rowId, fssSearchRows);
     var changedFieldValue = this.getFieldValue(changedField.currentFieldValue, fields);
     changedFieldRow!.selectedField = changedFieldValue;
 
     changedFieldRow!.value = "";
-
+    console.log('Changed Field Value', changedFieldValue); //Rhz
     var fieldDataType = this.getFieldDataType(changedFieldValue, fields);
     // getFieldRow
-    
+    console.log('Change Field Row', changedFieldRow!); //Rhz
     if(fieldDataType && changedFieldRow!.value){
       return changedFieldRow;
     }
