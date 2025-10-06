@@ -60,23 +60,31 @@ export class FssSearchHelperService {
     return fssSearchRows.find(fsr => fsr.rowId === rowId);
   }
 
-  getFieldValue(fieldText: string, fields: Field[]) {
-    console.log('Get Field Value'); //Rhz
-    console.log('Field Text', fieldText); //Rhz
-    let objectVal: Field = fields[0];
-    let testResult: any = fields.find(f => f.text === objectVal.text);
-    if (fieldText === objectVal.text) {
-      console.log('|' + fieldText + '| match with |' + objectVal.text + '|'); //Rhz)
-    } else {
-      console.log('|' + fieldText + '| did not match with |' + objectVal.text + '|'); //Rhz)
-    }
-    console.log('Test object', objectVal); //Rhz
-    console.log('Test Result', testResult); //Rhz
-    const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
-    //const selectedFieldValue: any = "FileName";
-    console.log('Selected Field Value', selectedFieldValue); //Rhz
-    return selectedFieldValue;
+  //getFieldValue(fieldText: string, fields: Field[]) {
+  //  console.log('Get Field Value'); //Rhz
+  //  console.log('Field Text', fieldText); //Rhz
+  //  let objectVal: Field = fields[0];
+  //  let testResult: any = fields.find(f => f.text === objectVal.text);
+  //  if (fieldText === objectVal.text) {
+  //    console.log('|' + fieldText + '| match with |' + objectVal.text + '|'); //Rhz)
+  //  } else {
+  //    console.log('|' + fieldText + '| did not match with |' + objectVal.text + '|'); //Rhz)
+  //  }
+  //  console.log('Test object', objectVal); //Rhz
+  //  console.log('Test Result', testResult); //Rhz
+  //  const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
+  //  //const selectedFieldValue: any = "FileName";
+  //  console.log('Selected Field Value', selectedFieldValue); //Rhz
+  //  return selectedFieldValue;
+  //}
+
+  getFieldValue(field: string | Field, fields: Field[]): string | undefined {
+    const fieldText = typeof field === 'string' ? field : field.text;
+    //const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
+    const match = fields.find(f => f.text === fieldText);
+    return match?.value;
   }
+
 
   setValueFormControl(fieldDataType: string, changedFieldRow: FssSearchRow) {
     if (fieldDataType === 'number') {
