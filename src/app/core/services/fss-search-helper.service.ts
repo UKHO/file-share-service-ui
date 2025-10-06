@@ -64,6 +64,7 @@ export class FssSearchHelperService {
   getFieldValue(field: string | Field, fields: Field[]) {
     const fieldText = typeof field === 'string' ? field : field.text;
     console.log('Get Field Value'); //Rhz
+    console.log('Field Parameter', field); //Rhz
     console.log('Field Text', fieldText); //Rhz
     let objectVal: Field = fields[0];
     let testResult: any = fields.find(f => f.text === objectVal.text);
