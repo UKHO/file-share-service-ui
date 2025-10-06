@@ -103,6 +103,7 @@ export class FssAdvancedSearchComponent implements OnInit {
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
+    console.log('Operators from init: ', this.operators); //Rhz
     if (!localStorage['batchAttributes']) {
       this.displayLoader = true;
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {

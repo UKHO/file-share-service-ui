@@ -26,6 +26,8 @@ export class FssSearchHelperService {
     // SetDefaultValueFormControl based on fieldDataType
     this.setValueFormControl(fieldDataType, changedFieldRow!);
     console.log('About to access filter operators'); //Rhz
+    console.log('Field Type', fieldDataType); //Rhz
+    console.log('Operators', operators); //Rhz
     // getFilteredOperators
     changedFieldRow!.operators = this.getFilteredOperators(fieldDataType, operators);
     console.log('Filter operators: ', changedFieldRow!.operators  ); //Rhz
