@@ -64,7 +64,10 @@ export class FssSearchHelperService {
    
     console.log('Field Parameter', fieldText); //Rhz
     
-    //let objectVal: Field = fields[0];
+    let objectVal: Field = fields[0];
+    console.log('Test Field ', objectVal.text); //Rhz
+
+
     //let testResult: any = fields.find(f => f.text === objectVal.text);
     //console.log('Test object', objectVal); //Rhz
     //console.log('Test Result', testResult); //Rhz
