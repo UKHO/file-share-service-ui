@@ -65,6 +65,11 @@ export class FssSearchHelperService {
     console.log('Field Text', fieldText); //Rhz
     let objectVal: Field = fields[0];
     let testResult: any = fields.find(f => f.text === objectVal.text);
+    if (fieldText === objectVal.text) {
+      console.log('|' + fieldText + '| match with |' + objectVal.text + '|'); //Rhz)
+    } else {
+      console.log('|' + fieldText + '| did not match with |' + objectVal.text + '|'); //Rhz)
+    }
     console.log('Test object', objectVal); //Rhz
     console.log('Test Result', testResult); //Rhz
     const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
