@@ -60,18 +60,15 @@ export class FssSearchHelperService {
     return fssSearchRows.find(fsr => fsr.rowId === rowId);
   }
 
-  //getFieldValue(fieldText: string, fields: Field[]) {
-  getFieldValue(field: string, fields: Field[]) {
-    let fieldText: string = field;
-    console.log('Field Parameter', field); //Rhz
-    console.log('Field Text', fieldText); //Rhz
-
+  getFieldValue(fieldText: string, fields: Field[]) {
+   
+    console.log('Field Parameter', fieldText); //Rhz
     
     //let objectVal: Field = fields[0];
     //let testResult: any = fields.find(f => f.text === objectVal.text);
     //console.log('Test object', objectVal); //Rhz
     //console.log('Test Result', testResult); //Rhz
-    const selectedFieldValue: any = fields.find(f => f.text === fieldText.valueOf())?.value!;
+    const selectedFieldValue: any = fields.find(f => f.text == fieldText)?.value!;
     console.log('Selected Field Value', selectedFieldValue); //Rhz
     return selectedFieldValue;
   }
