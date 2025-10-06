@@ -61,8 +61,8 @@ export class FssSearchHelperService {
   }
 
   //getFieldValue(fieldText: string, fields: Field[]) {
-  getFieldValue(field: string | Field, fields: Field[]) {
-    const fieldText = typeof field === 'string' ? field : field.text;
+  getFieldValue(field: string, fields: Field[]) {
+    let fieldText : string = typeof field === 'string' ? field : '';
     console.log('Get Field Value'); //Rhz
     console.log('Field Parameter', field); //Rhz
     console.log('Field Text', fieldText); //Rhz
