@@ -64,7 +64,7 @@ export class FssSearchHelperService {
     console.log('Get Field Value'); //Rhz
     console.log('Field Text', fieldText); //Rhz
     //const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
-    const selectedFieldValue: any = "$batch(POD Version)";
+    const selectedFieldValue: any = "$batch(ProductType)";
     console.log('Selected Field Value', selectedFieldValue); //Rhz
     return selectedFieldValue;
   }
