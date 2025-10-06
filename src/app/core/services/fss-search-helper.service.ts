@@ -63,22 +63,15 @@ export class FssSearchHelperService {
   //getFieldValue(fieldText: string, fields: Field[]) {
   getFieldValue(field: string, fields: Field[]) {
     let fieldText: string = field;
-    console.log('Get Field Value'); //Rhz
     console.log('Field Parameter', field); //Rhz
     console.log('Field Text', fieldText); //Rhz
-    let objectVal: Field = fields[0];
-    let objval2: Field = fields[1];
-    objval2.text = fieldText;
-    let testResult: any = fields.find(f => f.text === objectVal.text);
-    if (objval2.text === objectVal.text) {
-      console.log('|' + objval2.text + '| match with |' + objectVal.text + '|'); //Rhz)
-    } else {
-      console.log('|' + objval2.text + '| did not match with |' + objectVal.text + '|'); //Rhz)
-    }
-    console.log('Test object', objectVal); //Rhz
-    console.log('Test Result', testResult); //Rhz
-    const selectedFieldValue: any = fields.find(f => f.text === objval2.text)?.value!;
-    //const selectedFieldValue: any = "FileName";
+
+    
+    //let objectVal: Field = fields[0];
+    //let testResult: any = fields.find(f => f.text === objectVal.text);
+    //console.log('Test object', objectVal); //Rhz
+    //console.log('Test Result', testResult); //Rhz
+    const selectedFieldValue: any = fields.find(f => f.text === fieldText.valueOf())?.value!;
     console.log('Selected Field Value', selectedFieldValue); //Rhz
     return selectedFieldValue;
   }

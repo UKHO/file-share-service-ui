@@ -103,7 +103,6 @@ export class FssAdvancedSearchComponent implements OnInit {
   ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
-    console.log('Operators from init: ', this.operators); //Rhz
     if (!localStorage['batchAttributes']) {
       this.displayLoader = true;
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
@@ -212,7 +211,6 @@ export class FssAdvancedSearchComponent implements OnInit {
         }
       }, 0);
     }
-    console.log('fssSearchRows: ', this.fssSearchRows);  //Rhz
 
     this.setupGrouping();
     this.analyticsService.SearchRowAdded();
@@ -364,9 +362,7 @@ export class FssAdvancedSearchComponent implements OnInit {
   };
 
   onFieldChanged(changedField: any) {
-    console.log('Incoming operators on change: ', this.operators); //Rhz
     var changedFieldRow = this.fssSearchHelperService.onFieldChanged(changedField, this.fields, this.operators, this.fssSearchRows);
-    console.log('changedFieldRow operators: ', changedFieldRow?.operators); //Rhz
   }
 
   goToSearchEditor() {
