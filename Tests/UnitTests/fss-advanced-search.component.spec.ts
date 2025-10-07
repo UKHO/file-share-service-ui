@@ -24,7 +24,7 @@ import { of } from 'rxjs';
 
 describe('FssAdvancedSearchComponent', () => {
   let component: FssAdvancedSearchComponent;
-  let fixture: any;  //Rhz new
+  let fixture: any;  //Rhz new for version 19
   let fileShareApiService: FileShareApiService;  
   let searchService: FssSearchService;
   let msalService: MsalService;

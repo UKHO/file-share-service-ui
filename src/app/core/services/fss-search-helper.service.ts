@@ -11,32 +11,27 @@ export class FssSearchHelperService {
 
   onFieldChanged(changedField:any, fields: Field[], operators: Operator[], fssSearchRows: FssSearchRow[]){
     // getFieldDataType
-    console.log('Helper onFieldChange'); //Rhz
-    console.log('Changed Field', changedField); //Rhz
-    console.log('Fields', fields); //Rhz
     var changedFieldRow = this.getSearchRow(changedField.rowId, fssSearchRows);
-    var changedFieldValue = this.getFieldValue(changedField.currentFieldValue, fields);
+
+    //Coersion now required as changedField?.currentFieldValue can be of type string or object
+    const fieldTextValue: string = typeof changedField?.currentFieldValue === "string" ?
+      changedField?.currentFieldValue : changedField?.currentFieldValue.value;
+
+    var changedFieldValue = this.getFieldValue(fieldTextValue, fields);
     changedFieldRow!.selectedField = changedFieldValue;
 
     changedFieldRow!.value = "";
-    console.log('Changed Field Value', changedFieldValue); //Rhz
     var fieldDataType = this.getFieldDataType(changedFieldValue, fields);
     // getFieldRow
-    console.log('Change Field Row', changedFieldRow!); //Rhz
     if(fieldDataType && changedFieldRow!.value){
       return changedFieldRow;
     }
     // SetDefaultValueFormControl based on fieldDataType
     this.setValueFormControl(fieldDataType, changedFieldRow!);
-    console.log('About to access filter operators'); //Rhz
-    console.log('Field Type', fieldDataType); //Rhz
-    console.log('Operators', operators); //Rhz
     // getFilteredOperators
     changedFieldRow!.operators = this.getFilteredOperators(fieldDataType, operators);
-    console.log('Filter operators: ', changedFieldRow!.operators  ); //Rhz
     // getValueType
     changedFieldRow!.valueType = this.getValueType(fieldDataType);
-    console.log('Filter value: ', changedFieldRow!.valueType  ); //Rhz
 
     // setDefault
     if (!this.isOperatorExist(changedFieldRow!)) {
@@ -61,28 +56,7 @@ export class FssSearchHelperService {
   }
 
   getFieldValue(fieldText: string, fields: Field[]) {
-   
-    console.log('Field Parameter', fieldText); //Rhz
-    
-    const newField: Field = {
-        text: '',
-        value: fieldText,
-        dataType: 'string',
-        type: ''
-    };
-    newField.text = fieldText;
-
-    console.log('Test Field ', newField.text.valueOf()); //Rhz
-
-    const testField = fields[0];
-    testField.text = fieldText;
-    console.log('Test2 Field ', testField.text); //Rhz
-
-    //let testResult: any = fields.find(f => f.text === objectVal.text);
-    //console.log('Test object', objectVal); //Rhz
-    //console.log('Test Result', testResult); //Rhz
-    const selectedFieldValue: any = fields.find(f => f.text === testField.text)?.value!;
-    console.log('Selected Field Value', selectedFieldValue); //Rhz
+    const selectedFieldValue: any = fields.find(f => f.text === fieldText)?.value!;
     return selectedFieldValue;
   }
 
