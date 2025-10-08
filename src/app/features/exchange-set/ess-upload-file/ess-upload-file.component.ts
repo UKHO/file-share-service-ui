@@ -33,7 +33,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(private essUploadFileService: EssUploadFileService,
     private route: Router, private essInfoErrorMessageService: EssInfoErrorMessageService,
     private scsProductInformationApiService: ScsProductInformationApiService, private msalService: MsalService,
-    private _elementRef?: ElementRef,
+    private _elementRef?: ElementRef
   ) {
     this.maxEncsLimit = AppConfigService.settings['essConfig'].MaxEncLimit;
     this.maxEncSelectionLimit = AppConfigService.settings['essConfig'].MaxEncSelectionLimit;
@@ -46,6 +46,11 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit(): void {
     this.triggerInfoErrorMessage(false, 'info', '');
     this.essUploadFileService.infoMessage = false;
+    
+  }
+
+  fileValue() {
+    return this.encFile ? this.encFile.name : 'Click to choose a file or drag it';
   }
 
   ngAfterViewInit(): void {
@@ -115,10 +120,17 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   addChooseFileButtonAttribute() {
-    let choosefile_input = this._elementRef?.nativeElement.querySelector('#file-upload input[type="file"]');
-    let choosefile_label = this._elementRef?.nativeElement.querySelector('#file-upload label');
-    choosefile_label?.setAttribute('id', 'chooseFileLabel');
-    choosefile_input?.setAttribute('aria-labelledby', 'uploadExplanationText chooseFileLabel');
+    console.log('addChooseFileButtonAttribute does nothing at the moment'); //Rhz
+    //let choosefile_input = this._elementRef?.nativeElement.querySelector('#file-upload input[type="file"]');
+    //let choosefile_input = this._elementRef?.nativeElement.querySelector('#file-upload');
+    //let choosefile_label = this._elementRef?.nativeElement.querySelector('#file-upload label');
+    //console.log('choosefile_input', choosefile_input);
+    //console.log('choosefile_label', choosefile_label);
+    //choosefile_label?.setAttribute('id', 'chooseFileLabel');
+    //choosefile_input?.setAttribute('aria-labelledby', 'uploadExplanationText chooseFileLabel');
+    //console.log('choosefile_input', choosefile_input);
+    //console.log('choosefile_label', choosefile_label);
+    
   }
 
   isInvalidEncFile(encFile: File) {
