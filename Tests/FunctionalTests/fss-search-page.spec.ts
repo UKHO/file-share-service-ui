@@ -15,7 +15,9 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
     await page.waitForTimeout(2000);
-    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
+    var asLink = await page.getByTestId('advancedSearchLinkId'); //rhz
+    await asLink.click(); //rhz
+    //await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
   });
 
   test('Does it display "Simplified Search" link on advanced Search page', async ({ page }) => {
