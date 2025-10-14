@@ -15,8 +15,7 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
     await page.waitForTimeout(2000);
-    var asLink = await page.getByTestId('advancedSearchLinkId'); //rhz
-    await asLink.click(); //rhz
+    await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click(); //rhz
     //await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
   });
 

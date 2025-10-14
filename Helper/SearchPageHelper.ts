@@ -106,17 +106,19 @@ export async function InsertSearchText(page: Page, searchBatchAttribute: string)
 export async function ExpectAllResultsHaveBatchUserAttValue(
   page: Page, preciseValue: string): Promise<void> {
 
-  await ExpectSelectionsAreEqual(page,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+  await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector, preciseValue.toLowerCase());  
+  //await ExpectSelectionsAreEqual(page,
+  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
+  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
 }
 
 export async function ExpectAllResultsContainBatchUserAttValue(
   page: Page, containsValue: string): Promise<void> {
 
-  await ExpectSelectionsAreEqual(page,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
+  await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector, containsValue.toLowerCase()); 
+  //await ExpectSelectionsAreEqual(page,
+  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
+  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAttValue(
@@ -128,9 +130,11 @@ export async function ExpectAllResultsContainAnyBatchUserAttValue(
     .map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
     .join(' or ');
 
-  await ExpectSelectionsAreEqual(page,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
+   await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector,  tdPredicate);  
+
+  //await ExpectSelectionsAreEqual(page,
+  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
+  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
@@ -139,7 +143,7 @@ export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
   expect(containsOneOf.length).toBeTruthy();
 
   await ExpectSelectionsAreEqualforBatchAndFile(page,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
+    `//table[@class='${fssSearchPageObjectsConfig.attributeTableSelector}']`,  //rhz
     `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
     containsOneOf
   );
@@ -201,16 +205,24 @@ export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
 
 
 
-async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {
+async function ExpectSelectionsAreEqual(page: Page, selector: string, condition: string): Promise<void> {
   await page.waitForTimeout(3000);
   //  count the result rows
-  const resultCount = await page.$$eval(tablePath, matches => matches.length);
+  //var tablePath = "//table[@class='attribute-table sc-admiralty-card']"; //rhz
+  //const resultCount = await page.$$eval(tablePath, matches => matches.length);
+  //"table.attribute-table"
+  const resultCount = await page.locator(selector).count(); //rhz
 
   // fail if there are no matching selections
   expect(resultCount).toBeTruthy();
 
+  //rhz new
+  const tables = page.locator(selector);
+  const withValueCount = await tables.filter({ has: page.locator('td', {hasText:condition})}).count();
+  //rhz new end
+
   // count the result rows with the attribute value
-  const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
+  //const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
 
   // assert all the resulting batches have the attribute value
   expect(withValueCount).toEqual(resultCount);
@@ -260,24 +272,31 @@ export async function GetTotalResultCount(page: Page): Promise<number> {
 
 export async function GetCountOfBatchRows(page: Page): Promise<number> {
   //  count the result rows
-  return await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
+  //return await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
+  return await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count(); //rhz
 }
 
 export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumnName: string, tablecloumnValue: string): Promise<void> {
 
   while (true) {
     //count the result rows
-    const resultCount = await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
+    //const resultCount = await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
+    const resultCount = await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count(); //rhz
 
     //fail if there are no matching selections
     expect(resultCount).toBeTruthy();
 
     let attributeFieldCount = 0;
     for (let rc = 0; rc < resultCount; rc++) {
-      const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//th`
-      let colnum = await GetColumnNumber(page, tablepath, tablecloumnName);
-      expect(await page.locator(`(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//td[${colnum}]`).textContent()).toEqual(tablecloumnValue);
-      attributeFieldCount = attributeFieldCount + 1;
+      //const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//th`
+
+      //let colnum = await GetColumnNumber(page, tablepath, tablecloumnName);
+      //expect(await page.locator(`(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//td[${colnum}]`).textContent()).toEqual(tablecloumnValue);
+      //attributeFieldCount = attributeFieldCount + 1;
+
+      const table = page.locator(fssSearchPageObjectsConfig.attributeTableSelector).nth(rc);
+      const headers = table.locator('tr th');
+
 
     }
 
