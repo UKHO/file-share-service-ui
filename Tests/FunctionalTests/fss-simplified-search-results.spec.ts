@@ -71,7 +71,8 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     //Click on expand button
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
     //Click on download button
-    await page.click(fssSearchPageObjectsConfig.fileDownloadButton, { force: true });
+    //await page.click(fssSearchPageObjectsConfig.fileDownloadButton, { force: true });
+    page.getByTestId(fssSearchPageObjectsConfig.fileDownloadButtonTestId).click();
     //Get the file downloaded status
     const fileDownloadStatus = await page.getAttribute(fssSearchPageObjectsConfig.fileDownloadButtonStatus, "class");
     expect(fileDownloadStatus).toContain("check");

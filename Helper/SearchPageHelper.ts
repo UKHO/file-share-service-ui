@@ -126,12 +126,13 @@ export async function ExpectAllResultsContainAnyBatchUserAttValue(
 
   expect(containsOneOf.length).toBeTruthy();
 
-  const tdPredicate = containsOneOf
-    .map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
-    .join(' or ');
+  //Rhz const tdPredicate = containsOneOf
+    //.map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
+    //.map(containsValue => `'${containsValue.toLowerCase()}'`)
+    //.join(' or ');
 
-   await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector,  tdPredicate);  
-
+   //await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector,  tdPredicate);  
+  await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector,  containsOneOf);
   //await ExpectSelectionsAreEqual(page,
   //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
   //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
@@ -143,7 +144,7 @@ export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
   expect(containsOneOf.length).toBeTruthy();
 
   await ExpectSelectionsAreEqualforBatchAndFile(page,
-    `//table[@class='${fssSearchPageObjectsConfig.attributeTableSelector}']`,  //rhz
+    fssSearchPageObjectsConfig.attributeTableSelector,  //rhz
     `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
     containsOneOf
   );
@@ -205,46 +206,47 @@ export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
 
 
 
-async function ExpectSelectionsAreEqual(page: Page, selector: string, condition: string): Promise<void> {
+async function ExpectSelectionsAreEqual(page: Page, selector: string, condition: string | string[]): Promise<void> {
   await page.waitForTimeout(3000);
   //  count the result rows
-  //var tablePath = "//table[@class='attribute-table sc-admiralty-card']"; //rhz
-  //const resultCount = await page.$$eval(tablePath, matches => matches.length);
-  //"table.attribute-table"
   const resultCount = await page.locator(selector).count(); //rhz
 
   // fail if there are no matching selections
   expect(resultCount).toBeTruthy();
 
-  //rhz new
+  let tmpWithValueCount = 0;
   const tables = page.locator(selector);
-  const withValueCount = await tables.filter({ has: page.locator('td', {hasText:condition})}).count();
-  //rhz new end
-
+  if (typeof condition === 'string') {
+     tmpWithValueCount = await tables.filter({ has: page.locator('td', {hasText:condition})}).count();
+  } else {
+    for (const cond of condition) {
+      tmpWithValueCount += await tables.filter({ has: page.locator('td', {hasText:cond})}).count();
+    }
+  }
   // count the result rows with the attribute value
-  //const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
-
+  const withValueCount = tmpWithValueCount;
+  
   // assert all the resulting batches have the attribute value
   expect(withValueCount).toEqual(resultCount);
 }
 
-async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, tableBatchAttribute: string, filePath: string, condition: string[]): Promise<void> {
-
+async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, selector: string, filePath: string, condition: string[]): Promise<void> {
+    //Rhz Fix  
     await page.waitForTimeout(3000);
     let withValueCount = 0;
     let withFileNameCount = 0;
 
     //  count the result rows
-    const resultCount = await page.$$eval(`${tableBatchAttribute}`, elements => elements.length);
+    const resultCount = await page.locator(selector).count(); //rhz
+
     
     // fail if there are no matching selections
     expect(resultCount).toBeTruthy();
     
+    const searchedBatchAttibutes = await page.locator(`${selector} tr td:first-child`).allTextContents(); 
+
     // count the result rows with the attribute value
-
     for (let rc = 0; rc < resultCount; rc++) {
-      const searchedBatchAttibutes = await page.$$eval(`${tableBatchAttribute}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
-
       switch (true) {
         case (searchedBatchAttibutes[rc]?.includes(condition[0])):
           withValueCount = withValueCount + 1;
@@ -270,7 +272,7 @@ export async function GetTotalResultCount(page: Page): Promise<number> {
   return parseInt(totalResult.split(' ')[0], 10);
 }
 
-export async function GetCountOfBatchRows(page: Page): Promise<number> {
+export async function GetCountOfBatchRowsXXRhz(page: Page): Promise<number> {
   //  count the result rows
   //return await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
   return await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count(); //rhz
