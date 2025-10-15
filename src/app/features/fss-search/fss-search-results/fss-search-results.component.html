@@ -36,7 +36,7 @@
             <admiralty-table-cell>{{element.MimeType}}</admiralty-table-cell>
             <admiralty-table-cell>{{element.FileSize}}</admiralty-table-cell>
             <admiralty-table-cell>
-              <button [attr.data-testid]="fd-button-test-id-"+idx class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
+              <button attr.data-testid="fd-button-test-id-{{idx}}" class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
                       attr.data-file-download-batch-id="{{batch.BatchID.value}}"
                       attr.aria-label="Download File for {{element.FileName}}"
                       (click)="downloadFile($event.target, element)"></button>
