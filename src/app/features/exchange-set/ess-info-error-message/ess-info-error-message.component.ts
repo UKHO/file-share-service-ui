@@ -16,6 +16,7 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
   displayErrorMessage = false;
   messageType: 'info' | 'warning' | 'success' | 'error' = 'info';
   messageDesc: string | ProductsNotInExchangeSet[];
+  testId: string = 'message-unknown';
   essInfoErrorMessagesubscription: Subscription;
   constructor(private essInfoErrorMessageService: EssInfoErrorMessageService, private scroll : ViewportScroller ) {
   }
@@ -51,6 +52,12 @@ export class EssInfoErrorMessageComponent implements OnInit , OnDestroy {
     }
     if(messageDesc){
        this.scroll.scrollToPosition([0,0]);
+    }
+    switch (messageType) {
+      case 'info': this.testId = 'message-info'; break;
+      case 'warning': this.testId = 'message-warning'; break;
+      case 'success': this.testId = 'message-success'; break;
+      case 'error': this.testId = 'message-error'; break;
     }
   }
 

@@ -27,6 +27,7 @@ export class EssLandingPageObjects {
     readonly messageType: Locator;
     readonly aioCheckBoxSelector: Locator;
     readonly pageUnderTest: Page
+    readonly errorDialogue: Locator;
 
     constructor(readonly page: Page) {
         this.expect = new EssLandingPageAssertions(this);
@@ -52,6 +53,7 @@ export class EssLandingPageObjects {
         this.MaxSelectedENCs = this.page.locator('//div/div/div/p[3]');
         this.getDialogueSelector = this.page.locator(("admiralty-dialogue"));
         this.messageType = this.page.locator("div[class='dialogue-title sc-admiralty-dialogue'] admiralty-icon");
+        this.errorDialogue = this.page.locator("admiralty-dialogue:has(section.dialogue.error)"); 
         this.aioCheckBoxSelector = this.page.locator('admiralty-checkbox div');
 
         this.pageUnderTest = page;

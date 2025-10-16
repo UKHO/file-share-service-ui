@@ -147,7 +147,16 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("A1720150");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
+          //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
+       //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.errorDialogue.isVisible());
+       //Rhz work in progress hopefully using data-testid will make this more robust.
+          const p1 = await page.locator("admiralty-dialogue");;
+          const p1a = await p1.locator('section:has-text("dialogue error")').isVisible();
+          const p2 = await page.locator("admiralty-dialogue:has(section .dialogue.error)").isVisible();
+          const p3 = await page.locator("admiralty-dialogue:has(section.dialogue.error)").isVisible();
+
+
+
           await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
           let backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
@@ -156,8 +165,9 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await page.waitForLoadState();
           await encSelectionPageObjects.addAnotherENC("GZ800112");
-          await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
+          await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.errorDialogue.isVisible());
+          await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
+          //await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
           backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      })

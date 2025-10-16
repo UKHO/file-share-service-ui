@@ -121,7 +121,6 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     // Assert the filter checked state
     expect(await page.getByTestId(attrCD).locator('div input').isChecked()).toBeTruthy();
     expect(await page.getByTestId(attrDVD).locator('div input').isChecked()).toBeTruthy();
-    //expect(await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').isChecked()).toBeTruthy();
 
     //clicks on clear filter buttton
     await page.click(fssSearchPageObjectsConfig.clearFilterButton);
@@ -138,20 +137,21 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaTypes.value.split(' '));
     //select batch attributes filter
-    await page.locator('admiralty-checkbox').filter({ hasText: attributeMultipleMediaTypes.value.split(' ')[0] }).locator('div').click();
+    let requiredMediaType = attributeMultipleMediaTypes.value.split(' ')[0];
+    await page.locator('admiralty-checkbox').filter({ hasText: requiredMediaType }).locator('div').click();
 
     // Assert the filter checked state
-    //rhz works in Debug 
-
-    const cbChecked = await page.locator('admiralty-checkbox').filter({ hasText: attributeMultipleMediaTypes.value.split(' ')[0] }).locator('div input').isChecked();
     await page.waitForTimeout(2000);
+
+    const cbChecked = await page.locator('admiralty-checkbox').filter({ hasText: requiredMediaType }).locator('div input').isChecked();
+    
     expect(cbChecked).toBeTruthy();
 
     //clicks on clear filter buttton
     await page.click(fssSearchPageObjectsConfig.applyFilterButton);
 
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainBatchUserAttValue(page, attributeMultipleMediaTypes.value.split(' ')[0]);
+    await ExpectAllResultsContainBatchUserAttValue(page,  requiredMediaType);
 
   })
 

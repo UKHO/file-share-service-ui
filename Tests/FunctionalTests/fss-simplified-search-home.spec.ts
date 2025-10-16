@@ -22,8 +22,8 @@ test.describe('Test Search Attribute Scenario On Simplified Search Page', () => 
   })
 
   test('Does it display "Advanced Search" link on Simplified Search page', async ({ page }) => {
-    var advancedSearchLink = await page.innerText(fssSearchPageObjectsConfig.advancedSearchLinkSelector);
-    expect(advancedSearchLink).toEqual(fssSearchPageObjectsConfig.advancedSearchLink);
+    var advancedSearchLink = await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId);
+    expect(await advancedSearchLink.textContent()).toEqual(fssSearchPageObjectsConfig.advancedSearchLink);
   })
 
   test('Does it display "Error message" if user clicks on search button and simplified search box is empty', async ({ page }) => {
@@ -33,8 +33,7 @@ test.describe('Test Search Attribute Scenario On Simplified Search Page', () => 
   }) 
 
   test('Verify user clicks on "Advanced Search" link navigates to Advanced Search page', async ({ page }) => {
-    await page.waitForSelector(fssSearchPageObjectsConfig.advancedSearchLinkSelector);
-    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
+    await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click();
     await page.waitForSelector(fssSearchPageObjectsConfig.advancedSearchAddLineSelector);
     await page.click(fssSearchPageObjectsConfig.advancedSearchAddLineSelector);
     await page.waitForSelector(fssSearchPageObjectsConfig.advancedSearchTableSelector);   

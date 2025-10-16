@@ -107,18 +107,12 @@ export async function ExpectAllResultsHaveBatchUserAttValue(
   page: Page, preciseValue: string): Promise<void> {
 
   await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector, preciseValue.toLowerCase());  
-  //await ExpectSelectionsAreEqual(page,
-  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
 }
 
 export async function ExpectAllResultsContainBatchUserAttValue(
   page: Page, containsValue: string): Promise<void> {
 
   await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector, containsValue.toLowerCase()); 
-  //await ExpectSelectionsAreEqual(page,
-  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAttValue(
@@ -126,16 +120,8 @@ export async function ExpectAllResultsContainAnyBatchUserAttValue(
 
   expect(containsOneOf.length).toBeTruthy();
 
-  //Rhz const tdPredicate = containsOneOf
-    //.map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
-    //.map(containsValue => `'${containsValue.toLowerCase()}'`)
-    //.join(' or ');
-
-   //await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector,  tdPredicate);  
   await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector,  containsOneOf);
-  //await ExpectSelectionsAreEqual(page,
-  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-  //  `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
+  
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
@@ -272,6 +258,7 @@ export async function GetTotalResultCount(page: Page): Promise<number> {
   return parseInt(totalResult.split(' ')[0], 10);
 }
 
+//Rhz we probably don't need this function
 export async function GetCountOfBatchRowsXXRhz(page: Page): Promise<number> {
   //  count the result rows
   //return await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
@@ -279,27 +266,22 @@ export async function GetCountOfBatchRowsXXRhz(page: Page): Promise<number> {
 }
 
 export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumnName: string, tablecloumnValue: string): Promise<void> {
+  //count the result rows
+  const resultCount = await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count(); //
+
+  //fail if there are no matching selections
+  expect(resultCount).toBeTruthy();
 
   while (true) {
-    //count the result rows
-    //const resultCount = await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
-    const resultCount = await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count(); //rhz
-
-    //fail if there are no matching selections
-    expect(resultCount).toBeTruthy();
 
     let attributeFieldCount = 0;
     for (let rc = 0; rc < resultCount; rc++) {
-      //const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//th`
-
-      //let colnum = await GetColumnNumber(page, tablepath, tablecloumnName);
-      //expect(await page.locator(`(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//td[${colnum}]`).textContent()).toEqual(tablecloumnValue);
-      //attributeFieldCount = attributeFieldCount + 1;
-
       const table = page.locator(fssSearchPageObjectsConfig.attributeTableSelector).nth(rc);
       const headers = table.locator('tr th');
 
-
+      let colnum = await GetColumnNumber(page, headers, tablecloumnName);
+      expect(await table.locator(`tr td:nth-child(${colnum})`).textContent()).toEqual(tablecloumnValue);
+      attributeFieldCount = attributeFieldCount + 1;
     }
 
     // assert all the resulting batches have the attribute value
@@ -325,11 +307,13 @@ export async function filterCheckBox(batchAtributeType: string, batchAttributeVa
   return checkBoxMatch;
 }
 
-async function GetColumnNumber(page: Page, tablePath: string, columnHeaderText: string) {
+
+
+async function GetColumnNumber(page: Page, tablePath: Locator, columnHeaderText: string) {
   let colIndex = 0;
-  const resultCount = await page.$$eval(tablePath, matches => matches.length);
+  const resultCount = await tablePath.count();
   for (let col = 1; col <= resultCount; col++) {
-    if (await page.locator(`${tablePath}[${col}]`).textContent() === columnHeaderText) {
+    if (await tablePath.nth(col - 1).textContent() === columnHeaderText) {
       colIndex = col;
       break;
 

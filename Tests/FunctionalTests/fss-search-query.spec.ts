@@ -107,7 +107,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
     await page.getByTestId('adv-search-button').click();
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
-    const resultCount = await GetCountOfBatchRows(page);        
+    const resultCount = await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count();        
     //Get the product counts on UI
     const paginatorText = await page.innerText(fssSearchPageObjectsConfig.paginatorPageCount);
     expect(paginatorText).toContain(`Showing 1-${resultCount}`);
@@ -122,7 +122,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     // Click on expand button
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
     // Click on download button
-    await page.click(fssSearchPageObjectsConfig.fileDownloadButton, {force: true});
+    await page.getByTestId(fssSearchPageObjectsConfig.fileDownloadButtonTestId).first().click();
     // Get the file downloaded status
     const fileDownloadStatus = await page.getAttribute(fssSearchPageObjectsConfig.fileDownloadButtonStatus, "class");
     expect(fileDownloadStatus).toContain("check");

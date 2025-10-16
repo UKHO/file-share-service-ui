@@ -121,7 +121,12 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
   test('Verify when "BatchPublishedDate" attribute field selected, input value field change to "date" type', async ({ page }) => {
 
     await SearchAttribute(page, "BatchPublishedDate");
-    const inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
+    var inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
+    var maxtime = Date.now() + 10000;
+    while (inputValueFieldAttribute !== "date" && Date.now() < maxtime) {
+      await page.waitForTimeout(500);
+      inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
+    }
     expect(inputValueFieldAttribute).toEqual("date");
   })
 
