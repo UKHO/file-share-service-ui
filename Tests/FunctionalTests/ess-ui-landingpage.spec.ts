@@ -98,7 +98,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Upload CSV file with valid & invalid ENCs and verify ENC uploaded', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
-          //await page.locator('#file-upload').click();  //rhz
+          //await page.locator('input[type="file"]').setInputFiles('./Tests/TestData/validAndInvalidENCs.csv');     //rhz this line works too
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
@@ -109,6 +109,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Upload TXT file with valid & invalid ENCs and verify ENC uploaded', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
+          //await page.locator('input[type="file"]').setInputFiles('./Tests/TestData/ValidAndInvalidENCs.txt');     //rhz this line works too
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
@@ -120,6 +121,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in CSV File, upload only once.', async ({ page }) => {
           let enclist = ['AU220150', 'CN484220', 'CA271105', 'AU5PTL01'];
           await esslandingPageObjects.uploadradiobtnSelectorClick();
+          //await page.locator('input[type="file"]').setInputFiles('./Tests/TestData/validAndDuplicateENCs.csv'); //rhz this line works too
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           const requestPromise = await esslandingPageObjects.page.waitForResponse(r =>
