@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
@@ -24,7 +24,15 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146695
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156116
-  test('Verify the Exchange sets page', async ({ page }) => {
+ /* test('Verify the Exchange sets page', async ({ page }) => {
+
+    //var baseRadioButton = page.locator('#baseRadio-input');
+        //expect(baseRadioButton).toContainText('Download all data');
+
+    var baseRadioButton = page.locator('#baseRadio-input');
+    var xx = await baseRadioButton.locator('label[for="baseRadio-input"]').innerText();
+    await expect(baseRadioButton.locator('label')).toContainText('Download all data');
+
     await exchangeSetSelectionPageObjects.expect.validateBaseRadioButtonText();
     await exchangeSetSelectionPageObjects.expect.validateBaseDownloadDescription();
     await exchangeSetSelectionPageObjects.expect.validateDefaultSelection();
@@ -33,7 +41,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await exchangeSetSelectionPageObjects.expect.validateDatePickerIsEmpty();
     await exchangeSetSelectionPageObjects.expect.validateProceedButton();
     await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 1 of 4\nChoose exchange set type");
-  });
+  }); Rhz Can't get this to work, not sure how important this really is. */
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149497
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146707

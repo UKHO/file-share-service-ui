@@ -61,6 +61,7 @@ export class ExchangeSetSelectionAssertion {
 
     async validateBaseRadioButtonText() {
         expect(((await this.selection.baseRadioButtonText.innerText())).split('\n')[0].trim() == 'Download all data').toBeTruthy();
+        expect(await this.selection.baseRadioButtonText.innerText() == 'Download all data').toBeTruthy();
     }
 
     async validateBaseDownloadDescription() {
