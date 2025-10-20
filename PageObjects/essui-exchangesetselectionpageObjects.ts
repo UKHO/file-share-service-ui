@@ -6,8 +6,6 @@ export class ExchangeSetSelectionPageObjects {
     readonly deltaRadioButton: Locator;
     readonly datePicker: Locator;
     readonly proceed: Locator;
-    readonly baseRadioButtonTextXXRhz: Locator;
-    readonly deltaRadioButtonTextXXRhz: Locator;
     readonly warningMessage: Locator;
     readonly header: Locator;
 
@@ -17,8 +15,6 @@ export class ExchangeSetSelectionPageObjects {
         this.deltaRadioButton = page.locator("#deltaRadio");
         this.datePicker = page.locator("input[type='date']");
         this.proceed = page.locator("button:has-text('Proceed')");
-        this.baseRadioButtonTextXXRhz = page.locator("div[role='radiogroup'] > :nth-child(1) div label");
-        this.deltaRadioButtonTextXXRhz = page.locator("div[role='radiogroup'] > :nth-child(2) div label");
         this.warningMessage = page.locator(".warningMsgTitle");
         this.header = page.locator("h2#main");
     }

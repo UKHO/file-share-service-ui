@@ -98,7 +98,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Upload CSV file with valid & invalid ENCs and verify ENC uploaded', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
-          //await page.locator('input[type="file"]').setInputFiles('./Tests/TestData/validAndInvalidENCs.csv');     //rhz this line works too
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
@@ -109,7 +108,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Upload TXT file with valid & invalid ENCs and verify ENC uploaded', async ({ page }) => {
 
           await esslandingPageObjects.uploadradiobtnSelectorClick();
-          //await page.locator('input[type="file"]').setInputFiles('./Tests/TestData/ValidAndInvalidENCs.txt');     //rhz this line works too
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.txt');
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.expect.VerifyExcludedENCsMessage("Some values have not been added to list.");
@@ -121,7 +119,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      test('Verify uploading valid, invalid & valid duplicate ENC Numbers in CSV File, upload only once.', async ({ page }) => {
           let enclist = ['AU220150', 'CN484220', 'CA271105', 'AU5PTL01'];
           await esslandingPageObjects.uploadradiobtnSelectorClick();
-          //await page.locator('input[type="file"]').setInputFiles('./Tests/TestData/validAndDuplicateENCs.csv'); //rhz this line works too
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/validAndDuplicateENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
           const requestPromise = await esslandingPageObjects.page.waitForResponse(r =>
@@ -150,14 +147,10 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("A1720150");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          //var dataitem = await page.getByTestId("message-error").textContent();
           var errorDisplay = page.getByTestId("message-error");
           expect(errorDisplay).toContainText("Invalid ENC number");
-          //await encSelectionPageObjects.expect.toBeTruthy(messageResult);
          
 
-          //await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
           let backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
           await esslandingPageObjects.addencradiobtnSelectorClick();
@@ -167,9 +160,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await encSelectionPageObjects.addAnotherENC("GZ800112");
           errorDisplay =  await page.getByTestId("message-error");
           expect(errorDisplay).toContainText("Invalid ENC number");
-          //await encSelectionPageObjects.expect.toBeTruthy(messageResult);
-          //await esslandingPageObjects.expect.errorMessageForInvalidENCSelectorContainText("Invalid ENC number");
-          //await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
           backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      })
@@ -233,8 +223,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-         // await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          //await esslandingPageObjects.expect.VerifyExcludedENCsMessage('No valid ENCs found');
           var errorDisplay = page.getByTestId("message-error");
           expect(errorDisplay).toContainText("No valid ENCs found");
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
@@ -265,18 +253,11 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
           await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() === 'GET');
-          //await encSelectionPageObjects.errorMessage.click();
-          //let message = await encSelectionPageObjects.errorMessage.innerText();
           // rhz look for specific items in error message, thus ignoring any additional text
           var errorDisplay = page.getByTestId("message-error");
           expect(errorDisplay).toContainText("Invalid cells");
           expect(errorDisplay).toContainText("GZ800112");
           expect(errorDisplay).toContainText("There have been no updates for the ENCs in the date range selected.");
-          //const messageState = "Invalid cells"
-          //const messageENC = "GZ800112"
-          //await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[0].trim().includes(messageState));
-          //await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[0].trim().includes(messageENC));
-          //await encSelectionPageObjects.expect.toBeTruthy(message.split('.')[1].trim() == "There have been no updates for the ENCs in the date range selected");
      });
 
      //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156738
@@ -289,11 +270,8 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          //await encSelectionPageObjects.errorMessage.click();
-          //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation"); // rhz commented out as using data-testid
           var errorDisplay = page.getByTestId("message-error");
           expect(errorDisplay).toContainText("No valid ENCs found");
-          //await encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.errorMessage.innerText() == "No valid ENCs found");
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });
@@ -306,19 +284,12 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidAndInvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
+          //rhz - look for specific phrases in the message
           var errorDisplay = page.getByTestId("message-error");
           expect(errorDisplay).toContainText("Invalid cells");
           expect(errorDisplay).toContainText("GZ800112");
           expect(errorDisplay).toContainText("There have been no updates for the ENCs in the date range selected.");
-          //rhz - look for specific phrases in the message
-          //const messageState = "Invalid cells"
-          //const messageENC = "GZ800112"
-          //const messageComms = "There have been no updates for the ENCs in the date range selected."
-          //const messageToCheck = await encSelectionPageObjects.errorMessage.innerText();
-          //await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageState));
-          //await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageENC));
-          //await encSelectionPageObjects.expect.toBeTruthy(messageToCheck.includes(messageComms));
+          
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });
@@ -331,11 +302,9 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidEncWithAioCell.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
           var errorDisplay = page.getByTestId("message-error");
           expect(errorDisplay).toContainText("No valid ENCs found");
-          //const message = "No valid ENCs found";
-          //await encSelectionPageObjects.expect.toBeTruthy(message == (await encSelectionPageObjects.errorMessage.innerText()).trim());
+
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });
@@ -348,11 +317,8 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidEncWithAioCell.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
           var errorDisplay = page.getByTestId("message-error");
           expect(errorDisplay).toContainText("No valid ENCs found");
-          //const message = "No valid ENCs found";
-          //await encSelectionPageObjects.expect.toBeTruthy(message == (await encSelectionPageObjects.errorMessage.innerText()).trim());
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });
@@ -365,8 +331,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("A1720150");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-          //await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
           errorDisplay =  await page.getByTestId("message-error");
           expect(errorDisplay).toContainText("Invalid ENC number");
 
@@ -382,8 +346,6 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           const checkMsg = await exchangeSetSelectionPageObjects.warningMessage.innerText();
           if (checkMsg.includes("no updates") == false) {
                await encSelectionPageObjects.addAnotherENC("GZ800112");
-               //await encSelectionPageObjects.expect.toBeTruthy(await esslandingPageObjects.messageType.getAttribute("icon-name") == "exclamation");
-               //await encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.errorMessage.innerText()).trim() == "Invalid ENC number");
                var errorDisplay = page.getByTestId("message-error");
                expect(errorDisplay).toContainText("Invalid ENC number");
                backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));

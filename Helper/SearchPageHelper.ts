@@ -217,7 +217,6 @@ async function ExpectSelectionsAreEqual(page: Page, selector: string, condition:
 }
 
 async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, selector: string, filePath: string, condition: string[]): Promise<void> {
-    //Rhz Fix  
     await page.waitForTimeout(3000);
     let withValueCount = 0;
     let withFileNameCount = 0;
@@ -258,12 +257,6 @@ export async function GetTotalResultCount(page: Page): Promise<number> {
   return parseInt(totalResult.split(' ')[0], 10);
 }
 
-//Rhz we probably don't need this function
-export async function GetCountOfBatchRowsXXRhz(page: Page): Promise<number> {
-  //  count the result rows
-  //return await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
-  return await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count(); //rhz
-}
 
 export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumnName: string, tablecloumnValue: string): Promise<void> {
   //count the result rows

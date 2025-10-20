@@ -117,7 +117,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.addAnotherENC("AU220130");
     var infoDisplay =  await page.getByTestId("message-info");
     expect(infoDisplay).toContainText("ENC already in list");
-    //await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list")
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
 
@@ -153,7 +152,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await encSelectionPageObjects.addAnotherENC("GB301191");
     var infoDisplay =  await page.getByTestId("message-info");
     expect(infoDisplay).toContainText("Max ENC limit reached");
-    //await encSelectionPageObjects.expect.errorMsgMaxLimitSelectorContainText("Max ENC limit reached");
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
@@ -232,18 +230,12 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    //await esslandingPageObjects.page.waitForResponse(r =>
-    //  r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST')
-    //await encSelectionPageObjects.errorMessage.click();
     // rhz - instead of looking for a literal "Invalid cells - GZ800112";
     // look for what we expect to find in the string
     var warningDisplay =  await page.getByTestId("message-warning");
     expect(warningDisplay).toContainText("Invalid cells");
     //expect(warningDisplay).toContainText("GZ800112");
    
-    //var actualErrorMessage = await encSelectionPageObjects.errorMessage.innerText();
-    //await encSelectionPageObjects.expect.toBeTruthy(actualErrorMessage.includes("Invalid cells"));
-    //await encSelectionPageObjects.expect.toBeTruthy(actualErrorMessage.includes("GZ800112"));
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149494
@@ -271,7 +263,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156059
-  // Disabled - this test relates to S57 which is not available at the moment Rhz
   test("check UKHO user is able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for base exchange set.",async ({ page}) =>{
     await encSelectionPageObjects.selectAllSelectorClick();
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
@@ -280,8 +271,6 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
     encSelectionPageObjects.expect.toBeTruthy(await page.getByTestId('S63').textContent() == "S63 exchange set");
     encSelectionPageObjects.expect.toBeTruthy(await page.getByTestId('S57').textContent() == "S57 exchange set");
-    //encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s63Radiobutton.innerText()).trim() == "S63 exchange set");
-    //encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s57Radiobutton.innerText()).trim() == "S57 exchange set");
   });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156211

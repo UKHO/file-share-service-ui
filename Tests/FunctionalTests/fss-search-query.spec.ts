@@ -23,7 +23,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
         .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
         await page.waitForTimeout(2000);
     await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click(); //rhz
-    //await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
   });
 
   test('Batch Attribute table returns correct product on attribute search', async ({ page }) => {
@@ -128,8 +127,6 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     expect(fileDownloadStatus).toContain("check");
   });
 
-  // rhz - disabled test due to issue with the test data
-  // test('Batch Attribute table returns records less than filesize search', async ({ page }) => {    
   
 
   test('Test to verify no result for search query', async ({ page }) => {
