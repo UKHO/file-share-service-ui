@@ -22,7 +22,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
         .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
         await page.waitForTimeout(2000);
-    await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click(); //rhz
+    await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click();
   });
 
   test('Batch Attribute table returns correct product on attribute search', async ({ page }) => {

@@ -130,7 +130,7 @@ export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
   expect(containsOneOf.length).toBeTruthy();
 
   await ExpectSelectionsAreEqualforBatchAndFile(page,
-    fssSearchPageObjectsConfig.attributeTableSelector,  //rhz
+    fssSearchPageObjectsConfig.attributeTableSelector, 
     `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
     containsOneOf
   );
@@ -195,7 +195,7 @@ export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
 async function ExpectSelectionsAreEqual(page: Page, selector: string, condition: string | string[]): Promise<void> {
   await page.waitForTimeout(3000);
   //  count the result rows
-  const resultCount = await page.locator(selector).count(); //rhz
+  const resultCount = await page.locator(selector).count(); 
 
   // fail if there are no matching selections
   expect(resultCount).toBeTruthy();
@@ -222,7 +222,7 @@ async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, selector: str
     let withFileNameCount = 0;
 
     //  count the result rows
-    const resultCount = await page.locator(selector).count(); //rhz
+    const resultCount = await page.locator(selector).count(); 
 
     
     // fail if there are no matching selections

@@ -53,19 +53,12 @@ describe('FssSearchResultsComponent', () => {
     //analyticsService = TestBed.inject(AnalyticsService);
   });
 
-  //Rhz new
   function create() {
     const fixture = TestBed.createComponent(FssSearchResultsComponent);
     component = fixture.componentInstance;
     return { fixture };
   }
-  //Rhz new end
 
-  //it('should create FssSearchResultsComponent', () => {
-  //  const fixture = TestBed.createComponent(FssSearchResultsComponent);
-  //  const app = fixture.debugElement.componentInstance;
-  //  expect(app).toBeTruthy();
-  //});
   it('should create FssSearchResultsComponent', () => {
     const { fixture } = create();
     expect(fixture.componentInstance).toBeTruthy();
@@ -73,15 +66,6 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for search result count
 
-  //test('should return search result count 1 when search result for 1 batch is provided', () => {
-  //  component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-  //  component.searchResult = Array.of(SearchResultMockData['entries']);
-  //  component.ngOnChanges();
-  //  var batches = component.searchResult[0];
-
-  //  expect(batches.length).toEqual(1);
-  //  expect(component.searchResultVM.length).toEqual(1);
-  //});
   test('should return search result count 1 when search result for 1 batch is provided', () => {
     create();
     component.searchResult = [SearchResultMockData.entries];
@@ -92,21 +76,6 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for batch attributes
 
-  //test('should return batch attributes when search result data is provided', () => {
-  //  component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-  //  component.searchResult = Array.of(SearchResultMockData['entries']);
-  //  component.ngOnChanges();
-  //  var batches = component.searchResult[0];
-
-  //  var expectedBatchAttributes = [
-  //    { "key": "product", "value": "TidalPredictionService" },
-  //    { "key": "cellname", "value": "AVCS" }];
-
-  //  var batchAttributes = component.getBatchAttributes(batches[0]);
-
-  //  expect(batchAttributes.length).toEqual(2);
-  //  expect(batchAttributes).toEqual(expectedBatchAttributes);
-  //});
   test('should return batch attributes when search result data is provided', () => {
     create();
     component.searchResult = [SearchResultMockData.entries];
@@ -121,23 +90,6 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for system attributes
 
-  //test('should return system attributes when search result data is provided', () => {
-  //  component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-  //  component.searchResult = Array.of(SearchResultMockData['entries']);
-  //  component.ngOnChanges();
-
-  //  var expectedBatchID = { "key": "Batch ID", "value": "9439e409-e545-435c-afd7-f3a5cce527e3" };
-  //  var expectedBatchPublishedDate = { key: 'Batch published date', value: '2021-06-18T12:57:48.853Z' };
-  //  var expectedExpiryDate = { key: 'Batch expiry date', value: '2022-02-28T13:05:10.14Z' };
-
-  //  var batchID = component.searchResultVM[0].BatchID;
-  //  var batchPublishedDate = component.searchResultVM[0].BatchPublishedDate;
-  //  var expiryDate = component.searchResultVM[0].ExpiryDate;
-
-  //  expect(batchID).toEqual(expectedBatchID);
-  //  expect(batchPublishedDate).toEqual(expectedBatchPublishedDate);
-  //  expect(expiryDate).toEqual(expectedExpiryDate);
-  //});
   test('should return system attributes when search result data is provided', () => {
     create();
     component.searchResult = [SearchResultMockData.entries];
@@ -150,15 +102,6 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for file details column headers
 
-  //test('should return file details column data', () => {
-  //  component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-  //  component.ngOnChanges();
-
-  //  var expectedColumnData = ColumnHeader;
-  //  var resultedColumnData = component.getfileDetailsColumnData();
-
-  //  expect(expectedColumnData).toEqual(resultedColumnData);
-  //});
   test('should return file details column data', () => {
     create();
     component.ngOnChanges();
@@ -167,29 +110,6 @@ describe('FssSearchResultsComponent', () => {
 
   //Test for batch file details
 
-  //test('should return batch file details when search result data is provided', () => {
-  //  component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-  //  component.searchResult = Array.of(SearchResultMockData['entries']);
-  //  component.ngOnChanges();
-  //  var batches = component.searchResult[0];
-
-  //  var expectedBatchFileDetails = {
-  //    columnData: ColumnHeader,
-  //    rowData: [
-  //      {
-  //        FileName: 'My Test File.txt',
-  //        MimeType: 'image/jpeg',
-  //        FileSize: '3.81 MB',
-  //        FileLink: '/batch/9439e409-e545-435c-afd7-f3a5cce527e3/files/My%20Test%20File.txt'
-  //      }
-  //    ]
-  //  };
-
-  //  var batchfileDetails = component.getBatchFileDetails(batches[0]);
-
-  //  expect(batchfileDetails.rowData.length).toEqual(1);
-  //  expect(batchfileDetails).toEqual(expectedBatchFileDetails);
-  //});
   test('should return batch file details when search result data is provided', () => {
     create();
     component.searchResult = [SearchResultMockData.entries];

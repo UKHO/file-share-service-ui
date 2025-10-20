@@ -31,12 +31,7 @@ Object.defineProperty(global.self, 'crypto', {
   }
 });
 
-//Rhz : replaced by webcrypto below, remove later
-//Object.defineProperty(globalThis, 'crypto', {
-//  value: {
-//    getRandomValues: (arr: any) => crypto.randomBytes(arr.length)
-//  }
-//});
+
 
 if (!(globalThis as any).crypto || !(globalThis as any).crypto.subtle) {
   Object.defineProperty(globalThis, 'crypto', {

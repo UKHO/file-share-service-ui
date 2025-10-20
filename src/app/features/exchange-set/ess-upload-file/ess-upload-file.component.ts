@@ -17,7 +17,7 @@ import { HttpStatusCode } from '@angular/common/http';
   templateUrl: './ess-upload-file.component.html',
   styleUrls: ['./ess-upload-file.component.scss'],
 })
-export class EssUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EssUploadFileComponent implements OnInit, OnDestroy {
   validEncList: string[];
   encFile: File;
   maxEncsLimit: number;
@@ -53,9 +53,6 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit, OnDestroy 
     return this.encFile ? this.encFile.name : 'Click to choose a file or drag it';
   }
 
-  ngAfterViewInit(): void {
-    this.addChooseFileButtonAttribute();
-  }
 
   onFileInputChange(changeEvent: Event) {
     this.validEncList = [];
@@ -119,19 +116,7 @@ export class EssUploadFileComponent implements OnInit, AfterViewInit, OnDestroy 
     };
   }
 
-  addChooseFileButtonAttribute() {
-    console.log('addChooseFileButtonAttribute does nothing at the moment'); //Rhz
-    //let choosefile_input = this._elementRef?.nativeElement.querySelector('#file-upload input[type="file"]');
-    //let choosefile_input = this._elementRef?.nativeElement.querySelector('#file-upload');
-    //let choosefile_label = this._elementRef?.nativeElement.querySelector('#file-upload label');
-    //console.log('choosefile_input', choosefile_input);
-    //console.log('choosefile_label', choosefile_label);
-    //choosefile_label?.setAttribute('id', 'chooseFileLabel');
-    //choosefile_input?.setAttribute('aria-labelledby', 'uploadExplanationText chooseFileLabel');
-    //console.log('choosefile_input', choosefile_input);
-    //console.log('choosefile_label', choosefile_label);
-    
-  }
+  
 
   isInvalidEncFile(encFile: File) {
     return encFile && encFile.type !== 'text/plain' && encFile.type !== 'text/csv' && encFile.type !== 'application/vnd.ms-excel';

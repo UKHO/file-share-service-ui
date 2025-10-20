@@ -51,13 +51,6 @@ select{
 	border-radius: 0;
 }
 
-/*ukho-dialogue section {
-    margin: 0 0 10px 0;
-}*/
-
-/*admiralty-dialogue section {
-  margin: 0 0 10px 0;
-}*/
 
 #mainContainer {
   .header-image {
@@ -69,26 +62,6 @@ select{
     background-size: cover;
   }
 
-  /*ukho-card {
-    p {
-      font-size: x-large;
-      font-weight: 300;
-      margin-bottom: 20px;
-    }
-
-    button {
-      float: left;
-    }
-
-    a#fss-createaccount {
-      padding: 20px 0 20px 40px;
-      float: left;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }*/
 
   admiralty-card {
     p {
@@ -253,11 +226,6 @@ button.fileDownload{
 	}
 }
 
-/*ukho-expansion{
-	section.expansion.bordered{
-		border-bottom: none !important;
-	}
-}*/
 
 admiralty-expansion {
   section.expansion.bordered {
@@ -314,17 +282,6 @@ table.attribute-table, .system-attribute-table{
 	}
 }
 
-/*ukho-expansion{
-	section{
-		border-bottom: none;
-	}
-}*/
-
-/*admiralty-expansion {
-  section {
-    border-bottom: none;
-  }
-}*/
 
 .result-margin{
 	margin-top:20px;
@@ -444,93 +401,13 @@ button{
 	}
 }}
 
-/*.valueTD{
-	text-align: left;
-	
-	ukho-textinput{
-	&[ng-reflect-type="date"], &[ng-reflect-type="time"] {
-		display: inline-block;
-		width: 47%;
-		margin: 0 10px 0 0;
-		vertical-align: top;
-	}
-	&.validated, &.invalid {
-		input.form-text-input{
-		padding-right: 0;
-	}
-	}
-}
-
-ukho-textinput.text-input-wrap{
-	&[ng-reflect-type="date"] {
-		display: inline-block;
-		width: 43%;
-	input {
-		padding-right: 3%;
-	}
-}
-	&[ng-reflect-type="time"]{
-		width: 45%;
-		display: inline-block;
-		left: 7%;
-	
-}
-}
-	
-}*/
 
 
-/*========= Admiralty=========
-.admiralty-valueTD {
-  text-align: left;
-
-  admiralty-input {
-    &[ng-reflect-type="date"], &[ng-reflect-type="time"] {
-      display: inline-block;
-      width: 47%;
-      margin: 0 10px 0 0;
-      vertical-align: top;
-    }
-
-    &.validated, &.invalid {
-      input.form-text-input {
-        padding-right: 0;
-      }
-    }
-  }
-
-  admiralty-input.text-input-wrap {
-    &[ng-reflect-type="date"] {
-      display: inline-block;
-      width: 43%;
-
-      input {
-        padding-right: 3%;
-      }
-    }
-
-    &[ng-reflect-type="time"] {
-      width: 45%;
-      display: inline-block;
-      left: 7%;
-    }
-  }
-}*/
-
-.siplifideSearchBtn button.primary{
-	margin-top: 28px;
-    height: 55px;
-}
-
-/*Rhz: this added because of above typo*/
 .simplifideSearchBtn button.primary {
   margin-top: 28px;
   height: 55px;
 }
 
-/*ukho-textinput.text-input-wrap .error-text{
-	display: none;
-}*/
 
 [tabindex="-1"]:focus-visible{
 	border:none;
@@ -551,28 +428,6 @@ app-root {
 	flex-direction: column;
 }
 
-/*@media screen and (max-width:1024px){
-	.valueTD {
-		ukho-textinput.text-input-wrap{
-		&[ng-reflect-type=date]{
-		padding-left: 5px;
-		input{
-			padding-left:5px;
-		}
-	}
-	&[ng-reflect-type=time]{
-		width: 42%;
-		left: 6%;
-	}
- }
- }
-	#mainContainer {
-	.header-image {
-		height: 240px;
-		background: url(/assets/images/UKHO-17-AW-0005-Web.jpg) center center;
-	}
-}
-}*/
 
 .SearchBatch{
 	cursor: pointer;

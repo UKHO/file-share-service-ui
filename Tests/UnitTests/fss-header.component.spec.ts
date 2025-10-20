@@ -63,14 +63,12 @@ describe('FssHeaderComponent', () => {
     essUploadFileService = TestBed.inject(EssUploadFileService);
   });
 
-  //Rhz new
   function create() {
     const fixture = TestBed.createComponent(FssHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     return { fixture };
   }
-  //Rhz end
 
   test('should exist msalService', () => {
     expect(msalService).toBeDefined();
@@ -81,7 +79,6 @@ describe('FssHeaderComponent', () => {
   });
 
   test('should have header component', () => {
-    //const fixture = TestBed.createComponent(FssHeaderComponent);
     const { fixture } = create();
     const header = fixture.debugElement.nativeElement.querySelector('admiralty-header');
     const footer = fixture.debugElement.nativeElement.querySelector('admiralty-footer');
@@ -91,21 +88,18 @@ describe('FssHeaderComponent', () => {
 
 
   test('should exist', () => {
-    //component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     create();
     component.ngOnInit();
     expect(component).toBeDefined();
   });
 
   test('should exist the title in header', () => {
-    //component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     create();
     component.ngOnInit();
     expect(component.title).toEqual(AppConfigService.settings["fssConfig"].fssTitle);
   });
 
   test('should exist Exchange set menu item in header', () => {
-    //component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     create();
     component.ngOnInit();
     
@@ -113,14 +107,12 @@ describe('FssHeaderComponent', () => {
     expect(component.essTitle).toEqual("Exchange sets");
   });
   test('should not exist Exchange set search, menu item in header if not logged in', () => {
-    //component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
 
     create();
     component.ngOnInit();
     
   });
   test('should exist Search menu item in header', () => {
-    //component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     create();
     component.ngOnInit();
 
@@ -128,7 +120,6 @@ describe('FssHeaderComponent', () => {
   });
 
   test('should set isPrivilegedUser to true for admin domains', () => {
-    //component = new FssHeaderComponent(msalGuardConfiguration, msalService, route, msalBroadcastServie, analyticsService, signInButtonService,essUploadFileService);
     create();
     component.configPrivilegedUserDomains = ["test.com", "abcd.com"];
     const claims = {
