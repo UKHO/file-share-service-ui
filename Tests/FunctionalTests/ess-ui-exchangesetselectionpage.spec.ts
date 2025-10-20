@@ -24,24 +24,28 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146695
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156116
- /* test('Verify the Exchange sets page', async ({ page }) => {
+ test('Verify the Exchange sets page', async ({ page }) => {
 
-    //var baseRadioButton = page.locator('#baseRadio-input');
-        //expect(baseRadioButton).toContainText('Download all data');
-
-    var baseRadioButton = page.locator('#baseRadio-input');
-    var xx = await baseRadioButton.locator('label[for="baseRadio-input"]').innerText();
-    await expect(baseRadioButton.locator('label')).toContainText('Download all data');
-
-    await exchangeSetSelectionPageObjects.expect.validateBaseRadioButtonText();
-    await exchangeSetSelectionPageObjects.expect.validateBaseDownloadDescription();
-    await exchangeSetSelectionPageObjects.expect.validateDefaultSelection();
-    await exchangeSetSelectionPageObjects.expect.validateDeltaRadioButtonText();
-    await exchangeSetSelectionPageObjects.expect.validateDeltaDownloadDescription();
+    await expect(page.locator('#baseRadio').filter({ hasText: 'Download all data' })).toBeVisible();
+    await expect(page.locator('#baseLabel').filter({ hasText: 'Select Download all data if you are installing base and all updates for specific ENCs or ADMIRALTY Information Overlay (AIO).'})).toBeVisible();
+    
+    await expect(page.locator('#deltaRadio').filter({ hasText: 'Download updates' })).toBeVisible();
+    await expect(page.locator('#deltaLabel').filter({ hasText: 'Select Download updates to only receive updates for ENCs or AIO since your last update. This must be a date within the last 27 days.'})).toBeVisible();
+    // if delta radio button is selected by default then date picker should be visible
+    await expect(page.locator('.enc-datetime-container')).toBeVisible();
+    // confirm that the date picker is empty
+    //const date = await page.locator("input[type='date']").evaluate((element: HTMLInputElement) => element.value);
+    //expect(date == '').toBeTruthy();
+    
+    //await exchangeSetSelectionPageObjects.expect.validateBaseRadioButtonText();
+    //await exchangeSetSelectionPageObjects.expect.validateBaseDownloadDescription();
+    //await exchangeSetSelectionPageObjects.expect.validateDefaultSelection();
+    //await exchangeSetSelectionPageObjects.expect.validateDeltaRadioButtonText();
+    //await exchangeSetSelectionPageObjects.expect.validateDeltaDownloadDescription();
     await exchangeSetSelectionPageObjects.expect.validateDatePickerIsEmpty();
     await exchangeSetSelectionPageObjects.expect.validateProceedButton();
     await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 1 of 4\nChoose exchange set type");
-  }); Rhz Can't get this to work, not sure how important this really is. */
+  }); 
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149497
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146707

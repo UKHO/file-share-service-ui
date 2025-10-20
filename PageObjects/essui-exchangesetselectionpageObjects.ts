@@ -6,8 +6,8 @@ export class ExchangeSetSelectionPageObjects {
     readonly deltaRadioButton: Locator;
     readonly datePicker: Locator;
     readonly proceed: Locator;
-    readonly baseRadioButtonText: Locator;
-    readonly deltaRadioButtonText: Locator;
+    readonly baseRadioButtonTextXXRhz: Locator;
+    readonly deltaRadioButtonTextXXRhz: Locator;
     readonly warningMessage: Locator;
     readonly header: Locator;
 
@@ -17,8 +17,8 @@ export class ExchangeSetSelectionPageObjects {
         this.deltaRadioButton = page.locator("#deltaRadio");
         this.datePicker = page.locator("input[type='date']");
         this.proceed = page.locator("button:has-text('Proceed')");
-        this.baseRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(1) div label");
-        this.deltaRadioButtonText = page.locator("div[role='radiogroup'] > :nth-child(2) div label");
+        this.baseRadioButtonTextXXRhz = page.locator("div[role='radiogroup'] > :nth-child(1) div label");
+        this.deltaRadioButtonTextXXRhz = page.locator("div[role='radiogroup'] > :nth-child(2) div label");
         this.warningMessage = page.locator(".warningMsgTitle");
         this.header = page.locator("h2#main");
     }
@@ -59,12 +59,12 @@ export class ExchangeSetSelectionAssertion {
         expect(date == '').toBeTruthy();
     }
 
-    async validateBaseRadioButtonText() {
-        expect(((await this.selection.baseRadioButtonText.innerText())).split('\n')[0].trim() == 'Download all data').toBeTruthy();
-        expect(await this.selection.baseRadioButtonText.innerText() == 'Download all data').toBeTruthy();
-    }
+    //async validateBaseRadioButtonText() {
+        //expect(((await this.selection.baseRadioButtonText.innerText())).split('\n')[0].trim() == 'Download all data').toBeTruthy();
+       // expect(await this.selection.baseRadioButtonText.innerText() == 'Download all data').toBeTruthy();
+   // }
 
-    async validateBaseDownloadDescription() {
+    /*async validateBaseDownloadDescription() {
         expect((await this.selection.baseRadioButtonText.innerText()).split('\n')[1].trim() == 'Select Download all data if you are installing base and all updates for specific ENCs or ADMIRALTY Information Overlay (AIO).').toBeTruthy();
     }
 
@@ -79,7 +79,7 @@ export class ExchangeSetSelectionAssertion {
     async validateDefaultSelection() {
         const isSelected = await this.selection.deltaRadioButton.evaluate((element: HTMLInputElement) => element.checked);
         expect(isSelected).toBeTruthy();
-    }
+    }*/
 
     async validateMessageForFutureDate() {
         await this.selection.warningMessage.click();
