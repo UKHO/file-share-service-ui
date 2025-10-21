@@ -346,7 +346,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           const checkMsg = await exchangeSetSelectionPageObjects.warningMessage.innerText();
           if (checkMsg.includes("no updates") == false) {
                await encSelectionPageObjects.addAnotherENC("GZ800112");
-               var errorDisplay = page.getByTestId("message-error");
+               const errorDisplay = page.getByTestId("message-error");
                expect(errorDisplay).toContainText("Invalid ENC number");
                backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
                await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");

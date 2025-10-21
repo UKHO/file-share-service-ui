@@ -17,7 +17,7 @@ export class FssSearchHelperService {
     const fieldTextValue: string = typeof changedField?.currentFieldValue === "string" ?
       changedField?.currentFieldValue : changedField?.currentFieldValue.value;
 
-    var changedFieldValue = this.getFieldValue(fieldTextValue, fields);
+    const changedFieldValue = this.getFieldValue(fieldTextValue, fields);
     changedFieldRow!.selectedField = changedFieldValue;
 
     changedFieldRow!.value = "";

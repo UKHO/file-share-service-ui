@@ -150,7 +150,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.proceedButtonSelectorClick();
     //Adding ENC manually
     await encSelectionPageObjects.addAnotherENC("GB301191");
-    var infoDisplay =  await page.getByTestId("message-info");
+    const infoDisplay =  await page.getByTestId("message-info");
     expect(infoDisplay).toContainText("Max ENC limit reached");
   })
 
