@@ -115,7 +115,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
     //13956 - Add another ENC2 - Duplicate No.
     await encSelectionPageObjects.addAnotherENC("AU220130");
-    var infoDisplay =  await page.getByTestId("message-info");
+    const infoDisplay =  await page.getByTestId("message-info");
     expect(infoDisplay).toContainText("ENC already in list");
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
   })
@@ -232,9 +232,9 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.proceedButtonSelectorClick();
     // rhz - instead of looking for a literal "Invalid cells - GZ800112";
     // look for what we expect to find in the string
-    var warningDisplay =  await page.getByTestId("message-warning");
+    const warningDisplay =  await page.getByTestId("message-warning");
     expect(warningDisplay).toContainText("Invalid cells");
-    //expect(warningDisplay).toContainText("GZ800112");
+    expect(warningDisplay).toContainText("GZ800112");
    
   })
 
