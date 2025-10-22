@@ -33,15 +33,7 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
     await expect(page.locator('#deltaLabel').filter({ hasText: 'Select Download updates to only receive updates for ENCs or AIO since your last update. This must be a date within the last 27 days.'})).toBeVisible();
     // if delta radio button is selected by default then date picker should be visible
     await expect(page.locator('.enc-datetime-container')).toBeVisible();
-    // confirm that the date picker is empty
-    //const date = await page.locator("input[type='date']").evaluate((element: HTMLInputElement) => element.value);
-    //expect(date == '').toBeTruthy();
     
-    //await exchangeSetSelectionPageObjects.expect.validateBaseRadioButtonText();
-    //await exchangeSetSelectionPageObjects.expect.validateBaseDownloadDescription();
-    //await exchangeSetSelectionPageObjects.expect.validateDefaultSelection();
-    //await exchangeSetSelectionPageObjects.expect.validateDeltaRadioButtonText();
-    //await exchangeSetSelectionPageObjects.expect.validateDeltaDownloadDescription();
     await exchangeSetSelectionPageObjects.expect.validateDatePickerIsEmpty();
     await exchangeSetSelectionPageObjects.expect.validateProceedButton();
     await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 1 of 4\nChoose exchange set type");

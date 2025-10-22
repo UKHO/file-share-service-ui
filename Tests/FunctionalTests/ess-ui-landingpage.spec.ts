@@ -331,7 +331,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("A1720150");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          errorDisplay =  await page.getByTestId("message-error");
+          const errorDisplay =  await page.getByTestId("message-error");
           expect(errorDisplay).toContainText("Invalid ENC number");
 
           let backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
