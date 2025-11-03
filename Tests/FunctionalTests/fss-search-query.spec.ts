@@ -22,7 +22,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
         .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
         await page.waitForTimeout(2000);
-    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
+    await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click();
   });
 
   test('Batch Attribute table returns correct product on attribute search', async ({ page }) => {
@@ -106,7 +106,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);
     await page.getByTestId('adv-search-button').click();
     await ExpectAllResultsHaveBatchUserAttValue(page, attributeProductType.value);
-    const resultCount = await GetCountOfBatchRows(page);        
+    const resultCount = await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count();        
     //Get the product counts on UI
     const paginatorText = await page.innerText(fssSearchPageObjectsConfig.paginatorPageCount);
     expect(paginatorText).toContain(`Showing 1-${resultCount}`);
@@ -121,14 +121,12 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     // Click on expand button
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
     // Click on download button
-    await page.click(fssSearchPageObjectsConfig.fileDownloadButton, {force: true});
+    await page.getByTestId(fssSearchPageObjectsConfig.fileDownloadButtonTestId).first().click();
     // Get the file downloaded status
     const fileDownloadStatus = await page.getAttribute(fssSearchPageObjectsConfig.fileDownloadButtonStatus, "class");
     expect(fileDownloadStatus).toContain("check");
   });
 
-  // rhz - disabled test due to issue with the test data
-  // test('Batch Attribute table returns records less than filesize search', async ({ page }) => {    
   
 
   test('Test to verify no result for search query', async ({ page }) => {

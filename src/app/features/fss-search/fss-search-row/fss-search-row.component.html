@@ -25,22 +25,21 @@
                             aria-label="UnGroup selected search rows"><i class='icon-group-color fa-solid fa-xmark fa-1x'></i></button>                                            
                 </td>
             </ng-container>
-            <td width="10%" class="select-adjust">
+            <td width="10%">
                 <admiralty-select class="no-labels" id="fss-querytable-joinoperator-{{i+1}}" *ngIf="i > 0" [(ngModel)]="fssSearchRow.selectedJoinOperator">
                     <option *ngFor="let joinOperator of fssSearchRow.joinOperators" value="{{joinOperator.value}}">
                         {{joinOperator.text}}</option>
                 </admiralty-select>
             </td>
             <td width="25%">
-              <admiralty-type-ahead resultsOnInitFocus="true" id="fss-querytable-field-{{i+1}}"
-                                    type="text" class="dropdown-left"
-                                    [value] = "fssSearchRow.fieldValue"
-                                    (selectionChanged)="onFieldChange($event, fssSearchRow.rowId)">
-                <admiralty-type-ahead-item *ngFor="let item of fssSearchRow.fields"
-                                           [value]="item.text"></admiralty-type-ahead-item>
-              </admiralty-type-ahead>
+              <admiralty-autocomplete id="fss-querytable-field-{{i+1}}" class="dropdown-left"
+                                      [value] = "fssSearchRow.fieldValue"
+                                      (admiraltyChange)="onFieldChange($event, fssSearchRow.rowId)">
+                <admiralty-autocomplete-option *ngFor="let item of fssSearchRow.fields"
+                                           [value]="item.text"></admiralty-autocomplete-option>
+              </admiralty-autocomplete>
             </td>
-            <td width="20%" class="select-adjust">
+            <td width="20%">
                 <admiralty-select class="no-labels" id="fss-querytable-operator-{{i+1}}" #operatorSelect [(ngModel)]="fssSearchRow.selectedOperator"
                 (admiraltyChange)="onOperatorChange($event, fssSearchRow.rowId)">
                     <option *ngFor="let Operator of fssSearchRow.operators "

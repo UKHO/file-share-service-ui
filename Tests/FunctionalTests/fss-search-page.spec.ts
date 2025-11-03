@@ -15,7 +15,7 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector)).toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
     await page.waitForTimeout(2000);
-    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
+    await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click(); 
   });
 
   test('Does it display "Simplified Search" link on advanced Search page', async ({ page }) => {
@@ -120,7 +120,12 @@ test.describe('FSS UI Search Page Functional Test Scenarios', () => {
   test('Verify when "BatchPublishedDate" attribute field selected, input value field change to "date" type', async ({ page }) => {
 
     await SearchAttribute(page, "BatchPublishedDate");
-    const inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
+    let inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
+    const maxtime = Date.now() + 10000;
+    while (inputValueFieldAttribute !== "date" && Date.now() < maxtime) {
+      await page.waitForTimeout(500);
+      inputValueFieldAttribute = await page.getAttribute(fssSearchPageObjectsConfig.inputSearchValueSelector, "type");
+    }
     expect(inputValueFieldAttribute).toEqual("date");
   })
 

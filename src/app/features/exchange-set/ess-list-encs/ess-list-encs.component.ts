@@ -20,6 +20,7 @@ enum SelectDeselect {
 
 @Component({
   selector: 'app-ess-list-encs',
+  standalone: false,
   templateUrl: './ess-list-encs.component.html',
   styleUrls: ['./ess-list-encs.component.scss'],
   encapsulation: ViewEncapsulation.None

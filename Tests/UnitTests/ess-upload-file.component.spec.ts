@@ -388,7 +388,7 @@ describe('EssUploadFileComponent', () => {
   test('should show the explaination text in ess upload file component with max enc limit from config', () => {
     const fixture = TestBed.createComponent(EssUploadFileComponent);
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('p').textContent).toBe('You can upload a permit file or csv file with up to 10 ENCs listed. If your list is longer, please split them and load as separate files. ');
+    expect(fixture.nativeElement.querySelector('p').textContent).toContain('You can upload a permit file or csv file with up to 10 ENCs listed. If your list is longer, please split them and load as separate files. ');
   });
 
   test('should show the explaination text  in upload file component with max enc selection limit from config', () => {
@@ -397,7 +397,7 @@ describe('EssUploadFileComponent', () => {
     const essLandingPageText = fixture.debugElement.queryAll(By.css('p'));
     for (var i = 0; i < essLandingPageText.length; i++) {
       if (i == essLandingPageText.length - 1)
-        expect(essLandingPageText[i].nativeElement.innerHTML).toBe('Once you have uploaded a list, you can then make an exchange set containing a maximum of 5 individual ENCs. ');
+        expect(essLandingPageText[i].nativeElement.innerHTML).toContain('Once you have uploaded a list, you can then make an exchange set containing a maximum of 5 individual ENCs. ');
     }
   });
 

@@ -1,4 +1,4 @@
-import { NgModule,APP_INITIALIZER, ErrorHandler } from '@angular/core';
+import { NgModule,provideAppInitializer, inject, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,11 +29,6 @@ import {
   InteractionType
 } from '@azure/msal-browser';
 
-export function initializerFactory(env: AppConfigService): any {
-  const configUrl: string = 'assets/config/appconfig.json';
-    const promise = env.init(configUrl).then((value) => { });
-    return () => promise;
-}
 
 export function GTMFactory(): any {
   const googleTagManagerId = AppConfigService.settings.GoogleTagManagerId;
@@ -110,13 +105,9 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
             provide: 'APM_BASE_CLIENT',
             useFactory: ApmFactory
         },    
-        AppConfigService,
+        
         AnalyticsService,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: initializerFactory,
-            deps: [AppConfigService], multi: true
-        },
+        provideAppInitializer(() => inject(AppConfigService).init('assets/config/appconfig.json')),
         {
             provide: MSAL_INSTANCE,
             useFactory: MSALInstanceFactory

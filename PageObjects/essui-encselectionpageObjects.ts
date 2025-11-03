@@ -302,7 +302,7 @@ class EncSelectionPageAssertions {
 
   async errorMessageForDuplicateNumberSelectorContainsText(expected: string): Promise<void> {
     expect(this.encSelectionPageObjects.getDialogueSelector).toBeTruthy();
-    await this.encSelectionPageObjects.errorMessage.click();
+    await this.encSelectionPageObjects.errorMessage.click(); 
     expect(await this.encSelectionPageObjects.errorMessage.innerText() == expected).toBeTruthy();
   }
 

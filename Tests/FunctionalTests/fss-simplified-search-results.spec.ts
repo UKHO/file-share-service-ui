@@ -5,7 +5,7 @@ import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import {
   ExpectAllResultsHaveBatchUserAttValue, ExpectAllResultsContainAnyBatchUserAttValue,
   ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed, AdmiraltyExpectAllResultsHaveFileAttributeValue,
-  GetTotalResultCount, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue,ExpectAllResultsHaveFileAttributeValue
+  GetTotalResultCount, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue
 } from '../../Helper/SearchPageHelper';
 import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType,attributeFileName } from '../../Helper/ConstantHelper';
 
@@ -71,7 +71,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     //Click on expand button
     await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
     //Click on download button
-    await page.click(fssSearchPageObjectsConfig.fileDownloadButton, { force: true });
+    await page.getByTestId(fssSearchPageObjectsConfig.fileDownloadButtonTestId).first().click();
     //Get the file downloaded status
     const fileDownloadStatus = await page.getAttribute(fssSearchPageObjectsConfig.fileDownloadButtonStatus, "class");
     expect(fileDownloadStatus).toContain("check");
@@ -115,16 +115,18 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').click();
     await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').click();
 
+    await page.waitForTimeout(3000);
+
     // Assert the filter checked state
-    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').isChecked()).toBeTruthy();
-    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').isChecked()).toBeTruthy();
+    expect(await page.getByTestId(attrCD).locator('div input').isChecked()).toBeTruthy();
+    expect(await page.getByTestId(attrDVD).locator('div input').isChecked()).toBeTruthy();
 
     //clicks on clear filter buttton
     await page.click(fssSearchPageObjectsConfig.clearFilterButton);
 
     // Assert the filter checked state
-    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').isChecked()).toBeFalsy();
-    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').isChecked()).toBeFalsy();
+    expect(await page.getByTestId(attrCD).locator('div input').isChecked()).toBeFalsy();
+    expect(await page.getByTestId(attrDVD).locator('div input').isChecked()).toBeFalsy();
 
 
   })
@@ -134,17 +136,21 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaTypes.value.split(' '));
     //select batch attributes filter
-    await page.locator('admiralty-checkbox').filter({ hasText: attributeMultipleMediaTypes.value.split(' ')[0] }).locator('div').click();
+    let requiredMediaType = attributeMultipleMediaTypes.value.split(' ')[0];
+    await page.locator('admiralty-checkbox').filter({ hasText: requiredMediaType }).locator('div').click();
 
     // Assert the filter checked state
-    const cbChecked = await page.locator('admiralty-checkbox').filter({ hasText: attributeMultipleMediaTypes.value.split(' ')[0] }).locator('div').isChecked();
+    await page.waitForTimeout(2000);
+
+    const cbChecked = await page.locator('admiralty-checkbox').filter({ hasText: requiredMediaType }).locator('div input').isChecked();
+    
     expect(cbChecked).toBeTruthy();
 
     //clicks on clear filter buttton
     await page.click(fssSearchPageObjectsConfig.applyFilterButton);
 
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainBatchUserAttValue(page, attributeMultipleMediaTypes.value.split(' ')[0]);
+    await ExpectAllResultsContainBatchUserAttValue(page,  requiredMediaType);
 
   })
 

@@ -1,16 +1,17 @@
 .addSingleFileSection {
-	.text-input-wrap {
-		height: initial;
-	}
+  .text-input-wrap {
+    height: initial;
+  }
 
-	.addSingleFileTextbox {
-		width: 35%;
-		float: left;
-		margin-right: 20px;
-	}
+  .addSingleFileTextbox {
+    width: 35%;
+    float: left;
+    margin-right: 20px;
+    margin-top: -6px; //to line up with the button
+  }
 }
 
 .addAioCheckbox {
 	align-content: start;
-	padding-top: 0px;
+	padding-top: 15px;
 }

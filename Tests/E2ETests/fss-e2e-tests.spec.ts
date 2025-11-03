@@ -17,7 +17,7 @@ test.describe('FSS UI E2E Scenarios', () => {
     expect(await page.innerHTML(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector))
       .toEqual(fssSearchPageObjectsConfig.searchPageContainerHeaderText);
     await page.waitForTimeout(2000);
-    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, { force: true });
+    await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click();
     // Get the token from local storage once user logged in
     idToken = await page.evaluate(() => { return localStorage.getItem('idToken') });
     idToken?.replace(/["]+/g, '');
@@ -30,8 +30,8 @@ test.describe('FSS UI E2E Scenarios', () => {
     await page.getByTestId('adv-search-button').click();
     // Verification of attribute table records
     const card = page.locator("admiralty-card").first();
-    const table = card.getByRole("table");
-    await expect(table).toHaveClass("attribute-table");
+    const table = card.locator(".attribute-table"); 
+    await page.waitForTimeout(500);
     const noOfRecods = await table.getByRole("row").count();
     expect(noOfRecods).toBeGreaterThanOrEqual(2);
     // Search Query String

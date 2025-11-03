@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { autoTestConfig } from '../../appSetting.json';
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
@@ -24,16 +24,20 @@ test.describe('ESS UI Exchange Set Type Selection Page Functional Test Scenarios
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146695
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156116
-  test('Verify the Exchange sets page', async ({ page }) => {
-    await exchangeSetSelectionPageObjects.expect.validateBaseRadioButtonText();
-    await exchangeSetSelectionPageObjects.expect.validateBaseDownloadDescription();
-    await exchangeSetSelectionPageObjects.expect.validateDefaultSelection();
-    await exchangeSetSelectionPageObjects.expect.validateDeltaRadioButtonText();
-    await exchangeSetSelectionPageObjects.expect.validateDeltaDownloadDescription();
+ test('Verify the Exchange sets page', async ({ page }) => {
+
+    await expect(page.locator('#baseRadio').filter({ hasText: 'Download all data' })).toBeVisible();
+    await expect(page.locator('#baseLabel').filter({ hasText: 'Select Download all data if you are installing base and all updates for specific ENCs or ADMIRALTY Information Overlay (AIO).'})).toBeVisible();
+    
+    await expect(page.locator('#deltaRadio').filter({ hasText: 'Download updates' })).toBeVisible();
+    await expect(page.locator('#deltaLabel').filter({ hasText: 'Select Download updates to only receive updates for ENCs or AIO since your last update. This must be a date within the last 27 days.'})).toBeVisible();
+    // if delta radio button is selected by default then date picker should be visible
+    await expect(page.locator('.enc-datetime-container')).toBeVisible();
+    
     await exchangeSetSelectionPageObjects.expect.validateDatePickerIsEmpty();
     await exchangeSetSelectionPageObjects.expect.validateProceedButton();
     await exchangeSetSelectionPageObjects.expect.validateHeaderText("Step 1 of 4\nChoose exchange set type");
-  });
+  }); 
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149497
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/146707

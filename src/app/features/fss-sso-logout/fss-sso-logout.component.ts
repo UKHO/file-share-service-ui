@@ -5,6 +5,7 @@ import { FileShareApiService } from 'src/app/core/services/file-share-api.servic
 
 @Component({
   selector: 'app-fss-sso-logout',
+  standalone: false,
   templateUrl: './fss-sso-logout.component.html',
   styleUrls: ['./fss-sso-logout.component.scss']
 })

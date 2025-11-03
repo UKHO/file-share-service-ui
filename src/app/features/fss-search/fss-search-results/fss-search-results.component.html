@@ -30,13 +30,13 @@
           <admiralty-table-header-cell *ngFor="let heading of batch.batchFileDetails.columnData">{{heading}}</admiralty-table-header-cell>
         </admiralty-table-header>
         <admiralty-table-body>
-          <admiralty-table-row *ngFor="let element of batch.batchFileDetails.rowData">
+          <admiralty-table-row *ngFor="let element of batch.batchFileDetails.rowData; let idx = index;">
             <!--<caption class="sr-only">Dowload files for Batch {{batch.SerialNumber}} Rhz: not sure what to do with this.</caption>-->
             <admiralty-table-cell>{{element.FileName}}</admiralty-table-cell>
             <admiralty-table-cell>{{element.MimeType}}</admiralty-table-cell>
             <admiralty-table-cell>{{element.FileSize}}</admiralty-table-cell>
             <admiralty-table-cell>
-              <button class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
+              <button attr.data-testid="fd-button-test-id-{{idx}}" class="fileDownload fa fa-download fa-1x cursorPointer" tabindex="0" role="button"
                       attr.data-file-download-batch-id="{{batch.BatchID.value}}"
                       attr.aria-label="Download File for {{element.FileName}}"
                       (click)="downloadFile($event.target, element)"></button>

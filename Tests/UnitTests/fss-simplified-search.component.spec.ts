@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA} from '@angular/core';
-import {jest} from '@jest/globals';
+//import {jest} from '@jest/globals';  //rhz
 import { FssSimplifiedSearchComponent } from '../../src/app/features/fss-search/fss-simplified-search/fss-simplified-search.component';
 import { FssSearchFilterService } from '../../src/app/core/services/fss-search-filter.service';
 import { Router } from '@angular/router';

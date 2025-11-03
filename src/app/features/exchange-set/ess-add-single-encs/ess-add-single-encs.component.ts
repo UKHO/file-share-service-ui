@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ess-add-single-encs',
+  standalone: false,
   templateUrl: './ess-add-single-encs.component.html',
   styleUrls: ['./ess-add-single-encs.component.scss']
 })

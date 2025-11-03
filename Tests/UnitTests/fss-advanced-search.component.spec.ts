@@ -24,12 +24,12 @@ import { of } from 'rxjs';
 
 describe('FssAdvancedSearchComponent', () => {
   let component: FssAdvancedSearchComponent;
+  let fixture: any;  //Rhz new for version 19
   let fileShareApiService: FileShareApiService;  
   let searchService: FssSearchService;
   let msalService: MsalService;
   let fssSearchHelperService: FssSearchHelperService;
   let fssSearchValidatorService: FssSearchValidatorService;
-  let elementRef: ElementRef;
   let searchGroupingService: FssSearchGroupingService;
   let analyticsService: AnalyticsService;
   let popularSearchService: FssPopularSearchService;
@@ -72,17 +72,20 @@ describe('FssAdvancedSearchComponent', () => {
     searchGroupingService = TestBed.inject(FssSearchGroupingService);
     analyticsService = TestBed.inject(AnalyticsService);
     popularSearchService = TestBed.inject(FssPopularSearchService);
-      
-    component = new FssAdvancedSearchComponent(searchService, fileShareApiService, elementRef, fssSearchHelperService, fssSearchValidatorService, searchGroupingService, popularSearchService, analyticsService, msalService);
+
+    fixture = TestBed.createComponent(FssAdvancedSearchComponent);
+    component = fixture.componentInstance;
+    
     component.observablePopularSearch = of(null);
     component.observableAdvancedSearchTokenRefresh = of();
+
+    fixture.detectChanges(); //Rhz new
   });
 
   it('should create', () => {
-    const fixture = TestBed.createComponent(FssAdvancedSearchComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
+  
 
   test('should return datatype as "attribute" when UserAttribute is passed', () => {
     component.ngOnInit();

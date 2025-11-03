@@ -15,6 +15,7 @@ import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-fss-advanced-search',
+  standalone: false,
   templateUrl: './fss-advanced-search.component.html',
   styleUrls: ['./fss-advanced-search.component.scss'],
   providers: [
