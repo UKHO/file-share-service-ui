@@ -24,6 +24,6 @@
       [label]="encFile ? this.encFile.name : 'Click to choose a file or drag it'"
       (fileInputChange)="onFileInputChange($event)">
     </admiralty-file-input>
-    <admiralty-button (click)="loadFileReader()">Proceed</admiralty-button>
+    <admiralty-button (click)="loadFileReader()" data-testid="StepProceedButton">Proceed</admiralty-button>
   </div>
 </div>

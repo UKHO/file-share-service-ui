@@ -27,8 +27,8 @@ export class ExchangeSetSelectionPageObjects {
         await this.deltaRadioButton.click();
     }
 
-    async clickOnProceedButton() {
-        await this.proceed.click();
+  async clickOnProceedButton() {
+    await this.page.getByTestId('StepProceedButton').click();
     }
 
     async enterDate(date: Date) {
@@ -42,7 +42,7 @@ export class ExchangeSetSelectionAssertion {
     constructor(readonly selection: ExchangeSetSelectionPageObjects) {
     }
 
-    async validateProceedButton() {
+  async validateProceedButton() {
         expect(await this.selection.proceed.isEnabled()).toBeFalsy();
     }
 
