@@ -14,7 +14,7 @@ export class ExchangeSetSelectionPageObjects {
         this.baseRadioButton = page.locator("#baseRadio");
         this.deltaRadioButton = page.locator("#deltaRadio");
         this.datePicker = page.locator("input[type='date']");
-        //this.proceed = page.locator("button:has-text('Proceed')");
+        this.proceed = page.locator("button:has-text('Proceed')");
         this.warningMessage = page.locator(".warningMsgTitle");
         this.header = page.locator("h2#main");
     }
@@ -42,7 +42,7 @@ export class ExchangeSetSelectionAssertion {
     constructor(readonly selection: ExchangeSetSelectionPageObjects) {
     }
 
-    async validateProceedButton() {
+  async validateProceedButton() {
         expect(await this.selection.proceed.isEnabled()).toBeFalsy();
     }
 
