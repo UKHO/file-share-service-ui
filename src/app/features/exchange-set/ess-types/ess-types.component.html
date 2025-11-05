@@ -31,7 +31,7 @@
           [(ngModel)]="selectedDeltaDownloadDate"></admiralty-input>
       </div>
       <div class="button-container">
-        <admiralty-button (click)="onProceedClicked()" id="proceedButton" [disabled]="!isRadioSelected">
+        <admiralty-button (click)="onProceedClicked()" id="proceedButton" [disabled]="!isRadioSelected" data-testid="StepProceedButton">
           Proceed
         </admiralty-button>
       </div>

@@ -14,7 +14,7 @@ export class ExchangeSetSelectionPageObjects {
         this.baseRadioButton = page.locator("#baseRadio");
         this.deltaRadioButton = page.locator("#deltaRadio");
         this.datePicker = page.locator("input[type='date']");
-        this.proceed = page.locator("button:has-text('Proceed')");
+        //this.proceed = page.locator("button:has-text('Proceed')");
         this.warningMessage = page.locator(".warningMsgTitle");
         this.header = page.locator("h2#main");
     }
@@ -27,8 +27,8 @@ export class ExchangeSetSelectionPageObjects {
         await this.deltaRadioButton.click();
     }
 
-    async clickOnProceedButton() {
-        await this.proceed.click();
+  async clickOnProceedButton() {
+    await page.getByTestId('StepProceedButton').click();
     }
 
     async enterDate(date: Date) {
