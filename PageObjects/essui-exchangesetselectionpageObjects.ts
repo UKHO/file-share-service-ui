@@ -28,7 +28,7 @@ export class ExchangeSetSelectionPageObjects {
     }
 
   async clickOnProceedButton() {
-    await page.getByTestId('StepProceedButton').click();
+    await this.page.getByTestId('StepProceedButton').click();
     }
 
     async enterDate(date: Date) {
