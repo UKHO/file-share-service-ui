@@ -15,8 +15,7 @@ describe('AppComponent', () => {
   let activatedRoute: ActivatedRoute;
   let router: Router;
   let titleService: Title;
-  let msalService: MsalService;
-  let apmservice: ApmService
+  let msalService: MsalService;  
 
   // Mock ApmService
   const mockApmService = {
@@ -38,8 +37,7 @@ describe('AppComponent', () => {
       elasticAPM: {
         ServiceName: '',
         ServerURL: '',
-        Environment: '',
-        ApiKey: ''
+        Environment: ''
       }
     };
 
@@ -61,12 +59,11 @@ describe('AppComponent', () => {
     titleService = TestBed.inject(Title);
     router = TestBed.inject(Router);
     activatedRoute = TestBed.inject(ActivatedRoute);
-    msalService = TestBed.inject(MsalService);
-    apmservice = TestBed.inject(ApmService)
+    msalService = TestBed.inject(MsalService);    
     });
 
   it('should exist', () => {
-    component = new AppComponent(activatedRoute, router, titleService, msalService, apmservice);
+    component = new AppComponent(activatedRoute, router, titleService, msalService);
     expect(component).toBeDefined();
   })
 
