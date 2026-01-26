@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { MsalService } from '@azure/msal-angular';
 import { AppConfigService } from './core/services/app-config.service';
-import { init as initApm} from '@elastic/apm-rum';
+import { init as initApm } from '@elastic/apm-rum';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     private msalService: MsalService
   ) { 
       // Agent API is exposed through this apm instance
-    initApm({
+    const apm =  initApm({
       serviceName:  AppConfigService.settings['elasticAPM'].ServiceName,
       serverUrl: AppConfigService.settings['elasticAPM'].ServerURL,
       environment: AppConfigService.settings['elasticAPM'].Environment,
