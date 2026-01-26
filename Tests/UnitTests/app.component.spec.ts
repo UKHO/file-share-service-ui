@@ -15,7 +15,8 @@ describe('AppComponent', () => {
   let activatedRoute: ActivatedRoute;
   let router: Router;
   let titleService: Title;
-  let msalService: MsalService;  
+  let msalService: MsalService;
+  let apmservice: ApmService
 
   // Mock ApmService
   const mockApmService = {
@@ -59,11 +60,12 @@ describe('AppComponent', () => {
     titleService = TestBed.inject(Title);
     router = TestBed.inject(Router);
     activatedRoute = TestBed.inject(ActivatedRoute);
-    msalService = TestBed.inject(MsalService);    
-    });
+    msalService = TestBed.inject(MsalService);
+    apmservice = TestBed.inject(ApmService)
+  });
 
   it('should exist', () => {
-    component = new AppComponent(activatedRoute, router, titleService, msalService);
+    component = new AppComponent(activatedRoute, router, titleService, msalService, apmservice);
     expect(component).toBeDefined();
   })
 
