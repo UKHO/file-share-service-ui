@@ -193,7 +193,7 @@ export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
 
 
 async function ExpectSelectionsAreEqual(page: Page, selector: string, condition: string | string[]): Promise<void> {
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(5000);
   //  count the result rows
   const resultCount = await page.locator(selector).count(); 
 
