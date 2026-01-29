@@ -38,8 +38,7 @@ describe('AppComponent', () => {
       elasticAPM: {
         ServiceName: '',
         ServerURL: '',
-        Environment: '',
-        ApiKey: ''
+        Environment: ''
       }
     };
 
@@ -63,7 +62,7 @@ describe('AppComponent', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     msalService = TestBed.inject(MsalService);
     apmservice = TestBed.inject(ApmService)
-    });
+  });
 
   it('should exist', () => {
     component = new AppComponent(activatedRoute, router, titleService, msalService, apmservice);

@@ -13,39 +13,35 @@ import { ApmService } from '@elastic/apm-rum-angular';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  
+
   currentUrl: any = '';
 
-  isOverlay:boolean = false;
-  
+  isOverlay: boolean = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title,
     private msalService: MsalService,
     apmservice: ApmService
-  ) { 
-      // Agent API is exposed through this apm instance
-      const apm = apmservice.init({
-      serviceName:  AppConfigService.settings['elasticAPM'].ServiceName,
-      serverUrl: AppConfigService.settings['elasticAPM'].ServerURL
-      })
+  ) {
+    // Agent API is exposed through this apm instance
+    apmservice.init({
+      serviceName: AppConfigService.settings['elasticAPM'].ServiceName,
+      serverUrl: AppConfigService.settings['elasticAPM'].ServerURL,
+      environment: AppConfigService.settings['elasticAPM'].Environment,
+    })
 
-      apm.setUserContext({
-      'username': AppConfigService.settings['elasticAPM'].Environment,
-      'id': AppConfigService.settings['elasticAPM'].ApiKey
-      })        
-          
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         if (e.url != '') {
           this.currentUrl = e.url;
         } else {
-          this.currentUrl ='';
+          this.currentUrl = '';
         }
 
       }
-      
+
     });
   }
 
@@ -76,7 +72,7 @@ export class AppComponent implements OnInit {
         });
   }
 
-  changeOverlay(pageOverlay:any){
+  changeOverlay(pageOverlay: any) {
     this.isOverlay = pageOverlay;
   }
 }

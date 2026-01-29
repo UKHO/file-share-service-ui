@@ -64,9 +64,7 @@ jobs:
   - name: essConfig.apiUiUrl
     value: $(essConfig-apiUiUrl)
   - name: essConfig.privilegedUserDomains
-    value: $(essConfig-PrivilegedUserDomains)
-  - name: elasticAPM.ApiKey
-    value: $(elasticAPM-ApiKey)
+    value: $(essConfig-PrivilegedUserDomains) 
   - name: elasticAPM.Environment
     value: $(elasticAPM-Environment)
   - name: elasticAPM.ServerURL

@@ -106,13 +106,13 @@ export async function InsertSearchText(page: Page, searchBatchAttribute: string)
 export async function ExpectAllResultsHaveBatchUserAttValue(
   page: Page, preciseValue: string): Promise<void> {
 
-  await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector, preciseValue.toLowerCase());  
+  await ExpectSelectionsAreEqual(page, fssSearchPageObjectsConfig.attributeTableSelector, preciseValue.toLowerCase());
 }
 
 export async function ExpectAllResultsContainBatchUserAttValue(
   page: Page, containsValue: string): Promise<void> {
 
-  await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector, containsValue.toLowerCase()); 
+  await ExpectSelectionsAreEqual(page, fssSearchPageObjectsConfig.attributeTableSelector, containsValue.toLowerCase());
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAttValue(
@@ -120,8 +120,8 @@ export async function ExpectAllResultsContainAnyBatchUserAttValue(
 
   expect(containsOneOf.length).toBeTruthy();
 
-  await  ExpectSelectionsAreEqual(page,fssSearchPageObjectsConfig.attributeTableSelector,  containsOneOf);
-  
+  await ExpectSelectionsAreEqual(page, fssSearchPageObjectsConfig.attributeTableSelector, containsOneOf);
+
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
@@ -130,7 +130,7 @@ export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
   expect(containsOneOf.length).toBeTruthy();
 
   await ExpectSelectionsAreEqualforBatchAndFile(page,
-    fssSearchPageObjectsConfig.attributeTableSelector, 
+    fssSearchPageObjectsConfig.attributeTableSelector,
     `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
     containsOneOf
   );
@@ -141,7 +141,7 @@ export async function ExpectAllResultsHaveFileAttributeValue(
 
   await ExpectSelectionsAreEqual(page,
     `//admiralty-table[@role='table']`,
-    `//admiralty-table[@role='table' and  .//admiralty-table-cell[contains(., '${preciseValue.toLowerCase()}')]]`); 
+    `//admiralty-table[@role='table' and  .//admiralty-table-cell[contains(., '${preciseValue.toLowerCase()}')]]`);
 }
 
 export async function AdmiraltyExpectAllResultsHaveFileAttributeValue(
@@ -193,9 +193,9 @@ export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
 
 
 async function ExpectSelectionsAreEqual(page: Page, selector: string, condition: string | string[]): Promise<void> {
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(7000);
   //  count the result rows
-  const resultCount = await page.locator(selector).count(); 
+  const resultCount = await page.locator(selector).count();
 
   // fail if there are no matching selections
   expect(resultCount).toBeTruthy();
@@ -203,52 +203,52 @@ async function ExpectSelectionsAreEqual(page: Page, selector: string, condition:
   let tmpWithValueCount = 0;
   const tables = page.locator(selector);
   if (typeof condition === 'string') {
-     tmpWithValueCount = await tables.filter({ has: page.locator('td', {hasText:condition})}).count();
+    tmpWithValueCount = await tables.filter({ has: page.locator('td', { hasText: condition }) }).count();
   } else {
     for (const cond of condition) {
-      tmpWithValueCount += await tables.filter({ has: page.locator('td', {hasText:cond})}).count();
+      tmpWithValueCount += await tables.filter({ has: page.locator('td', { hasText: cond }) }).count();
     }
   }
   // count the result rows with the attribute value
   const withValueCount = tmpWithValueCount;
-  
+
   // assert all the resulting batches have the attribute value
   expect(withValueCount).toEqual(resultCount);
 }
 
 async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, selector: string, filePath: string, condition: string[]): Promise<void> {
-    await page.waitForTimeout(3000);
-    let withValueCount = 0;
-    let withFileNameCount = 0;
+  await page.waitForTimeout(3000);
+  let withValueCount = 0;
+  let withFileNameCount = 0;
 
-    //  count the result rows
-    const resultCount = await page.locator(selector).count(); 
+  //  count the result rows
+  const resultCount = await page.locator(selector).count();
 
-    
-    // fail if there are no matching selections
-    expect(resultCount).toBeTruthy();
-    
-    const searchedBatchAttibutes = await page.locator(`${selector} tr td:first-child`).allTextContents(); 
 
-    // count the result rows with the attribute value
-    for (let rc = 0; rc < resultCount; rc++) {
-      switch (true) {
-        case (searchedBatchAttibutes[rc]?.includes(condition[0])):
-          withValueCount = withValueCount + 1;
-          break;
-        case (searchedBatchAttibutes[rc]?.includes(condition[1])):
-          withValueCount = withValueCount + 1;
-          break;
-         default :
-           withFileNameCount = withFileNameCount + 1;
-           break;
-        
-      }
+  // fail if there are no matching selections
+  expect(resultCount).toBeTruthy();
+
+  const searchedBatchAttibutes = await page.locator(`${selector} tr td:first-child`).allTextContents();
+
+  // count the result rows with the attribute value
+  for (let rc = 0; rc < resultCount; rc++) {
+    switch (true) {
+      case (searchedBatchAttibutes[rc]?.includes(condition[0])):
+        withValueCount = withValueCount + 1;
+        break;
+      case (searchedBatchAttibutes[rc]?.includes(condition[1])):
+        withValueCount = withValueCount + 1;
+        break;
+      default:
+        withFileNameCount = withFileNameCount + 1;
+        break;
+
     }
+  }
 
-    const withBothValueCount = withValueCount + withFileNameCount;
-    // assert all the resulting batches have the search value
-    expect(withBothValueCount).toEqual(resultCount);
+  const withBothValueCount = withValueCount + withFileNameCount;
+  // assert all the resulting batches have the search value
+  expect(withBothValueCount).toEqual(resultCount);
 }
 
 
