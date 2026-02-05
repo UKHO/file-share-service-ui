@@ -252,7 +252,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   onPageChangeHandler(changeEvent: Event) {
-    let value = changeEvent as CustomEvent<number>; 
+    let value = changeEvent as CustomEvent<number>;
     this.pageChange(value.detail)
   }
 
@@ -302,10 +302,25 @@ export class FssSearchComponent implements OnInit {
   }
 
   popularSearchClicked(popularSearch: any) {
-    this.eventPopularSearch.next(popularSearch);
-    if (this.UkhoAdvanceSearch !== undefined) {
-      this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');
-      this.UkhoAdvanceSearch.nativeElement.focus();
+    // Ensure we're working with the search data, not an event object
+    const searchData = popularSearch?.target ? null : popularSearch;
+
+    if (searchData) {
+      // Switch to advanced search mode to show the advanced search component
+      this.activeSearchType = SearchType.AdvancedSearch;
+      this.displaySearchResult = false;
+      this.displayMessage = false;
+
+      // Emit the popular search data to the advanced search component
+      this.eventPopularSearch.next(searchData);
+
+      // Set focus after a brief delay to ensure component is rendered
+      setTimeout(() => {
+        if (this.UkhoAdvanceSearch !== undefined) {
+          this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');
+          this.UkhoAdvanceSearch.nativeElement.focus();
+        }
+      }, 100);
     }
   }
 
@@ -324,7 +339,7 @@ export class FssSearchComponent implements OnInit {
         this.attribute = attributeSearchResults.find((searchResult: { key: any; }) => searchResult.key.toLowerCase() === element.attribute.toLowerCase());
         if (this.attribute) {
           if (this.attribute["values"].length > 1) {
-            this.attribute["values"].splice(AppConfigService.settings['fssConfig'].maxAttributeValueCount, 1);        
+            this.attribute["values"].splice(AppConfigService.settings['fssConfig'].maxAttributeValueCount, 1);
             this.filterGroups.push({
               title: element.attribute,
               items: this.getAttributesValues(this.attribute["values"], element.attributeSortType, element.sortOrder),

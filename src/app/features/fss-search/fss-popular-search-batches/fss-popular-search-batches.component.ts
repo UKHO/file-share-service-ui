@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter,  AfterViewChecked } from '@angular/core';
+import { Component, Input, Output, EventEmitter, AfterViewChecked } from '@angular/core';
 import { PopularSearchConfigService } from '../../../core/services/popular-search-config.service';
 import { SearchType } from '../../../core/models/fss-search-types';
 
@@ -9,7 +9,7 @@ import { SearchType } from '../../../core/models/fss-search-types';
   styleUrls: ['./fss-popular-search-batches.component.scss']
 })
 export class FssPopularSearchBatchesComponent implements AfterViewChecked {
-  
+
   @Output() popularSearchClicked = new EventEmitter<boolean>();
   @Input() activeSearchType: SearchType;
   popularSearches: any = [];
@@ -38,7 +38,12 @@ export class FssPopularSearchBatchesComponent implements AfterViewChecked {
     }
   }
 
-  onPopularSearchClick(popularSearch:any){
+  onPopularSearchClick(popularSearch: any, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      event.preventDefault();
+    }
     this.popularSearchClicked.emit(popularSearch)
   }
 
