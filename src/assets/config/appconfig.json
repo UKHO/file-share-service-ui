@@ -1,6 +1,6 @@
 {
   "Environment": "",
-  "googleTagManagerId": "Not-Needed-For-Running-Locally",
+  "GoogleTagManagerId": "Not-Needed-For-Running-Locally",
   "b2cConfig": {
     "tenantName": "",
     "clientId": "",
