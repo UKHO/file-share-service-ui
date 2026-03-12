@@ -105,7 +105,7 @@ export class FssSearchComponent implements OnInit {
     this.analyticsService.getAdvancedSearchResult();
   }
 
-  onSimplifiedSearchClicked(searchFilterText: string) {
+  onSimplifiedSearchClicked(searchFilterText: string) {  
     this.displaySearchResult = false;
     if (searchFilterText.trim() !== "") {
       this.displayLoader = true;
@@ -120,7 +120,7 @@ export class FssSearchComponent implements OnInit {
           })
       })
     } else {
-      this.messageTitle = "There is a problem with a field";
+      this.messageTitle = "There is a problem with a field_";
       this.messageDesc = "Please enter a search field value.";
       this.showMessage("warning", this.messageTitle, this.messageDesc);
     }
