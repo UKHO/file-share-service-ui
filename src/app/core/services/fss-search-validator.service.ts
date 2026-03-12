@@ -13,6 +13,7 @@ export class FssSearchValidatorService {
   constructor(private analyticsService: AnalyticsService) { }
 
   validateSearchInput(fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[]) {   
+    debugger;
     var flag = true;
     this.errorMessageTitle = "";
     this.errorMessageDescription = "";
