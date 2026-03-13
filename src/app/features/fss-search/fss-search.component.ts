@@ -81,6 +81,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   onAdvancedSearchClicked(fssAdvancedSearch: any) {
+    debugger;
     if (this.fssSearchValidatorService.validateSearchInput(
       fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       var filter = this.fssSearchFilterService.getFilterExpression(
@@ -302,6 +303,7 @@ export class FssSearchComponent implements OnInit {
   }
 
   popularSearchClicked(popularSearch: any) {
+    debugger;
     this.eventPopularSearch.next(popularSearch);
     if (this.UkhoAdvanceSearch !== undefined) {
       this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');
