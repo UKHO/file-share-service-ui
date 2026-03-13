@@ -80,8 +80,7 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = false;
   }
 
-  onAdvancedSearchClicked(fssAdvancedSearch: any) {
-    debugger;
+  onAdvancedSearchClicked(fssAdvancedSearch: any) {    
     if (this.fssSearchValidatorService.validateSearchInput(
       fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       var filter = this.fssSearchFilterService.getFilterExpression(
@@ -121,7 +120,7 @@ export class FssSearchComponent implements OnInit {
           })
       })
     } else {
-      this.messageTitle = "There is a problem with a field_";
+      this.messageTitle = "There is a problem with a field";
       this.messageDesc = "Please enter a search field value.";
       this.showMessage("warning", this.messageTitle, this.messageDesc);
     }
@@ -302,8 +301,7 @@ export class FssSearchComponent implements OnInit {
 
   }
 
-  popularSearchClicked(popularSearch: any) {
-    debugger;
+  popularSearchClicked(popularSearch: any) {    
     this.eventPopularSearch.next(popularSearch);
     if (this.UkhoAdvanceSearch !== undefined) {
       this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');
