@@ -41,6 +41,7 @@ export class FssSearchValidatorService {
           }
         }
       }
+      console.log("fields: " + fields);
       if (!fieldDataType) {
         if (fssSearchRows[rowId].selectedField === "" || fssSearchRows[rowId].selectedOperator === "") {
           if (fssSearchRows[rowId].fieldFormControl.touched === false) {
