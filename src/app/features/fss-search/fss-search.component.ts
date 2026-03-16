@@ -80,7 +80,7 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = false;
   }
 
-  onAdvancedSearchClicked(fssAdvancedSearch: any) {    
+  onAdvancedSearchClicked(fssAdvancedSearch: any) { 
     if (this.fssSearchValidatorService.validateSearchInput(
       fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       var filter = this.fssSearchFilterService.getFilterExpression(
@@ -105,7 +105,7 @@ export class FssSearchComponent implements OnInit {
     this.analyticsService.getAdvancedSearchResult();
   }
 
-  onSimplifiedSearchClicked(searchFilterText: string) {  
+  onSimplifiedSearchClicked(searchFilterText: string) {
     this.displaySearchResult = false;
     if (searchFilterText.trim() !== "") {
       this.displayLoader = true;
@@ -301,7 +301,7 @@ export class FssSearchComponent implements OnInit {
 
   }
 
-  popularSearchClicked(popularSearch: any) {    
+  popularSearchClicked(popularSearch: any) {
     this.eventPopularSearch.next(popularSearch);
     if (this.UkhoAdvanceSearch !== undefined) {
       this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');

@@ -100,7 +100,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.getAdvancedSearchResult();
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
     if (!localStorage['batchAttributes']) {
