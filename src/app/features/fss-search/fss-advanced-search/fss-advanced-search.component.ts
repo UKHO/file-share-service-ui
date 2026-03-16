@@ -253,6 +253,9 @@ export class FssAdvancedSearchComponent implements OnInit {
   }
 
   getAdvancedSearchResult() {
+    if(this.fields.length === 0 ){
+      this.refreshFields(JSON.parse(localStorage.getItem('batchAttributes')!));
+    }
     this.onAdvancedSearchClicked.emit({ fssSearchRows: this.fssSearchRows, fields: this.fields, 
         operators: this.operators, rowGroupings: this.rowGroupings});
     }
