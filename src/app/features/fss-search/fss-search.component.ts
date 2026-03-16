@@ -80,7 +80,7 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = false;
   }
 
-  onAdvancedSearchClicked(fssAdvancedSearch: any) { 
+  onAdvancedSearchClicked(fssAdvancedSearch: any) {
     if (this.fssSearchValidatorService.validateSearchInput(
       fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       var filter = this.fssSearchFilterService.getFilterExpression(
