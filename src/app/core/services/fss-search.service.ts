@@ -54,7 +54,8 @@ export class FssSearchService implements IFssSearchService {
 
   refreshUserAttributes(batchAttributeResult: string | any[]) {
     this.userAttributes = [];
-    if(batchAttributeResult === undefined || batchAttributeResult.length === 0){
+    console.log("batchAttributeResult: " + batchAttributeResult);
+    if(!batchAttributeResult || batchAttributeResult === undefined || batchAttributeResult?.length === 0){
       return this.userAttributes;
     }
     for (let i = 0; i < batchAttributeResult.length; i++) {
