@@ -66,6 +66,9 @@ export class FssSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.SimplifiedSearch;
+    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+              localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));             
+    });
   }
 
   ShowAdvancedSearchClicked() {
@@ -301,7 +304,7 @@ export class FssSearchComponent implements OnInit {
 
   }
 
-  popularSearchClicked(popularSearch: any) {
+  popularSearchClicked(popularSearch: any) {   
     this.eventPopularSearch.next(popularSearch);
     if (this.UkhoAdvanceSearch !== undefined) {
       this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');
