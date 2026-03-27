@@ -11,6 +11,7 @@ import { FilterGroup, FilterItem } from '../../shared/components/ukho-table/filt
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { SilentRequest } from '@azure/msal-browser';
+import { e } from '@angular/cdk/scrolling-module.d-ud2XrbF8';
 
 @Component({
   selector: 'app-fss-search',
@@ -66,9 +67,27 @@ export class FssSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.SimplifiedSearch;
-    this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-              localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));             
-    });
+    this.displayLoader = true;
+
+    // this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+    //   this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+    //       localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));        
+    //      // this.displayLoader = false;
+    //       this.analyticsService.searchInIt();
+    //   });
+    //   },error => {
+        
+    //     this.msalService.instance
+    //       .loginPopup(this.fssSilentTokenRequest)
+    //       .then(response => {
+    //         this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
+    //           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));        
+    //         //  this.displayLoader = false;
+    //           this.analyticsService.searchInIt();
+    //         });
+    //       })
+    //   }); 
+   
   }
 
   ShowAdvancedSearchClicked() {
@@ -83,12 +102,13 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = false;
   }
 
-  onAdvancedSearchClicked(fssAdvancedSearch: any) {
+  onAdvancedSearchClicked(fssAdvancedSearch: any) {    
     if (this.fssSearchValidatorService.validateSearchInput(
       fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       var filter = this.fssSearchFilterService.getFilterExpression(
         fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
+        console.log("filter: " + filter);
         this.getSearchResult(filter);
       }, error => {
         this.msalService.instance
@@ -168,6 +188,10 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
+  onLoadComplete(event: boolean) {    
+    this.displayLoader = !event;
+  }
+
   onApplyFilterButtonClicked(filterItem: FilterGroup[]) {
     var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
     var applyFilter_FilterExpression = filterExpression ? this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")") : this.MainQueryFilterExpression;
@@ -196,24 +220,30 @@ export class FssSearchComponent implements OnInit {
     this.displayLoader = false;
     this.displaySearchResult = false;
     let errmsg = "";
-    if (err.error != undefined && err.error.errors != undefined && err.error.errors.length > 0) {
-      for (let i = 0; i < err.error.errors.length; i++) {
-        errmsg += err.error.errors[i]['description'] + '\n';
-      }
-    }
-    else if (err.error != undefined && err.error.message != undefined) {
-      errmsg = err.error.message;
-    }
-    if (err.error.statusCode == this.TooManyRequest) {
-      this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
-    }
-    else if (this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch) {
+    // console.log("Error: " + JSON.stringify(err));
 
-      this.showMessage("error", "There has been an error", "please contact customer services");
-    }
-    else {
-      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
-    }
+    // if(!err || !err.error || err.error.statusCode == undefined){      
+    //   this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
+    // } else {
+      if (err.error != undefined && err.error.errors != undefined && err.error.errors.length > 0) {
+        for (let i = 0; i < err.error.errors.length; i++) {
+          errmsg += err.error.errors[i]['description'] + '\n';
+        }
+      }
+      else if (err.error != undefined && err.error.message != undefined) {
+        errmsg = err.error.message;
+      }
+      if (err.error.statusCode == this.TooManyRequest) {
+        this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
+      }
+      else if (this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch) {
+
+        this.showMessage("error", "There has been an error", "please contact customer services");
+      }
+      else {
+        this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+      }
+   // }
     this.analyticsService.errorHandling();
   }
 
