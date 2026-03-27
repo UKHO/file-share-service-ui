@@ -42,8 +42,6 @@ export class FssSearchValidatorService {
       }
     
       if (!fieldDataType) {
-        console.log("fieldDataType is null for field value: " + fssSearchRows[rowId]);
-        console.log("fields: " + fields);
         if (fssSearchRows[rowId].selectedField === "" || fssSearchRows[rowId].selectedOperator === "") {
           if (fssSearchRows[rowId].fieldFormControl.touched === false) {
             fssSearchRows[rowId].fieldFormControl.markAsTouched();

@@ -54,11 +54,6 @@ export class FssSearchService implements IFssSearchService {
 
   refreshUserAttributes(batchAttributeResult: string | any[]) {
     this.userAttributes = [];
-    console.log("batchAttributeResult: " + batchAttributeResult);
-    if(!batchAttributeResult || batchAttributeResult === undefined || batchAttributeResult?.length === 0){
-     batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
-     console.log("batchAttributeResult from local storage: " + batchAttributeResult);
-    }
     for (let i = 0; i < batchAttributeResult.length; i++) {
       const batchAttributes: Field =
         { value: '$batch(' + batchAttributeResult[i] + ')', text: batchAttributeResult[i], type: 'UserAttribute', dataType: 'attribute' };

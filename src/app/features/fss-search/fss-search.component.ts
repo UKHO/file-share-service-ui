@@ -68,25 +68,6 @@ export class FssSearchComponent implements OnInit {
   ngOnInit(): void {
     this.activeSearchType = SearchType.SimplifiedSearch;
     this.displayLoader = true;
-
-    // this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-    //   this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-    //       localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));        
-    //      // this.displayLoader = false;
-    //       this.analyticsService.searchInIt();
-    //   });
-    //   },error => {
-        
-    //     this.msalService.instance
-    //       .loginPopup(this.fssSilentTokenRequest)
-    //       .then(response => {
-    //         this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-    //           localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));        
-    //         //  this.displayLoader = false;
-    //           this.analyticsService.searchInIt();
-    //         });
-    //       })
-    //   }); 
    
   }
 
@@ -102,13 +83,12 @@ export class FssSearchComponent implements OnInit {
     this.displayMessage = false;
   }
 
-  onAdvancedSearchClicked(fssAdvancedSearch: any) {    
+  onAdvancedSearchClicked(fssAdvancedSearch: any) {
     if (this.fssSearchValidatorService.validateSearchInput(
       fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.fields, fssAdvancedSearch.operators)) {
       var filter = this.fssSearchFilterService.getFilterExpression(
         fssAdvancedSearch.fssSearchRows, fssAdvancedSearch.rowGroupings);
       this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
-        console.log("filter: " + filter);
         this.getSearchResult(filter);
       }, error => {
         this.msalService.instance
@@ -220,30 +200,25 @@ export class FssSearchComponent implements OnInit {
     this.displayLoader = false;
     this.displaySearchResult = false;
     let errmsg = "";
-    // console.log("Error: " + JSON.stringify(err));
+    if (err.error != undefined && err.error.errors != undefined && err.error.errors.length > 0) {
+      for (let i = 0; i < err.error.errors.length; i++) {
+        errmsg += err.error.errors[i]['description'] + '\n';
+      }
+    }
+    else if (err.error != undefined && err.error.message != undefined) {
+      errmsg = err.error.message;
+    }
+    if (err.error.statusCode == this.TooManyRequest) {
+      this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
+    }
+    else if (this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch) {
 
-    // if(!err || !err.error || err.error.statusCode == undefined){      
-    //   this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
-    // } else {
-      if (err.error != undefined && err.error.errors != undefined && err.error.errors.length > 0) {
-        for (let i = 0; i < err.error.errors.length; i++) {
-          errmsg += err.error.errors[i]['description'] + '\n';
-        }
-      }
-      else if (err.error != undefined && err.error.message != undefined) {
-        errmsg = err.error.message;
-      }
-      if (err.error.statusCode == this.TooManyRequest) {
-        this.showMessage("error", "There has been an error", "Too many requests in a short period of time, please try again");
-      }
-      else if (this.activeSearchType == this.SearchTypeEnum.SimplifiedSearch) {
+      this.showMessage("error", "There has been an error", "please contact customer services");
+    }
+    else {
+      this.showMessage("warning", "An exception occurred when processing this search", errmsg);
+    }
 
-        this.showMessage("error", "There has been an error", "please contact customer services");
-      }
-      else {
-        this.showMessage("warning", "An exception occurred when processing this search", errmsg);
-      }
-   // }
     this.analyticsService.errorHandling();
   }
 
@@ -334,7 +309,7 @@ export class FssSearchComponent implements OnInit {
 
   }
 
-  popularSearchClicked(popularSearch: any) {   
+  popularSearchClicked(popularSearch: any) {
     this.eventPopularSearch.next(popularSearch);
     if (this.UkhoAdvanceSearch !== undefined) {
       this.UkhoAdvanceSearch.nativeElement.setAttribute('tabindex', '-1');
