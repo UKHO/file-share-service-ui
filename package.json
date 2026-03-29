@@ -42,7 +42,7 @@
     "zone.js": "^0.15.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.19",
+    "@angular-devkit/build-angular": "^21.2.5",
     "@angular-eslint/builder": "19.8.0",
     "@angular-eslint/eslint-plugin": "19.8.0",
     "@angular-eslint/eslint-plugin-template": "19.8.0",
@@ -66,7 +66,7 @@
     "jest-playwright-preset": "^4.0.0",
     "jest-preset-angular": "^14.6.1",
     "terser": "^5.19.4",
-    "terser-webpack-plugin": "^5.3.9",
+    "terser-webpack-plugin": "^5.4.0",
     "ts-jest": "^29.4.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.8.3",
