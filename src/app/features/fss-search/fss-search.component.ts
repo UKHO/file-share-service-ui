@@ -11,6 +11,7 @@ import { FilterGroup, FilterItem } from '../../shared/components/ukho-table/filt
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { SilentRequest } from '@azure/msal-browser';
+import { e } from '@angular/cdk/scrolling-module.d-ud2XrbF8';
 
 @Component({
   selector: 'app-fss-search',
@@ -66,6 +67,8 @@ export class FssSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.activeSearchType = SearchType.SimplifiedSearch;
+    this.displayLoader = true;
+   
   }
 
   ShowAdvancedSearchClicked() {
@@ -165,6 +168,10 @@ export class FssSearchComponent implements OnInit {
     }
   }
 
+  onLoadComplete(event: boolean) {    
+    this.displayLoader = !event;
+  }
+
   onApplyFilterButtonClicked(filterItem: FilterGroup[]) {
     var filterExpression = this.fssSearchFilterService.getFilterExpressionForApplyFilter(filterItem);
     var applyFilter_FilterExpression = filterExpression ? this.MainQueryFilterExpression.concat(" AND ").concat("(" + filterExpression + ")") : this.MainQueryFilterExpression;
@@ -211,6 +218,7 @@ export class FssSearchComponent implements OnInit {
     else {
       this.showMessage("warning", "An exception occurred when processing this search", errmsg);
     }
+
     this.analyticsService.errorHandling();
   }
 
