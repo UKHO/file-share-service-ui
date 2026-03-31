@@ -61,6 +61,7 @@ export class FssAdvancedSearchComponent implements OnInit {
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   @Output() ShowSimplifiedSearchClicked = new EventEmitter<boolean>();
   @Output() onAdvancedSearchClicked = new EventEmitter<{ fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[], rowGroupings: RowGrouping[] }>();
+   @Output() onLoadComplete = new EventEmitter<boolean>();
   fssSilentTokenRequest: SilentRequest;
   fssTokenScope: any = [];
 
@@ -100,7 +101,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.getAdvancedSearchResult();
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
     if (!localStorage['batchAttributes']) {
@@ -112,6 +113,7 @@ export class FssAdvancedSearchComponent implements OnInit {
           this.addSearchRow();         
           this.displayLoader = false;
           this.analyticsService.searchInIt();
+          this.onLoadComplete.emit(true);
         });
       },error => {
         
@@ -124,6 +126,7 @@ export class FssAdvancedSearchComponent implements OnInit {
               this.addSearchRow();         
               this.displayLoader = false;
               this.analyticsService.searchInIt();
+              this.onLoadComplete.emit(true);
             });
           })
       }); 
@@ -133,6 +136,8 @@ export class FssAdvancedSearchComponent implements OnInit {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
       this.refreshFields(batchAttributeResult);
       this.addSearchRow();
+      this.onLoadComplete.emit(true);
+
     }
 
     this.subscriptionPopularSearch = this.observablePopularSearch.subscribe((data) => 
@@ -165,7 +170,8 @@ export class FssAdvancedSearchComponent implements OnInit {
   getBatchAttributes() {
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
+        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
+        
         this.refreshFields(batchAttributeResult);
         this.refreshExistingFssRowsFields();
       });    
@@ -252,7 +258,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.analyticsService.SearchRowDeleted();
   }
 
-  getAdvancedSearchResult() {
+  getAdvancedSearchResult() {    
     if(this.fields.length === 0 ){
       this.refreshFields(JSON.parse(localStorage.getItem('batchAttributes')!));
     }
