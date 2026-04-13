@@ -1,10 +1,6 @@
-//import 'jest-preset-angular/setup-jest.mjs';
+import 'jest-preset-angular/setup-jest';
 import crypto from 'crypto';
 import { webcrypto } from 'node:crypto';
-import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone/index.mjs';
-
-setupZoneTestEnv();
-
 
 Object.defineProperty(window, 'CSS', { value: null });
 Object.defineProperty(window, 'getComputedStyle', {

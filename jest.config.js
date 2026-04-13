@@ -7,6 +7,9 @@ module.exports = {
   roots: ['<rootDir>/Tests/UnitTests/'],
   testMatch: ['**/+(*.)+(spec).+(ts)'],
   setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(@ukho|@angular|@azure|@elastic|angular-google-tag-manager)/)'
+  ],
   collectCoverage: true,
   coverageReporters: ['html','cobertura'],
   coverageDirectory: 'coverage',
