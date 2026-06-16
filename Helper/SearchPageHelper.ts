@@ -100,7 +100,7 @@ export function DataCollectionComparison(collectionSource: any, collectionTarget
 export async function InsertSearchText(page: Page, searchBatchAttribute: string) {
   await page.getByRole("textbox").fill(searchBatchAttribute);
   await page.getByTestId('sim-search-button').click();
-  await page.waitForTimeout(2000);
+  await WaitForSearchResultsStabilized(page);
 }
 
 export async function ExpectAllResultsHaveBatchUserAttValue(
@@ -193,7 +193,7 @@ export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
 
 
 async function ExpectSelectionsAreEqual(page: Page, selector: string, condition: string | string[]): Promise<void> {
-  await page.waitForTimeout(7000);
+  await WaitForSearchResultsStabilized(page);
   //  count the result rows
   const resultCount = await page.locator(selector).count();
 
@@ -217,7 +217,7 @@ async function ExpectSelectionsAreEqual(page: Page, selector: string, condition:
 }
 
 async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, selector: string, filePath: string, condition: string[]): Promise<void> {
-  await page.waitForTimeout(3000);
+  await WaitForSearchResultsStabilized(page);
   let withValueCount = 0;
   let withFileNameCount = 0;
 
@@ -255,6 +255,47 @@ async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, selector: str
 export async function GetTotalResultCount(page: Page): Promise<number> {
   const totalResult = await page.innerText(fssSearchPageObjectsConfig.totalResultCountSelector);
   return parseInt(totalResult.split(' ')[0], 10);
+}
+
+async function WaitForSearchResultsStabilized(page: Page): Promise<void> {
+  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => { });
+
+  const tableRows = page.locator(fssSearchPageObjectsConfig.searchResultTableSelector);
+  const noResultsDialog = page.locator(fssSearchPageObjectsConfig.dialogInfoSelector);
+
+  await Promise.race([
+    tableRows.first().waitFor({ state: 'visible', timeout: 15000 }),
+    noResultsDialog.waitFor({ state: 'visible', timeout: 15000 })
+  ]).catch(() => { });
+
+  await WaitForCountToStabilize(page, fssSearchPageObjectsConfig.searchResultTableSelector);
+}
+
+async function WaitForCountToStabilize(page: Page, selector: string): Promise<void> {
+  const timeoutMs = 10000;
+  const pollMs = 300;
+  const stableSamplesNeeded = 2;
+  const deadline = Date.now() + timeoutMs;
+
+  let stableSamples = 0;
+  let lastCount = -1;
+
+  while (Date.now() < deadline) {
+    const currentCount = await page.locator(selector).count();
+
+    if (currentCount === lastCount) {
+      stableSamples += 1;
+    } else {
+      stableSamples = 0;
+      lastCount = currentCount;
+    }
+
+    if (stableSamples >= stableSamplesNeeded) {
+      return;
+    }
+
+    await page.waitForTimeout(pollMs);
+  }
 }
 
 
