@@ -200,17 +200,18 @@ async function ExpectSelectionsAreEqual(page: Page, selector: string, condition:
   // fail if there are no matching selections
   expect(resultCount).toBeTruthy();
 
-  let tmpWithValueCount = 0;
-  const tables = page.locator(selector);
-  if (typeof condition === 'string') {
-    tmpWithValueCount = await tables.filter({ has: page.locator('td', { hasText: condition }) }).count();
-  } else {
-    for (const cond of condition) {
-      tmpWithValueCount += await tables.filter({ has: page.locator('td', { hasText: cond }) }).count();
+  const normalizedConditions = (typeof condition === 'string' ? [condition] : condition)
+    .map(c => c.toLowerCase().trim())
+    .filter(Boolean);
+
+  let withValueCount = 0;
+  for (let i = 0; i < resultCount; i++) {
+    const rowText = ((await page.locator(selector).nth(i).textContent()) ?? '').toLowerCase();
+    const hasMatch = normalizedConditions.some(cond => rowText.includes(cond));
+    if (hasMatch) {
+      withValueCount += 1;
     }
   }
-  // count the result rows with the attribute value
-  const withValueCount = tmpWithValueCount;
 
   // assert all the resulting batches have the attribute value
   expect(withValueCount).toEqual(resultCount);

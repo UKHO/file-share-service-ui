@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { EssLandingPageObjects } from '../../PageObjects/essui-landingpageObjects';
 import { fssHomePageObjectsConfig } from '../../PageObjects/fss-homepageObjects.json';
 import { autoTestConfig } from '../../appSetting.json';
@@ -11,6 +11,15 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
      let esslandingPageObjects: EssLandingPageObjects;
      let encSelectionPageObjects: EncSelectionPageObjects;
      let exchangeSetSelectionPageObjects: ExchangeSetSelectionPageObjects;
+
+     async function waitForMessageError(page: Page, expectedTexts: string[]): Promise<void> {
+          const errorDisplay = page.getByTestId("message-error").first();
+          await errorDisplay.waitFor({ state: 'visible', timeout: 60000 });
+          await expect.poll(async () => (await errorDisplay.innerText()).trim(), { timeout: 60000 }).not.toEqual('');
+          for (const text of expectedTexts) {
+               await expect(errorDisplay).toContainText(text, { timeout: 60000 });
+          }
+     }
 
      test.beforeEach(async ({ page }) => {
           esslandingPageObjects = new EssLandingPageObjects(page);
@@ -147,8 +156,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.addencradiobtnSelectorClick();
           await esslandingPageObjects.setaddSingleENCTextboxSelector("A1720150");
           await esslandingPageObjects.proceedButtonSelectorClick();
-          let errorDisplay = page.getByTestId("message-error");
-          expect(errorDisplay).toContainText("Invalid ENC number");
+          await waitForMessageError(page, ["Invalid ENC number"]);
          
 
           let backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
@@ -158,8 +166,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await page.waitForLoadState();
           await encSelectionPageObjects.addAnotherENC("GZ800112");
-          errorDisplay =  await page.getByTestId("message-error");
-          expect(errorDisplay).toContainText("Invalid ENC number");
+          await waitForMessageError(page, ["Invalid ENC number"]);
           backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      })
@@ -253,11 +260,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.proceedButtonSelectorClick();
           await esslandingPageObjects.page.waitForResponse(response => response.url().includes('productInformation/productIdentifiers') && response.request().method() === 'POST');
           await esslandingPageObjects.page.waitForResponse(response => response.url().includes('ProductInformation?sinceDateTime=') && response.request().method() === 'GET');
-          // rhz look for specific items in error message, thus ignoring any additional text
-          const errorDisplay = page.getByTestId("message-error");
-          expect(errorDisplay).toContainText("Invalid cells");
-          expect(errorDisplay).toContainText("GZ800112");
-          expect(errorDisplay).toContainText("There have been no updates for the ENCs in the date range selected.");
+          await waitForMessageError(page, ["Invalid cells", "GZ800112", "There have been no updates for the ENCs in the date range selected."]);
      });
 
      //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156738
@@ -270,8 +273,7 @@ test.describe('ESS UI Landing Page Functional Test Scenarios', () => {
           await esslandingPageObjects.uploadradiobtnSelectorClick();
           await esslandingPageObjects.uploadFile(page, './Tests/TestData/InvalidENCs.csv');
           await esslandingPageObjects.proceedButtonSelectorClick();
-          const errorDisplay = page.getByTestId("message-error");
-          expect(errorDisplay).toContainText("No valid ENCs found");
+          await waitForMessageError(page, ["No valid ENCs found"]);
           const backgroundColour = await encSelectionPageObjects.messageBackground.evaluate(element => window.getComputedStyle(element).getPropertyValue("background-color"));
           await encSelectionPageObjects.expect.toBeTruthy(backgroundColour == "rgb(247, 225, 225)");
      });

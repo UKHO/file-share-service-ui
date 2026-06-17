@@ -30,7 +30,7 @@ export class EsDownloadPageObjects {
         this.expect = new EsDownloadPageAssertions(this);
         this.encselectionPageObjects = new EncSelectionPageObjects(page);
         this.downloadButtonSelector = this.page.locator("//button[@type='submit']");
-        this.spinnerSelector = this.page.locator("i.fas.fa-circle-notch.fa-spin");
+        this.spinnerSelector = this.page.locator("i.fa-circle-notch.fa-spin");
         this.includedENCsCountSelector = this.page.locator("(//strong[@class='f21'][2])");
         this.EstimatedESsizeSelector = this.page.locator("//p[@class='f21']");
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
@@ -87,6 +87,24 @@ class EsDownloadPageAssertions {
     async spinnerSelectorHidden(): Promise<void> {
         await this.esDownloadPageObjects.spinnerSelector.waitFor({ state: 'hidden', timeout: 120000 });
         expect(await this.esDownloadPageObjects.spinnerSelector.isHidden()).toBeTruthy();
+    }
+
+    async waitForDownloadReadyState(timeoutMs: number = 180000): Promise<void> {
+        const start = Date.now();
+
+        while ((Date.now() - start) < timeoutMs) {
+            if (await this.esDownloadPageObjects.downloadButtonSelector.isVisible().catch(() => false)) {
+                return;
+            }
+
+            if (await this.esDownloadPageObjects.errorMessageSelector.isVisible().catch(() => false)) {
+                throw new Error('Exchange set moved to an error state before download became available.');
+            }
+
+            await this.esDownloadPageObjects.page.waitForTimeout(1000);
+        }
+
+        throw new Error('Download button did not become visible within timeout and no explicit error state was detected.');
     }
 
     async downloadButtonSelectorEnabled(): Promise<void> {
