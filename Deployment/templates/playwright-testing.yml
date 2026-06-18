@@ -60,16 +60,6 @@ jobs:
       folderPath: '$(Build.SourcesDirectory)\'
       xmlTransformationRules:
       jsonTargetFiles: appSetting.json
-
-  - task: PowerShell@2
-    displayName: Show transformed url and apiurl values
-    inputs:
-      targetType: inline
-      script: |
-        $appSettingPath = "$(Build.SourcesDirectory)\appSetting.json"
-        $config = Get-Content -Raw -Path $appSettingPath | ConvertFrom-Json
-        Write-Host "autoTestConfig.url: $($config.autoTestConfig.url)"
-        Write-Host "autoTestConfig.apiurl: $($config.autoTestConfig.apiurl)"
                 
   - script: |
       npm run test:${{ parameters.TestName }}
