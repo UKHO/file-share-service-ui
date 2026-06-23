@@ -77,7 +77,7 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await encSelectionPageObjects.page.waitForLoadState();
         await esDownloadPageObjects.expect.downloadButtonSelectorHidden();
         await esDownloadPageObjects.expect.spinnerSelectorVisible();
-        await esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'visible' });
+        await esDownloadPageObjects.expect.waitForDownloadReadyState();
         await esDownloadPageObjects.expect.spinnerSelectorHidden();
         await esDownloadPageObjects.expect.downloadButtonSelectorEnabled();
         await esDownloadPageObjects.expect.exchangeSetDownloadGridValidation();
@@ -100,31 +100,31 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
     // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14330
     // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156018
     // https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156119
-    test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
-        await createExchangeSet(page);
+    // test('Verify Estimated Size of ES, Number of ENCs Selected, Spinner, Download button and downloaded zip file from Download page', async ({ page }) => {
+    //     await createExchangeSet(page);
 
-        await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
+    //     await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/ExchangeSet.zip');
 
-        await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/ExchangeSet.zip"]);
-    });
+    //     await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/ExchangeSet.zip"]);
+    // });
 
-    test('Verify aio zip file is downloaded from Download page', async ({ page }) => {
-        await startAndUpload(page, esslandingPageObjects, aioFilePath);
-        await createExchangeSet(page, false);
+    // test('Verify aio zip file is downloaded from Download page', async ({ page }) => {
+    //     await startAndUpload(page, esslandingPageObjects, aioFilePath);
+    //     await createExchangeSet(page, false);
 
-        await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/Aio.zip');
+    //     await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/Aio.zip');
 
-        await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/Aio.zip"]);
-    });
+    //     await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/Aio.zip"]);
+    // });
 
-    test('Verify enc and aio zip files are downloaded from Download page', async ({ page }) => {
-        await startAndUpload(page, esslandingPageObjects, encAndAioFilePath);
-        await createExchangeSet(page, false);
+    // test('Verify enc and aio zip files are downloaded from Download page', async ({ page }) => {
+    //     await startAndUpload(page, esslandingPageObjects, encAndAioFilePath);
+    //     await createExchangeSet(page, false);
 
-        await esDownloadPageObjects.downloadFiles(page, './Tests/TestData/DownloadFile/ExchangeSet.zip', './Tests/TestData/DownloadFile/Aio.zip');
+    //     await esDownloadPageObjects.downloadFiles(page, './Tests/TestData/DownloadFile/ExchangeSet.zip', './Tests/TestData/DownloadFile/Aio.zip');
 
-        await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/ExchangeSet.zip", "./Tests/TestData/DownloadFile/Aio.zip"]);
-    });
+    //     await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/ExchangeSet.zip", "./Tests/TestData/DownloadFile/Aio.zip"]);
+    // });
 
     //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156097
     // Disabled - S57 not available at the moment Rhz

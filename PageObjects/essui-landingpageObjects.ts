@@ -124,17 +124,21 @@ export class EssLandingPageObjects {
 class EssLandingPageAssertions {
     constructor(readonly esslandingPageObjects: EssLandingPageObjects) {
     }
+
+    private normalizeEncList(values: string[]): string[] {
+        return values.map(v => v.trim().toUpperCase()).sort();
+    }
+
     async verifyUploadedENCs(expectedENCs: string[]): Promise<void> {
         await this.esslandingPageObjects.page.waitForSelector(`table tbody tr:nth-child(${expectedENCs.length}) td`, { state: 'visible', timeout: 15000 });
         let uploadedEncs = await this.esslandingPageObjects.ENClistTableCol1.allInnerTexts();
 
         expect(uploadedEncs.length).toEqual(expectedENCs.length);
 
-        for (var i = 0; i < expectedENCs.length; i++) {
+        const normalizedUploaded = this.normalizeEncList(uploadedEncs);
+        const normalizedExpected = this.normalizeEncList(expectedENCs);
 
-            expect(uploadedEncs[i]).toEqual(expectedENCs[i]);
-
-        }
+        expect(normalizedUploaded).toEqual(normalizedExpected);
     }
 
     async exchangesettextSelectorIsVisible(): Promise<void> {

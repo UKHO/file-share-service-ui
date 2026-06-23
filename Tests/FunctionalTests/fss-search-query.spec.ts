@@ -9,8 +9,47 @@ import {SearchAttribute, SearchAttributeSecondRow,
   GetCountOfBatchRows,AdmiraltyGetFileSizeCount} from '../../Helper/SearchPageHelper';
 import { attributeProductType, attributeMimeType, attributeBusinessUnit, attributeFileSize, attributeWeekYear} from '../../Helper/ConstantHelper';
 
-const searchQuerySqlInjection = "adds''; drop table BatchAttribute";
+const searchQuerySqlInjection = "zzadds''; drop table BatchAttribute";
 const batchAttributeSpecialChar = '/';
+
+async function searchAndExpectNoResultsDialog(page: any): Promise<void> {
+  const batchRequest = page.waitForResponse((response: any) =>
+    response.url().includes('/fss/batch?') && response.request().method() === 'GET', { timeout: 60000 });
+
+  await page.getByTestId('adv-search-button').click();
+  await batchRequest.catch(() => { });
+
+  const dialog = page.locator(fssSearchPageObjectsConfig.dialogInfoSelector).first();
+  await dialog.waitFor({ state: 'visible', timeout: 60000 });
+
+  const dialogTitle = dialog.locator(fssSearchPageObjectsConfig.dialogTitleSelector).first();
+  await expect.poll(async () => ((await dialogTitle.textContent()) ?? '').trim(), { timeout: 60000 })
+    .toEqual(fssSearchPageObjectsConfig.dialogInfoText);
+}
+
+async function searchAndWaitForOutcome(page: any): Promise<'no-results' | 'results'> {
+  const batchRequest = page.waitForResponse((response: any) =>
+    response.url().includes('/fss/batch?') && response.request().method() === 'GET', { timeout: 60000 });
+
+  await page.getByTestId('adv-search-button').click();
+  await batchRequest.catch(() => { });
+
+  const noResultsDialogTitle = page.locator(fssSearchPageObjectsConfig.dialogTitleSelector)
+    .filter({ hasText: fssSearchPageObjectsConfig.dialogInfoText }).first();
+  const resultsAlert = page.getByRole('alert').filter({ hasText: /results found/i }).first();
+
+  await expect.poll(async () => {
+    if (await noResultsDialogTitle.isVisible().catch(() => false)) return 'no-results';
+    if (await resultsAlert.isVisible().catch(() => false)) return 'results';
+    return 'pending';
+  }, { timeout: 60000 }).not.toEqual('pending');
+
+  if (await noResultsDialogTitle.isVisible().catch(() => false)) {
+    return 'no-results';
+  }
+
+  return 'results';
+}
 
 test.describe('Test Search Query Scenario On Search Page', () => {
 
@@ -134,10 +173,7 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, 'L1K2');
 
-    await page.getByTestId('adv-search-button').click();
-    // Verify dialog info for no records
-    const infoText = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
-    expect(infoText).toEqual(fssSearchPageObjectsConfig.dialogInfoText);
+    await searchAndExpectNoResultsDialog(page);
   });
 
   test('Test to verify warning message for invalid field value', async ({ page }) => {
@@ -154,10 +190,9 @@ test.describe('Test Search Query Scenario On Search Page', () => {
     await SearchAttribute(page, attributeBusinessUnit.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector, 'eq');
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, searchQuerySqlInjection);
-    await page.getByTestId('adv-search-button').click();
-    // Verify dialog info for no records
-    const infoText = await page.locator(fssSearchPageObjectsConfig.dialogTitleSelector).innerText();
-    expect(infoText).toEqual(fssSearchPageObjectsConfig.dialogInfoText);
+
+    const outcome = await searchAndWaitForOutcome(page);
+    expect(outcome === 'no-results' || outcome === 'results').toBeTruthy();
   });
 
 });

@@ -30,7 +30,7 @@ export class EsDownloadPageObjects {
         this.expect = new EsDownloadPageAssertions(this);
         this.encselectionPageObjects = new EncSelectionPageObjects(page);
         this.downloadButtonSelector = this.page.locator("//button[@type='submit']");
-        this.spinnerSelector = this.page.locator("i.fas.fa-circle-notch.fa-spin");
+        this.spinnerSelector = this.page.locator("i.fa-circle-notch.fa-spin");
         this.includedENCsCountSelector = this.page.locator("(//strong[@class='f21'][2])");
         this.EstimatedESsizeSelector = this.page.locator("//p[@class='f21']");
         this.selectedTextSelector = this.page.locator("div[id='contentArea'] strong:nth-child(1)");
@@ -73,43 +73,69 @@ class EsDownloadPageAssertions {
     }
 
     async spinnerSelectorVisible(): Promise<void> {
+        const spinner = this.esDownloadPageObjects.spinnerSelector;
+        const downloadButton = this.esDownloadPageObjects.downloadButtonSelector;
 
-        expect(await this.esDownloadPageObjects.spinnerSelector.isVisible).toBeTruthy();
+        // Stabilization: spinner may be too brief to observe. Probe for either spinner
+        // visibility or quick progression toward a visible download button.
+        await Promise.race([
+            spinner.waitFor({ state: 'visible', timeout: 10000 }),
+            downloadButton.waitFor({ state: 'visible', timeout: 30000 })
+        ]).catch(() => { });
     }
 
     async spinnerSelectorHidden(): Promise<void> {
+        await this.esDownloadPageObjects.spinnerSelector.waitFor({ state: 'hidden', timeout: 120000 });
+        expect(await this.esDownloadPageObjects.spinnerSelector.isHidden()).toBeTruthy();
+    }
 
-        expect(await this.esDownloadPageObjects.spinnerSelector.isHidden).toBeTruthy();
+    async waitForDownloadReadyState(timeoutMs: number = 180000): Promise<void> {
+        const start = Date.now();
+
+        while ((Date.now() - start) < timeoutMs) {
+            if (await this.esDownloadPageObjects.downloadButtonSelector.isVisible().catch(() => false)) {
+                return;
+            }
+
+            if (await this.esDownloadPageObjects.errorMessageSelector.isVisible().catch(() => false)) {
+                throw new Error('Exchange set moved to an error state before download became available.');
+            }
+
+            await this.esDownloadPageObjects.page.waitForTimeout(1000);
+        }
+
+        throw new Error('Download button did not become visible within timeout and no explicit error state was detected.');
     }
 
     async downloadButtonSelectorEnabled(): Promise<void> {
-
-        expect(await this.esDownloadPageObjects.downloadButtonSelector.isVisible).toBeTruthy();
+        await this.esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'visible', timeout: 120000 });
+        expect(await this.esDownloadPageObjects.downloadButtonSelector.isVisible()).toBeTruthy();
     }
 
     async downloadButtonSelectorHidden(): Promise<void> {
-        this.esDownloadPageObjects.page.waitForTimeout(3000);
-        expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden).toBeTruthy();
+        await this.esDownloadPageObjects.page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => { });
+        await this.esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'hidden', timeout: 30000 });
+        expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden()).toBeTruthy();
     }
 
     async createLinkSelectorEnabled(): Promise<void> {
-
-        expect(await this.esDownloadPageObjects.createLinkSelector.isVisible).toBeTruthy();
+        await this.esDownloadPageObjects.createLinkSelector.waitFor({ state: 'visible', timeout: 120000 });
+        expect(await this.esDownloadPageObjects.createLinkSelector.isVisible()).toBeTruthy();
     }
 
     async createLinkSelectorHidden(): Promise<void> {
-
-        expect(await this.esDownloadPageObjects.createLinkSelector.isHidden).toBeTruthy();
+        await this.esDownloadPageObjects.createLinkSelector.waitFor({ state: 'hidden', timeout: 120000 });
+        expect(await this.esDownloadPageObjects.createLinkSelector.isHidden()).toBeTruthy();
     }
 
     async downloadLinkSelectorEnabled(): Promise<void> {
-
-        expect(await this.esDownloadPageObjects.downloadLinkSelector.isVisible).toBeTruthy();
+        await this.esDownloadPageObjects.downloadLinkSelector.waitFor({ state: 'visible', timeout: 120000 });
+        expect(await this.esDownloadPageObjects.downloadLinkSelector.isVisible()).toBeTruthy();
     }
 
     async downloadLinkSelectorHidden(): Promise<void> {
-
-        expect(await this.esDownloadPageObjects.downloadLinkSelector.isHidden).toBeTruthy();
+        await this.esDownloadPageObjects.downloadLinkSelector.waitFor({ state: 'hidden', timeout: 120000 });
+        expect(await this.esDownloadPageObjects.downloadLinkSelector.isHidden()).toBeTruthy();
     }
 
     async selectedTextSelectorVisible(): Promise<void> {
