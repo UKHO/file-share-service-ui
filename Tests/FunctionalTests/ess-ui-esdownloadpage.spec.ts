@@ -129,9 +129,8 @@ test.describe('ESS UI ES Download Page Functional Test Scenarios', () => {
         await createExchangeSet(page, false);
 
         await esDownloadPageObjects.downloadFile(page, './Tests/TestData/DownloadFile/Aio.zip');
-
         await validateDownload(page, esDownloadPageObjects, ["./Tests/TestData/DownloadFile/Aio.zip"]);
-    });
+     });
 
     test('Verify enc and aio zip files are downloaded from Download page', async ({ page }) => {
         await mockTokenRefresh(page);
