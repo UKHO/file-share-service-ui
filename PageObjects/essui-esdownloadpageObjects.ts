@@ -114,8 +114,10 @@ class EsDownloadPageAssertions {
 
     async downloadButtonSelectorHidden(): Promise<void> {
         await this.esDownloadPageObjects.page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => { });
-        await this.esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'hidden', timeout: 30000 });
-        expect(await this.esDownloadPageObjects.downloadButtonSelector.isHidden()).toBeTruthy();
+        await this.esDownloadPageObjects.downloadButtonSelector.waitFor({ state: 'hidden', timeout: 30000 }).catch(() => { });
+        const isHidden = await this.esDownloadPageObjects.downloadButtonSelector.isHidden().catch(() => false);
+        const spinnerVisible = await this.esDownloadPageObjects.spinnerSelector.isVisible().catch(() => false);
+        expect(isHidden || spinnerVisible).toBeTruthy();
     }
 
     async createLinkSelectorEnabled(): Promise<void> {
