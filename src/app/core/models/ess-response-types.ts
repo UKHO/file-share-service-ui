@@ -4,12 +4,13 @@ export interface ExchangeSetDetails {
   requestedProductCount: number;
   exchangeSetCellCount: number;
   requestedProductsAlreadyUpToDateCount: number;
-  requestedProductsNotInExchangeSet: ProductsNotInExchangeSet[]
+  requestedProductsNotInExchangeSet: ProductsNotInExchangeSet[];
 }
 export interface ExchangeSetLinks {
   exchangeSetBatchStatusUri: URL;
   exchangeSetBatchDetailsUri: URL;
   exchangeSetFileUri: URL;
+  aioExchangeSetFileUri: URL;
 }
 export interface ProductsNotInExchangeSet {
   productName: string;

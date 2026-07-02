@@ -13,7 +13,7 @@ test.describe('FSS UI Search Page Accessibility Test Scenarios', () => {
     await AcceptCookies(page);
     await LoginPortal(page,autoTestConfig.user, autoTestConfig.password);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchPageContainerHeaderSelector);   
-    await page.click(fssSearchPageObjectsConfig.advancedSearchLinkSelector, {force: true});
+    await page.getByTestId(fssSearchPageObjectsConfig.advancedSearchLinkTestId).click();
     await SearchAttribute(page, attributeProductType.key);
     await page.selectOption(fssSearchPageObjectsConfig.operatorDropDownSelector,"contains");
     await page.fill(fssSearchPageObjectsConfig.inputSearchValueSelector, attributeProductType.value);

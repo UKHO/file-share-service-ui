@@ -3,35 +3,45 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { MsalService } from '@azure/msal-angular';
+import { AppConfigService } from './core/services/app-config.service';
+import { ApmService } from '@elastic/apm-rum-angular';
 
 @Component({
   selector: 'app-root',
+  standalone: false,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  
+
   currentUrl: any = '';
 
-  isOverlay:boolean = false;
-  
+  isOverlay: boolean = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title,
-    private msalService: MsalService
-  ) { 
-  
+    private msalService: MsalService,
+    apmservice: ApmService
+  ) {
+    // Agent API is exposed through this apm instance
+    apmservice.init({
+      serviceName: AppConfigService.settings['elasticAPM'].ServiceName,
+      serverUrl: AppConfigService.settings['elasticAPM'].ServerURL,
+      environment: AppConfigService.settings['elasticAPM'].Environment,
+    })
+
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         if (e.url != '') {
           this.currentUrl = e.url;
         } else {
-          this.currentUrl ='';
+          this.currentUrl = '';
         }
 
       }
-      
+
     });
   }
 
@@ -62,7 +72,7 @@ export class AppComponent implements OnInit {
         });
   }
 
-  changeOverlay(pageOverlay:any){
+  changeOverlay(pageOverlay: any) {
     this.isOverlay = pageOverlay;
   }
 }

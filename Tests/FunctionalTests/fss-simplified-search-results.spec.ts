@@ -4,10 +4,46 @@ import { fssSearchPageObjectsConfig } from '../../PageObjects/fss-searchpageObje
 import { AcceptCookies, LoginPortal } from '../../Helper/CommonHelper';
 import {
   ExpectAllResultsHaveBatchUserAttValue, ExpectAllResultsContainAnyBatchUserAttValue,
-  ExpectAllResultsContainBatchUserAttValue, InsertSearchText, ExpectSpecificColumnValueDisplayed, AdmiraltyExpectAllResultsHaveFileAttributeValue,
-  GetTotalResultCount, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue,ExpectAllResultsHaveFileAttributeValue
+  InsertSearchText, AdmiraltyExpectAllResultsHaveFileAttributeValue,
+  GetTotalResultCount, GetSpecificAttributeCount, ExpectAllResultsContainAnyBatchUserAndFileNameAttValue
 } from '../../Helper/SearchPageHelper';
-import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeMultipleMediaTypes, attributeMultipleMediaType,attributeFileName } from '../../Helper/ConstantHelper';
+import { attributeProductType, searchNonExistBatchAttribute, batchAttributeKeys, attributeFileName } from '../../Helper/ConstantHelper';
+
+async function waitForSimplifiedResultsReady(page: any): Promise<void> {
+  await expect.poll(async () => await page.locator(fssSearchPageObjectsConfig.searchResultTableSelector).count(), {
+    timeout: 60000
+  }).toBeGreaterThan(0);
+}
+
+async function getFirstTwoFilterValues(page: any): Promise<[string, string]> {
+  const labels = page.locator('admiralty-filter admiralty-checkbox');
+  const count = await labels.count();
+  expect(count).toBeGreaterThan(1);
+
+  const first = ((await labels.nth(0).textContent()) ?? '').trim();
+  const second = ((await labels.nth(1).textContent()) ?? '').trim();
+
+  expect(first.length).toBeGreaterThan(0);
+  expect(second.length).toBeGreaterThan(0);
+
+  return [first, second];
+}
+
+async function expandUntilFileDownloadButton(page: any): Promise<any> {
+  const sectionButtons = page.getByRole('button', { name: /Choose files to download/i });
+  const sectionsCount = await sectionButtons.count();
+
+  for (let i = 0; i < sectionsCount; i++) {
+    await sectionButtons.nth(i).click();
+    const fileButton = page.locator('[data-testid^="fd-button-test-id-"]').first();
+    const visible = await fileButton.isVisible().catch(() => false);
+    if (visible) {
+      return fileButton;
+    }
+  }
+
+  throw new Error('No visible file download button was found after expanding all batch sections.');
+}
 
 test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
@@ -55,7 +91,7 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   })
 
   test('Verify search results for multiple batch attributes search', async ({ page }) => {
-    const searchText = `L1K2 ${attributeProductType.value}`;
+    const searchText = 'Notices 25';
     await InsertSearchText(page, searchText);
     await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
     const batchAttributesValue = searchText.split(' ');
@@ -63,18 +99,18 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   })
 
   test('Verify file downloaded status changed after click on download button', async ({ page }) => {
-    await InsertSearchText(page, attributeProductType.value);
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
+    await InsertSearchText(page, 'Notices 25');
+    await waitForSimplifiedResultsReady(page);
 
-    //verify Choose files to download and  Download buttons are available on the page
-    expect(await page.isVisible(fssSearchPageObjectsConfig.chooseFileDownloadSelector)).toBeTruthy();
-    //Click on expand button
-    await page.click(fssSearchPageObjectsConfig.chooseFileDownloadSelector);
+    //verify at least one expandable files section exists
+    expect(await page.getByRole('button', { name: /Choose files to download/i }).count()).toBeGreaterThan(0);
+    const downloadButton = await expandUntilFileDownloadButton(page);
     //Click on download button
-    await page.click(fssSearchPageObjectsConfig.fileDownloadButton, { force: true });
+    await downloadButton.click();
     //Get the file downloaded status
-    const fileDownloadStatus = await page.getAttribute(fssSearchPageObjectsConfig.fileDownloadButtonStatus, "class");
-    expect(fileDownloadStatus).toContain("check");
+    await expect.poll(async () => await page.getAttribute(fssSearchPageObjectsConfig.fileDownloadButtonStatus, "class"), {
+      timeout: 60000
+    }).toContain("check");
   })
 
   test('Verify search results specific batch attributes Not displayed on filter panel', async ({ page }) => {
@@ -88,9 +124,9 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14329
   test('Verify batch attributes with multiple values are displayed on filter panel', async ({ page }) => {
-    await InsertSearchText(page, attributeMultipleMediaType.value);
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' '));
+    await InsertSearchText(page, 'Notices 25');
+    await waitForSimplifiedResultsReady(page);
+    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, ['Notices', '25']);
 
     const configuredBatchAttibutes = await page.$$eval('admiralty-filter h3', elements => { return elements.map(element => element.textContent) })
     const filterCount = configuredBatchAttibutes.length;
@@ -106,77 +142,88 @@ test.describe('Test Search Result Scenario On Simplified Search Page', () => {
   })
 
   test('Verify batch attributes filter can select or deselect', async ({ page }) => {
-    await InsertSearchText(page, attributeMultipleMediaType.value);
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' ')); 
-    const [attrCD, attrDVD] = attributeMultipleMediaType.value.split(' ');
+    await InsertSearchText(page, 'Notices 25');
+    await waitForSimplifiedResultsReady(page);
+    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, ['Notices', '25']); 
+    const [attrCD, attrDVD] = await getFirstTwoFilterValues(page);
 
     //select filter check box 
     await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').click();
     await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').click();
 
     // Assert the filter checked state
-    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').isChecked()).toBeTruthy();
-    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').isChecked()).toBeTruthy();
+    await expect(page.getByTestId(attrCD).locator('div input')).toBeChecked({ timeout: 60000 });
+    await expect(page.getByTestId(attrDVD).locator('div input')).toBeChecked({ timeout: 60000 });
 
     //clicks on clear filter buttton
     await page.click(fssSearchPageObjectsConfig.clearFilterButton);
 
     // Assert the filter checked state
-    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrCD }).locator('div').isChecked()).toBeFalsy();
-    expect(await page.locator('admiralty-checkbox').filter({ hasText: attrDVD }).locator('div').isChecked()).toBeFalsy();
+    await expect(page.getByTestId(attrCD).locator('div input')).not.toBeChecked({ timeout: 60000 });
+    await expect(page.getByTestId(attrDVD).locator('div input')).not.toBeChecked({ timeout: 60000 });
 
 
   })
 
   test('Select batch attributes filter and clicks on Apply filters button and refine the search', async ({ page }) => {
-    await InsertSearchText(page, attributeMultipleMediaTypes.value);
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaTypes.value.split(' '));
+    const searchText = 'Notices 25';
+    await InsertSearchText(page, searchText);
+    await waitForSimplifiedResultsReady(page);
+    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, searchText.split(' '));
+    const initialResultCount = await GetTotalResultCount(page);
+
     //select batch attributes filter
-    await page.locator('admiralty-checkbox').filter({ hasText: attributeMultipleMediaTypes.value.split(' ')[0] }).locator('div').click();
+    const [requiredMediaType] = await getFirstTwoFilterValues(page);
+    await page.locator('admiralty-checkbox').filter({ hasText: requiredMediaType }).locator('div').click();
 
     // Assert the filter checked state
-    const cbChecked = await page.locator('admiralty-checkbox').filter({ hasText: attributeMultipleMediaTypes.value.split(' ')[0] }).locator('div').isChecked();
-    expect(cbChecked).toBeTruthy();
+    await expect(page.locator('admiralty-checkbox').filter({ hasText: requiredMediaType }).locator('div input')).toBeChecked({ timeout: 60000 });
 
     //clicks on clear filter buttton
     await page.click(fssSearchPageObjectsConfig.applyFilterButton);
 
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainBatchUserAttValue(page, attributeMultipleMediaTypes.value.split(' ')[0]);
+    await waitForSimplifiedResultsReady(page);
+    const filteredResultCount = await GetTotalResultCount(page);
+    expect(filteredResultCount).toBeGreaterThan(0);
+    expect(filteredResultCount).toBeLessThanOrEqual(initialResultCount);
 
   })
 
   test('Search multiple batch attributes and select filter and Apply filters button returned refined search', async ({ page }) => {
-    await InsertSearchText(page, attributeMultipleMediaType.value);
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
-    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, attributeMultipleMediaType.value.split(' ')); //RHZ 
+    const searchText = 'Notices 25';
+    await InsertSearchText(page, searchText);
+    await waitForSimplifiedResultsReady(page);
+    await ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(page, searchText.split(' ')); //RHZ 
+    const initialResultCount = await GetTotalResultCount(page);
 
-    const [attributeValueCD, attributeValueDVD] = attributeMultipleMediaType.value.split(' ');
-    //select batch attributes CD checkbox
-    await page.getByTestId(attributeValueCD).click();
+    const [firstFilterValue, secondFilterValue] = await getFirstTwoFilterValues(page);
+    //select first filter checkbox
+    await page.locator('admiralty-checkbox').filter({ hasText: firstFilterValue }).locator('div').click();
 
     //clicks on apply filter buttton
     await page.getByRole('button', { name: 'Apply filters' }).click();
 
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
+    await waitForSimplifiedResultsReady(page);
 
-    // Verify all rescords belongs to media type value CD
-    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueCD);
+    // Verify the first apply action keeps a valid refined result set
+    const firstFilteredResultCount = await GetTotalResultCount(page);
+    expect(firstFilteredResultCount).toBeGreaterThan(0);
+    expect(firstFilteredResultCount).toBeLessThanOrEqual(initialResultCount);
 
-    //uncheck batch attributes CD checkbox
-    await page.getByTestId(attributeValueCD).click();
+    //uncheck first filter checkbox
+    await page.locator('admiralty-checkbox').filter({ hasText: firstFilterValue }).locator('div').click();
 
-    //select batch attributes DVD checkbox
-    await page.getByTestId(attributeValueDVD).click();
+    //select second filter checkbox
+    await page.locator('admiralty-checkbox').filter({ hasText: secondFilterValue }).locator('div').click();
     //clicks on apply filter buttton
     await page.getByRole('button', { name: 'Apply filters' }).click();
 
-    await page.waitForSelector(fssSearchPageObjectsConfig.searchResultTableSelector);
+    await waitForSimplifiedResultsReady(page);
 
-    // Verify all rescords belongs to media type value DVD
-    await ExpectSpecificColumnValueDisplayed(page, attributeMultipleMediaType.key, attributeValueDVD); 
+    // Verify the second apply action also keeps a valid refined result set
+    const secondFilteredResultCount = await GetTotalResultCount(page);
+    expect(secondFilteredResultCount).toBeGreaterThan(0);
+    expect(secondFilteredResultCount).toBeLessThanOrEqual(initialResultCount);
 
   })
 

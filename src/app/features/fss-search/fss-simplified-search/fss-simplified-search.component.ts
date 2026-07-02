@@ -6,6 +6,7 @@ import { AppConfigService } from '../../../core/services/app-config.service';
     
 @Component({
   selector: 'app-fss-simplified-search',
+  standalone: false,
   templateUrl: './fss-simplified-search.component.html',
   styleUrls: ['./fss-simplified-search.component.scss']
 })

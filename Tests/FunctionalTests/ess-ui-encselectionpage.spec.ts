@@ -75,7 +75,7 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(100);  
+    await encSelectionPageObjects.expect.verifyRightTableRowsCountSelectorCount(100);
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13944 (For valid ENC no.)
@@ -108,15 +108,36 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     })
     await encSelectionPageObjects.addSingleENC("DE260001");
     await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
-    await encSelectionPageObjects.addAnotherENC("AU220130");  
+    await encSelectionPageObjects.addAnotherENC("AU220130");
     await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 2);
-    await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220130"); 
+    await encSelectionPageObjects.expect.secondEncSelectorContainText("AU220130");
     await encSelectionPageObjects.expect.anotherCheckBoxSelectorChecked();
 
     //13956 - Add another ENC2 - Duplicate No.
-    await encSelectionPageObjects.addAnotherENC("AU220130"); 
-    await encSelectionPageObjects.expect.errorMessageForDuplicateNumberSelectorContainsText("ENC already in list")
+    await encSelectionPageObjects.addAnotherENC("AU220130");
+    const infoDisplay =  await page.getByTestId("message-info");
+    expect(infoDisplay).toContainText("ENC already in list");
     await encSelectionPageObjects.expect.verifyLeftTableRowsCountSelectorCount(2);
+  })
+
+  test('Verify that after clicking on "Add another ENC" link, user is able to add aio and aio checkbox is disabled', async ({ page }) => {
+    await encSelectionPageObjects.startAgainLinkSelectorClick();
+    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
+    await exchangeSetSelectionPageObjects.clickOnProceedButton();
+    let requestedCount = 0;
+    encSelectionPageObjects.page.on('request', request => {
+      if (request.url().includes('productInformation/productIdentifiers') && request.method() == 'POST')
+        requestedCount++;
+    })
+    await encSelectionPageObjects.addSingleENC("DE260001");
+    await encSelectionPageObjects.expect.addAnotherENCSelectorVisible();
+    await encSelectionPageObjects.addAnotherENCSelector.click();
+    await encSelectionPageObjects.aioCheckBoxSelectorClick();
+    const aio = await esslandingPageObjects.getAddedENC();
+    await esslandingPageObjects.proceedButtonSelectorClick();
+    await encSelectionPageObjects.expect.toBeTruthy(requestedCount == 2);
+    await encSelectionPageObjects.expect.secondEncSelectorContainText(aio);
+    await encSelectionPageObjects.expect.aioCheckBoxSelectorIsNotVisible();
   })
 
   //https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/13957
@@ -125,12 +146,14 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
     await exchangeSetSelectionPageObjects.clickOnProceedButton();
     await esslandingPageObjects.uploadradiobtnSelectorClick();
-    await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');  
+    await esslandingPageObjects.uploadFile(page, './Tests/TestData/ValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
     //Adding ENC manually
-    await encSelectionPageObjects.addAnotherENC("GB301191"); 
-
-    await encSelectionPageObjects.expect.errorMsgMaxLimitSelectorContainText("Max ENC limit reached");
+    await encSelectionPageObjects.addAnotherENC("GB301191");
+    await expect.poll(async () => {
+      const alerts = await page.getByRole('alert').allTextContents().catch(() => []);
+      return alerts.join(' ').trim();
+    }, { timeout: 15000 }).toContain('Max ENC limit reached');
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
@@ -209,30 +232,18 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/downloadValidAndInvalidENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    await esslandingPageObjects.page.waitForResponse(r =>
-      r.url().includes('productInformation/productIdentifiers') && r.request().method() === 'POST')
-    await encSelectionPageObjects.errorMessage.click();
     // rhz - instead of looking for a literal "Invalid cells - GZ800112";
     // look for what we expect to find in the string
-    var actualErrorMessage = await encSelectionPageObjects.errorMessage.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(actualErrorMessage.includes("Invalid cells"));
-    await encSelectionPageObjects.expect.toBeTruthy(actualErrorMessage.includes("GZ800112"));
-  })
+    await expect.poll(async () => {
+      const alerts = await page.getByRole('alert').allTextContents().catch(() => []);
+      return alerts.join(' ').trim();
+    }, { timeout: 15000 }).toContain('Invalid cells');
 
-  //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/150972
-  test('Verify validation message for Excluded AIO cell', async ({ page }) => {
-    var message = "AIO exchange sets are currently not available from this page. Please download them from the main File Share Service site";
-    await encSelectionPageObjects.page.waitForLoadState();
-    await encSelectionPageObjects.startAgainLinkSelectorClick();
-    await exchangeSetSelectionPageObjects.selectBaseDownloadRadioButton();
-    await exchangeSetSelectionPageObjects.clickOnProceedButton();
-    await encSelectionPageObjects.addSingleENC("GB800002");
-    await encSelectionPageObjects.errorMessage.click();
-    await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
-    await encSelectionPageObjects.addSingleENC("DE260001");
-    await encSelectionPageObjects.addAnotherENC("GB800002");
-    await encSelectionPageObjects.errorMessage.click();
-    await encSelectionPageObjects.expect.toBeTruthy(message == await encSelectionPageObjects.errorMessage.innerText());
+    await expect.poll(async () => {
+      const alerts = await page.getByRole('alert').allTextContents().catch(() => []);
+      return alerts.join(' ').trim();
+    }, { timeout: 15000 }).toContain('GZ800112');
+   
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/149494
@@ -243,14 +254,12 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     const selectENCsFromTable = encSelectionPageObjects.encTableCheckboxList;
     await encSelectionPageObjects.selectAllSelectorClick();
     await encSelectionPageObjects.deselectAllSelector.isVisible();
-    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
+    await expect(encSelectionPageObjects.exchangeSetSizeSelector).toHaveText(new RegExp(`^${fileSize.toFixed(2)} MB\\s*$`), { timeout: 15000 });
     let itemIndex = 0;
     await selectENCsFromTable.nth(itemIndex).click();
-    
-    let newFileSize = (await encSelectionPageObjects.getFileSizeItemRemoved(await response.text(),itemIndex));
-    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(newFileSize + ' MB' == estimatedSize);
+
+    let newFileSize = (await encSelectionPageObjects.getFileSizeItemRemoved(await response.text(), itemIndex));
+    await expect(encSelectionPageObjects.exchangeSetSizeSelector).toHaveText(new RegExp(`^${parseFloat(newFileSize).toFixed(2)} MB\\s*$`), { timeout: 15000 });
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151757
@@ -260,18 +269,18 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
 
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156059
-  // Disabled - this test relates to S57 which is not available at the moment Rhz
-  //test("check UKHO user is able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for base exchange set.",async ({ page}) =>{
-  //  await encSelectionPageObjects.selectAllSelectorClick();
-  //  encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
-  //  encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
-  //  encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
-  //  encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s63Radiobutton.innerText()).trim() == "S63 exchange set");
-  //  encSelectionPageObjects.expect.toBeTruthy((await encSelectionPageObjects.s57Radiobutton.innerText()).trim() == "S57 exchange set");
-  //});
+  test("check UKHO user is able to see options to choose preferred exchange set format on 'Confirm exchange set content​' screen for base exchange set.",async ({ page}) =>{
+    await encSelectionPageObjects.selectAllSelectorClick();
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s57Radiobutton.isVisible());
+    encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.s63Radiobutton.isChecked());
+
+    encSelectionPageObjects.expect.toBeTruthy(await page.getByTestId('S63').textContent() == "S63 exchange set");
+    encSelectionPageObjects.expect.toBeTruthy(await page.getByTestId('S57').textContent() == "S57 exchange set");
+  });
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156211
-  
+
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/156231
   test("Check Estimated size is visible for S63 exchange set when user select base exchange set type", async ({ page }) => {
@@ -281,10 +290,10 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.uploadradiobtnSelectorClick();
     await esslandingPageObjects.uploadFile(page, './Tests/TestData/250ENCs.csv');
     await esslandingPageObjects.proceedButtonSelectorClick();
-    await page.waitForSelector("input[type='checkbox']:nth-child(1)", { state: "visible", timeout: 3000});
+    await page.waitForSelector("input[type='checkbox']:nth-child(1)", { state: "visible", timeout: 3000 });
     const selectENCsFromTable = encSelectionPageObjects.encTableCheckboxList;
     await selectENCsFromTable.nth(0).click();
-    for (var i=1; !await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight); i++) {
+    for (var i = 1; !await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight); i++) {
       await selectENCsFromTable.nth(i).click();
     }
     encSelectionPageObjects.expect.toBeTruthy(await encSelectionPageObjects.selectedEncs.evaluate(element => element.scrollHeight > element.clientHeight));

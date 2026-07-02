@@ -61,12 +61,16 @@ jobs:
     value: $(essConfig-MaxEncLimit)
   - name: essConfig.MaxEncSelectionLimit
     value: $(essConfig-MaxEncSelectionLimit)
-  - name: essConfig.aioExcludeEncs
-    value: $(essConfig-aioExcludeEncs)
   - name: essConfig.apiUiUrl
     value: $(essConfig-apiUiUrl)
   - name: essConfig.privilegedUserDomains
-    value: $(essConfig-PrivilegedUserDomains)
+    value: $(essConfig-PrivilegedUserDomains) 
+  - name: elasticAPM.Environment
+    value: $(elasticAPM-Environment)
+  - name: elasticAPM.ServerURL
+    value: $(elasticAPM-ServerURL)
+  - name: elasticAPM.ServiceName
+    value: $(elasticAPM-ServiceName)
   strategy:
     runOnce:
       deploy:

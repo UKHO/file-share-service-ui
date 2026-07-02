@@ -4,6 +4,7 @@ import { SearchType } from '../../../core/models/fss-search-types';
 
 @Component({
   selector: 'app-fss-popular-search-batches',
+  standalone: false,
   templateUrl: './fss-popular-search-batches.component.html',
   styleUrls: ['./fss-popular-search-batches.component.scss']
 })

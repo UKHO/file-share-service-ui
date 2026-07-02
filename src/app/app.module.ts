@@ -1,4 +1,4 @@
-import { NgModule,APP_INITIALIZER } from '@angular/core';
+import { NgModule,provideAppInitializer, inject, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -8,6 +8,8 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { AppConfigService } from './core/services/app-config.service';
 import { AnalyticsService } from './core/services/analytics.service';
 import { HttpErrorInterceptorService } from './core/services/httperror-interceptor.service';
+import { ApmErrorHandler, ApmModule, ApmService } from '@elastic/apm-rum-angular'
+import { init as initApm } from '@elastic/apm-rum'
 
 import {
   MsalModule,
@@ -27,15 +29,18 @@ import {
   InteractionType
 } from '@azure/msal-browser';
 
-export function initializerFactory(env: AppConfigService): any {
-  const configUrl: string = 'assets/config/appconfig.json';
-    const promise = env.init(configUrl).then((value) => { });
-    return () => promise;
-}
 
 export function GTMFactory(): any {
   const googleTagManagerId = AppConfigService.settings.GoogleTagManagerId;
   return googleTagManagerId;
+}
+
+export function ApmFactory(): any {
+  return initApm({
+    serviceName: AppConfigService.settings['elasticAPM'].ServiceName,
+    serverUrl: AppConfigService.settings['elasticAPM'].ServerURL,
+    environment: AppConfigService.settings['elasticAPM'].Environment
+  });
 }
 
 
@@ -79,7 +84,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
             [AppConfigService.settings["fssConfig"].stateManagementApiUrl+'/logout', null],
             [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].apiScope]],
             [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].apiScope]],
-            [AppConfigService.settings["essConfig"].apiUiUrl, [AppConfigService.settings["essConfig"].apiScope]],        
+            [AppConfigService.settings["essConfig"].apiUiUrl, [AppConfigService.settings["essConfig"].apiScope]]     
         ]),
     };
 }
@@ -87,20 +92,22 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 
 @NgModule({ declarations: [
         AppComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    ],   
+    bootstrap: [AppComponent], imports: [BrowserModule,        
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
         AppRoutingModule,
-        MsalModule], providers: [
-        AppConfigService,
-        AnalyticsService,
+        MsalModule,
+        ApmModule], providers: [
+        ApmService,
         {
-            provide: APP_INITIALIZER,
-            useFactory: initializerFactory,
-            deps: [AppConfigService], multi: true
-        },
+            provide: 'APM_BASE_CLIENT',
+            useFactory: ApmFactory
+        },    
+        
+        AnalyticsService,
+        provideAppInitializer(() => inject(AppConfigService).init('assets/config/appconfig.json')),
         {
             provide: MSAL_INSTANCE,
             useFactory: MSALInstanceFactory
@@ -129,6 +136,11 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
         { provide: 'googleTagManagerId',
             useFactory: GTMFactory
         },
+        {
+            provide: ErrorHandler,
+            useClass: ApmErrorHandler
+        },
         provideHttpClient(withInterceptorsFromDi()),
     ] })
-export class AppModule { }
+export class AppModule {      
+}

@@ -15,6 +15,7 @@ import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-fss-advanced-search',
+  standalone: false,
   templateUrl: './fss-advanced-search.component.html',
   styleUrls: ['./fss-advanced-search.component.scss'],
   providers: [
@@ -60,6 +61,7 @@ export class FssAdvancedSearchComponent implements OnInit {
   @ViewChild("ukhoTarget") ukhoDialog: ElementRef;
   @Output() ShowSimplifiedSearchClicked = new EventEmitter<boolean>();
   @Output() onAdvancedSearchClicked = new EventEmitter<{ fssSearchRows: FssSearchRow[], fields: Field[], operators: Operator[], rowGroupings: RowGrouping[] }>();
+   @Output() onLoadComplete = new EventEmitter<boolean>();
   fssSilentTokenRequest: SilentRequest;
   fssTokenScope: any = [];
 
@@ -99,7 +101,7 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.getAdvancedSearchResult();
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.joinOperators = this.fssSearchTypeService.getJoinOperators();
     this.operators = this.fssSearchTypeService.getOperators();
     if (!localStorage['batchAttributes']) {
@@ -111,6 +113,10 @@ export class FssAdvancedSearchComponent implements OnInit {
           this.addSearchRow();         
           this.displayLoader = false;
           this.analyticsService.searchInIt();
+          this.onLoadComplete.emit(true);
+        }, () => {
+          this.displayLoader = false;
+          this.onLoadComplete.emit(true);
         });
       },error => {
         
@@ -123,7 +129,14 @@ export class FssAdvancedSearchComponent implements OnInit {
               this.addSearchRow();         
               this.displayLoader = false;
               this.analyticsService.searchInIt();
+              this.onLoadComplete.emit(true);
+            }, () => {
+              this.displayLoader = false;
+              this.onLoadComplete.emit(true);
             });
+          }).catch(() => {
+            this.handleTokenExpiry();
+            this.onLoadComplete.emit(true);
           })
       }); 
         
@@ -132,6 +145,8 @@ export class FssAdvancedSearchComponent implements OnInit {
       var batchAttributeResult = JSON.parse(localStorage.getItem('batchAttributes')!);
       this.refreshFields(batchAttributeResult);
       this.addSearchRow();
+      this.onLoadComplete.emit(true);
+
     }
 
     this.subscriptionPopularSearch = this.observablePopularSearch.subscribe((data) => 
@@ -162,11 +177,16 @@ export class FssAdvancedSearchComponent implements OnInit {
   }
 
   getBatchAttributes() {
+    this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
-        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
+        localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
+        
         this.refreshFields(batchAttributeResult);
         this.refreshExistingFssRowsFields();
+        this.displayLoader = false;
+      }, () => {
+        this.displayLoader = false;
       });    
     },error => {
       
@@ -177,7 +197,12 @@ export class FssAdvancedSearchComponent implements OnInit {
             localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
             this.refreshFields(batchAttributeResult);
             this.refreshExistingFssRowsFields();
+            this.displayLoader = false;
+          }, () => {
+            this.displayLoader = false;
           });    
+        }).catch(() => {
+          this.handleTokenExpiry();
         })
     }); 
   }
@@ -251,7 +276,10 @@ export class FssAdvancedSearchComponent implements OnInit {
     this.analyticsService.SearchRowDeleted();
   }
 
-  getAdvancedSearchResult() {
+  getAdvancedSearchResult() {    
+    if(this.fields.length === 0 ){
+      this.refreshFields(JSON.parse(localStorage.getItem('batchAttributes')!));
+    }
     this.onAdvancedSearchClicked.emit({ fssSearchRows: this.fssSearchRows, fields: this.fields, 
         operators: this.operators, rowGroupings: this.rowGroupings});
     }
