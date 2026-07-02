@@ -150,8 +150,10 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.proceedButtonSelectorClick();
     //Adding ENC manually
     await encSelectionPageObjects.addAnotherENC("GB301191");
-    const infoDisplay =  await page.getByTestId("message-info");
-    expect(infoDisplay).toContainText("Max ENC limit reached");
+    await expect.poll(async () => {
+      const alerts = await page.getByRole('alert').allTextContents().catch(() => []);
+      return alerts.join(' ').trim();
+    }, { timeout: 15000 }).toContain('Max ENC limit reached');
   })
 
   // https://dev.azure.com/ukhocustomer/File-Share-Service/_workitems/edit/14112
@@ -232,9 +234,15 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     await esslandingPageObjects.proceedButtonSelectorClick();
     // rhz - instead of looking for a literal "Invalid cells - GZ800112";
     // look for what we expect to find in the string
-    const warningDisplay =  await page.getByTestId("message-warning");
-    expect(warningDisplay).toContainText("Invalid cells");
-    expect(warningDisplay).toContainText("GZ800112");
+    await expect.poll(async () => {
+      const alerts = await page.getByRole('alert').allTextContents().catch(() => []);
+      return alerts.join(' ').trim();
+    }, { timeout: 15000 }).toContain('Invalid cells');
+
+    await expect.poll(async () => {
+      const alerts = await page.getByRole('alert').allTextContents().catch(() => []);
+      return alerts.join(' ').trim();
+    }, { timeout: 15000 }).toContain('GZ800112');
    
   })
 
@@ -246,14 +254,12 @@ test.describe('ESS UI ENCs Selection Page Functional Test Scenarios', () => {
     const selectENCsFromTable = encSelectionPageObjects.encTableCheckboxList;
     await encSelectionPageObjects.selectAllSelectorClick();
     await encSelectionPageObjects.deselectAllSelector.isVisible();
-    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(fileSize + ' MB' == estimatedSize);
+    await expect(encSelectionPageObjects.exchangeSetSizeSelector).toHaveText(new RegExp(`^${fileSize.toFixed(2)} MB\\s*$`), { timeout: 15000 });
     let itemIndex = 0;
     await selectENCsFromTable.nth(itemIndex).click();
 
     let newFileSize = (await encSelectionPageObjects.getFileSizeItemRemoved(await response.text(), itemIndex));
-    var estimatedSize = await encSelectionPageObjects.exchangeSetSizeSelector.innerText();
-    await encSelectionPageObjects.expect.toBeTruthy(newFileSize + ' MB' == estimatedSize);
+    await expect(encSelectionPageObjects.exchangeSetSizeSelector).toHaveText(new RegExp(`^${parseFloat(newFileSize).toFixed(2)} MB\\s*$`), { timeout: 15000 });
   })
 
   //https://dev.azure.com/ukhydro/File%20Share%20Service/_workitems/edit/151757
