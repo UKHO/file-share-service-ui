@@ -89,4 +89,10 @@ export const apiRoute200WithExcludedENCs = (page: Page) => page.route('**/produc
     });
 });
 
-
+export const mockTokenRefresh = (page: Page) => page.route('**/tokenrefresh', async (route) => {
+    route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({})
+    })
+})
