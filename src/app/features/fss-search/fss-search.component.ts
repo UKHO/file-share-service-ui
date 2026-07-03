@@ -96,6 +96,9 @@ export class FssSearchComponent implements OnInit {
           .then(response => {
             this.getSearchResult(filter);
           })
+          .catch(() => {
+            this.handleTokenExpiry();
+          })
       })
     }
     else {
@@ -120,6 +123,9 @@ export class FssSearchComponent implements OnInit {
           .loginPopup(this.fssSilentTokenRequest)
           .then(response => {
             this.getSimplifiedSearchApiResult(searchFilterText);
+          })
+          .catch(() => {
+            this.handleTokenExpiry();
           })
       })
     } else {
@@ -165,6 +171,8 @@ export class FssSearchComponent implements OnInit {
           this.handleGetSearchResultFailure(error);
         }
       );
+    } else {
+      this.displayLoader = false;
     }
   }
 
@@ -183,6 +191,9 @@ export class FssSearchComponent implements OnInit {
         .loginPopup(this.fssSilentTokenRequest)
         .then(response => {
           this.getSearchResult(applyFilter_FilterExpression);
+        })
+        .catch(() => {
+          this.handleTokenExpiry();
         })
     });
   }
@@ -247,6 +258,13 @@ export class FssSearchComponent implements OnInit {
     this.loginErrorDisplay = false;
   }
 
+  handleTokenExpiry() {
+    this.showMessage("info", "Your Sign-in Token has Expired", "");
+    this.loginErrorDisplay = true;
+    this.displayLoader = false;
+    this.analyticsService.tokenExpired();
+  }
+
   searchResultsFocus() {
     if (this.showSearchResult !== undefined) {
       this.showSearchResult.nativeElement.setAttribute('tabindex', '-1');
@@ -304,6 +322,9 @@ export class FssSearchComponent implements OnInit {
               this.handleGetSearchResultFailure(error);
             }
           );
+        })
+        .catch(() => {
+          this.handleTokenExpiry();
         })
     });
 
