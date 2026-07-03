@@ -5,6 +5,7 @@ import { DefaultValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-fss-simplified-filter',
+  standalone: false,
   templateUrl: './fss-simplified-filter.component.html',
   styleUrls: ['./fss-simplified-filter.component.scss']
 })

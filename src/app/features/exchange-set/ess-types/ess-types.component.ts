@@ -5,6 +5,7 @@ import { EssUploadFileService } from '../../../core/services/ess-upload-file.ser
 
 @Component({
   selector: 'app-ess-types',
+  standalone: false,
   templateUrl: './ess-types.component.html',
   styleUrls: ['./ess-types.component.scss'],
 })

@@ -16,108 +16,105 @@ import { DesignSystemModule } from '@ukho/admiralty-angular';
 
 describe('FssSearchResultsComponent', () => {
   let component: FssSearchResultsComponent;
-  let fileShareApiService: FileShareApiService;
-  let msalService: MsalService;
-  let elementRef: ElementRef;
-  let analyticsService: AnalyticsService;
+  //let fileShareApiService: FileShareApiService;
+  //let msalService: MsalService;
+  //let elementRef: ElementRef;
+  //let analyticsService: AnalyticsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientModule, TableModule, RouterTestingModule, DesignSystemModule],
+      imports: [
+        HttpClientModule,
+        TableModule,
+        RouterTestingModule,
+        DesignSystemModule
+      ],
       declarations: [FssSearchResultsComponent],
-      providers: [FileShareApiService, MsalService, AnalyticsService, {
-        provide: MSAL_INSTANCE,
-        useFactory: MockMSALInstanceFactory
+      providers: [
+        FileShareApiService,
+        MsalService,
+        AnalyticsService, {
+          provide: MSAL_INSTANCE,
+          useFactory: MockMSALInstanceFactory
       },
       {
         provide: "googleTagManagerId",
         useValue: "YOUR_GTM_ID"
      }],
       schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+    }).compileComponents();
     AppConfigService.settings = {
       fssConfig: {
         "apiUrl": "https://dummyfssapiurl"
       }
     };
-    fileShareApiService = TestBed.inject(FileShareApiService);
-    msalService = TestBed.inject(MsalService);
-    analyticsService = TestBed.inject(AnalyticsService);
+    //fileShareApiService = TestBed.inject(FileShareApiService);
+    //msalService = TestBed.inject(MsalService);
+    //analyticsService = TestBed.inject(AnalyticsService);
   });
 
-  it('should create FssSearchResultsComponent', () => {
+  function create() {
     const fixture = TestBed.createComponent(FssSearchResultsComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    component = fixture.componentInstance;
+    return { fixture };
+  }
+
+  it('should create FssSearchResultsComponent', () => {
+    const { fixture } = create();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
   //Test for search result count
-  test('should return search result count 1 when search result for 1 batch is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-    component.searchResult = Array.of(SearchResultMockData['entries']);
-    component.ngOnChanges();
-    var batches = component.searchResult[0];
 
-    expect(batches.length).toEqual(1);
+  test('should return search result count 1 when search result for 1 batch is provided', () => {
+    create();
+    component.searchResult = [SearchResultMockData.entries];
+    component.ngOnChanges();
+    expect(component.searchResult[0].length).toEqual(1);
     expect(component.searchResultVM.length).toEqual(1);
   });
 
   //Test for batch attributes
+
   test('should return batch attributes when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-    component.searchResult = Array.of(SearchResultMockData['entries']);
+    create();
+    component.searchResult = [SearchResultMockData.entries];
     component.ngOnChanges();
-    var batches = component.searchResult[0];
-
-    var expectedBatchAttributes = [
-      { "key": "product", "value": "TidalPredictionService" },
-      { "key": "cellname", "value": "AVCS" }];
-
-    var batchAttributes = component.getBatchAttributes(batches[0]);
-
-    expect(batchAttributes.length).toEqual(2);
-    expect(batchAttributes).toEqual(expectedBatchAttributes);
+    const expected = [
+      { key: 'product', value: 'TidalPredictionService' },
+      { key: 'cellname', value: 'AVCS' }
+    ];
+    const batchAttributes = component.getBatchAttributes(component.searchResult[0][0]);
+    expect(batchAttributes).toEqual(expected);
   });
 
   //Test for system attributes
+
   test('should return system attributes when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-    component.searchResult = Array.of(SearchResultMockData['entries']);
+    create();
+    component.searchResult = [SearchResultMockData.entries];
     component.ngOnChanges();
-
-    var expectedBatchID = { "key": "Batch ID", "value": "9439e409-e545-435c-afd7-f3a5cce527e3" };
-    var expectedBatchPublishedDate = { key: 'Batch published date', value: '2021-06-18T12:57:48.853Z' };
-    var expectedExpiryDate = { key: 'Batch expiry date', value: '2022-02-28T13:05:10.14Z' };
-
-    var batchID = component.searchResultVM[0].BatchID;
-    var batchPublishedDate = component.searchResultVM[0].BatchPublishedDate;
-    var expiryDate = component.searchResultVM[0].ExpiryDate;
-
-    expect(batchID).toEqual(expectedBatchID);
-    expect(batchPublishedDate).toEqual(expectedBatchPublishedDate);
-    expect(expiryDate).toEqual(expectedExpiryDate);
+    expect(component.searchResultVM[0].BatchID).toEqual({ key: 'Batch ID', value: '9439e409-e545-435c-afd7-f3a5cce527e3' });
+    expect(component.searchResultVM[0].BatchPublishedDate).toEqual({ key: 'Batch published date', value: '2021-06-18T12:57:48.853Z' });
+    expect(component.searchResultVM[0].ExpiryDate).toEqual({ key: 'Batch expiry date', value: '2022-02-28T13:05:10.14Z' });
   });
 
+
   //Test for file details column headers
+
   test('should return file details column data', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
+    create();
     component.ngOnChanges();
-
-    var expectedColumnData = ColumnHeader;
-    var resultedColumnData = component.getfileDetailsColumnData();
-
-    expect(expectedColumnData).toEqual(resultedColumnData);
+    expect(component.getfileDetailsColumnData()).toEqual(ColumnHeader);
   });
 
   //Test for batch file details
-  test('should return batch file details when search result data is provided', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-    component.searchResult = Array.of(SearchResultMockData['entries']);
-    component.ngOnChanges();
-    var batches = component.searchResult[0];
 
-    var expectedBatchFileDetails = {
+  test('should return batch file details when search result data is provided', () => {
+    create();
+    component.searchResult = [SearchResultMockData.entries];
+    component.ngOnChanges();
+    const expected = {
       columnData: ColumnHeader,
       rowData: [
         {
@@ -128,34 +125,42 @@ describe('FssSearchResultsComponent', () => {
         }
       ]
     };
-
-    var batchfileDetails = component.getBatchFileDetails(batches[0]);
-
-    expect(batchfileDetails.rowData.length).toEqual(1);
-    expect(batchfileDetails).toEqual(expectedBatchFileDetails);
+    expect(component.getBatchFileDetails(component.searchResult[0][0])).toEqual(expected);
   });
 
-  test('should return file download link when search result data is provided', fakeAsync(() => {
-    const fixture = TestBed.createComponent(FssSearchResultsComponent);
-    component = fixture.componentInstance;
-    component.searchResult = Array.of(SearchResultMockData['entries']);
-    component.ngOnChanges();
-    tick(100);
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      var ExpectedDownloadFileName = component.searchResultVM[0].batchFileDetails.rowData[0].FileName;
-      const element = fixture.nativeElement.querySelectorAll('admiralty-table-cell')[0];
-      let fileName = element.innerHTML;
-      expect(fileName).not.toBeNull();
-      expect(fileName).toEqual(ExpectedDownloadFileName);
-    })
 
+  //test('should return file download link when search result data is provided', fakeAsync(() => {
+  //  const fixture = TestBed.createComponent(FssSearchResultsComponent);
+  //  component = fixture.componentInstance;
+  //  component.searchResult = Array.of(SearchResultMockData['entries']);
+  //  component.ngOnChanges();
+  //  tick(100);
+  //  fixture.detectChanges();
+  //  fixture.whenStable().then(() => {
+  //    var ExpectedDownloadFileName = component.searchResultVM[0].batchFileDetails.rowData[0].FileName;
+  //    const element = fixture.nativeElement.querySelectorAll('admiralty-table-cell')[0];
+  //    let fileName = element.innerHTML;
+  //    expect(fileName).not.toBeNull();
+  //    expect(fileName).toEqual(ExpectedDownloadFileName);
+  //  })
+
+  //}));
+  test('should return file download link when search result data is provided', fakeAsync(() => {
+    const { fixture } = create();
+    component.searchResult = [SearchResultMockData.entries];
+    component.ngOnChanges();
+    tick(50);
+    fixture.detectChanges();
+    const nameCell = fixture.nativeElement.querySelectorAll('admiralty-table-cell')[0];
+    expect(nameCell.innerHTML).toEqual(component.searchResultVM[0].batchFileDetails.rowData[0].FileName);
   }));
 
-  //Test for file size conversion 
+
+  //Test for file size conversion (Rhz commented)
   test('should convert file size from bytes to respective size units', () => {
-    component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
-    component.ngOnChanges();
+    //Rhz we don't need the component here, not sure what this is even testing.
+    //component = new FssSearchResultsComponent(elementRef, fileShareApiService, analyticsService, msalService);
+    //component.ngOnChanges();
     var zeroBytes = formatBytes(0);
     var fileSizeBytes = formatBytes(100);
     var fileSizeKB = formatBytes(2000);

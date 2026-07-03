@@ -53,11 +53,13 @@
     "apiUrl": "",
     "apiScope": "",
     "defaultEstimatedSizeinMB": "0.5",
-    "aioExcludeEncs": [
-      "GB800002",
-      "FR800002"
-    ],
+    "aioCell": "GB800001",
     "apiUiUrl": "",
     "privilegedUserDomains": []
+  },
+  "elasticAPM": {
+    "Environment": "",
+    "ServerURL": "",
+    "ServiceName": ""
   }
 }

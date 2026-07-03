@@ -5,6 +5,7 @@ import { SortDirection } from './tables.types';
 
 @Directive({
   selector: '[ukhoSortHeader]',
+  standalone: false,
 })
 export class SortHeaderDirective implements OnInit, OnDestroy {
   @HostBinding('style.cursor') styleCursor = 'pointer';

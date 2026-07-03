@@ -1,5 +1,5 @@
 <div class="warningsBoxForDownload">
   <admiralty-dialogue [type]='messageType' [heading]="messageTitle" *ngIf="displayErrorMessage">
-    <div [innerHTML]="messageDesc"></div>
+    <div [innerHTML]="messageDesc" [attr.data-testid]="testId" ></div>
   </admiralty-dialogue>
 </div>

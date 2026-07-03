@@ -100,23 +100,19 @@ export function DataCollectionComparison(collectionSource: any, collectionTarget
 export async function InsertSearchText(page: Page, searchBatchAttribute: string) {
   await page.getByRole("textbox").fill(searchBatchAttribute);
   await page.getByTestId('sim-search-button').click();
-  await page.waitForTimeout(2000);
+  await WaitForSearchResultsStabilized(page);
 }
 
 export async function ExpectAllResultsHaveBatchUserAttValue(
   page: Page, preciseValue: string): Promise<void> {
 
-  await ExpectSelectionsAreEqual(page,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')='${preciseValue.toLowerCase()}'])]`);
+  await ExpectSelectionsAreEqual(page, fssSearchPageObjectsConfig.attributeTableSelector, preciseValue.toLowerCase());
 }
 
 export async function ExpectAllResultsContainBatchUserAttValue(
   page: Page, containsValue: string): Promise<void> {
 
-  await ExpectSelectionsAreEqual(page,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')])]`);
+  await ExpectSelectionsAreEqual(page, fssSearchPageObjectsConfig.attributeTableSelector, containsValue.toLowerCase());
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAttValue(
@@ -124,13 +120,8 @@ export async function ExpectAllResultsContainAnyBatchUserAttValue(
 
   expect(containsOneOf.length).toBeTruthy();
 
-  const tdPredicate = containsOneOf
-    .map(containsValue => `contains(translate(text(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '${containsValue.toLowerCase()}')`)
-    .join(' or ');
+  await ExpectSelectionsAreEqual(page, fssSearchPageObjectsConfig.attributeTableSelector, containsOneOf);
 
-  await ExpectSelectionsAreEqual(page,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}' and 0 < count(.//td[${tdPredicate}])]`);
 }
 
 export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
@@ -139,7 +130,7 @@ export async function ExpectAllResultsContainAnyBatchUserAndFileNameAttValue(
   expect(containsOneOf.length).toBeTruthy();
 
   await ExpectSelectionsAreEqualforBatchAndFile(page,
-    `//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`,
+    fssSearchPageObjectsConfig.attributeTableSelector,
     `//table[@class='${fssSearchPageObjectsConfig.fileAttributeTable.substring(1)}']`,
     containsOneOf
   );
@@ -150,7 +141,7 @@ export async function ExpectAllResultsHaveFileAttributeValue(
 
   await ExpectSelectionsAreEqual(page,
     `//admiralty-table[@role='table']`,
-    `//admiralty-table[@role='table' and  .//admiralty-table-cell[contains(., '${preciseValue.toLowerCase()}')]]`); 
+    `//admiralty-table[@role='table' and  .//admiralty-table-cell[contains(., '${preciseValue.toLowerCase()}')]]`);
 }
 
 export async function AdmiraltyExpectAllResultsHaveFileAttributeValue(
@@ -201,55 +192,64 @@ export async function AdmiraltyGetFileSizeCount(page: Page, fileSize: number) {
 
 
 
-async function ExpectSelectionsAreEqual(page: Page, tablePath: string, tablePathWithCondition: string): Promise<void> {
-  await page.waitForTimeout(3000);
+async function ExpectSelectionsAreEqual(page: Page, selector: string, condition: string | string[]): Promise<void> {
+  await WaitForSearchResultsStabilized(page);
   //  count the result rows
-  const resultCount = await page.$$eval(tablePath, matches => matches.length);
+  const resultCount = await page.locator(selector).count();
 
   // fail if there are no matching selections
   expect(resultCount).toBeTruthy();
 
-  // count the result rows with the attribute value
-  const withValueCount = await page.$$eval(tablePathWithCondition, matches => matches.length);
+  const normalizedConditions = (typeof condition === 'string' ? [condition] : condition)
+    .map(c => c.toLowerCase().trim())
+    .filter(Boolean);
+
+  let withValueCount = 0;
+  for (let i = 0; i < resultCount; i++) {
+    const rowText = ((await page.locator(selector).nth(i).textContent()) ?? '').toLowerCase();
+    const hasMatch = normalizedConditions.some(cond => rowText.includes(cond));
+    if (hasMatch) {
+      withValueCount += 1;
+    }
+  }
 
   // assert all the resulting batches have the attribute value
   expect(withValueCount).toEqual(resultCount);
 }
 
-async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, tableBatchAttribute: string, filePath: string, condition: string[]): Promise<void> {
+async function ExpectSelectionsAreEqualforBatchAndFile(page: Page, selector: string, filePath: string, condition: string[]): Promise<void> {
+  await WaitForSearchResultsStabilized(page);
+  let withValueCount = 0;
+  let withFileNameCount = 0;
 
-    await page.waitForTimeout(3000);
-    let withValueCount = 0;
-    let withFileNameCount = 0;
+  //  count the result rows
+  const resultCount = await page.locator(selector).count();
 
-    //  count the result rows
-    const resultCount = await page.$$eval(`${tableBatchAttribute}`, elements => elements.length);
-    
-    // fail if there are no matching selections
-    expect(resultCount).toBeTruthy();
-    
-    // count the result rows with the attribute value
 
-    for (let rc = 0; rc < resultCount; rc++) {
-      const searchedBatchAttibutes = await page.$$eval(`${tableBatchAttribute}//tr//td[1]`, elements => { return elements.map(element => element.textContent) });
+  // fail if there are no matching selections
+  expect(resultCount).toBeTruthy();
 
-      switch (true) {
-        case (searchedBatchAttibutes[rc]?.includes(condition[0])):
-          withValueCount = withValueCount + 1;
-          break;
-        case (searchedBatchAttibutes[rc]?.includes(condition[1])):
-          withValueCount = withValueCount + 1;
-          break;
-         default :
-           withFileNameCount = withFileNameCount + 1;
-           break;
-        
-      }
+  const searchedBatchAttibutes = await page.locator(`${selector} tr td:first-child`).allTextContents();
+
+  // count the result rows with the attribute value
+  for (let rc = 0; rc < resultCount; rc++) {
+    switch (true) {
+      case (searchedBatchAttibutes[rc]?.includes(condition[0])):
+        withValueCount = withValueCount + 1;
+        break;
+      case (searchedBatchAttibutes[rc]?.includes(condition[1])):
+        withValueCount = withValueCount + 1;
+        break;
+      default:
+        withFileNameCount = withFileNameCount + 1;
+        break;
+
     }
+  }
 
-    const withBothValueCount = withValueCount + withFileNameCount;
-    // assert all the resulting batches have the search value
-    expect(withBothValueCount).toEqual(resultCount);
+  const withBothValueCount = withValueCount + withFileNameCount;
+  // assert all the resulting batches have the search value
+  expect(withBothValueCount).toEqual(resultCount);
 }
 
 
@@ -258,27 +258,65 @@ export async function GetTotalResultCount(page: Page): Promise<number> {
   return parseInt(totalResult.split(' ')[0], 10);
 }
 
-export async function GetCountOfBatchRows(page: Page): Promise<number> {
-  //  count the result rows
-  return await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
+async function WaitForSearchResultsStabilized(page: Page): Promise<void> {
+  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => { });
+
+  const tableRows = page.locator(fssSearchPageObjectsConfig.searchResultTableSelector);
+  const noResultsDialog = page.locator(fssSearchPageObjectsConfig.dialogInfoSelector);
+
+  await Promise.race([
+    tableRows.first().waitFor({ state: 'visible', timeout: 15000 }),
+    noResultsDialog.waitFor({ state: 'visible', timeout: 15000 })
+  ]).catch(() => { });
+
+  await WaitForCountToStabilize(page, fssSearchPageObjectsConfig.searchResultTableSelector);
 }
 
+async function WaitForCountToStabilize(page: Page, selector: string): Promise<void> {
+  const timeoutMs = 10000;
+  const pollMs = 300;
+  const stableSamplesNeeded = 2;
+  const deadline = Date.now() + timeoutMs;
+
+  let stableSamples = 0;
+  let lastCount = -1;
+
+  while (Date.now() < deadline) {
+    const currentCount = await page.locator(selector).count();
+
+    if (currentCount === lastCount) {
+      stableSamples += 1;
+    } else {
+      stableSamples = 0;
+      lastCount = currentCount;
+    }
+
+    if (stableSamples >= stableSamplesNeeded) {
+      return;
+    }
+
+    await page.waitForTimeout(pollMs);
+  }
+}
+
+
 export async function ExpectSpecificColumnValueDisplayed(page: Page, tablecloumnName: string, tablecloumnValue: string): Promise<void> {
+  //count the result rows
+  const resultCount = await page.locator(fssSearchPageObjectsConfig.attributeTableSelector).count(); //
+
+  //fail if there are no matching selections
+  expect(resultCount).toBeTruthy();
 
   while (true) {
-    //count the result rows
-    const resultCount = await page.$$eval(`//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}']`, matches => matches.length);
-
-    //fail if there are no matching selections
-    expect(resultCount).toBeTruthy();
 
     let attributeFieldCount = 0;
     for (let rc = 0; rc < resultCount; rc++) {
-      const tablepath = `(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//th`
-      let colnum = await GetColumnNumber(page, tablepath, tablecloumnName);
-      expect(await page.locator(`(//table[@class='${fssSearchPageObjectsConfig.searchAttributeTable.substring(1)}'])[${rc + 1}]//tr//td[${colnum}]`).textContent()).toEqual(tablecloumnValue);
-      attributeFieldCount = attributeFieldCount + 1;
+      const table = page.locator(fssSearchPageObjectsConfig.attributeTableSelector).nth(rc);
+      const headers = table.locator('tr th');
 
+      let colnum = await GetColumnNumber(page, headers, tablecloumnName);
+      expect(await table.locator(`tr td:nth-child(${colnum})`).textContent()).toEqual(tablecloumnValue);
+      attributeFieldCount = attributeFieldCount + 1;
     }
 
     // assert all the resulting batches have the attribute value
@@ -304,11 +342,13 @@ export async function filterCheckBox(batchAtributeType: string, batchAttributeVa
   return checkBoxMatch;
 }
 
-async function GetColumnNumber(page: Page, tablePath: string, columnHeaderText: string) {
+
+
+async function GetColumnNumber(page: Page, tablePath: Locator, columnHeaderText: string) {
   let colIndex = 0;
-  const resultCount = await page.$$eval(tablePath, matches => matches.length);
+  const resultCount = await tablePath.count();
   for (let col = 1; col <= resultCount; col++) {
-    if (await page.locator(`${tablePath}[${col}]`).textContent() === columnHeaderText) {
+    if (await tablePath.nth(col - 1).textContent() === columnHeaderText) {
       colIndex = col;
       break;
 

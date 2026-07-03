@@ -2,7 +2,10 @@
 @use '@fortawesome/fontawesome-free/scss/solid';
 @use '@fortawesome/fontawesome-free/scss/brands';
 
-@import '~@ukho/admiralty-core/styles/core.css';
+//@import '~@ukho/admiralty-core/styles/core.css';
+/* styles.css */
+@import "@ukho/admiralty-core/styles/admiralty.bundle.css";
+@import "@ukho/admiralty-core/themes/default.css";
 
 .skip-to-content-link {
 	left: 47%;
@@ -48,13 +51,6 @@ select{
 	border-radius: 0;
 }
 
-/*ukho-dialogue section {
-    margin: 0 0 10px 0;
-}*/
-
-/*admiralty-dialogue section {
-  margin: 0 0 10px 0;
-}*/
 
 #mainContainer {
   .header-image {
@@ -66,26 +62,6 @@ select{
     background-size: cover;
   }
 
-  /*ukho-card {
-    p {
-      font-size: x-large;
-      font-weight: 300;
-      margin-bottom: 20px;
-    }
-
-    button {
-      float: left;
-    }
-
-    a#fss-createaccount {
-      padding: 20px 0 20px 40px;
-      float: left;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }*/
 
   admiralty-card {
     p {
@@ -250,11 +226,6 @@ button.fileDownload{
 	}
 }
 
-/*ukho-expansion{
-	section.expansion.bordered{
-		border-bottom: none !important;
-	}
-}*/
 
 admiralty-expansion {
   section.expansion.bordered {
@@ -311,17 +282,6 @@ table.attribute-table, .system-attribute-table{
 	}
 }
 
-/*ukho-expansion{
-	section{
-		border-bottom: none;
-	}
-}*/
-
-/*admiralty-expansion {
-  section {
-    border-bottom: none;
-  }
-}*/
 
 .result-margin{
 	margin-top:20px;
@@ -441,87 +401,13 @@ button{
 	}
 }}
 
-/*.valueTD{
-	text-align: left;
-	
-	ukho-textinput{
-	&[ng-reflect-type="date"], &[ng-reflect-type="time"] {
-		display: inline-block;
-		width: 47%;
-		margin: 0 10px 0 0;
-		vertical-align: top;
-	}
-	&.validated, &.invalid {
-		input.form-text-input{
-		padding-right: 0;
-	}
-	}
+
+
+.simplifideSearchBtn button.primary {
+  margin-top: 28px;
+  height: 55px;
 }
 
-ukho-textinput.text-input-wrap{
-	&[ng-reflect-type="date"] {
-		display: inline-block;
-		width: 43%;
-	input {
-		padding-right: 3%;
-	}
-}
-	&[ng-reflect-type="time"]{
-		width: 45%;
-		display: inline-block;
-		left: 7%;
-	
-}
-}
-	
-}*/
-
-
-/*========= Admiralty=========
-.admiralty-valueTD {
-  text-align: left;
-
-  admiralty-input {
-    &[ng-reflect-type="date"], &[ng-reflect-type="time"] {
-      display: inline-block;
-      width: 47%;
-      margin: 0 10px 0 0;
-      vertical-align: top;
-    }
-
-    &.validated, &.invalid {
-      input.form-text-input {
-        padding-right: 0;
-      }
-    }
-  }
-
-  admiralty-input.text-input-wrap {
-    &[ng-reflect-type="date"] {
-      display: inline-block;
-      width: 43%;
-
-      input {
-        padding-right: 3%;
-      }
-    }
-
-    &[ng-reflect-type="time"] {
-      width: 45%;
-      display: inline-block;
-      left: 7%;
-    }
-  }
-}*/
-
-.siplifideSearchBtn button.primary{
-	margin-top: 28px;
-    height: 55px;
-}
-
-/*ukho-textinput.text-input-wrap .error-text{
-	display: none;
-}*/
 
 [tabindex="-1"]:focus-visible{
 	border:none;
@@ -542,28 +428,6 @@ app-root {
 	flex-direction: column;
 }
 
-/*@media screen and (max-width:1024px){
-	.valueTD {
-		ukho-textinput.text-input-wrap{
-		&[ng-reflect-type=date]{
-		padding-left: 5px;
-		input{
-			padding-left:5px;
-		}
-	}
-	&[ng-reflect-type=time]{
-		width: 42%;
-		left: 6%;
-	}
- }
- }
-	#mainContainer {
-	.header-image {
-		height: 240px;
-		background: url(/assets/images/UKHO-17-AW-0005-Web.jpg) center center;
-	}
-}
-}*/
 
 .SearchBatch{
 	cursor: pointer;
@@ -587,96 +451,113 @@ app-root {
     width: 290px;
 }
 
-.enc-list-table, .warningsBoxForDownload{
-	display: block;
-	thead, tbody{
-		tr {
-			display: flex;
-			width: 100%;
-		}
-	}
-	thead{
-		display: block;
-		width: 100%;
-		tr {
-			th{
-				flex-basis: 100%;
-				&:last-child{
-					flex-basis: 10%;
-				}
-			}
-			
-		}
-	}
-    tbody{
-       max-height: 50vh;
-	   overflow-y: auto;
-	   display: block;
-	   padding-right: 2px;
-		&::-webkit-scrollbar {
-			width: 10px;
-			background-color: #595959; //forground dark color
-			border-radius: 50px;
-		}
-		&::-webkit-scrollbar-track {
-			background-color: #C4C4CA; //background light color
-			border-radius: 50px;
-		}
-		&::-webkit-scrollbar-thumb {
-			box-shadow: inset 0 0 30px rgb(89, 89, 89); //forground dark color
-			border-radius: 5px;
-		}
-		tr{
-			td{
-				flex-basis: 100%;
-				border-right:1px solid #d8d8d8;
-				display: flex;
-				&:last-child{
-					flex-basis: 10%;
-					align-items: center;
-					justify-content: center;
-				}
-				.checkbox-wrapper label{
-					padding-left: 30px !important;
-				}
-			}
-		}
+.enc-list-table, .warningsBoxForDownload {
+  display: block;
+
+  thead, tbody {
+    tr {
+      display: flex;
+      width: 100%;
     }
-	
-	.dialog{
-		max-height: 31vh;
-		overflow-y: auto;
-		display: block;
-		padding-right: 2px;
-		 &::-webkit-scrollbar {
-			 width: 10px;
-			 background-color: #595959; //forground dark color
-			 border-radius: 50px;
-		 }
-		 &::-webkit-scrollbar-track {
-			 background-color: #C4C4CA; //background light color
-			 border-radius: 50px;
-		 }
-		 &::-webkit-scrollbar-thumb {
-			 box-shadow: inset 0 0 30px rgb(89, 89, 89); //forground dark color
-			 border-radius: 5px;
-		 }
-		 tr{
-			 td{
-				 flex-basis: 100%;
-				 border-right:1px solid #d8d8d8;
-				 display: flex;
-				 &:last-child{
-					 flex-basis: 10%;
-					 align-items: center;
-					 justify-content: center;
-				 }
-				 .checkbox-wrapper label{
-					 padding-left: 30px !important;
-				 }
-			 }
-		 }
-	 }
+  }
+
+  thead {
+    display: block;
+    width: 100%;
+
+    tr {
+      th {
+        flex-basis: 100%;
+
+        &:last-child {
+          flex-basis: 10%;
+        }
+      }
+    }
+  }
+
+  tbody {
+    max-height: 29vh;
+    min-height: 29vh;
+    overflow-y: auto;
+    display: block;
+    padding-right: 2px;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+      background-color: #595959; //forground dark color
+      border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #C4C4CA; //background light color
+      border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      box-shadow: inset 0 0 30px rgb(89, 89, 89); //forground dark color
+      border-radius: 5px;
+    }
+
+    tr {
+      td {
+        flex-basis: 100%;
+        border-right: 1px solid #d8d8d8;
+        display: flex;
+
+        &:last-child {
+          flex-basis: 10%;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .checkbox-wrapper label {
+          padding-left: 30px !important;
+        }
+      }
+    }
+  }
+
+  .dialog {
+    max-height: 31vh;
+    overflow-y: auto;
+    display: block;
+    padding-right: 2px;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+      background-color: #595959; //forground dark color
+      border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #C4C4CA; //background light color
+      border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      box-shadow: inset 0 0 30px rgb(89, 89, 89); //forground dark color
+      border-radius: 5px;
+    }
+
+    tr {
+      td {
+        flex-basis: 100%;
+        border-right: 1px solid #d8d8d8;
+        display: flex;
+
+        &:last-child {
+          flex-basis: 10%;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .checkbox-wrapper label {
+          padding-left: 30px !important;
+        }
+      }
+    }
+  }
 }
 
 
@@ -727,13 +608,13 @@ app-root {
 }
 
 .headerEssSteps,
-.headerEssSteps > span{
-	display: block;
-	font-family: JohnstonITC, Helvetica, sans-serif;
-	color: #09315b;
-	font-weight: 400;
-	font-size: 48px;
-	line-height: 60px;
-	margin: 0 0 30px;
-  }
+.headerEssSteps > span {
+  display: block;
+  font-family: JohnstonITC, Helvetica, sans-serif;
+  color: #09315b;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 60px;
+  margin: 0 0 30px;
+}
 

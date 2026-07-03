@@ -40,6 +40,7 @@ export class FssSearchValidatorService {
           }
         }
       }
+    
       if (!fieldDataType) {
         if (fssSearchRows[rowId].selectedField === "" || fssSearchRows[rowId].selectedOperator === "") {
           if (fssSearchRows[rowId].fieldFormControl.touched === false) {
