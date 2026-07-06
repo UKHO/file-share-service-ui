@@ -35,7 +35,7 @@
     "angular-google-tag-manager": "^1.11.0",
     "jest-junit": "^16.0.0",
     "node-forge": "^1.4.0",
-    "postcss": "^8.5.9",
+    "postcss": "^8.5.10",
     "rxjs": "^7.8.2",
     "tar": "^7.5.11",
     "tslib": "^2.6.2",
