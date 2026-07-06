@@ -114,6 +114,9 @@ export class FssAdvancedSearchComponent implements OnInit {
           this.displayLoader = false;
           this.analyticsService.searchInIt();
           this.onLoadComplete.emit(true);
+        }, () => {
+          this.displayLoader = false;
+          this.onLoadComplete.emit(true);
         });
       },error => {
         
@@ -127,7 +130,13 @@ export class FssAdvancedSearchComponent implements OnInit {
               this.displayLoader = false;
               this.analyticsService.searchInIt();
               this.onLoadComplete.emit(true);
+            }, () => {
+              this.displayLoader = false;
+              this.onLoadComplete.emit(true);
             });
+          }).catch(() => {
+            this.handleTokenExpiry();
+            this.onLoadComplete.emit(true);
           })
       }); 
         
@@ -168,12 +177,16 @@ export class FssAdvancedSearchComponent implements OnInit {
   }
 
   getBatchAttributes() {
+    this.displayLoader = true;
     this.msalService.instance.acquireTokenSilent(this.fssSilentTokenRequest).then(response => {
       this.fileShareApiService.getBatchAttributes().subscribe((batchAttributeResult) => {
         localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));
         
         this.refreshFields(batchAttributeResult);
         this.refreshExistingFssRowsFields();
+        this.displayLoader = false;
+      }, () => {
+        this.displayLoader = false;
       });    
     },error => {
       
@@ -184,7 +197,12 @@ export class FssAdvancedSearchComponent implements OnInit {
             localStorage.setItem('batchAttributes', JSON.stringify(batchAttributeResult));   
             this.refreshFields(batchAttributeResult);
             this.refreshExistingFssRowsFields();
+            this.displayLoader = false;
+          }, () => {
+            this.displayLoader = false;
           });    
+        }).catch(() => {
+          this.handleTokenExpiry();
         })
     }); 
   }
