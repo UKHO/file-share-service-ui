@@ -14,15 +14,15 @@
     "force-resolutions": "npx npm-force-resolutions"
   },
   "dependencies": {
-    "@angular/animations": "^19.2.16",
+    "@angular/animations": "19.2.20",
     "@angular/cdk": "19.2.19",
-    "@angular/common": "^19.2.16",
-    "@angular/compiler": "^19.2.20",
-    "@angular/core": "^19.2.20",
-    "@angular/forms": "^19.2.16",
-    "@angular/platform-browser": "^19.2.16",
-    "@angular/platform-browser-dynamic": "^19.2.16",
-    "@angular/router": "^19.2.16",
+    "@angular/common": "19.2.20",
+    "@angular/compiler": "19.2.20",
+    "@angular/core": "19.2.20",
+    "@angular/forms": "19.2.20",
+    "@angular/platform-browser": "19.2.20",
+    "@angular/platform-browser-dynamic": "19.2.20",
+    "@angular/router": "19.2.20",
     "@azure/msal-angular": "^3.1.0",
     "@azure/msal-browser": "^3.30.0",
     "@elastic/apm-rum": "^5.17.0",
@@ -32,25 +32,26 @@
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@ukho/admiralty-angular": "5.1.0",
-    "angular-google-tag-manager": "^1.11.0",
+    "@ukho/admiralty-core": "5.1.0",
+    "angular-google-tag-manager": "1.11.0",
     "jest-junit": "^16.0.0",
     "node-forge": "^1.4.0",
-    "postcss": "^8.5.9",
+    "postcss": "^8.5.10",
     "rxjs": "^7.8.2",
-    "tar": "^7.5.11",
+    "tar": "^7.5.19",
     "tslib": "^2.6.2",
     "zone.js": "^0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.20",
+    "@angular-devkit/build-angular": "19.2.20",
     "@angular-eslint/builder": "19.8.0",
     "@angular-eslint/eslint-plugin": "19.8.0",
     "@angular-eslint/eslint-plugin-template": "19.8.0",
     "@angular-eslint/schematics": "19.8.0",
     "@angular-eslint/template-parser": "19.8.0",
-    "@angular/cli": "^19.2.20",
-    "@angular/compiler-cli": "^19.2.20",
-    "@playwright/test": "^1.56.1",
+    "@angular/cli": "19.2.20",
+    "@angular/compiler-cli": "19.2.20",
+    "@playwright/test": "1.58.2",
     "@types/jest": "^29.5.4",
     "@types/node": "^20.5.9",
     "@types/request": "^2.48.8",
@@ -71,6 +72,9 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.8.3",
     "webpack-dev-middleware": "^6.1.2",
-    "webpack-dev-server": "^5.2.2"
+    "webpack-dev-server": "^5.2.5"
+  },
+  "overrides": {
+    "@ukho/admiralty-core": "5.1.0"
   }
 }
