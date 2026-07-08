@@ -7,9 +7,6 @@ module.exports = {
   roots: ['<rootDir>/Tests/UnitTests/'],
   testMatch: ['**/+(*.)+(spec).+(ts)'],
   setupFilesAfterEnv:  ['<rootDir>/setup-jest.ts'],
-  transformIgnorePatterns: [
-    'node_modules/(?!.*\\.mjs$|@ukho/admiralty-angular|@ukho/admiralty-core)'
-  ],
   collectCoverage: true,
   coverageReporters: ['html','cobertura'],
   coverageDirectory: 'coverage',
