@@ -36,14 +36,14 @@
     "angular-google-tag-manager": "1.11.0",
     "jest-junit": "^16.0.0",
     "node-forge": "^1.4.0",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.19",
     "rxjs": "^7.8.2",
     "tar": "^7.5.19",
     "tslib": "^2.6.2",
     "zone.js": "^0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "19.2.20",
+    "@angular-devkit/build-angular": "22.1.2",
     "@angular-eslint/builder": "19.8.0",
     "@angular-eslint/eslint-plugin": "19.8.0",
     "@angular-eslint/eslint-plugin-template": "19.8.0",
