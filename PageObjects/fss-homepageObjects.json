@@ -8,6 +8,7 @@
     "signinLinkText": "Sign in",
     "linkSelector": "admiralty-link",
     "accessibilityLinkName": "accessibility",
+    "accessibilityReviewText": "We review these documents on a regular basis.",
     "privacypolicyLinkName": "Privacy policy",
     "marinedataportalLinkName": "Admiralty - Maritime Data Solutions Logo",
     "marinedataportalPageSelector": "div.navbar-header + h2",

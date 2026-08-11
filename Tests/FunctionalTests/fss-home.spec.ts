@@ -27,6 +27,7 @@ test.describe('FSS UI Home Page Functional Test Scenarios', () => {
         await lnk.click()
         await page.waitForLoadState("networkidle");
         expect(page.url()).toContain("accessibility");
+        await expect(page.getByText(fssHomePageObjectsConfig.accessibilityReviewText)).toBeVisible();
     })
 
 
