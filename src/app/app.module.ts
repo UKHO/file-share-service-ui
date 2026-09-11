@@ -31,34 +31,38 @@ import {
 
 
 export function GTMFactory(): any {
-  const googleTagManagerId = AppConfigService.settings.GoogleTagManagerId;
+  const settings = AppConfigService.getSettings();
+  const googleTagManagerId = settings.GoogleTagManagerId;
   return googleTagManagerId;
 }
 
 export function ApmFactory(): any {
+  const settings = AppConfigService.getSettings();
   return initApm({
-    serviceName: AppConfigService.settings['elasticAPM'].ServiceName,
-    serverUrl: AppConfigService.settings['elasticAPM'].ServerURL,
-    environment: AppConfigService.settings['elasticAPM'].Environment
+    serviceName: settings['elasticAPM'].ServiceName,
+    serverUrl: settings['elasticAPM'].ServerURL,
+    environment: settings['elasticAPM'].Environment
   });
 }
 
 
 export function MSALInstanceFactory(): IPublicClientApplication {
-    const tenantName = AppConfigService.settings["b2cConfig"].tenantName;
-    
+    const settings = AppConfigService.getSettings();
+    const b2cConfig = settings["b2cConfig"];
+    const tenantName = b2cConfig.tenantName;
+
     return new PublicClientApplication({
         auth: {
-            clientId: AppConfigService.settings["b2cConfig"].clientId,
-            authority: "https://" + tenantName + ".b2clogin.com/" + tenantName + ".onmicrosoft.com/" + AppConfigService.settings["b2cConfig"].signUpSignIn,
-            redirectUri: AppConfigService.settings["b2cConfig"].redirectUri,
+            clientId: b2cConfig.clientId,
+            authority: "https://" + tenantName + ".b2clogin.com/" + tenantName + ".onmicrosoft.com/" + b2cConfig.signUpSignIn,
+            redirectUri: b2cConfig.redirectUri,
             knownAuthorities: [tenantName + ".b2clogin.com/"],
-            postLogoutRedirectUri: AppConfigService.settings["b2cConfig"].postLogoutRedirectUri,
-            navigateToLoginRequestUrl: AppConfigService.settings["b2cConfig"].navigateToLoginRequestUrl
+            postLogoutRedirectUri: b2cConfig.postLogoutRedirectUri,
+            navigateToLoginRequestUrl: b2cConfig.navigateToLoginRequestUrl
         },
         cache: {
-            cacheLocation: AppConfigService.settings["b2cConfig"].cacheLocation,
-            storeAuthStateInCookie: AppConfigService.settings["b2cConfig"].storeAuthStateInCookie
+            cacheLocation: b2cConfig.cacheLocation,
+            storeAuthStateInCookie: b2cConfig.storeAuthStateInCookie
         }
     });
 }
@@ -70,21 +74,30 @@ export function MSALGuardConfigFac(): MsalGuardConfiguration {
 }
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+    const settings = AppConfigService.getSettings();
+    const b2cConfig = settings["b2cConfig"];
+    const fssConfig = settings["fssConfig"];
+
     return {
-        interactionType: AppConfigService.settings["b2cConfig"].interactionType,
+        interactionType: b2cConfig.interactionType,
         authRequest: {
-            scopes: [AppConfigService.settings["fssConfig"].apiScope],
+            scopes: [fssConfig.apiScope],
         },
     };
 }
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+    const settings = AppConfigService.getSettings();
+    const b2cConfig = settings["b2cConfig"];
+    const fssConfig = settings["fssConfig"];
+    const essConfig = settings["essConfig"];
+
     return {
-        interactionType: AppConfigService.settings["b2cConfig"].interactionType,
+        interactionType: b2cConfig.interactionType,
         protectedResourceMap: new Map([
-            [AppConfigService.settings["fssConfig"].stateManagementApiUrl+'/logout', null],
-            [AppConfigService.settings["fssConfig"].apiUrl, [AppConfigService.settings["fssConfig"].apiScope]],
-            [AppConfigService.settings["essConfig"].apiUrl, [AppConfigService.settings["essConfig"].apiScope]],
-            [AppConfigService.settings["essConfig"].apiUiUrl, [AppConfigService.settings["essConfig"].apiScope]]     
+            [fssConfig.stateManagementApiUrl+'/logout', null],
+            [fssConfig.apiUrl, [fssConfig.apiScope]],
+            [essConfig.apiUrl, [essConfig.apiScope]],
+            [essConfig.apiUiUrl, [essConfig.apiScope]]     
         ]),
     };
 }
