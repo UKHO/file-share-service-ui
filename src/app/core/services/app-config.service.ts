@@ -23,13 +23,17 @@ export class AppConfigService {
         return AppConfigService.settings;
     }
 
+    static setSettings(settings: unknown): void {
+        AppConfigService.settings = settings;
+        AppConfigService.isLoaded = true;
+    }
+
     init(endpoint: string): Promise<boolean> {
         return new Promise<boolean>((resolve, reject) => {
           this.http.get(endpoint).pipe(map(result => result))
             .subscribe({
               next: (value: unknown) => {
-                AppConfigService.settings = value;
-                AppConfigService.isLoaded = true;
+                AppConfigService.setSettings(value);
                 resolve(true);
               },
               error: (error: unknown) => {
