@@ -11,7 +11,6 @@ import { FilterGroup, FilterItem } from '../../shared/components/ukho-table/filt
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { SilentRequest } from '@azure/msal-browser';
-import { e } from '@angular/cdk/scrolling-module.d-ud2XrbF8';
 
 @Component({
   selector: 'app-fss-search',

@@ -1,12 +1,36 @@
 import { _VIEW_REPEATER_STRATEGY, _DisposeViewRepeaterStrategy } from '@angular/cdk/collections';
-import { CdkTable, CDK_TABLE, CDK_TABLE_TEMPLATE, _COALESCED_STYLE_SCHEDULER, _CoalescedStyleScheduler } from '@angular/cdk/table';
+import { CdkTable, CDK_TABLE } from '@angular/cdk/table';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'ukho-table, table[ukho-table]',
   standalone: false,
   exportAs: 'ukhoTable',
-  template: CDK_TABLE_TEMPLATE,
+  // Mirrors the template used internally by CdkTable (@angular/cdk/table) since v20 no longer exports CDK_TABLE_TEMPLATE.
+  template: `
+    <ng-content select="caption"/>
+    <ng-content select="colgroup, col"/>
+    @if (_isServer) {
+      <ng-content/>
+    }
+    @if (_isNativeHtmlTable) {
+      <thead role="rowgroup">
+        <ng-container headerRowOutlet/>
+      </thead>
+      <tbody role="rowgroup">
+        <ng-container rowOutlet/>
+        <ng-container noDataRowOutlet/>
+      </tbody>
+      <tfoot role="rowgroup">
+        <ng-container footerRowOutlet/>
+      </tfoot>
+    } @else {
+      <ng-container headerRowOutlet/>
+      <ng-container rowOutlet/>
+      <ng-container noDataRowOutlet/>
+      <ng-container footerRowOutlet/>
+    }
+  `,
   styleUrls: ['./table.component.scss'],
   providers: [
     {
@@ -20,10 +44,6 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
     {
       provide: _VIEW_REPEATER_STRATEGY,
       useClass: _DisposeViewRepeaterStrategy,
-    },
-    {
-      provide: _COALESCED_STYLE_SCHEDULER,
-      useClass: _CoalescedStyleScheduler
     }
   ],
   changeDetection: ChangeDetectionStrategy.Default,
