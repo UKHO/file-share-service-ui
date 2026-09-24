@@ -66,8 +66,8 @@ describe('FssSearchComponent', () => {
 
    beforeEach(() => {
       fixture = TestBed.createComponent(FssSearchComponent);
-      router = TestBed.get(Router);
-      route = TestBed.get(ActivatedRoute);
+      router = TestBed.inject(Router);
+      route = TestBed.inject(ActivatedRoute);
       component = fixture.componentInstance;
       fixture.detectChanges();
 
