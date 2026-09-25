@@ -1,4 +1,4 @@
-import { NgModule,provideAppInitializer, inject, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -107,7 +107,6 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
         },    
         
         AnalyticsService,
-        provideAppInitializer(() => inject(AppConfigService).init('assets/config/appconfig.json')),
         {
             provide: MSAL_INSTANCE,
             useFactory: MSALInstanceFactory

@@ -41,6 +41,7 @@ describe('AppComponent', () => {
         Environment: ''
       }
     };
+    (AppConfigService as any).isLoaded = true;
 
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MsalModule],
