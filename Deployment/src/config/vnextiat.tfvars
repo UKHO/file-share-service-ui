@@ -9,5 +9,4 @@ front_door_subscription_id        = "773c0f37-8bf4-409d-b473-c6de8b31bc96"
 front_door_profile_name           = "frontdoor-dev-fd"
 front_door_resource_group         = "frontdoor-dev-rg"
 front_door_shared_endpoint_name   = "frontdoor-dev-fd"
-# TODO: SERVICE_DNS_URL from File-Share-Service-UI-vNext-IAT-Deploy-Variables (hostname only, no https://).
-front_door_custom_domain_hostname = ""
+front_door_custom_domain_hostname = "fss-vnextiat.admiralty.co.uk"
