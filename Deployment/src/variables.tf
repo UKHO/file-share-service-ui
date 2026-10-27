@@ -101,3 +101,21 @@ variable "front_door_custom_domain_dns_zone_id" {
   type        = string
   default     = ""
 }
+
+variable "front_door_api_origin_hostname" {
+  description = "APIM gateway hostname that /api/* on the UI domain is forwarded to. Empty skips the API route."
+  type        = string
+  default     = ""
+}
+
+variable "front_door_api_path" {
+  description = "APIM path of the FSS API for this environment (e.g. fss-vnextiat); /api/* is rewritten to it."
+  type        = string
+  default     = ""
+}
+
+variable "front_door_api_auth_path" {
+  description = "APIM path of the FSS UI session API for this environment (e.g. fss-ui-auth-vnextiat); /api/auth/* is rewritten to it."
+  type        = string
+  default     = ""
+}
