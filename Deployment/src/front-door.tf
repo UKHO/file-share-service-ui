@@ -159,7 +159,15 @@ module "front_door_delivery" {
           preserve_unmatched_path = true
         }
       }
-      conditions = null
+      # Same shape as rewrite_auth; Terraform 1.3.7 won't unify null with an object here.
+      conditions = {
+        url_path_condition = {
+          operator         = "BeginsWith"
+          negate_condition = false
+          match_values     = ["api/"]
+          transforms       = ["Lowercase"]
+        }
+      }
     }
   } : {}
 }
