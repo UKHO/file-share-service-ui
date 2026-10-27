@@ -89,7 +89,7 @@ module "front_door_delivery" {
     }
   } : {}
 
-  routes = merge({
+  routes = {
     fssui_route = {
       name                   = "fssui-${local.env_name}-route"
       origin_group_key       = "fssui"
@@ -101,24 +101,12 @@ module "front_door_delivery" {
       supported_protocols    = ["Http", "Https"]
       custom_domain_keys     = local.front_door_custom_domain_enabled ? ["fssui_domain"] : []
       link_to_default_domain = !local.front_door_custom_domain_enabled
+      rule_set_keys          = local.front_door_api_enabled ? ["fssapi"] : []
     }
-    }, local.front_door_api_enabled ? {
-    fssapi_route = {
-      name                   = "fssui-${local.env_name}-api-route"
-      origin_group_key       = "fssapi"
-      origin_keys            = ["fssapi_apim"]
-      enabled                = var.front_door_route_enabled
-      forwarding_protocol    = "HttpsOnly"
-      https_redirect_enabled = true
-      patterns_to_match      = ["/api/*"]
-      supported_protocols    = ["Http", "Https"]
-      custom_domain_keys     = local.front_door_custom_domain_enabled ? ["fssui_domain"] : []
-      link_to_default_domain = !local.front_door_custom_domain_enabled
-      rule_set_keys          = ["fssapi"]
-    }
-  } : {})
+  }
 
   # Same mapping as the old proxy: /api/auth/* -> APIM session API, /api/* -> APIM FSS API.
+  # Must be on the /* route: rewrites only see the path after the route pattern, so a /api/* route can't strip /api.
   rule_sets = local.front_door_api_enabled ? {
     fssapi = {
       name = "fssui${replace(local.env_name, "-", "")}api"
@@ -137,6 +125,11 @@ module "front_door_delivery" {
           destination             = "/${var.front_door_api_auth_path}/"
           preserve_unmatched_path = true
         }
+        route_configuration_override_action = {
+          origin_group_key    = "fssapi"
+          forwarding_protocol = "HttpsOnly"
+          cache_behavior      = "Disabled"
+        }
       }
       conditions = {
         url_path_condition = {
@@ -151,12 +144,17 @@ module "front_door_delivery" {
       name              = "rewriteapi"
       rule_set_key      = "fssapi"
       order             = 2
-      behavior_on_match = "Continue"
+      behavior_on_match = "Stop"
       actions = {
         url_rewrite_action = {
           source_pattern          = "/api/"
           destination             = "/${var.front_door_api_path}/"
           preserve_unmatched_path = true
+        }
+        route_configuration_override_action = {
+          origin_group_key    = "fssapi"
+          forwarding_protocol = "HttpsOnly"
+          cache_behavior      = "Disabled"
         }
       }
       # Same shape as rewrite_auth; Terraform 1.3.7 won't unify null with an object here.
