@@ -12,6 +12,8 @@ front_door_shared_endpoint_name   = "frontdoor-dev-fd"
 front_door_custom_domain_hostname = "fss-vnextiat.admiralty.co.uk"
 
 # /api/* -> APIM, matching the old proxy (fss-qa/api/* -> nonlive-api/fss-qa/*).
+# Once nonlive-api's DNS moves to Front Door (alz-front-door-routes/solas-apim), this origin loops back through
+# the same profile. If /api/ calls then fail (5xx/loop), use APIM directly: "solasnonlive.azure-api.net".
 front_door_api_origin_hostname = "nonlive-api.admiralty.co.uk"
 front_door_api_path            = "fss-vnextiat"
 front_door_api_auth_path       = "fss-ui-auth-vnextiat"
