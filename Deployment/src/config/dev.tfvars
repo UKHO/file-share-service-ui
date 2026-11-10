@@ -3,7 +3,7 @@
 # Secrets and other per-environment values still come from pipeline variable groups as TF_VAR_*.
 
 # Front Door onboarding (dev) — PBI 313049. Paused: Dev is route to live; vNext IAT goes first.
-front_door_enabled                = false
+front_door_enabled                = true
 front_door_route_enabled          = true
 front_door_subscription_id        = "773c0f37-8bf4-409d-b473-c6de8b31bc96"
 front_door_profile_name           = "frontdoor-dev-fd"
