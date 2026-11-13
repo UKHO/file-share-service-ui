@@ -22,3 +22,11 @@ provider "azurerm" {
   alias = "build_agent"
   subscription_id = var.agent_subscription_id
 }
+
+provider "azurerm" {
+  features {}
+  alias           = "frontdoor"
+  subscription_id = var.front_door_subscription_id != "" ? var.front_door_subscription_id : null
+  # azurerm 3.x tries to register retired providers (e.g. ServiceFabricMesh); FSS SP lacks rights in the platform FD subscription.
+  skip_provider_registration = true
+}
