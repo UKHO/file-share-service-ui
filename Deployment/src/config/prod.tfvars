@@ -10,3 +10,7 @@ front_door_profile_name           = "frontdoor-live-fd"
 front_door_resource_group         = "frontdoor-live-rg"
 front_door_shared_endpoint_name   = "frontdoor-live-fd"
 front_door_custom_domain_hostname = "fss.admiralty.co.uk"
+
+front_door_api_origin_hostname    = "api.admiralty.co.uk"
+front_door_api_path               = "fss"
+front_door_api_auth_path          = "fss-ui-auth"

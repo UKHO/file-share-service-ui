@@ -10,3 +10,7 @@ front_door_profile_name           = "frontdoor-dev-fd"
 front_door_resource_group         = "frontdoor-dev-rg"
 front_door_shared_endpoint_name   = "frontdoor-dev-fd"
 front_door_custom_domain_hostname = "fss-vnexte2e.admiralty.co.uk"
+
+front_door_api_origin_hostname    = "nonlive-api.admiralty.co.uk"
+front_door_api_path               = "fss-vnexte2e"
+front_door_api_auth_path          = "fss-ui-auth-vnexte2e"
