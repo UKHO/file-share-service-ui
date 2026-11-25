@@ -46,6 +46,24 @@ describe('EssTypesComponent', () => {
     fixture.detectChanges();
   });
 
+  function withFixedClock(test: () => void): void {
+    jest.useFakeTimers();
+    try {
+      jest.setSystemTime(new Date('2024-11-03T12:00:00Z'));
+      test();
+    } finally {
+      jest.useRealTimers();
+    }
+  }
+
+  function selectDate(value: string): void {
+    const input = document.createElement('input');
+    input.type = 'date';
+    input.value = value;
+    const event = new Event('change');
+    Object.defineProperty(event, 'target', { value: input });
+    component.onDateChange(event);
+  }
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -120,6 +138,47 @@ describe('EssTypesComponent', () => {
       messageDesc: errorMessage
     };
     expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual(errObj);
+  });
+
+
+  it('should accept exactly 27 calendar days across the autumn clock change and preserve the selected date', () => {
+    withFixedClock(() => {
+      expect(new Date().getTimezoneOffset()).toBe(0);
+      expect(new Date('2024-10-07T00:00:00Z').getTimezoneOffset()).toBe(-60);
+
+      selectDate('2024-10-07');
+
+      expect(component.isDateValid).toBe(true);
+      expect(component.isDateSelected).toBe(true);
+      expect(component.isRadioSelected).toBe(true);
+      expect(essInfoErrorMessageService.infoErrMessage.showInfoErrorMessage).toBe(false);
+      const storedDate: Date = service.exchangeSetDeltaDate;
+      expect(storedDate).toBeInstanceOf(Date);
+      expect([
+        storedDate.getFullYear(),
+        storedDate.getMonth(),
+        storedDate.getDate(),
+        storedDate.getHours(),
+        storedDate.getMinutes(),
+        storedDate.getSeconds(),
+        storedDate.getMilliseconds()
+      ]).toEqual([2024, 9, 7, 0, 0, 0, 0]);
+    });
+  });
+
+  it('should reject exactly 28 calendar days across the autumn clock change', () => {
+    withFixedClock(() => {
+      selectDate('2024-10-06');
+
+      expect(component.isDateValid).toBe(false);
+      expect(component.isRadioSelected).toBe(false);
+      expect(service.exchangeSetDeltaDate).toBeUndefined();
+      expect(essInfoErrorMessageService.infoErrMessage).toStrictEqual({
+        showInfoErrorMessage: true,
+        messageType: 'info',
+        messageDesc: 'Date selected not within last 27 days, please choose a different date or select the “Download all data” option'
+      });
+    });
   });
 
   it('should set onDescriptionClick to baseRadio button on onDescriptionClick clicked', () => {
