@@ -104,7 +104,6 @@ export class EssTypesComponent implements OnInit, OnDestroy {
   );
 
   const differenceDays = (currentDayUtc - selectedDayUtc) / 86_400_000;
-  console.log('Delta date differenceDays:', differenceDays);
 
   if (differenceDays < 0 || differenceDays > 27) {
     this.resetDate();
