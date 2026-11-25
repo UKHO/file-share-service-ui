@@ -2,6 +2,8 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig');
 const {defaults} = require('jest-config');
 
+process.env.TZ = 'Europe/London';
+
 module.exports = {
   preset: 'jest-preset-angular',
   roots: ['<rootDir>/Tests/UnitTests/'],
