@@ -86,24 +86,37 @@ export class EssTypesComponent implements OnInit, OnDestroy {
     this.router.navigate(['exchangesets', 'exchange-set']);
   }
 
-  private isValidDeltaDateSelected(selectedDate: any) {
-    const currentDate: any = new Date();
-    const targetDate: any = new Date(selectedDate);
-    targetDate.setHours(currentDate.getHours());
-    targetDate.setMinutes(currentDate.getMinutes());
-    targetDate.setSeconds(currentDate.getSeconds());
-    targetDate.setMilliseconds(currentDate.getMilliseconds());
-    
-    const differenceMs = Math.abs(targetDate - currentDate);
-    const differenceDays = Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+ private isValidDeltaDateSelected(selectedDate: Date): boolean {
+  const currentDate = new Date();
+  const selectedYear = selectedDate.getUTCFullYear();
+  const selectedMonth = selectedDate.getUTCMonth();
+  const selectedDayOfMonth = selectedDate.getUTCDate();
 
-    if (differenceDays > 27 || targetDate > currentDate) {
-      this.resetDate();
-      return false;
-    }
-    this._selectedDeltaDownloadDate = targetDate;
-    return true;
+  const selectedDayUtc = Date.UTC(
+    selectedYear,
+    selectedMonth,
+    selectedDayOfMonth,
+  );
+  const currentDayUtc = Date.UTC(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
+  );
+
+  const differenceDays = (currentDayUtc - selectedDayUtc) / 86_400_000;
+
+  if (differenceDays < 0 || differenceDays > 27) {
+    this.resetDate();
+    return false;
   }
+
+  this._selectedDeltaDownloadDate = new Date(
+    selectedYear,
+    selectedMonth,
+    selectedDayOfMonth,
+  );
+  return true;
+}
 
   private resetDate() {
     const dateInput = document.getElementById('dateInput') as HTMLInputElement;

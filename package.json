@@ -74,6 +74,7 @@
     "webpack-dev-server": "^5.2.5"
   },
   "overrides": {
-    "@ukho/admiralty-core": "5.1.0"
+    "@ukho/admiralty-core": "5.1.0",
+    "parse5": "8.1.1"
   }
 }
